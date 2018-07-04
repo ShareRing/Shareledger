@@ -1,4 +1,4 @@
-package types
+package handlers
 
 import (
 	"encoding/json"
@@ -6,6 +6,9 @@ import (
 	"strconv"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
+
+	"github.com/sharering/shareledger/x/bank/messages"
+	"github.com/sharering/shareledger/types"
 
 )
 
@@ -17,7 +20,7 @@ import (
 // in ValidateBasic().
 func HandleMsgSend(key *sdk.KVStoreKey) sdk.Handler {
 	return func(ctx sdk.Context, msg sdk.Msg) sdk.Result {
-		sendMsg, ok := msg.(MsgSend)
+		sendMsg, ok := msg.(messages.MsgSend)
 
 		fmt.Println("Received %v", sendMsg)
 
@@ -54,7 +57,7 @@ func HandleMsgSend(key *sdk.KVStoreKey) sdk.Handler {
 }
 
 // Convenience Handlers
-func handleFrom(store sdk.KVStore, from sdk.Address, amt Coin) sdk.Result {
+func handleFrom(store sdk.KVStore, from sdk.Address, amt types.Coin) sdk.Result {
 	// Get sender account from the store.
 	accBytes := store.Get(from)
 	//if accBytes == nil {
@@ -63,7 +66,7 @@ func handleFrom(store sdk.KVStore, from sdk.Address, amt Coin) sdk.Result {
 	//}
 
 	// Unmarshal the JSON account bytes.
-	var acc appAccount
+	var acc types.AppAccount
 	if accBytes != nil {
 		err := json.Unmarshal(accBytes, &acc)
 
@@ -72,8 +75,8 @@ func handleFrom(store sdk.KVStore, from sdk.Address, amt Coin) sdk.Result {
 			return sdk.ErrInternal("Error when deserializing account").Result()
 		}
 	} else {
-		acc = appAccount{
-			Coins: NewCoin("SHR", 100 ),
+		acc = types.AppAccount{
+			Coins: types.NewCoin("SHR", 0),
 		}
 	}
 
@@ -103,13 +106,13 @@ func handleFrom(store sdk.KVStore, from sdk.Address, amt Coin) sdk.Result {
 					 //Log: "Result" }
 }
 
-func handleTo(store sdk.KVStore, to sdk.Address, amt Coin) sdk.Result {
+func handleTo(store sdk.KVStore, to sdk.Address, amt types.Coin) sdk.Result {
 	// Add msg amount to receiver account
 	accBytes := store.Get(to)
-	var acc appAccount
+	var acc types.AppAccount
 	if accBytes == nil {
 		// Receiver account does not already exist, create a new one.
-		acc = appAccount{}
+		acc = types.AppAccount{}
 	} else {
 		// Receiver account already exists. Retrieve and decode it.
 		err := json.Unmarshal(accBytes, &acc)
@@ -136,8 +139,5 @@ func handleTo(store sdk.KVStore, to sdk.Address, amt Coin) sdk.Result {
 	return sdk.Result{Log: strconv.FormatInt(acc.Coins.Amount, 10)}
 }
 
-// Simple account struct
-type appAccount struct {
-	Coins Coin `json:"coins"`
-}
+
 

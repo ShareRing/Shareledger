@@ -1,4 +1,4 @@
-package types
+package bank
 
 import (
 	//"encoding/json"
@@ -6,6 +6,8 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/wire"
+
+	msg "github.com/sharering/shareledger/x/bank/messages"
 )
 
 
@@ -42,7 +44,8 @@ func TxDecoder(txBytes []byte) (sdk.Tx, sdk.Error) {
 func MakeCodec() *wire.Codec {
 	cdc := wire.NewCodec()
 	cdc.RegisterInterface((*sdk.Msg)(nil), nil)
-	cdc.RegisterConcrete(MsgSend{}, "shareledger/MsgSend", nil)
-	cdc.RegisterConcrete(MsgCheck{}, "shareledger/MsgCheck", nil)
+	cdc.RegisterConcrete(msg.MsgSend{}, "shareledger/MsgSend", nil)
+	cdc.RegisterConcrete(msg.MsgCheck{}, "shareledger/MsgCheck", nil)
+	cdc.RegisterConcrete(msg.MsgLoad{}, "shareledger/MsgLoad", nil)
 	return cdc
 }

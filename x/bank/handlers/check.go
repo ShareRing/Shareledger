@@ -1,8 +1,10 @@
-package types
+package handlers
 
 import (
 	"fmt"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/sharering/shareledger/x/bank/messages"
+	"github.com/sharering/shareledger/types"
 
 	"encoding/json"
 )
@@ -15,7 +17,7 @@ import (
 // in ValidateBasic().
 func HandleMsgCheck(key *sdk.KVStoreKey) sdk.Handler {
 	return func(ctx sdk.Context, msg sdk.Msg) sdk.Result {
-		checkMsg, ok := msg.(MsgCheck)
+		checkMsg, ok := msg.(messages.MsgCheck)
 
 		fmt.Printf("Received %v\n", checkMsg)
 
@@ -31,7 +33,7 @@ func HandleMsgCheck(key *sdk.KVStoreKey) sdk.Handler {
 
 		accBytes := store.Get(checkMsg.Account)
 
-		var acc appAccount
+		var acc types.AppAccount
 		if accBytes != nil {
 			err := json.Unmarshal(accBytes, &acc)
 
@@ -40,8 +42,8 @@ func HandleMsgCheck(key *sdk.KVStoreKey) sdk.Handler {
 				return sdk.ErrInternal("Error when deserializing account").Result()
 			}
 		} else {
-			acc = appAccount{
-				Coins: NewCoin("SHR", 0 ),
+			acc = types.AppAccount{
+				Coins: types.NewCoin("SHR", 0 ),
 			}
 		}
 

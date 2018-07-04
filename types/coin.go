@@ -38,7 +38,7 @@ func (coin Coin) Minus(other Coin) Coin {
 	if !coin.IsSameDenom(other) {
 		return coin
 	}
-	return NewCoin(coin.Denom, coin.Amount + other.Amount)
+	return NewCoin(coin.Denom, coin.Amount - other.Amount)
 }
 
 func (coin Coin) IsSameDenom(other Coin) bool {

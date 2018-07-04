@@ -1,4 +1,4 @@
-package types
+package messages
 
 import (
 	"encoding/json"

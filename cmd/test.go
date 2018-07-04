@@ -5,12 +5,16 @@ import (
 	"encoding/json"
 	"encoding/hex"
 
-	"github.com/sharering/shareledger/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+
+	"github.com/sharering/shareledger/x/bank/messages"
+	"github.com/sharering/shareledger/x/bank"
+	"github.com/sharering/shareledger/types"
+	"github.com/cosmos/cosmos-sdk/wire"
 )
 
 func usingJson(){
-	msg := types.MsgSend{
+	msg := messages.MsgSend{
 		From: sdk.Address([]byte("123")),
 		To: sdk.Address([]byte("234")),
 		Amount: types.Coin{
@@ -27,7 +31,7 @@ func usingJson(){
 	fmt.Printf("String format: %s\n", b)
 	fmt.Printf("ToString: %s\n", hex.EncodeToString(b))
 
-	var dmsg types.MsgSend
+	var dmsg messages.MsgSend
 	nerr := json.Unmarshal(b, &dmsg)
 	if nerr != nil {
 		fmt.Println("Unmarsjal error:", err)
@@ -37,9 +41,9 @@ func usingJson(){
 
 func usingCodec(){
 
-	cdc := types.MakeCodec()
+	cdc := bank.MakeCodec()
 
-	msg := types.MsgSend{
+	msg := messages.MsgSend{
 		From: sdk.Address([]byte("123")),
 		To: sdk.Address([]byte("234")),
 		Amount: types.Coin{
@@ -61,7 +65,7 @@ func usingCodec(){
 
 
 	fmt.Println("*****")
-	msg1 := types.MsgCheck{
+	msg1 := messages.MsgCheck{
 		Account: sdk.Address([]byte("123")),
 		Denom: "SHR",
 	}
@@ -80,7 +84,7 @@ func usingCodec(){
 
 
 	fmt.Println("********")
-	var a types.MsgCheck
+	var a messages.MsgCheck
 	err = cdc.UnmarshalJSON(res1, &a)
 	fmt.Println("Type:", a.Type())
 	fmt.Println("Unmarshalled:", a)
@@ -90,6 +94,34 @@ func usingCodec(){
 	err = cdc.UnmarshalJSON(res1, &b)
 	fmt.Println("Type:", b.Type())
 	fmt.Println("Unmarshalled:", b)
+
+
+
+	printMsgLoad(cdc)
+}
+
+
+func printMsgLoad(cdc *wire.Codec){
+	fmt.Println("*****MsgLoad")
+	msg1 := messages.MsgLoad{
+		Nonce: 1,
+		Account: sdk.Address([]byte("123")),
+		Amount: types.Coin{"SHR", 100},
+	}
+
+	fmt.Println("Load Message:", msg1)
+	res1, err1 := cdc.MarshalJSON(msg1)
+	if err1 != nil {
+		fmt.Println("Error", err1)
+		return
+	}
+
+	fmt.Println("Marshalled:", res1)
+	fmt.Printf("String format: %s\n", res1)
+	fmt.Printf("ToString: %s\n", hex.EncodeToString(res1))
+
+
+
 }
 
 

@@ -1,9 +1,11 @@
-package types
+package messages
 
 import (
 	"encoding/json"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
+
+	types "github.com/sharering/shareledger/types"
 )
 
 //------------------------------------------------------------------
@@ -17,11 +19,11 @@ type MsgSend struct {
 	Nonce  int64 `json:"nonce"`
 	From   sdk.Address `json:"from"`
 	To     sdk.Address `json:"to"`
-	Amount Coin   `json:"amount"`
+	Amount types.Coin   `json:"amount"`
 }
 
 // NewMsgSend
-func NewMsgSend(nonce int64, from, to sdk.Address, amt Coin) MsgSend {
+func NewMsgSend(nonce int64, from, to sdk.Address, amt types.Coin) MsgSend {
 	return MsgSend{nonce, from, to, amt}
 }
 
