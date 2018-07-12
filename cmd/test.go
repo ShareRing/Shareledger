@@ -1,24 +1,24 @@
 package main
 
 import (
-	"fmt"
-	"encoding/json"
 	"encoding/hex"
+	"encoding/json"
+	"fmt"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	"github.com/sharering/shareledger/x/bank/messages"
-	"github.com/sharering/shareledger/x/bank"
-	"github.com/sharering/shareledger/types"
 	"github.com/cosmos/cosmos-sdk/wire"
+	"github.com/sharering/shareledger/types"
+	"github.com/sharering/shareledger/x/bank"
+	"github.com/sharering/shareledger/x/bank/messages"
 )
 
-func usingJson(){
+func usingJson() {
 	msg := messages.MsgSend{
 		From: sdk.Address([]byte("123")),
-		To: sdk.Address([]byte("234")),
+		To:   sdk.Address([]byte("234")),
 		Amount: types.Coin{
-			Denom: "SHR",
+			Denom:  "SHR",
 			Amount: 3,
 		},
 	}
@@ -39,15 +39,15 @@ func usingJson(){
 	fmt.Println("Unmarshalled:", dmsg)
 }
 
-func usingCodec(){
+func usingCodec() {
 
 	cdc := bank.MakeCodec()
 
 	msg := messages.MsgSend{
 		From: sdk.Address([]byte("123")),
-		To: sdk.Address([]byte("234")),
+		To:   sdk.Address([]byte("234")),
 		Amount: types.Coin{
-			Denom: "SHR",
+			Denom:  "SHR",
 			Amount: 3,
 		},
 	}
@@ -63,11 +63,10 @@ func usingCodec(){
 	fmt.Printf("String format: %s\n", res)
 	fmt.Printf("ToString: %s\n", hex.EncodeToString(res))
 
-
 	fmt.Println("*****")
 	msg1 := messages.MsgCheck{
 		Account: sdk.Address([]byte("123")),
-		Denom: "SHR",
+		Denom:   "SHR",
 	}
 
 	fmt.Println("Check Message:", msg1)
@@ -81,8 +80,6 @@ func usingCodec(){
 	fmt.Printf("String format: %s\n", res1)
 	fmt.Printf("ToString: %s\n", hex.EncodeToString(res1))
 
-
-
 	fmt.Println("********")
 	var a messages.MsgCheck
 	err = cdc.UnmarshalJSON(res1, &a)
@@ -95,18 +92,15 @@ func usingCodec(){
 	fmt.Println("Type:", b.Type())
 	fmt.Println("Unmarshalled:", b)
 
-
-
 	printMsgLoad(cdc)
 }
 
-
-func printMsgLoad(cdc *wire.Codec){
+func printMsgLoad(cdc *wire.Codec) {
 	fmt.Println("*****MsgLoad")
 	msg1 := messages.MsgLoad{
-		Nonce: 1,
+		Nonce:   1,
 		Account: sdk.Address([]byte("123")),
-		Amount: types.Coin{"SHR", 100},
+		Amount:  types.Coin{"SHR", 100},
 	}
 
 	fmt.Println("Load Message:", msg1)
@@ -120,12 +114,9 @@ func printMsgLoad(cdc *wire.Codec){
 	fmt.Printf("String format: %s\n", res1)
 	fmt.Printf("ToString: %s\n", hex.EncodeToString(res1))
 
-
-
 }
 
-
-func main(){
+func main() {
 	usingCodec()
 	fmt.Println("******")
 	usingJson()

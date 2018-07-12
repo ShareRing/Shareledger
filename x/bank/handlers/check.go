@@ -3,8 +3,8 @@ package handlers
 import (
 	"fmt"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/sharering/shareledger/x/bank/messages"
 	"github.com/sharering/shareledger/types"
+	"github.com/sharering/shareledger/x/bank/messages"
 
 	"encoding/json"
 )
@@ -30,7 +30,6 @@ func HandleMsgCheck(key *sdk.KVStoreKey) sdk.Handler {
 		// Load the store.
 		store := ctx.KVStore(key)
 
-
 		accBytes := store.Get(checkMsg.Account)
 
 		var acc types.AppAccount
@@ -43,18 +42,18 @@ func HandleMsgCheck(key *sdk.KVStoreKey) sdk.Handler {
 			}
 		} else {
 			acc = types.AppAccount{
-				Coins: types.NewCoin("SHR", 0 ),
+				Coins: types.NewCoin("SHR", 0),
 			}
 		}
 
 		if acc.Coins.Denom == checkMsg.Denom {
 			return sdk.Result{
-				Log: fmt.Sprintf("%v", acc.Coins.Amount),
+				Log:  fmt.Sprintf("%v", acc.Coins.Amount),
 				Tags: checkMsg.Tags(),
 			}
 		} else {
 			return sdk.Result{
-				Log: fmt.Sprintf("This account doensn't have this Coin"),
+				Log:  fmt.Sprintf("This account doensn't have this Coin"),
 				Tags: checkMsg.Tags(),
 			}
 		}

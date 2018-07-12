@@ -1,12 +1,12 @@
 package main
 
 import (
-	"os"
 	"fmt"
+	"os"
 
 	"github.com/tendermint/abci/server"
-	cmn "github.com/tendermint/tmlibs/common"
 	"github.com/tendermint/tmlibs/cli"
+	cmn "github.com/tendermint/tmlibs/common"
 	dbm "github.com/tendermint/tmlibs/db"
 	"github.com/tendermint/tmlibs/log"
 
@@ -22,7 +22,7 @@ func main() {
 		panic(err)
 	}
 
-	defer func(){
+	defer func() {
 		if err := fi.Close(); err != nil {
 			panic(err)
 		}
@@ -62,5 +62,3 @@ func main() {
 	})
 	return
 }
-
-

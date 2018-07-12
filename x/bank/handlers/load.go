@@ -6,12 +6,10 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
 	"github.com/sharering/shareledger/x/bank/messages"
-
 )
 
 //--------------------------------
 // Handler for the message
-
 
 func HandleMsgLoad(key *sdk.KVStoreKey) sdk.Handler {
 	return func(ctx sdk.Context, msg sdk.Msg) sdk.Result {
@@ -23,10 +21,8 @@ func HandleMsgLoad(key *sdk.KVStoreKey) sdk.Handler {
 			return sdk.NewError(2, 1, "MsgLoad is malformed").Result()
 		}
 
-
 		// Load the store
 		store := ctx.KVStore(key)
-
 
 		// Credit the account
 		var resT sdk.Result
@@ -34,14 +30,11 @@ func HandleMsgLoad(key *sdk.KVStoreKey) sdk.Handler {
 			return resT
 		}
 
-
 		return sdk.Result{
-			Log: resT.Log,
+			Log:  resT.Log,
 			Data: resT.Data,
 			Tags: loadMsg.Tags(),
 		}
 
 	}
 }
-
-

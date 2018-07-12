@@ -14,8 +14,8 @@ var _ sdk.Msg = MsgCheck{}
 
 // MsgCheck to send coins from Input to Output
 type MsgCheck struct {
-	Account   sdk.Address `json:"account"`
-	Denom 	  string   `json:"denom"`
+	Account sdk.Address `json:"account"`
+	Denom   string      `json:"denom"`
 }
 
 // NewMsgCheck

@@ -1,26 +1,23 @@
 package messages
 
 import (
+	"encoding/json"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/sharering/shareledger/types"
-	"encoding/json"
 )
 
 //----------------------------------------------------------------
 // Msg
 
-
 // MsgLoad to load coins into an account
 var _ sdk.Msg = MsgLoad{}
 
-
 // Load coins to an account
 type MsgLoad struct {
-	Nonce int64 `json:"nonce"`
+	Nonce   int64       `json:"nonce"`
 	Account sdk.Address `json:"from"`
-	Amount types.Coin `json:"amount"`
+	Amount  types.Coin  `json:"amount"`
 }
-
 
 // NewMsgLoad
 func NewMsgLoad(nonce int64, account sdk.Address, amt types.Coin) MsgLoad {
@@ -28,8 +25,7 @@ func NewMsgLoad(nonce int64, account sdk.Address, amt types.Coin) MsgLoad {
 }
 
 // Implement Msg
-func (msg MsgLoad) Type() string {return "bank"}
-
+func (msg MsgLoad) Type() string { return "bank" }
 
 // Implement Msg. Load to ensure the address are good and the amount is positive
 func (msg MsgLoad) ValidateBasic() sdk.Error {
@@ -43,7 +39,6 @@ func (msg MsgLoad) ValidateBasic() sdk.Error {
 	return nil
 }
 
-
 func (msg MsgLoad) GetSignBytes() []byte {
 	bz, err := json.Marshal(msg)
 	if err != nil {
@@ -55,7 +50,6 @@ func (msg MsgLoad) GetSignBytes() []byte {
 func (msg MsgLoad) GetSigners() []sdk.Address {
 	return []sdk.Address{msg.Account}
 }
-
 
 func (msg MsgLoad) Tags() sdk.Tags {
 	return sdk.NewTags("account", []byte(msg.Account.String()))

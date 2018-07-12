@@ -2,10 +2,11 @@ package bank
 
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/sharering/shareledger/x/bank/messages"
 	"github.com/sharering/shareledger/x/bank/handlers"
+	"github.com/sharering/shareledger/x/bank/messages"
 	"reflect"
 )
+
 func NewHandler(key *sdk.KVStoreKey) sdk.Handler {
 	return func(ctx sdk.Context, msg sdk.Msg) sdk.Result {
 		switch msg := msg.(type) {
