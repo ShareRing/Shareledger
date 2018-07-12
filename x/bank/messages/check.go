@@ -24,7 +24,7 @@ func NewMsgCheck(account sdk.Address, denom string) MsgCheck {
 }
 
 // Implements Msg.
-func (msg MsgCheck) Type() string { return "check" }
+func (msg MsgCheck) Type() string { return "bank" }
 
 // Implements Msg. Ensure the addresses are good and the
 // amount is positive.

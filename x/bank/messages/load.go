@@ -28,7 +28,7 @@ func NewMsgLoad(nonce int64, account sdk.Address, amt types.Coin) MsgLoad {
 }
 
 // Implement Msg
-func (msg MsgLoad) Type() string {return "load"}
+func (msg MsgLoad) Type() string {return "bank"}
 
 
 // Implement Msg. Load to ensure the address are good and the amount is positive

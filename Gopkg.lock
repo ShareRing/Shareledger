@@ -3,12 +3,6 @@
 
 [[projects]]
   branch = "master"
-  name = "github.com/brejski/hid"
-  packages = ["."]
-  revision = "06112dcfcc50a7e0e4fd06e17f9791e788fdaafc"
-
-[[projects]]
-  branch = "master"
   name = "github.com/btcsuite/btcd"
   packages = ["btcec"]
   revision = "86fed781132ac890ee03e906e4ecd5d6fa180c64"
@@ -25,11 +19,11 @@
     "baseapp",
     "store",
     "types",
+    "version",
     "wire",
     "x/auth"
   ]
-  revision = "1e6d26ad3dce18fd1dde9bbee7d2aa192c196310"
-  version = "v0.19.1-rc1"
+  revision = "9f30a90980799c5f363a5f50cffa3bcea81b6421"
 
 [[projects]]
   name = "github.com/davecgh/go-spew"
@@ -235,17 +229,14 @@
 [[projects]]
   name = "github.com/tendermint/go-amino"
   packages = ["."]
-  revision = "2106ca61d91029c931fd54968c2bb02dc96b1412"
-  version = "0.10.1"
+  revision = "ed62928576cfcaf887209dc96142cd79cdfff389"
+  version = "0.9.9"
 
 [[projects]]
   name = "github.com/tendermint/go-crypto"
-  packages = [
-    ".",
-    "tmhash"
-  ]
-  revision = "6a6b591a3d7592a04b46af95451cb5be3b114f76"
-  version = "v0.9.0"
+  packages = ["."]
+  revision = "915416979bf70efa4bcbf1c6cd5d64c5fff9fc19"
+  version = "v0.6.2"
 
 [[projects]]
   name = "github.com/tendermint/iavl"
@@ -253,21 +244,17 @@
     ".",
     "sha256truncated"
   ]
-  revision = "adddb2d68a04e72d4b5f0c539fd8b3c9219ec62e"
-  version = "v0.8.0"
+  revision = "c9206995e8f948e99927f5084a88a7e94ca256da"
+  version = "v0.8.0-rc0"
 
 [[projects]]
   name = "github.com/tendermint/tendermint"
   packages = [
-    "abci/types",
-    "crypto",
-    "crypto/tmhash",
     "libs/pubsub",
     "libs/pubsub/query",
     "types"
   ]
-  revision = "aa20c45ae99bb57a8efa2be7b09898e8967d1965"
-  version = "v0.21.1-rc1"
+  revision = "696e8c6f9e950eec15f150f314d2dd9ddf6bc601"
 
 [[projects]]
   name = "github.com/tendermint/tmlibs"
@@ -281,11 +268,6 @@
     "merkle/tmhash"
   ]
   revision = "0c98d10b4ffbd87978d79c160e835b3d3df241ec"
-
-[[projects]]
-  name = "github.com/zondax/ledger-goclient"
-  packages = ["."]
-  revision = "3e2146609cdb97894c064d59e9d00accd8c2b1dd"
 
 [[projects]]
   branch = "master"
@@ -380,6 +362,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "44904c87544066b8963c7268173929e6d0200cf5971b4ed4e1fb085788740c19"
+  inputs-digest = "95ec71a76ad31f64e5eaf1ea92d245774261e725a30e7e3f2790292b626c7384"
   solver-name = "gps-cdcl"
   solver-version = 1

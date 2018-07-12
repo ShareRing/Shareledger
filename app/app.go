@@ -8,7 +8,8 @@ import (
 	bapp "github.com/cosmos/cosmos-sdk/baseapp"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	"github.com/sharering/shareledger/types"
+	"github.com/sharering/shareledger/x/bank"
+	//"github.com/sharering/shareledger/x/bank/handlers"
 )
 
 const (
@@ -17,7 +18,7 @@ const (
 
 func NewShareLedgerApp(logger log.Logger, db dbm.DB) *bapp.BaseApp {
 
-	cdc := types.MakeCodec()
+	cdc := bank.MakeCodec()
 
 	// Create the base application object.
 	app := bapp.NewBaseApp(ShareLedgerApp, cdc, logger, db)
@@ -26,13 +27,15 @@ func NewShareLedgerApp(logger log.Logger, db dbm.DB) *bapp.BaseApp {
 	keyAccount := sdk.NewKVStoreKey("acc")
 
 	// Determine how transactions are decoded.
-	app.SetTxDecoder(types.TxDecoder)
+	app.SetTxDecoder(bank.TxDecoder)
 
 	// Register message routes.
 	// Note the handler gets access to the account store.
 	app.Router().
-		AddRoute("send", types.HandleMsgSend(keyAccount)).
-		AddRoute("check", types.HandleMsgCheck(keyAccount))
+		AddRoute("bank", bank.NewHandler(keyAccount))
+		//AddRoute("send", handlers.HandleMsgSend(keyAccount)).
+		//AddRoute("check", handlers.HandleMsgCheck(keyAccount)).
+		//AddRoute("load", handlers.HandleMsgLoad(keyAccount))
 
 	// Mount stores and load the latest state.
 	app.MountStoresIAVL(keyAccount)

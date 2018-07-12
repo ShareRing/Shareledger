@@ -7,9 +7,8 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	"github.com/sharering/shareledger/x/bank/messages"
 	"github.com/sharering/shareledger/types"
-
+	"github.com/sharering/shareledger/x/bank/messages"
 )
 
 //------------------------------------------------------------------
@@ -49,7 +48,7 @@ func HandleMsgSend(key *sdk.KVStoreKey) sdk.Handler {
 		// Return a success (Code 0).
 		// Add list of key-value pair descriptors ("tags").
 		return sdk.Result{
-			Log: res,
+			Log:  res,
 			Data: append(resF.Data, resT.Data...),
 			Tags: sendMsg.Tags(),
 		}
@@ -61,8 +60,8 @@ func handleFrom(store sdk.KVStore, from sdk.Address, amt types.Coin) sdk.Result 
 	// Get sender account from the store.
 	accBytes := store.Get(from)
 	//if accBytes == nil {
-		// Account was not added to store. Return the result of the error.
-		//return sdk.NewError(2, 101, "Account not added to store").Result()
+	// Account was not added to store. Return the result of the error.
+	//return sdk.NewError(2, 101, "Account not added to store").Result()
 	//}
 
 	// Unmarshal the JSON account bytes.
@@ -79,7 +78,6 @@ func handleFrom(store sdk.KVStore, from sdk.Address, amt types.Coin) sdk.Result 
 			Coins: types.NewCoin("SHR", 0),
 		}
 	}
-
 
 	// Deduct msg amount from sender account.
 	senderCoins := acc.Coins.Minus(amt)
@@ -102,8 +100,8 @@ func handleFrom(store sdk.KVStore, from sdk.Address, amt types.Coin) sdk.Result 
 	// Update store with updated sender account
 	store.Set(from, naccBytes)
 	return sdk.Result{Data: naccBytes,
-					  Log: strconv.FormatInt(acc.Coins.Amount, 10)}
-					 //Log: "Result" }
+		Log: strconv.FormatInt(acc.Coins.Amount, 10)}
+	//Log: "Result" }
 }
 
 func handleTo(store sdk.KVStore, to sdk.Address, amt types.Coin) sdk.Result {
@@ -138,6 +136,3 @@ func handleTo(store sdk.KVStore, to sdk.Address, amt types.Coin) sdk.Result {
 	store.Set(to, accBytes)
 	return sdk.Result{Log: strconv.FormatInt(acc.Coins.Amount, 10)}
 }
-
-
-
