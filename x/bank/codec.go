@@ -6,8 +6,8 @@ import (
 )
 
 func RegisterCodec(cdc *wire.Codec) *wire.Codec {
-	cdc.RegisterConcrete(msg.MsgSend{}, "shareledger/MsgSend", nil)
-	cdc.RegisterConcrete(msg.MsgCheck{}, "shareledger/MsgCheck", nil)
-	cdc.RegisterConcrete(msg.MsgLoad{}, "shareledger/MsgLoad", nil)
+	cdc.RegisterConcrete(msg.MsgSend{}, "shareledger/bank/MsgSend", nil)
+	cdc.RegisterConcrete(msg.MsgCheck{}, "shareledger/bank/MsgCheck", nil)
+	cdc.RegisterConcrete(msg.MsgLoad{}, "shareledger/bank/MsgLoad", nil)
 	return cdc
 }

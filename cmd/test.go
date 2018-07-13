@@ -9,8 +9,14 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/wire"
 	"github.com/sharering/shareledger/types"
+	"github.com/sharering/shareledger/app"
 	"github.com/sharering/shareledger/x/bank"
 	"github.com/sharering/shareledger/x/bank/messages"
+
+
+	"github.com/sharering/shareledger/x/asset"
+	amsg "github.com/sharering/shareledger/x/asset/messages"
+	//ahdl "github.com/sharering/shareledger/x/asset/handlers"
 )
 
 func usingJson() {
@@ -41,7 +47,9 @@ func usingJson() {
 
 func usingCodec() {
 
-	cdc := bank.MakeCodec()
+	cdc := app.MakeCodec()
+	cdc = bank.RegisterCodec(cdc)
+
 
 	msg := messages.MsgSend{
 		From: sdk.Address([]byte("123")),
@@ -116,8 +124,37 @@ func printMsgLoad(cdc *wire.Codec) {
 
 }
 
+func printMsgCreate(){
+	cdc := app.MakeCodec()
+	cdc = asset.RegisterCodec(cdc)
+
+	msg := amsg.MsgCreate{
+		Creator: sdk.Address([]byte("333333")),
+		Hash: []byte("333333"),
+		UUID: "333333",
+	}
+	//msg := amsg.MsgDelete{
+	//	UUID: "333333",
+	//}
+	//msg := amsg.MsgUpdate{
+	//	Creator: sdk.Address([]byte("333333")),
+	//	Hash: []byte("333333"),
+	//	UUID: "333333",
+	//}
+	res, err := cdc.MarshalJSON(msg)
+	if err != nil {
+		fmt.Println("Error", err)
+		return
+	}
+	fmt.Println("Marshalled:", res)
+	fmt.Printf("String format: %s\n", res)
+	fmt.Printf("ToString: %s\n", hex.EncodeToString(res))
+
+}
+
 func main() {
-	usingCodec()
-	fmt.Println("******")
-	usingJson()
+	//usingCodec()
+	//fmt.Println("******")
+	//usingJson()
+	printMsgCreate()
 }

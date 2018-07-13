@@ -30,6 +30,7 @@ func GetTxDecoder(cdc *wire.Codec) func([]byte) (sdk.Tx, sdk.Error) {
 
 		//err := json.Unmarshal(txBytes, &tx)
 		err := cdc.UnmarshalJSON(txBytes, &tx)
+
 		if err != nil {
 			fmt.Println("Error in decoding")
 			return nil, sdk.ErrTxDecode(err.Error())

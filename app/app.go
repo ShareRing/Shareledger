@@ -11,6 +11,8 @@ import (
 
 	"github.com/sharering/shareledger/types"
 	"github.com/sharering/shareledger/x/bank"
+	"github.com/sharering/shareledger/x/asset"
+	"github.com/sharering/shareledger/x/asset/handlers"
 )
 
 const (
@@ -24,6 +26,8 @@ func NewShareLedgerApp(logger log.Logger, db dbm.DB) *bapp.BaseApp {
 	// Create the base application object.
 	app := bapp.NewBaseApp(ShareLedgerApp, cdc, logger, db)
 
+
+	SetupAsset(app, cdc)
 	SetupBank(app, cdc)
 
 	// Determine how transactions are decoded.
@@ -55,5 +59,22 @@ func SetupBank(app *bapp.BaseApp, cdc *wire.Codec) {
 	if err != nil {
 		cmn.Exit(err.Error())
 	}
+}
 
+func SetupAsset(app *bapp.BaseApp, cdc *wire.Codec) {
+	keyAsset := sdk.NewKVStoreKey("asset")
+
+	keeper := asset.NewKeeper(keyAsset, cdc)
+
+	cdc = asset.RegisterCodec(cdc)
+
+
+	app.Router().
+		AddRoute("asset", handlers.NewHandler(keeper))
+
+	app.MountStoresIAVL(keyAsset)
+	err := app.LoadLatestVersion(keyAsset)
+	if err != nil {
+		cmn.Exit(err.Error())
+	}
 }
