@@ -64,5 +64,6 @@ func (msg MsgSend) Tags() sdk.Tags {
 	return sdk.NewTags("msg.From", []byte(msg.From.String())).
 		AppendTag("msg.To", []byte(msg.To.String())).
 		AppendTag("msg.type", []byte(msg.Type())).
-		AppendTag("msg.Amount", []byte(msg.Amount.String()))
+		AppendTag("msg.Amount", []byte(msg.Amount.String())).
+		AppendTag("ShareLedgerEvt", []byte("BalanceChanged"))
 }
