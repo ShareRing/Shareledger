@@ -32,13 +32,13 @@ func (k Keeper) CreateAsset(ctx sdk.Context, msg msg.MsgCreate) (types.Asset, er
 
 	store := ctx.KVStore(k.storeKey)
 
-	asset := types.NewAsset(msg.UUID, msg.Creator, msg.Hash)
+	asset := types.NewAsset(msg.UUID, msg.Creator, msg.Hash, msg.Status, msg.Fee)
 
 
 	assetBytes, err := json.Marshal(asset)
 
 	if err != nil {
-		return types.NewAsset("", []byte(""), []byte("")), errors.New("Asset Encoding Error")
+		return types.Asset{}, errors.New("Asset Encoding Error")
 
 	}
 
@@ -55,14 +55,14 @@ func (k Keeper) RetrieveAsset(ctx sdk.Context, msg msg.MsgRetrieve) (types.Asset
 	assetBytes := store.Get([]byte(msg.UUID))
 
 	if assetBytes == nil {
-		return types.NewAsset("", []byte(""), []byte("")), errors.New("Asset is not found")
+		return types.Asset{}, errors.New("Asset is not found")
 	}
 
 	var asset types.Asset
 
 	derr := json.Unmarshal(assetBytes, &asset)
 	if derr != nil {
-		return types.NewAsset("", []byte(""), []byte("")), errors.New("Asset decoding error")
+		return types.NewAsset("", []byte(""), []byte(""), true, 0), errors.New("Asset decoding error")
 	}
 
 
@@ -77,23 +77,23 @@ func (k Keeper) UpdateAsset(ctx sdk.Context, msg msg.MsgUpdate) (types.Asset, er
 	assetBytes := store.Get([]byte(msg.UUID))
 
 	if assetBytes == nil {
-		return types.NewAsset("", []byte(""), []byte("")), errors.New("Asset is not found")
+		return types.Asset{}, errors.New("Asset is not found")
 	}
 
 	var asset types.Asset
 
 	derr := json.Unmarshal(assetBytes, &asset)
 	if derr != nil {
-		return types.NewAsset("", []byte(""), []byte("")), errors.New("Asset decoding error")
+		return types.Asset{}, errors.New("Asset decoding error")
 	}
 
 
-	asset = types.NewAsset(msg.UUID, msg.Creator, msg.Hash)
+	asset = types.NewAsset(msg.UUID, msg.Creator, msg.Hash, msg.Status, msg.Fee)
 
 	nassetBytes, err := json.Marshal(asset)
 
 	if err != nil {
-		return types.NewAsset("", []byte(""), []byte("")), errors.New("Asset Encoding Error")
+		return types.NewAsset("", []byte(""), []byte(""), true, 0), errors.New("Asset Encoding Error")
 
 	}
 
@@ -109,7 +109,7 @@ func (k Keeper) DeleteAsset(ctx sdk.Context, msg msg.MsgDelete) (types.Asset, er
 	assetBytes := store.Get([]byte(msg.UUID))
 
 	if assetBytes == nil {
-		return types.NewAsset("", []byte(""), []byte("")), errors.New("Asset is not found")
+		return types.NewAsset("", []byte(""), []byte(""), true, 0), errors.New("Asset is not found")
 	}
 
 	// Unmarshall asset
@@ -118,7 +118,7 @@ func (k Keeper) DeleteAsset(ctx sdk.Context, msg msg.MsgDelete) (types.Asset, er
 	derr := json.Unmarshal(assetBytes, &asset)
 
 	if derr != nil {
-		return types.NewAsset("", []byte(""), []byte("")), errors.New("Asset decoding error")
+		return types.NewAsset("", []byte(""), []byte(""), true, 0), errors.New("Asset decoding error")
 	}
 
 	// Delete asset

@@ -132,6 +132,8 @@ func printMsgCreate(){
 		Creator: sdk.Address([]byte("333333")),
 		Hash: []byte("333333"),
 		UUID: "333333",
+		Fee: 1,
+		Status: true,
 	}
 	//msg := amsg.MsgDelete{
 	//	UUID: "333333",
