@@ -7,16 +7,17 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	"github.com/cosmos/cosmos-sdk/wire"
-	"github.com/sharering/shareledger/types"
 	"github.com/sharering/shareledger/app"
+	"github.com/sharering/shareledger/types"
 	"github.com/sharering/shareledger/x/bank"
 	"github.com/sharering/shareledger/x/bank/messages"
-
 
 	"github.com/sharering/shareledger/x/asset"
 	amsg "github.com/sharering/shareledger/x/asset/messages"
 	//ahdl "github.com/sharering/shareledger/x/asset/handlers"
+
+	"github.com/sharering/shareledger/x/booking"
+	bmsg "github.com/sharering/shareledger/x/booking/messages"
 )
 
 func usingJson() {
@@ -49,7 +50,6 @@ func usingCodec() {
 
 	cdc := app.MakeCodec()
 	cdc = bank.RegisterCodec(cdc)
-
 
 	msg := messages.MsgSend{
 		From: sdk.Address([]byte("123")),
@@ -100,10 +100,13 @@ func usingCodec() {
 	fmt.Println("Type:", b.Type())
 	fmt.Println("Unmarshalled:", b)
 
-	printMsgLoad(cdc)
+	printMsgLoad()
 }
 
-func printMsgLoad(cdc *wire.Codec) {
+func printMsgLoad() {
+	cdc := app.MakeCodec()
+	cdc = bank.RegisterCodec(cdc)
+
 	fmt.Println("*****MsgLoad")
 	msg1 := messages.MsgLoad{
 		Nonce:   1,
@@ -124,16 +127,16 @@ func printMsgLoad(cdc *wire.Codec) {
 
 }
 
-func printMsgCreate(){
+func printMsgCreate() {
 	cdc := app.MakeCodec()
 	cdc = asset.RegisterCodec(cdc)
 
 	msg := amsg.MsgCreate{
 		Creator: sdk.Address([]byte("333333")),
-		Hash: []byte("333333"),
-		UUID: "333333",
-		Fee: 1,
-		Status: true,
+		Hash:    []byte("333333"),
+		UUID:    "333333",
+		Fee:     1,
+		Status:  true,
 	}
 	//msg := amsg.MsgDelete{
 	//	UUID: "333333",
@@ -154,9 +157,54 @@ func printMsgCreate(){
 
 }
 
+func printMsgBook() {
+	cdc := app.MakeCodec()
+	cdc = booking.RegisterCodec(cdc)
+
+	msg := bmsg.MsgBook{
+		Nonce:    1,
+		Renter:   sdk.Address([]byte("123456")),
+		UUID:     "112233",
+		Duration: 12,
+	}
+
+	res, err := cdc.MarshalJSON(msg)
+	if err != nil {
+		fmt.Println("Error", err)
+		return
+	}
+	fmt.Println("Marshalled:", res)
+	fmt.Printf("String format: %s\n", res)
+	fmt.Printf("ToString: %s\n", hex.EncodeToString(res))
+}
+
+func printMsgComplete() {
+	cdc := app.MakeCodec()
+	cdc = booking.RegisterCodec(cdc)
+
+	msg := bmsg.MsgComplete{
+		Nonce:     1,
+		Renter:    sdk.Address([]byte("123456")),
+		BookingID: "121212",
+	}
+
+	res, err := cdc.MarshalJSON(msg)
+	if err != nil {
+		fmt.Println("Error", err)
+		return
+	}
+	fmt.Println("Marshalled:", res)
+	fmt.Printf("String format: %s\n", res)
+	fmt.Printf("ToString: %s\n", hex.EncodeToString(res))
+
+}
+
 func main() {
-	//usingCodec()
+	usingCodec()
 	//fmt.Println("******")
 	//usingJson()
-	printMsgCreate()
+	//printMsgCreate()
+	//printMsgBook()
+	//printMsgLoad()
+	//printMsgComplete()
 }

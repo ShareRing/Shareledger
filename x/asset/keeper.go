@@ -62,7 +62,7 @@ func (k Keeper) RetrieveAsset(ctx sdk.Context, msg msg.MsgRetrieve) (types.Asset
 
 	derr := json.Unmarshal(assetBytes, &asset)
 	if derr != nil {
-		return types.NewAsset("", []byte(""), []byte(""), true, 0), errors.New("Asset decoding error")
+		return types.Asset{}, errors.New("Asset decoding error")
 	}
 
 

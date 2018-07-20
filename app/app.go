@@ -13,6 +13,9 @@ import (
 	"github.com/sharering/shareledger/x/bank"
 	"github.com/sharering/shareledger/x/asset"
 	"github.com/sharering/shareledger/x/asset/handlers"
+
+	"github.com/sharering/shareledger/x/booking"
+	bhandlers "github.com/sharering/shareledger/x/booking/handlers"
 )
 
 const (
@@ -26,9 +29,13 @@ func NewShareLedgerApp(logger log.Logger, db dbm.DB) *bapp.BaseApp {
 	// Create the base application object.
 	app := bapp.NewBaseApp(ShareLedgerApp, cdc, logger, db)
 
+	assetKey := sdk.NewKVStoreKey("asset")
+	bookingKey := sdk.NewKVStoreKey("booking")
+	accountKey := sdk.NewKVStoreKey("account")
 
-	SetupAsset(app, cdc)
-	SetupBank(app, cdc)
+	SetupAsset(app, cdc, assetKey)
+	SetupBank(app, cdc, accountKey)
+	SetupBooking(app, cdc, bookingKey, assetKey, accountKey)
 
 	// Determine how transactions are decoded.
 	app.SetTxDecoder(types.GetTxDecoder(cdc))
@@ -42,29 +49,27 @@ func MakeCodec() *wire.Codec {
 	return cdc
 }
 
-func SetupBank(app *bapp.BaseApp, cdc *wire.Codec) {
+func SetupBank(app *bapp.BaseApp, cdc *wire.Codec, accountKey *sdk.KVStoreKey) {
 	// Bank module
 	// Create a key for accessing the account store.
-	keyAccount := sdk.NewKVStoreKey("acc")
 	cdc = bank.RegisterCodec(cdc)
 
 	// Register message routes.
 	// Note the handler gets access to the account store.
 	app.Router().
-		AddRoute("bank", bank.NewHandler(keyAccount))
+		AddRoute("bank", bank.NewHandler(accountKey))
 
 	// Mount stores and load the latest state.
-	app.MountStoresIAVL(keyAccount)
-	err := app.LoadLatestVersion(keyAccount)
+	app.MountStoresIAVL(accountKey)
+	err := app.LoadLatestVersion(accountKey)
 	if err != nil {
 		cmn.Exit(err.Error())
 	}
 }
 
-func SetupAsset(app *bapp.BaseApp, cdc *wire.Codec) {
-	keyAsset := sdk.NewKVStoreKey("asset")
+func SetupAsset(app *bapp.BaseApp, cdc *wire.Codec, assetKey *sdk.KVStoreKey) {
 
-	keeper := asset.NewKeeper(keyAsset, cdc)
+	keeper := asset.NewKeeper(assetKey, cdc)
 
 	cdc = asset.RegisterCodec(cdc)
 
@@ -72,9 +77,31 @@ func SetupAsset(app *bapp.BaseApp, cdc *wire.Codec) {
 	app.Router().
 		AddRoute("asset", handlers.NewHandler(keeper))
 
-	app.MountStoresIAVL(keyAsset)
-	err := app.LoadLatestVersion(keyAsset)
+	app.MountStoresIAVL(assetKey)
+	err := app.LoadLatestVersion(assetKey)
 	if err != nil {
 		cmn.Exit(err.Error())
 	}
+}
+
+
+func SetupBooking(app *bapp.BaseApp, cdc *wire.Codec, bookingKey *sdk.KVStoreKey,
+	              assetKey *sdk.KVStoreKey, accountKey *sdk.KVStoreKey){
+
+	cdc = booking.RegisterCodec(cdc)
+
+	k := booking.NewKeeper(bookingKey,
+						   assetKey,
+		 				   accountKey,
+						   cdc)
+
+	app.Router().
+		AddRoute("booking", bhandlers.NewHandler(k))
+
+	app.MountStoresIAVL(bookingKey)
+	err := app.LoadLatestVersion(bookingKey)
+	if err != nil {
+		cmn.Exit(err.Error())
+	}
+
 }
