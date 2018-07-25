@@ -14,7 +14,7 @@
   revision = "d4cc87b860166d00d6b5b9e0d3b3d71d6088d4d4"
 
 [[projects]]
-  name = "github.com/cosmos/cosmos-sdk"
+  name = "bitbucket.org/shareringvn/cosmos-sdk"
   packages = [
     "baseapp",
     "store",

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"reflect"
 
-	sdk "github.com/cosmos/cosmos-sdk/types"
+	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
 	"github.com/sharering/shareledger/x/asset/messages"
 	"github.com/sharering/shareledger/x/asset"
 )

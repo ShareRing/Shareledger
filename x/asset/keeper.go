@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"errors"
 
-	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/cosmos/cosmos-sdk/wire"
+	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
+	"bitbucket.org/shareringvn/cosmos-sdk/wire"
 
 	"github.com/sharering/shareledger/types"
 	msg "github.com/sharering/shareledger/x/asset/messages"

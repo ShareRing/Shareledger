@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	sdk "github.com/cosmos/cosmos-sdk/types"
+	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
 )
 
 type MsgComplete struct {

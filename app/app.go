@@ -5,9 +5,9 @@ import (
 	dbm "github.com/tendermint/tmlibs/db"
 	"github.com/tendermint/tmlibs/log"
 
-	bapp "github.com/cosmos/cosmos-sdk/baseapp"
-	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/cosmos/cosmos-sdk/wire"
+	bapp "bitbucket.org/shareringvn/cosmos-sdk/baseapp"
+	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
+	"bitbucket.org/shareringvn/cosmos-sdk/wire"
 
 	"github.com/sharering/shareledger/types"
 	"github.com/sharering/shareledger/x/bank"

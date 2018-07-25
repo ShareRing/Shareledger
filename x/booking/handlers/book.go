@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	sdk "github.com/cosmos/cosmos-sdk/types"
+	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
 	"github.com/sharering/shareledger/x/booking"
 	"github.com/sharering/shareledger/x/booking/messages"
 	"fmt"

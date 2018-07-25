@@ -75,7 +75,7 @@
   revision = "696e8c6f9e950eec15f150f314d2dd9ddf6bc601"
 
 [[constraint]]
-  name = "github.com/cosmos/cosmos-sdk"
+  name = "bitbucket.org/shareringvn/cosmos-sdk"
   revision = "9f30a90980799c5f363a5f50cffa3bcea81b6421"
 
 [[override]]
