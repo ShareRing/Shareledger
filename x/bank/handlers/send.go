@@ -9,6 +9,8 @@ import (
 
 	"github.com/sharering/shareledger/types"
 	"github.com/sharering/shareledger/x/bank/messages"
+	"github.com/sharering/shareledger/utils"
+	"github.com/sharering/shareledger/constants"
 )
 
 //------------------------------------------------------------------
@@ -58,7 +60,8 @@ func HandleMsgSend(key *sdk.KVStoreKey) sdk.Handler {
 // Convenience Handlers
 func handleFrom(store sdk.KVStore, from sdk.Address, amt types.Coin) sdk.Result {
 	// Get sender account from the store.
-	accBytes := store.Get(from)
+	// accBytes := store.Get(from)
+
 	//if accBytes == nil {
 	// Account was not added to store. Return the result of the error.
 	//return sdk.NewError(2, 101, "Account not added to store").Result()
@@ -66,18 +69,35 @@ func handleFrom(store sdk.KVStore, from sdk.Address, amt types.Coin) sdk.Result 
 
 	// Unmarshal the JSON account bytes.
 	var acc types.AppAccount
-	if accBytes != nil {
-		err := json.Unmarshal(accBytes, &acc)
+	//if accBytes != nil {
+	//	err := json.Unmarshal(accBytes, &acc)
+	//
+	//	if err != nil {
+	//		// InternalError
+	//		return sdk.ErrInternal("Error when deserializing account").Result()
+	//	}
+	//} else {
+	//	acc = types.AppAccount{
+	//		Coins: types.NewCoin("SHR", 0),
+	//	}
+	//}
 
-		if err != nil {
-			// InternalError
-			return sdk.ErrInternal("Error when deserializing account").Result()
-		}
-	} else {
+	err := utils.Retrieve(store, from, &acc)
+	if err != nil {
+		return sdk.ErrInternal(utils.Format(constants.ERROR_STORE_RETRIEVAL,
+											"AppAccount",
+											"bank")).Result()
+	}
+
+	if acc == (types.AppAccount{}) {
 		acc = types.AppAccount{
 			Coins: types.NewCoin("SHR", 0),
 		}
 	}
+
+
+
+
 
 	// Deduct msg amount from sender account.
 	senderCoins := acc.Coins.Minus(amt)
