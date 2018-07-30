@@ -2,11 +2,14 @@ package handlers
 
 import (
 	"fmt"
+
 	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
+
 	"github.com/sharering/shareledger/types"
+	"github.com/sharering/shareledger/utils"
+	"github.com/sharering/shareledger/constants"
 	"github.com/sharering/shareledger/x/bank/messages"
 
-	"encoding/json"
 )
 
 //------------------------------------------------------------------
@@ -30,20 +33,17 @@ func HandleMsgCheck(key *sdk.KVStoreKey) sdk.Handler {
 		// Load the store.
 		store := ctx.KVStore(key)
 
-		accBytes := store.Get(checkMsg.Account)
-
 		var acc types.AppAccount
-		if accBytes != nil {
-			err := json.Unmarshal(accBytes, &acc)
+		err := utils.Retrieve(store, checkMsg.Account, &acc)
+		if err != nil {
+			return sdk.ErrInternal(utils.Format(constants.ERROR_STORE_RETRIEVAL,
+												utils.ByteToString(checkMsg.Account),
+												"bank")).Result()
+		}
 
-			if err != nil {
-				// InternalError
-				return sdk.ErrInternal("Error when deserializing account").Result()
-			}
-		} else {
-			acc = types.AppAccount{
-				Coins: types.NewCoin("SHR", 0),
-			}
+		// If no acc found
+		if acc == (types.AppAccount{}) {
+			acc = types.NewDefaultAccount()
 		}
 
 		if acc.Coins.Denom == checkMsg.Denom {

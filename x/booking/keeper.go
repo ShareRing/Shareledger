@@ -1,17 +1,17 @@
 package booking
 
 import (
-	"encoding/json"
-	"errors"
 	"fmt"
+	"bytes"
 
 	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
 	"bitbucket.org/shareringvn/cosmos-sdk/wire"
+	"github.com/google/go-cmp/cmp"
 
 	"github.com/sharering/shareledger/types"
 	utils "github.com/sharering/shareledger/utils"
 	msg "github.com/sharering/shareledger/x/booking/messages"
-	"bytes"
+	"github.com/sharering/shareledger/constants"
 )
 
 type Keeper struct {
@@ -20,6 +20,7 @@ type Keeper struct {
 	accountKey sdk.StoreKey // account key
 	cdc        *wire.Codec
 }
+
 
 func NewKeeper(bookingKey sdk.StoreKey, assetKey sdk.StoreKey, accountKey sdk.StoreKey, cdc *wire.Codec) Keeper {
 	return Keeper{
@@ -47,80 +48,88 @@ func (k Keeper) Book(ctx sdk.Context, msg msg.MsgBook) (types.Booking, error) {
 
 	// Checking asset
 
-	assetBytes := assetStore.Get([]byte(msg.UUID))
-
-	if assetBytes == nil {
-		return types.Booking{}, errors.New("Asset not found")
-	}
-
 	var asset types.Asset
 
-	derr := json.Unmarshal(assetBytes, &asset)
 
-	if derr != nil {
-		return types.Booking{}, errors.New("Asset decoding failed.")
+	err = utils.Retrieve(assetStore, []byte(msg.UUID), &asset)
+
+	if err != nil {
+		return types.Booking{}, fmt.Errorf(constants.ERROR_STORE_RETRIEVAL,
+										"types.Asset",
+											constants.STORE_BOOKING)
+	}
+
+	if cmp.Equal(asset, (types.Asset{})) {
+		return types.Booking{}, fmt.Errorf(constants.ERROR_STORE_NOT_FOUND,
+											msg.UUID,
+											constants.STORE_BOOKING)
 	}
 
 	if asset.Status == false {
-		return types.Booking{}, errors.New("Asset is busy")
+		return types.Booking{}, fmt.Errorf(constants.BOOKING_ASSET_RENTED,
+										   asset.UUID)
 	}
 
 
 	// Checking account
-
-	accountBytes := accountStore.Get(msg.Renter)
-
-	if accountBytes == nil {
-		return types.Booking{}, errors.New("Renter not found")
-	}
-
 	var renter types.AppAccount
 
-	rerr := json.Unmarshal(accountBytes, &renter)
+	err = utils.Retrieve(accountStore, msg.Renter, &renter)
 
-	if rerr != nil {
-		return types.Booking{}, errors.New("Renter decoding failed")
+	if err != nil {
+		return types.Booking{}, fmt.Errorf(constants.ERROR_STORE_RETRIEVAL,
+			                               utils.ByteToString(msg.Renter),
+			                               constants.STORE_BANK)
 	}
 
+	if renter == (types.AppAccount{}) {
+		return types.Booking{}, fmt.Errorf(constants.ERROR_STORE_NOT_FOUND,
+										   msg.Renter,
+										   constants.STORE_ASSET)
+	}
+
+
+	// Calculate fee and deduce from Renter account
 	value := msg.Duration * asset.Fee
 
 	if renter.Coins.Amount < value {
-		return types.Booking{}, errors.New("Insufficient balance")
+		return types.Booking{}, fmt.Errorf(constants.BOOKING_INSUFFICIENT_BALANCE,
+										  msg.Renter)
 	}
 
-	renter.Coins = renter.Coins.Minus(types.NewCoin("SHR", value))
+	renter.Coins = renter.Coins.Minus(types.NewCoin(renter.Coins.Denom, value))
 
 
 	booking := types.NewBooking(bookingId,
-		msg.Renter,
-		msg.UUID,
-		msg.Duration,
-		false)
-
-	bookingBytes, err1 := json.Marshal(booking)
-
-	if err1 != nil {
-		return types.Booking{}, fmt.Errorf("Booking encoding failed %s", err1.Error())
-	}
+								msg.Renter,
+								msg.UUID,
+								msg.Duration,
+								false)
 
 	// Update asset status
 	asset.Status = false
 
-	assetBytes, err = json.Marshal(asset)
+	err = utils.Store(bookingStore, []byte(booking.BookingID), booking)
 	if err != nil {
-		return types.Booking{}, errors.New("Asset encoding failed.")
+		return types.Booking{}, fmt.Errorf(constants.ERROR_STORE_UPDATE,
+			                               "types.Booking",
+			                               	constants.STORE_BOOKING)
 	}
 
 
-	accountBytes, err = json.Marshal(renter)
+	err = utils.Store(assetStore, []byte(asset.UUID), asset)
 	if err != nil {
-		return types.Booking{}, errors.New("Renter encoding failed.")
+		return types.Booking{}, fmt.Errorf(constants.ERROR_STORE_UPDATE,
+										   "types.Asset",
+										   	constants.STORE_ASSET)
 	}
 
-
-	assetStore.Set([]byte(asset.UUID), assetBytes)
-	bookingStore.Set([]byte(booking.BookingID), bookingBytes)
-	accountStore.Set(msg.Renter, accountBytes)
+	err = utils.Store(accountStore, msg.Renter, renter)
+	if err != nil {
+		return types.Booking{}, fmt.Errorf(constants.ERROR_STORE_UPDATE,
+										"types.Asset",
+											constants.STORE_BANK)
+	}
 
 	return booking, nil
 
@@ -136,69 +145,58 @@ func (k Keeper) Complete(ctx sdk.Context, msg msg.MsgComplete) (types.Booking, e
 
 
 	// Checking booking
-
-	bookingBytes := bookingStore.Get([]byte(msg.BookingID))
-
-	if bookingBytes == nil {
-		return types.Booking{}, errors.New("Booking not found")
-	}
-
 	var booking types.Booking
-	err := json.Unmarshal(bookingBytes, &booking)
 
+	err := utils.Retrieve(bookingStore, []byte(msg.BookingID), &booking)
 	if err != nil {
-		return types.Booking{}, errors.New("Booking decoding failed")
+		return types.Booking{}, fmt.Errorf(constants.ERROR_STORE_RETRIEVAL,
+									   "types.Booking",
+									   	   constants.STORE_BOOKING)
 	}
 
 	if !bytes.Equal(msg.Renter, booking.Renter) {
-		return types.Booking{}, errors.New("Mismatch Renter")
+		return types.Booking{}, fmt.Errorf(constants.BOOKING_MISMATCH_RENTER,
+											utils.ByteToString(booking.Renter),
+											utils.ByteToString(msg.Renter))
 	}
 
 	if booking.IsCompleted == true {
-		return types.Booking{}, errors.New("This booking is already completed.")
+		return types.Booking{}, fmt.Errorf(constants.BOOKING_COMPLETED_ERROR,
+										   booking.BookingID)
 	}
 
 
 
 
 	// Check asset
-	assetBytes := assetStore.Get([]byte(booking.UUID))
-	if assetBytes == nil {
-		return types.Booking{}, errors.New("Asset not found")
-	}
-
 	var asset types.Asset
 
-	derr := json.Unmarshal(assetBytes, &asset)
-
-	if derr != nil {
-		return types.Booking{}, errors.New("Asset decoding failed.")
+	err = utils.Retrieve(assetStore, []byte(booking.UUID), &asset)
+	if err != nil {
+		return types.Booking{}, fmt.Errorf(constants.ERROR_STORE_RETRIEVAL,
+								       "types.Asset",
+										   constants.STORE_ASSET)
 	}
 
 	if asset.Status != false {
-		return types.Booking{}, errors.New("Asset is not under renting period")
+		return types.Booking{}, fmt.Errorf(constants.BOOKING_ASSET_NOT_RENTED,
+										  asset.UUID)
 	}
 
 	// Checking owner account
 
-	accountBytes := accountStore.Get(asset.Creator)
-
 	var owner types.AppAccount
 
-	if accountBytes != nil {
-		rerr := json.Unmarshal(accountBytes, &owner)
-
-
-		if rerr != nil {
-			return types.Booking{}, errors.New("Owner decoding failed")
-		}
-	} else {
-		owner = types.AppAccount{
-			Coins: types.NewCoin("SHR", 0),
-		}
+	err = utils.Retrieve(accountStore, asset.Creator, &owner)
+	if err != nil {
+		return types.Booking{}, fmt.Errorf(constants.ERROR_STORE_RETRIEVAL,
+									   "types.AppAccount",
+										   constants.STORE_BANK)
 	}
 
-
+	if owner == (types.AppAccount{}) {
+		owner = types.NewDefaultAccount()
+	}
 
 
 	// Update owner balance
@@ -210,31 +208,34 @@ func (k Keeper) Complete(ctx sdk.Context, msg msg.MsgComplete) (types.Booking, e
 
 	// Update Booking
 	booking.IsCompleted = true
-	bookingBytes, err1 := json.Marshal(booking)
-
-	if err1 != nil {
-		return types.Booking{}, fmt.Errorf("Booking encoding failed %s", err1.Error())
-	}
 
 	// Update asset status. Asset is available now
 	asset.Status = true
 
-	// Encoding variables
-	assetBytes, err = json.Marshal(asset)
+
+	err = utils.Store(assetStore, []byte(asset.UUID), asset)
+
 	if err != nil {
-		return types.Booking{}, errors.New("Asset encoding failed.")
+		return types.Booking{}, fmt.Errorf(constants.ERROR_STORE_UPDATE,
+								       "types.Asset",
+										   constants.STORE_ASSET)
 	}
 
+	err = utils.Store(bookingStore, []byte(asset.UUID), booking)
 
-	accountBytes, err = json.Marshal(owner)
 	if err != nil {
-		return types.Booking{}, errors.New("Owner encoding failed.")
+		return types.Booking{}, fmt.Errorf(constants.ERROR_STORE_UPDATE,
+								       "types.Booking",
+										   constants.STORE_BOOKING)
 	}
 
+	err = utils.Store(accountStore, asset.Creator, owner)
 
-	assetStore.Set([]byte(asset.UUID), assetBytes)
-	bookingStore.Set([]byte(booking.BookingID), bookingBytes)
-	accountStore.Set(asset.Creator, accountBytes)
+	if err != nil {
+		return types.Booking{}, fmt.Errorf(constants.ERROR_STORE_UPDATE,
+								       "types.AppAccount",
+										   constants.STORE_BANK)
+	}
 
 	return booking, nil
 

@@ -76,11 +76,7 @@
 
 [[constraint]]
   name = "bitbucket.org/shareringvn/cosmos-sdk"
-  #revision = "e7fcd173c89e98595688dbb1b7778e6e4c3c2abb"
-  #revision = "500e3a337227109cae82f39ed2e349aef3463000"
   branch = "shareledger/modified"
-  #revision = "265344a4faf41be2d4a7d6096c125c1e2a29f73d"
-  #revision = "9f30a90980799c5f363a5f50cffa3bcea81b6421"
 
 [[override]]
   name = "github.com/tendermint/tmlibs"

@@ -10,12 +10,14 @@ import (
 	"bitbucket.org/shareringvn/cosmos-sdk/wire"
 
 	"github.com/sharering/shareledger/types"
+
 	"github.com/sharering/shareledger/x/bank"
+
 	"github.com/sharering/shareledger/x/asset"
-	"github.com/sharering/shareledger/x/asset/handlers"
 
 	"github.com/sharering/shareledger/x/booking"
-	bhandlers "github.com/sharering/shareledger/x/booking/handlers"
+
+	"github.com/sharering/shareledger/constants"
 )
 
 const (
@@ -29,9 +31,9 @@ func NewShareLedgerApp(logger log.Logger, db dbm.DB) *bapp.BaseApp {
 	// Create the base application object.
 	app := bapp.NewBaseApp(ShareLedgerApp, cdc, logger, db)
 
-	assetKey := sdk.NewKVStoreKey("asset")
-	bookingKey := sdk.NewKVStoreKey("booking")
-	accountKey := sdk.NewKVStoreKey("account")
+	assetKey := sdk.NewKVStoreKey(constants.STORE_ASSET)
+	bookingKey := sdk.NewKVStoreKey(constants.STORE_BOOKING)
+	accountKey := sdk.NewKVStoreKey(constants.STORE_BANK)
 
 	SetupAsset(app, cdc, assetKey)
 	SetupBank(app, cdc, accountKey)
@@ -75,7 +77,7 @@ func SetupAsset(app *bapp.BaseApp, cdc *wire.Codec, assetKey *sdk.KVStoreKey) {
 
 
 	app.Router().
-		AddRoute("asset", handlers.NewHandler(keeper))
+		AddRoute("asset", asset.NewHandler(keeper))
 
 	app.MountStoresIAVL(assetKey)
 	err := app.LoadLatestVersion(assetKey)
@@ -96,7 +98,7 @@ func SetupBooking(app *bapp.BaseApp, cdc *wire.Codec, bookingKey *sdk.KVStoreKey
 						   cdc)
 
 	app.Router().
-		AddRoute("booking", bhandlers.NewHandler(k))
+		AddRoute("booking", booking.NewHandler(k))
 
 	app.MountStoresIAVL(bookingKey)
 	err := app.LoadLatestVersion(bookingKey)

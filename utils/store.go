@@ -22,7 +22,7 @@ func Retrieve(store sdk.KVStore, key []byte, value interface{})  error{
 	// Get value
 	valueBytes := store.Get(key)
 
-	if valueBytes != nil {
+	if valueBytes == nil {
 		return nil
 	}
 
