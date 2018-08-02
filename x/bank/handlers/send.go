@@ -134,5 +134,7 @@ func handleTo(store sdk.KVStore, to sdk.Address, amt types.Coin) sdk.Result {
 
 	// Update store with updated receiver account
 	store.Set(to, accBytes)
-	return sdk.Result{Log: strconv.FormatInt(acc.Coins.Amount, 10)}
+	return sdk.Result{
+		Log: strconv.FormatInt(acc.Coins.Amount, 10),
+	}
 }

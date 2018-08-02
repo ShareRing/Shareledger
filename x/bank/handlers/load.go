@@ -29,6 +29,7 @@ func HandleMsgLoad(key *sdk.KVStoreKey) sdk.Handler {
 		if resT = handleTo(store, loadMsg.Account, loadMsg.Amount); !resT.IsOK() {
 			return resT
 		}
+		//resutTags := loadMsg.Tags().AppendTags(resT.Tags)
 
 		return sdk.Result{
 			Log:  resT.Log,

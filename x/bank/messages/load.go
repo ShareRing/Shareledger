@@ -2,6 +2,7 @@ package messages
 
 import (
 	"encoding/json"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/sharering/shareledger/types"
 )
@@ -52,5 +53,8 @@ func (msg MsgLoad) GetSigners() []sdk.Address {
 }
 
 func (msg MsgLoad) Tags() sdk.Tags {
-	return sdk.NewTags("account", []byte(msg.Account.String()))
+	return sdk.NewTags("account", []byte(msg.Account.String())).
+		AppendTag("msg.Amount", []byte(msg.Amount.String())).
+		AppendTag("ShareLedgerEvt", []byte("BalanceChanged"))
+
 }
