@@ -3,7 +3,7 @@ package types
 import (
 	"encoding/hex"
 	"fmt"
-	sdk "github.com/cosmos/cosmos-sdk/types"
+	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
 	"strconv"
 )
 

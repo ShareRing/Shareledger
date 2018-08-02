@@ -13,7 +13,7 @@ import (
 	"github.com/tendermint/tmlibs/log"
 
 	"../app"
-	"github.com/cosmos/cosmos-sdk/server"
+	"bitbucket.org/shareringvn/cosmos-sdk/server"
 )
 func main() {
 	cdc := app.MakeCodec()

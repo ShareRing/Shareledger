@@ -1,7 +1,7 @@
 package asset
 
 import (
-	"github.com/cosmos/cosmos-sdk/wire"
+	"bitbucket.org/shareringvn/cosmos-sdk/wire"
 	"github.com/sharering/shareledger/x/asset/messages"
 )
 

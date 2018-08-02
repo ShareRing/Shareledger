@@ -1,13 +1,14 @@
 package handlers
 
 import (
-	"encoding/json"
 	"fmt"
 	"strconv"
 
-	sdk "github.com/cosmos/cosmos-sdk/types"
+	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
 
+	"github.com/sharering/shareledger/constants"
 	"github.com/sharering/shareledger/types"
+	"github.com/sharering/shareledger/utils"
 	"github.com/sharering/shareledger/x/bank/messages"
 )
 
@@ -57,26 +58,20 @@ func HandleMsgSend(key *sdk.KVStoreKey) sdk.Handler {
 
 // Convenience Handlers
 func handleFrom(store sdk.KVStore, from sdk.Address, amt types.Coin) sdk.Result {
-	// Get sender account from the store.
-	accBytes := store.Get(from)
-	//if accBytes == nil {
-	// Account was not added to store. Return the result of the error.
-	//return sdk.NewError(2, 101, "Account not added to store").Result()
-	//}
 
 	// Unmarshal the JSON account bytes.
 	var acc types.AppAccount
-	if accBytes != nil {
-		err := json.Unmarshal(accBytes, &acc)
 
-		if err != nil {
-			// InternalError
-			return sdk.ErrInternal("Error when deserializing account").Result()
-		}
-	} else {
-		acc = types.AppAccount{
-			Coins: types.NewCoin("SHR", 0),
-		}
+	err := utils.Retrieve(store, from, &acc)
+	if err != nil {
+		return sdk.ErrInternal(utils.Format(constants.ERROR_STORE_RETRIEVAL,
+			"AppAccount",
+			constants.STORE_BANK)).Result()
+	}
+
+	// In case there is no associate account
+	if acc == (types.AppAccount{}) {
+		acc = types.NewDefaultAccount()
 	}
 
 	// Deduct msg amount from sender account.
@@ -91,32 +86,31 @@ func handleFrom(store sdk.KVStore, from sdk.Address, amt types.Coin) sdk.Result 
 	// Set acc coins to new amount.
 	acc.Coins = senderCoins
 
-	// Encode sender account.
-	naccBytes, nerr := json.Marshal(acc)
-	if nerr != nil {
-		return sdk.ErrInternal("Account encoding error").Result()
+	err = utils.Store(store, from, acc)
+
+	if err != nil {
+		return sdk.ErrInternal(utils.Format(constants.ERROR_STORE_UPDATE,
+			utils.ByteToString(from),
+			constants.STORE_BANK)).Result()
 	}
 
-	// Update store with updated sender account
-	store.Set(from, naccBytes)
-	return sdk.Result{Data: naccBytes,
-		Log: strconv.FormatInt(acc.Coins.Amount, 10)}
-	//Log: "Result" }
+	return sdk.Result{Log: strconv.FormatInt(acc.Coins.Amount, 10)}
 }
 
 func handleTo(store sdk.KVStore, to sdk.Address, amt types.Coin) sdk.Result {
 	// Add msg amount to receiver account
-	accBytes := store.Get(to)
 	var acc types.AppAccount
-	if accBytes == nil {
-		// Receiver account does not already exist, create a new one.
-		acc = types.AppAccount{}
-	} else {
-		// Receiver account already exists. Retrieve and decode it.
-		err := json.Unmarshal(accBytes, &acc)
-		if err != nil {
-			return sdk.ErrInternal("Account decoding error").Result()
-		}
+
+	err := utils.Retrieve(store, to, &acc)
+	if err != nil {
+		return sdk.ErrInternal(utils.Format(constants.ERROR_STORE_RETRIEVAL,
+			utils.ByteToString(to),
+			constants.STORE_BANK)).Result()
+	}
+
+	// In case there is no associate account
+	if acc == (types.AppAccount{}) {
+		acc = types.NewDefaultAccount()
 	}
 
 	// Add amount to receiver's old coins
@@ -126,15 +120,13 @@ func handleTo(store sdk.KVStore, to sdk.Address, amt types.Coin) sdk.Result {
 	acc.Coins = receiverCoins
 	fmt.Println("After Plus:", acc.Coins.Amount)
 
-	// Encode receiver account
-	accBytes, err := json.Marshal(acc)
+	err = utils.Store(store, to, acc)
+
 	if err != nil {
-		return sdk.ErrInternal("Account encoding error").Result()
+		return sdk.ErrInternal(utils.Format(constants.ERROR_STORE_UPDATE,
+			utils.ByteToString(to),
+			constants.STORE_BANK)).Result()
 	}
 
-	// Update store with updated receiver account
-	store.Set(to, accBytes)
-	return sdk.Result{
-		Log: strconv.FormatInt(acc.Coins.Amount, 10),
-	}
+	return sdk.Result{Log: strconv.FormatInt(acc.Coins.Amount, 10)}
 }

@@ -1,7 +1,7 @@
 package bank
 
 import (
-	"github.com/cosmos/cosmos-sdk/wire"
+	"bitbucket.org/shareringvn/cosmos-sdk/wire"
 	msg "github.com/sharering/shareledger/x/bank/messages"
 )
 
