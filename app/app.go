@@ -47,6 +47,15 @@ func NewShareLedgerApp(logger log.Logger, db dbm.DB) *bapp.BaseApp {
 
 func MakeCodec() *wire.Codec {
 	cdc := wire.NewCodec()
+    cdc.RegisterConcrete(types.SHRTx{}, "shareledger/SHRTx", nil)
+    
+    cdc.RegisterInterface((*types.PubKey)(nil), nil)
+    cdc.RegisterConcrete(types.PubKeySecp256k1{}, "shareledger/PubSecp256k1", nil)
+    
+    
+    cdc.RegisterInterface((*types.Signature)(nil), nil)
+    cdc.RegisterConcrete(types.SignatureSecp256k1{}, "shareledger/SigSecp256k1", nil)
+
 	cdc.RegisterInterface((*sdk.Msg)(nil), nil)
 	return cdc
 }
