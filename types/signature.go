@@ -1,5 +1,10 @@
 package types
 
+import (
+    "bytes"
+    "encoding/json"
+    "fmt"
+)
 //----------------------------------------
 
 type Signature interface {
@@ -17,7 +22,7 @@ var _ Signature = SignatureSecp256k1{}
 type SignatureSecp256k1 []byte
 
 func (sig SignatureSecp256k1) Bytes() []byte {
-	bz, err := cdc.MarshalBinaryBare(sig)
+	bz, err := json.Marshal(sig)
 	if err != nil {
 		panic(err)
 	}
@@ -26,7 +31,9 @@ func (sig SignatureSecp256k1) Bytes() []byte {
 
 func (sig SignatureSecp256k1) IsZero() bool { return len(sig) == 0 }
 
-func (sig SignatureSecp256k1) String() string { return fmt.Sprintf("/%X.../", Fingerprint(sig[:])) }
+func (sig SignatureSecp256k1) String() string {
+    return fmt.Sprintf("SignatureSecp256k1{%X}", []byte(sig[:]))
+}
 
 func (sig SignatureSecp256k1) Equals(other Signature) bool {
 	if otherSecp, ok := other.(SignatureSecp256k1); ok {
