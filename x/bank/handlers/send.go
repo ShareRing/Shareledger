@@ -128,5 +128,7 @@ func handleTo(store sdk.KVStore, to sdk.Address, amt types.Coin) sdk.Result {
 			constants.STORE_BANK)).Result()
 	}
 
-	return sdk.Result{Log: strconv.FormatInt(acc.Coins.Amount, 10)}
+	return sdk.Result{
+		Log: strconv.FormatInt(acc.Coins.Amount, 10),
+	}
 }

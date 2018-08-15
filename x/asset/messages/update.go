@@ -12,8 +12,8 @@ type MsgUpdate struct {
 	Creator sdk.Address `json:"creator"`
 	Hash    []byte      `json:"hash"`
 	UUID    string      `json:"uuid"`
-	Fee     int64       `json:"fee"`
 	Status  bool        `json:"status"`
+	Fee     int64       `json:"fee"`
 }
 
 // enforce the msg type at compile time
@@ -54,7 +54,7 @@ func (msg MsgUpdate) GetSignBytes() []byte {
 func (msg MsgUpdate) Get(key interface{}) (value interface{}) { return nil }
 
 func (msg MsgUpdate) String() string {
-	return fmt.Sprintf("Asset/MsgCreation{%s}", msg.UUID)
+	return fmt.Sprintf("Asset/MsgUpdate{%s}", msg.UUID)
 }
 
 func (msg MsgUpdate) GetSigners() []sdk.Address {
@@ -63,7 +63,7 @@ func (msg MsgUpdate) GetSigners() []sdk.Address {
 
 func (msg MsgUpdate) Tags() sdk.Tags {
 	return sdk.NewTags("msg.module", []byte("asset")).
-		AppendTag("msg.action", []byte("create")).
+		AppendTag("msg.action", []byte("update")).
 		AppendTag("asset.creator", []byte(msg.Creator.String())).
 		AppendTag("asset.UUID", []byte(msg.UUID)).
 		AppendTag("asset.Hash", []byte(msg.Hash)).
