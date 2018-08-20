@@ -1,11 +1,8 @@
 package constants
 
-
-
 // ENCODING ERROR
 const ERROR_ENCODING = "Encoding %s failed."
 const ERROR_DECODING = "Decoding %s failed."
-
 
 // STORE OPERATION ERRORS
 const ERROR_STORE_RETRIEVAL = "Retrieval %s from Store %s failed."
@@ -18,3 +15,10 @@ const BOOKING_COMPLETED_ERROR = "The booking %s is already completed."
 const BOOKING_ASSET_NOT_RENTED = "Asset %s is not rented."
 const BOOKING_ASSET_RENTED = "Asset %s is already rented."
 const BOOKING_INSUFFICIENT_BALANCE = "Account %s has insuficient balance."
+
+// SHRAccount
+const SHRACCOUNT_EXISITNG_ADDRESS = "Address already exists."
+
+// Proto Error
+const ACCOUNT_INVALID_STRUCT = "accountMapper requires a struct proto BaseAccount, or a pointer to one"
+const ACCOUNT_INVALID_INTERFACE = "accountMapper requries a proto BaseAccount, but %v doesn't implement BaseAccount interface."
