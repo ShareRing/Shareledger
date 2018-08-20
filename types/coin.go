@@ -51,3 +51,28 @@ func (coin Coin) IsPositive() bool {
 func (coin Coin) IsNotNegative() bool {
 	return coin.Amount >= 0
 }
+
+//------------------------------------------------------
+// Coins
+
+type Coins []Coin
+
+func (coins Coins) String() string {
+	if len(coins) == 0 {
+		return ""
+	}
+
+	out := ""
+	for _, coin := range coins {
+		out += fmt.Sprintf("%v,", coin.String())
+	}
+	return out[:len(out)-1]
+}
+
+func (coins Coins) GetCoins() Coins {
+	return coins
+}
+
+func (coins *Coins) SetCoins(co Coins) {
+	*coins = co
+}
