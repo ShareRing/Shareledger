@@ -1,12 +1,16 @@
 package auth
 
 import (
+	"fmt"
+
 	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
+	//"bitbucket.org/shareringvn/cosmos-sdk/wire"
+	//"github.com/sharering/shareledger/types"
 )
 
 func NewAnteHandler(am AccountMapper) sdk.AnteHandler {
 	return func(
-		ctx sdk.Context, tx types.SHRTx,
+		ctx sdk.Context, tx sdk.Tx,
 	) (_ sdk.Context, _ sdk.Result, abort bool) {
 
 		authTx, ok := tx.(AuthTx)
@@ -14,7 +18,7 @@ func NewAnteHandler(am AccountMapper) sdk.AnteHandler {
 			return ctx, sdk.ErrInternal("tx must be AuthTx").Result(), true
 		}
 
-		sig := autTx.GetSignature()
+		sig := authTx.GetSignature()
 		if sig == nil {
 			return ctx,
 				sdk.ErrInternal("Null signature").Result(),
@@ -22,17 +26,21 @@ func NewAnteHandler(am AccountMapper) sdk.AnteHandler {
 		}
 
 		authSig, ok := sig.(AuthSig)
-		if ok != nil {
+		if !ok {
 			return ctx,
 				sdk.ErrInternal("Sig must be AuthSig").Result(),
 				true
 		}
 
 		// verify Nonce and Signature
-		_, res := verifySignature(ctx, am, authSig, tx.GetSignBytes())
-		if res != nil {
+		signingAccount, res := verifySignature(ctx, am, authSig, authTx.GetSignBytes())
+
+		if signingAccount == nil {
 			return ctx, res, true
 		}
+
+		// Save account to context
+		ctx = WithSigners(ctx, signingAccount)
 
 		return ctx, sdk.Result{}, false // abort = false
 
@@ -40,36 +48,35 @@ func NewAnteHandler(am AccountMapper) sdk.AnteHandler {
 }
 
 func verifySignature(ctx sdk.Context,
-					am AccountMapper,
-					sig AuthSig,
-					signBytes []byte) (acc BaseAccount,
-									   res sdk.Result) {
+	am AccountMapper,
+	sig AuthSig,
+	signBytes []byte) (acc BaseAccount,
+	res sdk.Result) {
 
-	addr = sig.GetPubKey().Address()
-	acc := am.GetAccount(ctx, addr)
-	
+	addr := sig.GetPubKey().Address()
+	acc = am.GetAccount(ctx, addr)
+
 	// acc exists
 	if acc == nil {
 		return nil,
 			sdk.ErrUnknownAddress(addr.String()).Result()
 	}
-	
+
 	// verify nonce
 	currentNonce := acc.GetNonce()
 	if sig.GetNonce() < currentNonce {
 		return nil,
-			sdk.ErrInternal(fmt.Sprintf("Invalid nonce. Current nonce is: %d", currentNonce)).Result(),
+			sdk.ErrInternal(fmt.Sprintf("Invalid nonce. Current nonce is: %d", currentNonce)).Result()
 	}
-
 
 	// verify signature
 	if !sig.Verify(signBytes) {
 		return nil,
-		sdk.ErrUnauthorized("Signature Verification failed.").Result()
+			sdk.ErrUnauthorized("Signature Verification failed.").Result()
 	}
 
 	// Update nonce
-	acc.SetAccount(sig.GetNonce() + 1)
+	acc.SetNonce(sig.GetNonce() + 1)
 
-	return acc, nil
+	return acc, sdk.Result{}
 }

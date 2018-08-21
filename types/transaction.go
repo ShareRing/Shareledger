@@ -11,6 +11,7 @@ import (
 //-----------------------------------------------------------------
 // Tx Interface
 type SHRTx interface {
+	sdk.Tx
 	GetMsg() sdk.Msg
 	GetSignature() SHRSignature
 	VerifySignature() bool
@@ -47,7 +48,7 @@ func (tx BasicTx) GetMsg() sdk.Msg {
 
 // GetSignature returns the signature with this transaction
 func (tx BasicTx) GetSignature() SHRSignature {
-	return tx.Signature.(SHRSignature)
+	return tx.Signature
 }
 
 // GetSignBytes returns Bytes to be signed
@@ -65,7 +66,7 @@ func (tx BasicTx) VerifySignature() bool {
 // JSON decode MsgSend.
 func GetTxDecoder(cdc *wire.Codec) func([]byte) (sdk.Tx, sdk.Error) {
 	return func(txBytes []byte) (sdk.Tx, sdk.Error) {
-		var tx = SHRTx{}
+		var tx = BasicTx{}
 
 		//fmt.Println("TxDecoder:", txBytes)
 		//err := json.Unmarshal(txBytes, &tx)

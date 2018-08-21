@@ -1,7 +1,7 @@
 package auth
 
 import (
-	sdk "bitbucket.org/cosmos-sdk/types"
+	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
 )
 
 type contextKey int // local to auth module
@@ -16,10 +16,11 @@ func WithSigners(ctx sdk.Context, account BaseAccount) sdk.Context {
 }
 
 // Get the signers from the context
-func GetSigner(ctx types.Context) BaseAccount {
+func GetSigner(ctx sdk.Context) BaseAccount {
 	v := ctx.Value(contextKeySigner)
 	if v == nil {
-		return BaseAccount{}
+		var b BaseAccount
+		return b
 	}
 	return v.(BaseAccount)
 }

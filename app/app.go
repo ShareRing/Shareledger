@@ -9,52 +9,78 @@ import (
 	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
 	"bitbucket.org/shareringvn/cosmos-sdk/wire"
 
+	"github.com/sharering/shareledger/constants"
 	"github.com/sharering/shareledger/types"
 
-	"github.com/sharering/shareledger/x/bank"
-
 	"github.com/sharering/shareledger/x/asset"
-
+	"github.com/sharering/shareledger/x/auth"
+	"github.com/sharering/shareledger/x/bank"
 	"github.com/sharering/shareledger/x/booking"
-
-	"github.com/sharering/shareledger/constants"
 )
 
 const (
-	ShareLedgerApp = "ShareLedger_v0.0.1"
+	appName = "ShareLedger_v0.0.1"
 )
 
-func NewShareLedgerApp(logger log.Logger, db dbm.DB) *bapp.BaseApp {
+type ShareLedgerApp struct {
+	*bapp.BaseApp
+	cdc *wire.Codec
+
+	// keys to access the substores
+	assetKey   *sdk.KVStoreKey
+	bookingKey *sdk.KVStoreKey
+	accountKey *sdk.KVStoreKey
+
+	// Manage getting and setting accounts
+	accountMapper auth.AccountMapper
+}
+
+func NewShareLedgerApp(logger log.Logger, db dbm.DB) *ShareLedgerApp {
 
 	cdc := MakeCodec()
 
 	// Create the base application object.
-	app := bapp.NewBaseApp(ShareLedgerApp, cdc, logger, db)
+	baseApp := bapp.NewBaseApp(appName, cdc, logger, db)
 
 	assetKey := sdk.NewKVStoreKey(constants.STORE_ASSET)
 	bookingKey := sdk.NewKVStoreKey(constants.STORE_BOOKING)
 	accountKey := sdk.NewKVStoreKey(constants.STORE_BANK)
+	authKey := sdk.NewKVStoreKey(constants.STORE_AUTH)
 
-	SetupAsset(app, cdc, assetKey)
-	SetupBank(app, cdc, accountKey)
-	SetupBooking(app, cdc, bookingKey, assetKey, accountKey)
+	SetupAsset(baseApp, cdc, assetKey)
+	SetupBank(baseApp, cdc, accountKey)
+	SetupBooking(baseApp, cdc, bookingKey, assetKey, accountKey)
+
+	// accountMapper for Auth Module storing
+	accountMapper := auth.NewAccountMapper(
+		cdc,
+		authKey,
+		&auth.SHRAccount{},
+	)
 
 	// Determine how transactions are decoded.
-	app.SetTxDecoder(types.GetTxDecoder(cdc))
+	baseApp.SetTxDecoder(types.GetTxDecoder(cdc))
 
-	return app
+	return &ShareLedgerApp{
+		BaseApp:       baseApp,
+		assetKey:      assetKey,
+		bookingKey:    bookingKey,
+		accountKey:    accountKey,
+		accountMapper: accountMapper,
+	}
 }
 
 func MakeCodec() *wire.Codec {
 	cdc := wire.NewCodec()
-    cdc.RegisterConcrete(types.SHRTx{}, "shareledger/SHRTx", nil)
-    
-    cdc.RegisterInterface((*types.PubKey)(nil), nil)
-    cdc.RegisterConcrete(types.PubKeySecp256k1{}, "shareledger/PubSecp256k1", nil)
-    
-    
-    cdc.RegisterInterface((*types.Signature)(nil), nil)
-    cdc.RegisterConcrete(types.SignatureSecp256k1{}, "shareledger/SigSecp256k1", nil)
+	cdc.RegisterInterface((*types.SHRTx)(nil), nil)
+	cdc.RegisterConcrete(types.BasicTx{}, "shareledger/BasicTx", nil)
+	cdc.RegisterConcrete(auth.AuthTx{}, "shareledger/AuthTx", nil)
+
+	cdc.RegisterInterface((*types.PubKey)(nil), nil)
+	cdc.RegisterConcrete(types.PubKeySecp256k1{}, "shareledger/PubSecp256k1", nil)
+
+	cdc.RegisterInterface((*types.Signature)(nil), nil)
+	cdc.RegisterConcrete(types.SignatureSecp256k1{}, "shareledger/SigSecp256k1", nil)
 
 	cdc.RegisterInterface((*sdk.Msg)(nil), nil)
 	return cdc
@@ -84,7 +110,6 @@ func SetupAsset(app *bapp.BaseApp, cdc *wire.Codec, assetKey *sdk.KVStoreKey) {
 
 	cdc = asset.RegisterCodec(cdc)
 
-
 	app.Router().
 		AddRoute("asset", asset.NewHandler(keeper))
 
@@ -95,16 +120,15 @@ func SetupAsset(app *bapp.BaseApp, cdc *wire.Codec, assetKey *sdk.KVStoreKey) {
 	}
 }
 
-
 func SetupBooking(app *bapp.BaseApp, cdc *wire.Codec, bookingKey *sdk.KVStoreKey,
-	              assetKey *sdk.KVStoreKey, accountKey *sdk.KVStoreKey){
+	assetKey *sdk.KVStoreKey, accountKey *sdk.KVStoreKey) {
 
 	cdc = booking.RegisterCodec(cdc)
 
 	k := booking.NewKeeper(bookingKey,
-						   assetKey,
-		 				   accountKey,
-						   cdc)
+		assetKey,
+		accountKey,
+		cdc)
 
 	app.Router().
 		AddRoute("booking", booking.NewHandler(k))

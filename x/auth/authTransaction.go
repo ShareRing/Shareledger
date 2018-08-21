@@ -1,9 +1,12 @@
 package auth
 
 import (
+	"fmt"
 	"strconv"
 
 	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
+	"bitbucket.org/shareringvn/cosmos-sdk/wire"
+
 	"github.com/sharering/shareledger/types"
 )
 
@@ -33,8 +36,8 @@ func (tx AuthTx) GetMsg() sdk.Msg {
 }
 
 // GetSignature returns the signature with this transaction
-func (tx AuthTx) GetSignature() SHRSignature {
-	return tx.Signature.(SHRSignature)
+func (tx AuthTx) GetSignature() types.SHRSignature {
+	return tx.Signature
 }
 
 // GetNonce returns Nonce sent with the signature
@@ -57,7 +60,7 @@ func (tx AuthTx) VerifySignature() bool {
 // JSON decode MsgSend.
 func GetTxDecoder(cdc *wire.Codec) func([]byte) (sdk.Tx, sdk.Error) {
 	return func(txBytes []byte) (sdk.Tx, sdk.Error) {
-		var tx = SHRTx{}
+		var tx types.SHRTx
 
 		//fmt.Println("TxDecoder:", txBytes)
 		//err := json.Unmarshal(txBytes, &tx)
@@ -96,14 +99,14 @@ func NewAuthSig(key types.PubKey, sig types.Signature, nonce int64) AuthSig {
 }
 
 func (sig AuthSig) String() string {
-	return fmt.Sprintf("AuthSig{%s, %s, %s}", sig.PubKey, sig.Signature, sig.nonce)
+	return fmt.Sprintf("AuthSig{%s, %s, %s}", sig.PubKey, sig.Signature, sig.Nonce)
 }
 
 // Verify signature according to message
 // Prefix message with a nonce
 func (sig AuthSig) Verify(msg []byte) bool {
 	// convert Nonce to byte
-	nonceBytes := []byte(strconv.Itoa(sig.Nonce))
+	nonceBytes := []byte(strconv.Itoa(int(sig.Nonce)))
 
 	// Prefix msg with Nonce
 	msg = append(nonceBytes, msg...)

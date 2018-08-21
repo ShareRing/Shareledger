@@ -26,7 +26,7 @@ func NewDefaultAccount() AppAccount {
 }
 
 func (acc AppAccount) GetCoins() Coins {
-	returns Coins([]Coin{acc.Coins})
+	return Coins([]Coin{acc.Coins})
 }
 
 func (acc *AppAccount) SetCoins(coins Coins) {

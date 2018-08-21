@@ -1,9 +1,12 @@
 package auth
 
 import (
+	"errors"
+
 	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
 	constants "github.com/sharering/shareledger/constants"
-	types "github.com/sharering/shareledger/types"
+
+	"github.com/sharering/shareledger/types"
 )
 
 // BaseAccount is an interface providing sequence number to avoid replay attack
@@ -18,7 +21,7 @@ type BaseAccount interface {
 	SetPubKey(types.PubKey) error
 
 	GetNonce() int64
-	SetNonce(int64)
+	SetNonce(int64) error
 	IncreaseNonce()
 }
 
@@ -48,9 +51,9 @@ func (acc SHRAccount) GetAddress() sdk.Address {
 	return acc.Address
 }
 
-func (acc *SHRAccount) SetAddress(addr sdk.Address) {
+func (acc *SHRAccount) SetAddress(addr sdk.Address) error {
 	if len(acc.Address) != 0 {
-		return errors.New(constants.SHRACCOUNT_EXISTING_ADDRESS)
+		return errors.New(constants.SHRACCOUNT_INVALID_ADDRESS)
 	}
 	acc.Address = addr
 	return nil
@@ -60,7 +63,7 @@ func (acc SHRAccount) GetPubKey() types.PubKey {
 	return acc.PubKey
 }
 
-func (acc *SHRAccount) SetPubKey(pk types.PubKey) {
+func (acc *SHRAccount) SetPubKey(pk types.PubKey) error {
 	acc.PubKey = pk
 	return nil
 }
@@ -69,12 +72,19 @@ func (acc SHRAccount) GetNonce() int64 {
 	return acc.Nonce
 }
 
-func (acc *SHRAccount) SetNonce(no int64) {
+func (acc *SHRAccount) SetNonce(no int64) error {
 	acc.Nonce = no
 	return nil
 }
 
 func (acc *SHRAccount) IncreaseNonce() {
 	acc.Nonce += 1
-	return nil
+}
+
+func (acc *SHRAccount) GetCoins() types.Coins {
+	return acc.Coins
+}
+
+func (acc *SHRAccount) SetCoins(c types.Coins) {
+	acc.Coins = c
 }

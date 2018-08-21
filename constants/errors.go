@@ -18,6 +18,7 @@ const BOOKING_INSUFFICIENT_BALANCE = "Account %s has insuficient balance."
 
 // SHRAccount
 const SHRACCOUNT_EXISITNG_ADDRESS = "Address already exists."
+const SHRACCOUNT_INVALID_ADDRESS = "Invalid address."
 
 // Proto Error
 const ACCOUNT_INVALID_STRUCT = "accountMapper requires a struct proto BaseAccount, or a pointer to one"
