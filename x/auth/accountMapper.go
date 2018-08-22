@@ -84,6 +84,7 @@ func (am AccountMapper) SetNonce(ctx sdk.Context, addr sdk.Address, newNonce int
 		return sdk.ErrUnknownAddress(addr.String())
 	}
 	acc.SetNonce(newNonce)
+	am.SetAccount(ctx, acc)
 	return nil
 }
 

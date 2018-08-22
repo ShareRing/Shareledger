@@ -59,7 +59,7 @@ func verifySignature(ctx sdk.Context,
 	// acc doesn't exist
 	if acc == nil {
 		return nil,
-			sdk.ErrUnknownAddress(addr.String()).Result()
+			sdk.ErrInternal(fmt.Sprintf("%s doesnt exist", addr.String())).Result()
 	}
 
 	// verify nonce

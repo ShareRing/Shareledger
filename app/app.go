@@ -47,6 +47,12 @@ func NewShareLedgerApp(logger log.Logger, db dbm.DB) *ShareLedgerApp {
 	accountKey := sdk.NewKVStoreKey(constants.STORE_BANK)
 	authKey := sdk.NewKVStoreKey(constants.STORE_AUTH)
 
+	baseApp.MountStoresIAVL(authKey)
+	err := baseApp.LoadLatestVersion(authKey)
+	if err != nil {
+		cmn.Exit(err.Error())
+	}
+
 	SetupAsset(baseApp, cdc, assetKey)
 	SetupBank(baseApp, cdc, accountKey)
 	SetupBooking(baseApp, cdc, bookingKey, assetKey, accountKey)
@@ -59,9 +65,9 @@ func NewShareLedgerApp(logger log.Logger, db dbm.DB) *ShareLedgerApp {
 	)
 
 	// Determine how transactions are decoded.
-	baseApp.SetTxDecoder(types.GetTxDecoder(cdc))
-	//baseApp.SetTxDecoder(auth.GetTxDecoder(cdc))
-	//baseApp.SetAnteHandler(auth.NewAnteHandler(accountMapper))
+	//baseApp.SetTxDecoder(types.GetTxDecoder(cdc))
+	baseApp.SetTxDecoder(auth.GetTxDecoder(cdc))
+	baseApp.SetAnteHandler(auth.NewAnteHandler(accountMapper))
 
 	return &ShareLedgerApp{
 		BaseApp:       baseApp,
