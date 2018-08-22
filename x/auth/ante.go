@@ -56,7 +56,7 @@ func verifySignature(ctx sdk.Context,
 	addr := sig.GetPubKey().Address()
 	acc = am.GetAccount(ctx, addr)
 
-	// acc exists
+	// acc doesn't exist
 	if acc == nil {
 		return nil,
 			sdk.ErrUnknownAddress(addr.String()).Result()

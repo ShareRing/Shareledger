@@ -26,10 +26,10 @@ var _ SHRTx = BasicTx{}
 // Simple tx to wrap the Msg.
 type BasicTx struct {
 	sdk.Msg   `json:"message"`
-	Signature BaseSig `json:"signature"`
+	Signature BasicSig `json:"signature"`
 }
 
-func NewBasicTx(msg sdk.Msg, sig BaseSig) BasicTx {
+func NewBasicTx(msg sdk.Msg, sig BasicSig) BasicTx {
 	return BasicTx{
 		Msg:       msg,
 		Signature: sig,
@@ -93,24 +93,24 @@ type SHRSignature interface {
 	Verify([]byte) bool
 }
 
-var _ SHRSignature = BaseSig{}
+var _ SHRSignature = BasicSig{}
 
-type BaseSig struct {
+type BasicSig struct {
 	PubKey    `json:"pub_key"`
 	Signature `json:"signature"`
 }
 
-func NewBaseSig(key PubKey, sig Signature) BaseSig {
-	return BaseSig{
+func NewBasicSig(key PubKey, sig Signature) BasicSig {
+	return BasicSig{
 		PubKey:    key,
 		Signature: sig,
 	}
 }
 
-func (sig BaseSig) String() string {
+func (sig BasicSig) String() string {
 	return fmt.Sprintf("BaseSig{%s, %s}", sig.PubKey, sig.Signature)
 }
 
-func (sig BaseSig) Verify(msg []byte) bool {
+func (sig BasicSig) Verify(msg []byte) bool {
 	return sig.PubKey.VerifyBytes(msg, sig.Signature)
 }

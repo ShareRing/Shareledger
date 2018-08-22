@@ -60,6 +60,8 @@ func NewShareLedgerApp(logger log.Logger, db dbm.DB) *ShareLedgerApp {
 
 	// Determine how transactions are decoded.
 	baseApp.SetTxDecoder(types.GetTxDecoder(cdc))
+	//baseApp.SetTxDecoder(auth.GetTxDecoder(cdc))
+	//baseApp.SetAnteHandler(auth.NewAnteHandler(accountMapper))
 
 	return &ShareLedgerApp{
 		BaseApp:       baseApp,
@@ -75,6 +77,10 @@ func MakeCodec() *wire.Codec {
 	cdc.RegisterInterface((*types.SHRTx)(nil), nil)
 	cdc.RegisterConcrete(types.BasicTx{}, "shareledger/BasicTx", nil)
 	cdc.RegisterConcrete(auth.AuthTx{}, "shareledger/AuthTx", nil)
+
+	cdc.RegisterInterface((*types.SHRSignature)(nil), nil)
+	cdc.RegisterConcrete(types.BasicSig{}, "shareledger/BasicSig", nil)
+	cdc.RegisterConcrete(auth.AuthSig{}, "shareledger/AuthSig", nil)
 
 	cdc.RegisterInterface((*types.PubKey)(nil), nil)
 	cdc.RegisterConcrete(types.PubKeySecp256k1{}, "shareledger/PubSecp256k1", nil)
