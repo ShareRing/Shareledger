@@ -1,7 +1,9 @@
 package auth
 
 import (
+	"encoding/json"
 	"errors"
+	"fmt"
 
 	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
 	constants "github.com/sharering/shareledger/constants"
@@ -23,6 +25,8 @@ type BaseAccount interface {
 	GetNonce() int64
 	SetNonce(int64) error
 	IncreaseNonce()
+
+	String() string
 }
 
 //-------------------------------------------------------
@@ -39,13 +43,22 @@ type SHRAccount struct {
 }
 
 // NewSHRAccountWithAddress create  a SHRAccount with address
-func NewSHRAccountWithAddress(addr sdk.Address) SHRAccount {
-	return SHRAccount{
+func NewSHRAccountWithAddress(addr sdk.Address) *SHRAccount {
+	return &SHRAccount{
 		Address: addr,
+		Coins:   types.NewDefaultCoins(),
 	}
 }
 
 // Implement BaseAccount interface
+
+func (acc SHRAccount) String() string {
+	if v, err := json.Marshal(acc); err != nil {
+		panic(err)
+	} else {
+		return fmt.Sprintf("%s", v)
+	}
+}
 
 func (acc SHRAccount) GetAddress() sdk.Address {
 	return acc.Address
@@ -81,7 +94,7 @@ func (acc *SHRAccount) IncreaseNonce() {
 	acc.Nonce += 1
 }
 
-func (acc *SHRAccount) GetCoins() types.Coins {
+func (acc SHRAccount) GetCoins() types.Coins {
 	return acc.Coins
 }
 

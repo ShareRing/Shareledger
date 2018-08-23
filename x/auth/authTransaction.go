@@ -71,10 +71,10 @@ func GetTxDecoder(cdc *wire.Codec) func([]byte) (sdk.Tx, sdk.Error) {
 			return nil, sdk.ErrTxDecode(err.Error())
 		}
 		fmt.Println("Decoded Tx:", tx)
-		isVerified := tx.VerifySignature()
-		if !isVerified {
-			return nil, sdk.ErrTxDecode("InvalidSignature")
-		}
+		//isVerified := tx.VerifySignature()
+		//if !isVerified {
+		//return nil, sdk.ErrTxDecode("InvalidSignature")
+		//}
 		return tx, nil
 	}
 }
@@ -99,7 +99,7 @@ func NewAuthSig(key types.PubKey, sig types.Signature, nonce int64) AuthSig {
 }
 
 func (sig AuthSig) String() string {
-	return fmt.Sprintf("AuthSig{%s, %s, %s}", sig.PubKey, sig.Signature, sig.Nonce)
+	return fmt.Sprintf("AuthSig{%s, %s, %d}", sig.PubKey, sig.Signature, sig.Nonce)
 }
 
 // Verify signature according to message
@@ -110,6 +110,8 @@ func (sig AuthSig) Verify(msg []byte) bool {
 
 	// Prefix msg with Nonce
 	msg = append(nonceBytes, msg...)
+
+	fmt.Printf("Signed Msg: %s", msg)
 
 	return sig.PubKey.VerifyBytes(msg, sig.Signature)
 }

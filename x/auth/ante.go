@@ -53,13 +53,23 @@ func verifySignature(ctx sdk.Context,
 	signBytes []byte) (acc BaseAccount,
 	res sdk.Result) {
 
+	fmt.Println("PubKey:", sig.GetPubKey())
 	addr := sig.GetPubKey().Address()
+	fmt.Println("Addr:", addr)
+
 	acc = am.GetAccount(ctx, addr)
+	fmt.Println("Acc:", acc)
 
 	// acc doesn't exist
 	if acc == nil {
-		return nil,
-			sdk.ErrInternal(fmt.Sprintf("%s doesnt exist", addr.String())).Result()
+		//return nil,
+		//sdk.ErrInternal(fmt.Sprintf("%s doesnt exist", addr.String())).Result()
+		shrA := NewSHRAccountWithAddress(addr)
+		acc = shrA
+	}
+
+	if acc.GetPubKey() == nil {
+		acc.SetPubKey(sig.GetPubKey())
 	}
 
 	// verify nonce
@@ -77,6 +87,9 @@ func verifySignature(ctx sdk.Context,
 
 	// Update nonce
 	acc.SetNonce(sig.GetNonce() + 1)
+
+	// Save new nonce
+	am.SetAccount(ctx, acc)
 
 	return acc, sdk.Result{}
 }

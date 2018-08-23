@@ -137,9 +137,10 @@ func (am AccountMapper) encodeAccount(acc BaseAccount) []byte {
 }
 
 func (am AccountMapper) decodeAccount(bz []byte) (acc BaseAccount) {
-	err := am.cdc.UnmarshalBinaryBare(bz, &acc)
+	var acc1 *SHRAccount
+	err := am.cdc.UnmarshalBinaryBare(bz, &acc1)
 	if err != nil {
 		panic(err)
 	}
-	return
+	return acc1
 }

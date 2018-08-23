@@ -1,8 +1,8 @@
 package types
 
 import (
-    "encoding/json"
 	"bytes"
+	"encoding/json"
 	"fmt"
 
 	secp256k1 "github.com/btcsuite/btcd/btcec"
@@ -35,16 +35,15 @@ type PubKeySecp256k1 [65]byte
 // Implements Bitcoin style addresses: RIPEMD160(SHA256(pubkey))
 func (pubKey PubKeySecp256k1) Address() sdk.Address {
 	hasherSHA256 := sha3.NewKeccak256()
-    //hasherSHA256.Write([]byte("0x"))
+	//hasherSHA256.Write([]byte("0x"))
 	hasherSHA256.Write(pubKey[:]) // does not error
 	var sha []byte
 	sha = hasherSHA256.Sum(sha)
-    fmt.Printf("HashAddress: %x\n" , sha)
 	return sdk.Address(sha[12:])
 }
 
 func (pubKey PubKeySecp256k1) Bytes() []byte {
-    //cdc := amino.NewCodec()
+	//cdc := amino.NewCodec()
 	bz, err := json.Marshal(pubKey)
 	if err != nil {
 		panic(err)
@@ -56,15 +55,15 @@ func (pubKey PubKeySecp256k1) VerifyBytes(msg []byte, sig_ Signature) bool {
 	// and assert same algorithm to sign and verify
 	sig, ok := sig_.(SignatureSecp256k1)
 	if !ok {
-        fmt.Println("signature Is not Secp")
+		fmt.Println("signature Is not Secp")
 		return false
 	}
-    
-    pub__, err := secp256k1.ParsePubKey(pubKey[:], secp256k1.S256())
+
+	pub__, err := secp256k1.ParsePubKey(pubKey[:], secp256k1.S256())
 	if err != nil {
 		return false
 	}
-    
+
 	sig__, err := secp256k1.ParseDERSignature(sig[:], secp256k1.S256())
 	if err != nil {
 		return false
