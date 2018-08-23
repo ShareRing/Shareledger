@@ -29,7 +29,7 @@ type ShareLedgerApp struct {
 	// keys to access the substores
 	assetKey   *sdk.KVStoreKey
 	bookingKey *sdk.KVStoreKey
-	accountKey *sdk.KVStoreKey
+	//accountKey *sdk.KVStoreKey
 
 	// Manage getting and setting accounts
 	accountMapper auth.AccountMapper
@@ -44,7 +44,7 @@ func NewShareLedgerApp(logger log.Logger, db dbm.DB) *ShareLedgerApp {
 
 	assetKey := sdk.NewKVStoreKey(constants.STORE_ASSET)
 	bookingKey := sdk.NewKVStoreKey(constants.STORE_BOOKING)
-	accountKey := sdk.NewKVStoreKey(constants.STORE_BANK)
+	//accountKey := sdk.NewKVStoreKey(constants.STORE_BANK)
 	authKey := sdk.NewKVStoreKey(constants.STORE_AUTH)
 
 	baseApp.MountStoresIAVL(authKey)
@@ -53,16 +53,16 @@ func NewShareLedgerApp(logger log.Logger, db dbm.DB) *ShareLedgerApp {
 		cmn.Exit(err.Error())
 	}
 
-	SetupAsset(baseApp, cdc, assetKey)
-	SetupBank(baseApp, cdc, accountKey)
-	SetupBooking(baseApp, cdc, bookingKey, assetKey, accountKey)
-
-	// accountMapper for Auth Module storing
+	// accountMapper for Auth Module storing and Bank module
 	accountMapper := auth.NewAccountMapper(
 		cdc,
 		authKey,
 		&auth.SHRAccount{},
 	)
+
+	SetupAsset(baseApp, cdc, assetKey)
+	SetupBank(baseApp, cdc, accountMapper)
+	SetupBooking(baseApp, cdc, bookingKey, assetKey, accountMapper)
 
 	// Determine how transactions are decoded.
 	//baseApp.SetTxDecoder(types.GetTxDecoder(cdc))
@@ -70,10 +70,10 @@ func NewShareLedgerApp(logger log.Logger, db dbm.DB) *ShareLedgerApp {
 	baseApp.SetAnteHandler(auth.NewAnteHandler(accountMapper))
 
 	return &ShareLedgerApp{
-		BaseApp:       baseApp,
-		assetKey:      assetKey,
-		bookingKey:    bookingKey,
-		accountKey:    accountKey,
+		BaseApp:    baseApp,
+		assetKey:   assetKey,
+		bookingKey: bookingKey,
+		//accountKey:    accountKey,
 		accountMapper: accountMapper,
 	}
 }
@@ -88,6 +88,9 @@ func MakeCodec() *wire.Codec {
 	cdc.RegisterConcrete(types.BasicSig{}, "shareledger/BasicSig", nil)
 	cdc.RegisterConcrete(auth.AuthSig{}, "shareledger/AuthSig", nil)
 
+	cdc.RegisterInterface((*auth.BaseAccount)(nil), nil)
+	cdc.RegisterConcrete(auth.SHRAccount{}, "shareledger/SHRAccount", nil)
+
 	cdc.RegisterInterface((*types.PubKey)(nil), nil)
 	cdc.RegisterConcrete(types.PubKeySecp256k1{}, "shareledger/PubSecp256k1", nil)
 
@@ -98,7 +101,7 @@ func MakeCodec() *wire.Codec {
 	return cdc
 }
 
-func SetupBank(app *bapp.BaseApp, cdc *wire.Codec, accountKey *sdk.KVStoreKey) {
+func SetupBank(app *bapp.BaseApp, cdc *wire.Codec, am auth.AccountMapper) {
 	// Bank module
 	// Create a key for accessing the account store.
 	cdc = bank.RegisterCodec(cdc)
@@ -106,14 +109,14 @@ func SetupBank(app *bapp.BaseApp, cdc *wire.Codec, accountKey *sdk.KVStoreKey) {
 	// Register message routes.
 	// Note the handler gets access to the account store.
 	app.Router().
-		AddRoute("bank", bank.NewHandler(accountKey))
+		AddRoute("bank", bank.NewHandler(am))
 
 	// Mount stores and load the latest state.
-	app.MountStoresIAVL(accountKey)
-	err := app.LoadLatestVersion(accountKey)
-	if err != nil {
-		cmn.Exit(err.Error())
-	}
+	//app.MountStoresIAVL(accountKey)
+	//err := app.LoadLatestVersion(accountKey)
+	//if err != nil {
+	//cmn.Exit(err.Error())
+	//}
 }
 
 func SetupAsset(app *bapp.BaseApp, cdc *wire.Codec, assetKey *sdk.KVStoreKey) {
@@ -133,13 +136,13 @@ func SetupAsset(app *bapp.BaseApp, cdc *wire.Codec, assetKey *sdk.KVStoreKey) {
 }
 
 func SetupBooking(app *bapp.BaseApp, cdc *wire.Codec, bookingKey *sdk.KVStoreKey,
-	assetKey *sdk.KVStoreKey, accountKey *sdk.KVStoreKey) {
+	assetKey *sdk.KVStoreKey, am auth.AccountMapper) {
 
 	cdc = booking.RegisterCodec(cdc)
 
 	k := booking.NewKeeper(bookingKey,
 		assetKey,
-		accountKey,
+		am,
 		cdc)
 
 	app.Router().
