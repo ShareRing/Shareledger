@@ -10,3 +10,7 @@ const STORE_BANK = "bank"
 const STORE_BOOKING = "booking"
 const STORE_ASSET = "asset"
 const STORE_AUTH = "auth"
+
+// ALLOWED DENOM
+var DENOM_LIST = map[string]bool{"SHRP": true, "SHR": true}
+var BOOKING_DENOM = "SHRP"
