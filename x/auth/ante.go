@@ -53,12 +53,11 @@ func verifySignature(ctx sdk.Context,
 	signBytes []byte) (acc BaseAccount,
 	res sdk.Result) {
 
-	fmt.Println("PubKey:", sig.GetPubKey())
+	fmt.Println("PubKey used to sign:", sig.GetPubKey())
 	addr := sig.GetPubKey().Address()
-	fmt.Println("Addr:", addr)
 
 	acc = am.GetAccount(ctx, addr)
-	fmt.Println("Acc:", acc)
+	fmt.Println("PubKey of this account:", acc)
 
 	// acc doesn't exist
 	if acc == nil {

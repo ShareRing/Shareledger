@@ -111,8 +111,6 @@ func (sig AuthSig) Verify(msg []byte) bool {
 	// Prefix msg with Nonce
 	msg = append(nonceBytes, msg...)
 
-	fmt.Printf("Signed Msg: %s", msg)
-
 	return sig.PubKey.VerifyBytes(msg, sig.Signature)
 }
 
