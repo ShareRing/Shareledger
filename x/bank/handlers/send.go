@@ -2,13 +2,11 @@ package handlers
 
 import (
 	"fmt"
-	"strconv"
 
 	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
 
-	"github.com/sharering/shareledger/constants"
 	"github.com/sharering/shareledger/types"
-	"github.com/sharering/shareledger/utils"
+	"github.com/sharering/shareledger/x/auth"
 	"github.com/sharering/shareledger/x/bank/messages"
 )
 
@@ -18,7 +16,7 @@ import (
 // Handle MsgSend.
 // NOTE: msg.From, msg.To, and msg.Amount were already validated
 // in ValidateBasic().
-func HandleMsgSend(key *sdk.KVStoreKey) sdk.Handler {
+func HandleMsgSend(am auth.AccountMapper) sdk.Handler {
 	return func(ctx sdk.Context, msg sdk.Msg) sdk.Result {
 		sendMsg, ok := msg.(messages.MsgSend)
 
@@ -30,18 +28,15 @@ func HandleMsgSend(key *sdk.KVStoreKey) sdk.Handler {
 			return sdk.NewError(2, 1, "MsgSend is malformed").Result()
 		}
 
-		// Load the store.
-		store := ctx.KVStore(key)
-
 		// Debit from the sender.
 		var resF sdk.Result
 		var resT sdk.Result
-		if resF = handleFrom(store, sendMsg.From, sendMsg.Amount); !resF.IsOK() {
+		if resF = handleFrom(ctx, am, sendMsg.From, sendMsg.Amount); !resF.IsOK() {
 			return resF
 		}
 
 		// Credit the receiver.
-		if resT = handleTo(store, sendMsg.To, sendMsg.Amount); !resT.IsOK() {
+		if resT = handleTo(ctx, am, sendMsg.To, sendMsg.Amount); !resT.IsOK() {
 			return resT
 		}
 		fmt.Println("Result Log:", resF.Log, "-", resT.Log)
@@ -57,76 +52,57 @@ func HandleMsgSend(key *sdk.KVStoreKey) sdk.Handler {
 }
 
 // Convenience Handlers
-func handleFrom(store sdk.KVStore, from sdk.Address, amt types.Coin) sdk.Result {
+func handleFrom(ctx sdk.Context, am auth.AccountMapper, from sdk.Address, amt types.Coin) sdk.Result {
 
-	// Unmarshal the JSON account bytes.
-	var acc types.AppAccount
-
-	err := utils.Retrieve(store, from, &acc)
-	if err != nil {
-		return sdk.ErrInternal(utils.Format(constants.ERROR_STORE_RETRIEVAL,
-			"AppAccount",
-			constants.STORE_BANK)).Result()
-	}
+	acc := am.GetAccount(ctx, from)
 
 	// In case there is no associate account
-	if acc == (types.AppAccount{}) {
-		acc = types.NewDefaultAccount()
+	if acc == nil {
+		shrAcc := auth.NewSHRAccountWithAddress(from)
+		acc = shrAcc
 	}
 
 	// Deduct msg amount from sender account.
-	senderCoins := acc.Coins.Minus(amt)
+	senderCoins := acc.GetCoins()
+
+	senderCoinsAfter := senderCoins.Minus(amt)
 
 	// If any coin has negative amount, return insufficient coins error.
-	if !senderCoins.IsNotNegative() {
+	if !senderCoinsAfter.IsNotNegative() {
 		return sdk.ErrInsufficientCoins("Insufficient coins in account").Result()
 	}
 
-	fmt.Println("Deduce From:", acc.Coins.Amount, " ", senderCoins.Amount)
 	// Set acc coins to new amount.
-	acc.Coins = senderCoins
+	acc.SetCoins(senderCoinsAfter)
 
-	err = utils.Store(store, from, acc)
+	// Save to AccountMapper
+	am.SetAccount(ctx, acc)
 
-	if err != nil {
-		return sdk.ErrInternal(utils.Format(constants.ERROR_STORE_UPDATE,
-			utils.ByteToString(from),
-			constants.STORE_BANK)).Result()
-	}
-
-	return sdk.Result{Log: strconv.FormatInt(acc.Coins.Amount, 10)}
+	return sdk.Result{Log: acc.GetCoins().String()}
 }
 
-func handleTo(store sdk.KVStore, to sdk.Address, amt types.Coin) sdk.Result {
+func handleTo(ctx sdk.Context, am auth.AccountMapper, to sdk.Address, amt types.Coin) sdk.Result {
 	// Add msg amount to receiver account
-	var acc types.AppAccount
-
-	err := utils.Retrieve(store, to, &acc)
-	if err != nil {
-		return sdk.ErrInternal(utils.Format(constants.ERROR_STORE_RETRIEVAL,
-			utils.ByteToString(to),
-			constants.STORE_BANK)).Result()
-	}
+	acc := am.GetAccount(ctx, to)
 
 	// In case there is no associate account
-	if acc == (types.AppAccount{}) {
-		acc = types.NewDefaultAccount()
+	if acc == nil {
+		shrAcc := auth.NewSHRAccountWithAddress(to)
+		acc = shrAcc
 	}
 
 	// Add amount to receiver's old coins
-	receiverCoins := acc.Coins.Plus(amt)
+	receiverCoins := acc.GetCoins()
+	receiverCoinsAfter := receiverCoins.Plus(amt)
 
 	// Update receiver account
-	acc.Coins = receiverCoins
-	fmt.Println("After Plus:", acc.Coins.Amount)
+	acc.SetCoins(receiverCoinsAfter)
+	fmt.Println("After Plus:", receiverCoinsAfter)
 
-	err = utils.Store(store, to, acc)
+	// Save to AccountMapper
+	am.SetAccount(ctx, acc)
 
-	if err != nil {
-		return sdk.ErrInternal(utils.Format(constants.ERROR_STORE_UPDATE,
-			utils.ByteToString(to),
-			constants.STORE_BANK)).Result()
+	return sdk.Result{
+		Log: acc.GetCoins().String(),
 	}
-
-	return sdk.Result{Log: strconv.FormatInt(acc.Coins.Amount, 10)}
 }

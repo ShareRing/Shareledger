@@ -13,6 +13,7 @@ root="$PWD"
 rootdir="$workspace/src/github.com/sharering"
 proj="shareledger"
 if [ ! -L "$rootdir/$proj" ]; then
+    echo "Create link"
     mkdir -p "$rootdir"
     cd "$rootdir"
     ln -s ../../../../../. $proj

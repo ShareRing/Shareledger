@@ -15,12 +15,11 @@ var _ sdk.Msg = MsgCheck{}
 // MsgCheck to send coins from Input to Output
 type MsgCheck struct {
 	Account sdk.Address `json:"account"`
-	Denom   string      `json:"denom"`
 }
 
 // NewMsgCheck
-func NewMsgCheck(account sdk.Address, denom string) MsgCheck {
-	return MsgCheck{account, denom}
+func NewMsgCheck(account sdk.Address) MsgCheck {
+	return MsgCheck{account}
 }
 
 // Implements Msg.
@@ -31,9 +30,6 @@ func (msg MsgCheck) Type() string { return "bank" }
 func (msg MsgCheck) ValidateBasic() sdk.Error {
 	if len(msg.Account) == 0 {
 		return sdk.ErrInvalidAddress("Account address is empty")
-	}
-	if len(msg.Denom) == 0 {
-		return sdk.ErrInvalidAddress("Denomination is empty")
 	}
 	return nil
 }

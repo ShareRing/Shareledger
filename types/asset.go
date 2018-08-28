@@ -1,10 +1,11 @@
 package types
 
 import (
-	"encoding/hex"
+	// "encoding/hex"
+    "encoding/json"
 	"fmt"
 	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
-	"strconv"
+	// "strconv"
 )
 
 // Asset asset infomation
@@ -17,12 +18,11 @@ type Asset struct {
 }
 
 func (a Asset) String() string {
-	return fmt.Sprintf("Asset{UUID:%s, Hash:%s, Creator:%s, Status:%s, Fee:%d}",
-		                a.UUID,
-		                hex.EncodeToString(a.Hash),
-		                a.Creator.String(),
-						strconv.FormatBool(a.Status),
-						a.Fee)
+    b, err := json.Marshal(a)
+    if err != nil {
+        panic(err)
+    }
+    return fmt.Sprintf("%s", b)
 }
 
 //--------------------------------------------------------

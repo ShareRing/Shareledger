@@ -1,7 +1,6 @@
 package asset
 
 import (
-	"fmt"
 	"errors"
 	"encoding/json"
 
@@ -28,7 +27,6 @@ func NewKeeper(key sdk.StoreKey, cdc *wire.Codec) Keeper {
 
 //----------------------------------------------------------
 func (k Keeper) CreateAsset(ctx sdk.Context, msg msg.MsgCreate) (types.Asset, error) {
-	fmt.Println(ctx) //fake action for testing
 
 	store := ctx.KVStore(k.storeKey)
 
