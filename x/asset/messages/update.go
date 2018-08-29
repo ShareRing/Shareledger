@@ -6,6 +6,7 @@ import (
 	"strconv"
 
 	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
+	"github.com/sharering/shareledger/constants"
 )
 
 type MsgUpdate struct {
@@ -31,7 +32,7 @@ func NewMsgUpdate(creator sdk.Address, hash []byte, uuid string, status bool, fe
 
 // Type Implements Msg
 func (msg MsgUpdate) Type() string {
-	return "asset"
+	return constants.MESSAGE_ASSET
 }
 
 // ValidateBasic Implements Msg

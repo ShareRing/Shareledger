@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
+	"github.com/sharering/shareledger/constants"
 )
 
 type MsgBook struct {
@@ -26,7 +27,7 @@ func NewMsgBook(nonce int64, renter sdk.Address, uuid string, duration int64) Ms
 }
 
 func (msg MsgBook) Type() string {
-	return "booking"
+	return constants.MESSAGE_BOOKING
 }
 
 func (msg MsgBook) ValidateBasic() sdk.Error {

@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 
 	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
+	"github.com/sharering/shareledger/constants"
 	"github.com/sharering/shareledger/types"
 )
 
@@ -26,7 +27,7 @@ func NewMsgLoad(nonce int64, account sdk.Address, amt types.Coin) MsgLoad {
 }
 
 // Implement Msg
-func (msg MsgLoad) Type() string { return "bank" }
+func (msg MsgLoad) Type() string { return constants.MESSAGE_BANK }
 
 // Implement Msg. Load to ensure the address are good and the amount is positive
 func (msg MsgLoad) ValidateBasic() sdk.Error {

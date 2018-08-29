@@ -11,6 +11,12 @@ const STORE_BOOKING = "booking"
 const STORE_ASSET = "asset"
 const STORE_AUTH = "auth"
 
+// MESSAGE TYPE
+const MESSAGE_AUTH = "auth"
+const MESSAGE_ASSET = "asset"
+const MESSAGE_BANK = "bank"
+const MESSAGE_BOOKING = "booking"
+
 // ALLOWED DENOM
 var DENOM_LIST = map[string]bool{"SHRP": true, "SHR": true}
 var BOOKING_DENOM = "SHRP"

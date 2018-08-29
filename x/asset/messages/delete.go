@@ -1,13 +1,15 @@
 package messages
+
 import (
 	"encoding/json"
 	"fmt"
 
 	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
+	"github.com/sharering/shareledger/constants"
 )
 
 type MsgDelete struct {
-	UUID    string       `json:"uuid"`
+	UUID string `json:"uuid"`
 }
 
 // enforce the msg type at compile time
@@ -15,13 +17,13 @@ var _ sdk.Msg = MsgDelete{}
 
 func NewMsgDelete(uuid string) MsgDelete {
 	return MsgDelete{
-		UUID:    uuid,
+		UUID: uuid,
 	}
 }
 
 // Type Implements Msg
 func (msg MsgDelete) Type() string {
-	return "asset"
+	return constants.MESSAGE_ASSET
 }
 
 // ValidateBasic Implements Msg
@@ -50,7 +52,6 @@ func (msg MsgDelete) String() string {
 func (msg MsgDelete) GetSigners() []sdk.Address {
 	return []sdk.Address{}
 }
-
 
 func (msg MsgDelete) Tags() sdk.Tags {
 	return sdk.NewTags("msg.module", []byte("asset")).

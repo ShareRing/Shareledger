@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
+	"github.com/sharering/shareledger/constants"
 )
 
 type MsgComplete struct {
@@ -24,7 +25,7 @@ func NewMsgComplete(nonce int64, renter sdk.Address, bookingId string) MsgComple
 }
 
 func (msg MsgComplete) Type() string {
-	return "booking"
+	return constants.MESSAGE_BOOKING
 }
 
 func (msg MsgComplete) ValidateBasic() sdk.Error {

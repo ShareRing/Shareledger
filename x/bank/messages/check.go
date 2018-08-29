@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 
 	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
+	"github.com/sharering/shareledger/constants"
 )
 
 //------------------------------------------------------------------
@@ -23,7 +24,7 @@ func NewMsgCheck(account sdk.Address) MsgCheck {
 }
 
 // Implements Msg.
-func (msg MsgCheck) Type() string { return "bank" }
+func (msg MsgCheck) Type() string { return constants.MESSAGE_BANK }
 
 // Implements Msg. Ensure the addresses are good and the
 // amount is positive.

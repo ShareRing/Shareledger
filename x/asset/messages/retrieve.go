@@ -1,13 +1,15 @@
 package messages
+
 import (
 	"encoding/json"
 	"fmt"
 
 	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
+	"github.com/sharering/shareledger/constants"
 )
 
 type MsgRetrieve struct {
-	UUID    string       `json:"uuid"`
+	UUID string `json:"uuid"`
 }
 
 // enforce the msg type at compile time
@@ -15,13 +17,13 @@ var _ sdk.Msg = MsgRetrieve{}
 
 func NewMsgRetrieve(uuid string) MsgRetrieve {
 	return MsgRetrieve{
-		UUID:    uuid,
+		UUID: uuid,
 	}
 }
 
 // Type Implements Msg
 func (msg MsgRetrieve) Type() string {
-	return "asset"
+	return constants.MESSAGE_ASSET
 }
 
 // ValidateBasic Implements Msg
@@ -50,7 +52,6 @@ func (msg MsgRetrieve) String() string {
 func (msg MsgRetrieve) GetSigners() []sdk.Address {
 	return []sdk.Address{}
 }
-
 
 func (msg MsgRetrieve) Tags() sdk.Tags {
 	return sdk.NewTags("msg.module", []byte("asset")).
