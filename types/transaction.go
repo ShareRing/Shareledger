@@ -95,6 +95,7 @@ type SHRSignature interface {
 
 var _ SHRSignature = BasicSig{}
 
+// Signature without Nonce
 type BasicSig struct {
 	PubKey    `json:"pub_key"`
 	Signature `json:"signature"`
