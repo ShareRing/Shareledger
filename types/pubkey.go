@@ -2,6 +2,7 @@ package types
 
 import (
 	"bytes"
+	"encoding/hex"
 	"encoding/json"
 	"fmt"
 
@@ -81,4 +82,24 @@ func (pubKey PubKeySecp256k1) Equals(other PubKey) bool {
 	} else {
 		return false
 	}
+}
+
+//------------------------------------------------------------
+
+func GetTestPubKey() PubKeySecp256k1 {
+	pkBytes, err := hex.DecodeString("ab83994cf95abe45b9d8610524b3f8f8fd023d69f79449011cb5320d2ca180c5")
+
+	if err != nil {
+		fmt.Println("Error in DecodeString: ", err)
+		panic("Error in DecodeString")
+	}
+
+	_, pubKey_ := secp256k1.PrivKeyFromBytes(secp256k1.S256(), pkBytes)
+
+	serPubKey := pubKey_.SerializeUncompressed()
+	var pubKey PubKeySecp256k1
+	copy(pubKey[:], serPubKey[:65])
+
+	//address := pubKey.Address()
+	return pubKey
 }

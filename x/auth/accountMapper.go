@@ -73,7 +73,8 @@ func (am AccountMapper) GetPubKey(ctx sdk.Context, addr sdk.Address) (types.PubK
 func (am AccountMapper) GetNonce(ctx sdk.Context, addr sdk.Address) (int64, sdk.Error) {
 	acc := am.GetAccount(ctx, addr)
 	if acc == nil {
-		return -1, sdk.ErrUnknownAddress(addr.String())
+		return 0, nil
+		//return -1, sdk.ErrUnknownAddress(addr.String())
 	}
 	return acc.GetNonce(), nil
 }
