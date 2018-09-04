@@ -29,8 +29,7 @@ import (
 
 func usingJson() {
 	msg := messages.MsgSend{
-		From: sdk.Address([]byte("123")),
-		To:   sdk.Address([]byte("234")),
+		To: sdk.Address([]byte("234")),
 		Amount: types.Coin{
 			Denom:  "SHR",
 			Amount: 3,
@@ -59,8 +58,7 @@ func usingCodec() {
 	cdc = bank.RegisterCodec(cdc)
 
 	msg := messages.MsgSend{
-		From: sdk.Address([]byte("123")),
-		To:   sdk.Address([]byte("234")),
+		To: sdk.Address([]byte("234")),
 		Amount: types.Coin{
 			Denom:  "SHR",
 			Amount: 3,
@@ -115,7 +113,6 @@ func printMsgLoad() {
 
 	fmt.Println("*****MsgLoad")
 	msg1 := messages.MsgLoad{
-		Nonce:   1,
 		Account: sdk.Address([]byte("123")),
 		Amount:  types.Coin{"SHR", 100},
 	}
@@ -168,8 +165,6 @@ func printMsgBook() {
 	cdc = booking.RegisterCodec(cdc)
 
 	msg := bmsg.MsgBook{
-		Nonce:    1,
-		Renter:   sdk.Address([]byte("123456")),
 		UUID:     "112233",
 		Duration: 12,
 	}
@@ -189,8 +184,6 @@ func printMsgComplete() {
 	cdc = booking.RegisterCodec(cdc)
 
 	msg := bmsg.MsgComplete{
-		Nonce:     1,
-		Renter:    sdk.Address([]byte("123456")),
 		BookingID: "121212",
 	}
 
@@ -395,13 +388,13 @@ func testSignature() {
 
 func main() {
 	//usingCodec()
-	//printMsgCreate()
+	printMsgCreate()
 	//printMsgBook()
 	//printMsgLoad()
 	//printMsgComplete()
 	//testPubKey()
 	// testKeccak()
-	testMsgCreateSignedTx()
+	//testMsgCreateSignedTx()
 	//testMsgCreateNonceSignedTx()
 
 }
