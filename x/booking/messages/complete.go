@@ -9,17 +9,13 @@ import (
 )
 
 type MsgComplete struct {
-	Nonce     int64       `json:"nonce"`
-	Renter    sdk.Address `json:"renter"`
-	BookingID string      `json:"bookingId"`
+	BookingID string `json:"bookingId"`
 }
 
 var _ sdk.Msg = MsgComplete{}
 
-func NewMsgComplete(nonce int64, renter sdk.Address, bookingId string) MsgComplete {
+func NewMsgComplete(bookingId string) MsgComplete {
 	return MsgComplete{
-		Nonce:     nonce,
-		Renter:    renter,
 		BookingID: bookingId,
 	}
 }
@@ -29,9 +25,9 @@ func (msg MsgComplete) Type() string {
 }
 
 func (msg MsgComplete) ValidateBasic() sdk.Error {
-	if len(msg.Renter) == 0 {
-		return sdk.ErrInvalidAddress("Invalid address")
-	}
+	//if len(msg.Renter) == 0 {
+	//return sdk.ErrInvalidAddress("Invalid address")
+	//}
 
 	return nil
 }
@@ -48,11 +44,12 @@ func (msg MsgComplete) GetSignBytes() []byte {
 func (msg MsgComplete) Get(key interface{}) (value interface{}) { return nil }
 
 func (msg MsgComplete) String() string {
-	return fmt.Sprintf("Booking/MsgComplete{Renter: %s, BookingID: %s}", msg.Renter, msg.BookingID)
+	return fmt.Sprintf("Booking/MsgComplete{BookingID: %s}", msg.BookingID)
 }
 
 func (msg MsgComplete) GetSigners() []sdk.Address {
-	return []sdk.Address{msg.Renter}
+	//return []sdk.Address{msg.Renter}
+	return []sdk.Address{}
 }
 
 func (msg MsgComplete) Tags() sdk.Tags {

@@ -69,10 +69,15 @@ func (k Keeper) Book(ctx sdk.Context, msg msg.MsgBook) (types.Booking, error) {
 			asset.UUID)
 	}
 
-	renterAcc := k.accountMapper.GetAccount(ctx, msg.Renter)
+	// For a booking, renter is the account signing this message
+	renter := auth.GetSigner(ctx)
+
+	// renter account
+	renterAcc := k.accountMapper.GetAccount(ctx, renter.GetAddress())
+
 	if renterAcc == nil {
 		return types.Booking{}, fmt.Errorf(constants.ERROR_STORE_RETRIEVAL,
-			utils.ByteToString(msg.Renter),
+			utils.ByteToString(renter.GetAddress()),
 			constants.STORE_BANK)
 	}
 
@@ -85,11 +90,11 @@ func (k Keeper) Book(ctx sdk.Context, msg msg.MsgBook) (types.Booking, error) {
 
 	if !renterCoinsAfter.IsNotNegative() {
 		return types.Booking{}, fmt.Errorf(constants.BOOKING_INSUFFICIENT_BALANCE,
-			msg.Renter)
+			renter.GetAddress())
 	}
 
 	booking := types.NewBooking(bookingId,
-		msg.Renter,
+		renter.GetAddress(),
 		msg.UUID,
 		msg.Duration,
 		false)
@@ -111,7 +116,10 @@ func (k Keeper) Book(ctx sdk.Context, msg msg.MsgBook) (types.Booking, error) {
 			constants.STORE_ASSET)
 	}
 
+	// Save new balance
 	renterAcc.SetCoins(renterCoinsAfter)
+
+	// save new account
 	k.accountMapper.SetAccount(ctx, renterAcc)
 
 	return booking, nil
@@ -134,10 +142,14 @@ func (k Keeper) Complete(ctx sdk.Context, msg msg.MsgComplete) (types.Booking, e
 			constants.STORE_BOOKING)
 	}
 
-	if !bytes.Equal(msg.Renter, booking.Renter) {
+	// renter deduced from signature
+	renter := auth.GetSigner(ctx)
+
+	// only account initiate booking can complete it
+	if !bytes.Equal(renter.GetAddress(), booking.Renter) {
 		return types.Booking{}, fmt.Errorf(constants.BOOKING_MISMATCH_RENTER,
 			utils.ByteToString(booking.Renter),
-			utils.ByteToString(msg.Renter))
+			utils.ByteToString(renter.GetAddress()))
 	}
 
 	if booking.IsCompleted == true {
@@ -201,6 +213,8 @@ func (k Keeper) Complete(ctx sdk.Context, msg msg.MsgComplete) (types.Booking, e
 
 	// Save new balance to owner
 	ownerAccount.SetCoins(ownerCoinsAfter)
+
+	// Save account
 	k.accountMapper.SetAccount(ctx, ownerAccount)
 
 	return booking, nil
