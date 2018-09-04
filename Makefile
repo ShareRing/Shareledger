@@ -41,7 +41,7 @@ get_tools:
 get_vendor_deps:
 	@rm -rf vendor/
 	@echo "--> Running dep ensure"
-	@build/env.sh dep ensure -v
+	@build/env.sh dep ensure -v -update
 
 .PHONY: build build_linux get_vendor_deps get_tools update_tools check_tools
 
