@@ -20,18 +20,21 @@ func HandleMsgSend(am auth.AccountMapper) sdk.Handler {
 	return func(ctx sdk.Context, msg sdk.Msg) sdk.Result {
 		sendMsg, ok := msg.(messages.MsgSend)
 
-		fmt.Println("Received %v", sendMsg)
-
 		if !ok {
 			// Create custom error message and return result
 			// Note: Using unreserved error codespace
 			return sdk.NewError(2, 1, "MsgSend is malformed").Result()
 		}
 
+		// Get signer from signatures
+		signer := auth.GetSigner(ctx)
+
 		// Debit from the sender.
 		var resF sdk.Result
 		var resT sdk.Result
-		if resF = handleFrom(ctx, am, sendMsg.From, sendMsg.Amount); !resF.IsOK() {
+
+		// From account is deduced from signature
+		if resF = handleFrom(ctx, am, signer.GetAddress(), sendMsg.Amount); !resF.IsOK() {
 			return resF
 		}
 
@@ -46,7 +49,7 @@ func HandleMsgSend(am auth.AccountMapper) sdk.Handler {
 		return sdk.Result{
 			Log:  res,
 			Data: append(resF.Data, resT.Data...),
-			Tags: sendMsg.Tags(),
+			Tags: sendMsg.Tags().AppendTag("msg.From", []byte(signer.GetAddress().String())),
 		}
 	}
 }
