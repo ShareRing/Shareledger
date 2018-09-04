@@ -17,15 +17,13 @@ var _ sdk.Msg = MsgSend{}
 
 // MsgSend to send coins from Input to Output
 type MsgSend struct {
-	Nonce  int64       `json:"nonce"`
-	From   sdk.Address `json:"from"`
 	To     sdk.Address `json:"to"`
 	Amount types.Coin  `json:"amount"`
 }
 
 // NewMsgSend
-func NewMsgSend(nonce int64, from, to sdk.Address, amt types.Coin) MsgSend {
-	return MsgSend{nonce, from, to, amt}
+func NewMsgSend(to sdk.Address, amt types.Coin) MsgSend {
+	return MsgSend{to, amt}
 }
 
 // Implements Msg.
@@ -34,9 +32,6 @@ func (msg MsgSend) Type() string { return constants.MESSAGE_BANK }
 // Implements Msg. Ensure the addresses are good and the
 // amount is positive.
 func (msg MsgSend) ValidateBasic() sdk.Error {
-	if len(msg.From) == 0 {
-		return sdk.ErrInvalidAddress("From address is empty")
-	}
 	if len(msg.To) == 0 {
 		return sdk.ErrInvalidAddress("To address is empty")
 	}
@@ -57,13 +52,13 @@ func (msg MsgSend) GetSignBytes() []byte {
 
 // Implements Msg. Return the signer.
 func (msg MsgSend) GetSigners() []sdk.Address {
-	return []sdk.Address{msg.From}
+	//return []sdk.Address{msg.From}
+	return []sdk.Address{}
 }
 
 // Returns the sdk.Tags for the message
 func (msg MsgSend) Tags() sdk.Tags {
-	return sdk.NewTags("msg.From", []byte(msg.From.String())).
-		AppendTag("msg.To", []byte(msg.To.String())).
+	return sdk.NewTags("msg.To", []byte(msg.To.String())).
 		AppendTag("msg.type", []byte(msg.Type())).
 		AppendTag("msg.Amount", []byte(msg.Amount.String())).
 		AppendTag("ShareLedgerEvt", []byte("BalanceChanged"))

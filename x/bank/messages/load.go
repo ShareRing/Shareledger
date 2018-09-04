@@ -16,14 +16,13 @@ var _ sdk.Msg = MsgLoad{}
 
 // Load coins to an account
 type MsgLoad struct {
-	Nonce   int64       `json:"nonce"`
-	Account sdk.Address `json:"from"`
+	Account sdk.Address `json:"address"`
 	Amount  types.Coin  `json:"amount"`
 }
 
 // NewMsgLoad
-func NewMsgLoad(nonce int64, account sdk.Address, amt types.Coin) MsgLoad {
-	return MsgLoad{nonce, account, amt}
+func NewMsgLoad(account sdk.Address, amt types.Coin) MsgLoad {
+	return MsgLoad{account, amt}
 }
 
 // Implement Msg
@@ -50,7 +49,8 @@ func (msg MsgLoad) GetSignBytes() []byte {
 }
 
 func (msg MsgLoad) GetSigners() []sdk.Address {
-	return []sdk.Address{msg.Account}
+	return []sdk.Address{}
+	//return []sdk.Address{msg.Account}
 }
 
 func (msg MsgLoad) Tags() sdk.Tags {
