@@ -75,7 +75,8 @@ func verifySignature(ctx sdk.Context,
 	currentNonce := acc.GetNonce()
 	if sig.GetNonce() != currentNonce+1 {
 		return nil,
-			sdk.ErrInternal(fmt.Sprintf("Invalid nonce. Current nonce is: %d", currentNonce)).Result()
+			sdk.ErrInternal(fmt.Sprintf("Invalid nonce. Provided Nonce: %d, Current nonce is: %d",
+				sig.GetNonce(), currentNonce)).Result()
 	}
 
 	// verify signature
