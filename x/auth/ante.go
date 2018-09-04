@@ -85,7 +85,7 @@ func verifySignature(ctx sdk.Context,
 	}
 
 	// Update nonce
-	acc.SetNonce(sig.GetNonce() + 1)
+	acc.SetNonce(sig.GetNonce()) // currentNonce + 1
 
 	// Save new nonce
 	am.SetAccount(ctx, acc)
