@@ -64,10 +64,11 @@ func GetTxDecoder(cdc *wire.Codec) func([]byte) (sdk.Tx, sdk.Error) {
 
 		//fmt.Println("TxDecoder:", txBytes)
 		//err := json.Unmarshal(txBytes, &tx)
-		err := cdc.UnmarshalJSON(txBytes, &tx)
+		//err := cdc.UnmarshalJSON(txBytes, &tx)
+		err := cdc.UnmarshalBinary(txBytes, &tx)
 
 		if err != nil {
-			fmt.Println("Error in decoding")
+			fmt.Println("Error in decoding", err)
 			return nil, sdk.ErrTxDecode(err.Error())
 		}
 		fmt.Println("Decoded Tx:", tx)

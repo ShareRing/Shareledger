@@ -117,7 +117,7 @@ func printMsgLoad() {
 		Amount:  types.Coin{"SHR", 100},
 	}
 
-	fmt.Println("Load Message:", msg1)
+	fmt.Printf("Load Message: %s\n", msg1.GetSignBytes())
 	res1, err1 := cdc.MarshalJSON(msg1)
 	if err1 != nil {
 		fmt.Println("Error", err1)
@@ -127,6 +127,11 @@ func printMsgLoad() {
 	fmt.Println("Marshalled:", res1)
 	fmt.Printf("String format: %s\n", res1)
 	fmt.Printf("ToString: %s\n", hex.EncodeToString(res1))
+
+	res2, err1 := cdc.MarshalBinary(msg1)
+	fmt.Println("BinaryMarshalled:", res2)
+	fmt.Printf("String Format: %s\n", res2)
+	fmt.Printf("ToString: %s\n", hex.EncodeToString(res2))
 
 }
 
@@ -388,13 +393,13 @@ func testSignature() {
 
 func main() {
 	//usingCodec()
-	printMsgCreate()
+	//printMsgCreate()
 	//printMsgBook()
 	//printMsgLoad()
 	//printMsgComplete()
 	//testPubKey()
 	// testKeccak()
 	//testMsgCreateSignedTx()
-	//testMsgCreateNonceSignedTx()
+	testMsgCreateNonceSignedTx()
 
 }
