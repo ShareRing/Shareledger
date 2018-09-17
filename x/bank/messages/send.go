@@ -7,6 +7,7 @@ import (
 
 	"github.com/sharering/shareledger/constants"
 	types "github.com/sharering/shareledger/types"
+	tags "github.com/sharering/shareledger/x/bank/tags"
 )
 
 //------------------------------------------------------------------
@@ -58,8 +59,7 @@ func (msg MsgSend) GetSigners() []sdk.Address {
 
 // Returns the sdk.Tags for the message
 func (msg MsgSend) Tags() sdk.Tags {
-	return sdk.NewTags("msg.To", []byte(msg.To.String())).
-		AppendTag("msg.type", []byte(msg.Type())).
-		AppendTag("msg.Amount", []byte(msg.Amount.String())).
-		AppendTag("ShareLedgerEvt", []byte("BalanceChanged"))
+	return sdk.NewTags(tags.ToAddress, []byte(msg.To.String())).
+		AppendTag(tags.Amount, []byte(msg.Amount.String())).
+		AppendTag(tags.Event, tags.Transfered)
 }

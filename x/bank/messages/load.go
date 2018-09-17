@@ -6,6 +6,7 @@ import (
 	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
 	"github.com/sharering/shareledger/constants"
 	"github.com/sharering/shareledger/types"
+	tags "github.com/sharering/shareledger/x/bank/tags"
 )
 
 //----------------------------------------------------------------
@@ -54,8 +55,8 @@ func (msg MsgLoad) GetSigners() []sdk.Address {
 }
 
 func (msg MsgLoad) Tags() sdk.Tags {
-	return sdk.NewTags("account", []byte(msg.Account.String())).
-		AppendTag("msg.Amount", []byte(msg.Amount.String())).
-		AppendTag("ShareLedgerEvt", []byte("BalanceChanged"))
+	return sdk.NewTags(tags.AccountAddress, []byte(msg.Account.String())).
+		AppendTag(tags.Amount, []byte(msg.Amount.String())).
+		AppendTag(tags.Event, tags.Credit)
 
 }

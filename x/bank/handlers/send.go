@@ -8,6 +8,7 @@ import (
 	"github.com/sharering/shareledger/types"
 	"github.com/sharering/shareledger/x/auth"
 	"github.com/sharering/shareledger/x/bank/messages"
+	tags "github.com/sharering/shareledger/x/bank/tags"
 )
 
 //------------------------------------------------------------------
@@ -49,7 +50,7 @@ func HandleMsgSend(am auth.AccountMapper) sdk.Handler {
 		return sdk.Result{
 			Log:  res,
 			Data: append(resF.Data, resT.Data...),
-			Tags: sendMsg.Tags().AppendTag("msg.From", []byte(signer.GetAddress().String())),
+			Tags: sendMsg.Tags().AppendTag(tags.FromAddress, []byte(signer.GetAddress().String())),
 		}
 	}
 }
