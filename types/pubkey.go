@@ -11,6 +11,13 @@ import (
 
 	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
 	crypto "github.com/tendermint/go-crypto"
+
+	// Library for test
+	"github.com/landonia/crypto/bip39"
+)
+
+var (
+	BITS = 256
 )
 
 //----------------------------------------
@@ -20,6 +27,7 @@ type PubKey interface {
 	Bytes() []byte
 	VerifyBytes(msg []byte, sig Signature) bool
 	Equals(PubKey) bool
+	String() string
 }
 
 //----------------------------------------
@@ -32,6 +40,17 @@ var _ PubKey = PubKeySecp256k1{}
 
 // Normal key 65 byte
 type PubKeySecp256k1 [65]byte
+
+func NewPubKeySecp256k1(b []byte) PubKeySecp256k1 {
+	if len(b) != 65 {
+		panic("Length of input to create PubKeySecp256k1 should be 65")
+	}
+	var pubK PubKeySecp256k1
+
+	copy(pubK[:], b[:65])
+
+	return pubK
+}
 
 // Implements Bitcoin style addresses: RIPEMD160(SHA256(pubkey))
 func (pubKey PubKeySecp256k1) Address() sdk.Address {
@@ -102,4 +121,34 @@ func GetTestPubKey() PubKeySecp256k1 {
 
 	//address := pubKey.Address()
 	return pubKey
+}
+
+func GenerateKeyPair() (PubKeySecp256k1, PrivKeySecp256k1) {
+
+	entropy, err := bip39.GenerateRandomEntropy(BITS)
+
+	if err != nil {
+		panic(err)
+	}
+
+	mnemonics, err1 := entropy.GenerateMnemonics(bip39.English)
+
+	if err1 != nil {
+		panic(err1)
+	}
+
+	privKeyBytes := crypto.Sha256([]byte(mnemonics.String())) // 32 bytes
+
+	_, pubK := secp256k1.PrivKeyFromBytes(secp256k1.S256(), privKeyBytes)
+
+	serPubKey := pubK.SerializeUncompressed()
+
+	var pubKey PubKeySecp256k1
+	copy(pubKey[:], serPubKey[:65])
+
+	var privKey PrivKeySecp256k1
+	copy(privKey[:], privKeyBytes[:32])
+
+	return pubKey, privKey
+
 }

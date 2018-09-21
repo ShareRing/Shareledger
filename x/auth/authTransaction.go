@@ -123,3 +123,16 @@ func (sig AuthSig) GetPubKey() types.PubKey {
 func (sig AuthSig) GetNonce() int64 {
 	return sig.Nonce
 }
+
+//------------------------------------------------------------
+// Function for testing
+
+// GetAuthTx - create an AuthTx message
+func GetAuthTx(pubKey types.PubKey, privKey types.PrivKey, msg sdk.Msg, nonce int64) AuthTx {
+
+	sig := privKey.SignWithNonce(msg, nonce)
+
+	authSig := NewAuthSig(pubKey, sig, nonce)
+
+	return NewAuthTx(msg, authSig)
+}

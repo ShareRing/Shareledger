@@ -1,10 +1,13 @@
 package types
 
 import (
-    "bytes"
-    "encoding/json"
-    "fmt"
+	"bytes"
+	"encoding/json"
+	"fmt"
+
+	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
 )
+
 //----------------------------------------
 
 type Signature interface {
@@ -12,7 +15,6 @@ type Signature interface {
 	IsZero() bool
 	Equals(Signature) bool
 }
-
 
 //-------------------------------------
 
@@ -32,7 +34,7 @@ func (sig SignatureSecp256k1) Bytes() []byte {
 func (sig SignatureSecp256k1) IsZero() bool { return len(sig) == 0 }
 
 func (sig SignatureSecp256k1) String() string {
-    return fmt.Sprintf("SignatureSecp256k1{%X}", []byte(sig[:]))
+	return fmt.Sprintf("SignatureSecp256k1{%X}", []byte(sig[:]))
 }
 
 func (sig SignatureSecp256k1) Equals(other Signature) bool {
@@ -41,4 +43,17 @@ func (sig SignatureSecp256k1) Equals(other Signature) bool {
 	} else {
 		return false
 	}
+}
+
+//-------------------------------------
+// Functions for testing
+
+func Sign(privKey *PrivKeySecp256k1, msg sdk.Msg) SignatureSecp256k1 {
+
+	return privKey.Sign(msg).(SignatureSecp256k1)
+}
+
+func SignWithNonce(privKey *PrivKeySecp256k1, msg sdk.Msg, nonce int64) SignatureSecp256k1 {
+
+	return privKey.SignWithNonce(msg, nonce).(SignatureSecp256k1)
 }

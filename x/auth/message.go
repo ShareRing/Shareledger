@@ -13,6 +13,11 @@ type MsgNonce struct {
 	Address sdk.Address `json:"address"`
 }
 
+
+func NewMsgNonce(account sdk.Address) MsgNonce {
+	return MsgNonce{account}
+}
+
 func (msg MsgNonce) Type() string {
 	return constants.MESSAGE_AUTH
 }
