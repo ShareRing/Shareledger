@@ -1,6 +1,8 @@
 package app
 
 import (
+	"os"
+
 	cmn "github.com/tendermint/tmlibs/common"
 	dbm "github.com/tendermint/tmlibs/db"
 	"github.com/tendermint/tmlibs/log"
@@ -20,6 +22,10 @@ import (
 
 const (
 	appName = "ShareLedger_v0.0.1"
+)
+
+var (
+	DefaultCLIHome  = os.ExpandEnv("$HOME/.shareledgercli")
 )
 
 type ShareLedgerApp struct {
@@ -70,7 +76,7 @@ func NewShareLedgerApp(logger log.Logger, db dbm.DB) *ShareLedgerApp {
 	baseApp.SetAnteHandler(auth.NewAnteHandler(accountMapper))
 	baseApp.Router().
 		AddRoute(constants.MESSAGE_AUTH, auth.NewHandler(accountMapper))
-	cdc.RegisterConcrete(auth.MsgNonce{}, "shareledger/auth/MsgNonce", nil)
+	cdc = auth.RegisterCodec(cdc)
 
 	return &ShareLedgerApp{
 		BaseApp:    baseApp,
