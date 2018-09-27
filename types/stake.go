@@ -1,7 +1,9 @@
 package types
 
 import (
+	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
 	abci "github.com/tendermint/abci/types"
+	crypto "github.com/tendermint/go-crypto"
 	tmtypes "github.com/tendermint/tendermint/types"
 )
 
@@ -31,47 +33,55 @@ func BondStatusToString(b BondStatus) string {
 
 // validator for a delegated proof of stake system
 type Validator interface {
-	GetMoniker() string       // moniker of the validator
-	GetStatus() BondStatus    // status of the validator
-	GetOwner() Address        // owner address to receive/return validators coins
-	GetPubKey() PubKey // validation pubkey
-	GetPower() Rat            // validation power
-	GetDelegatorShares() Rat  // Total out standing delegator shares
-	GetBondHeight() int64     // height in which the validator became active
+	GetMoniker() string          // moniker of the validator
+	GetStatus() BondStatus       // status of the validator
+	GetOwner() sdk.Address       // owner address to receive/return validators coins
+	GetPubKey() PubKey           // validation pubkey
+	GetPower() sdk.Rat           // validation power
+	GetDelegatorShares() sdk.Rat // Total out standing delegator shares
+	GetBondHeight() int64        // height in which the validator became active
 }
 
 // validator which fulfills abci validator interface for use in Tendermint
 func ABCIValidator(v Validator) abci.Validator {
-	return abci.Validator{
-		PubKey: tmtypes.TM2PB.PubKey(v.GetPubKey()),
-		Power:  v.GetPower().Evaluate(),
+	var pubKey crypto.PubKeySecp256k1
+	if pk, ok := v.GetPubKey().(PubKeySecp256k1); ok {
+
+		copy(pubKey[:], pk[:65])
+
+		return abci.Validator{
+			PubKey: tmtypes.TM2PB.PubKey(pubKey),
+			Power:  v.GetPower().Evaluate(),
+		}
+	} else {
+		panic("PubKey is not of PubKeySecp256k1")
 	}
 }
 
 // properties for the set of all validators
 type ValidatorSet interface {
 	// iterate through validator by owner-address, execute func for each validator
-	IterateValidators(Context,
+	IterateValidators(sdk.Context,
 		func(index int64, validator Validator) (stop bool))
 
 	// iterate through bonded validator by pubkey-address, execute func for each validator
-	IterateValidatorsBonded(Context,
+	IterateValidatorsBonded(sdk.Context,
 		func(index int64, validator Validator) (stop bool))
 
-	Validator(Context, Address) Validator     // get a particular validator by owner address
-	TotalPower(Context) Rat                   // total power of the validator set
-	Slash(Context, PubKey, int64, Rat) // slash the validator and delegators of the validator, specifying offence height & slash fraction
-	Revoke(Context, PubKey)            // revoke a validator
-	Unrevoke(Context, PubKey)          // unrevoke a validator
+	Validator(sdk.Context, sdk.Address) Validator // get a particular validator by owner address
+	TotalPower(sdk.Context) sdk.Rat               // total power of the validator set
+	Slash(sdk.Context, PubKey, int64, sdk.Rat)    // slash the validator and delegators of the validator, specifying offence height & slash fraction
+	Revoke(sdk.Context, PubKey)                   // revoke a validator
+	Unrevoke(sdk.Context, PubKey)                 // unrevoke a validator
 }
 
 //_______________________________________________________________________________
 
 // delegation bond for a delegated proof of stake system
 type Delegation interface {
-	GetDelegator() Address // delegator address for the bond
-	GetValidator() Address // validator owner address for the bond
-	GetBondShares() Rat    // amount of validator's shares
+	GetDelegator() sdk.Address // delegator address for the bond
+	GetValidator() sdk.Address // validator owner address for the bond
+	GetBondShares() sdk.Rat    // amount of validator's shares
 }
 
 // properties for the set of all delegations for a particular
@@ -80,6 +90,6 @@ type DelegationSet interface {
 
 	// iterate through all delegations from one delegator by validator-address,
 	//   execute func for each validator
-	IterateDelegations(ctx Context, delegator Address,
+	IterateDelegations(ctx sdk.Context, delegator sdk.Address,
 		fn func(index int64, delegation Delegation) (stop bool))
 }
