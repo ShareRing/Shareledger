@@ -25,7 +25,7 @@ const (
 )
 
 var (
-	DefaultCLIHome  = os.ExpandEnv("$HOME/.shareledgercli")
+	DefaultCLIHome = os.ExpandEnv("$HOME/.shareledgercli")
 )
 
 type ShareLedgerApp struct {
@@ -53,7 +53,9 @@ func NewShareLedgerApp(logger log.Logger, db dbm.DB) *ShareLedgerApp {
 	//accountKey := sdk.NewKVStoreKey(constants.STORE_BANK)
 	authKey := sdk.NewKVStoreKey(constants.STORE_AUTH)
 
-	baseApp.MountStoresIAVL(authKey)
+	// Mount Store
+
+	baseApp.MountStoresIAVL(authKey, assetKey, bookingKey)
 	err := baseApp.LoadLatestVersion(authKey)
 	if err != nil {
 		cmn.Exit(err.Error())
@@ -121,12 +123,6 @@ func SetupBank(app *bapp.BaseApp, cdc *wire.Codec, am auth.AccountMapper) {
 	app.Router().
 		AddRoute("bank", bank.NewHandler(am))
 
-	// Mount stores and load the latest state.
-	//app.MountStoresIAVL(accountKey)
-	//err := app.LoadLatestVersion(accountKey)
-	//if err != nil {
-	//cmn.Exit(err.Error())
-	//}
 }
 
 func SetupAsset(app *bapp.BaseApp, cdc *wire.Codec, assetKey *sdk.KVStoreKey) {
@@ -138,11 +134,7 @@ func SetupAsset(app *bapp.BaseApp, cdc *wire.Codec, assetKey *sdk.KVStoreKey) {
 	app.Router().
 		AddRoute("asset", asset.NewHandler(keeper))
 
-	app.MountStoresIAVL(assetKey)
-	err := app.LoadLatestVersion(assetKey)
-	if err != nil {
-		cmn.Exit(err.Error())
-	}
+	// app.MountStoresIAVL(assetKey)
 }
 
 func SetupBooking(app *bapp.BaseApp, cdc *wire.Codec, bookingKey *sdk.KVStoreKey,
@@ -158,10 +150,6 @@ func SetupBooking(app *bapp.BaseApp, cdc *wire.Codec, bookingKey *sdk.KVStoreKey
 	app.Router().
 		AddRoute("booking", booking.NewHandler(k))
 
-	app.MountStoresIAVL(bookingKey)
-	err := app.LoadLatestVersion(bookingKey)
-	if err != nil {
-		cmn.Exit(err.Error())
-	}
+	// app.MountStoresIAVL(bookingKey)
 
 }
