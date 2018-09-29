@@ -3,7 +3,9 @@ package main
 import (
 	"encoding/hex"
 	"fmt"
+	"math"
 	"math/rand"
+	"sync"
 	"time"
 
 	"github.com/spf13/cobra"
@@ -23,7 +25,7 @@ import (
 	"github.com/sharering/shareledger/cmd/stress-test/utils"
 )
 
-const (
+var (
 	// InitialBalance initial load for each account
 	InitialBalance int64 = 10000
 	// TransferValue each send
@@ -34,6 +36,10 @@ const (
 	TempFile string = "accounts.tmp"
 
 	RateLimit int = 2000
+
+	MaximumRequest int = 2
+
+	BurstRequest = 3
 )
 
 func main() {
@@ -57,7 +63,18 @@ func main() {
 
 	accountCmd.Flags().Int(constants.FlagN, 10, "Number of account to create")
 
+	throttleCmd := &cobra.Command{
+		Use:   "throttle",
+		Short: "Throttle Tendermint with maximum number of request in burst after each interval",
+		RunE:  spamSendTx,
+	}
+
+	throttleCmd.Flags().Int(constants.IntervalFlag, RateLimit, "Interval between bust")
+	throttleCmd.Flags().Int(constants.BurstRequestFlag, BurstRequest, "Number of requests per burst")
+	throttleCmd.Flags().Int(constants.MaximumRequestFlag, MaximumRequest, "Number of bursts")
+
 	rootCmd.AddCommand(accountCmd)
+	rootCmd.AddCommand(throttleCmd)
 
 	rootCmd.Execute()
 }
@@ -69,7 +86,7 @@ func check(err error) {
 func execute(cmd *cobra.Command, args []string) error {
 	// testNet()
 	createAccount(cmd)
-	spamSendTx(cmd)
+	// spamSendTx(cmd)
 	return nil
 }
 
@@ -118,52 +135,129 @@ func createAccount(cmd *cobra.Command) {
 	utils.WriteFile(TempFile, pubKeys, privKeys)
 }
 
-func spamSendTx(cmd *cobra.Command) {
+func spamSendTx(cmd *cobra.Command, in []string) error {
 
 	cdc := getCodec()
+
+	maximumRequest, _ := cmd.Flags().GetInt(constants.MaximumRequestFlag)
+	burstRequest, _ := cmd.Flags().GetInt(constants.BurstRequestFlag)
+	interval, _ := cmd.Flags().GetInt(constants.IntervalFlag)
 
 	fmt.Printf("ReadFile... \n")
 	// Read File
 	pubKeys, privKeys := utils.ReadFile(TempFile)
 
 	// Wait between send RateLimit milisecondj
-	limiter := time.Tick(time.Duration(RateLimit) * time.Millisecond)
+	limiter := time.NewTicker(time.Duration(interval) * time.Millisecond)
+
+	statistics := make(chan time.Duration)
+
+	go collectStatistics(statistics)
+
+	var wg sync.WaitGroup
+
+	count := 0
 
 	for {
-		<-limiter
-		fmt.Println("Executing goroutine")
-		go func() {
+		if count < maximumRequest {
+			<-limiter.C
+			fmt.Println("Executing goroutine")
 
-			fromIdx := rand.Intn(len(pubKeys))
-			toIdx := rand.Intn(len(pubKeys))
+			wg.Add(burstRequest)
 
-			// Get Nonce
-			nonce, err := requests.QueryNonceTx(nonceQuery(cdc, pubKeys[fromIdx].Address()))
-			check(err)
-
-			// Send Tx
-
-			sendMsg := getSendTransaction(pubKeys[toIdx], TransferValue)
-			sendTx := encodeMsg(cdc, privKeys[fromIdx], pubKeys[fromIdx], sendMsg, nonce + 1)
-
-			start := time.Now()
-
-			res, err := requests.SendTx(sendTx)
-			fmt.Printf("Result: %s\n", res)
-
-			elapsed := time.Now().Sub(start)
-
-			check(err)
-
-			if err != nil {
-				fmt.Println("From: %s, To: %s, Amount: %d", pubKeys[fromIdx].Address(),
-					pubKeys[toIdx].Address(),
-					TransferValue)
+			for i := 0; i < burstRequest; i++ {
+				go Spam(&wg, pubKeys, privKeys, cdc, statistics)
 			}
 
-		}()
+			count++
+
+			if count == maximumRequest {
+				limiter.Stop()
+			}
+
+		} else {
+
+			break
+
+		}
+	}
+	wg.Wait()
+	close(statistics)
+	time.Sleep(2 * time.Second)
+
+	return nil
+}
+
+// --------------------- GOROUTINE -------
+func Spam(wg *sync.WaitGroup,
+	pubKeys []types.PubKeySecp256k1,
+	privKeys []types.PrivKeySecp256k1,
+	cdc *wire.Codec,
+	stat chan time.Duration) {
+
+	fromIdx := rand.Intn(len(pubKeys))
+	toIdx := rand.Intn(len(pubKeys))
+
+	// Get Nonce
+	nonce, err := requests.QueryNonceTx(nonceQuery(cdc, pubKeys[fromIdx].Address()))
+	check(err)
+
+	// Send Tx
+
+	sendMsg := getSendTransaction(pubKeys[toIdx], TransferValue)
+	sendTx := encodeMsg(cdc, privKeys[fromIdx], pubKeys[fromIdx], sendMsg, nonce+1)
+
+	start := time.Now()
+
+	_, err = requests.SendTx(sendTx)
+	// fmt.Printf("Result: %s\n", res)
+
+	elapsed := time.Now().Sub(start)
+
+	check(err)
+
+	fmt.Printf("From: %s, To: %s, Amount: %d\n", pubKeys[fromIdx].Address(),
+		pubKeys[toIdx].Address(),
+		TransferValue)
+
+	fmt.Printf("ElapsedTime: %d\n", elapsed)
+
+	stat <- elapsed
+	wg.Done()
+}
+
+// ---------------- STATISTICS ---------------------
+
+type Statistics struct {
+	Count int64 `json:"count"`
+	Total int64 `json:"total"`
+	Max   int64 `json:"max"`
+}
+
+func collectStatistics(received chan time.Duration) {
+	stat := Statistics{0, 0, 0}
+
+	for dur := range received {
+
+		fmt.Println("Stat: received", dur)
+
+		nano := dur.Nanoseconds()
+
+		stat.Total += nano
+
+		if stat.Max < nano {
+			stat.Max = nano
+		}
+
+		stat.Count++
 	}
 
+	fmt.Printf("Statistics: %v\n", stat)
+	fmt.Printf("%20s %20s %20s %20s\n", "Count", "Total(ms)", "Max(ms)", "Average(ms)")
+	fmt.Printf("%20d %20f %20f %20f\n", stat.Count,
+		float64(stat.Total)/math.Pow(10, 6),
+		float64(stat.Max)/math.Pow(10, 6),
+		(float64(stat.Total)/math.Pow(10, 6))/float64(stat.Count))
 }
 
 // ---------------- UTILITIES -----------------------
