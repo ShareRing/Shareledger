@@ -2,7 +2,6 @@ package utils
 
 import (
 	"bufio"
-	"fmt"
 	"os"
 
 	"github.com/sharering/shareledger/types"
@@ -58,7 +57,7 @@ func ReadFile(path string) ([]types.PubKeySecp256k1, []types.PrivKeySecp256k1) {
 
 		reader.Discard(65)
 
-		fmt.Printf("%v\n", pubK)
+		// fmt.Printf("%v\n", pubK)
 
 		pubKeys = append(pubKeys, types.NewPubKeySecp256k1(pubK))
 
