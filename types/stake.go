@@ -2,9 +2,6 @@ package types
 
 import (
 	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
-	abci "github.com/tendermint/abci/types"
-	crypto "github.com/tendermint/go-crypto"
-	tmtypes "github.com/tendermint/tendermint/types"
 )
 
 // status of a validator
@@ -40,22 +37,6 @@ type Validator interface {
 	GetPower() sdk.Rat           // validation power
 	GetDelegatorShares() sdk.Rat // Total out standing delegator shares
 	GetBondHeight() int64        // height in which the validator became active
-}
-
-// validator which fulfills abci validator interface for use in Tendermint
-func ABCIValidator(v Validator) abci.Validator {
-	var pubKey crypto.PubKeySecp256k1
-	if pk, ok := v.GetPubKey().(PubKeySecp256k1); ok {
-
-		copy(pubKey[:], pk[:65])
-
-		return abci.Validator{
-			PubKey: tmtypes.TM2PB.PubKey(pubKey),
-			Power:  v.GetPower().Evaluate(),
-		}
-	} else {
-		panic("PubKey is not of PubKeySecp256k1")
-	}
 }
 
 // properties for the set of all validators

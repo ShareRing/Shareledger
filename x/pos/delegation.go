@@ -1,7 +1,6 @@
 package pos
 
 import (
-	"bytes"
 	"fmt"
 
 	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
@@ -17,12 +16,13 @@ type Delegation struct {
 	Height        int64       `json:"height"` // Last height bond updated
 }
 
+/*
 func (b Delegation) equal(b2 Delegation) bool {
 	return bytes.Equal(b.DelegatorAddr, b2.DelegatorAddr) &&
 		bytes.Equal(b.ValidatorAddr, b2.ValidatorAddr) &&
 		b.Height == b2.Height &&
 		b.Shares.Equal(b2.Shares)
-}
+}*/
 
 // ensure fulfills the sdk validator types
 var _ sdk.Delegation = Delegation{}
@@ -34,14 +34,7 @@ func (b Delegation) GetBondShares() sdk.Rat    { return b.Shares }
 
 //Human Friendly pretty printer
 func (b Delegation) HumanReadableString() (string, error) {
-	// bechAcc, err := sdk.Bech32ifyAcc(b.DelegatorAddr)
-	// if err != nil {
-	// return "", err
-	// }
-	// bechVal, err := sdk.Bech32ifyAcc(b.ValidatorAddr)
-	// if err != nil {
-	// return "", err
-	// }
+
 	resp := "Delegation \n"
 	resp += fmt.Sprintf("Delegator: %s\n", b.DelegatorAddr.String())
 	resp += fmt.Sprintf("Validator: %s\n", b.ValidatorAddr.String())

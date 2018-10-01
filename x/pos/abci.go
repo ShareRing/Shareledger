@@ -1,27 +1,12 @@
 package pos
 
 import (
+	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
 	abci "github.com/tendermint/abci/types"
 )
 
-func EndBlocker(ctx sdk.Context, k Keeper) (ValidatorUpdates []abci.Validator) {
-	pool := k.GetPool(ctx)
-
-	// Process Validator Provisions
-	// blockTime := ctx.BlockHeader().Time // XXX assuming in seconds, confirm
-	// if pool.InflationLastTime+blockTime >= 3600 {
-	// 	pool.InflationLastTime = blockTime
-	// 	pool = k.processProvisions(ctx)
-	// }
-
-	// save the params
-	k.setPool(ctx, pool)
-
-	// reset the intra-transaction counter
-	k.setIntraTxCounter(ctx, 0)
-
-	// calculate validator set changes
-	ValidatorUpdates = k.getTendermintUpdates(ctx)
-	k.clearTendermintUpdates(ctx)
-	return
+func EndBlocker(ctx sdk.Context, k Keeper) []abci.Validator {
+	var valUpdates []abci.Validator
+	//TODO: return updated Validators list
+	return valUpdates
 }

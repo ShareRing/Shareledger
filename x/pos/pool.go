@@ -1,8 +1,6 @@
 package pos
 
 import (
-	"bytes"
-
 	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
 )
 
@@ -17,22 +15,23 @@ type Pool struct {
 	BondedShares        sdk.Rat `json:"bonded_shares"`         // sum of all shares distributed for the Bonded Pool
 }
 
+/*
 func (p Pool) equal(p2 Pool) bool {
-	bz1 := msgCdc.MustMarshalBinary(&p)
-	bz2 := msgCdc.MustMarshalBinary(&p2)
+	bz1 := cdc.MustMarshalBinary(&p)
+	bz2 := cdc.MustMarshalBinary(&p2)
 	return bytes.Equal(bz1, bz2)
 }
-
+*/
 // initial pool for testing
 func InitialPool() Pool {
 	return Pool{
-		LooseUnbondedTokens:     sdk.ZeroInt(),
-		BondedTokens:            sdk.ZeroInt(),
-		UnbondingTokens:         sdk.ZeroInt(),
-		UnbondedTokens:          sdk.ZeroInt(),
-		BondedShares:            sdk.ZeroRat(),
-		UnbondingShares:         sdk.ZeroRat(),
-		UnbondedShares:          sdk.ZeroRat(),
+		LooseUnbondedTokens: sdk.ZeroInt(),
+		BondedTokens:        sdk.ZeroInt(),
+		UnbondingTokens:     sdk.ZeroInt(),
+		UnbondedTokens:      sdk.ZeroInt(),
+		BondedShares:        sdk.ZeroRat(),
+		UnbondingShares:     sdk.ZeroRat(),
+		UnbondedShares:      sdk.ZeroRat(),
 	}
 }
 

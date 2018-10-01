@@ -1,4 +1,4 @@
-package stake
+package pos
 
 import (
 	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
@@ -10,12 +10,13 @@ type PoolShares struct {
 	Amount sdk.Rat        `json:"amount"` // total shares of type ShareKind
 }
 
+/*
 // only the vitals - does not check bond height of IntraTxCounter
 func (s PoolShares) Equal(s2 PoolShares) bool {
 	return s.Status == s2.Status &&
 		s.Amount.Equal(s2.Amount)
 }
-
+*/
 func NewUnbondedShares(amount sdk.Rat) PoolShares {
 	return PoolShares{
 		Status: sdk.Unbonded,
