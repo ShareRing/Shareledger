@@ -1,8 +1,11 @@
 package app
 
 import (
+	"fmt"
 	"os"
 
+	"github.com/sharering/shareledger/x/pos"
+	abci "github.com/tendermint/abci/types"
 	cmn "github.com/tendermint/tmlibs/common"
 	dbm "github.com/tendermint/tmlibs/db"
 	"github.com/tendermint/tmlibs/log"
@@ -68,6 +71,9 @@ func NewShareLedgerApp(logger log.Logger, db dbm.DB) *ShareLedgerApp {
 		&auth.SHRAccount{},
 	)
 
+	//baseApp.SetInitChainer(InitChainer(cdc, accountMapper)) //working on it
+	//baseApp.SetEndBlocker(EndBlocker) //working on it
+
 	SetupAsset(baseApp, cdc, assetKey)
 	SetupBank(baseApp, cdc, accountMapper)
 	SetupBooking(baseApp, cdc, bookingKey, assetKey, accountMapper)
@@ -86,6 +92,47 @@ func NewShareLedgerApp(logger log.Logger, db dbm.DB) *ShareLedgerApp {
 		bookingKey: bookingKey,
 		//accountKey:    accountKey,
 		accountMapper: accountMapper,
+	}
+}
+
+// InitChainer will set initial balances for accounts as well as initial coin metadata
+
+func InitChainer(cdc *wire.Codec, accountMapper auth.AccountMapper) sdk.InitChainer {
+	return func(ctx sdk.Context, req abci.RequestInitChain) abci.ResponseInitChain {
+		stateJSON := req.AppStateBytes
+		var genesisState GenesisState
+		fmt.Printf("stateJSON=%s\n", stateJSON)
+
+		err := cdc.UnmarshalJSON(stateJSON, &genesisState)
+		fmt.Printf("req=%v\n", genesisState)
+		if err != nil {
+			panic(err)
+		}
+
+		// load the accounts - TODO
+
+		// load the initial POS information
+		abciVals, err := pos.InitGenesis(ctx, pos.Keeper{}, genesisState.StakeData)
+		if err != nil {
+			panic(err)
+		}
+		fmt.Printf("abciVal=%v\n", abciVals)
+		return abci.ResponseInitChain{
+			Validators: abciVals, //use the validator defined in stake
+		}
+
+	}
+}
+
+// application updates every end block
+
+func EndBlocker(ctx sdk.Context, req abci.RequestEndBlock) abci.ResponseEndBlock {
+
+	validatorUpdates := pos.EndBlocker(ctx, pos.Keeper{})
+	// Add these new validators to the addr -> pubkey map.
+
+	return abci.ResponseEndBlock{
+		ValidatorUpdates: validatorUpdates,
 	}
 }
 
