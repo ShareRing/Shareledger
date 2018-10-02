@@ -5,6 +5,7 @@ import (
 
 	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
 
+	"github.com/sharering/shareledger/constants"
 	"github.com/sharering/shareledger/types"
 	"github.com/sharering/shareledger/x/auth"
 	"github.com/sharering/shareledger/x/bank/messages"
@@ -43,8 +44,9 @@ func HandleMsgSend(am auth.AccountMapper) sdk.Handler {
 		if resT = handleTo(ctx, am, sendMsg.To, sendMsg.Amount); !resT.IsOK() {
 			return resT
 		}
-		fmt.Println("Result Log:", resF.Log, "-", resT.Log)
-		res := fmt.Sprintf("From:%v - To:%v", resF.Log, resT.Log)
+		constants.LOGGER.Info("Result:", "from", resF.Log, "to", resT.Log)
+
+		res := fmt.Sprintf("{\"from\":%v, \"to\":%v}", resF.Log, resT.Log)
 		// Return a success (Code 0).
 		// Add list of key-value pair descriptors ("tags").
 		return sdk.Result{
@@ -101,7 +103,6 @@ func handleTo(ctx sdk.Context, am auth.AccountMapper, to sdk.Address, amt types.
 
 	// Update receiver account
 	acc.SetCoins(receiverCoinsAfter)
-	fmt.Println("After Plus:", receiverCoinsAfter)
 
 	// Save to AccountMapper
 	am.SetAccount(ctx, acc)

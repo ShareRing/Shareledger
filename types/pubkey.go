@@ -75,7 +75,7 @@ func (pubKey PubKeySecp256k1) VerifyBytes(msg []byte, sig_ Signature) bool {
 	// and assert same algorithm to sign and verify
 	sig, ok := sig_.(SignatureSecp256k1)
 	if !ok {
-		fmt.Println("signature Is not Secp")
+		panic("Signature is not of tupe SignatureSecp256k1")
 		return false
 	}
 
@@ -109,7 +109,6 @@ func GetTestPubKey() PubKeySecp256k1 {
 	pkBytes, err := hex.DecodeString("ab83994cf95abe45b9d8610524b3f8f8fd023d69f79449011cb5320d2ca180c5")
 
 	if err != nil {
-		fmt.Println("Error in DecodeString: ", err)
 		panic("Error in DecodeString")
 	}
 

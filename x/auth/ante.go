@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
+	"github.com/sharering/shareledger/constants"
 	//"bitbucket.org/shareringvn/cosmos-sdk/wire"
 	//"github.com/sharering/shareledger/types"
 )
@@ -53,11 +54,11 @@ func verifySignature(ctx sdk.Context,
 	signBytes []byte) (acc BaseAccount,
 	res sdk.Result) {
 
-	fmt.Println("PubKey used to sign:", sig.GetPubKey())
+	constants.LOGGER.Info("PubKey used to sign", "pubKey", sig.GetPubKey())
 	addr := sig.GetPubKey().Address()
 
 	acc = am.GetAccount(ctx, addr)
-	fmt.Println("PubKey of this account:", acc)
+	constants.LOGGER.Info("PubKey of this account", "account", acc)
 
 	// acc doesn't exist
 	if acc == nil {

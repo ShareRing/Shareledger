@@ -59,7 +59,6 @@ func (tx BasicTx) GetSignBytes() []byte {
 // VerifySignature to verify signature
 func (tx BasicTx) VerifySignature() bool {
 	msg := tx.GetSignBytes()
-	fmt.Printf("SignBytes: %s\n", msg)
 	return tx.Signature.Verify(msg)
 }
 
@@ -73,10 +72,9 @@ func GetTxDecoder(cdc *wire.Codec) func([]byte) (sdk.Tx, sdk.Error) {
 		err := cdc.UnmarshalJSON(txBytes, &tx)
 
 		if err != nil {
-			fmt.Println("Error in decoding")
 			return nil, sdk.ErrTxDecode(err.Error())
 		}
-		fmt.Println("Decoded Tx:", tx)
+
 		isVerified := tx.VerifySignature()
 		if !isVerified {
 			return nil, sdk.ErrTxDecode("InvalidSignature")

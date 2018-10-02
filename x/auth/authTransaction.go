@@ -7,6 +7,7 @@ import (
 	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
 	"bitbucket.org/shareringvn/cosmos-sdk/wire"
 
+	"github.com/sharering/shareledger/constants"
 	"github.com/sharering/shareledger/types"
 )
 
@@ -53,7 +54,7 @@ func (tx AuthTx) GetSignBytes() []byte {
 // VerifySignature to verify signature
 func (tx AuthTx) VerifySignature() bool {
 	msg := tx.GetSignBytes()
-	fmt.Printf("SignBytes: %s\n", msg)
+	constants.LOGGER.Info("SignBytes", "signBytes", msg)
 	return tx.Signature.Verify(msg)
 }
 
@@ -68,10 +69,10 @@ func GetTxDecoder(cdc *wire.Codec) func([]byte) (sdk.Tx, sdk.Error) {
 		err := cdc.UnmarshalBinary(txBytes, &tx)
 
 		if err != nil {
-			fmt.Println("Error in decoding", err)
+			constants.LOGGER.Error("Eroor in decoding Tx", "err", err.Error())
 			return nil, sdk.ErrTxDecode(err.Error())
 		}
-		fmt.Println("Decoded Tx:", tx)
+		(constants.LOGGER).Info("Decoded Tx", "tx", tx)
 		//isVerified := tx.VerifySignature()
 		//if !isVerified {
 		//return nil, sdk.ErrTxDecode("InvalidSignature")

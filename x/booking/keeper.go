@@ -185,7 +185,7 @@ func (k Keeper) Complete(ctx sdk.Context, msg msg.MsgComplete) (types.Booking, e
 	value := booking.Duration * asset.Fee
 
 	ownerCoinsAfter := ownerCoins.Plus(types.NewCoin(constants.BOOKING_DENOM, value))
-	fmt.Printf("Owner balance: %s\n", ownerCoinsAfter)
+	constants.LOGGER.Info("Owner balance", "balance", ownerCoinsAfter)
 
 	// Update Booking
 	booking.IsCompleted = true
