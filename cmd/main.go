@@ -51,6 +51,7 @@ func initLogger(lvl string) log.Logger {
 
 	logger = log.NewFilter(logger, opt)
 
+	// assign global variable LOGGER to log all input
 	constants.LOGGER = logger
 
 	return logger
