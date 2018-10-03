@@ -2,6 +2,7 @@ package pos
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/sharering/shareledger/types"
 	abci "github.com/tendermint/abci/types"
@@ -19,16 +20,19 @@ import (
 // exchange rate. Voting power can be calculated as total bonds multiplied by
 // exchange rate.
 type Validator struct {
-	Owner   sdk.Address  `json:"owner"`   // sender of BondTx - UnbondTx returns here
-	PubKey  types.PubKey `json:"pub_key"` // pubkey of validator
-	Revoked bool         `json:"revoked"` // has the validator been revoked from bonded status?
+	Owner   sdk.Address      `json:"owner"`   // sender of BondTx - UnbondTx returns here
+	PubKey  types.PubKey     `json:"pub_key"` // pubkey of validator
+	Revoked bool             `json:"revoked"` // has the validator  been revoked from bonded status?
+	Status  types.BondStatus `json:"status"`  // validator status (bonded/unbonding/unbonded)
 
-	//PoolShares      PoolShares `json:"pool_shares"`      // total shares for tokens held in the pool
+	Tokens          sdk.Rat `json:"tokens"`           // delegated tokens (incl. self-delegation)
 	DelegatorShares sdk.Rat `json:"delegator_shares"` // total shares issued to a validator's delegators
 
 	Description        Description `json:"description"`           // description terms for the validator
 	BondHeight         int64       `json:"bond_height"`           // earliest height as a bonded validator
 	BondIntraTxCounter int16       `json:"bond_intra_tx_counter"` // block-local tx index of validator change
+	UnbondingHeight    int64       `json:"unbonding_height"`      // if unbonding, height at which this validator has begun unbonding
+	UnbondingMinTime   time.Time   `json:"unbonding_time"`        // if unbonding, min time for the validator to complete unbonding
 	//	ProposerRewardPool sdk.Coins   `json:"proposer_reward_pool"`  // XXX reward pool collected from being the proposer
 
 }
@@ -45,11 +49,13 @@ func NewValidator(owner sdk.Address, pubKey types.PubKeySecp256k1, description D
 		Owner:   owner,
 		PubKey:  pubKey,
 		Revoked: false,
-		//PoolShares:         NewUnbondedShares(sdk.ZeroRat()),
+
 		DelegatorShares:    sdk.ZeroRat(),
 		Description:        description,
 		BondHeight:         int64(0),
 		BondIntraTxCounter: int16(0),
+		UnbondingHeight:    int64(0),
+		UnbondingMinTime:   time.Unix(0, 0).UTC(),
 		//ProposerRewardPool: sdk.Coins{},
 	}
 }
@@ -100,111 +106,127 @@ func (v Validator) ABCIValidator() abci.Validator {
 	}
 }
 
-// abci validator from stake validator type
-func (v Validator) Status() types.BondStatus {
-	return types.Bonded //v.PoolShares.Status
+// UpdateStatus updates the location of the shares within a validator
+// to reflect the new status
+func (v Validator) UpdateStatus(pool Pool, NewStatus types.BondStatus) (Validator, Pool) {
+
+	switch v.Status {
+
+	case types.Unbonded:
+
+		switch NewStatus {
+		case types.Unbonded:
+			return v, pool
+		case types.Bonded:
+			pool = pool.looseTokensToBonded(v.Tokens)
+		}
+	case types.Unbonding:
+
+		switch NewStatus {
+		case types.Unbonding:
+			return v, pool
+		case types.Bonded:
+			pool = pool.looseTokensToBonded(v.Tokens)
+		}
+	case types.Bonded:
+
+		switch NewStatus {
+		case types.Bonded:
+			return v, pool
+		default:
+			pool = pool.bondedTokensToLoose(v.Tokens)
+		}
+	}
+
+	v.Status = NewStatus
+	return v, pool
 }
 
-// XXX TEST
-// get the power or potential power for a validator
-// if bonded, the power is the BondedShares
-// if not bonded, the power is the amount of bonded shares which the
-//    the validator would have it was bonded
-/*
-func (v Validator) EquivalentBondedShares(pool Pool) (eqBondedShares sdk.Rat) {
-	return v.PoolShares.ToBonded(pool).Amount
+// Returns if the validator should be considered unbonded
+func (v Validator) IsUnbonded(ctx sdk.Context) bool {
+	switch v.Status {
+	case types.Unbonded:
+		return true
+	case types.Unbonding:
+		//todo: check the time if it surpass the unboundtingTime
+		//ctxTime := ctx.BlockHeader().Time
+
+		//if ctxTime.After(v.UnbondingMinTime) {
+		//		return true
+		//	}
+		return false
+	}
+	return false
 }
-*/
 
 //_________________________________________________________________________________________________________
 
 // XXX Audit this function further to make sure it's correct
 // add tokens to a validator
-/*
-func (v Validator) addTokensFromDel(pool Pool,
-	amount sdk.Int) (validator2 Validator, p2 Pool, issuedDelegatorShares sdk.Rat) {
+func (v Validator) AddTokensFromDel(pool Pool, amount sdk.Int) (Validator, Pool, sdk.Rat) {
 
-	exRate := v.DelegatorShareExRate(pool) // bshr/delshr
+	// bondedShare/delegatedShare
+	exRate := v.DelegatorShareExRate()
+	amountDec := sdk.NewRatFromInt(amount)
 
-	var poolShares PoolShares
-	var equivalentBondedShares sdk.Rat
-	switch v.Status() {
-	case types.Unbonded:
-		pool, poolShares = pool.addTokensUnbonded(amount)
-	case types.Unbonding:
-		pool, poolShares = pool.addTokensUnbonding(amount)
-	case types.Bonded:
-		pool, poolShares = pool.addTokensBonded(amount)
+	if v.Status == types.Bonded {
+		pool = pool.looseTokensToBonded(amountDec)
 	}
-	v.PoolShares.Amount = v.PoolShares.Amount.Add(poolShares.Amount)
-	equivalentBondedShares = poolShares.ToBonded(pool).Amount
 
-	issuedDelegatorShares = equivalentBondedShares.Quo(exRate) // bshr/(bshr/delshr) = delshr
-	v.DelegatorShares = v.DelegatorShares.Add(issuedDelegatorShares)
+	v.Tokens = v.Tokens.Add(amountDec)
+	issuedShares := amountDec.Quo(exRate)
+	v.DelegatorShares = v.DelegatorShares.Add(issuedShares)
 
-	return v, pool, issuedDelegatorShares
+	return v, pool, issuedShares
 }
 
-// remove delegator shares from a validator
-// NOTE this function assumes the shares have already been updated for the validator status
-func (v Validator) removeDelShares(pool Pool,
-	delShares sdk.Rat) (validator2 Validator, p2 Pool, createdCoins sdk.Int) {
-
-	amount := v.DelegatorShareExRate(pool).Mul(delShares)
-	eqBondedSharesToRemove := NewBondedShares(amount)
+// RemoveDelShares removes delegator shares from a validator.
+func (v Validator) RemoveDelShares(pool Pool, delShares sdk.Rat) (Validator, Pool, sdk.Rat) {
+	issuedTokens := v.DelegatorShareExRate().Mul(delShares)
+	v.Tokens = v.Tokens.Sub(issuedTokens)
 	v.DelegatorShares = v.DelegatorShares.Sub(delShares)
 
-	switch v.Status() {
-	case types.Unbonded:
-		unbondedShares := eqBondedSharesToRemove.ToUnbonded(pool).Amount
-		pool, createdCoins = pool.removeSharesUnbonded(unbondedShares)
-		v.PoolShares.Amount = v.PoolShares.Amount.Sub(unbondedShares)
-	case types.Unbonding:
-		unbondingShares := eqBondedSharesToRemove.ToUnbonding(pool).Amount
-		pool, createdCoins = pool.removeSharesUnbonding(unbondingShares)
-		v.PoolShares.Amount = v.PoolShares.Amount.Sub(unbondingShares)
-	case types.Bonded:
-		pool, createdCoins = pool.removeSharesBonded(eqBondedSharesToRemove.Amount)
-		v.PoolShares.Amount = v.PoolShares.Amount.Sub(eqBondedSharesToRemove.Amount)
+	if v.Status == types.Bonded {
+		pool = pool.bondedTokensToLoose(issuedTokens)
 	}
-	return v, pool, createdCoins
+
+	return v, pool, issuedTokens
 }
 
-// get the exchange rate of tokens over delegator shares
-// UNITS: eq-val-bonded-shares/delegator-shares
-func (v Validator) DelegatorShareExRate(pool Pool) sdk.Rat {
+// DelegatorShareExRate gets the exchange rate of tokens over delegator shares.
+// UNITS: tokens/delegator-shares
+func (v Validator) DelegatorShareExRate() sdk.Rat {
 	if v.DelegatorShares.IsZero() {
 		return sdk.OneRat()
 	}
-	eqBondedShares := v.PoolShares.ToBonded(pool).Amount
-	return eqBondedShares.Quo(v.DelegatorShares)
+	return v.Tokens.Quo(v.DelegatorShares)
 }
-*/
+
+// Get the bonded tokens which the validator holds
+func (v Validator) BondedTokens() sdk.Rat {
+	if v.Status == types.Bonded {
+		return v.Tokens
+	}
+	return sdk.ZeroRat()
+}
+
 //______________________________________________________________________
 
-// ensure fulfills the sdk validator sdk
 var _ types.Validator = Validator{}
 
 // nolint - for sdk.Validator
 func (v Validator) GetMoniker() string          { return v.Description.Moniker }
-func (v Validator) GetStatus() types.BondStatus { return v.Status() }
+func (v Validator) GetStatus() types.BondStatus { return v.Status }
 
 func (v Validator) GetOwner() sdk.Address       { return v.Owner }
 func (v Validator) GetPubKey() types.PubKey     { return v.PubKey }
-func (v Validator) GetPower() sdk.Rat           { return sdk.NewRat(100) } //hard-code/*v.PoolShares.Bonded()*/ }
+func (v Validator) GetPower() sdk.Rat           { return v.BondedTokens() }
 func (v Validator) GetDelegatorShares() sdk.Rat { return v.DelegatorShares }
 func (v Validator) GetBondHeight() int64        { return v.BondHeight }
 
 //Human Friendly pretty printer
 func (v Validator) HumanReadableString() (string, error) {
-	// bechOwner, err := sdk.Bech32ifyAcc(v.Owner)
-	// if err != nil {
-	// 	return "", err
-	// }
-	// bechVal, err := sdk.Bech32ifyValPub(v.PubKey)
-	// if err != nil {
-	// 	return "", err
-	// }
+
 	resp := "Validator \n"
 	resp += fmt.Sprintf("Owner: %s\n", v.Owner.String())
 	resp += fmt.Sprintf("Validator: %s\n", v.PubKey.String())
