@@ -12,7 +12,7 @@ const defaultUnbondingTime time.Duration = 60 * 60 * 24 * 3 * time.Second //3 we
 
 // Params defines the high level settings for staking
 type Params struct {
-	GoalBonded sdk.Rat `json:"goal_bonded"` // Goal of percent bonded atoms
+	GoalBonded sdk.Rat `json:"goal_bonded"` // Goal of percent bonded token
 
 	UnbondingTime time.Duration `json:"unbonding_time"`
 

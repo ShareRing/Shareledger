@@ -1,6 +1,8 @@
 package pos
 
 import (
+	"fmt"
+
 	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
 	"github.com/pkg/errors"
 	abci "github.com/tendermint/abci/types"
@@ -8,8 +10,8 @@ import (
 
 // GenesisState - all staking state that must be provided at genesis
 type GenesisState struct {
-	Pool Pool `json:"pool"`
-	//Params     Params       `json:"params"`
+	Pool       Pool        `json:"pool"`
+	Params     Params      `json:"params"`
 	Validators []Validator `json:"validators"`
 	//Bonds      []Delegation `json:"bonds"`
 }
@@ -17,7 +19,8 @@ type GenesisState struct {
 func InitGenesis(ctx sdk.Context, keeper Keeper, data GenesisState) ([]abci.Validator, error) {
 
 	var abciVals []abci.Validator
-
+	fmt.Println("Genesis Pool", data.Pool)
+	fmt.Println("Genesis Param", data.Params)
 	for _, validator := range data.Validators {
 
 		if validator.DelegatorShares.IsZero() {
