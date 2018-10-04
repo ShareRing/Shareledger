@@ -3,7 +3,8 @@ package pos
 import (
 	"time"
 
-	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
+	// sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
+	"github.com/sharering/shareledger/types"
 )
 
 // defaultUnbondingTime reflects three weeks in seconds as the default
@@ -12,7 +13,7 @@ const defaultUnbondingTime time.Duration = 60 * 60 * 24 * 3 * time.Second //3 we
 
 // Params defines the high level settings for staking
 type Params struct {
-	GoalBonded sdk.Rat `json:"goal_bonded"` // Goal of percent bonded atoms
+	GoalBonded types.Dec `json:"goal_bonded"` // Goal of percent bonded atoms
 
 	UnbondingTime time.Duration `json:"unbonding_time"`
 
@@ -32,7 +33,7 @@ func (p Params) Equal(p2 Params) bool {
 // DefaultParams returns a default set of parameters.
 func DefaultParams() Params {
 	return Params{
-		GoalBonded:    sdk.NewRat(67, 100),
+		GoalBonded:    types.NewDecWithPrec(67, 2),
 		UnbondingTime: defaultUnbondingTime,
 		MaxValidators: 100,
 		BondDenom:     "SHR",

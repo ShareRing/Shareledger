@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
+	"github.com/sharering/shareledger/types"
 )
 
 // Delegation represents the bond with tokens held by an account.  It is
@@ -12,7 +13,7 @@ import (
 type Delegation struct {
 	DelegatorAddr sdk.Address `json:"delegator_addr"`
 	ValidatorAddr sdk.Address `json:"validator_addr"`
-	Shares        sdk.Rat     `json:"shares"`
+	Shares        types.Dec   `json:"shares"`
 	Height        int64       `json:"height"` // Last height bond updated
 }
 
@@ -25,12 +26,12 @@ func (b Delegation) equal(b2 Delegation) bool {
 }*/
 
 // ensure fulfills the sdk validator types
-var _ sdk.Delegation = Delegation{}
+// var _ sdk.Delegation = Delegation{}
 
 // nolint - for sdk.Delegation
 func (b Delegation) GetDelegator() sdk.Address { return b.DelegatorAddr }
 func (b Delegation) GetValidator() sdk.Address { return b.ValidatorAddr }
-func (b Delegation) GetBondShares() sdk.Rat    { return b.Shares }
+func (b Delegation) GetBondShares() types.Dec  { return b.Shares }
 
 //Human Friendly pretty printer
 func (b Delegation) HumanReadableString() (string, error) {

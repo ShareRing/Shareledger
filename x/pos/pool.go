@@ -3,18 +3,18 @@ package pos
 import (
 	"fmt"
 
-	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
 	"bitbucket.org/shareringvn/cosmos-sdk/wire"
+	"github.com/sharering/shareledger/types"
 )
 
 // Pool - dynamic parameters of the current state
 type Pool struct {
-	LooseTokens             sdk.Rat `json:"loose_tokens"`               // tokens which are not bonded in a validator
-	BondedTokens            sdk.Rat `json:"bonded_tokens"`              // reserve of bonded tokens
-	DateLastCommissionReset int64   `json:"date_last_commission_reset"` // unix timestamp for last commission accounting reset (daily)
+	LooseTokens             types.Dec `json:"loose_tokens"`               // tokens which are not bonded in a validator
+	BondedTokens            types.Dec `json:"bonded_tokens"`              // reserve of bonded tokens
+	DateLastCommissionReset int64     `json:"date_last_commission_reset"` // unix timestamp for last commission accounting reset (daily)
 
 	// Fee Related
-	PrevBondedShares sdk.Rat `json:"prev_bonded_shares"` // last recorded bonded shares - for fee calculations
+	PrevBondedShares types.Dec `json:"prev_bonded_shares"` // last recorded bonded shares - for fee calculations
 }
 
 /*
@@ -27,46 +27,46 @@ func (p Pool) Equal(p2 Pool) bool {
 // initial pool for testing
 func InitialPool() Pool {
 	return Pool{
-		LooseTokens:             sdk.ZeroRat(),
-		BondedTokens:            sdk.ZeroRat(),
+		LooseTokens:             types.ZeroDec(),
+		BondedTokens:            types.ZeroDec(),
 		DateLastCommissionReset: 0,
-		PrevBondedShares:        sdk.ZeroRat(),
+		PrevBondedShares:        types.ZeroDec(),
 	}
 }
 
 //____________________________________________________________________
 
 // Sum total of all staking tokens in the pool
-func (p Pool) TokenSupply() sdk.Rat {
+func (p Pool) TokenSupply() types.Dec {
 	return p.LooseTokens.Add(p.BondedTokens)
 }
 
 //____________________________________________________________________
 
 // get the bond ratio of the global state
-func (p Pool) BondedRatio() sdk.Rat {
+func (p Pool) BondedRatio() types.Dec {
 	supply := p.TokenSupply()
-	if supply.GT(sdk.ZeroRat()) {
+	if supply.GT(types.ZeroDec()) {
 		return p.BondedTokens.Quo(supply)
 	}
-	return sdk.ZeroRat()
+	return types.ZeroDec()
 }
 
 //_______________________________________________________________________
 
-func (p Pool) looseTokensToBonded(bondedTokens sdk.Rat) Pool {
+func (p Pool) looseTokensToBonded(bondedTokens types.Dec) Pool {
 	p.BondedTokens = p.BondedTokens.Add(bondedTokens)
 	p.LooseTokens = p.LooseTokens.Sub(bondedTokens)
-	if p.LooseTokens.LT(sdk.ZeroRat()) {
+	if p.LooseTokens.LT(types.ZeroDec()) {
 		panic(fmt.Sprintf("sanity check: loose tokens negative, pool: %v", p))
 	}
 	return p
 }
 
-func (p Pool) bondedTokensToLoose(bondedTokens sdk.Rat) Pool {
+func (p Pool) bondedTokensToLoose(bondedTokens types.Dec) Pool {
 	p.BondedTokens = p.BondedTokens.Sub(bondedTokens)
 	p.LooseTokens = p.LooseTokens.Add(bondedTokens)
-	if p.BondedTokens.LT(sdk.ZeroRat()) {
+	if p.BondedTokens.LT(types.ZeroDec()) {
 		panic(fmt.Sprintf("sanity check: bonded tokens negative, pool: %v", p))
 	}
 	return p

@@ -26,7 +26,8 @@ export GOPATH
 
 # Run the command inside the workspace.
 cd "$rootdir/$proj"
-PWD="$rootdir/$proj"
+# export PWD="$rootdir/$proj
+echo $PWD
 
 # Launch the arguments with the configured environment.
 exec "$@"

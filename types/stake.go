@@ -30,13 +30,13 @@ func BondStatusToString(b BondStatus) string {
 
 // validator for a delegated proof of stake system
 type Validator interface {
-	GetMoniker() string          // moniker of the validator
-	GetStatus() BondStatus       // status of the validator
-	GetOwner() sdk.Address       // owner address to receive/return validators coins
-	GetPubKey() PubKey           // validation pubkey
-	GetPower() sdk.Rat           // validation power
-	GetDelegatorShares() sdk.Rat // Total out standing delegator shares
-	GetBondHeight() int64        // height in which the validator became active
+	GetMoniker() string      // moniker of the validator
+	GetStatus() BondStatus   // status of the validator
+	GetOwner() sdk.Address   // owner address to receive/return validators coins
+	GetPubKey() PubKey       // validation pubkey
+	GetPower() Dec           // validation power
+	GetDelegatorShares() Dec // Total out standing delegator shares
+	GetBondHeight() int64    // height in which the validator became active
 }
 
 // properties for the set of all validators
@@ -50,8 +50,8 @@ type ValidatorSet interface {
 		func(index int64, validator Validator) (stop bool))
 
 	Validator(sdk.Context, sdk.Address) Validator // get a particular validator by owner address
-	TotalPower(sdk.Context) sdk.Rat               // total power of the validator set
-	Slash(sdk.Context, PubKey, int64, sdk.Rat)    // slash the validator and delegators of the validator, specifying offence height & slash fraction
+	TotalPower(sdk.Context) Dec                   // total power of the validator set
+	Slash(sdk.Context, PubKey, int64, Dec)        // slash the validator and delegators of the validator, specifying offence height & slash fraction
 	Revoke(sdk.Context, PubKey)                   // revoke a validator
 	Unrevoke(sdk.Context, PubKey)                 // unrevoke a validator
 }
@@ -62,7 +62,7 @@ type ValidatorSet interface {
 type Delegation interface {
 	GetDelegator() sdk.Address // delegator address for the bond
 	GetValidator() sdk.Address // validator owner address for the bond
-	GetBondShares() sdk.Rat    // amount of validator's shares
+	GetBondShares() Dec        // amount of validator's shares
 }
 
 // properties for the set of all delegations for a particular
