@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/sharering/shareledger/x/pos"
+	"github.com/sharering/shareledger/x/pos/keeper"
 	abci "github.com/tendermint/abci/types"
 	cmn "github.com/tendermint/tmlibs/common"
 	dbm "github.com/tendermint/tmlibs/db"
@@ -122,7 +123,7 @@ func InitChainer(cdc *wire.Codec, accountMapper auth.AccountMapper) sdk.InitChai
 		// load the accounts - TODO
 
 		// load the initial POS information
-		abciVals, err := pos.InitGenesis(ctx, pos.Keeper{}, genesisState.StakeData)
+		abciVals, err := pos.InitGenesis(ctx, keeper.Keeper{}, genesisState.StakeData)
 		if err != nil {
 			panic(err)
 		}
@@ -140,7 +141,7 @@ func InitChainer(cdc *wire.Codec, accountMapper auth.AccountMapper) sdk.InitChai
 
 func EndBlocker(ctx sdk.Context, req abci.RequestEndBlock) abci.ResponseEndBlock {
 
-	validatorUpdates := pos.EndBlocker(ctx, pos.Keeper{})
+	validatorUpdates := pos.EndBlocker(ctx, keeper.Keeper{})
 	// Add these new validators to the addr -> pubkey map.
 
 	return abci.ResponseEndBlock{

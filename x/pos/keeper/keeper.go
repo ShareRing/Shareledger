@@ -1,4 +1,4 @@
-package pos
+package keeper
 
 import (
 	"bitbucket.org/shareringvn/cosmos-sdk/wire"

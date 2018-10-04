@@ -6,6 +6,8 @@ import (
 	"github.com/pkg/errors"
 
 	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
+	"github.com/sharering/shareledger/x/pos/keeper"
+	posTypes "github.com/sharering/shareledger/x/pos/type"
 	abci "github.com/tendermint/abci/types"
 
 	"github.com/sharering/shareledger/types"
@@ -13,13 +15,13 @@ import (
 
 // GenesisState - all staking state that must be provided at genesis
 type GenesisState struct {
-	Pool       Pool        `json:"pool"`
-	Params     Params      `json:"params"`
-	Validators []Validator `json:"validators"`
+	Pool       posTypes.Pool        `json:"pool"`
+	Params     posTypes.Params      `json:"params"`
+	Validators []posTypes.Validator `json:"validators"`
 	//Bonds      []Delegation `json:"bonds"`
 }
 
-func InitGenesis(ctx sdk.Context, keeper Keeper, data GenesisState) ([]abci.Validator, error) {
+func InitGenesis(ctx sdk.Context, keeper keeper.Keeper, data GenesisState) ([]abci.Validator, error) {
 
 	var abciVals []abci.Validator
 	fmt.Println("Genesis Pool", data.Pool)
@@ -38,14 +40,14 @@ func InitGenesis(ctx sdk.Context, keeper Keeper, data GenesisState) ([]abci.Vali
 
 }
 func GenerateGenesis(pubKey types.PubKeySecp256k1) GenesisState {
-	validator := NewValidator(
+	validator := posTypes.NewValidator(
 		pubKey.Address(),
 		pubKey,
-		NewDescription("sharering", "", "sharering.network", ""))
+		posTypes.NewDescription("sharering", "", "sharering.network", ""))
 
 	gs := GenesisState{
-		Pool:       InitialPool(),
-		Validators: []Validator{validator},
+		Pool:       posTypes.InitialPool(),
+		Validators: []posTypes.Validator{validator},
 	}
 	return gs
 }

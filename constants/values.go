@@ -16,6 +16,7 @@ const MESSAGE_AUTH = "auth"
 const MESSAGE_ASSET = "asset"
 const MESSAGE_BANK = "bank"
 const MESSAGE_BOOKING = "booking"
+const MESSAGE_POS = "pos"
 
 // ALLOWED DENOM
 var DENOM_LIST = map[string]bool{"SHRP": true, "SHR": true}
