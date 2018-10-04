@@ -53,7 +53,7 @@ func NewValidator(owner sdk.Address, pubKey types.PubKeySecp256k1, description D
 		Status:  types.Unbonded,
 
 		Tokens:             types.ZeroDec(),
-		DelegatorShares:    types.ZeroDec(),
+		DelegatorShares:    types.OneDec(),
 		Description:        description,
 		BondHeight:         int64(0),
 		BondIntraTxCounter: int16(0),
