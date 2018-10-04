@@ -103,6 +103,12 @@ func (pubKey PubKeySecp256k1) Equals(other PubKey) bool {
 	}
 }
 
+func (pubKey PubKeySecp256k1) ToABCIPubKey() crypto.PubKeySecp256k1 {
+	var pk crypto.PubKeySecp256k1
+	copy(pk[:], pubKey[:65])
+	return pk
+}
+
 //------------------------------------------------------------
 
 func GetTestPubKey() PubKeySecp256k1 {

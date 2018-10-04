@@ -17,3 +17,9 @@ type GenesisAccount struct {
 	Address sdk.Address `json:"address"`
 	Coins   types.Coins `json:"coins"`
 }
+
+func GenerateGenesisState() GenesisState {
+	return GenesisState{
+		StakeData: pos.GenerateGenesis(),
+	}
+}

@@ -1,15 +1,16 @@
 package pos
 
 import (
+	"bytes"
 	"fmt"
 	"time"
 
-	"github.com/sharering/shareledger/types"
 	abci "github.com/tendermint/abci/types"
 	crypto "github.com/tendermint/go-crypto"
 	tmtypes "github.com/tendermint/tendermint/types"
 
 	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
+	"github.com/sharering/shareledger/types"
 )
 
 // Validator defines the total amount of bond shares and their exchange rate to
@@ -25,8 +26,8 @@ type Validator struct {
 	Revoked bool             `json:"revoked"` // has the validator  been revoked from bonded status?
 	Status  types.BondStatus `json:"status"`  // validator status (bonded/unbonding/unbonded)
 
-	Tokens          sdk.Rat `json:"tokens"`           // delegated tokens (incl. self-delegation)
-	DelegatorShares sdk.Rat `json:"delegator_shares"` // total shares issued to a validator's delegators
+	Tokens          types.Dec `json:"tokens"`           // delegated tokens (incl. self-delegation)
+	DelegatorShares types.Dec `json:"delegator_shares"` // total shares issued to a validator's delegators
 
 	Description        Description `json:"description"`           // description terms for the validator
 	BondHeight         int64       `json:"bond_height"`           // earliest height as a bonded validator
@@ -49,8 +50,10 @@ func NewValidator(owner sdk.Address, pubKey types.PubKeySecp256k1, description D
 		Owner:   owner,
 		PubKey:  pubKey,
 		Revoked: false,
+		Status:  types.Unbonded,
 
-		DelegatorShares:    sdk.ZeroRat(),
+		Tokens:             types.ZeroDec(),
+		DelegatorShares:    types.ZeroDec(),
 		Description:        description,
 		BondHeight:         int64(0),
 		BondIntraTxCounter: int16(0),
@@ -61,18 +64,20 @@ func NewValidator(owner sdk.Address, pubKey types.PubKeySecp256k1, description D
 }
 
 // only the vitals - does not check bond height of IntraTxCounter
-/*
-func (v Validator) equal(c2 Validator) bool {
+func (v Validator) Equal(c2 Validator) bool {
 	return v.PubKey.Equals(c2.PubKey) &&
 		bytes.Equal(v.Owner, c2.Owner) &&
-		v.PoolShares.Equal(c2.PoolShares) &&
+		// v.PoolShares.Equal(c2.PoolShares) &&
+		v.Tokens.Equal(c2.Tokens) &&
 		v.DelegatorShares.Equal(c2.DelegatorShares) &&
-		v.Description == c2.Description &&
-		//v.BondHeight == c2.BondHeight &&
-		//v.BondIntraTxCounter == c2.BondIntraTxCounter && // counter is always changing
-		v.ProposerRewardPool.IsEqual(c2.ProposerRewardPool)
+		v.Description == c2.Description //&&
+	//v.BondHeight == c2.BondHeight &&
+	//v.BondIntraTxCounter == c2.BondIntraTxCounter && // counter is always changing
+	// v.ProposerRewardPool.IsEqual(c2.ProposerRewardPool)
 }
-*/
+
+const DoNotModifyDesc = "[do-not-modify]"
+
 // Description - description fields for a validator
 type Description struct {
 	Moniker  string `json:"moniker"`  // name
@@ -90,19 +95,31 @@ func NewDescription(moniker, identity, website, details string) Description {
 	}
 }
 
-// validator which fulfills abci validator interface for use in Tendermint
-func (v Validator) ABCIValidator() abci.Validator {
-	var pubKey crypto.PubKeySecp256k1
+func (v Validator) GetABCIPubKey() crypto.PubKeySecp256k1 {
 	if pk, ok := v.GetPubKey().(types.PubKeySecp256k1); ok {
-
-		copy(pubKey[:], pk[:65])
-
-		return abci.Validator{
-			PubKey: tmtypes.TM2PB.PubKey(pubKey),
-			Power:  v.GetPower().Evaluate(),
-		}
+		return pk.ToABCIPubKey()
 	} else {
 		panic("PubKey is not of PubKeySecp256k1")
+	}
+
+}
+
+// validator which fulfills abci validator interface for use in Tendermint
+// ABCIValidator returns an abci.Validator from a staked validator type.
+func (v Validator) ABCIValidator() abci.Validator {
+	return abci.Validator{
+		PubKey:  tmtypes.TM2PB.PubKey(v.GetABCIPubKey()),
+		Address: v.GetPubKey().Address(),
+		Power:   v.BondedTokens().RoundInt64(),
+	}
+}
+
+// ABCIValidator returns an abci.Validator from a staked validator type.
+func (v Validator) ABCIValidatorZero() abci.Validator {
+	return abci.Validator{
+		PubKey:  tmtypes.TM2PB.PubKey(v.GetABCIPubKey()),
+		Address: v.GetPubKey().Address(),
+		Power:   0,
 	}
 }
 
@@ -159,15 +176,36 @@ func (v Validator) IsUnbonded(ctx sdk.Context) bool {
 	return false
 }
 
+// removes tokens from a validator
+func (v Validator) RemoveTokens(pool Pool, tokens types.Dec) (Validator, Pool) {
+	if v.Status == types.Bonded {
+		pool = pool.bondedTokensToLoose(tokens)
+	}
+
+	v.Tokens = v.Tokens.Sub(tokens)
+	return v, pool
+}
+
+// SetInitialCommission attempts to set a validator's initial commission. An
+// error is returned if the commission is invalid.
+// func (v Validator) SetInitialCommission(commission Commission) (Validator, sdk.Error) {
+// 	if err := commission.Validate(); err != nil {
+// 		return v, err
+// 	}
+
+// 	v.Commission = commission
+// 	return v, nil
+// }
+
 //_________________________________________________________________________________________________________
 
 // XXX Audit this function further to make sure it's correct
 // add tokens to a validator
-func (v Validator) AddTokensFromDel(pool Pool, amount sdk.Int) (Validator, Pool, sdk.Rat) {
+func (v Validator) AddTokensFromDel(pool Pool, amount types.Int) (Validator, Pool, types.Dec) {
 
 	// bondedShare/delegatedShare
 	exRate := v.DelegatorShareExRate()
-	amountDec := sdk.NewRatFromInt(amount)
+	amountDec := types.NewDecFromInt(amount)
 
 	if v.Status == types.Bonded {
 		pool = pool.looseTokensToBonded(amountDec)
@@ -181,7 +219,7 @@ func (v Validator) AddTokensFromDel(pool Pool, amount sdk.Int) (Validator, Pool,
 }
 
 // RemoveDelShares removes delegator shares from a validator.
-func (v Validator) RemoveDelShares(pool Pool, delShares sdk.Rat) (Validator, Pool, sdk.Rat) {
+func (v Validator) RemoveDelShares(pool Pool, delShares types.Dec) (Validator, Pool, types.Dec) {
 	issuedTokens := v.DelegatorShareExRate().Mul(delShares)
 	v.Tokens = v.Tokens.Sub(issuedTokens)
 	v.DelegatorShares = v.DelegatorShares.Sub(delShares)
@@ -195,19 +233,19 @@ func (v Validator) RemoveDelShares(pool Pool, delShares sdk.Rat) (Validator, Poo
 
 // DelegatorShareExRate gets the exchange rate of tokens over delegator shares.
 // UNITS: tokens/delegator-shares
-func (v Validator) DelegatorShareExRate() sdk.Rat {
+func (v Validator) DelegatorShareExRate() types.Dec {
 	if v.DelegatorShares.IsZero() {
-		return sdk.OneRat()
+		return types.OneDec()
 	}
 	return v.Tokens.Quo(v.DelegatorShares)
 }
 
 // Get the bonded tokens which the validator holds
-func (v Validator) BondedTokens() sdk.Rat {
+func (v Validator) BondedTokens() types.Dec {
 	if v.Status == types.Bonded {
 		return v.Tokens
 	}
-	return sdk.ZeroRat()
+	return types.ZeroDec()
 }
 
 //______________________________________________________________________
@@ -218,11 +256,11 @@ var _ types.Validator = Validator{}
 func (v Validator) GetMoniker() string          { return v.Description.Moniker }
 func (v Validator) GetStatus() types.BondStatus { return v.Status }
 
-func (v Validator) GetOwner() sdk.Address       { return v.Owner }
-func (v Validator) GetPubKey() types.PubKey     { return v.PubKey }
-func (v Validator) GetPower() sdk.Rat           { return v.BondedTokens() }
-func (v Validator) GetDelegatorShares() sdk.Rat { return v.DelegatorShares }
-func (v Validator) GetBondHeight() int64        { return v.BondHeight }
+func (v Validator) GetOwner() sdk.Address         { return v.Owner }
+func (v Validator) GetPubKey() types.PubKey       { return v.PubKey }
+func (v Validator) GetPower() types.Dec           { return v.BondedTokens() }
+func (v Validator) GetDelegatorShares() types.Dec { return v.DelegatorShares }
+func (v Validator) GetBondHeight() int64          { return v.BondHeight }
 
 //Human Friendly pretty printer
 func (v Validator) HumanReadableString() (string, error) {

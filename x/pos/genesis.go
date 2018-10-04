@@ -3,8 +3,9 @@ package pos
 import (
 	"fmt"
 
-	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
 	"github.com/pkg/errors"
+
+	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
 	abci "github.com/tendermint/abci/types"
 )
 
@@ -26,9 +27,18 @@ func InitGenesis(ctx sdk.Context, keeper Keeper, data GenesisState) ([]abci.Vali
 		if validator.DelegatorShares.IsZero() {
 			return abciVals, errors.Errorf("genesis validator cannot have zero delegator shares, validator: %v", validator)
 		}
+
+		fmt.Printf("InitGenesis validator: %s\n", validator.Owner)
 		abciVals = append(abciVals, validator.ABCIValidator())
 	}
 
 	return abciVals, nil
 
+}
+func GenerateGenesis() GenesisState {
+	gs := GenesisState{
+		Pool:       InitialPool(),
+		Validators: []Validator{},
+	}
+	return gs
 }

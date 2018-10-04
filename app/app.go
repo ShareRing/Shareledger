@@ -86,6 +86,10 @@ func NewShareLedgerApp(logger log.Logger, db dbm.DB) *ShareLedgerApp {
 		AddRoute(constants.MESSAGE_AUTH, auth.NewHandler(accountMapper))
 	cdc = auth.RegisterCodec(cdc)
 
+	// Register InitChain
+	// logger.Info("Register Init Chainer")
+	// baseApp.SetInitChainer(InitChainer(cdc, accountMapper))
+
 	return &ShareLedgerApp{
 		BaseApp:    baseApp,
 		assetKey:   assetKey,
@@ -100,6 +104,12 @@ func NewShareLedgerApp(logger log.Logger, db dbm.DB) *ShareLedgerApp {
 func InitChainer(cdc *wire.Codec, accountMapper auth.AccountMapper) sdk.InitChainer {
 	return func(ctx sdk.Context, req abci.RequestInitChain) abci.ResponseInitChain {
 		stateJSON := req.AppStateBytes
+		fmt.Printf("RequestInitChain.Time: %v\n", req.Time)
+		fmt.Printf("RequestInitChain.ChainId: %v\n", req.ChainId)
+		fmt.Printf("RequestInitChain.ConsensusParams: %v\n", req.ConsensusParams)
+		fmt.Printf("RequestInitChain.Validators: %v\n", req.Validators)
+		fmt.Printf("RequestInitChain.AppStateBytes: %v\n", req.AppStateBytes)
+
 		var genesisState GenesisState
 		fmt.Printf("stateJSON=%s\n", stateJSON)
 
@@ -116,7 +126,9 @@ func InitChainer(cdc *wire.Codec, accountMapper auth.AccountMapper) sdk.InitChai
 		if err != nil {
 			panic(err)
 		}
-		fmt.Printf("abciVal=%v\n", abciVals)
+		for _, abciVal := range abciVals {
+			fmt.Printf("abciVal=%v\n", abciVal)
+		}
 		return abci.ResponseInitChain{
 			Validators: abciVals, //use the validator defined in stake
 		}
