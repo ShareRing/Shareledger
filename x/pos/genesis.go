@@ -7,6 +7,8 @@ import (
 
 	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
 	abci "github.com/tendermint/abci/types"
+
+	"github.com/sharering/shareledger/types"
 )
 
 // GenesisState - all staking state that must be provided at genesis
@@ -35,10 +37,15 @@ func InitGenesis(ctx sdk.Context, keeper Keeper, data GenesisState) ([]abci.Vali
 	return abciVals, nil
 
 }
-func GenerateGenesis() GenesisState {
+func GenerateGenesis(pubKey types.PubKeySecp256k1) GenesisState {
+	validator := NewValidator(
+		pubKey.Address(),
+		pubKey,
+		NewDescription("sharering", "", "sharering.network", ""))
+
 	gs := GenesisState{
 		Pool:       InitialPool(),
-		Validators: []Validator{},
+		Validators: []Validator{validator},
 	}
 	return gs
 }

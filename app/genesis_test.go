@@ -6,27 +6,12 @@ import (
 	"testing"
 	"time"
 
+	"bitbucket.org/shareringvn/cosmos-sdk/wire"
 	"github.com/tendermint/go-crypto"
 	tmtypes "github.com/tendermint/tendermint/types"
-	"github.com/shareringvn/cosmos-sdk/wire"
 
 	"github.com/sharering/shareledger/types"
 )
-
-function registerAmino(cdc *wire.Codec){
-	cdc.RegisterInterface((*crypto.PubKey)(nil), nil)
-	cdc.RegisterConcrete(crypto.PubKeyEd25519{},
-		"tendermint/PubKeyEd25519", nil)
-	cdc.RegisterConcrete(crypto.PubKeySecp256k1{},
-		"tendermint/PubKeySecp256k1", nil)
-
-	cdc.RegisterInterface((*crypto.PrivKey)(nil), nil)
-	cdc.RegisterConcrete(crypto.PrivKeyEd25519{},
-		"tendermint/PrivKeyEd25519", nil)
-	cdc.RegisterConcrete(crypto.PrivKeySecp256k1{},
-		"tendermint/PrivKeySecp256k1", nil)
-
-}
 
 func TestMakeGenesisFile(t *testing.T) {
 	pubKey, _ := types.GenerateKeyPair()

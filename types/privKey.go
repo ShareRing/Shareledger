@@ -83,3 +83,14 @@ func (privKey PrivKeySecp256k1) SignWithNonce(msg sdk.Msg, nonce int64) Signatur
 func (privKey PrivKeySecp256k1) String() string {
 	return fmt.Sprintf("PrivKeySecp256k1{%X}", privKey[:])
 }
+
+func (privKey PrivKeySecp256k1) PubKey() PubKeySecp256k1 {
+	_, pubK := btcec.PrivKeyFromBytes(btcec.S256(), privKey[:])
+
+	serPubKey := pubK.SerializeUncompressed()
+
+	var pubKey PubKeySecp256k1
+	copy(pubKey[:], serPubKey[:65])
+
+	return pubKey
+}

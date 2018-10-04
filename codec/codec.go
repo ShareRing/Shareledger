@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 
 	amino "github.com/tendermint/go-amino"
-	// "github.com/tendermint/tendermint/crypto/encoding/amino"
+	"github.com/tendermint/go-crypto"
 )
 
 // amino codec to marshal/unmarshal
@@ -17,9 +17,24 @@ func New() *Codec {
 }
 
 // Register the go-crypto to the codec
-// func RegisterCrypto(cdc *Codec) {
-// 	cryptoAmino.RegisterAmino(cdc)
-// }
+func RegisterCrypto(cdc *Codec) {
+	registerAmino(cdc)
+}
+
+func registerAmino(cdc *Codec) {
+	cdc.RegisterInterface((*crypto.PubKey)(nil), nil)
+	cdc.RegisterConcrete(crypto.PubKeyEd25519{},
+		"tendermint/PubKeyEd25519", nil)
+	cdc.RegisterConcrete(crypto.PubKeySecp256k1{},
+		"tendermint/PubKeySecp256k1", nil)
+
+	cdc.RegisterInterface((*crypto.PrivKey)(nil), nil)
+	cdc.RegisterConcrete(crypto.PrivKeyEd25519{},
+		"tendermint/PrivKeyEd25519", nil)
+	cdc.RegisterConcrete(crypto.PrivKeySecp256k1{},
+		"tendermint/PrivKeySecp256k1", nil)
+
+}
 
 // attempt to make some pretty json
 func MarshalJSONIndent(cdc *Codec, obj interface{}) ([]byte, error) {
