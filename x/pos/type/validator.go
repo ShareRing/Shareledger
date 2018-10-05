@@ -10,6 +10,7 @@ import (
 	tmtypes "github.com/tendermint/tendermint/types"
 
 	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
+	"bitbucket.org/shareringvn/cosmos-sdk/wire"
 	"github.com/sharering/shareledger/types"
 )
 
@@ -44,8 +45,22 @@ var _ types.Validator = Validator{}
 // Validators - list of Validators
 type Validators []Validator
 
+// to encode/decode of Validator
+type validatorValue struct {
+	PubKey             types.PubKey
+	Revoked            bool
+	Status             types.BondStatus
+	Tokens             types.Dec
+	DelegatorShares    types.Dec
+	Description        Description
+	BondHeight         int64
+	BondIntraTxCounter int16
+	UnbondingHeight    int64
+	UnbondingMinTime   time.Time
+}
+
 // NewValidator - initialize a new validator
-func NewValidator(owner sdk.Address, pubKey types.PubKeySecp256k1, description Description) Validator {
+func NewValidator(owner sdk.Address, pubKey types.PubKey, description Description) Validator {
 	return Validator{
 		Owner:   owner,
 		PubKey:  pubKey,
@@ -246,6 +261,48 @@ func (v Validator) BondedTokens() types.Dec {
 		return v.Tokens
 	}
 	return types.ZeroDec()
+}
+
+// unmarshal a redelegation from a store key and value
+func UnmarshalValidator(cdc *wire.Codec, owner sdk.Address, value []byte) (validator Validator, err error) {
+	//TODO: Checking owner address
+
+	var storeValue validatorValue
+	err = cdc.UnmarshalBinary(value, &storeValue)
+	if err != nil {
+		return
+	}
+
+	return Validator{
+		Owner:              owner,
+		PubKey:             storeValue.PubKey,
+		Revoked:            storeValue.Revoked,
+		Tokens:             storeValue.Tokens,
+		Status:             storeValue.Status,
+		DelegatorShares:    storeValue.DelegatorShares,
+		Description:        storeValue.Description,
+		BondHeight:         storeValue.BondHeight,
+		BondIntraTxCounter: storeValue.BondIntraTxCounter,
+		UnbondingHeight:    storeValue.UnbondingHeight,
+		UnbondingMinTime:   storeValue.UnbondingMinTime,
+	}, nil
+}
+
+// return the redelegation without fields contained within the key for the store
+func MustMarshalValidator(cdc *wire.Codec, validator Validator) []byte {
+	val := validatorValue{
+		PubKey:             validator.PubKey,
+		Revoked:            validator.Revoked,
+		Status:             validator.Status,
+		Tokens:             validator.Tokens,
+		DelegatorShares:    validator.DelegatorShares,
+		Description:        validator.Description,
+		BondHeight:         validator.BondHeight,
+		BondIntraTxCounter: validator.BondIntraTxCounter,
+		UnbondingHeight:    validator.UnbondingHeight,
+		UnbondingMinTime:   validator.UnbondingMinTime,
+	}
+	return cdc.MustMarshalBinary(val)
 }
 
 //______________________________________________________________________

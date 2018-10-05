@@ -3,6 +3,8 @@ package types
 import (
 	"encoding/json"
 	"fmt"
+	"strings"
+
 	"github.com/sharering/shareledger/constants"
 )
 
@@ -157,6 +159,58 @@ func (coins *Coins) Minus(other Coin) Coins {
 	}
 
 	return ret
+}
+
+// Plus combines two sets of coins
+// CONTRACT: Plus will never return Coins where one Coin has a 0 amount.
+func (coins Coins) PlusMany(coinsB Coins) Coins {
+	sum := ([]Coin)(nil)
+	indexA, indexB := 0, 0
+	lenA, lenB := len(coins), len(coinsB)
+	for {
+		if indexA == lenA {
+			if indexB == lenB {
+				return sum
+			}
+			return append(sum, coinsB[indexB:]...)
+		} else if indexB == lenB {
+			return append(sum, coins[indexA:]...)
+		}
+		coinA, coinB := coins[indexA], coinsB[indexB]
+		switch strings.Compare(coinA.Denom, coinB.Denom) {
+		case -1:
+			sum = append(sum, coinA)
+			indexA++
+		case 0:
+			if coinA.Amount+coinB.Amount == 0 {
+				// ignore 0 sum coin type
+			} else {
+				sum = append(sum, coinA.Plus(coinB))
+			}
+			indexA++
+			indexB++
+		case 1:
+			sum = append(sum, coinB)
+			indexB++
+		}
+	}
+}
+
+// Minus subtracts a set of coins from another (adds the inverse)
+func (coins Coins) MinusMany(coinsB Coins) Coins {
+	return coins.PlusMany(coinsB.Negative())
+}
+
+// Negative returns a set of coins with all amount negative
+func (coins Coins) Negative() Coins {
+	res := make([]Coin, 0, len(coins))
+	for _, coin := range coins {
+		res = append(res, Coin{
+			Denom:  coin.Denom,
+			Amount: -coin.Amount,
+		})
+	}
+	return res
 }
 
 // IsPositive - all account has positive

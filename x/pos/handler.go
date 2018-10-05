@@ -2,8 +2,10 @@ package pos
 
 import (
 	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
+
 	"github.com/sharering/shareledger/x/pos/keeper"
 	"github.com/sharering/shareledger/x/pos/message"
+	posTypes "github.com/sharering/shareledger/x/pos/type"
 )
 
 func NewHandler(k keeper.Keeper) sdk.Handler {
@@ -21,53 +23,54 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
 
 func handleMsgCreateValidator(ctx sdk.Context, msg message.MsgCreateValidator, k keeper.Keeper) sdk.Result {
 	// check to see if the pubkey or sender has been registered before
-	/* _, found := k.GetValidator(ctx, msg.ValidatorAddr)
+	_, found := k.GetValidator(ctx, msg.ValidatorAddr)
 	if found {
-		return ErrValidatorOwnerExists(k.Codespace()).Result()
+		return sdk.Result{} //return posTypes.ErrValidatorOwnerExists(k.codespace().Result()
 	}
+	/*
+		_, found = k.GetValidatorByConsAddr(ctx, sdk.GetConsAddress(msg.PubKey))
+		if found {
+			return ErrValidatorPubKeyExists(k.Codespace()).Result()
+		}
 
-	_, found = k.GetValidatorByConsAddr(ctx, sdk.GetConsAddress(msg.PubKey))
-	if found {
-		return ErrValidatorPubKeyExists(k.Codespace()).Result()
-	}
-
-	if msg.Delegation.Denom != k.GetParams(ctx).BondDenom {
-		return ErrBadDenom(k.Codespace()).Result()
-	}
-
-	validator := NewValidator(msg.ValidatorAddr, msg.PubKey, msg.Description)
-	commission := NewCommissionWithTime(
-		msg.Commission.Rate, msg.Commission.MaxChangeRate,
-		msg.Commission.MaxChangeRate, ctx.BlockHeader().Time,
-	)
-	validator, err := validator.SetInitialCommission(commission)
-	if err != nil {
-		return err.Result()
-	}
+		if msg.Delegation.Denom != k.GetParams(ctx).BondDenom {
+			return ErrBadDenom(k.Codespace()).Result()
+		}
+	*/
+	validator := posTypes.NewValidator(msg.ValidatorAddr, msg.PubKey, msg.Description)
+	/*	commission := NewCommissionWithTime(
+			msg.Commission.Rate, msg.Commission.MaxChangeRate,
+			msg.Commission.MaxChangeRate, ctx.BlockHeader().Time,
+		)
+	*/
+	// Todo: commission
 
 	k.SetValidator(ctx, validator)
-	k.SetValidatorByConsAddr(ctx, validator)
-	k.SetNewValidatorByPowerIndex(ctx, validator)
+	//k.SetValidatorByConsAddr(ctx, validator)
+	//k.SetNewValidatorByPowerIndex(ctx, validator)
 
 	// move coins from the msg.Address account to a (self-delegation) delegator account
 	// the validator account and global shares are updated within here
-	_, err = k.Delegate(ctx, msg.DelegatorAddr, msg.Delegation, validator, true)
-	if err != nil {
-		return err.Result()
-	}
+	//todo: delegate
+	/*
+		_, err := k.Delegate(ctx, msg.DelegatorAddr, msg.Delegation, validator, true)
+		if err != nil {
+			return err.Result()
+		}
+	*/
 
-	k.OnValidatorCreated(ctx, validator.OperatorAddr)
-	accAddr := sdk.AccAddress(validator.OperatorAddr)
-	k.OnDelegationCreated(ctx, accAddr, validator.OperatorAddr)
+	//	k.OnValidatorCreated(ctx, validator.OperatorAddr)
+	//accAddr := sdk.AccAddress(validator.OperatorAddr)
+	//k.OnDelegationCreated(ctx, accAddr, validator.OperatorAddr)
 
 	tags := sdk.NewTags(
-		tags.Action, tags.ActionCreateValidator,
-		tags.DstValidator, []byte(msg.ValidatorAddr.String()),
-		tags.Moniker, []byte(msg.Description.Moniker),
-		tags.Identity, []byte(msg.Description.Identity),
-	) */
+	/* 	tags.Action, tags.ActionCreateValidator,
+	tags.DstValidator, []byte(msg.ValidatorAddr.String()),
+	tags.Moniker, []byte(msg.Description.Moniker),
+	tags.Identity, []byte(msg.Description.Identity), */
+	)
 
 	return sdk.Result{
-		//Tags: tags,
+		Tags: tags,
 	}
 }
