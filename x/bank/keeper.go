@@ -4,11 +4,16 @@ import (
 	"fmt"
 
 	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
+	"bitbucket.org/shareringvn/cosmos-sdk/wire"
 	"github.com/sharering/shareledger/types"
 	"github.com/sharering/shareledger/x/auth"
 )
 
 type Keeper struct {
+}
+
+func NewKeeper(bankKey sdk.StoreKey, cdc *wire.Codec) Keeper {
+	return Keeper{}
 }
 
 func (k Keeper) subtractCoins(ctx sdk.Context, am auth.AccountMapper, addr sdk.Address, amt types.Coins) (types.Coins, sdk.Tags, sdk.Error) {
