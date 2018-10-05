@@ -3,20 +3,37 @@ package keeper
 import (
 	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
 	types "github.com/sharering/shareledger/types"
+	posTypes "github.com/sharering/shareledger/x/pos/type"
 )
+
+// return a specific delegation
+func (k Keeper) GetDelegation(ctx sdk.Context,
+	delAddr sdk.Address, valAddr sdk.Address) (
+	delegation posTypes.Delegation, found bool) {
+
+	store := ctx.KVStore(k.storeKey)
+	key := GetDelegationKey(delAddr, valAddr)
+	value := store.Get(key)
+	if value == nil {
+		return delegation, false
+	}
+
+	delegation = posTypes.Delegation{} //posTypes.MustUnmarshalDelegation(k.cdc, key, value)
+	return delegation, true
+}
 
 // Perform a delegation, set/update everything necessary within the store.
 func (k Keeper) Delegate(ctx sdk.Context, delAddr sdk.Address, bondAmt types.Coin,
-	validator types.Validator, subtractAccount bool) (newShares sdk.Dec, err sdk.Error) {
+	validator posTypes.Validator, subtractAccount bool) (newShares types.Dec, err sdk.Error) {
 
 	// Get or create the delegator delegation
 	//Work-Around, refactor later
-	delegation, found := nil, false //k.GetDelegation(ctx, delAddr, validator.OperatorAddr)
+	delegation, found := posTypes.Delegation{}, false //k.GetDelegation(ctx, delAddr, validator.OperatorAddr)
 	if !found {
-		delegation = types.Delegation{
+		delegation = posTypes.Delegation{
 			DelegatorAddr: delAddr,
-			ValidatorAddr: validator.OperatorAddr,
-			Shares:        sdk.ZeroDec(),
+			ValidatorAddr: validator.Owner,
+			Shares:        types.ZeroDec(),
 		}
 	}
 

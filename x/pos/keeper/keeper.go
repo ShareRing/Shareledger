@@ -16,12 +16,11 @@ type Keeper struct {
 	codespace sdk.CodespaceType
 }
 
-func NewKeeper(posKey sdk.StoreKey, bk bank.Keeper sdk.StoreKey, cdc *wire.Codec) Keeper {
+func NewKeeper(posKey sdk.StoreKey, bk bank.Keeper, cdc *wire.Codec) Keeper {
 	keeper := Keeper{
 		storeKey:   posKey,
 		cdc:        cdc,
-		bankKeeper: bk,	
-		codespace:  codespace,
+		bankKeeper: bk,
 	}
 	return keeper
 }

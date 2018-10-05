@@ -1,6 +1,6 @@
 package app
 
-import (	
+import (
 	"fmt"
 	"os"
 
@@ -42,7 +42,7 @@ type ShareLedgerApp struct {
 	posKey     *sdk.KVStoreKey
 	bankKey    *sdk.KVStoreKey
 	//accountKey *sdk.KVStoreKey
-    bankKeeper  bank.Keeper
+	bankKeeper bank.Keeper
 	// Manage getting and setting accounts
 	accountMapper auth.AccountMapper
 }
@@ -59,6 +59,7 @@ func NewShareLedgerApp(logger log.Logger, db dbm.DB) *ShareLedgerApp {
 	//accountKey := sdk.NewKVStoreKey(constants.STORE_BANK)
 	authKey := sdk.NewKVStoreKey(constants.STORE_AUTH)
 	posKey := sdk.NewKVStoreKey(constants.STORE_POS)
+	bankKey := sdk.NewKVStoreKey(constants.STORE_BANK)
 
 	// Mount Store
 
@@ -79,7 +80,7 @@ func NewShareLedgerApp(logger log.Logger, db dbm.DB) *ShareLedgerApp {
 	//baseApp.SetEndBlocker(EndBlocker) //working on it
 
 	SetupAsset(baseApp, cdc, assetKey)
-	SetupBank(baseApp, cdc, accountMapper)
+	bankKeeper := SetupBank(baseApp, bankKey, cdc, accountMapper)
 	SetupBooking(baseApp, cdc, bookingKey, assetKey, accountMapper)
 
 	// Determine how transactions are decoded.
@@ -98,8 +99,8 @@ func NewShareLedgerApp(logger log.Logger, db dbm.DB) *ShareLedgerApp {
 		BaseApp:    baseApp,
 		assetKey:   assetKey,
 		bookingKey: bookingKey,
-		posKey:posKey
-
+		posKey:     posKey,
+		bankKeeper: bankKeeper,
 		//accountKey:    accountKey,
 		accountMapper: accountMapper,
 	}
@@ -178,15 +179,16 @@ func MakeCodec() *wire.Codec {
 	return cdc
 }
 
-func SetupBank(app *bapp.BaseApp, cdc *wire.Codec, am auth.AccountMapper) {
+func SetupBank(app *bapp.BaseApp, bankKey *sdk.KVStoreKey, cdc *wire.Codec, am auth.AccountMapper) bank.Keeper {
 	// Bank module
 	// Create a key for accessing the account store.
 	cdc = bank.RegisterCodec(cdc)
-    app.bankKeeper = bank.NewKeeper()
+	bankKeeper := bank.NewKeeper(bankKey, am, cdc)
 	// Register message routes.
 	// Note the handler gets access to the account store.
 	app.Router().
 		AddRoute("bank", bank.NewHandler(am))
+	return bankKeeper
 
 }
 
@@ -220,13 +222,10 @@ func SetupBooking(app *bapp.BaseApp, cdc *wire.Codec, bookingKey *sdk.KVStoreKey
 }
 
 func SetupPOS(app *bapp.BaseApp, cdc *wire.Codec, posKey *sdk.KVStoreKey,
-	bk bank.Keeper, am auth.AccountMapper) {
-    
-	//cdc = booking.RegisterCodec(cdc)
-	k: = pKeeper.NewKeeper(posKey, app.bankKeeper , cdc)
-	app.Router().
-		AddRoute("pos", pos.NewHandler(k))
+	bk bank.Keeper, am auth.AccountMapper, bankKeeper bank.Keeper) {
 
-	
+	//cdc = booking.RegisterCodec(cdc)
+	k := pKeeper.NewKeeper(posKey, bankKeeper, cdc)
+	app.Router().AddRoute("pos", pos.NewHandler(k))
 
 }

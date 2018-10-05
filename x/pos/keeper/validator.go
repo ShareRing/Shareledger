@@ -4,6 +4,7 @@ import (
 	"container/list"
 
 	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
+	types "github.com/sharering/shareledger/types"
 	posTypes "github.com/sharering/shareledger/x/pos/type"
 )
 
@@ -63,9 +64,9 @@ func (k Keeper) SetValidator(ctx sdk.Context, validator posTypes.Validator) {
 }
 
 // Update the tokens of an existing validator, update the validators power index key
-func (k Keeper) AddValidatorTokensAndShares(ctx sdk.Context, validator types.Validator,
-	tokensToAdd sdk.Int) (valOut types.Validator, addedShares sdk.Dec) {
-
+func (k Keeper) AddValidatorTokensAndShares(ctx sdk.Context, validator posTypes.Validator,
+	tokensToAdd int64) (valOut posTypes.Validator, addedShares types.Dec) {
+	pool := posTypes.InitialPool()
 	//pool := k.GetPool(ctx)
 	//k.DeleteValidatorByPowerIndex(ctx, validator, pool)
 	validator, pool, addedShares = validator.AddTokensFromDel(pool, tokensToAdd)
@@ -78,3 +79,4 @@ func (k Keeper) AddValidatorTokensAndShares(ctx sdk.Context, validator types.Val
 	//k.SetPool(ctx, pool)
 	//k.SetValidatorByPowerIndex(ctx, validator, pool)
 	return validator, addedShares
+}

@@ -29,3 +29,16 @@ var (
 func GetValidatorKey(operatorAddr sdk.Address) []byte {
 	return append(ValidatorsKey, operatorAddr.Bytes()...)
 }
+
+//______________________________________________________________________________
+
+// gets the key for delegator bond with validator
+// VALUE: stake/types.Delegation
+func GetDelegationKey(delAddr sdk.Address, valAddr sdk.Address) []byte {
+	return append(GetDelegationsKey(delAddr), valAddr.Bytes()...)
+}
+
+// gets the prefix for a delegator for all validators
+func GetDelegationsKey(delAddr sdk.Address) []byte {
+	return append(DelegationKey, delAddr.Bytes()...)
+}

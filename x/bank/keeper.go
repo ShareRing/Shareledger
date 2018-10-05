@@ -10,14 +10,19 @@ import (
 )
 
 type Keeper struct {
+	am auth.AccountMapper
 }
 
-func NewKeeper(bankKey sdk.StoreKey, cdc *wire.Codec) Keeper {
-	return Keeper{}
+func NewKeeper(bankKey sdk.StoreKey, _am auth.AccountMapper, cdc *wire.Codec) Keeper {
+	return Keeper{am: _am}
 }
 
-func (k Keeper) subtractCoins(ctx sdk.Context, am auth.AccountMapper, addr sdk.Address, amt types.Coins) (types.Coins, sdk.Tags, sdk.Error) {
+func (k Keeper) SubtractCoins(ctx sdk.Context, addr sdk.Address, amt types.Coins) (types.Coins, sdk.Tags, sdk.Error) {
 
+	return substractCoins(ctx, k.am, addr, amt)
+}
+
+func substractCoins(ctx sdk.Context, am auth.AccountMapper, addr sdk.Address, amt types.Coins) (types.Coins, sdk.Tags, sdk.Error) {
 	oldCoins := getCoins(ctx, am, addr)
 	newCoins := oldCoins.MinusMany(amt)
 	if !newCoins.IsNotNegative() {
@@ -46,11 +51,8 @@ func setCoins(ctx sdk.Context, am auth.AccountMapper, addr sdk.Address, amt type
 		acc = am.NewAccountWithAddress(ctx, addr)
 	}
 
-	err := acc.SetCoins(amt)
-	if err != nil {
-		// Handle w/ #870
-		panic(err)
-	}
+	acc.SetCoins(amt)
+
 	am.SetAccount(ctx, acc)
 	return nil
 }
