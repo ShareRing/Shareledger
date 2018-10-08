@@ -10,6 +10,7 @@ const STORE_BANK = "bank"
 const STORE_BOOKING = "booking"
 const STORE_ASSET = "asset"
 const STORE_AUTH = "auth"
+const STORE_POS = "pos"
 
 // MESSAGE TYPE
 const MESSAGE_AUTH = "auth"

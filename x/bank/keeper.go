@@ -4,15 +4,25 @@ import (
 	"fmt"
 
 	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
+	"bitbucket.org/shareringvn/cosmos-sdk/wire"
 	"github.com/sharering/shareledger/types"
 	"github.com/sharering/shareledger/x/auth"
 )
 
 type Keeper struct {
+	am auth.AccountMapper
 }
 
-func (k Keeper) subtractCoins(ctx sdk.Context, am auth.AccountMapper, addr sdk.Address, amt types.Coins) (types.Coins, sdk.Tags, sdk.Error) {
+func NewKeeper(bankKey sdk.StoreKey, _am auth.AccountMapper, cdc *wire.Codec) Keeper {
+	return Keeper{am: _am}
+}
 
+func (k Keeper) SubtractCoins(ctx sdk.Context, addr sdk.Address, amt types.Coins) (types.Coins, sdk.Tags, sdk.Error) {
+
+	return substractCoins(ctx, k.am, addr, amt)
+}
+
+func substractCoins(ctx sdk.Context, am auth.AccountMapper, addr sdk.Address, amt types.Coins) (types.Coins, sdk.Tags, sdk.Error) {
 	oldCoins := getCoins(ctx, am, addr)
 	newCoins := oldCoins.MinusMany(amt)
 	if !newCoins.IsNotNegative() {
@@ -42,6 +52,7 @@ func setCoins(ctx sdk.Context, am auth.AccountMapper, addr sdk.Address, amt type
 	}
 
 	acc.SetCoins(amt)
+
 	am.SetAccount(ctx, acc)
 	return nil
 }
