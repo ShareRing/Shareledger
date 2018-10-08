@@ -26,6 +26,9 @@ func InitGenesis(ctx sdk.Context, keeper keeper.Keeper, data GenesisState) ([]ab
 	var abciVals []abci.Validator
 	fmt.Println("Genesis Pool", data.Pool)
 	fmt.Println("Genesis Param", data.Params)
+
+	//keeper.SetPool(ctx, data.Pool)
+
 	for _, validator := range data.Validators {
 
 		if validator.DelegatorShares.IsZero() {

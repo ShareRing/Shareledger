@@ -157,3 +157,25 @@ func GenerateKeyPair() (PubKeySecp256k1, PrivKeySecp256k1) {
 	return pubKey, privKey
 
 }
+
+// convert from Tendermint PubKey to ShareLedger PubKey
+func ConvertToPubKey(pubKey []byte) PubKeySecp256k1 {
+
+	// Convert to Tendermint PubKeySecp256k1
+	// Tendermint use compressed version
+	// We need to convert to non-compressed version
+	// tmPubKey, ok := pubKey.(crypto.PubKeySecp256k1)
+	// if !ok {
+	// panic("Key is not of type crypto.PubKeySecp156k1")
+	// }
+
+	// Convert to PubKey in btcec
+	// btPubKey, err := secp256k1.ParsePubKey(tmPubKey[:], secp256k1.S256())
+	btPubKey, err := secp256k1.ParsePubKey(pubKey[:], secp256k1.S256())
+
+	if err != nil {
+		panic("Cannot parse PubKey in Secp256k1")
+	}
+
+	return NewPubKeySecp256k1(btPubKey.SerializeUncompressed())
+}
