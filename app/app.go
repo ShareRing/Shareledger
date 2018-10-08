@@ -88,8 +88,10 @@ func NewShareLedgerApp(logger log.Logger, db dbm.DB) *ShareLedgerApp {
 	cdc = auth.RegisterCodec(cdc)
 
 	// Register InitChain
-	// logger.Info("Register Init Chainer")
-	// baseApp.SetInitChainer(InitChainer(cdc, accountMapper))
+	logger.Info("Register Init Chainer")
+	baseApp.SetInitChainer(InitChainer(cdc, accountMapper))
+	baseApp.SetEndBlocker(EndBlocker(accountMapper))
+	baseApp.SetBeginBlocker(BeginBlocker)
 
 	return &ShareLedgerApp{
 		BaseApp:    baseApp,
@@ -112,10 +114,10 @@ func InitChainer(cdc *wire.Codec, accountMapper auth.AccountMapper) sdk.InitChai
 		fmt.Printf("RequestInitChain.AppStateBytes: %v\n", req.AppStateBytes)
 
 		var genesisState GenesisState
-		fmt.Printf("stateJSON=%s\n", stateJSON)
+		// fmt.Printf("stateJSON=%s\n", stateJSON)
 
 		err := cdc.UnmarshalJSON(stateJSON, &genesisState)
-		fmt.Printf("req=%v\n", genesisState)
+		// fmt.Printf("req=%v\n", genesisState)
 		if err != nil {
 			panic(err)
 		}
@@ -137,15 +139,48 @@ func InitChainer(cdc *wire.Codec, accountMapper auth.AccountMapper) sdk.InitChai
 	}
 }
 
+func BeginBlocker(ctx sdk.Context, req abci.RequestBeginBlock) (res abci.ResponseBeginBlock) {
+
+	// Save BlockHeader and Height to Context
+	ctx.WithBlockHeader(req.Header).WithBlockHeight(req.Header.Height)
+
+	return
+}
+
 // application updates every end block
+func EndBlocker(am auth.AccountMapper) sdk.EndBlocker {
+	return func(ctx sdk.Context, req abci.RequestEndBlock) abci.ResponseEndBlock {
 
-func EndBlocker(ctx sdk.Context, req abci.RequestEndBlock) abci.ResponseEndBlock {
+		proposer := ctx.BlockHeader().Proposer
+		pubKey := types.ConvertToPubKey(proposer.PubKey.GetData())
 
-	validatorUpdates := pos.EndBlocker(ctx, keeper.Keeper{})
-	// Add these new validators to the addr -> pubkey map.
+		address := pubKey.Address()
 
-	return abci.ResponseEndBlock{
-		ValidatorUpdates: validatorUpdates,
+		constants.LOGGER.Info("Block Forger", "BlockForger", address)
+
+		acc := am.GetAccount(ctx, address)
+
+		if acc == nil {
+			shrAcc := auth.NewSHRAccountWithAddress(address)
+			acc = shrAcc
+		}
+
+		balance := acc.GetCoins()
+		balanceAfter := balance.Plus(types.NewCoin("SHR", 10))
+
+		acc.SetCoins(balanceAfter)
+		am.SetAccount(ctx, acc)
+
+		constants.LOGGER.Info("Balance updated for Block Forger", "before", balance, "after", balanceAfter)
+
+		validatorUpdates := pos.EndBlocker(ctx, keeper.Keeper{})
+
+		// Add these new validators to the addr -> pubkey map.
+
+		return abci.ResponseEndBlock{
+			ValidatorUpdates: validatorUpdates,
+		}
+
 	}
 }
 

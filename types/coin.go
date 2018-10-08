@@ -126,7 +126,6 @@ func (coins *Coins) Plus(other Coin) Coins {
 	}
 	var ret []Coin
 	for _, e := range *coins {
-		fmt.Println(e)
 		if e.IsSameDenom(other) {
 			ret = append(ret, e.Plus(other))
 		} else {
