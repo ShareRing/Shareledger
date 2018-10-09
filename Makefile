@@ -21,10 +21,17 @@ build:
 	${PREFIX} go build $(BUILD_FLAGS) -o build/main$(SUFFIX) cmd/main.go
 	${PREFIX} go build $(BUILD_FLAGS) -o build/test$(SUFFIX) cmd/test.go
 	${PREFIX} go build $(BUILD_FLAGS) -o build/testAmino$(SUFFIX) cmd/testAmino.go
+	${PREFIX} go build $(BUILD_FLAGS) -o build/genesis$(SUFFIX) cmd/genesis/main.go
 
 build_linux:
 	${PREFIX} env GOOS=linux GOARCH=amd64 go build $(BUILD_FLAGS) -o build/main_linux$(SUFFIX) cmd/main.go
 	${PREFIX} env GOOS=linux GOARCH=amd64 go build $(BUILD_FLAGS) -o build/test_linux$(SUFFIX) cmd/test.go
+
+build_rp:
+	${PREFIX} env GOOS=linux GOARCH=arm GOARM=7 go build $(BUILD_FLAGS) -o build/main_linux$(SUFFIX) cmd/main.go
+	${PREFIX} env GOOS=linux GOARCH=arm GOARM=7 go build $(BUILD_FLAGS) -o build/test_linux$(SUFFIX) cmd/test.go
+
+
 
 ############################################
 ### Tools & dependencies
