@@ -4,7 +4,6 @@ import (
 	"fmt"
 
 	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
-	"bitbucket.org/shareringvn/cosmos-sdk/wire"
 	"github.com/sharering/shareledger/types"
 	"github.com/sharering/shareledger/x/auth"
 )
@@ -13,99 +12,123 @@ type Keeper struct {
 	am auth.AccountMapper
 }
 
-func NewKeeper(bankKey sdk.StoreKey, _am auth.AccountMapper, cdc *wire.Codec) Keeper {
+func NewKeeper(_am auth.AccountMapper) Keeper {
 	return Keeper{am: _am}
 }
 
-func (k Keeper) SubtractCoins(ctx sdk.Context, addr sdk.Address, amt types.Coins)
-	(types.Coins, sdk.Error) {
+func (k Keeper) SubtractCoins(
+	ctx sdk.Context,
+	addr sdk.Address,
+	amt types.Coins,
+) (types.Coins, sdk.Error) {
 
 		return substractCoins(ctx, k.am, addr, amt)
 }
 
-func (k Keeper) AddCoins(ctx sdk.Context, addr sdk.Address, amt types.Coins) 
-	(types.Coins, sdk.Error){
+func (k Keeper) AddCoins(
+	ctx sdk.Context,
+	addr sdk.Address,
+	amt types.Coins,
+) (types.Coins, sdk.Error) {
 
-		return addCoins(ctx, k.am, addr, amt)
+	return addCoins(ctx, k.am, addr, amt)
 }
 
+func (k Keeper) SubtractCoin(
+	ctx sdk.Context,
+	addr sdk.Address,
+	amt types.Coin,
+) (types.Coins, sdk.Error) {
 
-func (k Keeper) SubtractCoin(ctx sdk.Context, addr sdk.Address, amt types.Coin)
-	(types.Coins, sdk.Error){
-
-		return subtractCoin(ctx, k.am, addr, amt)
+	return subtractCoin(ctx, k.am, addr, amt)
 }
 
-func (k Keeper) AddCoins(ctx sdk.Context, addr sdk.Address, amt types.Coins) 
-	(types.Coins, sdk.Error){
+func (k Keeper) AddCoin(
+	ctx sdk.Context,
+	addr sdk.Address,
+	amt types.Coin,
+) (types.Coins, sdk.Error) {
 
-		return addCoin(ctx, k.am, addr, amt)
+	return addCoin(ctx, k.am, addr, amt)
 }
 
-func subtractCoin(ctx sdk.Context, am auth.AccountMapper, addr sdk.Address, amt types.Coins)
-	(types.Coin, sdk.Error){
+func subtractCoin(
+	ctx sdk.Context,
+	am auth.AccountMapper,
+	addr sdk.Address,
+	amt types.Coin,
+) (types.Coins, sdk.Error) {
 
-		oldCoins := getCoins(ctx, am, addr)
+	oldCoins := getCoins(ctx, am, addr)
 
-		newCoins := oldCoins.Minus(amt)
+	newCoins := oldCoins.Minus(amt)
 
-		if !newCoins.IsNotNegative() {
-			return amt, nil, sdk.ErrInsufficientCoins(fmt.Sprintf("%s < %s", oldCoins, amt))
-		}
+	if !newCoins.IsNotNegative() {
+		return oldCoins, sdk.ErrInsufficientCoins(fmt.Sprintf("%s < %s", oldCoins, amt))
+	}
 
-		err := setCoins(ctx, am, addr, newCoins)
+	err := setCoins(ctx, am, addr, newCoins)
 
-		return newCoins, err
+	return newCoins, err
 
 }
 
-func substractCoins(ctx sdk.Context, am auth.AccountMapper, addr sdk.Address, amt types.Coins) 
-	(types.Coins, sdk.Error) {
+func substractCoins(
+	ctx sdk.Context,
+	am auth.AccountMapper,
+	addr sdk.Address,
+	amt types.Coins,
+) (types.Coins, sdk.Error) {
 
-		oldCoins := getCoins(ctx, am, addr)
+	oldCoins := getCoins(ctx, am, addr)
 
-		newCoins := oldCoins.MinusMany(amt)
+	newCoins := oldCoins.MinusMany(amt)
 
-		if !newCoins.IsNotNegative() {
-			return amt, nil, sdk.ErrInsufficientCoins(fmt.Sprintf("%s < %s", oldCoins, amt))
-		}
+	if !newCoins.IsNotNegative() {
+		return oldCoins, sdk.ErrInsufficientCoins(fmt.Sprintf("%s < %s", oldCoins, amt))
+	}
 
-		err := setCoins(ctx, am, addr, newCoins)
+	err := setCoins(ctx, am, addr, newCoins)
 
-		return newCoins, err
+	return newCoins, err
 }
 
-func addCoin(ctx sdk.Context, am auth.AccountMapper, addr sdk.Address, amt types.Coins)
-	(types.Coins, sdk.Error){
+func addCoin(
+	ctx sdk.Context,
+	am auth.AccountMapper,
+	addr sdk.Address,
+	amt types.Coin,
+) (types.Coins, sdk.Error) {
 
-		oldCoins := getCoins(ctx, am, addr)
+	oldCoins := getCoins(ctx, am, addr)
 
-		newCoins := oldCoins.Plus(amt)
+	newCoins := oldCoins.Plus(amt)
 
-		if !newCoins.IsNotNegative() {
-			return amt, nil, sdk.ErrInsufficientCoins(fmt.Sprintf("Error during coins addition: %s + %s", oldCoins, amt))
-		}
+	if !newCoins.IsNotNegative() {
+		return oldCoins, sdk.ErrInsufficientCoins(fmt.Sprintf("Error during coins addition: %s + %s", oldCoins, amt))
+	}
 
-
-		err := setCoins(ctx, am, addr, newCoins)
-		return newCoins, err
+	err := setCoins(ctx, am, addr, newCoins)
+	return newCoins, err
 }
 
+func addCoins(
+	ctx sdk.Context,
+	am auth.AccountMapper,
+	addr sdk.Address,
+	amt types.Coins,
+) (types.Coins, sdk.Error) {
 
-func addCoins(ctx sdk.Context, am auth.AccountMapper, addr sdk.Address, amt types.Coins)
-	(types.Coins, sdk.Error){
+	oldCoins := getCoins(ctx, am, addr)
 
-		oldCoins := getCoins(ctx, am, addr)
+	newCoins := oldCoins.PlusMany(amt)
 
-		newCoins := oldCoins.PlusMany(amt)
+	if !newCoins.IsNotNegative() {
+		return oldCoins, sdk.ErrInsufficientCoins(fmt.Sprintf("Error during coins addition: %s + %s", oldCoins, amt))
+	}
 
-		if !newCoins.IsNotNegative() {
-			return amt, nil, sdk.ErrInsufficientCoins(fmt.Sprintf("Error during coins addition: %s + %s", oldCoins, amt))
-		}
-
-
-		err := setCoins(ctx, am, addr, newCoins)
-		return newCoins, err
+	err := setCoins(ctx, am, addr, newCoins)
+	return newCoins, err
 }
 
 //______________________________________________________________________________________________
