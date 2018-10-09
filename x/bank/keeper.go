@@ -13,7 +13,7 @@ type Keeper struct {
 	am auth.AccountMapper
 }
 
-func NewKeeper(bankKey sdk.StoreKey, _am auth.AccountMapper, cdc *wire.Codec) Keeper {
+func NewKeeper(_am auth.AccountMapper) Keeper {
 	return Keeper{am: _am}
 }
 
