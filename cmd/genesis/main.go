@@ -69,6 +69,7 @@ func generateGenesisFile(filePath string, genesisState []byte, pubKey crypto.Pub
 
 func main() {
 	homeDir := os.Getenv("HOME")
+
 	// reading priv_validator
 	genesisState, pubKey := generateGenesisState(homeDir + ConfigDir + PrivateValidatorFile)
 
