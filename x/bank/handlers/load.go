@@ -5,7 +5,6 @@ import (
 
 	"github.com/sharering/shareledger/x/auth"
 	"github.com/sharering/shareledger/x/bank/messages"
-	"github.com/sharering/shareledger/constants"
 )
 
 //--------------------------------
@@ -17,8 +16,7 @@ func HandleMsgLoad(am auth.AccountMapper) sdk.Handler {
 
 		// IMPORTANT
 		// TODO: require a list of limited accounts which are priviledged to load coins
-		signer := auth.GetSigner(ctx)
-		constants.LOGGER.Info("Signer", "signer", signer)
+		// signer := auth.GetSigner(ctx)
 
 		if !ok {
 			return sdk.NewError(2, 1, "MsgLoad is malformed").Result()

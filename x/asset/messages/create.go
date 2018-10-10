@@ -7,6 +7,7 @@ import (
 
 	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
 	"github.com/sharering/shareledger/constants"
+	"github.com/sharering/shareledger/types"
 )
 
 type MsgCreate struct {
@@ -70,4 +71,26 @@ func (msg MsgCreate) Tags() sdk.Tags {
 		AppendTag("asset.Hash", []byte(msg.Hash)).
 		AppendTag("asset.Status", []byte(strconv.FormatBool(msg.Status))).
 		AppendTag("asset.Fee", []byte(strconv.Itoa(int(msg.Fee))))
+}
+
+//------------------------------------------
+// Testing purpose
+
+func GetMsgCreate() MsgCreate {
+	pubKey, _ := types.GenerateKeyPair()
+
+	address := pubKey.Address()
+	hash := []byte("111111")
+	fee := int64(1)
+	status := true
+	uuid := "112233"
+
+	msgCreate := NewMsgCreate(
+		address,
+		hash,
+		uuid,
+		status,
+		fee,
+	)
+	return msgCreate
 }
