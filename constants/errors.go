@@ -23,3 +23,7 @@ const SHRACCOUNT_INVALID_ADDRESS = "Invalid address."
 // Proto Error
 const ACCOUNT_INVALID_STRUCT = "accountMapper requires a struct proto BaseAccount, or a pointer to one"
 const ACCOUNT_INVALID_INTERFACE = "accountMapper requries a proto BaseAccount, but %v doesn't implement BaseAccount interface."
+
+// Tx Fee Calculation
+const INSUFFICIENT_BALANCE = "Account %s has insufficient balance."
+const INVALID_TX_FEE = "Invalid transaction fee %s"
