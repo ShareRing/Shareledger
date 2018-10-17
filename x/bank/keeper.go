@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
-	"bitbucket.org/shareringvn/cosmos-sdk/wire"
+	//	"bitbucket.org/shareringvn/cosmos-sdk/wire"
 	"github.com/sharering/shareledger/types"
 	"github.com/sharering/shareledger/x/auth"
 )

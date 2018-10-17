@@ -19,7 +19,6 @@ type MsgCreateValidator struct {
 	Delegation    types.Coin   `json:"delegation"`
 }
 
-// MsgSend implements sdk.Msg
 var _ sdk.Msg = MsgCreateValidator{}
 
 // Type Implements Msg
@@ -43,13 +42,14 @@ func (msg MsgCreateValidator) GetSigners() []sdk.Address {
 // get the bytes for the message signer to sign on
 func (msg MsgCreateValidator) GetSignBytes() []byte {
 	b, err := json.Marshal(struct {
-		Description   posTypes.Description
-		DelegatorAddr sdk.Address  `json:"delegator_address"`
-		ValidatorAddr sdk.Address  `json:"validator_address"`
-		PubKey        types.PubKey `json:"pubkey"`
-		Delegation    types.Coin   `json:"delegation"`
+		Description   posTypes.Description `json:"description"`
+		DelegatorAddr sdk.Address          `json:"delegatorAddress"`
+		ValidatorAddr sdk.Address          `json:"validatorAddress"`
+		PubKey        types.PubKey         `json:"pubKey"`
+		Delegation    types.Coin           `json:"delegation"`
 	}{
 		Description:   msg.Description,
+		DelegatorAddr: msg.DelegatorAddr,
 		ValidatorAddr: msg.ValidatorAddr,
 		PubKey:        msg.PubKey,
 		Delegation:    msg.Delegation,
@@ -57,6 +57,7 @@ func (msg MsgCreateValidator) GetSignBytes() []byte {
 	if err != nil {
 		panic(err)
 	}
+
 	return b //sdk.MustSortJSON(b)
 }
 

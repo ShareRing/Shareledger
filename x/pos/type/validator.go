@@ -288,6 +288,15 @@ func UnmarshalValidator(cdc *wire.Codec, owner sdk.Address, value []byte) (valid
 	}, nil
 }
 
+// unmarshal a redelegation from a store key and value
+func MustUnmarshalValidator(cdc *wire.Codec, operatorAddr, value []byte) Validator {
+	validator, err := UnmarshalValidator(cdc, operatorAddr, value)
+	if err != nil {
+		panic(err)
+	}
+	return validator
+}
+
 // return the redelegation without fields contained within the key for the store
 func MustMarshalValidator(cdc *wire.Codec, validator Validator) []byte {
 	val := validatorValue{
