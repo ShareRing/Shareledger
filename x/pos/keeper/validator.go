@@ -3,10 +3,10 @@ package keeper
 // import (
 // 	"container/list"
 
-	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
-	types "github.com/sharering/shareledger/types"
-	posTypes "github.com/sharering/shareledger/x/pos/type"
-)
+// 	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
+// 	types "github.com/sharering/shareledger/types"
+// 	posTypes "github.com/sharering/shareledger/x/pos/type"
+// )
 
 // // Cache the amino decoding of validators, as it can be the case that repeated slashing calls
 // // cause many calls to GetValidator, which were shown to throttle the state machine in our
@@ -64,19 +64,19 @@ package keeper
 // }
 
 // Update the tokens of an existing validator, update the validators power index key
-func (k Keeper) AddValidatorTokensAndShares(ctx sdk.Context, validator posTypes.Validator,
-	tokensToAdd int64) (valOut posTypes.Validator, addedShares types.Dec) {
-	pool := posTypes.InitialPool()
-	//pool := k.GetPool(ctx)
-	//k.DeleteValidatorByPowerIndex(ctx, validator, pool)
-	validator, pool, addedShares = validator.AddTokensFromDel(pool, tokensToAdd)
-	// increment the intra-tx counter
-	// in case of a conflict, the validator which least recently changed power takes precedence
-	//counter := k.GetIntraTxCounter(ctx)
-	//validator.BondIntraTxCounter = counter
-	//k.SetIntraTxCounter(ctx, counter+1)
-	k.SetValidator(ctx, validator)
-	//k.SetPool(ctx, pool)
-	//k.SetValidatorByPowerIndex(ctx, validator, pool)
-	return validator, addedShares
-}
+// func (k Keeper) AddValidatorTokensAndShares(ctx sdk.Context, validator posTypes.Validator,
+// 	tokensToAdd int64) (valOut posTypes.Validator, addedShares types.Dec) {
+// 	pool := posTypes.InitialPool()
+// 	//pool := k.GetPool(ctx)
+// 	//k.DeleteValidatorByPowerIndex(ctx, validator, pool)
+// 	validator, pool, addedShares = validator.AddTokensFromDel(pool, tokensToAdd)
+// 	// increment the intra-tx counter
+// 	// in case of a conflict, the validator which least recently changed power takes precedence
+// 	//counter := k.GetIntraTxCounter(ctx)
+// 	//validator.BondIntraTxCounter = counter
+// 	//k.SetIntraTxCounter(ctx, counter+1)
+// 	k.SetValidator(ctx, validator)
+// 	//k.SetPool(ctx, pool)
+// 	//k.SetValidatorByPowerIndex(ctx, validator, pool)
+// 	return validator, addedShares
+// }
