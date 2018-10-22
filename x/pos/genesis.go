@@ -6,11 +6,11 @@ import (
 	"github.com/pkg/errors"
 
 	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
-	"github.com/sharering/shareledger/x/pos/keeper"
-	posTypes "github.com/sharering/shareledger/x/pos/type"
 	abci "github.com/tendermint/abci/types"
 
 	"github.com/sharering/shareledger/types"
+	"github.com/sharering/shareledger/x/pos/keeper"
+	posTypes "github.com/sharering/shareledger/x/pos/type"
 )
 
 // GenesisState - all staking state that must be provided at genesis

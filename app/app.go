@@ -158,8 +158,13 @@ func BeginBlocker(ctx sdk.Context, req abci.RequestBeginBlock) (res abci.Respons
 func EndBlocker(am auth.AccountMapper) sdk.EndBlocker {
 	return func(ctx sdk.Context, req abci.RequestEndBlock) abci.ResponseEndBlock {
 
-		//proposer := ctx.BlockHeader().Proposer
-		//pubKey := types.ConvertToPubKey(proposer.PubKey.GetData())
+		proposer := ctx.BlockHeader().Proposer
+		fmt.Printf("Proposer: %v\n", proposer)
+		fmt.Printf("Proposer PubKey: %v\n", proposer.PubKey)
+		if len(proposer.PubKey.GetData()) > 1 {
+			pubKey := types.ConvertToPubKey(proposer.PubKey.GetData())
+			fmt.Printf("Address: %s\n", pubKey.Address())
+		}
 
 		validatorUpdates := pos.EndBlocker(ctx, pKeeper.Keeper{})
 		// Add these new validators to the addr -> pubkey map.
