@@ -208,13 +208,7 @@ func SetupBank(app *bapp.BaseApp, cdc *wire.Codec, am auth.AccountMapper) bank.K
 	// Bank module
 	// Create a key for accessing the account store.
 	cdc = bank.RegisterCodec(cdc)
-<<<<<<< HEAD
-	bankKeeper := bank.NewKeeper(am)
-||||||| merged common ancestors
-	bankKeeper := bank.NewKeeper(bankKey, am, cdc)
-=======
 	bankKeeper := bank.NewKeeper(am /*, cdc*/)
->>>>>>> feature/pos
 	// Register message routes.
 	// Note the handler gets access to the account store.
 	app.Router().
@@ -253,23 +247,9 @@ func SetupBooking(app *bapp.BaseApp, cdc *wire.Codec, bookingKey *sdk.KVStoreKey
 }
 
 func SetupPOS(app *bapp.BaseApp, cdc *wire.Codec, posKey *sdk.KVStoreKey,
-<<<<<<< HEAD
-	bk bank.Keeper, am auth.AccountMapper, bankKeeper bank.Keeper) {
-
-	//cdc = booking.RegisterCodec(cdc)
-	// k := pKeeper.NewKeeper(posKey, bankKeeper, cdc)
-	// app.Router().AddRoute("pos", pos.NewHandler(k))
-||||||| merged common ancestors
-	bk bank.Keeper, am auth.AccountMapper, bankKeeper bank.Keeper) {
-
-	//cdc = booking.RegisterCodec(cdc)
-	k := pKeeper.NewKeeper(posKey, bankKeeper, cdc)
-	app.Router().AddRoute("pos", pos.NewHandler(k))
-=======
 	bankKeeper bank.Keeper, am auth.AccountMapper) {
 	cdc = pos.RegisterCodec(cdc)
 	k := pKeeper.NewKeeper(posKey, bankKeeper, cdc)
 	app.Router().AddRoute("pos", pos.NewHandler(k))
->>>>>>> feature/pos
 
 }
