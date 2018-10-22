@@ -109,7 +109,7 @@ func handleTo(ctx sdk.Context, am auth.AccountMapper, to sdk.Address, amt types.
 
 	// Save to AccountMapper
 	am.SetAccount(ctx, acc)
-
+	fmt.Println("acc.GetCoins().String()=", acc.GetCoins().String())
 	return sdk.Result{
 		Log: acc.GetCoins().String(),
 	}

@@ -35,19 +35,6 @@ build_rpi:
 	${PREFIX} env GOOS=linux GOARCH=arm GOARM=7 go build $(BUILD_FLAGS) -o build/testAmino_rpi$(SUFFIX) cmd/testAmino.go
 	${PREFIX} env GOOS=linux GOARCH=arm GOARM=7 go build $(BUILD_FLAGS) -o build/stresstest_rpi cmd/stress-test/main.go
 
-
-build_rp:
-	${PREFIX} env GOOS=linux GOARCH=arm GOARM=7 go build $(BUILD_FLAGS) -o build/main_linux$(SUFFIX) cmd/main.go
-	${PREFIX} env GOOS=linux GOARCH=arm GOARM=7 go build $(BUILD_FLAGS) -o build/test_linux$(SUFFIX) cmd/test.go
-
-
-
-build_rp:
-	${PREFIX} env GOOS=linux GOARCH=arm GOARM=7 go build $(BUILD_FLAGS) -o build/main_linux$(SUFFIX) cmd/main.go
-	${PREFIX} env GOOS=linux GOARCH=arm GOARM=7 go build $(BUILD_FLAGS) -o build/test_linux$(SUFFIX) cmd/test.go
-
-
-
 ############################################
 ### Tools & dependencies
 ############################################

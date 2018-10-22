@@ -64,7 +64,7 @@ func NewShareLedgerApp(logger log.Logger, db dbm.DB) *ShareLedgerApp {
 
 	// Mount Store
 
-	baseApp.MountStoresIAVL(authKey, assetKey, bookingKey)
+	baseApp.MountStoresIAVL(authKey, assetKey, bookingKey, posKey)
 	err := baseApp.LoadLatestVersion(authKey)
 	if err != nil {
 		cmn.Exit(err.Error())
@@ -80,6 +80,7 @@ func NewShareLedgerApp(logger log.Logger, db dbm.DB) *ShareLedgerApp {
 	SetupAsset(baseApp, cdc, assetKey)
 	bankKeeper := SetupBank(baseApp, cdc, accountMapper)
 	SetupBooking(baseApp, cdc, bookingKey, assetKey, accountMapper)
+	SetupPOS(baseApp, cdc, posKey, bankKeeper, accountMapper)
 
 	// Determine how transactions are decoded.
 	//baseApp.SetTxDecoder(types.GetTxDecoder(cdc))
@@ -94,7 +95,7 @@ func NewShareLedgerApp(logger log.Logger, db dbm.DB) *ShareLedgerApp {
 
 	// Register InitChain
 	logger.Info("Register Init Chainer")
-	baseApp.SetInitChainer(InitChainer(cdc, accountMapper))
+	//baseApp.SetInitChainer(InitChainer(cdc, accountMapper))
 	baseApp.SetEndBlocker(EndBlocker(accountMapper))
 	baseApp.SetBeginBlocker(BeginBlocker)
 
@@ -163,11 +164,16 @@ func EndBlocker(am auth.AccountMapper) sdk.EndBlocker {
 		proposer := ctx.BlockHeader().Proposer
 		fmt.Printf("Proposer: %v\n", proposer)
 		fmt.Printf("Proposer PubKey: %v\n", proposer.PubKey)
-		pubKey := types.ConvertToPubKey(proposer.PubKey.GetData())
+		if len(proposer.PubKey.GetData()) > 1 {
+			pubKey := types.ConvertToPubKey(proposer.PubKey.GetData())
+			fmt.Printf("Address: %s\n", pubKey.Address())
+		}
 
-		fmt.Printf("Address: %s\n", pubKey.Address())
-
-		// validatorUpdates := pos.EndBlocker(ctx, pKeeper.Keeper{})
+		validatorUpdates := pos.EndBlocker(ctx, pKeeper.Keeper{})
+		// Add these new validators to the addr -> pubkey map.
+		return abci.ResponseEndBlock{
+			ValidatorUpdates: validatorUpdates,
+		}
 
 		// Add these new validators to the addr -> pubkey map.
 		return abci.ResponseEndBlock{}
@@ -202,7 +208,13 @@ func SetupBank(app *bapp.BaseApp, cdc *wire.Codec, am auth.AccountMapper) bank.K
 	// Bank module
 	// Create a key for accessing the account store.
 	cdc = bank.RegisterCodec(cdc)
+<<<<<<< HEAD
 	bankKeeper := bank.NewKeeper(am)
+||||||| merged common ancestors
+	bankKeeper := bank.NewKeeper(bankKey, am, cdc)
+=======
+	bankKeeper := bank.NewKeeper(am /*, cdc*/)
+>>>>>>> feature/pos
 	// Register message routes.
 	// Note the handler gets access to the account store.
 	app.Router().
@@ -241,10 +253,23 @@ func SetupBooking(app *bapp.BaseApp, cdc *wire.Codec, bookingKey *sdk.KVStoreKey
 }
 
 func SetupPOS(app *bapp.BaseApp, cdc *wire.Codec, posKey *sdk.KVStoreKey,
+<<<<<<< HEAD
 	bk bank.Keeper, am auth.AccountMapper, bankKeeper bank.Keeper) {
 
 	//cdc = booking.RegisterCodec(cdc)
 	// k := pKeeper.NewKeeper(posKey, bankKeeper, cdc)
 	// app.Router().AddRoute("pos", pos.NewHandler(k))
+||||||| merged common ancestors
+	bk bank.Keeper, am auth.AccountMapper, bankKeeper bank.Keeper) {
+
+	//cdc = booking.RegisterCodec(cdc)
+	k := pKeeper.NewKeeper(posKey, bankKeeper, cdc)
+	app.Router().AddRoute("pos", pos.NewHandler(k))
+=======
+	bankKeeper bank.Keeper, am auth.AccountMapper) {
+	cdc = pos.RegisterCodec(cdc)
+	k := pKeeper.NewKeeper(posKey, bankKeeper, cdc)
+	app.Router().AddRoute("pos", pos.NewHandler(k))
+>>>>>>> feature/pos
 
 }
