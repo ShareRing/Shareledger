@@ -43,7 +43,13 @@ type ShareLedgerApp struct {
 	posKey     *sdk.KVStoreKey
 	bankKey    *sdk.KVStoreKey
 	//accountKey *sdk.KVStoreKey
-	bankKeeper bank.Keeper
+
+	//keepers
+	bankKeeper    bank.Keeper
+	posKeeper     pKeeper.Keeper
+	bookingKeeper booking.Keeper
+	assetKeeper   asset.Keeper
+
 	// Manage getting and setting accounts
 	accountMapper auth.AccountMapper
 }
@@ -77,42 +83,44 @@ func NewShareLedgerApp(logger log.Logger, db dbm.DB) *ShareLedgerApp {
 		&auth.SHRAccount{},
 	)
 
-	SetupAsset(baseApp, cdc, assetKey)
-	bankKeeper := SetupBank(baseApp, cdc, accountMapper)
-	SetupBooking(baseApp, cdc, bookingKey, assetKey, accountMapper)
-	SetupPOS(baseApp, cdc, posKey, bankKeeper, accountMapper)
-
 	// Determine how transactions are decoded.
 	//baseApp.SetTxDecoder(types.GetTxDecoder(cdc))
-	baseApp.SetTxDecoder(auth.GetTxDecoder(cdc))
-	baseApp.SetAnteHandler(auth.NewAnteHandler(accountMapper))
-	baseApp.Router().
+
+	app := &ShareLedgerApp{
+		BaseApp:    baseApp,
+		cdc:        cdc,
+		assetKey:   assetKey,
+		bookingKey: bookingKey,
+		posKey:     posKey,
+		//accountKey:    accountKey,
+		accountMapper: accountMapper,
+	}
+	app.SetupAsset(assetKey)
+	app.SetupBank(accountMapper)
+	app.SetupPOS(posKey, accountMapper)
+	app.SetupBooking(bookingKey, assetKey, accountMapper)
+
+	app.SetTxDecoder(auth.GetTxDecoder(cdc))
+	app.SetAnteHandler(auth.NewAnteHandler(accountMapper))
+	app.Router().
 		AddRoute(constants.MESSAGE_AUTH, auth.NewHandler(accountMapper))
 	cdc = auth.RegisterCodec(cdc)
 
 	// Set Tx Fee Calculation
-	baseApp.SetFeeHandler(fee.NewFeeHandler(accountMapper))
+	app.SetFeeHandler(fee.NewFeeHandler(accountMapper))
 
 	// Register InitChain
 	logger.Info("Register Init Chainer")
-	//baseApp.SetInitChainer(InitChainer(cdc, accountMapper))
-	baseApp.SetEndBlocker(EndBlocker(accountMapper))
-	baseApp.SetBeginBlocker(BeginBlocker)
+	app.SetInitChainer(app.InitChainer(accountMapper))
+	app.SetEndBlocker(EndBlocker(accountMapper))
+	app.SetBeginBlocker(BeginBlocker)
 
-	return &ShareLedgerApp{
-		BaseApp:    baseApp,
-		assetKey:   assetKey,
-		bookingKey: bookingKey,
-		posKey:     posKey,
-		bankKeeper: bankKeeper,
-		//accountKey:    accountKey,
-		accountMapper: accountMapper,
-	}
+	return app
 }
 
 // InitChainer will set initial balances for accounts as well as initial coin metadata
 
-func InitChainer(cdc *wire.Codec, accountMapper auth.AccountMapper) sdk.InitChainer {
+func (app *ShareLedgerApp) InitChainer(accountMapper auth.AccountMapper) sdk.InitChainer {
 	return func(ctx sdk.Context, req abci.RequestInitChain) abci.ResponseInitChain {
 		stateJSON := req.AppStateBytes
 		fmt.Printf("RequestInitChain.Time: %v\n", req.Time)
@@ -124,7 +132,7 @@ func InitChainer(cdc *wire.Codec, accountMapper auth.AccountMapper) sdk.InitChai
 		var genesisState GenesisState
 		// fmt.Printf("stateJSON=%s\n", stateJSON)
 
-		err := cdc.UnmarshalJSON(stateJSON, &genesisState)
+		err := app.cdc.UnmarshalJSON(stateJSON, &genesisState)
 		// fmt.Printf("req=%v\n", genesisState)
 		if err != nil {
 			panic(err)
@@ -133,7 +141,7 @@ func InitChainer(cdc *wire.Codec, accountMapper auth.AccountMapper) sdk.InitChai
 		// load the accounts - TODO
 
 		// load the initial POS information
-		abciVals, err := pos.InitGenesis(ctx, pKeeper.Keeper{}, genesisState.StakeData)
+		abciVals, err := pos.InitGenesis(ctx, app.posKeeper, genesisState.StakeData)
 		if err != nil {
 			panic(err)
 		}
@@ -204,24 +212,23 @@ func MakeCodec() *wire.Codec {
 	return cdc
 }
 
-func SetupBank(app *bapp.BaseApp, cdc *wire.Codec, am auth.AccountMapper) bank.Keeper {
+func (app *ShareLedgerApp) SetupBank(am auth.AccountMapper) {
 	// Bank module
 	// Create a key for accessing the account store.
-	cdc = bank.RegisterCodec(cdc)
-	bankKeeper := bank.NewKeeper(am /*, cdc*/)
+	app.cdc = bank.RegisterCodec(app.cdc)
+	app.bankKeeper = bank.NewKeeper(am /*, cdc*/)
 	// Register message routes.
 	// Note the handler gets access to the account store.
 	app.Router().
 		AddRoute("bank", bank.NewHandler(am))
-	return bankKeeper
 
 }
 
-func SetupAsset(app *bapp.BaseApp, cdc *wire.Codec, assetKey *sdk.KVStoreKey) {
+func (app *ShareLedgerApp) SetupAsset(assetKey *sdk.KVStoreKey) {
 
-	keeper := asset.NewKeeper(assetKey, cdc)
+	keeper := asset.NewKeeper(assetKey, app.cdc)
 
-	cdc = asset.RegisterCodec(cdc)
+	app.cdc = asset.RegisterCodec(app.cdc)
 
 	app.Router().
 		AddRoute("asset", asset.NewHandler(keeper))
@@ -229,27 +236,31 @@ func SetupAsset(app *bapp.BaseApp, cdc *wire.Codec, assetKey *sdk.KVStoreKey) {
 	// app.MountStoresIAVL(assetKey)
 }
 
-func SetupBooking(app *bapp.BaseApp, cdc *wire.Codec, bookingKey *sdk.KVStoreKey,
+func (app *ShareLedgerApp) SetupBooking(bookingKey *sdk.KVStoreKey,
 	assetKey *sdk.KVStoreKey, am auth.AccountMapper) {
 
-	cdc = booking.RegisterCodec(cdc)
+	app.cdc = booking.RegisterCodec(app.cdc)
 
-	k := booking.NewKeeper(bookingKey,
+	app.bookingKeeper = booking.NewKeeper(bookingKey,
 		assetKey,
 		am,
-		cdc)
+		app.cdc)
 
 	app.Router().
-		AddRoute("booking", booking.NewHandler(k))
+		AddRoute("booking", booking.NewHandler(app.bookingKeeper))
 
 	// app.MountStoresIAVL(bookingKey)
 
 }
 
-func SetupPOS(app *bapp.BaseApp, cdc *wire.Codec, posKey *sdk.KVStoreKey,
-	bankKeeper bank.Keeper, am auth.AccountMapper) {
-	cdc = pos.RegisterCodec(cdc)
-	k := pKeeper.NewKeeper(posKey, bankKeeper, cdc)
-	app.Router().AddRoute("pos", pos.NewHandler(k))
+func (app *ShareLedgerApp) SetupPOS(posKey *sdk.KVStoreKey,
+	am auth.AccountMapper) {
+	app.cdc = pos.RegisterCodec(app.cdc)
+	app.posKeeper = pKeeper.NewKeeper(posKey, app.bankKeeper, app.cdc)
+	app.Router().AddRoute("pos", pos.NewHandler(app.posKeeper))
+	app.QueryRouter().
+		AddRoute("pos", pos.NewQuerier(app.posKeeper, app.cdc))
+
+	//return k
 
 }
