@@ -216,11 +216,11 @@ func (v Validator) RemoveTokens(pool Pool, tokens types.Dec) (Validator, Pool) {
 
 // XXX Audit this function further to make sure it's correct
 // add tokens to a validator
-func (v Validator) AddTokensFromDel(pool Pool, amount int64) (Validator, Pool, types.Dec) {
+func (v Validator) AddTokensFromDel(pool Pool, amount types.Dec) (Validator, Pool, types.Dec) {
 
 	// bondedShare/delegatedShare
 	exRate := v.DelegatorShareExRate()
-	amountDec := types.NewDec(amount)
+	amountDec := amount
 
 	if v.Status == types.Bonded {
 		pool = pool.looseTokensToBonded(amountDec)
