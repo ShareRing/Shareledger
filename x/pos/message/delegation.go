@@ -50,7 +50,7 @@ func (msg MsgDelegate) ValidateBasic() sdk.Error {
 	if msg.ValidatorAddr == nil {
 		return posTypes.ErrNilValidatorAddr(posTypes.DefaultCodespace)
 	}
-	if !(msg.Delegation.Amount > 0) {
+	if !(msg.Delegation.Amount.IsPositive()) {
 		return posTypes.ErrBadDelegationAmount(posTypes.DefaultCodespace)
 	}
 	return nil
