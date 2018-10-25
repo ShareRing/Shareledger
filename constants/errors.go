@@ -27,3 +27,7 @@ const ACCOUNT_INVALID_INTERFACE = "accountMapper requries a proto BaseAccount, b
 // Tx Fee Calculation
 const INSUFFICIENT_BALANCE = "Account %s has insufficient balance."
 const INVALID_TX_FEE = "Invalid transaction fee %s"
+
+// Two separators found
+const DEC_TWO_SEPARATORS = "Two separators found at %d and %d"
+const DEC_INVALID_DECIMALS = "Two many decimal digits in fractional part"

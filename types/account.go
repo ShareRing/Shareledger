@@ -1,9 +1,5 @@
 package types
 
-import (
-	"github.com/sharering/shareledger/constants"
-)
-
 type Account interface {
 	GetCoins() Coins
 	SetCoins(Coins)
@@ -21,7 +17,7 @@ type AppAccount struct {
 
 func NewDefaultAccount() AppAccount {
 	return AppAccount{
-		Coins: NewCoin(constants.DEFAULT_DENOM, constants.DEFAULT_AMOUNT),
+		Coins: NewDefaultCoin(),
 	}
 }
 

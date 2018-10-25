@@ -7,6 +7,8 @@ import (
 	"strconv"
 	"strings"
 	"testing"
+
+	"github.com/sharering/shareledger/constants"
 )
 
 // NOTE: never use new(Dec) or else we will panic unmarshalling into the
@@ -22,6 +24,8 @@ const (
 	// bytes required to represent the above precision
 	// ceil(log2(9999999999))
 	DecimalPrecisionBits = 34
+
+	Separator = '.'
 )
 
 var (
@@ -174,15 +178,17 @@ func NewDecFromStr(str string) (d Dec, err Error) {
 
 //______________________________________________________________________________________________
 //nolint
-func (d Dec) IsNil() bool       { return d.Int == nil }                 // is decimal nil
-func (d Dec) IsZero() bool      { return (d.Int).Sign() == 0 }          // is equal to zero
-func (d Dec) Equal(d2 Dec) bool { return (d.Int).Cmp(d2.Int) == 0 }     // equal decimals
-func (d Dec) GT(d2 Dec) bool    { return (d.Int).Cmp(d2.Int) > 0 }      // greater than
-func (d Dec) GTE(d2 Dec) bool   { return (d.Int).Cmp(d2.Int) >= 0 }     // greater than or equal
-func (d Dec) LT(d2 Dec) bool    { return (d.Int).Cmp(d2.Int) < 0 }      // less than
-func (d Dec) LTE(d2 Dec) bool   { return (d.Int).Cmp(d2.Int) <= 0 }     // less than or equal
-func (d Dec) Neg() Dec          { return Dec{new(big.Int).Neg(d.Int)} } // reverse the decimal sign
-func (d Dec) Abs() Dec          { return Dec{new(big.Int).Abs(d.Int)} } // absolute value
+func (d Dec) IsNil() bool         { return d.Int == nil }                 // is decimal nil
+func (d Dec) IsZero() bool        { return (d.Int).Sign() == 0 }          // is equal to zero
+func (d Dec) Equal(d2 Dec) bool   { return (d.Int).Cmp(d2.Int) == 0 }     // equal decimals
+func (d Dec) GT(d2 Dec) bool      { return (d.Int).Cmp(d2.Int) > 0 }      // greater than
+func (d Dec) GTE(d2 Dec) bool     { return (d.Int).Cmp(d2.Int) >= 0 }     // greater than or equal
+func (d Dec) LT(d2 Dec) bool      { return (d.Int).Cmp(d2.Int) < 0 }      // less than
+func (d Dec) LTE(d2 Dec) bool     { return (d.Int).Cmp(d2.Int) <= 0 }     // less than or equal
+func (d Dec) Neg() Dec            { return Dec{new(big.Int).Neg(d.Int)} } // reverse the decimal sign
+func (d Dec) Abs() Dec            { return Dec{new(big.Int).Abs(d.Int)} } // absolute value
+func (d Dec) IsPositive() bool    { return d.GT(ZeroDec()) }              // checking positivity
+func (d Dec) IsNotNegative() bool { return d.GTE(ZeroDec()) }             // checking not negativity
 
 // addition
 func (d Dec) Add(d2 Dec) Dec {
@@ -387,17 +393,29 @@ func (d Dec) MarshalAmino() (string, error) {
 		return nilAmino, nil
 	}
 	bz, err := d.Int.MarshalText()
+
+	bz = FromBig(bz, Separator, Precision)
+
 	return string(bz), err
 }
 
 // requires a valid JSON string - strings quotes and calls UnmarshalText
 func (d *Dec) UnmarshalAmino(text string) (err error) {
 	tempInt := new(big.Int)
-	err = tempInt.UnmarshalText([]byte(text))
+
+	ok, err := IsValidDec([]byte(text), Separator, Precision)
+	if !ok {
+		return err
+	}
+
+	textBytes := ToBig([]byte(text), Separator, Precision)
+
+	err = tempInt.UnmarshalText(textBytes)
 	if err != nil {
 		return err
 	}
 	d.Int = tempInt
+
 	return nil
 }
 
@@ -411,6 +429,9 @@ func (d Dec) MarshalJSON() ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
+
+	bz = FromBig(bz, Separator, Precision)
+
 	return json.Marshal(string(bz))
 }
 
@@ -425,7 +446,15 @@ func (d *Dec) UnmarshalJSON(bz []byte) error {
 	if err != nil {
 		return err
 	}
-	return d.Int.UnmarshalText([]byte(text))
+
+	ok, err := IsValidDec([]byte(text), Separator, Precision)
+	if !ok {
+		return err
+	}
+
+	textBytes := ToBig([]byte(text), Separator, Precision)
+
+	return d.Int.UnmarshalText(textBytes)
 }
 
 //___________________________________________________________________________________
@@ -464,4 +493,124 @@ func MaxDec(d1, d2 Dec) Dec {
 // intended to be used with require/assert:  require.True(DecEq(...))
 func DecEq(t *testing.T, exp, got Dec) (*testing.T, bool, string, Dec, Dec) {
 	return t, exp.Equal(got), "expected:\t%v\ngot:\t\t%v", exp, got
+}
+
+func IsValidDec(input []byte, sep byte, precision int64) (bool, error) {
+	sepPos, err := SeparatorIndex(input, sep)
+
+	if err != nil {
+		return false, err
+	}
+
+	if sepPos < int64(len(input))-precision-1 {
+		return false, fmt.Errorf(constants.DEC_INVALID_DECIMALS)
+	}
+	return true, nil
+}
+
+func SeparatorIndex(input []byte, sep byte) (int64, error) {
+	sepPos := -1
+	for idx, v := range input {
+		if v == sep {
+			// another sep is already found
+			if sepPos != -1 {
+				return 0, fmt.Errorf(constants.DEC_TWO_SEPARATORS, sepPos, idx)
+			}
+			sepPos = idx
+		}
+	}
+	return int64(sepPos), nil
+}
+
+func AddSeparator(input []byte, precision int64, sep byte) []byte {
+	// if input is less than 1.0
+	// add 0 to the front
+	if int64(len(input)) <= precision {
+		for int64(len(input)) <= precision {
+			input = append([]byte("0"), input...)
+		}
+	}
+	mark := int64(len(input)) - precision
+	output := append([]byte(""), input[:mark]...)
+	output = append(output, sep)
+	output = append(output, input[mark:]...)
+	return output
+}
+
+func RemoveSeparator(input []byte, sep byte) []byte {
+	// look for separator
+	sepPos, err := SeparatorIndex(input, sep)
+
+	if err != nil {
+		panic(err)
+	} else if sepPos != -1 {
+		output := append([]byte(""), input[:sepPos]...)
+		output = append(output, input[sepPos+1:]...)
+		return output
+	} else {
+		return input
+	}
+}
+
+func TrimZero(input []byte, sep byte) []byte {
+	sepPos, err := SeparatorIndex(input, sep)
+	// Has Separator
+	if err != nil {
+
+		panic(err)
+
+	} else if sepPos != -1 {
+
+		trim := int64(len(input))
+
+		for i := int64(len(input) - 1); i > sepPos; i-- {
+			// looking for 0 after separator
+			if input[i] == 48 {
+				trim = i
+			} else {
+				break
+			}
+		}
+
+		// if trim up to separator, remove also separator
+		if trim == sepPos+1 {
+			trim = sepPos
+		}
+		input = append([]byte(""), input[:trim]...)
+	}
+
+	return input
+}
+
+func AddZero(input []byte, precision int64, sep byte) []byte {
+	// look for sep
+	sepPos, err := SeparatorIndex(input, sep)
+
+	if err != nil {
+		panic(err)
+	} else {
+		if sepPos == -1 {
+			sepPos = int64(len(input) - 1)
+		}
+	}
+
+	// number of zero to be added
+	noZero := precision - (int64(len(input)) - sepPos - 1)
+
+	zeroBytes := []byte("")
+	for i := int64(0); i < noZero; i++ {
+		zeroBytes = append(zeroBytes, '0')
+	}
+	return append(input, zeroBytes...)
+}
+
+func ToBig(input []byte, sep byte, precision int64) []byte {
+	zeroAdded := AddZero(input, precision, sep)
+	return RemoveSeparator(zeroAdded, sep)
+}
+
+func FromBig(input []byte, sep byte, precision int64) []byte {
+	sepAdded := AddSeparator(input, precision, sep)
+	trimmed := TrimZero(sepAdded, sep)
+	return trimmed
 }

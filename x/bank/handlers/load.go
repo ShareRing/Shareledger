@@ -1,8 +1,6 @@
 package handlers
 
 import (
-	"fmt"
-
 	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
 
 	"github.com/sharering/shareledger/x/auth"
@@ -28,10 +26,10 @@ func HandleMsgLoad(am auth.AccountMapper) sdk.Handler {
 
 		// Credit the account
 		var resT sdk.Result
+
 		if resT = handleTo(ctx, am, loadMsg.Account, loadMsg.Amount); !resT.IsOK() {
 			return resT
 		}
-		fmt.Println("resT=", resT)
 		return sdk.Result{
 			Log:  resT.Log,
 			Data: resT.Data,
