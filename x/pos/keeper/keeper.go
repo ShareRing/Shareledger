@@ -39,7 +39,6 @@ func (k Keeper) Codespace() sdk.CodespaceType {
 // load/save the global staking params
 func (k Keeper) GetParams(ctx sdk.Context) (params posTypes.Params) {
 	store := ctx.KVStore(k.storeKey)
-
 	b := store.Get(ParamKey)
 	if b == nil {
 		panic("Stored params should not have been nil")
@@ -52,8 +51,11 @@ func (k Keeper) GetParams(ctx sdk.Context) (params posTypes.Params) {
 // set the params
 func (k Keeper) SetParams(ctx sdk.Context, params posTypes.Params) {
 	store := ctx.KVStore(k.storeKey)
+
 	b := k.cdc.MustMarshalBinary(params)
+
 	store.Set(ParamKey, b)
+
 }
 
 //__________________________________________________________________________

@@ -111,7 +111,7 @@ func NewShareLedgerApp(logger log.Logger, db dbm.DB) *ShareLedgerApp {
 
 	// Register InitChain
 	logger.Info("Register Init Chainer")
-	app.SetInitChainer(app.InitChainer(accountMapper))
+	app.SetInitChainer(app.InitChainer)
 	app.SetEndBlocker(EndBlocker(accountMapper))
 	app.SetBeginBlocker(BeginBlocker)
 
@@ -120,39 +120,38 @@ func NewShareLedgerApp(logger log.Logger, db dbm.DB) *ShareLedgerApp {
 
 // InitChainer will set initial balances for accounts as well as initial coin metadata
 
-func (app *ShareLedgerApp) InitChainer(accountMapper auth.AccountMapper) sdk.InitChainer {
-	return func(ctx sdk.Context, req abci.RequestInitChain) abci.ResponseInitChain {
-		stateJSON := req.AppStateBytes
-		fmt.Printf("RequestInitChain.Time: %v\n", req.Time)
-		fmt.Printf("RequestInitChain.ChainId: %v\n", req.ChainId)
-		fmt.Printf("RequestInitChain.ConsensusParams: %v\n", req.ConsensusParams)
-		fmt.Printf("RequestInitChain.Validators: %v\n", req.Validators)
-		fmt.Printf("RequestInitChain.AppStateBytes: %v\n", req.AppStateBytes)
+func (app *ShareLedgerApp) InitChainer(ctx sdk.Context, req abci.RequestInitChain) abci.ResponseInitChain {
 
-		var genesisState GenesisState
-		// fmt.Printf("stateJSON=%s\n", stateJSON)
+	stateJSON := req.AppStateBytes
+	fmt.Printf("RequestInitChain.Time: %v\n", req.Time)
+	fmt.Printf("RequestInitChain.ChainId: %v\n", req.ChainId)
+	fmt.Printf("RequestInitChain.ConsensusParams: %v\n", req.ConsensusParams)
+	fmt.Printf("RequestInitChain.Validators: %v\n", req.Validators)
+	fmt.Printf("RequestInitChain.AppStateBytes: %v\n", req.AppStateBytes)
 
-		err := app.cdc.UnmarshalJSON(stateJSON, &genesisState)
-		// fmt.Printf("req=%v\n", genesisState)
-		if err != nil {
-			panic(err)
-		}
+	var genesisState GenesisState
+	// fmt.Printf("stateJSON=%s\n", stateJSON)
 
-		// load the accounts - TODO
-
-		// load the initial POS information
-		abciVals, err := pos.InitGenesis(ctx, app.posKeeper, genesisState.StakeData)
-		if err != nil {
-			panic(err)
-		}
-		for _, abciVal := range abciVals {
-			fmt.Printf("abciVal=%v\n", abciVal)
-		}
-		return abci.ResponseInitChain{
-			Validators: abciVals, //use the validator defined in stake
-		}
-
+	err := app.cdc.UnmarshalJSON(stateJSON, &genesisState)
+	// fmt.Printf("req=%v\n", genesisState)
+	if err != nil {
+		panic(err)
 	}
+
+	// load the accounts - TODO
+
+	// load the initial POS information
+	abciVals, err := pos.InitGenesis(ctx, app.posKeeper, genesisState.StakeData)
+	if err != nil {
+		panic(err)
+	}
+	for _, abciVal := range abciVals {
+		fmt.Printf("abciVal=%v\n", abciVal)
+	}
+	return abci.ResponseInitChain{
+		Validators: abciVals, //use the validator defined in stake
+	}
+
 }
 
 func BeginBlocker(ctx sdk.Context, req abci.RequestBeginBlock) (res abci.ResponseBeginBlock) {

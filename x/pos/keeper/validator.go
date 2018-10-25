@@ -56,6 +56,24 @@ func (k Keeper) GetValidator(ctx sdk.Context, addr sdk.Address) (validator posTy
 	return validator, true
 }
 
+// return a given amount of all the validators
+func (k Keeper) GetValidators(ctx sdk.Context, maxRetrieve uint16) (validators []posTypes.Validator) {
+	store := ctx.KVStore(k.storeKey)
+	validators = make([]posTypes.Validator, maxRetrieve)
+
+	iterator := sdk.KVStorePrefixIterator(store, ValidatorsKey)
+	defer iterator.Close()
+
+	i := 0
+	for ; iterator.Valid() && i < int(maxRetrieve); iterator.Next() {
+		addr := iterator.Key()[1:]
+		validator := posTypes.MustUnmarshalValidator(k.cdc, addr, iterator.Value())
+		validators[i] = validator
+		i++
+	}
+	return validators[:i] // trim if the array length < maxRetrieve
+}
+
 func (k Keeper) mustGetValidator(ctx sdk.Context, addr sdk.Address) posTypes.Validator {
 	validator, found := k.GetValidator(ctx, addr)
 	if !found {
