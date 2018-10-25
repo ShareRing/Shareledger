@@ -51,14 +51,14 @@ func NewAnteHandler(am AccountMapper) sdk.AnteHandler {
 func verifySignature(ctx sdk.Context,
 	am AccountMapper,
 	sig AuthSig,
-	signBytes []byte) (acc BaseAccount,
-	res sdk.Result) {
+	signBytes []byte,
+) (acc BaseAccount, res sdk.Result) {
 
 	constants.LOGGER.Info("PubKey used to sign", "pubKey", sig.GetPubKey())
 	addr := sig.GetPubKey().Address()
 
 	acc = am.GetAccount(ctx, addr)
-	constants.LOGGER.Info("PubKey of this account", "account", acc)
+	constants.LOGGER.Info("Signing account", "account", acc)
 
 	// acc doesn't exist
 	if acc == nil {

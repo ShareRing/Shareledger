@@ -5,10 +5,18 @@ import (
 	"strconv"
 
 	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
+
+	"github.com/sharering/shareledger/constants"
 )
 
 func NewHandler(am AccountMapper) sdk.Handler {
 	return func(ctx sdk.Context, msg sdk.Msg) sdk.Result {
+		constants.LOGGER.Info(
+			"Msg for Auth Module",
+			"type", reflect.TypeOf(msg),
+			"msg", msg,
+		)
+
 		switch msg := msg.(type) {
 		case MsgNonce:
 			return handleNonceQuery(ctx, am, msg)

@@ -1,19 +1,23 @@
 package asset
 
-
-
 import (
 	"fmt"
 	"reflect"
 
 	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
+	"github.com/sharering/shareledger/constants"
+	"github.com/sharering/shareledger/utils"
 	"github.com/sharering/shareledger/x/asset/messages"
-
 )
-
 
 func NewHandler(k Keeper) sdk.Handler {
 	return func(ctx sdk.Context, msg sdk.Msg) sdk.Result {
+		constants.LOGGER.Info(
+			"Msg for Asset Module",
+			"type", reflect.TypeOf(msg),
+			"msg", msg,
+		)
+
 		switch msg := msg.(type) {
 
 		case messages.MsgCreate:
@@ -32,7 +36,6 @@ func NewHandler(k Keeper) sdk.Handler {
 	}
 }
 
-
 func handleAssetCreation(ctx sdk.Context, k Keeper, msg messages.MsgCreate) sdk.Result {
 
 	asset, err := k.CreateAsset(ctx, msg)
@@ -40,12 +43,15 @@ func handleAssetCreation(ctx sdk.Context, k Keeper, msg messages.MsgCreate) sdk.
 		return sdk.ErrInternal(err.Error()).Result()
 	}
 
+	fee, denom := utils.GetMsgFee(msg)
+
 	return sdk.Result{
-		Log: fmt.Sprintf("%s", asset),
-		Tags: msg.Tags(),
+		Log:       fmt.Sprintf("%s", asset),
+		Tags:      msg.Tags(),
+		FeeAmount: fee,
+		FeeDenom:  denom,
 	}
 }
-
 
 func handleAssetRetrieval(ctx sdk.Context, k Keeper, msg messages.MsgRetrieve) sdk.Result {
 
@@ -55,7 +61,7 @@ func handleAssetRetrieval(ctx sdk.Context, k Keeper, msg messages.MsgRetrieve) s
 	}
 
 	return sdk.Result{
-		Log: fmt.Sprintf("%s", asset),
+		Log:  fmt.Sprintf("%s", asset),
 		Tags: msg.Tags(),
 	}
 }
@@ -67,9 +73,13 @@ func handleAssetUpdate(ctx sdk.Context, k Keeper, msg messages.MsgUpdate) sdk.Re
 		return sdk.ErrInternal(err.Error()).Result()
 	}
 
+	fee, denom := utils.GetMsgFee(msg)
+
 	return sdk.Result{
-		Log: fmt.Sprintf("%s", asset),
-		Tags: msg.Tags(),
+		Log:       fmt.Sprintf("%s", asset),
+		Tags:      msg.Tags(),
+		FeeAmount: fee,
+		FeeDenom:  denom,
 	}
 }
 
@@ -80,8 +90,12 @@ func handleAssetDelete(ctx sdk.Context, k Keeper, msg messages.MsgDelete) sdk.Re
 		return sdk.ErrInternal(err.Error()).Result()
 	}
 
+	fee, denom := utils.GetMsgFee(msg)
+
 	return sdk.Result{
-		Log: fmt.Sprintf("%s", asset),
-		Tags: msg.Tags(),
+		Log:       fmt.Sprintf("%s", asset),
+		Tags:      msg.Tags(),
+		FeeAmount: fee,
+		FeeDenom:  denom,
 	}
 }

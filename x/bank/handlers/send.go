@@ -5,8 +5,8 @@ import (
 
 	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
 
-	"github.com/sharering/shareledger/constants"
 	"github.com/sharering/shareledger/types"
+	"github.com/sharering/shareledger/utils"
 	"github.com/sharering/shareledger/x/auth"
 	"github.com/sharering/shareledger/x/bank/messages"
 	tags "github.com/sharering/shareledger/x/bank/tags"
@@ -44,15 +44,18 @@ func HandleMsgSend(am auth.AccountMapper) sdk.Handler {
 		if resT = handleTo(ctx, am, sendMsg.To, sendMsg.Amount); !resT.IsOK() {
 			return resT
 		}
-		constants.LOGGER.Info("Result:", "from", resF.Log, "to", resT.Log)
 
 		res := fmt.Sprintf("{\"from\":%v, \"to\":%v}", resF.Log, resT.Log)
 		// Return a success (Code 0).
 		// Add list of key-value pair descriptors ("tags").
+		fee, denom := utils.GetMsgFee(msg)
+
 		return sdk.Result{
-			Log:  res,
-			Data: append(resF.Data, resT.Data...),
-			Tags: sendMsg.Tags().AppendTag(tags.FromAddress, []byte(signer.GetAddress().String())),
+			Log:       res,
+			Data:      append(resF.Data, resT.Data...),
+			Tags:      sendMsg.Tags().AppendTag(tags.FromAddress, []byte(signer.GetAddress().String())),
+			FeeAmount: fee,
+			FeeDenom:  denom,
 		}
 	}
 }
@@ -107,6 +110,7 @@ func handleTo(ctx sdk.Context, am auth.AccountMapper, to sdk.Address, amt types.
 	// Save to AccountMapper
 	am.SetAccount(ctx, acc)
 
+	// fmt.Println("acc.GetCoins().String()=", acc.GetCoins().String())
 	return sdk.Result{
 		Log: acc.GetCoins().String(),
 	}

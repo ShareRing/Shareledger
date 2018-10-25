@@ -17,7 +17,8 @@ import (
 )
 
 var (
-	BITS = 256
+	BITS          = 256
+	ADDRESSLENGTH = 20 //byte length
 )
 
 //----------------------------------------

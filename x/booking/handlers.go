@@ -6,11 +6,20 @@ import (
 
 	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
 
+	"github.com/sharering/shareledger/constants"
+	"github.com/sharering/shareledger/utils"
 	"github.com/sharering/shareledger/x/booking/messages"
 )
 
 func NewHandler(k Keeper) sdk.Handler {
 	return func(ctx sdk.Context, msg sdk.Msg) sdk.Result {
+
+		constants.LOGGER.Info(
+			"Msg for Asset Module",
+			"type", reflect.TypeOf(msg),
+			"msg", msg,
+		)
+
 		switch msg := msg.(type) {
 		case messages.MsgBook:
 			return handleBooking(ctx, k, msg)
@@ -24,7 +33,6 @@ func NewHandler(k Keeper) sdk.Handler {
 	}
 }
 
-
 func handleBooking(ctx sdk.Context, k Keeper, msg messages.MsgBook) sdk.Result {
 
 	booking, err := k.Book(ctx, msg)
@@ -33,10 +41,13 @@ func handleBooking(ctx sdk.Context, k Keeper, msg messages.MsgBook) sdk.Result {
 		return sdk.ErrInternal(err.Error()).Result()
 	}
 
+	fee, denom := utils.GetMsgFee(msg)
 
 	return sdk.Result{
-		Log:  fmt.Sprintf("%s", booking.String()),
-		Tags: msg.Tags(),
+		Log:       fmt.Sprintf("%s", booking.String()),
+		Tags:      msg.Tags(),
+		FeeAmount: fee,
+		FeeDenom:  denom,
 	}
 }
 
@@ -48,9 +59,12 @@ func handleComplete(ctx sdk.Context, k Keeper, msg messages.MsgComplete) sdk.Res
 		return sdk.ErrInternal(err.Error()).Result()
 	}
 
+	fee, denom := utils.GetMsgFee(msg)
 
 	return sdk.Result{
-		Log:  fmt.Sprintf("Completed %s", booking.String()),
-		Tags: msg.Tags(),
+		Log:       fmt.Sprintf("Completed %s", booking.String()),
+		Tags:      msg.Tags(),
+		FeeAmount: fee,
+		FeeDenom:  denom,
 	}
 }

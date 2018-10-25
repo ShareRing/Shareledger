@@ -2,7 +2,8 @@ package keeper
 
 import (
 	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
-	types "github.com/sharering/shareledger/types"
+
+	"github.com/sharering/shareledger/types"
 	posTypes "github.com/sharering/shareledger/x/pos/type"
 )
 
@@ -18,8 +19,22 @@ func (k Keeper) GetDelegation(ctx sdk.Context,
 		return delegation, false
 	}
 
-	delegation = posTypes.Delegation{} //posTypes.MustUnmarshalDelegation(k.cdc, key, value)
+	delegation = posTypes.MustUnmarshalDelegation(k.cdc, key, value)
 	return delegation, true
+}
+
+// set the delegation
+func (k Keeper) SetDelegation(ctx sdk.Context, delegation posTypes.Delegation) {
+	store := ctx.KVStore(k.storeKey)
+	b := posTypes.MustMarshalDelegation(k.cdc, delegation)
+	store.Set(GetDelegationKey(delegation.DelegatorAddr, delegation.ValidatorAddr), b)
+}
+
+// remove a delegation from store
+func (k Keeper) RemoveDelegation(ctx sdk.Context, delegation posTypes.Delegation) {
+	//	k.OnDelegationRemoved(ctx, delegation.DelegatorAddr, delegation.ValidatorAddr) //hookig
+	store := ctx.KVStore(k.storeKey)
+	store.Delete(GetDelegationKey(delegation.DelegatorAddr, delegation.ValidatorAddr))
 }
 
 // Perform a delegation, set/update everything necessary within the store.
@@ -27,8 +42,7 @@ func (k Keeper) Delegate(ctx sdk.Context, delAddr sdk.Address, bondAmt types.Coi
 	validator posTypes.Validator, subtractAccount bool) (newShares types.Dec, err sdk.Error) {
 
 	// Get or create the delegator delegation
-	//Work-Around, refactor later
-	delegation, found := posTypes.Delegation{}, false //k.GetDelegation(ctx, delAddr, validator.OperatorAddr)
+	delegation, found := k.GetDelegation(ctx, delAddr, validator.Owner)
 	if !found {
 		delegation = posTypes.Delegation{
 			DelegatorAddr: delAddr,
@@ -37,19 +51,19 @@ func (k Keeper) Delegate(ctx sdk.Context, delAddr sdk.Address, bondAmt types.Coi
 		}
 	}
 
-// 	if subtractAccount {
-// 		// Account new shares, save
-// 		_, _, err = k.bankKeeper.SubtractCoins(ctx, delegation.DelegatorAddr, types.Coins{bondAmt})
-// 		if err != nil {
-// 			return
-// 		}
-// 	}
+	if subtractAccount {
+		// Account new shares, save
+		_, err = k.bankKeeper.SubtractCoins(ctx, delegation.DelegatorAddr, types.Coins{bondAmt})
+		if err != nil {
+			return
+		}
+	}
 
-// 	validator, newShares = k.AddValidatorTokensAndShares(ctx, validator, bondAmt.Amount)
+	validator, newShares = k.AddValidatorTokensAndShares(ctx, validator, bondAmt.Amount)
 
-// 	// Update delegation
-// 	delegation.Shares = delegation.Shares.Add(newShares)
-// 	delegation.Height = ctx.BlockHeight()
-// 	//k.SetDelegation(ctx, delegation)
-// 	return newShares, nil
-// }
+	// Update delegation
+	delegation.Shares = delegation.Shares.Add(newShares)
+	delegation.Height = ctx.BlockHeight()
+	k.SetDelegation(ctx, delegation)
+	return newShares, nil
+}

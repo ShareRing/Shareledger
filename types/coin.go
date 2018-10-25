@@ -10,13 +10,27 @@ import (
 
 type Coin struct {
 	Denom  string `json:"denom"`
-	Amount int64  `json:"amount"`
+	Amount Dec    `json:"amount"`
 }
 
 func NewCoin(denom string, amount int64) Coin {
 	return Coin{
 		Denom:  denom,
+		Amount: NewDecFromInt(NewInt(amount)),
+	}
+}
+
+func NewCoinFromDec(denom string, amount Dec) Coin {
+	return Coin{
+		Denom:  denom,
 		Amount: amount,
+	}
+}
+
+func NewDefaultCoin() Coin {
+	return Coin{
+		Denom:  constants.DEFAULT_DENOM,
+		Amount: NewDecFromInt(NewInt(constants.DEFAULT_AMOUNT)),
 	}
 }
 
@@ -29,21 +43,21 @@ func (coin Coin) String() string {
 func (coin Coin) Plus(other Coin) Coin {
 
 	// If account is 0
-	if coin.Amount == 0 {
+	if coin.Amount.IsZero() {
 		return other
 	}
 
 	if !coin.IsSameDenom(other) {
 		return coin
 	}
-	return NewCoin(coin.Denom, coin.Amount+other.Amount)
+	return NewCoinFromDec(coin.Denom, coin.Amount.Add(other.Amount))
 }
 
 func (coin Coin) Minus(other Coin) Coin {
 	if !coin.IsSameDenom(other) {
 		return coin
 	}
-	return NewCoin(coin.Denom, coin.Amount-other.Amount)
+	return NewCoinFromDec(coin.Denom, coin.Amount.Sub(other.Amount))
 }
 
 func (coin Coin) IsSameDenom(other Coin) bool {
@@ -51,11 +65,11 @@ func (coin Coin) IsSameDenom(other Coin) bool {
 }
 
 func (coin Coin) IsPositive() bool {
-	return coin.Amount > 0
+	return coin.Amount.IsPositive()
 }
 
 func (coin Coin) IsNotNegative() bool {
-	return coin.Amount >= 0
+	return coin.Amount.IsNotNegative()
 }
 
 func (coin Coin) HasValidDenoms() bool {
@@ -75,7 +89,7 @@ type Coins []Coin
 func NewDefaultCoins() Coins {
 	var ret []Coin
 	for k, _ := range constants.DENOM_LIST {
-		ret = append(ret, NewCoin(k, 0))
+		ret = append(ret, NewCoin(k, constants.DEFAULT_AMOUNT))
 	}
 	return ret
 }
@@ -181,7 +195,7 @@ func (coins Coins) PlusMany(coinsB Coins) Coins {
 			sum = append(sum, coinA)
 			indexA++
 		case 0:
-			if coinA.Amount+coinB.Amount == 0 {
+			if coinA.Amount.Add(coinB.Amount).IsZero() {
 				// ignore 0 sum coin type
 			} else {
 				sum = append(sum, coinA.Plus(coinB))
@@ -206,7 +220,7 @@ func (coins Coins) Negative() Coins {
 	for _, coin := range coins {
 		res = append(res, Coin{
 			Denom:  coin.Denom,
-			Amount: -coin.Amount,
+			Amount: coin.Amount.Neg(),
 		})
 	}
 	return res
