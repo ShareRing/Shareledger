@@ -24,10 +24,9 @@ type GenesisState struct {
 func InitGenesis(ctx sdk.Context, keeper keeper.Keeper, data GenesisState) ([]abci.Validator, error) {
 
 	var abciVals []abci.Validator
-	fmt.Println("Genesis Pool", data.Pool)
-	fmt.Println("Genesis Param", data.Params)
-
-	//keeper.SetPool(ctx, data.Pool)
+	keeper.SetPool(ctx, data.Pool)
+	keeper.SetParams(ctx, data.Params)
+	keeper.InitIntraTxCounter(ctx)
 
 	for _, validator := range data.Validators {
 
