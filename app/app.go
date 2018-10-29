@@ -22,7 +22,6 @@ import (
 	"github.com/sharering/shareledger/x/auth"
 	"github.com/sharering/shareledger/x/bank"
 	"github.com/sharering/shareledger/x/booking"
-	"github.com/sharering/shareledger/x/fee"
 )
 
 const (
@@ -66,7 +65,7 @@ func NewShareLedgerApp(logger log.Logger, db dbm.DB) *ShareLedgerApp {
 	//accountKey := sdk.NewKVStoreKey(constants.STORE_BANK)
 	authKey := sdk.NewKVStoreKey(constants.STORE_AUTH)
 	posKey := sdk.NewKVStoreKey(constants.STORE_POS)
-	// bankKey := sdk.NewKVStoreKey(constants.STORE_BANK)
+	//bankKey := sdk.NewKVStoreKey(constants.STORE_BANK)
 
 	// Mount Store
 
@@ -104,10 +103,10 @@ func NewShareLedgerApp(logger log.Logger, db dbm.DB) *ShareLedgerApp {
 	app.SetAnteHandler(auth.NewAnteHandler(accountMapper))
 	app.Router().
 		AddRoute(constants.MESSAGE_AUTH, auth.NewHandler(accountMapper))
-	cdc = auth.RegisterCodec(cdc)
+	app.cdc = auth.RegisterCodec(app.cdc)
 
 	// Set Tx Fee Calculation
-	app.SetFeeHandler(fee.NewFeeHandler(accountMapper))
+	//app.SetFeeHandler(fee.NewFeeHandler(accountMapper))
 
 	// Register InitChain
 	logger.Info("Register Init Chainer")
@@ -159,7 +158,7 @@ func BeginBlocker(ctx sdk.Context, req abci.RequestBeginBlock) (res abci.Respons
 	// Save BlockHeader and Height to Context
 	ctx.WithBlockHeader(req.Header).WithBlockHeight(req.Header.Height)
 
-	fmt.Printf("BeginBlocker: %v\n", req.Header.Proposer)
+	//fmt.Printf("BeginBlocker: %v\n", req.Header.Proposer)
 
 	return
 }
@@ -169,8 +168,8 @@ func EndBlocker(am auth.AccountMapper) sdk.EndBlocker {
 	return func(ctx sdk.Context, req abci.RequestEndBlock) abci.ResponseEndBlock {
 
 		proposer := ctx.BlockHeader().Proposer
-		fmt.Printf("Proposer: %v\n", proposer)
-		fmt.Printf("Proposer PubKey: %v\n", proposer.PubKey)
+		//	fmt.Printf("Proposer: %v\n", proposer)
+		//	fmt.Printf("Proposer PubKey: %v\n", proposer.PubKey)
 		if len(proposer.PubKey.GetData()) > 1 {
 			pubKey := types.ConvertToPubKey(proposer.PubKey.GetData())
 			fmt.Printf("Address: %s\n", pubKey.Address())
