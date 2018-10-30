@@ -11,9 +11,9 @@ import (
 
 // MsgBeginUnbonding - struct for unbonding transactions
 type MsgBeginUnbonding struct {
-	DelegatorAddr sdk.Address `json:"delegator_addr"`
-	ValidatorAddr sdk.Address `json:"validator_addr"`
-	SharesAmount  types.Dec   `json:"shares_amount"`
+	DelegatorAddr sdk.Address `json:"delegatorAddress"`
+	ValidatorAddr sdk.Address `json:"validatorAddress"`
+	SharesAmount  types.Dec   `json:"sharesAmount"`
 }
 
 func NewMsgBeginUnbonding(delAddr sdk.Address, valAddr sdk.Address, sharesAmount types.Dec) MsgBeginUnbonding {
@@ -32,9 +32,9 @@ func (msg MsgBeginUnbonding) GetSigners() []sdk.Address { return []sdk.Address{m
 // get the bytes for the message signer to sign on
 func (msg MsgBeginUnbonding) GetSignBytes() []byte {
 	b, err := json.Marshal(struct {
-		DelegatorAddr sdk.Address `json:"delegator_addr"`
-		ValidatorAddr sdk.Address `json:"validator_addr"`
-		SharesAmount  string      `json:"shares_amount"`
+		DelegatorAddr sdk.Address `json:"delegatorAddress"`
+		ValidatorAddr sdk.Address `json:"validatorAddress"`
+		SharesAmount  string      `json:"sharesAmount"`
 	}{
 		DelegatorAddr: msg.DelegatorAddr,
 		ValidatorAddr: msg.ValidatorAddr,
@@ -64,8 +64,8 @@ var _ sdk.Msg = MsgBeginUnbonding{}
 
 // MsgCompleteUnbonding - struct for unbonding transactions
 type MsgCompleteUnbonding struct {
-	DelegatorAddr sdk.Address `json:"delegator_addr"`
-	ValidatorAddr sdk.Address `json:"validator_addr"`
+	DelegatorAddr sdk.Address `json:"delegatorAddress"`
+	ValidatorAddr sdk.Address `json:"validatorAddress"`
 }
 
 func NewMsgCompleteUnbonding(delAddr sdk.Address, valAddr sdk.Address) MsgCompleteUnbonding {

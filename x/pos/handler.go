@@ -17,6 +17,10 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
 			return handleMsgCreateValidator(ctx, msg, k)
 		case message.MsgDelegate:
 			return handleMsgDelegate(ctx, msg, k)
+		case message.MsgBeginUnbonding:
+			return handleMsgBeginUnbonding(ctx, msg, k)
+		case message.MsgCompleteUnbonding:
+			return handleMsgCompleteUnbonding(ctx, msg, k)
 
 		default:
 			return sdk.ErrTxDecode("invalid message parse in staking module").Result()
