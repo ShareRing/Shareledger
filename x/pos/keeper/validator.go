@@ -106,3 +106,35 @@ func (k Keeper) AddValidatorTokensAndShares(ctx sdk.Context, validator posTypes.
 	//k.SetValidatorByPowerIndex(ctx, validator, pool)
 	return validator, addedShares
 }
+
+// remove the validator record and associated indexes
+func (k Keeper) RemoveValidator(ctx sdk.Context, address sdk.Address) {
+
+	// first retrieve the old validator record
+	/*validator*/
+	_, found := k.GetValidator(ctx, address)
+	if !found {
+		return
+	}
+
+	// delete the old validator record
+	store := ctx.KVStore(k.storeKey)
+	//pool := k.GetPool(ctx)
+	store.Delete(GetValidatorKey(address))
+	//store.Delete(GetValidatorByConsAddrKey(sdk.ConsAddress(validator.ConsPubKey.Address())))
+	//store.Delete(GetValidatorsByPowerIndexKey(validator, pool))
+
+}
+
+// Update the tokens of an existing validator, update the validators power index key
+func (k Keeper) RemoveValidatorTokensAndShares(ctx sdk.Context, validator posTypes.Validator,
+	sharesToRemove types.Dec) (valOut posTypes.Validator, removedTokens types.Dec) {
+
+	pool := k.GetPool(ctx)
+	//k.DeleteValidatorByPowerIndex(ctx, validator, pool)
+	validator, pool, removedTokens = validator.RemoveDelShares(pool, sharesToRemove)
+	k.SetValidator(ctx, validator)
+	k.SetPool(ctx, pool)
+	//k.SetValidatorByPowerIndex(ctx, validator, pool)
+	return validator, removedTokens
+}

@@ -94,3 +94,66 @@ func (b Delegation) HumanReadableString() (string, error) {
 
 	return resp, nil
 }
+
+// UnbondingDelegation reflects a delegation's passive unbonding queue.
+type UnbondingDelegation struct {
+	DelegatorAddr  sdk.Address `json:"delegator_addr"`  // delegator
+	ValidatorAddr  sdk.Address `json:"validator_addr"`  // validator unbonding from operator addr
+	CreationHeight int64       `json:"creation_height"` // height which the unbonding took place
+	MinTime        int64       `json:"min_time"`        // unix time for unbonding completion  /*time.Time*/
+	InitialBalance types.Coin  `json:"initial_balance"` // atoms initially scheduled to receive at completion
+	Balance        types.Coin  `json:"balance"`         // atoms to receive at completion
+}
+
+type ubdValue struct {
+	CreationHeight int64
+	MinTime        int64 //time.Time
+	InitialBalance types.Coin
+	Balance        types.Coin
+}
+
+// return the unbonding delegation without fields contained within the key for the store
+func MustMarshalUBD(cdc *wire.Codec, ubd UnbondingDelegation) []byte {
+	val := ubdValue{
+		ubd.CreationHeight,
+		ubd.MinTime,
+		ubd.InitialBalance,
+		ubd.Balance,
+	}
+	return cdc.MustMarshalBinary(val)
+}
+
+// unmarshal a unbonding delegation from a store key and value
+func MustUnmarshalUBD(cdc *wire.Codec, key, value []byte) UnbondingDelegation {
+	ubd, err := UnmarshalUBD(cdc, key, value)
+	if err != nil {
+		panic(err)
+	}
+	return ubd
+}
+
+// unmarshal a unbonding delegation from a store key and value
+func UnmarshalUBD(cdc *wire.Codec, key, value []byte) (ubd UnbondingDelegation, err error) {
+	var storeValue ubdValue
+	err = cdc.UnmarshalBinary(value, &storeValue)
+	if err != nil {
+		return
+	}
+
+	addrs := key[1:] // remove prefix bytes
+	if len(addrs) != 2*types.ADDRESSLENGTH {
+		//err = fmt.Errorf("%v", ErrBadDelegationAddr(DefaultCodespace).Data())
+		return
+	}
+	delAddr := sdk.Address(addrs[:types.ADDRESSLENGTH])
+	valAddr := sdk.Address(addrs[types.ADDRESSLENGTH:])
+
+	return UnbondingDelegation{
+		DelegatorAddr:  delAddr,
+		ValidatorAddr:  valAddr,
+		CreationHeight: storeValue.CreationHeight,
+		MinTime:        storeValue.MinTime,
+		InitialBalance: storeValue.InitialBalance,
+		Balance:        storeValue.Balance,
+	}, nil
+}

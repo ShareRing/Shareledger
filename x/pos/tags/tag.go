@@ -11,6 +11,8 @@ var (
 
 	//Value -  []byte
 
-	ValidatorCreated = []byte("ValidatorCreated")
-	Delegated        = []byte("Delegated")
+	ValidatorCreated  = []byte("ValidatorCreated")
+	Delegated         = []byte("Delegated")
+	BeginUnbonding    = []byte("BeginUnbonding")
+	CompleteUnbonding = []byte("CompleteUnbonding")
 )

@@ -108,3 +108,33 @@ func handleMsgDelegate(ctx sdk.Context, msg message.MsgDelegate, k keeper.Keeper
 		Tags: tags,
 	}
 }
+
+func handleMsgBeginUnbonding(ctx sdk.Context, msg message.MsgBeginUnbonding, k keeper.Keeper) sdk.Result {
+	err := k.BeginUnbonding(ctx, msg.DelegatorAddr, msg.ValidatorAddr, msg.SharesAmount)
+	if err != nil {
+		return err.Result()
+	}
+
+	tags := sdk.NewTags(
+		tags.Event, tags.BeginUnbonding,
+		tags.Delegator, []byte(msg.DelegatorAddr.String()),
+		tags.Validator, []byte(msg.ValidatorAddr.String()),
+	)
+	return sdk.Result{Tags: tags}
+}
+
+func handleMsgCompleteUnbonding(ctx sdk.Context, msg message.MsgCompleteUnbonding, k keeper.Keeper) sdk.Result {
+
+	err := k.CompleteUnbonding(ctx, msg.DelegatorAddr, msg.ValidatorAddr)
+	if err != nil {
+		return err.Result()
+	}
+
+	tags := sdk.NewTags(
+		tags.Event, tags.CompleteUnbonding,
+		tags.Delegator, []byte(msg.DelegatorAddr.String()),
+		tags.Validator, []byte(msg.ValidatorAddr.String()),
+	)
+
+	return sdk.Result{Tags: tags}
+}
