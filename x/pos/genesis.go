@@ -30,6 +30,8 @@ func InitGenesis(ctx sdk.Context, keeper keeper.Keeper, data GenesisState) ([]ab
 
 	for _, validator := range data.Validators {
 
+		fmt.Printf("Validator in gensis: %v", validator)
+
 		if validator.DelegatorShares.IsZero() {
 			return abciVals, errors.Errorf("genesis validator cannot have zero delegator shares, validator: %v", validator)
 		}
@@ -38,6 +40,8 @@ func InitGenesis(ctx sdk.Context, keeper keeper.Keeper, data GenesisState) ([]ab
 		keeper.SetValidator(ctx, validator)
 
 		vdi := posTypes.NewValidatorDistInfo(validator.Owner, int64(0))
+
+		// Store ValidatorDistInfo
 		keeper.SetValidatorDistInfo(ctx, vdi)
 	}
 

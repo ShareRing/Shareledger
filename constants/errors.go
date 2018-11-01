@@ -39,3 +39,10 @@ const POS_VALIDATOR_DIST_NOT_FOUND = "Validator Distribution Info for %X not fou
 const POS_INVALID_VALIDATOR_ADDRESS = "Validator Address is in incorrect format. Error: %s"
 const POS_MARSHAL_ERROR = "Marshal to JSON failed. %s"
 const POS_INVALID_PARAMS = "Unmarshal to Query params failed. %s"
+
+// Exchange
+const EXC_INVALID_DENOM = "Invalid Denom. Required %s. Provided %s."
+const EXC_JSON_MARSHAL = "MarshalJSON failed. %s"
+const EXC_EXCHANGE_RATE_NOT_FOUND = "Exchange Rate from %s to %s not found."
+const EXC_SAME_DENOM = "FromDenom and ToDenom should be different. Not the same %s."
+const EXC_INVALID_RATE = "Rate must be larger than 0. Provided rate %s."
