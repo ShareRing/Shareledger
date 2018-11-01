@@ -111,7 +111,7 @@ func NewShareLedgerApp(logger log.Logger, db dbm.DB) *ShareLedgerApp {
 	// Register InitChain
 	logger.Info("Register Init Chainer")
 	app.SetInitChainer(app.InitChainer)
-	app.SetEndBlocker(EndBlocker(accountMapper))
+	app.SetEndBlocker(EndBlocker(accountMapper, app.posKeeper))
 	app.SetBeginBlocker(BeginBlocker)
 
 	return app
@@ -133,6 +133,7 @@ func (app *ShareLedgerApp) InitChainer(ctx sdk.Context, req abci.RequestInitChai
 
 	err := app.cdc.UnmarshalJSON(stateJSON, &genesisState)
 	// fmt.Printf("req=%v\n", genesisState)
+
 	if err != nil {
 		panic(err)
 	}
@@ -146,6 +147,7 @@ func (app *ShareLedgerApp) InitChainer(ctx sdk.Context, req abci.RequestInitChai
 	}
 	for _, abciVal := range abciVals {
 		fmt.Printf("abciVal=%v\n", abciVal)
+
 	}
 	return abci.ResponseInitChain{
 		Validators: abciVals, //use the validator defined in stake
@@ -164,18 +166,24 @@ func BeginBlocker(ctx sdk.Context, req abci.RequestBeginBlock) (res abci.Respons
 }
 
 // application updates every end block
-func EndBlocker(am auth.AccountMapper) sdk.EndBlocker {
+func EndBlocker(am auth.AccountMapper, keeper pKeeper.Keeper) sdk.EndBlocker {
 	return func(ctx sdk.Context, req abci.RequestEndBlock) abci.ResponseEndBlock {
 
 		proposer := ctx.BlockHeader().Proposer
+
 		//	fmt.Printf("Proposer: %v\n", proposer)
 		//	fmt.Printf("Proposer PubKey: %v\n", proposer.PubKey)
+
+		var pubKey types.PubKeySecp256k1
+
 		if len(proposer.PubKey.GetData()) > 1 {
-			pubKey := types.ConvertToPubKey(proposer.PubKey.GetData())
-			fmt.Printf("Address: %s\n", pubKey.Address())
+			pubKey = types.ConvertToPubKey(proposer.PubKey.GetData())
+			// fmt.Printf("Address: %s\n", pubKey.Address())
+		} else {
+			pubKey = types.NilPubKeySecp256k1()
 		}
 
-		validatorUpdates := pos.EndBlocker(ctx, pKeeper.Keeper{})
+		validatorUpdates := pos.EndBlocker(ctx, keeper, pubKey)
 		// Add these new validators to the addr -> pubkey map.
 		return abci.ResponseEndBlock{
 			ValidatorUpdates: validatorUpdates,

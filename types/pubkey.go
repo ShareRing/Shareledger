@@ -53,6 +53,10 @@ func NewPubKeySecp256k1(b []byte) PubKeySecp256k1 {
 	return pubK
 }
 
+func NilPubKeySecp256k1() PubKeySecp256k1 {
+	return NewPubKeySecp256k1(make([]byte, 65))
+}
+
 // Implements Bitcoin style addresses: RIPEMD160(SHA256(pubkey))
 func (pubKey PubKeySecp256k1) Address() sdk.Address {
 	hasherSHA256 := sha3.NewKeccak256()

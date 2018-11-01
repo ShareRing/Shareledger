@@ -29,6 +29,7 @@ type Validator struct {
 
 	Tokens          types.Dec `json:"tokens"`           // delegated tokens (incl. self-delegation)
 	DelegatorShares types.Dec `json:"delegator_shares"` // total shares issued to a validator's delegators
+	CommissionRate  types.Dec `json:"commission_rate"` // commision kept by this validator
 
 	Description        Description `json:"description"`           // description terms for the validator
 	BondHeight         int64       `json:"bond_height"`           // earliest height as a bonded validator
@@ -52,6 +53,7 @@ type validatorValue struct {
 	Status             types.BondStatus
 	Tokens             types.Dec
 	DelegatorShares    types.Dec
+	CommissionRate     types.Dec
 	Description        Description
 	BondHeight         int64
 	BondIntraTxCounter int16
@@ -69,6 +71,7 @@ func NewValidator(owner sdk.Address, pubKey types.PubKey, description Descriptio
 
 		Tokens:             types.ZeroDec(),
 		DelegatorShares:    types.OneDec(),
+		CommissionRate:     types.ZeroDec(),
 		Description:        description,
 		BondHeight:         int64(0),
 		BondIntraTxCounter: int16(0),
@@ -91,7 +94,7 @@ func (v Validator) Equal(c2 Validator) bool {
 	// v.ProposerRewardPool.IsEqual(c2.ProposerRewardPool)
 }
 
-const DoNotModifyDesc = "[do-not-modify]"
+const DoNotModifyDes = "[do-not-modify]"
 
 // Description - description fields for a validator
 type Description struct {
@@ -280,6 +283,7 @@ func UnmarshalValidator(cdc *wire.Codec, owner sdk.Address, value []byte) (valid
 		Tokens:             storeValue.Tokens,
 		Status:             storeValue.Status,
 		DelegatorShares:    storeValue.DelegatorShares,
+		CommissionRate:     storeValue.CommissionRate,
 		Description:        storeValue.Description,
 		BondHeight:         storeValue.BondHeight,
 		BondIntraTxCounter: storeValue.BondIntraTxCounter,
@@ -305,6 +309,7 @@ func MustMarshalValidator(cdc *wire.Codec, validator Validator) []byte {
 		Status:             validator.Status,
 		Tokens:             validator.Tokens,
 		DelegatorShares:    validator.DelegatorShares,
+		CommissionRate:     validator.CommissionRate,
 		Description:        validator.Description,
 		BondHeight:         validator.BondHeight,
 		BondIntraTxCounter: validator.BondIntraTxCounter,
@@ -336,6 +341,7 @@ func (v Validator) HumanReadableString() (string, error) {
 	resp += fmt.Sprintf("Validator: %s\n", v.PubKey.String())
 	//resp += fmt.Sprintf("Shares: Status %s,  Amount: %s\n", sdk.BondStatusToString(v.PoolShares.Status), v.PoolShares.Amount.String())
 	resp += fmt.Sprintf("Delegator Shares: %s\n", v.DelegatorShares.String())
+	resp += fmt.Sprintf("Commission Rate: %s\n", v.CommissionRate.String())
 	resp += fmt.Sprintf("Description: %s\n", v.Description)
 	resp += fmt.Sprintf("Bond Height: %d\n", v.BondHeight)
 	//	resp += fmt.Sprintf("Proposer Reward Pool: %s\n", v.ProposerRewardPool.String())

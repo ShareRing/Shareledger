@@ -12,15 +12,19 @@ import (
 // owned by one delegator, and is associated with the voting power of one
 // pubKey.
 type Delegation struct {
-	DelegatorAddr sdk.Address `json:"delegator_addr"`
-	ValidatorAddr sdk.Address `json:"validator_addr"`
-	Shares        types.Dec   `json:"shares"`
-	Height        int64       `json:"height"` // Last height bond updated
+	DelegatorAddr    sdk.Address `json:"delegator_addr"`
+	ValidatorAddr    sdk.Address `json:"validator_addr"`
+	Shares           types.Dec   `json:"shares"`
+	Height           int64       `json:"height"`           // Last height bond updated
+	RewardAccum      types.Coin `json:"reward_accum"`     // reward accumulation of this block til withdrawal_height
+	WithdrawalHeight int64       `json:"withdrawal_height` // latest withdrawal height
 }
 
 type delegationValue struct {
-	Shares types.Dec
-	Height int64
+	Shares           types.Dec
+	Height           int64
+	RewardAccum      types.Coin
+	WithdrawalHeight int64
 }
 
 // aggregates of all delegations, unbondings and redelegations
@@ -36,6 +40,8 @@ func MustMarshalDelegation(cdc *wire.Codec, delegation Delegation) []byte {
 	val := delegationValue{
 		delegation.Shares,
 		delegation.Height,
+		delegation.RewardAccum,
+		delegation.WithdrawalHeight,
 	}
 	return cdc.MustMarshalBinary(val)
 }
@@ -68,10 +74,12 @@ func UnmarshalDelegation(cdc *wire.Codec, key, value []byte) (delegation Delegat
 	valAddr := sdk.Address(addrs[types.ADDRESSLENGTH:])
 
 	return Delegation{
-		DelegatorAddr: delAddr,
-		ValidatorAddr: valAddr,
-		Shares:        storeValue.Shares,
-		Height:        storeValue.Height,
+		DelegatorAddr:    delAddr,
+		ValidatorAddr:    valAddr,
+		Shares:           storeValue.Shares,
+		Height:           storeValue.Height,
+		RewardAccum:      storeValue.RewardAccum,
+		WithdrawalHeight: storeValue.WithdrawalHeight,
 	}, nil
 }
 
@@ -83,6 +91,21 @@ func (b Delegation) GetDelegator() sdk.Address { return b.DelegatorAddr }
 func (b Delegation) GetValidator() sdk.Address { return b.ValidatorAddr }
 func (b Delegation) GetBondShares() types.Dec  { return b.Shares }
 
+// UpdateDelReward updating reward accumulation
+func (b Delegation) UpdateDelAccum(
+	currentHeight int64,
+	totalRewardAccum types.Coin,
+) Delegation {
+
+	rewardCoin := totalRewardAccum.Mul(b.Shares)
+
+	b.RewardAccum = b.RewardAccum.Plus(rewardCoin)
+
+	b.WithdrawalHeight = currentHeight
+
+	return b
+}
+
 //Human Friendly pretty printer
 func (b Delegation) HumanReadableString() (string, error) {
 
@@ -91,6 +114,8 @@ func (b Delegation) HumanReadableString() (string, error) {
 	resp += fmt.Sprintf("Validator: %s\n", b.ValidatorAddr.String())
 	resp += fmt.Sprintf("Shares: %s", b.Shares.String())
 	resp += fmt.Sprintf("Height: %d", b.Height)
+	resp += fmt.Sprintf("RewardAccum: %s", b.RewardAccum)
+	resp += fmt.Sprintf("WithdrawalHeigh: %s", b.WithdrawalHeight)
 
 	return resp, nil
 }

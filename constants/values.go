@@ -22,3 +22,5 @@ const MESSAGE_POS = "pos"
 // ALLOWED DENOM
 var DENOM_LIST = map[string]bool{"SHRP": true, "SHR": true}
 var BOOKING_DENOM = "SHRP"
+var POS_DENOM = "SHR"
+var POS_BLOCK_REWARD = int64(5)

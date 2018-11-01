@@ -36,6 +36,10 @@ func ErrNoValidatorFound(codespace sdk.CodespaceType) sdk.Error {
 	return sdk.NewError(codespace, CodeInvalidValidator, "validator does not exist for that address")
 }
 
+func ErrNoDelegationFound(codespace sdk.CodespaceType) sdk.Error {
+	return sdk.NewError(codespace, CodeInvalidDelegation, "delegation does not exist for that address")
+}
+
 func ErrValidatorOwnerExists(codespace sdk.CodespaceType) sdk.Error {
 	return sdk.NewError(codespace, CodeInvalidValidator, "validator already exist for this operator address, must use new validator operator address")
 }

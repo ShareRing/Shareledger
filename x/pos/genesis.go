@@ -33,9 +33,12 @@ func InitGenesis(ctx sdk.Context, keeper keeper.Keeper, data GenesisState) ([]ab
 		if validator.DelegatorShares.IsZero() {
 			return abciVals, errors.Errorf("genesis validator cannot have zero delegator shares, validator: %v", validator)
 		}
-
-		fmt.Printf("InitGenesis validator: %s\n", validator.Owner)
 		abciVals = append(abciVals, validator.ABCIValidator())
+
+		keeper.SetValidator(ctx, validator)
+
+		vdi := posTypes.NewValidatorDistInfo(validator.Owner, int64(0))
+		keeper.SetValidatorDistInfo(ctx, vdi)
 	}
 
 	return abciVals, nil

@@ -260,6 +260,7 @@ func (d Dec) String() string {
 // evaluate as an integer and return left padded string
 func (d Dec) ToLeftPaddedWithDecimals(totalDigits int8) string {
 	intStr := d.Int.String()
+	fmt.Println("InStr:", intStr)
 	fcode := `%0` + strconv.Itoa(int(totalDigits)) + `s`
 	return fmt.Sprintf(fcode, intStr)
 }
@@ -430,6 +431,7 @@ func (d Dec) MarshalJSON() ([]byte, error) {
 		return nil, err
 	}
 
+	// convert to normal decimal representation, with decimal separator
 	bz = FromBig(bz, Separator, Precision)
 
 	return json.Marshal(string(bz))
@@ -446,14 +448,13 @@ func (d *Dec) UnmarshalJSON(bz []byte) error {
 	if err != nil {
 		return err
 	}
-
 	ok, err := IsValidDec([]byte(text), Separator, Precision)
 	if !ok {
 		return err
 	}
 
+	// from normal decimal representation to BigInt representation, adding zeros and drop separator
 	textBytes := ToBig([]byte(text), Separator, Precision)
-
 	return d.Int.UnmarshalText(textBytes)
 }
 
@@ -502,8 +503,8 @@ func IsValidDec(input []byte, sep byte, precision int64) (bool, error) {
 		return false, err
 	}
 
-	if sepPos < int64(len(input))-precision-1 {
-		return false, fmt.Errorf(constants.DEC_INVALID_DECIMALS)
+	if sepPos != -1 && sepPos < int64(len(input))-precision-1 {
+		return false, fmt.Errorf(constants.DEC_INVALID_DECIMALS, input, sepPos)
 	}
 	return true, nil
 }
@@ -546,6 +547,11 @@ func RemoveSeparator(input []byte, sep byte) []byte {
 	} else if sepPos != -1 {
 		output := append([]byte(""), input[:sepPos]...)
 		output = append(output, input[sepPos+1:]...)
+
+		// remove leading zero
+		for output[0] == '0' {
+			output = output[1:]
+		}
 		return output
 	} else {
 		return input

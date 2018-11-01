@@ -26,8 +26,16 @@ const ACCOUNT_INVALID_INTERFACE = "accountMapper requries a proto BaseAccount, b
 
 // Tx Fee Calculation
 const INSUFFICIENT_BALANCE = "Account %s has insufficient balance."
-const INVALID_TX_FEE = "Invalid transaction fee %s"
+const INVALID_TX_FEE = "Invalid transaction fee %s."
 
 // Two separators found
-const DEC_TWO_SEPARATORS = "Two separators found at %d and %d"
-const DEC_INVALID_DECIMALS = "Two many decimal digits in fractional part"
+const DEC_TWO_SEPARATORS = "Two separators found at %d and %d."
+const DEC_INVALID_DECIMALS = "Too many decimal digits in fractional part. %s"
+
+// POS
+const POS_WITHDRAWAL_ERROR = "Error in withdrawl for delegator %s."
+const POS_DELEGATION_NOT_FOUND = "Delegation with address %X not found."
+const POS_VALIDATOR_DIST_NOT_FOUND = "Validator Distribution Info for %X not found."
+const POS_INVALID_VALIDATOR_ADDRESS = "Validator Address is in incorrect format. Error: %s"
+const POS_MARSHAL_ERROR = "Marshal to JSON failed. %s"
+const POS_INVALID_PARAMS = "Unmarshal to Query params failed. %s"

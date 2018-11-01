@@ -6,6 +6,7 @@ import (
 	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
 	wire "bitbucket.org/shareringvn/cosmos-sdk/wire"
 
+	"github.com/sharering/shareledger/constants"
 	keep "github.com/sharering/shareledger/x/pos/keeper"
 	posTypes "github.com/sharering/shareledger/x/pos/type"
 
@@ -23,6 +24,7 @@ const (
 	QueryDelegatorValidator  = "delegatorValidator"
 	QueryPool                = "pool"
 	QueryParameters          = "parameters"
+	QueryValidatorDistInfo   = "validatorDistInfo"
 )
 
 // creates a querier for staking REST endpoints
@@ -34,6 +36,10 @@ func NewQuerier(k keep.Keeper, cdc *wire.Codec) sdk.Querier {
 			return queryValidators(ctx, cdc, k)
 		case QueryValidator:
 			return queryValidator(ctx, cdc, req, k)
+		case QueryValidatorDistInfo:
+			return queryValidatorDistInfo(ctx, cdc, req, k)
+		case QueryDelegation:
+			return queryDelegation(ctx, cdc, req, k)
 		/*
 			case QueryDelegator:
 				return queryDelegator(ctx, cdc, req, k)
@@ -77,8 +83,16 @@ type QueryBondsParams struct {
 	ValidatorAddr sdk.Address
 }
 
+type QueryValidatorDistParams struct {
+	ValidatorAddr sdk.Address
+}
+
+type QueryDelegationParams struct {
+	ValidatorAddr sdk.Address
+	DelegatorAddr sdk.Address
+}
+
 func queryValidators(ctx sdk.Context, cdc *wire.Codec, k keep.Keeper) (res []byte, err sdk.Error) {
-	fmt.Println("Query validators")
 	stakeParams := k.GetParams(ctx)
 	validators := k.GetValidators(ctx, stakeParams.MaxValidators)
 
@@ -107,6 +121,71 @@ func queryValidator(ctx sdk.Context, cdc *wire.Codec, req abci.RequestQuery, k k
 	if errRes != nil {
 		return nil, sdk.ErrInternal(fmt.Sprintf("could not marshal result to JSON: %s", errRes.Error()))
 	}
+	return res, nil
+}
+
+func queryValidatorDistInfo(
+	ctx sdk.Context,
+	cdc *wire.Codec,
+	req abci.RequestQuery,
+	k keep.Keeper,
+) (
+	res []byte, err sdk.Error,
+) {
+	var params QueryValidatorDistParams
+
+	errRes := cdc.UnmarshalBinary(req.Data, &params)
+
+	if errRes != nil {
+		return []byte{},
+			sdk.ErrUnknownAddress(fmt.Sprintf(constants.POS_INVALID_VALIDATOR_ADDRESS, err.Error()))
+	}
+
+	vdi, found := k.GetValidatorDistInfo(ctx, params.ValidatorAddr)
+	if !found {
+		return []byte{},
+			posTypes.ErrNoValidatorFound(posTypes.DefaultCodespace)
+	}
+
+	res, errRes = cdc.MarshalJSON(vdi)
+	if errRes != nil {
+		return nil,
+			sdk.ErrInternal(fmt.Sprintf(constants.POS_MARSHAL_ERROR, errRes.Error()))
+	}
+
+	return res, nil
+}
+
+func queryDelegation(
+	ctx sdk.Context,
+	cdc *wire.Codec,
+	req abci.RequestQuery,
+	k keep.Keeper,
+) (
+	res []byte, err sdk.Error,
+) {
+	var params QueryDelegationParams
+
+	errRes := cdc.UnmarshalBinary(req.Data, &params)
+
+	if errRes != nil {
+		return []byte{},
+			sdk.ErrUnknownAddress(fmt.Sprintf(constants.POS_INVALID_PARAMS, err.Error()))
+	}
+
+	delegation, found := k.GetDelegation(ctx, params.DelegatorAddr, params.ValidatorAddr)
+	if !found {
+		return []byte{},
+			posTypes.ErrNoDelegationFound(posTypes.DefaultCodespace)
+	}
+
+	res, errRes = cdc.MarshalJSON(delegation)
+
+	if errRes != nil {
+		return nil,
+			sdk.ErrInternal(fmt.Sprintf(constants.POS_MARSHAL_ERROR, errRes.Error()))
+	}
+
 	return res, nil
 }
 

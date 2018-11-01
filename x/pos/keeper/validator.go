@@ -52,13 +52,15 @@ func (k Keeper) GetValidator(ctx sdk.Context, addr sdk.Address) (validator posTy
 		delete(validatorCache, valToRemove.marshalled)
 	}
 
-	validator = posTypes.MustUnmarshalValidator(k.cdc, addr, value)
 	return validator, true
 }
 
 // return a given amount of all the validators
 func (k Keeper) GetValidators(ctx sdk.Context, maxRetrieve uint16) (validators []posTypes.Validator) {
 	store := ctx.KVStore(k.storeKey)
+
+
+	// maxRetrieve = 10
 	validators = make([]posTypes.Validator, maxRetrieve)
 
 	iterator := sdk.KVStorePrefixIterator(store, ValidatorsKey)
@@ -94,15 +96,19 @@ func (k Keeper) AddValidatorTokensAndShares(ctx sdk.Context, validator posTypes.
 	tokensToAdd types.Dec) (valOut posTypes.Validator, addedShares types.Dec) {
 
 	pool := k.GetPool(ctx)
+
 	//k.DeleteValidatorByPowerIndex(ctx, validator, pool)
 	validator, pool, addedShares = validator.AddTokensFromDel(pool, tokensToAdd /*.RoundInt64()*/)
+
 	// increment the intra-tx counter
 	// in case of a conflict, the validator which least recently changed power takes precedence
 	counter := k.GetIntraTxCounter(ctx)
 	validator.BondIntraTxCounter = counter
+
 	k.SetIntraTxCounter(ctx, counter+1)
 	k.SetValidator(ctx, validator)
 	k.SetPool(ctx, pool)
+
 	//k.SetValidatorByPowerIndex(ctx, validator, pool)
 	return validator, addedShares
 }

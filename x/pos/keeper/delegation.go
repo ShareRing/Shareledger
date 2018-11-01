@@ -23,6 +23,19 @@ func (k Keeper) GetDelegation(ctx sdk.Context,
 	return delegation, true
 }
 
+// return all delegations  during POS withdrawlReward
+func (k Keeper) GetAllDelegations(ctx sdk.Context) (delegations []posTypes.Delegation) {
+	store := ctx.KVStore(k.storeKey)
+	iterator := sdk.KVStorePrefixIterator(store, DelegationKey)
+	defer iterator.Close()
+
+	for ; iterator.Valid(); iterator.Next() {
+		delegation := posTypes.MustUnmarshalDelegation(k.cdc, iterator.Key(), iterator.Value())
+		delegations = append(delegations, delegation)
+	}
+	return delegations
+}
+
 // set the delegation
 func (k Keeper) SetDelegation(ctx sdk.Context, delegation posTypes.Delegation) {
 	store := ctx.KVStore(k.storeKey)

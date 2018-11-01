@@ -22,12 +22,17 @@ var (
 	RedelegationKey                  = []byte{0x0A} // key for a redelegation
 	RedelegationByValSrcIndexKey     = []byte{0x0B} // prefix for each key for an redelegation, by source validator operator
 	RedelegationByValDstIndexKey     = []byte{0x0C} // prefix for each key for an redelegation, by destination validator operator
+	ValidatorDistKey                 = []byte{0x0D} // prefix for each key for validator distribution information
 )
 
 // gets the key for the validator with address
 // VALUE: stake/types.Validator
 func GetValidatorKey(operatorAddr sdk.Address) []byte {
 	return append(ValidatorsKey, operatorAddr.Bytes()...)
+}
+
+func GetValidatorDistKey(operatorAddr sdk.Address) []byte {
+	return append(ValidatorDistKey, operatorAddr.Bytes()...)
 }
 
 //______________________________________________________________________________

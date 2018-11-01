@@ -20,6 +20,24 @@ func NewCoin(denom string, amount int64) Coin {
 	}
 }
 
+func NewPOSCoin(amount int64) Coin {
+	return Coin{
+		Denom:  constants.POS_DENOM,
+		Amount: NewDecFromInt(NewInt(amount)),
+	}
+}
+
+func NewPOSCoinFromDec(amount Dec) Coin {
+	return Coin{
+		Denom:  constants.POS_DENOM,
+		Amount: amount,
+	}
+}
+
+func NewZeroPOSCoin() Coin {
+	return NewPOSCoin(0)
+}
+
 func NewCoinFromDec(denom string, amount Dec) Coin {
 	return Coin{
 		Denom:  denom,
@@ -58,6 +76,10 @@ func (coin Coin) Minus(other Coin) Coin {
 		return coin
 	}
 	return NewCoinFromDec(coin.Denom, coin.Amount.Sub(other.Amount))
+}
+
+func (coin Coin) Mul(factor Dec) Coin {
+	return NewCoinFromDec(coin.Denom, coin.Amount.Mul(factor))
 }
 
 func (coin Coin) IsSameDenom(other Coin) bool {
