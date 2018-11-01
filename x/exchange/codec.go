@@ -1,4 +1,4 @@
-package asset
+package exchange
 
 import (
 	"bitbucket.org/shareringvn/cosmos-sdk/wire"

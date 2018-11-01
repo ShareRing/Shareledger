@@ -5,21 +5,21 @@ import (
 	"reflect"
 
 	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
-	msg "github.com/sharering/shareledger/x/exchange/messages"
 	"github.com/sharering/shareledger/utils"
+	"github.com/sharering/shareledger/x/exchange/messages"
 )
 
 func NewHandler(k Keeper) sdk.Handler {
 	return func(ctx sdk.Context, msg sdk.Msg) sdk.Result {
 		switch msg := msg.(type) {
-		case msg.MsgCreate:
-			return handleFeeMsg(k.CreateExchangeRate, ctx, msg)
-		case msg.MsgRetrieve:
-			return handleNonFeeMsg(k.RetrieveExchangeRate, ctx, msg)
-		case msg.MsgUpdate:
-			return handleFeeMsg(k.UpdateExchangeRate, ctx, msg)
-		case msg.MsgDelete:
-			return handleFeeMsg(k.DeleteExchangeRate, ctx, msg)
+		case messages.MsgCreate:
+			return handleMsgCreate(ctx, k, msg)
+		case messages.MsgRetrieve:
+			return handleMsgRetrieve(ctx, k, msg)
+		case messages.MsgUpdate:
+			return handleMsgUpdate(ctx, k, msg)
+		case messages.MsgDelete:
+			return handleMsgDelete(ctx, k, msg)
 		default:
 			errMsg := fmt.Sprintf("Unrecognized trace Msg type: %v", reflect.TypeOf(msg).Name())
 			return sdk.ErrUnknownRequest(errMsg).Result()
@@ -27,14 +27,13 @@ func NewHandler(k Keeper) sdk.Handler {
 	}
 }
 
-func handleFeeMsg(
-	f func(ctx sdk.Context, msg sdk.Msg),
+func handleMsgCreate(
 	ctx sdk.Context,
-	msg sdk.Msg,
-
+	k Keeper,
+	msg messages.MsgCreate,
 ) sdk.Result {
 
-	exr, err := f(ctx, msg)
+	exr, err := k.CreateExchangeRate(ctx, msg)
 
 	if err != nil {
 		return sdk.ErrInternal(err.Error()).Result()
@@ -52,20 +51,65 @@ func handleFeeMsg(
 	}
 }
 
-func handleNonFeeMsg(
-	f func(ctx sdk.Context, msg sdk.Msg),
+func handleMsgUpdate(
 	ctx sdk.Context,
-	msg sdk.Msg,
-
+	k Keeper,
+	msg messages.MsgUpdate,
 ) sdk.Result {
 
-	exr, err := f(ctx, msg)
+	exr, err := k.UpdateExchangeRate(ctx, msg)
 
 	if err != nil {
 		return sdk.ErrInternal(err.Error()).Result()
 	}
 
+	// TODO: MsgFee is based on name of Msg. Currently, Asset and This module ( Exchagne) share the same set of names
+	// Create, Delete, Update
 	fee, denom := utils.GetMsgFee(msg)
+
+	return sdk.Result{
+		Log:       fmt.Sprintf("%s", exr),
+		Tags:      msg.Tags(),
+		FeeAmount: fee,
+		FeeDenom:  denom,
+	}
+}
+
+func handleMsgDelete(
+	ctx sdk.Context,
+	k Keeper,
+	msg messages.MsgDelete,
+) sdk.Result {
+
+	exr, err := k.DeleteExchangeRate(ctx, msg)
+
+	if err != nil {
+		return sdk.ErrInternal(err.Error()).Result()
+	}
+
+	// TODO: MsgFee is based on name of Msg. Currently, Asset and This module ( Exchagne) share the same set of names
+	// Create, Delete, Update
+	fee, denom := utils.GetMsgFee(msg)
+
+	return sdk.Result{
+		Log:       fmt.Sprintf("%s", exr),
+		Tags:      msg.Tags(),
+		FeeAmount: fee,
+		FeeDenom:  denom,
+	}
+}
+func handleMsgRetrieve(
+	ctx sdk.Context,
+	k Keeper,
+	msg messages.MsgRetrieve,
+) sdk.Result {
+
+	exr, err := k.RetrieveExchangeRate(ctx, msg)
+
+	if err != nil {
+		return sdk.ErrInternal(err.Error()).Result()
+	}
+
 
 	return sdk.Result{
 		Log:  fmt.Sprintf("%s", exr),

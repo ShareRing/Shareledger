@@ -1,10 +1,13 @@
 package messages
 
 import (
+	"encoding/json"
 	"fmt"
+	"strings"
 
 	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
 
+	"github.com/sharering/shareledger/constants"
 	"github.com/sharering/shareledger/types"
 )
 
@@ -38,11 +41,10 @@ func (msg MsgUpdate) ValidateBasic() sdk.Error {
 		return sdk.ErrInternal(fmt.Sprintf(constants.EXC_SAME_DENOM, msg.FromDenom))
 	}
 
-
 	if !types.IsValidDenom(msg.FromDenom) || !types.IsValidDenom(msg.ToDenom) {
 		return sdk.ErrInternal(fmt.Sprintf(constants.EXC_INVALID_DENOM,
-										strings.Join(constants.DENOM_LIST, ","),
-										strings.Join([]string{msg.FromDenom, msg.ToDenom}, ","))
+			strings.Join(constants.ALL_DENOMS, ","),
+			strings.Join([]string{msg.FromDenom, msg.ToDenom}, ",")))
 	}
 
 	if msg.Rate.IsZero() {
@@ -52,7 +54,6 @@ func (msg MsgUpdate) ValidateBasic() sdk.Error {
 	return nil
 }
 
-
 func (msg MsgUpdate) GetSignBytes() []byte {
 	b, err := json.Marshal(msg)
 	if err != nil {
@@ -60,7 +61,6 @@ func (msg MsgUpdate) GetSignBytes() []byte {
 	}
 	return b
 }
-
 
 func (msg MsgUpdate) String() string {
 	return fmt.Sprintf("ExchangeRate/MsgUpdate{%s}", msg.GetSignBytes())

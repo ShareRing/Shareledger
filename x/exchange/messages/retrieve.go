@@ -1,25 +1,28 @@
 package messages
 
 import (
+	"encoding/json"
 	"fmt"
+	"strings"
 
 	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
 
+	"github.com/sharering/shareledger/constants"
 	"github.com/sharering/shareledger/types"
 )
 
 type MsgRetrieve struct {
-	FromDenom string    `json:"from_denom"`
-	ToDenom   string    `json:"to_denom"`
+	FromDenom string `json:"from_denom"`
+	ToDenom   string `json:"to_denom"`
 }
 
-var _ sdk.Msg = MsgRetriev{}
+var _ sdk.Msg = MsgRetrieve{}
 
 func NewMsgRetrieve(
 	from string,
 	to string,
 ) MsgRetrieve {
-	return Retrieve{
+	return MsgRetrieve{
 		FromDenom: from,
 		ToDenom:   to,
 	}
@@ -35,16 +38,14 @@ func (msg MsgRetrieve) ValidateBasic() sdk.Error {
 		return sdk.ErrInternal(fmt.Sprintf(constants.EXC_SAME_DENOM, msg.FromDenom))
 	}
 
-
 	if !types.IsValidDenom(msg.FromDenom) || !types.IsValidDenom(msg.ToDenom) {
 		return sdk.ErrInternal(fmt.Sprintf(constants.EXC_INVALID_DENOM,
-										strings.Join(constants.DENOM_LIST, ","),
-										strings.Join([]string{msg.FromDenom, msg.ToDenom}, ","))
+			strings.Join(constants.ALL_DENOMS, ","),
+			strings.Join([]string{msg.FromDenom, msg.ToDenom}, ",")))
 	}
 
 	return nil
 }
-
 
 func (msg MsgRetrieve) GetSignBytes() []byte {
 	b, err := json.Marshal(msg)
@@ -53,7 +54,6 @@ func (msg MsgRetrieve) GetSignBytes() []byte {
 	}
 	return b
 }
-
 
 func (msg MsgRetrieve) String() string {
 	return fmt.Sprintf("ExchangeRate/MsgRetrieve{%s}", msg.GetSignBytes())

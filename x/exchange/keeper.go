@@ -7,6 +7,8 @@ import (
 	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
 	"bitbucket.org/shareringvn/cosmos-sdk/wire"
 
+	"github.com/sharering/shareledger/constants"
+	"github.com/sharering/shareledger/x/exchange/messages"
 	"github.com/sharering/shareledger/x/exchange/types"
 )
 
@@ -27,7 +29,7 @@ func NewKeeper(key sdk.StoreKey, cdc *wire.Codec) Keeper {
 //-----------------------------------------------------------
 
 // GetStoreKey return keys to be used as key for store
-func GetStoreKey(fromDemon string, toDenom string) []byte {
+func GetStoreKey(fromDenom string, toDenom string) []byte {
 	return append([]byte(fromDenom), []byte(toDenom)...)
 }
 
@@ -61,10 +63,10 @@ func (k Keeper) Get(
 	jsonBytes := store.Get(key)
 
 	if jsonBytes == nil {
-		return e, sdk.ErrInternal(fmt.Sprintf(constants.EXCHANGE_RATE_NOT_FOUND, fromDenom, toDenom))
+		return e, sdk.ErrInternal(fmt.Sprintf(constants.EXC_EXCHANGE_RATE_NOT_FOUND, fromDenom, toDenom))
 	}
 
-	err := json.Unmarshal(jsonBytes, &e)
+	err = json.Unmarshal(jsonBytes, &e)
 	if err != nil {
 		return e, sdk.ErrInternal(fmt.Sprintf(constants.EXC_JSON_MARSHAL, err.Error()))
 	}
@@ -77,7 +79,7 @@ func (k Keeper) Delete(
 	fromDenom string,
 	toDenom string,
 ) (e types.ExchangeRate, err error) {
-	e, err = Get(ctx, fromDenom, toDenom)
+	e, err = k.Get(ctx, fromDenom, toDenom)
 	if err != nil {
 		return e, err
 	}
@@ -94,7 +96,7 @@ func (k Keeper) Delete(
 
 func (k Keeper) CreateExchangeRate(
 	ctx sdk.Context,
-	msg msg.MsgCreate,
+	msg messages.MsgCreate,
 ) (ex types.ExchangeRate, err error) {
 
 	ex = types.NewExchangeRate(msg.FromDenom, msg.ToDenom, msg.Rate)
@@ -106,14 +108,14 @@ func (k Keeper) CreateExchangeRate(
 
 func (k Keeper) RetrieveExchangeRate(
 	ctx sdk.Context,
-	msg msg.MsgRetrieve,
+	msg messages.MsgRetrieve,
 ) (ex types.ExchangeRate, err error) {
 	return k.Get(ctx, msg.FromDenom, msg.ToDenom)
 }
 
 func (k Keeper) UpdateExchangeRate(
 	ctx sdk.Context,
-	msg msg.MsgUpdate,
+	msg messages.MsgUpdate,
 ) (ex types.ExchangeRate, err error) {
 	ex = types.NewExchangeRate(msg.FromDenom, msg.ToDenom, msg.Rate)
 
@@ -124,7 +126,7 @@ func (k Keeper) UpdateExchangeRate(
 
 func (k Keeper) DeleteExchangeRate(
 	ctx sdk.Context,
-	msg msg.MsgDelete,
+	msg messages.MsgDelete,
 ) (ex types.ExchangeRate, err error) {
-	return k.Delete(ctx)
+	return k.Delete(ctx, msg.FromDenom, msg.ToDenom)
 }
