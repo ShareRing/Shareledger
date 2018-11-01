@@ -3,7 +3,6 @@ package posTypes
 import (
 	"bytes"
 	"fmt"
-	"time"
 
 	abci "github.com/tendermint/abci/types"
 	crypto "github.com/tendermint/go-crypto"
@@ -35,7 +34,7 @@ type Validator struct {
 	BondHeight         int64       `json:"bond_height"`           // earliest height as a bonded validator
 	BondIntraTxCounter int16       `json:"bond_intra_tx_counter"` // block-local tx index of validator change
 	UnbondingHeight    int64       `json:"unbonding_height"`      // if unbonding, height at which this validator has begun unbonding
-	UnbondingMinTime   time.Time   `json:"unbonding_time"`        // if unbonding, min time for the validator to complete unbonding
+	UnbondingMinTime   int64       `json:"unbonding_time"`        // time.Time  // if unbonding, min time for the validator to complete unbonding
 	//	ProposerRewardPool sdk.Coins   `json:"proposer_reward_pool"`  // XXX reward pool collected from being the proposer
 
 }
@@ -58,7 +57,7 @@ type validatorValue struct {
 	BondHeight         int64
 	BondIntraTxCounter int16
 	UnbondingHeight    int64
-	UnbondingMinTime   time.Time
+	UnbondingMinTime   int64 //time.Time
 }
 
 // NewValidator - initialize a new validator
@@ -76,7 +75,7 @@ func NewValidator(owner sdk.Address, pubKey types.PubKey, description Descriptio
 		BondHeight:         int64(0),
 		BondIntraTxCounter: int16(0),
 		UnbondingHeight:    int64(0),
-		UnbondingMinTime:   time.Unix(0, 0).UTC(),
+		UnbondingMinTime:   int64(0), //time.Unix(0, 0).UTC(),
 		//ProposerRewardPool: sdk.Coins{},
 	}
 }
