@@ -95,9 +95,10 @@ func (b Delegation) GetBondShares() types.Dec  { return b.Shares }
 func (b Delegation) UpdateDelAccum(
 	currentHeight int64,
 	totalRewardAccum types.Coin,
+	totalShares types.Dec,
 ) Delegation {
 
-	rewardCoin := totalRewardAccum.Mul(b.Shares)
+	rewardCoin := totalRewardAccum.Mul(b.Shares).Quo(totalShares)
 
 	b.RewardAccum = b.RewardAccum.Plus(rewardCoin)
 

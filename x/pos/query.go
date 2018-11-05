@@ -2,6 +2,7 @@ package pos
 
 import (
 	"fmt"
+	"encoding/json"
 
 	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
 	wire "bitbucket.org/shareringvn/cosmos-sdk/wire"
@@ -117,7 +118,8 @@ func queryValidator(ctx sdk.Context, cdc *wire.Codec, req abci.RequestQuery, k k
 		return []byte{}, posTypes.ErrNoValidatorFound(posTypes.DefaultCodespace)
 	}
 
-	res, errRes = cdc.MarshalJSON(validator)
+	// res, errRes = cdc.MarshalJSON(validator)
+	res, errRes = json.Marshal(validator)
 	if errRes != nil {
 		return nil, sdk.ErrInternal(fmt.Sprintf("could not marshal result to JSON: %s", errRes.Error()))
 	}

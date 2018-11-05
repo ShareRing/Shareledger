@@ -63,13 +63,16 @@ func GetTxDecoder(cdc *wire.Codec) func([]byte) (sdk.Tx, sdk.Error) {
 	return func(txBytes []byte) (sdk.Tx, sdk.Error) {
 		var tx types.SHRTx
 
+
+		constants.LOGGER.Info("txBytes: \n", "txBytes", txBytes)
+
 		//fmt.Println("TxDecoder:", txBytes)
 		//err := json.Unmarshal(txBytes, &tx)
 		//err := cdc.UnmarshalJSON(txBytes, &tx)
 		err := cdc.UnmarshalBinary(txBytes, &tx)
 
 		if err != nil {
-			constants.LOGGER.Error("Eroor in decoding Tx", "err", err.Error())
+			constants.LOGGER.Error("Error in decoding Tx", "err", err.Error())
 			return nil, sdk.ErrTxDecode(err.Error())
 		}
 		(constants.LOGGER).Info("Decoded Tx", "tx", tx)

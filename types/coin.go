@@ -3,7 +3,6 @@ package types
 import (
 	"encoding/json"
 	"fmt"
-	"strings"
 
 	"github.com/sharering/shareledger/constants"
 )
@@ -80,6 +79,11 @@ func (coin Coin) Minus(other Coin) Coin {
 
 func (coin Coin) Mul(factor Dec) Coin {
 	return NewCoinFromDec(coin.Denom, coin.Amount.Mul(factor))
+}
+
+
+func (coin Coin) Quo(factor Dec) Coin {
+	return NewCoinFromDec(coin.Denom, coin.Amount.Quo(factor))
 }
 
 func (coin Coin) IsSameDenom(other Coin) bool {
@@ -199,40 +203,47 @@ func (coins *Coins) Minus(other Coin) Coins {
 // Plus combines two sets of coins
 // CONTRACT: Plus will never return Coins where one Coin has a 0 amount.
 func (coins Coins) PlusMany(coinsB Coins) Coins {
-	sum := ([]Coin)(nil)
-	indexA, indexB := 0, 0
-	lenA, lenB := len(coins), len(coinsB)
-	for {
-		if indexA == lenA {
-			if indexB == lenB {
-				return sum
-			}
-			return append(sum, coinsB[indexB:]...)
-		} else if indexB == lenB {
-			return append(sum, coins[indexA:]...)
-		}
-		coinA, coinB := coins[indexA], coinsB[indexB]
-		switch strings.Compare(coinA.Denom, coinB.Denom) {
-		case -1:
-			sum = append(sum, coinA)
-			indexA++
-		case 0:
-			if coinA.Amount.Add(coinB.Amount).IsZero() {
-				// ignore 0 sum coin type
-			} else {
-				sum = append(sum, coinA.Plus(coinB))
-			}
-			indexA++
-			indexB++
-		case 1:
-			sum = append(sum, coinB)
-			indexB++
-		}
+	// TODO check valid denoms
+	for _, c := range coinsB {
+		coins = coins.Plus(c)
 	}
+
+	return coins
+	// sum := ([]Coin)(nil)
+	// indexA, indexB := 0, 0
+	// lenA, lenB := len(coins), len(coinsB)
+	// for {
+	// 	if indexA == lenA {
+	// 		if indexB == lenB {
+	// 			return sum
+	// 		}
+	// 		return append(sum, coinsB[indexB:]...)
+	// 	} else if indexB == lenB {
+	// 		return append(sum, coins[indexA:]...)
+	// 	}
+	// 	coinA, coinB := coins[indexA], coinsB[indexB]
+	// 	switch strings.Compare(coinA.Denom, coinB.Denom) {
+	// 	case -1:
+	// 		sum = append(sum, coinA)
+	// 		indexA++
+	// 	case 0:
+	// 		if coinA.Amount.Add(coinB.Amount).IsZero() {
+	// 			// ignore 0 sum coin type
+	// 		} else {
+	// 			sum = append(sum, coinA.Plus(coinB))
+	// 		}
+	// 		indexA++
+	// 		indexB++
+	// 	case 1:
+	// 		sum = append(sum, coinB)
+	// 		indexB++
+	// 	}
+	// }
 }
 
 // Minus subtracts a set of coins from another (adds the inverse)
 func (coins Coins) MinusMany(coinsB Coins) Coins {
+	fmt.Printf("MinusMany: %v\n", coinsB.Negative())
 	return coins.PlusMany(coinsB.Negative())
 }
 

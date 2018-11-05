@@ -1,6 +1,7 @@
 package pos
 
 import (
+	"fmt"
 	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
 
 	"github.com/sharering/shareledger/x/pos/keeper"
@@ -21,6 +22,8 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
 			return handleMsgBeginUnbonding(ctx, msg, k)
 		case message.MsgCompleteUnbonding:
 			return handleMsgCompleteUnbonding(ctx, msg, k)
+		case message.MsgWithdraw:
+			return handleMsgWithdraw(ctx, msg, k)
 
 		default:
 			return sdk.ErrTxDecode("invalid message parse in staking module").Result()
@@ -141,4 +144,30 @@ func handleMsgCompleteUnbonding(ctx sdk.Context, msg message.MsgCompleteUnbondin
 	)
 
 	return sdk.Result{Tags: tags}
+}
+
+func handleMsgWithdraw(
+	ctx sdk.Context,
+	msg message.MsgWithdraw,
+	k keeper.Keeper,
+) sdk.Result {
+
+	vdi, amount, err := k.WithdrawDelReward(ctx, msg.ValidatorAddr, msg.DelegatorAddr)
+
+	fmt.Printf("validator dist info: %v\n", vdi)
+
+	if err != nil {
+		return err.Result()
+	}
+
+	tags := sdk.NewTags(
+		tags.Event, tags.CompleteUnbonding,
+		tags.Delegator, []byte(msg.DelegatorAddr.String()),
+		tags.Validator, []byte(msg.ValidatorAddr.String()),
+	)
+
+	return sdk.Result{
+		Tags: tags,
+		Log: fmt.Sprintf("%s", amount),
+	}
 }

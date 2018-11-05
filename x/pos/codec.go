@@ -10,5 +10,6 @@ func RegisterCodec(cdc *wire.Codec) *wire.Codec {
 	cdc.RegisterConcrete(msg.MsgDelegate{}, "shareledger/pos/MsgDelegate", nil)
 	cdc.RegisterConcrete(msg.MsgBeginUnbonding{}, "shareledger/pos/MsgBeginUnbonding", nil)
 	cdc.RegisterConcrete(msg.MsgCompleteUnbonding{}, "shareledger/pos/MsgCompleteUnbonding", nil)
+	cdc.RegisterConcrete(msg.MsgWithdraw{}, "shareledger/pos/MsgWithdraw", nil)
 	return cdc
 }

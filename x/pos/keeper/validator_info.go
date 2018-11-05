@@ -9,7 +9,6 @@ import (
 
 	"github.com/sharering/shareledger/constants"
 	"github.com/sharering/shareledger/types"
-	"github.com/sharering/shareledger/x/bank"
 	posTypes "github.com/sharering/shareledger/x/pos/type"
 )
 
@@ -118,9 +117,11 @@ func (k Keeper) UpdateDelAccum(
 	posTypes.ValidatorDistInfo, sdk.Error,
 ) {
 
-	vdi, found := k.GetValidatorDistInfo(ctx, validatorAddr)
+	vdi, vdiFound := k.GetValidatorDistInfo(ctx, validatorAddr)
 
-	if !found {
+	validator, valFound := k.GetValidator(ctx, validatorAddr)
+
+	if !vdiFound || !valFound {
 		return vdi, sdk.ErrInternal(fmt.Sprintf(constants.POS_VALIDATOR_DIST_NOT_FOUND, validatorAddr))
 	}
 
@@ -139,7 +140,7 @@ func (k Keeper) UpdateDelAccum(
 		if bytes.Equal(delegation.ValidatorAddr, vdi.ValidatorAddr) {
 
 			// Update current Height, total Reward Accum
-			delegation = delegation.UpdateDelAccum(currentHeight, totalRewardAccum)
+			delegation = delegation.UpdateDelAccum(currentHeight, totalRewardAccum, validator.DelegatorShares)
 
 			totalShare = totalShare.Add(delegation.Shares)
 
@@ -161,11 +162,11 @@ func (k Keeper) UpdateDelAccum(
 
 func (k Keeper) WithdrawDelReward(
 	ctx sdk.Context,
-	bkeeper bank.Keeper,
-	currentHeight int64,
 	validatorAddr sdk.Address,
 	delegatorAddr sdk.Address,
 ) (posTypes.ValidatorDistInfo, types.Coin, sdk.Error) {
+
+	currentHeight := ctx.BlockHeight()
 
 	vdi, found := k.GetValidatorDistInfo(ctx, validatorAddr)
 	if !found {
@@ -200,7 +201,7 @@ func (k Keeper) WithdrawDelReward(
 
 	// update balance of delegator
 
-	_, err = bkeeper.AddCoin(
+	_, err = k.bankKeeper.AddCoin(
 		ctx,
 		delegatorAddr,
 		rewardCoin,
