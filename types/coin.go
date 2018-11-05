@@ -98,13 +98,12 @@ func (coin Coin) IsNotNegative() bool {
 	return coin.Amount.IsNotNegative()
 }
 
-func (coin Coin) HasValidDenoms() bool {
-	for denom, _ := range constants.DENOM_LIST {
-		if coin.Denom == denom {
-			return true
-		}
-	}
-	return false
+func (coin Coin) HasValidDenom() bool {
+	return IsValidDenom(coin.Denom)
+}
+
+func (coin Coin) HasDenom(denom string) bool {
+	return coin.Denom == denom
 }
 
 //------------------------------------------------------
@@ -161,7 +160,7 @@ func (coins Coins) HasValidDenoms() bool {
 }
 
 func (coins *Coins) Plus(other Coin) Coins {
-	if !other.HasValidDenoms() {
+	if !other.HasValidDenom() {
 		return *coins
 	}
 	var ret []Coin
@@ -185,7 +184,7 @@ func (coins *Coins) Plus(other Coin) Coins {
 
 // Minus - ensure *coins* and *co* have valid denoms
 func (coins *Coins) Minus(other Coin) Coins {
-	if !other.HasValidDenoms() {
+	if !other.HasValidDenom() {
 		return *coins
 	}
 	var ret []Coin
@@ -277,4 +276,16 @@ func (coins Coins) IsNotNegative() bool {
 		}
 	}
 	return true
+}
+
+//--------------------------------------------------------
+
+func IsValidDenom(denom string) bool {
+	for dn, _ := range constants.DENOM_LIST {
+		if dn == denom {
+			return true
+		}
+	}
+	return false
+
 }

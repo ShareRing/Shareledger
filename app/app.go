@@ -4,8 +4,6 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/sharering/shareledger/x/pos"
-	pKeeper "github.com/sharering/shareledger/x/pos/keeper"
 	abci "github.com/tendermint/abci/types"
 	cmn "github.com/tendermint/tmlibs/common"
 	dbm "github.com/tendermint/tmlibs/db"
@@ -22,6 +20,9 @@ import (
 	"github.com/sharering/shareledger/x/auth"
 	"github.com/sharering/shareledger/x/bank"
 	"github.com/sharering/shareledger/x/booking"
+	"github.com/sharering/shareledger/x/exchange"
+	"github.com/sharering/shareledger/x/pos"
+	pKeeper "github.com/sharering/shareledger/x/pos/keeper"
 )
 
 const (
@@ -44,10 +45,11 @@ type ShareLedgerApp struct {
 	//accountKey *sdk.KVStoreKey
 
 	//keepers
-	bankKeeper    bank.Keeper
-	posKeeper     pKeeper.Keeper
-	bookingKeeper booking.Keeper
-	assetKeeper   asset.Keeper
+	bankKeeper     bank.Keeper
+	posKeeper      pKeeper.Keeper
+	bookingKeeper  booking.Keeper
+	assetKeeper    asset.Keeper
+	exchangeKeeper exchange.Keeper
 
 	// Manage getting and setting accounts
 	accountMapper auth.AccountMapper
@@ -65,11 +67,12 @@ func NewShareLedgerApp(logger log.Logger, db dbm.DB) *ShareLedgerApp {
 	//accountKey := sdk.NewKVStoreKey(constants.STORE_BANK)
 	authKey := sdk.NewKVStoreKey(constants.STORE_AUTH)
 	posKey := sdk.NewKVStoreKey(constants.STORE_POS)
+	exchangeKey := sdk.NewKVStoreKey(constants.STORE_EXCHANGE)
 	//bankKey := sdk.NewKVStoreKey(constants.STORE_BANK)
 
 	// Mount Store
 
-	baseApp.MountStoresIAVL(authKey, assetKey, bookingKey, posKey)
+	baseApp.MountStoresIAVL(authKey, assetKey, bookingKey, posKey, exchangeKey)
 	err := baseApp.LoadLatestVersion(authKey)
 	if err != nil {
 		cmn.Exit(err.Error())
@@ -98,6 +101,7 @@ func NewShareLedgerApp(logger log.Logger, db dbm.DB) *ShareLedgerApp {
 	app.SetupBank(accountMapper)
 	app.SetupPOS(posKey, accountMapper)
 	app.SetupBooking(bookingKey, assetKey, accountMapper)
+	app.SetupExchange(exchangeKey)
 
 	app.SetTxDecoder(auth.GetTxDecoder(cdc))
 	app.SetAnteHandler(auth.NewAnteHandler(accountMapper))
@@ -269,4 +273,10 @@ func (app *ShareLedgerApp) SetupPOS(posKey *sdk.KVStoreKey,
 
 	//return k
 
+}
+
+func (app *ShareLedgerApp) SetupExchange(exchangeKey *sdk.KVStoreKey) {
+	app.cdc = exchange.RegisterCodec(app.cdc)
+	app.exchangeKeeper = exchange.NewKeeper(exchangeKey, app.cdc)
+	app.Router().AddRoute("exchangerate", exchange.NewHandler(app.exchangeKeeper))
 }
