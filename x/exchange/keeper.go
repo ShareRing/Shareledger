@@ -8,21 +8,24 @@ import (
 	"bitbucket.org/shareringvn/cosmos-sdk/wire"
 
 	"github.com/sharering/shareledger/constants"
+	"github.com/sharering/shareledger/x/bank"
 	"github.com/sharering/shareledger/x/exchange/messages"
 	"github.com/sharering/shareledger/x/exchange/types"
 )
 
 // Keeper to store ExchangeRate
 type Keeper struct {
-	storeKey sdk.StoreKey // key used to access the store from Context
-	cdc      *wire.Codec
+	storeKey   sdk.StoreKey // key used to access the store from Context
+	bankKeeper bank.Keeper  // bank keeper to swap tokens
+	cdc        *wire.Codec
 }
 
 // NewKeeper - Return a new keeper
-func NewKeeper(key sdk.StoreKey, cdc *wire.Codec) Keeper {
+func NewKeeper(key sdk.StoreKey, bk bank.Keeper, cdc *wire.Codec) Keeper {
 	return Keeper{
-		storeKey: key,
-		cdc:      cdc,
+		storeKey:   key,
+		bankKeeper: bk,
+		cdc:        cdc,
 	}
 }
 
@@ -108,9 +111,10 @@ func (k Keeper) CreateExchangeRate(
 
 func (k Keeper) RetrieveExchangeRate(
 	ctx sdk.Context,
-	msg messages.MsgRetrieve,
+	fromDenom string,
+	toDenom string,
 ) (ex types.ExchangeRate, err error) {
-	return k.Get(ctx, msg.FromDenom, msg.ToDenom)
+	return k.Get(ctx, fromDenom, toDenom)
 }
 
 func (k Keeper) UpdateExchangeRate(

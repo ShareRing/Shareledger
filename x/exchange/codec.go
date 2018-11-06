@@ -11,5 +11,6 @@ func RegisterCodec(cdc *wire.Codec) *wire.Codec {
 	cdc.RegisterConcrete(messages.MsgRetrieve{}, "shareledger/exchange/MsgRetrieve", nil)
 	cdc.RegisterConcrete(messages.MsgUpdate{}, "shareledger/exchange/MsgUpdate", nil)
 	cdc.RegisterConcrete(messages.MsgDelete{}, "shareledger/exchange/MsgDelete", nil)
+	cdc.RegisterConcrete(messages.MsgExchange{}, "shareledger/exchange/MsgExchange", nil)
 	return cdc
 }
