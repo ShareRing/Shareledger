@@ -16,13 +16,31 @@ func NewKeeper(_am auth.AccountMapper) Keeper {
 	return Keeper{am: _am}
 }
 
+
+
+
+func (k Keeper) GetCoins(
+	ctx sdk.Context,
+	addr sdk.Address,
+) types.Coins {
+	return getCoins(ctx, k.am, addr)
+}
+
+func (k Keeper) SetCoins(
+	ctx sdk.Context,
+	addr sdk.Address,
+	amt types.Coins,
+) sdk.Error {
+ 	return setCoins(ctx, k.am , addr, amt)
+}
+
 func (k Keeper) SubtractCoins(
 	ctx sdk.Context,
 	addr sdk.Address,
 	amt types.Coins,
 ) (types.Coins, sdk.Error) {
 
-		return substractCoins(ctx, k.am, addr, amt)
+	return substractCoins(ctx, k.am, addr, amt)
 }
 
 func (k Keeper) AddCoins(
@@ -51,6 +69,13 @@ func (k Keeper) AddCoin(
 
 	return addCoin(ctx, k.am, addr, amt)
 }
+
+
+//-------------------------------------------------------------------------
+
+
+
+//-------------------------------------------------------------------------
 
 func subtractCoin(
 	ctx sdk.Context,

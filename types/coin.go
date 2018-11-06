@@ -3,6 +3,7 @@ package types
 import (
 	"encoding/json"
 	"fmt"
+	"reflect"
 
 	"github.com/sharering/shareledger/constants"
 )
@@ -81,21 +82,12 @@ func (coin Coin) Mul(factor Dec) Coin {
 	return NewCoinFromDec(coin.Denom, coin.Amount.Mul(factor))
 }
 
-
 func (coin Coin) Quo(factor Dec) Coin {
 	return NewCoinFromDec(coin.Denom, coin.Amount.Quo(factor))
 }
 
 func (coin Coin) IsSameDenom(other Coin) bool {
 	return (coin.Denom == other.Denom)
-}
-
-func (coin Coin) IsPositive() bool {
-	return coin.Amount.IsPositive()
-}
-
-func (coin Coin) IsNotNegative() bool {
-	return coin.Amount.IsNotNegative()
 }
 
 func (coin Coin) HasValidDenom() bool {
@@ -105,6 +97,18 @@ func (coin Coin) HasValidDenom() bool {
 func (coin Coin) HasDenom(denom string) bool {
 	return coin.Denom == denom
 }
+
+func (c Coin) IsNil() bool         { return c.Amount.IsNil() }
+func (c Coin) IsZero() bool        { return c.Amount.IsZero() }
+func (c Coin) Equal(o Coin) bool   { return c.IsSameDenom(o) && c.Amount.Equal(o.Amount) }
+func (c Coin) GT(o Coin) bool      { return c.IsSameDenom(o) && c.Amount.GT(o.Amount) }
+func (c Coin) GTE(o Coin) bool     { return c.IsSameDenom(o) && c.Amount.GTE(o.Amount) }
+func (c Coin) LT(o Coin) bool      { return c.IsSameDenom(o) && c.Amount.LT(o.Amount) }
+func (c Coin) LTE(o Coin) bool     { return c.IsSameDenom(o) && c.Amount.LTE(o.Amount) }
+func (c Coin) Neg() Coin           { return NewCoinFromDec(c.Denom, c.Amount.Neg()) }
+func (c Coin) Abs() Coin           { return NewCoinFromDec(c.Denom, c.Amount.Abs()) }
+func (c Coin) IsPositive() bool    { return c.Amount.IsPositive() }
+func (c Coin) IsNotNegative() bool { return c.Amount.IsNotNegative() }
 
 //------------------------------------------------------
 // Coins
@@ -258,24 +262,65 @@ func (coins Coins) Negative() Coins {
 	return res
 }
 
-// IsPositive - all account has positive
-func (coins Coins) IsPositive() bool {
+func (coins Coins) Abs() Coins {
+	res := make([]Coin, 0, len(coins))
+	for _, coin := range coins {
+		res = append(res, coin.Abs())
+	}
+	return res
+}
+
+// func (coins Coins) IsPositive() bool {
+// 	for _, c := range coins {
+// 		if !c.IsPositive() {
+// 			return false
+// 		}
+// 	}
+// 	return true
+// }
+
+// IsNotNegative - all account are not negative
+// func (coins Coins) IsNotNegative() bool {
+// 	for _, c := range coins {
+// 		if !c.IsNotNegative() {
+// 			return false
+// 		}
+// 	}
+// 	return true
+// }
+
+func (c Coins) IsNil() bool         { return c.AllCoins("IsNil") }         // is nil. All coins are Nil
+func (c Coins) IsZero() bool        { return c.AllCoins("IsZero") }        // is equal to Zero. All coins are equal to zero
+func (c Coins) Equal(o Coin) bool   { return c.HasCoin(o, "Equal") }       // equal. Coin with the same denom has to be equal
+func (c Coins) GT(o Coin) bool      { return c.HasCoin(o, "GT") }          // greater. Coin with the same denom has to be greater
+func (c Coins) GTE(o Coin) bool     { return c.HasCoin(o, "GTE") }         // greater or equal. Coin with the same denom has to be greater or equal
+func (c Coins) LT(o Coin) bool      { return c.HasCoin(o, "LT") }          // less than. Coin with the same denom has to be less than
+func (c Coins) LTE(o Coin) bool     { return c.HasCoin(o, "LTE") }         // less than or equal. Coin with same denom has to be less than or equal
+func (c Coins) IsPositive() bool    { return c.AllCoins("IsPositive") }    // checking positivity. All coin have to be positive
+func (c Coins) IsNotNegative() bool { return c.AllCoins("IsNotNegative") } // checking negativity. All coin have to be negative
+
+// AllCoins - ensure all coins has a field which has a method return true
+// Example: coins.IsNil() == AllCoins("Amount", "IsNil")
+// meaning Coins IsNil() if all coins of Coins IsNil
+func (coins Coins) AllCoins(method string) bool {
 	for _, c := range coins {
-		if !c.IsPositive() {
+		if !reflect.ValueOf(c).MethodByName(method).Call([]reflect.Value{})[0].Interface().(bool) {
 			return false
 		}
 	}
 	return true
 }
 
-// IsNotNegative - all account are not negative
-func (coins Coins) IsNotNegative() bool {
+// HasCoin - has a coin whose method satisfies the method
+// Example: coins.GT(*other*) if coins has a single coin which is GT than *other*
+func (coins Coins) HasCoin(o Coin, method string) bool {
 	for _, c := range coins {
-		if !c.IsNotNegative() {
-			return false
+		if c.IsSameDenom(o) &&
+			reflect.ValueOf(c).MethodByName(method).Call([]reflect.Value{reflect.ValueOf(o)})[0].Interface().(bool) {
+			return true
 		}
 	}
-	return true
+	return false
 }
 
 //--------------------------------------------------------

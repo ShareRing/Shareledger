@@ -101,7 +101,7 @@ func NewShareLedgerApp(logger log.Logger, db dbm.DB) *ShareLedgerApp {
 	app.SetupBank(accountMapper)
 	app.SetupPOS(posKey, accountMapper)
 	app.SetupBooking(bookingKey, assetKey, accountMapper)
-	app.SetupExchange(exchangeKey)
+	app.SetupExchange(exchangeKey, accountMapper)
 
 	app.SetTxDecoder(auth.GetTxDecoder(cdc))
 	app.SetAnteHandler(auth.NewAnteHandler(accountMapper))
@@ -266,7 +266,8 @@ func (app *ShareLedgerApp) SetupBooking(bookingKey *sdk.KVStoreKey,
 func (app *ShareLedgerApp) SetupPOS(posKey *sdk.KVStoreKey,
 	am auth.AccountMapper) {
 	app.cdc = pos.RegisterCodec(app.cdc)
-	app.posKeeper = pKeeper.NewKeeper(posKey, app.bankKeeper, app.cdc)
+	bankKeeper := bank.NewKeeper(am)
+	app.posKeeper = pKeeper.NewKeeper(posKey, bankKeeper, app.cdc)
 	app.Router().AddRoute("pos", pos.NewHandler(app.posKeeper))
 	app.QueryRouter().
 		AddRoute("pos", pos.NewQuerier(app.posKeeper, app.cdc))
@@ -275,8 +276,9 @@ func (app *ShareLedgerApp) SetupPOS(posKey *sdk.KVStoreKey,
 
 }
 
-func (app *ShareLedgerApp) SetupExchange(exchangeKey *sdk.KVStoreKey) {
+func (app *ShareLedgerApp) SetupExchange(exchangeKey *sdk.KVStoreKey, am auth.AccountMapper) {
 	app.cdc = exchange.RegisterCodec(app.cdc)
-	app.exchangeKeeper = exchange.NewKeeper(exchangeKey, app.cdc)
+	bankKeeper := bank.NewKeeper(am)
+	app.exchangeKeeper = exchange.NewKeeper(exchangeKey, bankKeeper, app.cdc)
 	app.Router().AddRoute("exchangerate", exchange.NewHandler(app.exchangeKeeper))
 }
