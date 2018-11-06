@@ -5,27 +5,25 @@ import (
 	"fmt"
 
 	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
-	"bitbucket.org/shareringvn/cosmos-sdk/wire"
 
 	"github.com/sharering/shareledger/constants"
+	"github.com/sharering/shareledger/types"
 	"github.com/sharering/shareledger/x/bank"
 	"github.com/sharering/shareledger/x/exchange/messages"
-	"github.com/sharering/shareledger/x/exchange/types"
+	etypes "github.com/sharering/shareledger/x/exchange/types"
 )
 
 // Keeper to store ExchangeRate
 type Keeper struct {
 	storeKey   sdk.StoreKey // key used to access the store from Context
 	bankKeeper bank.Keeper  // bank keeper to swap tokens
-	cdc        *wire.Codec
 }
 
 // NewKeeper - Return a new keeper
-func NewKeeper(key sdk.StoreKey, bk bank.Keeper, cdc *wire.Codec) Keeper {
+func NewKeeper(key sdk.StoreKey, bk bank.Keeper) Keeper {
 	return Keeper{
 		storeKey:   key,
 		bankKeeper: bk,
-		cdc:        cdc,
 	}
 }
 
@@ -37,7 +35,7 @@ func GetStoreKey(fromDenom string, toDenom string) []byte {
 }
 
 // StoreExchangeRate - store exchangeRate
-func (k Keeper) Store(ctx sdk.Context, e types.ExchangeRate) error {
+func (k Keeper) Store(ctx sdk.Context, e etypes.ExchangeRate) error {
 	store := ctx.KVStore(k.storeKey)
 
 	key := GetStoreKey(e.FromDenom, e.ToDenom)
@@ -57,7 +55,7 @@ func (k Keeper) Get(
 	ctx sdk.Context,
 	fromDenom string,
 	toDenom string,
-) (e types.ExchangeRate, err error) {
+) (e etypes.ExchangeRate, err error) {
 
 	store := ctx.KVStore(k.storeKey)
 
@@ -81,7 +79,7 @@ func (k Keeper) Delete(
 	ctx sdk.Context,
 	fromDenom string,
 	toDenom string,
-) (e types.ExchangeRate, err error) {
+) (e etypes.ExchangeRate, err error) {
 	e, err = k.Get(ctx, fromDenom, toDenom)
 	if err != nil {
 		return e, err
@@ -100,9 +98,16 @@ func (k Keeper) Delete(
 func (k Keeper) CreateExchangeRate(
 	ctx sdk.Context,
 	msg messages.MsgCreate,
-) (ex types.ExchangeRate, err error) {
+) (ex etypes.ExchangeRate, err error) {
 
-	ex = types.NewExchangeRate(msg.FromDenom, msg.ToDenom, msg.Rate)
+	_, err = k.Get(ctx, msg.FromDenom, msg.ToDenom)
+
+	// Already exist an exchange
+	if err == nil {
+		return ex, fmt.Errorf(constants.EXC_ALREADY_EXIST, msg.FromDenom, msg.ToDenom)
+	}
+
+	ex = etypes.NewExchangeRate(msg.FromDenom, msg.ToDenom, msg.Rate)
 
 	err = k.Store(ctx, ex)
 
@@ -113,15 +118,15 @@ func (k Keeper) RetrieveExchangeRate(
 	ctx sdk.Context,
 	fromDenom string,
 	toDenom string,
-) (ex types.ExchangeRate, err error) {
+) (ex etypes.ExchangeRate, err error) {
 	return k.Get(ctx, fromDenom, toDenom)
 }
 
 func (k Keeper) UpdateExchangeRate(
 	ctx sdk.Context,
 	msg messages.MsgUpdate,
-) (ex types.ExchangeRate, err error) {
-	ex = types.NewExchangeRate(msg.FromDenom, msg.ToDenom, msg.Rate)
+) (ex etypes.ExchangeRate, err error) {
+	ex = etypes.NewExchangeRate(msg.FromDenom, msg.ToDenom, msg.Rate)
 
 	err = k.Store(ctx, ex)
 
@@ -131,6 +136,124 @@ func (k Keeper) UpdateExchangeRate(
 func (k Keeper) DeleteExchangeRate(
 	ctx sdk.Context,
 	msg messages.MsgDelete,
-) (ex types.ExchangeRate, err error) {
+) (ex etypes.ExchangeRate, err error) {
 	return k.Delete(ctx, msg.FromDenom, msg.ToDenom)
+}
+
+func (k Keeper) SellCoin(
+	ctx sdk.Context,
+	account sdk.Address,
+	reserveAddress sdk.Address,
+	fromDenom string,
+	toDenom string,
+	sellingAmount types.Dec,
+) (err error) {
+	exr, err := k.RetrieveExchangeRate(ctx, fromDenom, toDenom)
+
+	if err != nil {
+		return err
+	}
+	// Get balance
+	fromAcc := k.bankKeeper.GetCoins(ctx, account)
+
+	// Already check validity with the message
+	reserve := etypes.NewReserve(reserveAddress)
+
+	reserveAcc := reserve.GetCoins(ctx, k.bankKeeper)
+
+	sellingCoin := types.NewCoinFromDec(fromDenom, sellingAmount)
+
+	buyingCoin := exr.Convert(sellingCoin)
+
+	if fromAcc.LT(sellingCoin) || reserveAcc.LT(buyingCoin) {
+		return fmt.Errorf(constants.EXC_INSUFFICIENT_BALANCE,
+			fromAcc.String(),
+			sellingCoin.String(),
+			reserveAcc.String(),
+			buyingCoin.String())
+	}
+
+	// Transfer selling currencies from FromAcc to ReserveAcc
+	newFromAcc := fromAcc.Minus(sellingCoin)
+	newReserveAcc := reserveAcc.Plus(sellingCoin)
+
+	// Transfer Buying currencies from ReserveAcc to FromAcc
+	newReserveAcc = newReserveAcc.Minus(buyingCoin)
+	newFromAcc = newFromAcc.Plus(buyingCoin)
+
+	// Save to store
+
+	sdkErr := k.bankKeeper.SetCoins(ctx, account, newFromAcc)
+
+	if sdkErr != nil {
+		return fmt.Errorf(sdkErr.Error())
+	}
+
+	sdkErr = reserve.SetCoins(ctx, k.bankKeeper, newReserveAcc)
+
+	if sdkErr != nil {
+		return fmt.Errorf(sdkErr.Error())
+	}
+
+	return nil
+}
+
+func (k Keeper) BuyCoin(
+	ctx sdk.Context,
+	account sdk.Address,
+	reserveAddress sdk.Address,
+	fromDenom string,
+	toDenom string,
+	buyingAmount types.Dec,
+) (err error) {
+	fmt.Printf("BUY COIN\n")
+	exr, err := k.RetrieveExchangeRate(ctx, fromDenom, toDenom)
+
+	if err != nil {
+		return err
+	}
+	// Get balance
+	fromAcc := k.bankKeeper.GetCoins(ctx, account)
+
+	// Already check validity with the message
+	reserve := etypes.NewReserve(reserveAddress)
+
+	reserveAcc := reserve.GetCoins(ctx, k.bankKeeper)
+
+	buyingCoin := types.NewCoinFromDec(toDenom, buyingAmount)
+
+	sellingCoin := exr.Obtain(buyingCoin)
+
+	if fromAcc.LT(sellingCoin) || reserveAcc.LT(buyingCoin) {
+		return fmt.Errorf(constants.EXC_INSUFFICIENT_BALANCE,
+			fromAcc.String(),
+			sellingCoin.String(),
+			reserveAcc.String(),
+			buyingCoin.String())
+	}
+
+	// Transfer selling currencies from FromAcc to ReserveAcc
+	newFromAcc := fromAcc.Minus(sellingCoin)
+	newReserveAcc := reserveAcc.Plus(sellingCoin)
+
+	// Transfer Buying currencies from ReserveAcc to FromAcc
+	newReserveAcc = newReserveAcc.Minus(buyingCoin)
+	newFromAcc = newFromAcc.Plus(buyingCoin)
+
+	// Save to store
+
+	sdkErr := k.bankKeeper.SetCoins(ctx, account, newFromAcc)
+
+	if sdkErr != nil {
+		return fmt.Errorf(sdkErr.Error())
+	}
+
+	sdkErr = reserve.SetCoins(ctx, k.bankKeeper, newReserveAcc)
+
+	if sdkErr != nil {
+		return fmt.Errorf(sdkErr.Error())
+	}
+
+	return nil
+
 }

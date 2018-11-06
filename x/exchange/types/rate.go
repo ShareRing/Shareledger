@@ -34,11 +34,24 @@ func (e ExchangeRate) UpdateRate(newRate types.Dec) ExchangeRate {
 }
 
 // Convert - convert from one coin to another using this exchange rate
-func (e ExchangeRate) Convert(from types.Coin) (to types.Coin) {
-	if !from.HasDenom(e.FromDenom) {
-		panic(fmt.Sprintf(constants.EXC_INVALID_DENOM, e.FromDenom, from.Denom))
+func (e ExchangeRate) Convert(sellingCoin types.Coin) (buyingCoin types.Coin) {
+	if !sellingCoin.HasDenom(e.FromDenom) {
+		panic(fmt.Sprintf(constants.EXC_INVALID_DENOM, e.FromDenom, sellingCoin.Denom))
 	}
 
-	toAmount := from.Amount.Mul(e.Rate)
-	return types.NewCoinFromDec(e.ToDenom, toAmount)
+	// if convert FromDenom -> ToDenom
+	buyingAmount := sellingCoin.Amount.Mul(e.Rate)
+
+	return types.NewCoinFromDec(e.ToDenom, buyingAmount)
+}
+
+func (e ExchangeRate) Obtain(buyingCoin types.Coin) (sellingCoin types.Coin) {
+	if !buyingCoin.HasDenom(e.ToDenom) {
+		panic(fmt.Sprintf(constants.EXC_INVALID_DENOM, e.ToDenom, buyingCoin.Denom))
+	}
+
+	// if convert ToDemom -> FromDenom
+	sellingAmount := buyingCoin.Amount.Quo(e.Rate)
+
+	return types.NewCoinFromDec(e.FromDenom, sellingAmount)
 }

@@ -21,6 +21,7 @@ import (
 	"github.com/sharering/shareledger/x/bank"
 	"github.com/sharering/shareledger/x/booking"
 	"github.com/sharering/shareledger/x/exchange"
+	"github.com/sharering/shareledger/x/fee"
 	"github.com/sharering/shareledger/x/pos"
 	pKeeper "github.com/sharering/shareledger/x/pos/keeper"
 )
@@ -110,7 +111,7 @@ func NewShareLedgerApp(logger log.Logger, db dbm.DB) *ShareLedgerApp {
 	app.cdc = auth.RegisterCodec(app.cdc)
 
 	// Set Tx Fee Calculation
-	//app.SetFeeHandler(fee.NewFeeHandler(accountMapper))
+	app.SetFeeHandler(fee.NewFeeHandler(accountMapper, exchangeKey))
 
 	// Register InitChain
 	logger.Info("Register Init Chainer")
@@ -279,6 +280,6 @@ func (app *ShareLedgerApp) SetupPOS(posKey *sdk.KVStoreKey,
 func (app *ShareLedgerApp) SetupExchange(exchangeKey *sdk.KVStoreKey, am auth.AccountMapper) {
 	app.cdc = exchange.RegisterCodec(app.cdc)
 	bankKeeper := bank.NewKeeper(am)
-	app.exchangeKeeper = exchange.NewKeeper(exchangeKey, bankKeeper, app.cdc)
+	app.exchangeKeeper = exchange.NewKeeper(exchangeKey, bankKeeper)
 	app.Router().AddRoute("exchangerate", exchange.NewHandler(app.exchangeKeeper))
 }
