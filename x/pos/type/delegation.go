@@ -16,7 +16,7 @@ type Delegation struct {
 	ValidatorAddr    sdk.Address `json:"validator_addr"`
 	Shares           types.Dec   `json:"shares"`
 	Height           int64       `json:"height"`           // Last height bond updated
-	RewardAccum      types.Coin `json:"reward_accum"`     // reward accumulation of this block til withdrawal_height
+	RewardAccum      types.Coin  `json:"reward_accum"`     // reward accumulation of this block til withdrawal_height
 	WithdrawalHeight int64       `json:"withdrawal_height` // latest withdrawal height
 }
 
@@ -181,5 +181,79 @@ func UnmarshalUBD(cdc *wire.Codec, key, value []byte) (ubd UnbondingDelegation, 
 		MinTime:        storeValue.MinTime,
 		InitialBalance: storeValue.InitialBalance,
 		Balance:        storeValue.Balance,
+	}, nil
+}
+
+// Redelegation reflects a delegation's passive re-delegation queue.
+type Redelegation struct {
+	DelegatorAddr    sdk.Address `json:"delegator_addr"`     // delegator
+	ValidatorSrcAddr sdk.Address `json:"validator_src_addr"` // validator redelegation source operator addr
+	ValidatorDstAddr sdk.Address `json:"validator_dst_addr"` // validator redelegation destination operator addr
+	CreationHeight   int64       `json:"creation_height"`    // height which the redelegation took place
+	MinTime          int64       `json:"min_time"`           // unix time for redelegation completion
+	InitialBalance   types.Coin  `json:"initial_balance"`    // initial balance when redelegation started
+	Balance          types.Coin  `json:"balance"`            // current balance
+	SharesSrc        types.Dec   `json:"shares_src"`         // amount of source shares redelegating
+	SharesDst        types.Dec   `json:"shares_dst"`         // amount of destination shares redelegating
+}
+
+type redValue struct {
+	CreationHeight int64
+	MinTime        int64 //time.Time
+	InitialBalance types.Coin
+	Balance        types.Coin
+	SharesSrc      types.Dec
+	SharesDst      types.Dec
+}
+
+// return the redelegation without fields contained within the key for the store
+func MustMarshalRED(cdc *wire.Codec, red Redelegation) []byte {
+	val := redValue{
+		red.CreationHeight,
+		red.MinTime,
+		red.InitialBalance,
+		red.Balance,
+		red.SharesSrc,
+		red.SharesDst,
+	}
+	return cdc.MustMarshalBinary(val)
+}
+
+// unmarshal a redelegation from a store key and value
+func MustUnmarshalRED(cdc *wire.Codec, key, value []byte) Redelegation {
+	red, err := UnmarshalRED(cdc, key, value)
+	if err != nil {
+		panic(err)
+	}
+	return red
+}
+
+// unmarshal a redelegation from a store key and value
+func UnmarshalRED(cdc *wire.Codec, key, value []byte) (red Redelegation, err error) {
+	var storeValue redValue
+	err = cdc.UnmarshalBinary(value, &storeValue)
+	if err != nil {
+		return
+	}
+
+	addrs := key[1:] // remove prefix bytes
+	if len(addrs) != 3*types.ADDRESSLENGTH {
+		//err = fmt.Errorf("%v", posTypes.ErrBadRedelegationAddr(DefaultCodespace).Data())
+		return
+	}
+	delAddr := sdk.Address(addrs[:types.ADDRESSLENGTH])
+	valSrcAddr := sdk.Address(addrs[types.ADDRESSLENGTH : 2*types.ADDRESSLENGTH])
+	valDstAddr := sdk.Address(addrs[2*types.ADDRESSLENGTH:])
+
+	return Redelegation{
+		DelegatorAddr:    delAddr,
+		ValidatorSrcAddr: valSrcAddr,
+		ValidatorDstAddr: valDstAddr,
+		CreationHeight:   storeValue.CreationHeight,
+		MinTime:          storeValue.MinTime,
+		InitialBalance:   storeValue.InitialBalance,
+		Balance:          storeValue.Balance,
+		SharesSrc:        storeValue.SharesSrc,
+		SharesDst:        storeValue.SharesDst,
 	}, nil
 }

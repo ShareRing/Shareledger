@@ -16,4 +16,5 @@ var (
 	BeginUnbonding    = []byte("BeginUnbonding")
 	CompleteUnbonding = []byte("CompleteUnbonding")
 	Withdraw          = []byte("Witdrawed")
+	BeginRedelegation = []byte("BeginRedelegation")
 )

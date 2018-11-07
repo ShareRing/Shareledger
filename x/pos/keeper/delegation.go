@@ -283,3 +283,139 @@ func (k Keeper) CompleteUnbonding(ctx sdk.Context, delAddr sdk.Address, valAddr 
 	k.RemoveUnbondingDelegation(ctx, ubd)
 	return nil
 }
+
+func (k Keeper) BeginRedelegation(ctx sdk.Context, delAddr sdk.Address,
+	valSrcAddr, valDstAddr sdk.Address, sharesAmount types.Dec) sdk.Error {
+
+	// check if this is a transitive redelegation
+	if k.HasReceivingRedelegation(ctx, delAddr, valSrcAddr) {
+		return posTypes.ErrTransitiveRedelegation(k.Codespace())
+	}
+
+	returnAmount, err := k.unbond(ctx, delAddr, valSrcAddr, sharesAmount)
+	if err != nil {
+		return err
+	}
+
+	params := k.GetParams(ctx)
+	returnCoin := types.NewCoin(params.BondDenom, returnAmount.RoundInt64())
+	dstValidator, found := k.GetValidator(ctx, valDstAddr)
+	if !found {
+		return posTypes.ErrBadRedelegationDst(k.Codespace())
+	}
+	sharesCreated, err := k.Delegate(ctx, delAddr, returnCoin, dstValidator, false)
+	if err != nil {
+		return err
+	}
+
+	// create the unbonding delegation
+	minTime, height, completeNow := k.getBeginInfo(ctx, params, valSrcAddr)
+
+	if completeNow { // no need to create the redelegation object
+		return nil
+	}
+
+	red := posTypes.Redelegation{
+		DelegatorAddr:    delAddr,
+		ValidatorSrcAddr: valSrcAddr,
+		ValidatorDstAddr: valDstAddr,
+		CreationHeight:   height,
+		MinTime:          minTime,
+		SharesDst:        sharesCreated,
+		SharesSrc:        sharesAmount,
+		Balance:          returnCoin,
+		InitialBalance:   returnCoin,
+	}
+	k.SetRedelegation(ctx, red)
+	return nil
+}
+
+// complete unbonding an ongoing redelegation
+func (k Keeper) CompleteRedelegation(ctx sdk.Context, delAddr sdk.Address,
+	valSrcAddr, valDstAddr sdk.Address) sdk.Error {
+
+	red, found := k.GetRedelegation(ctx, delAddr, valSrcAddr, valDstAddr)
+	if !found {
+		return posTypes.ErrNoRedelegation(k.Codespace())
+	}
+
+	// ensure that enough time has passed
+	ctxTime := ctx.BlockHeader().Time
+	if red.MinTime > ctxTime { //red.MinTime.After(ctxTime) {
+		return posTypes.ErrNotMature(k.Codespace(), "redelegation", "unit-time", red.MinTime, ctxTime)
+	}
+
+	k.RemoveRedelegation(ctx, red)
+	return nil
+}
+
+//_____________________________________________________________________________________
+
+// return a given amount of all the delegator redelegations
+func (k Keeper) GetRedelegations(ctx sdk.Context, delegator sdk.Address,
+	maxRetrieve uint16) (redelegations []posTypes.Redelegation) {
+	redelegations = make([]posTypes.Redelegation, maxRetrieve)
+
+	store := ctx.KVStore(k.storeKey)
+	delegatorPrefixKey := GetREDsKey(delegator)
+	iterator := sdk.KVStorePrefixIterator(store, delegatorPrefixKey)
+	defer iterator.Close()
+
+	i := 0
+	for ; iterator.Valid() && i < int(maxRetrieve); iterator.Next() {
+		redelegation := posTypes.MustUnmarshalRED(k.cdc, iterator.Key(), iterator.Value())
+		redelegations[i] = redelegation
+		i++
+	}
+	return redelegations[:i] // trim if the array length < maxRetrieve
+}
+
+// return a redelegation
+func (k Keeper) GetRedelegation(ctx sdk.Context,
+	delAddr sdk.Address, valSrcAddr, valDstAddr sdk.Address) (red posTypes.Redelegation, found bool) {
+
+	store := ctx.KVStore(k.storeKey)
+	key := GetREDKey(delAddr, valSrcAddr, valDstAddr)
+	value := store.Get(key)
+	if value == nil {
+		return red, false
+	}
+
+	red = posTypes.MustUnmarshalRED(k.cdc, key, value)
+	return red, true
+}
+
+// check if validator is receiving a redelegation
+func (k Keeper) HasReceivingRedelegation(ctx sdk.Context,
+	delAddr sdk.Address, valDstAddr sdk.Address) bool {
+
+	store := ctx.KVStore(k.storeKey)
+	prefix := GetREDsByDelToValDstIndexKey(delAddr, valDstAddr)
+	iterator := sdk.KVStorePrefixIterator(store, prefix)
+	defer iterator.Close()
+
+	found := false
+	if iterator.Valid() {
+		found = true
+	}
+	return found
+}
+
+// set a redelegation and associated index
+func (k Keeper) SetRedelegation(ctx sdk.Context, red posTypes.Redelegation) {
+	store := ctx.KVStore(k.storeKey)
+	bz := posTypes.MustMarshalRED(k.cdc, red)
+	key := GetREDKey(red.DelegatorAddr, red.ValidatorSrcAddr, red.ValidatorDstAddr)
+	store.Set(key, bz)
+	store.Set(GetREDByValSrcIndexKey(red.DelegatorAddr, red.ValidatorSrcAddr, red.ValidatorDstAddr), []byte{})
+	store.Set(GetREDByValDstIndexKey(red.DelegatorAddr, red.ValidatorSrcAddr, red.ValidatorDstAddr), []byte{})
+}
+
+// remove a redelegation object and associated index
+func (k Keeper) RemoveRedelegation(ctx sdk.Context, red posTypes.Redelegation) {
+	store := ctx.KVStore(k.storeKey)
+	redKey := GetREDKey(red.DelegatorAddr, red.ValidatorSrcAddr, red.ValidatorDstAddr)
+	store.Delete(redKey)
+	store.Delete(GetREDByValSrcIndexKey(red.DelegatorAddr, red.ValidatorSrcAddr, red.ValidatorDstAddr))
+	store.Delete(GetREDByValDstIndexKey(red.DelegatorAddr, red.ValidatorSrcAddr, red.ValidatorDstAddr))
+}

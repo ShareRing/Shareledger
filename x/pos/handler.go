@@ -2,6 +2,7 @@ package pos
 
 import (
 	"fmt"
+
 	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
 
 	"github.com/sharering/shareledger/x/pos/keeper"
@@ -146,6 +147,23 @@ func handleMsgCompleteUnbonding(ctx sdk.Context, msg message.MsgCompleteUnbondin
 	return sdk.Result{Tags: tags}
 }
 
+/*
+func handleMsgBeginRedelegate(ctx sdk.Context, msg posTypes.MsgBeginRedelegate, k keeper.Keeper) sdk.Result {
+	err := k.BeginRedelegation(ctx, msg.DelegatorAddr, msg.ValidatorSrcAddr,
+		msg.ValidatorDstAddr, msg.SharesAmount)
+	if err != nil {
+		return err.Result()
+	}
+
+	tags := sdk.NewTags(
+		tags.Event, tags.BeginRedelegation,
+		tags.Delegator, []byte(msg.DelegatorAddr.String()),
+		tags.SrcValidator, []byte(msg.ValidatorSrcAddr.String()),
+		tags.DstValidator, []byte(msg.ValidatorDstAddr.String()),
+	)
+	return sdk.Result{Tags: tags}
+} */
+
 func handleMsgWithdraw(
 	ctx sdk.Context,
 	msg message.MsgWithdraw,
@@ -168,6 +186,6 @@ func handleMsgWithdraw(
 
 	return sdk.Result{
 		Tags: tags,
-		Log: fmt.Sprintf("%s", amount),
+		Log:  fmt.Sprintf("%s", amount),
 	}
 }
