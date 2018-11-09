@@ -14,11 +14,11 @@ import (
 //--------------------------------
 // Handler for the message
 
-func HandleMsgLoad(am auth.AccountMapper) sdk.Handler {
+func HandleMsgBurn(am auth.AccountMapper) sdk.Handler {
 	return func(ctx sdk.Context, msg sdk.Msg) sdk.Result {
-		loadMsg, ok := msg.(messages.MsgLoad)
+		burnMsg, ok := msg.(messages.MsgBurn)
 		if !ok {
-			return sdk.NewError(2, 1, "MsgLoad is malformed").Result()
+			return sdk.NewError(2, 1, "MsgBurn is malformed").Result()
 		}
 
 		// IMPORTANT
@@ -34,13 +34,13 @@ func HandleMsgLoad(am auth.AccountMapper) sdk.Handler {
 		// Credit the account
 		var resT sdk.Result
 
-		if resT = handleTo(ctx, am, loadMsg.Account, loadMsg.Amount); !resT.IsOK() {
+		if resT = handleFrom(ctx, am, burnMsg.Account, burnMsg.Amount); !resT.IsOK() {
 			return resT
 		}
 		return sdk.Result{
 			Log:  resT.Log,
 			Data: resT.Data,
-			Tags: loadMsg.Tags(),
+			Tags: burnMsg.Tags(),
 		}
 
 	}

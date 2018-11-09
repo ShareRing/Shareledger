@@ -50,3 +50,9 @@ const EXC_INVALID_AMOUNT = "Amount must be larger than 0. Provided amount %s."
 const EXC_INVALID_RESERVE = "Invalid Reserve %s."
 const EXC_INSUFFICIENT_BALANCE = "Account (%s < %s) or Reserve (%s < %s) has insufficient amount."
 const EXC_ALREADY_EXIST = "Exchange Rate from %s to %s has already existed."
+
+// RESERVE
+const RES_RESERVE_ONLY = "Only priviledged accounts can execute this transaction."
+
+// BANK
+const BANK_INVALID_BURNT_DENOM = "Only booking denom %s is allowed to be burnt."

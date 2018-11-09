@@ -26,6 +26,8 @@ func NewHandler(am auth.AccountMapper) sdk.Handler {
 			return handlers.HandleMsgLoad(am)(ctx, msg)
 		case messages.MsgSend:
 			return handlers.HandleMsgSend(am)(ctx, msg)
+		case messages.MsgBurn:
+			return handlers.HandleMsgBurn(am)(ctx, msg)
 		default:
 			errMsg := "Unrecognized bank Msg type" + reflect.TypeOf(msg).Name()
 			return sdk.ErrUnknownRequest(errMsg).Result()

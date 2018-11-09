@@ -1,13 +1,13 @@
 package types
 
 import (
-	"bytes"
 	"encoding/hex"
 	"fmt"
 
 	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
 	"github.com/sharering/shareledger/constants"
 	"github.com/sharering/shareledger/types"
+	"github.com/sharering/shareledger/utils"
 	"github.com/sharering/shareledger/x/bank"
 )
 
@@ -22,16 +22,7 @@ func NewReserve(addr sdk.Address) Reserve {
 }
 
 func (res Reserve) IsValid() bool {
-	for _, resStr := range constants.RESERVE_ACCOUNTS {
-		decoded, err := hex.DecodeString(resStr)
-		if err != nil {
-			panic(err)
-		}
-		if bytes.Equal(res.Address[:], decoded) {
-			return true
-		}
-	}
-	return false
+	return utils.IsValidReserve(res.Address)
 }
 
 func (res Reserve) String() string {
