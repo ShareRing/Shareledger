@@ -53,6 +53,7 @@ const EXC_ALREADY_EXIST = "Exchange Rate from %s to %s has already existed."
 
 // RESERVE
 const RES_RESERVE_ONLY = "Only priviledged accounts can execute this transaction."
+const RES_OWN_ACCOUNT = "An account can only burn Coins of its own. Account %s != Signer %s."
 
 // BANK
 const BANK_INVALID_BURNT_DENOM = "Only booking denom %s is allowed to be burnt."
