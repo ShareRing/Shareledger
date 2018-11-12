@@ -25,6 +25,11 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
 			return handleMsgCompleteUnbonding(ctx, msg, k)
 		case message.MsgWithdraw:
 			return handleMsgWithdraw(ctx, msg, k)
+		case message.MsgBeginRedelegate:
+			return handleMsgBeginRedelegate(ctx, msg, k)
+
+		case message.MsgCompleteRedelegate:
+			return handleMsgCompleteRedelegate(ctx, msg, k)
 
 		default:
 			return sdk.ErrTxDecode("invalid message parse in staking module").Result()
@@ -147,8 +152,7 @@ func handleMsgCompleteUnbonding(ctx sdk.Context, msg message.MsgCompleteUnbondin
 	return sdk.Result{Tags: tags}
 }
 
-/*
-func handleMsgBeginRedelegate(ctx sdk.Context, msg posTypes.MsgBeginRedelegate, k keeper.Keeper) sdk.Result {
+func handleMsgBeginRedelegate(ctx sdk.Context, msg message.MsgBeginRedelegate, k keeper.Keeper) sdk.Result {
 	err := k.BeginRedelegation(ctx, msg.DelegatorAddr, msg.ValidatorSrcAddr,
 		msg.ValidatorDstAddr, msg.SharesAmount)
 	if err != nil {
@@ -162,7 +166,22 @@ func handleMsgBeginRedelegate(ctx sdk.Context, msg posTypes.MsgBeginRedelegate, 
 		tags.DstValidator, []byte(msg.ValidatorDstAddr.String()),
 	)
 	return sdk.Result{Tags: tags}
-} */
+}
+
+func handleMsgCompleteRedelegate(ctx sdk.Context, msg message.MsgCompleteRedelegate, k keeper.Keeper) sdk.Result {
+	err := k.CompleteRedelegation(ctx, msg.DelegatorAddr, msg.ValidatorSrcAddr, msg.ValidatorDstAddr)
+	if err != nil {
+		return err.Result()
+	}
+
+	tags := sdk.NewTags(
+		tags.Event, tags.CompleteRedelegation,
+		tags.Delegator, []byte(msg.DelegatorAddr.String()),
+		tags.SrcValidator, []byte(msg.ValidatorSrcAddr.String()),
+		tags.DstValidator, []byte(msg.ValidatorDstAddr.String()),
+	)
+	return sdk.Result{Tags: tags}
+}
 
 func handleMsgWithdraw(
 	ctx sdk.Context,
