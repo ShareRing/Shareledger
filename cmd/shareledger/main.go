@@ -40,6 +40,7 @@ func constructCommand() *cobra.Command {
 	rootCmd.AddCommand(
 		subcommands.InitFilesCmd,
 		subcommands.ShowNodeIDCmd,
+		subcommands.ResetAllCmd,
 	)
 
 	return rootCmd
