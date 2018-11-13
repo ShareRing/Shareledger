@@ -56,6 +56,7 @@ func GenerateGenesis(pubKey types.PubKeySecp256k1) GenesisState {
 
 	gs := GenesisState{
 		Pool:       posTypes.InitialPool(),
+		Params:     posTypes.DefaultParams(),
 		Validators: []posTypes.Validator{validator},
 	}
 	return gs

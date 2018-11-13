@@ -5,6 +5,7 @@ import (
 
 	// sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
 	"github.com/sharering/shareledger/types"
+	"github.com/sharering/shareledger/constants"
 )
 
 // defaultUnbondingTime reflects three weeks in seconds as the default
@@ -33,9 +34,9 @@ func (p Params) Equal(p2 Params) bool {
 // DefaultParams returns a default set of parameters.
 func DefaultParams() Params {
 	return Params{
-		GoalBonded:    types.NewDecWithPrec(67, 2),
+		GoalBonded:    types.ZeroDec(),
 		UnbondingTime: defaultUnbondingTime,
-		MaxValidators: 100,
-		BondDenom:     "SHR",
+		MaxValidators: 10,
+		BondDenom:     constants.POS_DENOM,
 	}
 }
