@@ -17,8 +17,8 @@ import (
 	"github.com/tendermint/tmlibs/log"
 
 	"github.com/sharering/shareledger/app"
-	"github.com/sharering/shareledger/constants"
 	"github.com/sharering/shareledger/cmd/shareledger/subcommands"
+	"github.com/sharering/shareledger/constants"
 )
 
 func main() {
@@ -39,6 +39,7 @@ func constructCommand() *cobra.Command {
 
 	rootCmd.AddCommand(
 		subcommands.InitFilesCmd,
+		subcommands.ShowNodeIDCmd,
 	)
 
 	return rootCmd

@@ -20,8 +20,8 @@ import (
 )
 
 var (
-	rootDir = "/Users/trangtran/.shareledger"
-	config = cfg.DefaultConfig()
+	configDir = "/.shareledger"
+	config = cfg.DefaultConfig().SetRoot(os.Getenv("HOME") + configDir)
 	logger = log.NewTMLogger(log.NewSyncWriter(os.Stdout))
 )
 
@@ -32,15 +32,12 @@ var InitFilesCmd = &cobra.Command{
 	RunE:  initFiles,
 }
 
+
 func initFiles(cmd *cobra.Command, args []string) error {
 	return initFilesWithConfig(config)
 }
 
 func initFilesWithConfig(config *cfg.Config) error {
-	// setup rootdir	
-	config.SetRoot(rootDir)
-	cfg.EnsureRoot(rootDir)
-
 	// private validator
 	privValFile := config.PrivValidatorFile()
 	logger.Info("PrivateValidator File:", "filePath", privValFile)
@@ -50,6 +47,11 @@ func initFilesWithConfig(config *cfg.Config) error {
 		logger.Info("Found private validator", "path", privValFile)
 	} else {
 		pv = privval.GenFilePV(privValFile)
+		newPrivKey := crypto.GenPrivKeySecp256k1()
+		pv.PrivKey = newPrivKey
+		pv.PubKey = pv.PrivKey.PubKey()
+		pv.Address = pv.PubKey.Address()
+
 		pv.Save()
 		logger.Info("Generated private validator", "path", privValFile)
 	}
@@ -95,12 +97,7 @@ func initFilesWithConfig(config *cfg.Config) error {
 
 func genGenesisState(pv *privval.FilePV) (app.GenesisState, crypto.PubKey) {
 	// Change Ed25519 to Secp256k1
-	newPrivKey := crypto.GenPrivKeySecp256k1()
-	pv.PrivKey = newPrivKey
-	pv.PubKey = pv.PrivKey.PubKey()
-	pv.Address = pv.PubKey.Address()
-
-	// save new priv_validator.json
+		// save new priv_validator.json
 	pv.Save()
 
 	privK, ok := pv.PrivKey.(crypto.PrivKeySecp256k1)
