@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"os"
+	"strings"
 
 	"github.com/tendermint/go-crypto"
 	"github.com/tendermint/tendermint/privval"
@@ -70,9 +71,15 @@ func generateGenesisFile(filePath string, genesisState []byte, pubKey crypto.Pub
 func main() {
 	homeDir := os.Getenv("HOME")
 
+	configDir := os.Getenv("SHR_CONFIG_DIR")
+
+	if strings.Compare(configDir, "") == 0 {
+		configDir = homeDir + ConfigDir
+	}
+
 	// reading priv_validator
-	genesisState, pubKey := generateGenesisState(homeDir + ConfigDir + PrivateValidatorFile)
+	genesisState, pubKey := generateGenesisState(configDir + PrivateValidatorFile)
 
 	// update genesis accordingly
-	generateGenesisFile(homeDir+ConfigDir+GenesisFile, genesisState.ToJSON(), pubKey)
+	generateGenesisFile(configDir+GenesisFile, genesisState.ToJSON(), pubKey)
 }

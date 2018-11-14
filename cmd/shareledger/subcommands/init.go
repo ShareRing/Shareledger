@@ -21,7 +21,8 @@ import (
 
 var (
 	configDir = "/.shareledger"
-	config = cfg.DefaultConfig().SetRoot(os.Getenv("HOME") + configDir)
+	rootDir = os.Getenv("HOME") + configDir
+	config = cfg.DefaultConfig().SetRoot(rootDir)
 	logger = log.NewTMLogger(log.NewSyncWriter(os.Stdout))
 )
 
@@ -30,6 +31,10 @@ var InitFilesCmd = &cobra.Command{
 	Use:   "init",
 	Short: "Initialize essential files",
 	RunE:  initFiles,
+}
+
+func init() {
+	cfg.EnsureRoot(rootDir)
 }
 
 
