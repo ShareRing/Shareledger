@@ -246,7 +246,6 @@ func (coins Coins) PlusMany(coinsB Coins) Coins {
 
 // Minus subtracts a set of coins from another (adds the inverse)
 func (coins Coins) MinusMany(coinsB Coins) Coins {
-	fmt.Printf("MinusMany: %v\n", coinsB.Negative())
 	return coins.PlusMany(coinsB.Negative())
 }
 
