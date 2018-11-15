@@ -2,7 +2,6 @@ package subcommands
 
 import (
 	"encoding/json"
-	"os"
 	"time"
 
 	"github.com/spf13/cobra"
@@ -13,18 +12,12 @@ import (
 	"github.com/tendermint/tendermint/privval"
 	tmtypes "github.com/tendermint/tendermint/types"
 	cmn "github.com/tendermint/tmlibs/common"
-	"github.com/tendermint/tmlibs/log"
 
 	"github.com/sharering/shareledger/app"
 	"github.com/sharering/shareledger/types"
 )
 
-var (
-	configDir = "/.shareledger"
-	rootDir = os.Getenv("HOME") + configDir
-	config = cfg.DefaultConfig().SetRoot(rootDir)
-	logger = log.NewTMLogger(log.NewSyncWriter(os.Stdout))
-)
+
 
 // InitFilesCmd initialises a fresh Tendermint Core instance.
 var InitFilesCmd = &cobra.Command{
@@ -32,11 +25,6 @@ var InitFilesCmd = &cobra.Command{
 	Short: "Initialize essential files",
 	RunE:  initFiles,
 }
-
-func init() {
-	cfg.EnsureRoot(rootDir)
-}
-
 
 func initFiles(cmd *cobra.Command, args []string) error {
 	return initFilesWithConfig(config)
