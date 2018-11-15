@@ -13,6 +13,7 @@ func main() {
 		subcommands.ShowNodeIDCmd,
 		subcommands.ResetAllCmd,
 		subcommands.NodeCmd,
+		subcommands.VersionCmd,
 	)
 
 	rootCmd.Execute()
