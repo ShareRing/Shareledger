@@ -117,3 +117,6 @@ func (msg MsgCompleteRedelegate) ValidateBasic() sdk.Error {
 	}
 	return nil
 }
+
+var _ sdk.Msg = MsgBeginRedelegate{}
+var _ sdk.Msg = MsgCompleteRedelegate{}

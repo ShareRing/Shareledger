@@ -17,6 +17,8 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
 		switch msg := msg.(type) {
 		case message.MsgCreateValidator:
 			return handleMsgCreateValidator(ctx, msg, k)
+		case message.MsgEditValidator:
+			return handleMsgEditValidator(ctx, msg, k)
 		case message.MsgDelegate:
 			return handleMsgDelegate(ctx, msg, k)
 		case message.MsgBeginUnbonding:
@@ -206,5 +208,43 @@ func handleMsgWithdraw(
 	return sdk.Result{
 		Tags: tags,
 		Log:  fmt.Sprintf("%s", amount),
+	}
+}
+
+func handleMsgEditValidator(ctx sdk.Context, msg message.MsgEditValidator, k keeper.Keeper) sdk.Result {
+	// validator must already be registered
+	validator, found := k.GetValidator(ctx, msg.ValidatorAddr)
+	if !found {
+		return posTypes.ErrNoValidatorFound(k.Codespace()).Result()
+	}
+
+	// replace all editable fields (clients should autofill existing values)
+	description, err := validator.Description.UpdateDescription(msg.Description)
+	if err != nil {
+		return err.Result()
+	}
+
+	validator.Description = description
+
+	/*if msg.CommissionRate != nil {
+		commission, err := k.UpdateValidatorCommission(ctx, validator, *msg.CommissionRate)
+		if err != nil {
+			return err.Result()
+		}
+		validator.Commission = commission
+		k.OnValidatorModified(ctx, msg.ValidatorAddr)
+	}*/
+
+	k.SetValidator(ctx, validator)
+
+	tags := sdk.NewTags(
+		tags.Event, tags.EditValidator,
+		tags.DstValidator, []byte(msg.ValidatorAddr.String()),
+		tags.Moniker, []byte(description.Moniker),
+		tags.Identity, []byte(description.Identity),
+	)
+
+	return sdk.Result{
+		Tags: tags,
 	}
 }
