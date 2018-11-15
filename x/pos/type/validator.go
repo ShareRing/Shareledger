@@ -28,7 +28,7 @@ type Validator struct {
 
 	Tokens          types.Dec `json:"tokens"`           // delegated tokens (incl. self-delegation)
 	DelegatorShares types.Dec `json:"delegator_shares"` // total shares issued to a validator's delegators
-	CommissionRate  types.Dec `json:"commission_rate"` // commision kept by this validator
+	CommissionRate  types.Dec `json:"commission_rate"`  // commision kept by this validator
 
 	Description        Description `json:"description"`           // description terms for the validator
 	BondHeight         int64       `json:"bond_height"`           // earliest height as a bonded validator
@@ -322,6 +322,9 @@ func MustMarshalValidator(cdc *wire.Codec, validator Validator) []byte {
 
 var _ types.Validator = Validator{}
 
+// constant used in flags to indicate that description field should not be updated
+const DoNotModifyDesc = "[do-not-modify]"
+
 // nolint - for sdk.Validator
 func (v Validator) GetMoniker() string          { return v.Description.Moniker }
 func (v Validator) GetStatus() types.BondStatus { return v.Status }
@@ -331,6 +334,48 @@ func (v Validator) GetPubKey() types.PubKey       { return v.PubKey }
 func (v Validator) GetPower() types.Dec           { return v.BondedTokens() }
 func (v Validator) GetDelegatorShares() types.Dec { return v.DelegatorShares }
 func (v Validator) GetBondHeight() int64          { return v.BondHeight }
+
+// UpdateDescription updates the fields of a given description. An error is
+// returned if the resulting description contains an invalid length.
+func (d Description) UpdateDescription(d2 Description) (Description, sdk.Error) {
+	if d2.Moniker == DoNotModifyDesc {
+		d2.Moniker = d.Moniker
+	}
+	if d2.Identity == DoNotModifyDesc {
+		d2.Identity = d.Identity
+	}
+	if d2.Website == DoNotModifyDesc {
+		d2.Website = d.Website
+	}
+	if d2.Details == DoNotModifyDesc {
+		d2.Details = d.Details
+	}
+
+	return Description{
+		Moniker:  d2.Moniker,
+		Identity: d2.Identity,
+		Website:  d2.Website,
+		Details:  d2.Details,
+	}.EnsureLength()
+}
+
+// EnsureLength ensures the length of a validator's description.
+func (d Description) EnsureLength() (Description, sdk.Error) {
+	if len(d.Moniker) > 70 {
+		return d, ErrDescriptionLength(DefaultCodespace, "moniker", len(d.Moniker), 70)
+	}
+	if len(d.Identity) > 3000 {
+		return d, ErrDescriptionLength(DefaultCodespace, "identity", len(d.Identity), 3000)
+	}
+	if len(d.Website) > 140 {
+		return d, ErrDescriptionLength(DefaultCodespace, "website", len(d.Website), 140)
+	}
+	if len(d.Details) > 280 {
+		return d, ErrDescriptionLength(DefaultCodespace, "details", len(d.Details), 280)
+	}
+
+	return d, nil
+}
 
 //Human Friendly pretty printer
 func (v Validator) HumanReadableString() (string, error) {

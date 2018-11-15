@@ -103,3 +103,4 @@ func (msg MsgCompleteUnbonding) ValidateBasic() sdk.Error {
 }
 
 var _ sdk.Msg = MsgCompleteUnbonding{}
+var _ sdk.Msg = MsgBeginUnbonding{}

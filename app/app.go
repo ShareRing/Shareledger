@@ -1,7 +1,6 @@
 package app
 
 import (
-	"fmt"
 	"os"
 
 	abci "github.com/tendermint/abci/types"
@@ -127,11 +126,11 @@ func NewShareLedgerApp(logger log.Logger, db dbm.DB) *ShareLedgerApp {
 func (app *ShareLedgerApp) InitChainer(ctx sdk.Context, req abci.RequestInitChain) abci.ResponseInitChain {
 
 	stateJSON := req.AppStateBytes
-	fmt.Printf("RequestInitChain.Time: %v\n", req.Time)
-	fmt.Printf("RequestInitChain.ChainId: %v\n", req.ChainId)
-	fmt.Printf("RequestInitChain.ConsensusParams: %v\n", req.ConsensusParams)
-	fmt.Printf("RequestInitChain.Validators: %v\n", req.Validators)
-	fmt.Printf("RequestInitChain.AppStateBytes: %v\n", req.AppStateBytes)
+	//fmt.Printf("RequestInitChain.Time: %v\n", req.Time)
+	//fmt.Printf("RequestInitChain.ChainId: %v\n", req.ChainId)
+	//fmt.Printf("RequestInitChain.ConsensusParams: %v\n", req.ConsensusParams)
+	//fmt.Printf("RequestInitChain.Validators: %v\n", req.Validators)
+	//fmt.Printf("RequestInitChain.AppStateBytes: %v\n", req.AppStateBytes)
 
 	var genesisState GenesisState
 	// fmt.Printf("stateJSON=%s\n", stateJSON)
@@ -143,17 +142,18 @@ func (app *ShareLedgerApp) InitChainer(ctx sdk.Context, req abci.RequestInitChai
 		panic(err)
 	}
 
-	// load the accounts - TODO
+	// load the accounts
+	for _, gacc := range genesisState.Accounts {
+		acc := gacc.ToSHRAccount()
+		app.accountMapper.SetAccount(ctx, acc)
+	}
 
 	// load the initial POS information
 	abciVals, err := pos.InitGenesis(ctx, app.posKeeper, genesisState.StakeData)
 	if err != nil {
 		panic(err)
 	}
-	for _, abciVal := range abciVals {
-		fmt.Printf("abciVal=%v\n", abciVal)
 
-	}
 	return abci.ResponseInitChain{
 		Validators: abciVals, //use the validator defined in stake
 	}

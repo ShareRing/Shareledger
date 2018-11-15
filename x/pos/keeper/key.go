@@ -2,6 +2,7 @@ package keeper
 
 import (
 	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
+	"github.com/sharering/shareledger/types"
 )
 
 // TODO remove some of these prefixes once have working multistore
@@ -70,4 +71,79 @@ func GetUBDKey(delAddr sdk.Address, valAddr sdk.Address) []byte {
 // VALUE: none (key rearrangement used)
 func GetUBDByValIndexKey(delAddr sdk.Address, valAddr sdk.Address) []byte {
 	return append(GetUBDsByValIndexKey(valAddr), delAddr.Bytes()...)
+}
+
+// gets the prefix keyspace for redelegations from a delegator
+func GetREDsKey(delAddr sdk.Address) []byte {
+	return append(RedelegationKey, delAddr.Bytes()...)
+}
+
+// gets the key for a redelegation
+// VALUE: stake/types.RedelegationKey
+func GetREDKey(delAddr sdk.Address, valSrcAddr, valDstAddr sdk.Address) []byte {
+	return append(append(
+		GetREDsKey(delAddr.Bytes()),
+		valSrcAddr.Bytes()...),
+		valDstAddr.Bytes()...)
+}
+
+// gets the index-key for a redelegation, stored by source-validator-index
+// VALUE: none (key rearrangement used)
+func GetREDByValSrcIndexKey(delAddr sdk.Address, valSrcAddr, valDstAddr sdk.Address) []byte {
+	return append(append(
+		GetREDsFromValSrcIndexKey(valSrcAddr),
+		delAddr.Bytes()...),
+		valDstAddr.Bytes()...)
+}
+
+// gets the index-key for a redelegation, stored by destination-validator-index
+// VALUE: none (key rearrangement used)
+func GetREDByValDstIndexKey(delAddr sdk.Address, valSrcAddr, valDstAddr sdk.Address) []byte {
+	return append(append(
+		GetREDsToValDstIndexKey(valDstAddr),
+		delAddr.Bytes()...),
+		valSrcAddr.Bytes()...)
+}
+
+// rearranges the ValSrcIndexKey to get the REDKey
+func GetREDKeyFromValSrcIndexKey(IndexKey []byte) []byte {
+	addrs := IndexKey[1:] // remove prefix bytes
+	if len(addrs) != 3*types.ADDRESSLENGTH {
+		panic("unexpected key length")
+	}
+	valSrcAddr := addrs[:types.ADDRESSLENGTH]
+	delAddr := addrs[types.ADDRESSLENGTH : 2*types.ADDRESSLENGTH]
+	valDstAddr := addrs[2*types.ADDRESSLENGTH:]
+
+	return GetREDKey(delAddr, valSrcAddr, valDstAddr)
+}
+
+// rearranges the ValDstIndexKey to get the REDKey
+func GetREDKeyFromValDstIndexKey(IndexKey []byte) []byte {
+	addrs := IndexKey[1:] // remove prefix bytes
+	if len(addrs) != 3*types.ADDRESSLENGTH {
+		panic("unexpected key length")
+	}
+	valDstAddr := addrs[:types.ADDRESSLENGTH]
+	delAddr := addrs[types.ADDRESSLENGTH : 2*types.ADDRESSLENGTH]
+	valSrcAddr := addrs[2*types.ADDRESSLENGTH:]
+	return GetREDKey(delAddr, valSrcAddr, valDstAddr)
+}
+
+// gets the prefix keyspace for all redelegations redelegating away from a source validator
+func GetREDsFromValSrcIndexKey(valSrcAddr sdk.Address) []byte {
+	return append(RedelegationByValSrcIndexKey, valSrcAddr.Bytes()...)
+}
+
+// gets the prefix keyspace for all redelegations redelegating towards a destination validator
+func GetREDsToValDstIndexKey(valDstAddr sdk.Address) []byte {
+	return append(RedelegationByValDstIndexKey, valDstAddr.Bytes()...)
+}
+
+// gets the prefix keyspace for all redelegations redelegating towards a destination validator
+// from a particular delegator
+func GetREDsByDelToValDstIndexKey(delAddr sdk.Address, valDstAddr sdk.Address) []byte {
+	return append(
+		GetREDsToValDstIndexKey(valDstAddr),
+		delAddr.Bytes()...)
 }

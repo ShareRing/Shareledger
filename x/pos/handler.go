@@ -2,6 +2,7 @@ package pos
 
 import (
 	"fmt"
+
 	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
 
 	"github.com/sharering/shareledger/x/pos/keeper"
@@ -16,6 +17,8 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
 		switch msg := msg.(type) {
 		case message.MsgCreateValidator:
 			return handleMsgCreateValidator(ctx, msg, k)
+		case message.MsgEditValidator:
+			return handleMsgEditValidator(ctx, msg, k)
 		case message.MsgDelegate:
 			return handleMsgDelegate(ctx, msg, k)
 		case message.MsgBeginUnbonding:
@@ -24,6 +27,11 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
 			return handleMsgCompleteUnbonding(ctx, msg, k)
 		case message.MsgWithdraw:
 			return handleMsgWithdraw(ctx, msg, k)
+		case message.MsgBeginRedelegate:
+			return handleMsgBeginRedelegate(ctx, msg, k)
+
+		case message.MsgCompleteRedelegate:
+			return handleMsgCompleteRedelegate(ctx, msg, k)
 
 		default:
 			return sdk.ErrTxDecode("invalid message parse in staking module").Result()
@@ -146,6 +154,37 @@ func handleMsgCompleteUnbonding(ctx sdk.Context, msg message.MsgCompleteUnbondin
 	return sdk.Result{Tags: tags}
 }
 
+func handleMsgBeginRedelegate(ctx sdk.Context, msg message.MsgBeginRedelegate, k keeper.Keeper) sdk.Result {
+	err := k.BeginRedelegation(ctx, msg.DelegatorAddr, msg.ValidatorSrcAddr,
+		msg.ValidatorDstAddr, msg.SharesAmount)
+	if err != nil {
+		return err.Result()
+	}
+
+	tags := sdk.NewTags(
+		tags.Event, tags.BeginRedelegation,
+		tags.Delegator, []byte(msg.DelegatorAddr.String()),
+		tags.SrcValidator, []byte(msg.ValidatorSrcAddr.String()),
+		tags.DstValidator, []byte(msg.ValidatorDstAddr.String()),
+	)
+	return sdk.Result{Tags: tags}
+}
+
+func handleMsgCompleteRedelegate(ctx sdk.Context, msg message.MsgCompleteRedelegate, k keeper.Keeper) sdk.Result {
+	err := k.CompleteRedelegation(ctx, msg.DelegatorAddr, msg.ValidatorSrcAddr, msg.ValidatorDstAddr)
+	if err != nil {
+		return err.Result()
+	}
+
+	tags := sdk.NewTags(
+		tags.Event, tags.CompleteRedelegation,
+		tags.Delegator, []byte(msg.DelegatorAddr.String()),
+		tags.SrcValidator, []byte(msg.ValidatorSrcAddr.String()),
+		tags.DstValidator, []byte(msg.ValidatorDstAddr.String()),
+	)
+	return sdk.Result{Tags: tags}
+}
+
 func handleMsgWithdraw(
 	ctx sdk.Context,
 	msg message.MsgWithdraw,
@@ -168,6 +207,44 @@ func handleMsgWithdraw(
 
 	return sdk.Result{
 		Tags: tags,
-		Log: fmt.Sprintf("%s", amount),
+		Log:  fmt.Sprintf("%s", amount),
+	}
+}
+
+func handleMsgEditValidator(ctx sdk.Context, msg message.MsgEditValidator, k keeper.Keeper) sdk.Result {
+	// validator must already be registered
+	validator, found := k.GetValidator(ctx, msg.ValidatorAddr)
+	if !found {
+		return posTypes.ErrNoValidatorFound(k.Codespace()).Result()
+	}
+
+	// replace all editable fields (clients should autofill existing values)
+	description, err := validator.Description.UpdateDescription(msg.Description)
+	if err != nil {
+		return err.Result()
+	}
+
+	validator.Description = description
+
+	/*if msg.CommissionRate != nil {
+		commission, err := k.UpdateValidatorCommission(ctx, validator, *msg.CommissionRate)
+		if err != nil {
+			return err.Result()
+		}
+		validator.Commission = commission
+		k.OnValidatorModified(ctx, msg.ValidatorAddr)
+	}*/
+
+	k.SetValidator(ctx, validator)
+
+	tags := sdk.NewTags(
+		tags.Event, tags.EditValidator,
+		tags.DstValidator, []byte(msg.ValidatorAddr.String()),
+		tags.Moniker, []byte(description.Moniker),
+		tags.Identity, []byte(description.Identity),
+	)
+
+	return sdk.Result{
+		Tags: tags,
 	}
 }
