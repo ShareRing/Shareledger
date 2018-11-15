@@ -28,7 +28,7 @@ func constructCommand() *cobra.Command {
 
 	nodeCmd := &cobra.Command{
 		Use:   "node",
-		Short: "Shareledger is distributed blockchain for sharing services",
+		Short: "ShareLedger - a custom-designed distributed blockchain",
 
 		RunE: startCombo,
 	}
