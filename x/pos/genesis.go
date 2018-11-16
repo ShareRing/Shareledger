@@ -54,6 +54,8 @@ func GenerateGenesis(pubKey types.PubKeySecp256k1) GenesisState {
 		pubKey,
 		posTypes.NewDescription("sharering", "", "sharering.network", ""))
 
+	validator.Tokens = types.OneDec() // avoid zero tokens
+
 	gs := GenesisState{
 		Pool:       posTypes.InitialPool(),
 		Params:     posTypes.DefaultParams(),

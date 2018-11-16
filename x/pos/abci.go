@@ -1,7 +1,7 @@
 package pos
 
 import (
-	// "fmt"
+	"fmt"
 
 	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
 	"github.com/sharering/shareledger/x/pos/keeper"
@@ -18,6 +18,7 @@ func EndBlocker(ctx sdk.Context, k keeper.Keeper, proposer types.PubKeySecp256k1
 	if !proposer.Equals(types.NilPubKeySecp256k1()) {
 
 		address := proposer.Address()
+		// fmt.Printf("POS.EndBlocker PROPOSER: %X\n", address)
 		// fmt.Println("Looking for vladiator: %X", address)
 
 		validator, found := k.GetValidator(ctx, address)
@@ -29,7 +30,7 @@ func EndBlocker(ctx sdk.Context, k keeper.Keeper, proposer types.PubKeySecp256k1
 		// txt, _ := validator.HumanReadableString()
 		// fmt.Println("UpdateBlockReward", txt)
 
-		_, err := k.UpdateBlockReward(
+		vdi, err := k.UpdateBlockReward(
 			ctx,
 			validator.Owner,
 			validator.CommissionRate,
@@ -39,7 +40,7 @@ func EndBlocker(ctx sdk.Context, k keeper.Keeper, proposer types.PubKeySecp256k1
 			panic(err.Error())
 		}
 
-		// fmt.Printf("ValidatorDistInfo: %v\n", vdi.HumanReadableString())
+		fmt.Printf("ValidatorDistInfo: %v\n", vdi.HumanReadableString())
 	}
 
 	var valUpdates []abci.Validator

@@ -25,7 +25,6 @@ func (k Keeper) GetValidatorDistInfo(
 	if vdiElem, ok := validatorDistCache[string(addr)]; ok {
 		// Update frequency in validatorCacheList
 		validatorCacheList.MoveToBack(vdiElem)
-		// Update frequency in validatorCacheList
 
 		return vdiElem.Value.(posTypes.ValidatorDistInfo), true
 	}

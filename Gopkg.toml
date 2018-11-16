@@ -72,7 +72,9 @@
 
 [[constraint]]
   name = "github.com/tendermint/tendermint"
-  revision = "696e8c6f9e950eec15f150f314d2dd9ddf6bc601"
+  source = "bitbucket.org/shareringvn/tendermint"
+  branch = "fixedVersion"
+  # revision = "696e8c6f9e950eec15f150f314d2dd9ddf6bc601"
 
 [[constraint]]
   name = "bitbucket.org/shareringvn/cosmos-sdk"
