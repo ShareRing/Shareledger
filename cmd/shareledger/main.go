@@ -14,6 +14,7 @@ func main() {
 		subcommands.ResetAllCmd,
 		subcommands.NodeCmd,
 		subcommands.VersionCmd,
+		subcommands.TestnetFilesCmd,
 	)
 
 	rootCmd.Execute()
