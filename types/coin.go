@@ -117,7 +117,7 @@ type Coins []Coin
 
 func NewDefaultCoins() Coins {
 	var ret []Coin
-	for k, _ := range constants.DENOM_LIST {
+	for _, k := range constants.ALL_DENOMS {
 		ret = append(ret, NewCoin(k, constants.DEFAULT_AMOUNT))
 	}
 	return ret
