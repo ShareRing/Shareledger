@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
+	abci "github.com/tendermint/abci/types"
 
 	"github.com/sharering/shareledger/types"
 	posTypes "github.com/sharering/shareledger/x/pos/type"
@@ -58,7 +59,6 @@ func (k Keeper) GetValidator(ctx sdk.Context, addr sdk.Address) (validator posTy
 // return a given amount of all the validators
 func (k Keeper) GetValidators(ctx sdk.Context, maxRetrieve uint16) (validators []posTypes.Validator) {
 	store := ctx.KVStore(k.storeKey)
-
 
 	// maxRetrieve = 10
 	validators = make([]posTypes.Validator, maxRetrieve)
@@ -143,4 +143,14 @@ func (k Keeper) RemoveValidatorTokensAndShares(ctx sdk.Context, validator posTyp
 	k.SetPool(ctx, pool)
 	//k.SetValidatorByPowerIndex(ctx, validator, pool)
 	return validator, removedTokens
+}
+
+func (k Keeper) GetValidatorSetUpdates(ctx sdk.Context) []abci.Validator {
+	var abciValidators []abci.Validator
+	validators := k.GetValidators(ctx, 100)
+	for _, val := range validators {
+		abciValidators = append(abciValidators, val.ABCIValidator())
+	}
+	return abciValidators
+
 }

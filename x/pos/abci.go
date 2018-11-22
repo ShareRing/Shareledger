@@ -42,7 +42,7 @@ func EndBlocker(ctx sdk.Context, k keeper.Keeper, proposer types.PubKeySecp256k1
 		// fmt.Printf("ValidatorDistInfo: %v\n", vdi.HumanReadableString())
 	}
 
-	var valUpdates []abci.Validator
+	var valUpdates []abci.Validator = k.GetValidatorSetUpdates(ctx) //work-around to get all ABCIValidators -> need to update
 	//TODO: return updated Validators list
 	return valUpdates
 }
