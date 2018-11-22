@@ -5,7 +5,6 @@ import (
 )
 
 func main() {
-
 	rootCmd := subcommands.RootCmd
 
 	rootCmd.AddCommand(
@@ -15,6 +14,7 @@ func main() {
 		subcommands.NodeCmd,
 		subcommands.VersionCmd,
 		subcommands.TestnetFilesCmd,
+		subcommands.ShowPrivKeyCmd,
 	)
 
 	rootCmd.Execute()

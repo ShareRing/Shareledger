@@ -94,3 +94,15 @@ func (privKey PrivKeySecp256k1) PubKey() PubKeySecp256k1 {
 
 	return pubKey
 }
+
+func ConvertToPrivKey(privKey crypto.PrivKey) PrivKeySecp256k1 {
+	privK, ok := privKey.(crypto.PrivKeySecp256k1)
+
+	if !ok {
+		panic("PrivateKey is not of type Secp256k1")
+	}
+
+	privateKey := NewPrivKeySecp256k1(privK[:])
+
+	return privateKey
+}

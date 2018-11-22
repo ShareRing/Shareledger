@@ -90,8 +90,8 @@ func initFilesWithConfig(config *cfg.Config) error {
 
 func genGenesisState(pv *privval.FilePV) (app.GenesisState, crypto.PubKey) {
 	// Change Ed25519 to Secp256k1
-		// save new priv_validator.json
-	pv.Save()
+	// save new priv_validator.json
+	// pv.Save()
 
 	privK, ok := pv.PrivKey.(crypto.PrivKeySecp256k1)
 
