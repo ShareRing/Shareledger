@@ -13,6 +13,8 @@ import (
 	"github.com/sharering/shareledger/types"
 )
 
+var MaxPartialToken types.Dec = types.NewDec(2) //100/2
+
 // Validator defines the total amount of bond shares and their exchange rate to
 // coins. Accumulation of interest is modelled as an in increase in the
 // exchange rate, and slashing as a decrease.  When coins are delegated to this
@@ -263,6 +265,14 @@ func (v Validator) BondedTokens() types.Dec {
 		return v.Tokens
 	}
 	return types.ZeroDec()
+}
+
+//check if the adding token violet the percent rule or not:
+func (v Validator) IsAddingTokenValid(pool Pool, tokenAMount types.Dec) bool {
+	totalToken := v.Tokens.Add(tokenAMount)
+	totalBoundedToken := pool.BondedTokens
+
+	return totalToken.GT(totalBoundedToken.Quo(MaxPartialToken))
 }
 
 // unmarshal a redelegation from a store key and value

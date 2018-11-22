@@ -56,6 +56,11 @@ func (k Keeper) RemoveDelegation(ctx sdk.Context, delegation posTypes.Delegation
 func (k Keeper) Delegate(ctx sdk.Context, delAddr sdk.Address, bondAmt types.Coin,
 	validator posTypes.Validator, subtractAccount bool) (newShares types.Dec, err sdk.Error) {
 
+	//checking if the validator hold valid token number:
+	pool := k.GetPool(ctx)
+	if !validator.IsAddingTokenValid(pool, bondAmt.Amount) {
+		return types.ZeroDec(), posTypes.ErrBadPercentStake(k.Codespace())
+	}
 	// Get or create the delegator delegation
 	delegation, found := k.GetDelegation(ctx, delAddr, validator.Owner)
 	if !found {

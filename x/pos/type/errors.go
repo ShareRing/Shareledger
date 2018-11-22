@@ -23,6 +23,10 @@ const (
 )
 
 //validator
+func ErrBadPercentStake(codespace sdk.CodespaceType) sdk.Error {
+	return sdk.NewError(codespace, CodeInvalidInput, "Staking is greater than 50% token on Pool")
+}
+
 func ErrNilValidatorAddr(codespace sdk.CodespaceType) sdk.Error {
 	return sdk.NewError(codespace, CodeInvalidInput, "validator address is nil")
 }
