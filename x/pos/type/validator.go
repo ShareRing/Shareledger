@@ -270,9 +270,9 @@ func (v Validator) BondedTokens() types.Dec {
 //check if the adding token violet the percent rule or not:
 func (v Validator) IsAddingTokenValid(pool Pool, tokenAMount types.Dec) bool {
 	totalToken := v.Tokens.Add(tokenAMount)
-	tokenSupply := pool.TokenSupply()
+	totalBoundedToken := pool.BondedTokens
 
-	return totalToken.GT(tokenSupply.Quo(MaxPartialToken))
+	return totalToken.GT(totalBoundedToken.Quo(MaxPartialToken))
 }
 
 // unmarshal a redelegation from a store key and value
