@@ -21,6 +21,9 @@ var (
 const (
 	defaultLogLevelKey = "*"
 	HomeFlag           = "home"
+	RPCListenAddress   = "tcp://0.0.0.0:46657"
+	P2PListenAddress   = "tcp://0.0.0.0:46656"
+	BaseConfigProxyApp = "tcp://127.0.0.1:46658"
 )
 
 var RootCmd = &cobra.Command{

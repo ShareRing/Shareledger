@@ -39,31 +39,31 @@ func constructCommand() *cobra.Command {
 	nodeCmd.Flags().String("moniker", config.Moniker, "Node Name")
 
 	// priv val flags
-	nodeCmd.Flags().String("priv_validator_laddr", config.PrivValidatorListenAddr, "Socket address to listen on for connections from external priv_validator process")
+	// nodeCmd.Flags().String("priv_validator_laddr", config.PrivValidatorListenAddr, "Socket address to listen on for connections from external priv_validator process")
 
 	// node flags
-	nodeCmd.Flags().Bool("fast_sync", config.FastSync, "Fast blockchain syncing")
+	// nodeCmd.Flags().Bool("fast_sync", config.FastSync, "Fast blockchain syncing")
 
 	// abci flags
-	nodeCmd.Flags().String("proxy_app", config.ProxyApp, "Proxy app address, or 'nilapp' or 'kvstore' for local testing.")
-	nodeCmd.Flags().String("abci", config.ABCI, "Specify abci transport (socket | grpc)")
+	// nodeCmd.Flags().String("proxy_app", config.ProxyApp, "Proxy app address, or 'nilapp' or 'kvstore' for local testing.")
+	// nodeCmd.Flags().String("abci", config.ABCI, "Specify abci transport (socket | grpc)")
 
 	// rpc flags
-	nodeCmd.Flags().String("rpc.laddr", config.RPC.ListenAddress, "RPC listen address. Port required")
-	nodeCmd.Flags().String("rpc.grpc_laddr", config.RPC.GRPCListenAddress, "GRPC listen address (BroadcastTx only). Port required")
-	nodeCmd.Flags().Bool("rpc.unsafe", config.RPC.Unsafe, "Enabled unsafe rpc methods")
+	nodeCmd.Flags().String("rpc.laddr", RPCListenAddress, "RPC listen address. Port required")
+	// nodeCmd.Flags().String("rpc.grpc_laddr", config.RPC.GRPCListenAddress, "GRPC listen address (BroadcastTx only). Port required")
+	// nodeCmd.Flags().Bool("rpc.unsafe", config.RPC.Unsafe, "Enabled unsafe rpc methods")
 
 	// p2p flags
-	nodeCmd.Flags().String("p2p.laddr", config.P2P.ListenAddress, "Node listen address. (0.0.0.0:0 means any interface, any port)")
-	nodeCmd.Flags().String("p2p.seeds", config.P2P.Seeds, "Comma-delimited ID@host:port seed nodes")
-	nodeCmd.Flags().String("p2p.persistent_peers", config.P2P.PersistentPeers, "Comma-delimited ID@host:port persistent peers")
-	nodeCmd.Flags().Bool("p2p.skip_upnp", config.P2P.SkipUPNP, "Skip UPNP configuration")
-	nodeCmd.Flags().Bool("p2p.pex", config.P2P.PexReactor, "Enable/disable Peer-Exchange")
-	nodeCmd.Flags().Bool("p2p.seed_mode", config.P2P.SeedMode, "Enable/disable seed mode")
-	nodeCmd.Flags().String("p2p.private_peer_ids", config.P2P.PrivatePeerIDs, "Comma-delimited private peer IDs")
+	nodeCmd.Flags().String("p2p.laddr", P2PListenAddress, "Node listen address. (0.0.0.0:0 means any interface, any port)")
+	// nodeCmd.Flags().String("p2p.seeds", config.P2P.Seeds, "Comma-delimited ID@host:port seed nodes")
+	// nodeCmd.Flags().String("p2p.persistent_peers", config.P2P.PersistentPeers, "Comma-delimited ID@host:port persistent peers")
+	// nodeCmd.Flags().Bool("p2p.skip_upnp", config.P2P.SkipUPNP, "Skip UPNP configuration")
+	// nodeCmd.Flags().Bool("p2p.pex", config.P2P.PexReactor, "Enable/disable Peer-Exchange")
+	// nodeCmd.Flags().Bool("p2p.seed_mode", config.P2P.SeedMode, "Enable/disable seed mode")
+	// nodeCmd.Flags().String("p2p.private_peer_ids", config.P2P.PrivatePeerIDs, "Comma-delimited private peer IDs")
 
 	// consensus flags
-	nodeCmd.Flags().Bool("consensus.create_empty_blocks", config.Consensus.CreateEmptyBlocks, "Set this to false to only produce blocks when there are txs or when the AppHash changes")
+	// nodeCmd.Flags().Bool("consensus.create_empty_blocks", config.Consensus.CreateEmptyBlocks, "Set this to false to only produce blocks when there are txs or when the AppHash changes")
 
 	return nodeCmd
 }

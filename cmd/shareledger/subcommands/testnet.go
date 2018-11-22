@@ -85,9 +85,9 @@ Example:
 func testnetFiles(cmd *cobra.Command, args []string) error {
 	config := cfg.DefaultConfig()
 
-	config.P2P.ListenAddress = "tcp://0.0.0.0:46656"
-	config.RPC.ListenAddress = "tcp://0.0.0.0:46657"
-	config.BaseConfig.ProxyApp = "tcp://127.0.0.1:46658"
+	config.P2P.ListenAddress = P2PListenAddress
+	config.RPC.ListenAddress = RPCListenAddress
+	config.BaseConfig.ProxyApp = BaseConfigProxyApp
 
 	genVals := make([]types.GenesisValidator, nValidators)
 	stateVals := make([]posTypes.Validator, nValidators)
