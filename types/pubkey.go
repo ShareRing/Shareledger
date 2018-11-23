@@ -110,7 +110,14 @@ func (pubKey PubKeySecp256k1) Equals(other PubKey) bool {
 
 func (pubKey PubKeySecp256k1) ToABCIPubKey() crypto.PubKeySecp256k1 {
 	var pk crypto.PubKeySecp256k1
-	copy(pk[:], pubKey[:65])
+
+	pub__, err := secp256k1.ParsePubKey(pubKey[:], secp256k1.S256())
+
+	if err != nil {
+		panic(err)
+	}
+
+	copy(pk[:], pub__.SerializeCompressed())
 	return pk
 }
 
