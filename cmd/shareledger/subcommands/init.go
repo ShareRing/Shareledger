@@ -2,7 +2,9 @@ package subcommands
 
 import (
 	"encoding/json"
+	"fmt"
 	"time"
+	"path/filepath"
 
 	"github.com/spf13/cobra"
 
@@ -17,8 +19,6 @@ import (
 	"github.com/sharering/shareledger/types"
 )
 
-
-
 // InitFilesCmd initialises a fresh Tendermint Core instance.
 var InitFilesCmd = &cobra.Command{
 	Use:   "init",
@@ -27,6 +27,11 @@ var InitFilesCmd = &cobra.Command{
 }
 
 func initFiles(cmd *cobra.Command, args []string) error {
+	config := cfg.DefaultConfig()
+	config.P2P.ListenAddress = P2PListenAddress
+	config.RPC.ListenAddress = RPCListenAddress
+	config.BaseConfig.ProxyApp = BaseConfigProxyApp
+
 	return initFilesWithConfig(config)
 }
 
@@ -44,6 +49,8 @@ func initFilesWithConfig(config *cfg.Config) error {
 		pv.PrivKey = newPrivKey
 		pv.PubKey = pv.PrivKey.PubKey()
 		pv.Address = pv.PubKey.Address()
+
+		fmt.Printf("Priv_Validator File Address: %X\n", pv.Address)
 
 		pv.Save()
 		logger.Info("Generated private validator", "path", privValFile)
@@ -74,7 +81,7 @@ func initFilesWithConfig(config *cfg.Config) error {
 		}
 		genDoc.Validators = []tmtypes.GenesisValidator{{
 			PubKey: pubKey,
-			Power:  10,
+			Power:  1,
 		}}
 
 		genDoc.AppStateJSON = json.RawMessage(genesisState.ToJSON())
@@ -85,13 +92,19 @@ func initFilesWithConfig(config *cfg.Config) error {
 		logger.Info("Generated genesis file", "path", genFile)
 	}
 
+	// Rewrite config file
+	path := filepath.Join(config.BaseConfig.RootDir, "config", "config.toml")
+	cfg.WriteConfigFile(path, config)
+
+	logger.Info("Generated config file", "path", path)
+
 	return nil
 }
 
 func genGenesisState(pv *privval.FilePV) (app.GenesisState, crypto.PubKey) {
 	// Change Ed25519 to Secp256k1
 	// save new priv_validator.json
-	// pv.Save()
+	pv.Save()
 
 	privK, ok := pv.PrivKey.(crypto.PrivKeySecp256k1)
 
@@ -104,5 +117,7 @@ func genGenesisState(pv *privval.FilePV) (app.GenesisState, crypto.PubKey) {
 	pubKey := privKey.PubKey()
 
 	gs := app.GenerateGenesisState(pubKey)
+	fmt.Printf("PrivateKey Address: %X\n", pubKey.Address())
+	fmt.Printf("Priv_Validator File Address: %X\n", pv.Address)
 	return gs, pv.PubKey
 }

@@ -48,6 +48,9 @@ var RootCmd = &cobra.Command{
 func init() {
 	RootCmd.PersistentFlags().String("log_level", "shareledger:info,"+config.LogLevel, "Log Level")
 	RootCmd.PersistentFlags().String(HomeFlag, defaultDir, "Home directory where to store all configuration files and data")
+	config.P2P.ListenAddress = P2PListenAddress
+	config.RPC.ListenAddress = RPCListenAddress
+	config.BaseConfig.ProxyApp = BaseConfigProxyApp
 }
 
 // Bind all flags and read the config into viper
