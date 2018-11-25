@@ -1,6 +1,7 @@
 package app
 
 import (
+	"fmt"
 	"os"
 
 	abci "github.com/tendermint/abci/types"
@@ -126,11 +127,18 @@ func NewShareLedgerApp(logger log.Logger, db dbm.DB) *ShareLedgerApp {
 func (app *ShareLedgerApp) InitChainer(ctx sdk.Context, req abci.RequestInitChain) abci.ResponseInitChain {
 
 	stateJSON := req.AppStateBytes
-	//fmt.Printf("RequestInitChain.Time: %v\n", req.Time)
-	//fmt.Printf("RequestInitChain.ChainId: %v\n", req.ChainId)
-	//fmt.Printf("RequestInitChain.ConsensusParams: %v\n", req.ConsensusParams)
-	//fmt.Printf("RequestInitChain.Validators: %v\n", req.Validators)
-	//fmt.Printf("RequestInitChain.AppStateBytes: %v\n", req.AppStateBytes)
+	app.Logger.Info("Init Chain",
+		"time", req.Time,
+		"ChainID", req.ChainId,
+		"ConsensusParams", req.ConsensusParams,
+		"Validators", req.Validators,
+		// "AppStateBytes", fmt.Sprintf("%s", req.AppStateBytes),
+	)
+	// fmt.Printf("RequestInitChain.Time: %v\n", req.Time)
+	// fmt.Printf("RequestInitChain.ChainId: %v\n", req.ChainId)
+	// fmt.Printf("RequestInitChain.ConsensusParams: %v\n", req.ConsensusParams)
+	// fmt.Printf("RequestInitChain.Validators: %v\n", req.Validators)
+	// fmt.Printf("RequestInitChain.AppStateBytes: %v\n", req.AppStateBytes)
 
 	var genesisState GenesisState
 	// fmt.Printf("stateJSON=%s\n", stateJSON)
@@ -165,6 +173,9 @@ func BeginBlocker(ctx sdk.Context, req abci.RequestBeginBlock) (res abci.Respons
 	// Save BlockHeader and Height to Context
 	ctx.WithBlockHeader(req.Header).WithBlockHeight(req.Header.Height)
 
+	// Reset this variable at the beginning of a block
+	pos.ValidatorChanged = false
+
 	//fmt.Printf("BeginBlocker: %v\n", req.Header.Proposer)
 
 	return
@@ -189,13 +200,21 @@ func EndBlocker(am auth.AccountMapper, keeper pKeeper.Keeper) sdk.EndBlocker {
 		}
 
 		validatorUpdates := pos.EndBlocker(ctx, keeper, pubKey)
+		for _, val := range validatorUpdates {
+			constants.LOGGER.Info("Validator Update",
+				"Address", fmt.Sprintf("%X", val.Address),
+				"Power", val.Power,
+				"PubKey", val.PubKey,
+			)
+		}
+
 		// Add these new validators to the addr -> pubkey map.
 		return abci.ResponseEndBlock{
 			ValidatorUpdates: validatorUpdates,
 		}
 
 		// Add these new validators to the addr -> pubkey map.
-		return abci.ResponseEndBlock{}
+		// return abci.ResponseEndBlock{}
 	}
 }
 

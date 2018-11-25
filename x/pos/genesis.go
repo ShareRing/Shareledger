@@ -8,6 +8,7 @@ import (
 	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
 	abci "github.com/tendermint/abci/types"
 
+	"github.com/sharering/shareledger/constants"
 	"github.com/sharering/shareledger/types"
 	"github.com/sharering/shareledger/x/pos/keeper"
 	posTypes "github.com/sharering/shareledger/x/pos/type"
@@ -30,7 +31,10 @@ func InitGenesis(ctx sdk.Context, keeper keeper.Keeper, data GenesisState) ([]ab
 
 	for _, validator := range data.Validators {
 
-		fmt.Printf("Validator in gensis: %v", validator)
+		constants.LOGGER.Info("Validator",
+			"ShareledgerAddress", fmt.Sprintf("%X", validator.Owner),
+			"TendermintAddress", fmt.Sprintf("%X", validator.ABCIValidator().Address),
+		)
 
 		if validator.DelegatorShares.IsZero() {
 			return abciVals, errors.Errorf("genesis validator cannot have zero delegator shares, validator: %v", validator)
