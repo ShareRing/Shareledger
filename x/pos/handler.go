@@ -11,6 +11,10 @@ import (
 	posTypes "github.com/sharering/shareledger/x/pos/type"
 )
 
+var (
+	ValidatorChanged = false
+)
+
 func NewHandler(k keeper.Keeper) sdk.Handler {
 	return func(ctx sdk.Context, msg sdk.Msg) sdk.Result {
 		// NOTE msg already has validate basic run
@@ -67,6 +71,10 @@ func handleMsgCreateValidator(ctx sdk.Context, msg message.MsgCreateValidator, k
 	//k.SetValidatorByConsAddr(ctx, validator)
 	//k.SetNewValidatorByPowerIndex(ctx, validator)
 
+	vdi := posTypes.NewValidatorDistInfo(validator.Owner, ctx.BlockHeight())
+
+	k.SetValidatorDistInfo(ctx, vdi)
+
 	// move coins from the msg.Address account to a (self-delegation) delegator account
 	// the validator account and global shares are updated within here
 
@@ -78,6 +86,10 @@ func handleMsgCreateValidator(ctx sdk.Context, msg message.MsgCreateValidator, k
 	//	k.OnValidatorCreated(ctx, validator.OperatorAddr)
 	//accAddr := sdk.AccAddress(validator.OperatorAddr)
 	//k.OnDelegationCreated(ctx, accAddr, validator.OperatorAddr)
+
+	// Update ValidatorChanged
+	// This variable is reset at the beginning of a block
+	ValidatorChanged = true
 
 	tags := sdk.NewTags(
 		tags.Event, tags.ValidatorCreated,

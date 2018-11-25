@@ -18,8 +18,6 @@ func EndBlocker(ctx sdk.Context, k keeper.Keeper, proposer types.PubKeySecp256k1
 	if !proposer.Equals(types.NilPubKeySecp256k1()) {
 
 		address := proposer.Address()
-		// fmt.Printf("POS.EndBlocker PROPOSER: %X\n", address)
-		// fmt.Println("Looking for vladiator: %X", address)
 
 		validator, found := k.GetValidator(ctx, address)
 
@@ -40,10 +38,21 @@ func EndBlocker(ctx sdk.Context, k keeper.Keeper, proposer types.PubKeySecp256k1
 			panic(err.Error())
 		}
 
-		fmt.Printf("ValidatorDistInfo: %v\n", vdi.HumanReadableString())
+		constants.LOGGER.Info(fmt.Sprintf("Proposer %X", vdi.ValidatorAddr),
+			"RewardAccum", vdi.RewardAccum.String(),
+			"Commission", vdi.Commission.String(),
+			"WithdrawHeight", vdi.WithdrawalHeight,
+			"ValidatorReward", vdi.ValidatorReward.String(),
+		)
+		// fmt.Printf("ValidatorDistInfo: %v\n", vdi.HumanReadableString())
 	}
 
-	var valUpdates []abci.Validator = k.GetValidatorSetUpdates(ctx) //work-around to get all ABCIValidators -> need to update
+	var valUpdates []abci.Validator
+	if ValidatorChanged {
+		valUpdates = k.GetValidatorSetUpdates(ctx) //work-around to get all ABCIValidators -> need to update
+	} else {
+		valUpdates = []abci.Validator{}
+	}
 	//TODO: return updated Validators list
 	return valUpdates
 }
