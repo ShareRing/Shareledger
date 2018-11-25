@@ -127,9 +127,11 @@ func (v Validator) GetABCIPubKey() crypto.PubKeySecp256k1 {
 // ABCIValidator returns an abci.Validator from a staked validator type.
 func (v Validator) ABCIValidator() abci.Validator {
 	return abci.Validator{
-		PubKey:  tmtypes.TM2PB.PubKey(v.GetABCIPubKey()),
-		Address: v.GetPubKey().Address(),
-		Power:   v.BondedTokens().RoundInt64(),
+		PubKey: tmtypes.TM2PB.PubKey(v.GetABCIPubKey()),
+		// Address: v.GetPubKey().Address(),
+		Address: v.GetABCIPubKey().Address(),
+		// Power:   v.BondedTokens().RoundInt64(),
+		Power: int64(1),
 	}
 }
 
@@ -253,7 +255,7 @@ func (v Validator) RemoveDelShares(pool Pool, delShares types.Dec) (Validator, P
 // DelegatorShareExRate gets the exchange rate of tokens over delegator shares.
 // UNITS: tokens/delegator-shares
 func (v Validator) DelegatorShareExRate() types.Dec {
-	if v.DelegatorShares.IsZero() {
+	if v.DelegatorShares.IsZero() || v.Tokens.IsZero() {
 		return types.OneDec()
 	}
 	return v.Tokens.Quo(v.DelegatorShares)
