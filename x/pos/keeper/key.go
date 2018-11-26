@@ -1,8 +1,11 @@
 package keeper
 
 import (
+	"encoding/binary"
+
 	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
 	"github.com/sharering/shareledger/types"
+	posTypes "github.com/sharering/shareledger/x/pos/type"
 )
 
 // TODO remove some of these prefixes once have working multistore
@@ -24,6 +27,9 @@ var (
 	RedelegationByValSrcIndexKey     = []byte{0x0B} // prefix for each key for an redelegation, by source validator operator
 	RedelegationByValDstIndexKey     = []byte{0x0C} // prefix for each key for an redelegation, by destination validator operator
 	ValidatorDistKey                 = []byte{0x0D} // prefix for each key for validator distribution information
+	// Last* values are const during a block.
+	LastValidatorPowerKey = []byte{0x11} // prefix for each key to a validator index, for bonded validators
+	LastTotalPowerKey     = []byte{0x12} // prefix for the total power
 )
 
 // gets the key for the validator with address
@@ -34,6 +40,12 @@ func GetValidatorKey(operatorAddr sdk.Address) []byte {
 
 func GetValidatorDistKey(operatorAddr sdk.Address) []byte {
 	return append(ValidatorDistKey, operatorAddr.Bytes()...)
+}
+
+// gets the key for the validator with pubkey
+// VALUE: validator operator address ([]byte)
+func GetValidatorByConsAddrKey(addr sdk.Address) []byte {
+	return append(ValidatorsByConsAddrKey, addr.Bytes()...)
 }
 
 //______________________________________________________________________________
@@ -146,4 +158,47 @@ func GetREDsByDelToValDstIndexKey(delAddr sdk.Address, valDstAddr sdk.Address) [
 	return append(
 		GetREDsToValDstIndexKey(valDstAddr),
 		delAddr.Bytes()...)
+}
+
+// get the validator by power index.
+// Power index is the key used in the power-store, and represents the relative
+// power ranking of the validator.
+// VALUE: validator operator address ([]byte)
+func GetValidatorsByPowerIndexKey(validator posTypes.Validator, pool posTypes.Pool) []byte {
+	// NOTE the address doesn't need to be stored because counter bytes must always be different
+	return getValidatorPowerRank(validator)
+}
+
+// get the bonded validator index key for an operator address
+func GetLastValidatorPowerKey(operator sdk.Address) []byte {
+	return append(LastValidatorPowerKey, operator...)
+}
+
+// get the power ranking of a validator
+// NOTE the larger values are of higher value
+// nolint: unparam
+func getValidatorPowerRank(validator posTypes.Validator) []byte {
+
+	potentialPower := validator.Tokens
+
+	// todo: deal with cases above 2**64, ref https://github.com/cosmos/cosmos-sdk/issues/2439#issuecomment-427167556
+	tendermintPower := potentialPower.RoundInt64()
+	tendermintPowerBytes := make([]byte, 8)
+	binary.BigEndian.PutUint64(tendermintPowerBytes[:], uint64(tendermintPower))
+
+	powerBytes := tendermintPowerBytes
+	powerBytesLen := len(powerBytes)
+
+	// key is of format prefix || powerbytes || heightBytes || counterBytes
+	key := make([]byte, 1+powerBytesLen+8+2)
+
+	key[0] = ValidatorsByPowerIndexKey[0]
+	copy(key[1:powerBytesLen+1], powerBytes)
+
+	// include heightBytes height is inverted (older validators first)
+	binary.BigEndian.PutUint64(key[powerBytesLen+1:powerBytesLen+9], ^uint64(validator.BondHeight))
+	// include counterBytes, counter is inverted (first txns have priority)
+	binary.BigEndian.PutUint16(key[powerBytesLen+9:powerBytesLen+11], ^uint16(validator.BondIntraTxCounter))
+
+	return key
 }

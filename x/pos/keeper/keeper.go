@@ -1,7 +1,11 @@
 package keeper
 
 import (
+	"bytes"
+	"sort"
+
 	"bitbucket.org/shareringvn/cosmos-sdk/wire"
+	"github.com/sharering/shareledger/types"
 	bank "github.com/sharering/shareledger/x/bank"
 	posTypes "github.com/sharering/shareledger/x/pos/type"
 
@@ -83,4 +87,43 @@ func (k Keeper) SetIntraTxCounter(ctx sdk.Context, counter int16) {
 	store := ctx.KVStore(k.storeKey)
 	bz := k.cdc.MustMarshalBinary(counter)
 	store.Set(IntraTxCounterKey, bz)
+}
+
+// Set the last total validator power.
+func (k Keeper) SetLastTotalPower(ctx sdk.Context, power sdk.Int) {
+	store := ctx.KVStore(k.storeKey)
+	b := k.cdc.MustMarshalBinary(power)
+	store.Set(LastTotalPowerKey, b)
+}
+
+// Delete the last validator power.
+func (k Keeper) DeleteLastValidatorPower(ctx sdk.Context, operator sdk.Address) {
+	store := ctx.KVStore(k.storeKey)
+	store.Delete(GetLastValidatorPowerKey(operator))
+}
+
+// Set the last validator power.
+func (k Keeper) SetLastValidatorPower(ctx sdk.Context, operator sdk.Address, power sdk.Int) {
+	store := ctx.KVStore(k.storeKey)
+	bz := k.cdc.MustMarshalBinary(power)
+	store.Set(GetLastValidatorPowerKey(operator), bz)
+}
+
+// given a map of remaining validators to previous bonded power
+// returns the list of validators to be unbonded, sorted by operator address
+func (k Keeper) sortNoLongerBonded(last validatorsByAddr) [][]byte {
+	// sort the map keys for determinism
+	noLongerBonded := make([][]byte, len(last))
+	index := 0
+	for valAddrBytes := range last {
+		valAddr := make([]byte, types.ADDRESSLENGTH)
+		copy(valAddr[:], valAddrBytes[:])
+		noLongerBonded[index] = valAddr
+		index++
+	}
+	// sorted by address - order doesn't matter
+	sort.SliceStable(noLongerBonded, func(i, j int) bool {
+		return bytes.Compare(noLongerBonded[i], noLongerBonded[j]) == -1
+	})
+	return noLongerBonded
 }
