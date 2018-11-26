@@ -2,7 +2,6 @@ package subcommands
 
 import (
 	"encoding/json"
-	"fmt"
 	"time"
 	"path/filepath"
 
@@ -27,11 +26,6 @@ var InitFilesCmd = &cobra.Command{
 }
 
 func initFiles(cmd *cobra.Command, args []string) error {
-	config := cfg.DefaultConfig()
-	config.P2P.ListenAddress = P2PListenAddress
-	config.RPC.ListenAddress = RPCListenAddress
-	config.BaseConfig.ProxyApp = BaseConfigProxyApp
-
 	return initFilesWithConfig(config)
 }
 
@@ -49,8 +43,6 @@ func initFilesWithConfig(config *cfg.Config) error {
 		pv.PrivKey = newPrivKey
 		pv.PubKey = pv.PrivKey.PubKey()
 		pv.Address = pv.PubKey.Address()
-
-		fmt.Printf("Priv_Validator File Address: %X\n", pv.Address)
 
 		pv.Save()
 		logger.Info("Generated private validator", "path", privValFile)
@@ -93,7 +85,7 @@ func initFilesWithConfig(config *cfg.Config) error {
 	}
 
 	// Rewrite config file
-	path := filepath.Join(config.BaseConfig.RootDir, "config", "config.toml")
+	path := filepath.Join(config.BaseConfig.RootDir, ConfigDir, RootFile)
 	cfg.WriteConfigFile(path, config)
 
 	logger.Info("Generated config file", "path", path)
@@ -117,7 +109,5 @@ func genGenesisState(pv *privval.FilePV) (app.GenesisState, crypto.PubKey) {
 	pubKey := privKey.PubKey()
 
 	gs := app.GenerateGenesisState(pubKey)
-	fmt.Printf("PrivateKey Address: %X\n", pubKey.Address())
-	fmt.Printf("Priv_Validator File Address: %X\n", pv.Address)
 	return gs, pv.PubKey
 }

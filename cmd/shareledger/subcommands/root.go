@@ -1,6 +1,7 @@
 package subcommands
 
 import (
+	"fmt"
 	"os"
 	"path/filepath"
 
@@ -24,6 +25,8 @@ const (
 	RPCListenAddress   = "tcp://0.0.0.0:46657"
 	P2PListenAddress   = "tcp://0.0.0.0:46656"
 	BaseConfigProxyApp = "tcp://127.0.0.1:46658"
+	ConfigDir          = "config"
+	RootFile           = "config.toml"
 )
 
 var RootCmd = &cobra.Command{
@@ -62,9 +65,14 @@ func bindFlagsLoadViper(cmd *cobra.Command, args []string) error {
 
 	homeDir := viper.GetString(HomeFlag)
 	viper.Set(HomeFlag, homeDir)
-	viper.SetConfigName("config")                         // name of config file (without extension)
-	viper.AddConfigPath(homeDir)                          // search root directory
-	viper.AddConfigPath(filepath.Join(homeDir, "config")) // search root directory /config
+	viper.SetConfigName("config")                          // name of config file (without extension)
+	viper.AddConfigPath(homeDir)                           // search root directory
+	viper.AddConfigPath(filepath.Join(homeDir, ConfigDir)) // search root directory /config
+
+	// Ensure Root
+	config.RootDir = homeDir
+	config.SetRoot(homeDir)
+	cfg.EnsureRoot(homeDir)
 
 	// If a config file is found, read it in.
 	if err := viper.ReadInConfig(); err == nil {
@@ -75,19 +83,17 @@ func bindFlagsLoadViper(cmd *cobra.Command, args []string) error {
 		// ignore not found error, return other errors
 		return err
 	}
+
 	return nil
 }
 
 func ParseConfig() (*cfg.Config, error) {
-	conf := cfg.DefaultConfig()
-
-	err := viper.Unmarshal(conf)
+	err := viper.Unmarshal(config)
 
 	if err != nil {
+		fmt.Printf("Error: %v\n", err)
 		return nil, err
 	}
 
-	conf.SetRoot(conf.RootDir)
-	cfg.EnsureRoot(conf.RootDir)
-	return conf, err
+	return config, err
 }
