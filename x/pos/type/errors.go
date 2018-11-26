@@ -5,6 +5,8 @@ import (
 	"fmt"
 
 	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
+
+	"github.com/sharering/shareledger/constants"
 )
 
 type CodeType = sdk.CodeType
@@ -24,7 +26,10 @@ const (
 
 //validator
 func ErrBadPercentStake(codespace sdk.CodespaceType) sdk.Error {
-	return sdk.NewError(codespace, CodeInvalidInput, "Staking is greater than 50% token on Pool")
+	return sdk.NewError(codespace, CodeInvalidInput, constants.POS_INVALID_DELEGATION_TOKEN)
+}
+func ErrInSufficientMasterNodeToken(codespace sdk.CodespaceType) sdk.Error {
+	return sdk.NewError(codespace, CodeInvalidInput, constants.POS_INSUFFICIENT_MASTERNODE_TOKEN)
 }
 
 func ErrNilValidatorAddr(codespace sdk.CodespaceType) sdk.Error {

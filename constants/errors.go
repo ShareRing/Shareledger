@@ -39,6 +39,8 @@ const POS_VALIDATOR_DIST_NOT_FOUND = "Validator Distribution Info for %X not fou
 const POS_INVALID_VALIDATOR_ADDRESS = "Validator Address is in incorrect format. Error: %s"
 const POS_MARSHAL_ERROR = "Marshal to JSON failed. %s"
 const POS_INVALID_PARAMS = "Unmarshal to Query params failed. %s"
+const POS_INVALID_DELEGATION_TOKEN = "Staking is greater than 50% token on Pool"
+const POS_INSUFFICIENT_MASTERNODE_TOKEN = "Master Node needs at least 2000000 Token"
 
 // Exchange
 const EXC_INVALID_DENOM = "Invalid Denom. Required %s. Provided %s."

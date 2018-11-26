@@ -3,6 +3,7 @@ package posTypes
 import (
 	"bytes"
 	"fmt"
+	"math"
 
 	abci "github.com/tendermint/abci/types"
 	crypto "github.com/tendermint/go-crypto"
@@ -268,7 +269,7 @@ func (v Validator) BondedTokens() types.Dec {
 }
 
 //check if the adding token violet the percent rule or not:
-func (v Validator) IsAddingTokenValid(pool Pool, tokenAMount types.Dec) bool {
+func (v Validator) IsDelegatingTokenValid(pool Pool, tokenAMount types.Dec) bool {
 	totalToken := v.Tokens.Add(tokenAMount)
 	totalBoundedToken := pool.BondedTokens
 
@@ -339,9 +340,17 @@ const DoNotModifyDesc = "[do-not-modify]"
 func (v Validator) GetMoniker() string          { return v.Description.Moniker }
 func (v Validator) GetStatus() types.BondStatus { return v.Status }
 
-func (v Validator) GetOwner() sdk.Address         { return v.Owner }
-func (v Validator) GetPubKey() types.PubKey       { return v.PubKey }
-func (v Validator) GetPower() types.Dec           { return v.BondedTokens() }
+func (v Validator) GetOwner() sdk.Address   { return v.Owner }
+func (v Validator) GetPubKey() types.PubKey { return v.PubKey }
+func (v Validator) GetPower() types.Dec {
+	bondedToken := v.BondedTokens().RoundInt64()
+	s := fmt.Sprintf("%v", math.Log2(float64(bondedToken)))
+	if power, err := types.NewDecFromStr(s); err == nil {
+		return power
+	}
+
+	return types.ZeroDec()
+}
 func (v Validator) GetDelegatorShares() types.Dec { return v.DelegatorShares }
 func (v Validator) GetBondHeight() int64          { return v.BondHeight }
 

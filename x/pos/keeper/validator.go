@@ -117,8 +117,6 @@ func (k Keeper) AddValidatorTokensAndShares(ctx sdk.Context, validator posTypes.
 // remove the validator record and associated indexes
 func (k Keeper) RemoveValidator(ctx sdk.Context, address sdk.Address) {
 
-	// first retrieve the old validator record
-	/*validator*/
 	validator, found := k.GetValidator(ctx, address)
 	if !found {
 		return
