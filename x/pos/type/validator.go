@@ -3,6 +3,7 @@ package posTypes
 import (
 	"bytes"
 	"fmt"
+	"sort"
 
 	abci "github.com/tendermint/abci/types"
 	crypto "github.com/tendermint/go-crypto"
@@ -403,4 +404,20 @@ func (v Validator) HumanReadableString() (string, error) {
 	//	resp += fmt.Sprintf("Proposer Reward Pool: %s\n", v.ProposerRewardPool.String())
 
 	return resp, nil
+}
+
+//-----------------------------------------------------------
+
+// Sort abci.Validator By Address
+
+type SortValidators []abci.Validator
+
+func (av SortValidators) Len() int           { return len(av) }
+func (av SortValidators) Swap(i, j int)      { av[i], av[j] = av[j], av[i] }
+func (av SortValidators) Less(i, j int) bool { return bytes.Compare(av[i].Address, av[j].Address) < 0 }
+
+// SortABCIValidators - function to sort abci.Validator in ascending order before returning to Tendermint
+func SortABCIValidators(av []abci.Validator) []abci.Validator { 
+	sort.Sort(SortValidators(av))
+	return av
 }

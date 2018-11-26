@@ -151,6 +151,11 @@ func (k Keeper) GetValidatorSetUpdates(ctx sdk.Context) []abci.Validator {
 	for _, val := range validators {
 		abciValidators = append(abciValidators, val.ABCIValidator())
 	}
+
+	// Sort in ascending order before returning to Tendermint
+	// As Tendermint search incrementally along the array for an address in the ValidatorSet
+	// abciValidators = posTypes.SortABCIValidators(abciValidators)
+	
 	return abciValidators
 
 }
