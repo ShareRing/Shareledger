@@ -15,6 +15,7 @@ func main() {
 		subcommands.VersionCmd,
 		subcommands.TestnetFilesCmd,
 		subcommands.ShowPrivKeyCmd,
+		subcommands.RegisterValidatorCmd,
 	)
 
 	rootCmd.Execute()

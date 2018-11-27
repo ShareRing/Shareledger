@@ -10,6 +10,9 @@ import (
 	posTypes "github.com/sharering/shareledger/x/pos/type"
 )
 
+var _ sdk.Msg = MsgCreateValidator{}
+var _ sdk.Msg = MsgEditValidator{}
+
 // MsgCreateValidator - struct for unbonding transactions
 type MsgCreateValidator struct {
 	Description   posTypes.Description
@@ -124,5 +127,3 @@ func (msg MsgEditValidator) ValidateBasic() sdk.Error {
 	return nil
 }
 
-var _ sdk.Msg = MsgCreateValidator{}
-var _ sdk.Msg = MsgEditValidator{}
