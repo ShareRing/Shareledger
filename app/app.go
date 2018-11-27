@@ -194,8 +194,6 @@ func EndBlocker(am auth.AccountMapper, keeper pKeeper.Keeper) sdk.EndBlocker {
 			ValidatorUpdates: validatorUpdates,
 		}
 
-		// Add these new validators to the addr -> pubkey map.
-		return abci.ResponseEndBlock{}
 	}
 }
 
