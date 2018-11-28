@@ -1,8 +1,6 @@
 package pos
 
 import (
-	"fmt"
-
 	"github.com/pkg/errors"
 
 	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
@@ -15,10 +13,10 @@ import (
 
 // GenesisState - all staking state that must be provided at genesis
 type GenesisState struct {
-	Pool       posTypes.Pool        `json:"pool"`
-	Params     posTypes.Params      `json:"params"`
-	Validators []posTypes.Validator `json:"validators"`
-	//Bonds      []Delegation `json:"bonds"`
+	Pool       posTypes.Pool         `json:"pool"`
+	Params     posTypes.Params       `json:"params"`
+	Validators []posTypes.Validator  `json:"validators"`
+	Bonds      []posTypes.Delegation `json:"bonds"`
 }
 
 func InitGenesis(ctx sdk.Context, keeper keeper.Keeper, data GenesisState) ([]abci.Validator, error) {
@@ -30,7 +28,7 @@ func InitGenesis(ctx sdk.Context, keeper keeper.Keeper, data GenesisState) ([]ab
 
 	for _, validator := range data.Validators {
 
-		fmt.Printf("Validator in gensis: %v", validator)
+		//fmt.Printf("Validator in gensis: %v", validator)
 
 		if validator.DelegatorShares.IsZero() {
 			return abciVals, errors.Errorf("genesis validator cannot have zero delegator shares, validator: %v", validator)
@@ -38,6 +36,10 @@ func InitGenesis(ctx sdk.Context, keeper keeper.Keeper, data GenesisState) ([]ab
 		abciVals = append(abciVals, validator.ABCIValidator())
 
 		keeper.SetValidator(ctx, validator)
+		keeper.SetValidatorByPowerIndex(ctx, validator, data.Pool)
+		// Manually set indices for the first time
+		//keeper.SetValidatorByConsAddr(ctx, validator)
+		//keeper.OnValidatorCreated(ctx, validator.OperatorAddr)
 
 		vdi := posTypes.NewValidatorDistInfo(validator.Owner, int64(0))
 
@@ -45,9 +47,24 @@ func InitGenesis(ctx sdk.Context, keeper keeper.Keeper, data GenesisState) ([]ab
 		keeper.SetValidatorDistInfo(ctx, vdi)
 	}
 
+	for _, delegation := range data.Bonds {
+		keeper.SetDelegation(ctx, delegation)
+		//keeper.OnDelegationCreated(ctx, delegation.DelegatorAddr, delegation.ValidatorAddr)
+	}
+
 	return abciVals, nil
 
 }
+
+func NewGenesisState(pool posTypes.Pool, params posTypes.Params, validators []posTypes.Validator, bonds []posTypes.Delegation) GenesisState {
+	return GenesisState{
+		Pool:       pool,
+		Params:     params,
+		Validators: validators,
+		Bonds:      bonds,
+	}
+}
+
 func GenerateGenesis(pubKey types.PubKeySecp256k1) GenesisState {
 	validator := posTypes.NewValidator(
 		pubKey.Address(),
