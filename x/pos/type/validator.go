@@ -130,7 +130,7 @@ func (v Validator) ABCIValidator() abci.Validator {
 	return abci.Validator{
 		PubKey:  tmtypes.TM2PB.PubKey(v.GetABCIPubKey()),
 		Address: v.GetPubKey().Address(),
-		Power:   v.BondedTokens().RoundInt64(),
+		Power:   v.GetPower().RoundInt64(), //v.BondedTokens().RoundInt64(),
 	}
 }
 
@@ -279,6 +279,11 @@ func (v Validator) IsDelegatingTokenValid(pool Pool, tokenAMount types.Dec) bool
 // unmarshal a redelegation from a store key and value
 func UnmarshalValidator(cdc *wire.Codec, owner sdk.Address, value []byte) (validator Validator, err error) {
 	//TODO: Checking owner address
+	/*
+		if len(owner) != types.ADDRESSLENGTH {
+			err = fmt.Errorf("%v", err.ErrBadValidatorAddr(DefaultCodespace).Data())
+			return
+		}*/
 
 	var storeValue validatorValue
 	err = cdc.UnmarshalBinary(value, &storeValue)
@@ -343,6 +348,7 @@ func (v Validator) GetStatus() types.BondStatus { return v.Status }
 func (v Validator) GetOwner() sdk.Address   { return v.Owner }
 func (v Validator) GetPubKey() types.PubKey { return v.PubKey }
 func (v Validator) GetPower() types.Dec {
+	//calculate power based on Logarit
 	bondedToken := v.BondedTokens().RoundInt64()
 	s := fmt.Sprintf("%v", math.Log2(float64(bondedToken)))
 	if power, err := types.NewDecFromStr(s); err == nil {
