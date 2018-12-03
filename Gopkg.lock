@@ -18,11 +18,11 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:c0decf632843204d2b8781de7b26e7038584e2dcccc7e2f401e88ae85b1df2b7"
+  digest = "1:093bf93a65962e8191e3e8cd8fc6c363f83d43caca9739c906531ba7210a9904"
   name = "github.com/btcsuite/btcd"
   packages = ["btcec"]
   pruneopts = "UT"
-  revision = "67e573d211ace594f1366b4ce9d39726c4b19bd0"
+  revision = "3dcf298fed2d5fd65918dc560b3942b2aa0629e8"
 
 [[projects]]
   branch = "master"
@@ -242,6 +242,14 @@
   version = "v1.0.0"
 
 [[projects]]
+  branch = "master"
+  digest = "1:d38f81081a389f1466ec98192cf9115a82158854d6f01e1c23e2e7554b97db71"
+  name = "github.com/rcrowley/go-metrics"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "3113b8401b8a98917cde58f8bbd42a1b1c03b1fd"
+
+[[projects]]
   digest = "1:6a4a11ba764a56d2758899ec6f3848d24698d48442ebce85ee7a3f63284526cd"
   name = "github.com/spf13/afero"
   packages = [
@@ -305,7 +313,7 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:9ff9e1808adfc43f788f1c1e9fd2660c285b522243da985a4c043ec6f2a2d736"
+  digest = "1:2c4379920afd63d262751932c18dfaa30d92ee8241403a919cd7a3e4cf9561d6"
   name = "github.com/syndtr/goleveldb"
   packages = [
     "leveldb",
@@ -322,7 +330,7 @@
     "leveldb/util",
   ]
   pruneopts = "UT"
-  revision = "f9080354173f192dfc8821931eacf9cfd6819253"
+  revision = "d5f8e13ca70d404acb9f9f8daab06b3818425145"
 
 [[projects]]
   digest = "1:724b6cffc872768cfbea9e577bdcc75e4ba84f074238b12d09bfcbfc830434f1"
@@ -379,7 +387,7 @@
 
 [[projects]]
   branch = "fixedVersion"
-  digest = "1:a1e4e437b355ee34ac551e6af6724189b4a4bf956d90611b4373c4fad61b138f"
+  digest = "1:113dc5ce0d9e2ba5b2328ca9b8450c42520be6ab03bf932a560f191e1e96639b"
   name = "github.com/tendermint/tendermint"
   packages = [
     "blockchain",
@@ -398,10 +406,12 @@
     "p2p/upnp",
     "privval",
     "proxy",
+    "rpc/client",
     "rpc/core",
     "rpc/core/types",
     "rpc/grpc",
     "rpc/lib",
+    "rpc/lib/client",
     "rpc/lib/server",
     "rpc/lib/types",
     "state",
@@ -412,7 +422,7 @@
     "version",
   ]
   pruneopts = "UT"
-  revision = "f44542b3e0a0ae3ea3dd75c62f71a6f34a53f599"
+  revision = "67ae186e520d8c1f3623b2f5b0afa470c7399209"
   source = "bitbucket.org/shareringvn/tendermint"
 
 [[projects]]
@@ -450,7 +460,7 @@
     "salsa20/salsa",
   ]
   pruneopts = "UT"
-  revision = "3d3f9f413869b949e48070b5bc593aa22cc2b8f2"
+  revision = "c05539cddb594cf33f1f0f5871d2964e9f813749"
 
 [[projects]]
   branch = "master"
@@ -470,11 +480,11 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:7ba061af4131fb44b30448572acd0d6fefbf63a61b97b7ef1dea0be5871c2742"
+  digest = "1:225564f71149334315118db714e1ea87513e4a11cf4acb27e26bc7577cebfa0b"
   name = "golang.org/x/sys"
   packages = ["unix"]
   pruneopts = "UT"
-  revision = "66b7b1311ac80bbafcd2daeef9a5e6e2cd1e2399"
+  revision = "62eef0e2fa9b2c385f7b2778e763486da6880d37"
 
 [[projects]]
   digest = "1:a2ab62866c75542dd18d2b069fec854577a20211d7c0ea6ae746072a1dccdd18"
@@ -565,6 +575,7 @@
     "github.com/tendermint/tendermint/p2p",
     "github.com/tendermint/tendermint/privval",
     "github.com/tendermint/tendermint/proxy",
+    "github.com/tendermint/tendermint/rpc/client",
     "github.com/tendermint/tendermint/rpc/core/types",
     "github.com/tendermint/tendermint/rpc/lib/types",
     "github.com/tendermint/tendermint/types",

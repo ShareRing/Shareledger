@@ -32,6 +32,7 @@ var (
 	hostnamePrefix          string
 	startingIPAddress       string
 	p2pPort                 int
+	rpcPort 				int
 	listIPAddress           string
 	listMonikers            string
 )
@@ -58,8 +59,8 @@ func init() {
 		"Starting IP address (192.168.0.1 results in persistent peers list ID0@192.168.0.1:46656, ID1@192.168.0.2:46656, ...)")
 	TestnetFilesCmd.Flags().StringVar(&listIPAddress, "list-ip-address", "",
 		"List of IP addresses ( Ex: 192.168.0.1:46656,192.168.1.3:46656). Number of addreses equals to number of nodes other error throws. This overrides starting-ip-address and p2p-port")
-	TestnetFilesCmd.Flags().IntVar(&p2pPort, "p2p-port", 46656,
-		"P2P Port")
+	TestnetFilesCmd.Flags().IntVar(&p2pPort, "p2p-port", 46656, "P2P Port")
+	// TestnetFilesCmd.Flags().IntVar(&rpcPort, "rpc-port", 46657, "RPC Port")
 	TestnetFilesCmd.Flags().StringVar(&listMonikers, "monikers", "",
 		"List of monikers separated by comma( Ex: moniker1,moniker1,moniker3)")
 }

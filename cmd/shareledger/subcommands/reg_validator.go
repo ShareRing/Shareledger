@@ -7,9 +7,11 @@ import (
 
 	"github.com/sharering/shareledger/client"
 )
+
 const (
 	MINIMUN_STAKED int64 = int64(2000)
 )
+
 var (
 	moniker  string
 	identity string
@@ -26,13 +28,12 @@ var RegisterValidatorCmd = &cobra.Command{
 }
 
 func init() {
-	RegisterValidatorCmd.Flags().StringVar(&moniker, "moniker", config.Moniker, "Node name")
+	RegisterValidatorCmd.Flags().StringVar(&moniker, "moniker", "", "Node name")
 	// RegisterValidatorCmd.Flags().StringVar(&identity, "identity", "", "Identity Signature (ex: uPort or Keybase)")
 	RegisterValidatorCmd.Flags().StringVar(&website, "website", "sharering.network", "Website link")
 	RegisterValidatorCmd.Flags().StringVar(&details, "details", "ShareLedger Masternode", "Details of your MasterNode")
 	RegisterValidatorCmd.Flags().Int64Var(&amount, "tokens", 0, "Amount of tokens to be staked.")
 	RegisterValidatorCmd.MarkFlagRequired("tokens")
-	RegisterValidatorCmd.MarkFlagRequired("moniker")
 }
 
 func registerValidator(cmd *cobra.Command, args []string) error {
@@ -45,7 +46,11 @@ func registerValidator(cmd *cobra.Command, args []string) error {
 
 	context := client.NewCoreContextFromConfig(config)
 
-	fmt.Printf("Amount=%d Moniker=%s Website=%s Dettails=%s\n", amount, moniker, website, details)
+	if moniker == "" {
+		moniker = config.BaseConfig.Moniker
+	}
+
+	fmt.Printf("Amount=%d Moniker=%s Website=%s Details=%s\n", amount, moniker, website, details)
 
 	err := context.RegisterValidator(amount, moniker, "", website, details)
 	if err != nil {

@@ -2,12 +2,13 @@ package subcommands
 
 import (
 	"encoding/json"
-	"time"
 	"path/filepath"
+	"strconv"
+	"time"
 
 	"github.com/spf13/cobra"
 
-	"github.com/tendermint/go-crypto"
+	crypto "github.com/tendermint/go-crypto"
 	cfg "github.com/tendermint/tendermint/config"
 	"github.com/tendermint/tendermint/p2p"
 	"github.com/tendermint/tendermint/privval"
@@ -23,6 +24,23 @@ var InitFilesCmd = &cobra.Command{
 	Use:   "init",
 	Short: "Initialize essential files",
 	RunE:  initFiles,
+}
+
+const (
+	listenAddress string = "tcp://0.0.0.0:"
+)
+
+var (
+	persistentPeers string
+)
+
+func init() {
+	InitFilesCmd.Flags().StringVar(&persistentPeers, "persistent-peers", "",
+		"List of persistent peers.")
+	InitFilesCmd.Flags().IntVar(&rpcPort, "rpc-port", 46657, "RPC listening port.")
+	InitFilesCmd.Flags().IntVar(&p2pPort, "p2p-port", 46656, "P2P listening port.")
+	InitFilesCmd.Flags().StringVar(&moniker, "moniker", "default-moniker",
+		"Unique name of your Masternode.")
 }
 
 func initFiles(cmd *cobra.Command, args []string) error {
@@ -83,6 +101,13 @@ func initFilesWithConfig(config *cfg.Config) error {
 		}
 		logger.Info("Generated genesis file", "path", genFile)
 	}
+
+	// Update RP2 & P2P port
+	logger.Info("PersistentPeers", "peers", persistentPeers)
+	config.BaseConfig.Moniker = moniker
+	config.RPC.ListenAddress = listenAddress + strconv.Itoa(rpcPort)
+	config.P2P.ListenAddress = listenAddress + strconv.Itoa(p2pPort)
+	config.P2P.PersistentPeers = persistentPeers
 
 	// Rewrite config file
 	path := filepath.Join(config.BaseConfig.RootDir, ConfigDir, RootFile)

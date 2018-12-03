@@ -1,6 +1,7 @@
 package client
 
 import (
+	"encoding/json"
 	"fmt"
 	"strconv"
 	"strings"
@@ -29,10 +30,18 @@ type CoreContext struct {
 	Codec   *wire.Codec
 }
 
+type SHRAccount1 struct {
+	Address sdk.Address  `json:"address"`
+	Coins   types.Coins  `json:"coins"`
+	PubKey  []byte 		 `json:"pub_key"`
+	Nonce   int64        `json:"nonce"`
+}
+
 func NewCoreContextFromConfig(config *cfg.Config) CoreContext {
 	proto, addr := getRPCAddress(config, 0)
 
-	addr = "127.0.0.1:46657"
+	// fmt.Println("Connect to:", proto+"://"+addr)
+
 	return CoreContext{
 		Client:  rpcclient.NewHTTP(proto+"://"+addr, "/websocket"),
 		PrivKey: getPrivKey(config),
@@ -46,7 +55,7 @@ func (c CoreContext) ConstructTransaction(msg sdk.Msg) (auth.AuthTx, error) {
 		panic(err)
 	}
 
-	authTx := auth.GetAuthTx(c.PrivKey.PubKey(), c.PrivKey, msg, nonce + 1)
+	authTx := auth.GetAuthTx(c.PrivKey.PubKey(), c.PrivKey, msg, nonce+1)
 	return authTx, nil
 }
 
@@ -106,6 +115,8 @@ func (c CoreContext) RegisterValidator(
 		Delegation:    delegation,
 	}
 
+	fmt.Println("Client: ", c.Client)
+
 	fmt.Println("Construct Transaction\n")
 	authTx, err := c.ConstructTransaction(msgCreateValidator)
 	if err != nil {
@@ -155,6 +166,35 @@ func (c CoreContext) LoadBalance(amount int64, denom string) error {
 	fmt.Printf("LoadBalance: %v\n", result)
 	return nil
 
+}
+
+func (c CoreContext) CheckBalance() error {
+	msgCheck := bmsg.NewMsgCheck(c.PrivKey.PubKey().Address())
+
+	authTx, err := c.ConstructTransaction(msgCheck)
+	if err != nil {
+		return err
+	}
+
+	tdmTx, err := c.ConstructTendermintTransaction(authTx)
+	if err != nil {
+		return err
+	}
+
+	result, err := c.Client.ABCIQuery("app/query", cmn.HexBytes(tdmTx))
+	if err != nil {
+		return err
+	}
+
+	var account SHRAccount1
+
+	err = json.Unmarshal([]byte(result.Response.Log), &account)
+	if err != nil {
+		return err
+	}
+
+	fmt.Printf("%v\n", account.Coins)
+	return nil
 }
 
 //----------------------------------------------------------
