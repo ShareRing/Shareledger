@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"sort"
+	"math"
 
 	abci "github.com/tendermint/abci/types"
 	crypto "github.com/tendermint/go-crypto"
@@ -128,11 +129,9 @@ func (v Validator) GetABCIPubKey() crypto.PubKeySecp256k1 {
 // ABCIValidator returns an abci.Validator from a staked validator type.
 func (v Validator) ABCIValidator() abci.Validator {
 	return abci.Validator{
-		PubKey: tmtypes.TM2PB.PubKey(v.GetABCIPubKey()),
-		// Address: v.GetPubKey().Address(),
-		Address: v.GetABCIPubKey().Address(),
-		// Power:   v.BondedTokens().RoundInt64(),
-		Power: int64(1),
+		PubKey:  tmtypes.TM2PB.PubKey(v.GetABCIPubKey()),
+		Address: v.GetPubKey().Address(),
+		Power:   v.GetPower().RoundInt64(), //v.BondedTokens().RoundInt64(),
 	}
 }
 
@@ -271,7 +270,7 @@ func (v Validator) BondedTokens() types.Dec {
 }
 
 //check if the adding token violet the percent rule or not:
-func (v Validator) IsAddingTokenValid(pool Pool, tokenAMount types.Dec) bool {
+func (v Validator) IsDelegatingTokenValid(pool Pool, tokenAMount types.Dec) bool {
 	totalToken := v.Tokens.Add(tokenAMount)
 	totalBoundedToken := pool.BondedTokens
 
@@ -281,6 +280,11 @@ func (v Validator) IsAddingTokenValid(pool Pool, tokenAMount types.Dec) bool {
 // unmarshal a redelegation from a store key and value
 func UnmarshalValidator(cdc *wire.Codec, owner sdk.Address, value []byte) (validator Validator, err error) {
 	//TODO: Checking owner address
+	/*
+		if len(owner) != types.ADDRESSLENGTH {
+			err = fmt.Errorf("%v", err.ErrBadValidatorAddr(DefaultCodespace).Data())
+			return
+		}*/
 
 	var storeValue validatorValue
 	err = cdc.UnmarshalBinary(value, &storeValue)
@@ -342,9 +346,18 @@ const DoNotModifyDesc = "[do-not-modify]"
 func (v Validator) GetMoniker() string          { return v.Description.Moniker }
 func (v Validator) GetStatus() types.BondStatus { return v.Status }
 
-func (v Validator) GetOwner() sdk.Address         { return v.Owner }
-func (v Validator) GetPubKey() types.PubKey       { return v.PubKey }
-func (v Validator) GetPower() types.Dec           { return v.BondedTokens() }
+func (v Validator) GetOwner() sdk.Address   { return v.Owner }
+func (v Validator) GetPubKey() types.PubKey { return v.PubKey }
+func (v Validator) GetPower() types.Dec {
+	//calculate power based on Logarit
+	bondedToken := v.BondedTokens().RoundInt64()
+	s := fmt.Sprintf("%v", math.Log2(float64(bondedToken)))
+	if power, err := types.NewDecFromStr(s); err == nil {
+		return power
+	}
+
+	return types.ZeroDec()
+}
 func (v Validator) GetDelegatorShares() types.Dec { return v.DelegatorShares }
 func (v Validator) GetBondHeight() int64          { return v.BondHeight }
 

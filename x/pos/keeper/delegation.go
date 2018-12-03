@@ -58,7 +58,10 @@ func (k Keeper) Delegate(ctx sdk.Context, delAddr sdk.Address, bondAmt types.Coi
 
 	//checking if the validator hold valid token number:
 	pool := k.GetPool(ctx)
-	if !validator.IsAddingTokenValid(pool, bondAmt.Amount) {
+	if !validator.IsDelegatingTokenValid(pool, bondAmt.Amount) {
+		if validator.Tokens.IsZero() { //validator has just created -> remove it
+			k.RemoveValidator(ctx, validator.Owner)
+		}
 		return types.ZeroDec(), posTypes.ErrBadPercentStake(k.Codespace())
 	}
 	// Get or create the delegator delegation

@@ -1,5 +1,7 @@
 package constants
 
+import "time"
+
 // APP ACCOUNT
 const DEFAULT_DENOM = "SHR"
 const DEFAULT_AMOUNT = 0
@@ -29,7 +31,10 @@ var POS_DENOM = "SHR"
 var EXCHANGABLE_FEE_DENOM = "SHRP"
 var DEFAULT_RESERVE = "405C725BC461DCA455B8AA84769E8ACE6B3763F4"
 var POS_BLOCK_REWARD = int64(5)
+var UNBONDING_TIME time.Duration = 60 * 60 * 24 * 3 * time.Second //3 weeks -> adjust it
 
+//POS Constant
+var MIN_MASTER_NODE_TOKEN int64 = 2000000
 
 // EXCHANGE
 var RESERVE_ACCOUNTS = []string{

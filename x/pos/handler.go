@@ -5,6 +5,8 @@ import (
 
 	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
 
+	"github.com/sharering/shareledger/constants"
+	types "github.com/sharering/shareledger/types"
 	"github.com/sharering/shareledger/x/pos/keeper"
 	"github.com/sharering/shareledger/x/pos/message"
 	"github.com/sharering/shareledger/x/pos/tags"
@@ -50,15 +52,17 @@ func handleMsgCreateValidator(ctx sdk.Context, msg message.MsgCreateValidator, k
 		return posTypes.ErrValidatorOwnerExists(k.Codespace()).Result()
 	}
 	/*
-		_, found = k.GetValidatorByConsAddr(ctx, sdk.GetConsAddress(msg.PubKey))
+		_, found = k.GetValidatorByConsAddr(ctx, sdk.Address(msg.PubKey.Address()))
 		if found {
-			return ErrValidatorPubKeyExists(k.Codespace()).Result()
-		}
+			return posTypes.ErrValidatorPubKeyExists(k.Codespace()).Result()
+		}*/
 
-		if msg.Delegation.Denom != k.GetParams(ctx).BondDenom {
-			return ErrBadDenom(k.Codespace()).Result()
-		}
-	*/
+	if msg.Delegation.Denom != k.GetParams(ctx).BondDenom {
+		return posTypes.ErrBadDenom(k.Codespace()).Result()
+	}
+	if msg.Delegation.Amount.LT(types.NewDec(constants.MIN_MASTER_NODE_TOKEN)) {
+		return posTypes.ErrInSufficientMasterNodeToken(k.Codespace()).Result()
+	}
 	validator := posTypes.NewValidator(msg.ValidatorAddr, msg.PubKey, msg.Description)
 	/*	commission := NewCommissionWithTime(
 			msg.Commission.Rate, msg.Commission.MaxChangeRate,
@@ -69,7 +73,7 @@ func handleMsgCreateValidator(ctx sdk.Context, msg message.MsgCreateValidator, k
 
 	k.SetValidator(ctx, validator)
 	//k.SetValidatorByConsAddr(ctx, validator)
-	//k.SetNewValidatorByPowerIndex(ctx, validator)
+	k.SetNewValidatorByPowerIndex(ctx, validator)
 
 	vdi := posTypes.NewValidatorDistInfo(validator.Owner, ctx.BlockHeight())
 
