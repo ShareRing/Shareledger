@@ -41,6 +41,9 @@ func NewFeeHandler(am auth.AccountMapper, exchangeKey *sdk.KVStoreKey) sdk.FeeHa
 		// if Account is less than txFee
 		if signerCoins.LT(txFee) {
 
+			deltaCoins := signerCoins.Minus(txFee)
+			deltaCoin := deltaCoins.GetCoin(txFee.Denom).Neg()
+
 			exchangeKeeper := exchange.NewKeeper(exchangeKey, keeper)
 
 			err := exchangeKeeper.BuyCoin(
@@ -49,7 +52,7 @@ func NewFeeHandler(am auth.AccountMapper, exchangeKey *sdk.KVStoreKey) sdk.FeeHa
 				utils.StringToAddress(constants.DEFAULT_RESERVE),
 				constants.EXCHANGABLE_FEE_DENOM,
 				result.FeeDenom,
-				txFee.Amount,
+				deltaCoin.Amount, // only buy the difference
 			)
 
 			if err != nil {

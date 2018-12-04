@@ -322,6 +322,17 @@ func (coins Coins) HasCoin(o Coin, method string) bool {
 	return false
 }
 
+// GetCoin - Get a single coin from coin
+func (coins Coins) GetCoin(denom string) Coin {
+
+	for _, c := range coins {
+		if c.HasDenom(denom) {
+			return c
+		}
+	}
+	panic(fmt.Sprintf("Coins %v don't have coin %s", coins, denom))
+}
+
 //--------------------------------------------------------
 
 func IsValidDenom(denom string) bool {
