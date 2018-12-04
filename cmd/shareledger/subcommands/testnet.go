@@ -239,7 +239,8 @@ func getMoniker(i int) string {
 
 		return monikers[i]
 	}
-	return ""
+	return cmn.Fmt("%s%d", nodeDirPrefix, i)
+
 }
 
 func populatePersistentPeersInConfigAndWriteIt(config *cfg.Config) error {
