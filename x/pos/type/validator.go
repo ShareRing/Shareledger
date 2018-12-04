@@ -130,7 +130,8 @@ func (v Validator) GetABCIPubKey() crypto.PubKeySecp256k1 {
 func (v Validator) ABCIValidator() abci.Validator {
 	return abci.Validator{
 		PubKey:  tmtypes.TM2PB.PubKey(v.GetABCIPubKey()),
-		Address: v.GetPubKey().Address(),
+		Address: v.GetABCIPubKey().Address(),
+		// Address: v.GetPubKey().Address(),
 		Power:   v.GetPower().RoundInt64(), //v.BondedTokens().RoundInt64(),
 	}
 }
@@ -139,7 +140,8 @@ func (v Validator) ABCIValidator() abci.Validator {
 func (v Validator) ABCIValidatorZero() abci.Validator {
 	return abci.Validator{
 		PubKey:  tmtypes.TM2PB.PubKey(v.GetABCIPubKey()),
-		Address: v.GetPubKey().Address(),
+		Address: v.GetABCIPubKey().Address(),
+		// Address: v.GetPubKey().Address(),
 		Power:   0,
 	}
 }
