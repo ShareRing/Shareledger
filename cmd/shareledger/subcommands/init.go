@@ -32,6 +32,7 @@ const (
 
 var (
 	persistentPeers string
+	privKeyParam         string
 )
 
 func init() {
@@ -41,6 +42,7 @@ func init() {
 	InitFilesCmd.Flags().IntVar(&p2pPort, "p2p-port", 46656, "P2P listening port.")
 	InitFilesCmd.Flags().StringVar(&moniker, "moniker", "default-moniker",
 		"Unique name of your Masternode.")
+	InitFilesCmd.Flags().StringVar(&privKeyParam, "privKey", "", "Generate using an existing private key.")
 }
 
 func initFiles(cmd *cobra.Command, args []string) error {
@@ -57,7 +59,13 @@ func initFilesWithConfig(config *cfg.Config) error {
 		logger.Info("Found private validator", "path", privValFile)
 	} else {
 		pv = privval.GenFilePV(privValFile)
-		newPrivKey := crypto.GenPrivKeySecp256k1()
+		var newPrivKey crypto.PrivKeySecp256k1
+
+		if privKeyParam == "" {
+			newPrivKey = crypto.GenPrivKeySecp256k1()
+		} else {
+			newPrivKey = types.GetCryptoPrivKey(privKeyParam)
+		}
 		pv.PrivKey = newPrivKey
 		pv.PubKey = pv.PrivKey.PubKey()
 		pv.Address = pv.PubKey.Address()

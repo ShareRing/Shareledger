@@ -1,6 +1,8 @@
 package types
 
 import (
+	// "crypto"
+	"encoding/hex"
 	"fmt"
 
 	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
@@ -105,4 +107,18 @@ func ConvertToPrivKey(privKey crypto.PrivKey) PrivKeySecp256k1 {
 	privateKey := NewPrivKeySecp256k1(privK[:])
 
 	return privateKey
+}
+
+func GetCryptoPrivKey(input string) crypto.PrivKeySecp256k1 {
+	privKeyBytes, err := hex.DecodeString(input)
+
+	if err != nil {
+		panic(fmt.Sprintf("Error in decode string: ", err))
+	}
+
+	privK, _ := btcec.PrivKeyFromBytes(btcec.S256(), privKeyBytes)
+
+	privKey32 := [32]byte{}
+	copy(privKey32[:], privK.Serialize())
+	return crypto.PrivKeySecp256k1(privKey32)
 }
