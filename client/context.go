@@ -49,6 +49,17 @@ func NewCoreContextFromConfig(config *cfg.Config) CoreContext {
 	}
 }
 
+func NewCoreContextFromConfigWithClient(config *cfg.Config, client string) CoreContext {
+
+	// fmt.Println("Connect to:", proto+"://"+addr)
+
+	return CoreContext{
+		Client:  rpcclient.NewHTTP(client, "/websocket"),
+		PrivKey: getPrivKey(config),
+		Codec:   getCodec(),
+	}
+}
+
 func (c CoreContext) ConstructTransaction(msg sdk.Msg) (auth.AuthTx, error) {
 	nonce, err := c.GetNonce()
 	if err != nil {

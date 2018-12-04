@@ -34,6 +34,7 @@ func init() {
 	RegisterValidatorCmd.Flags().StringVar(&details, "details", "ShareLedger Masternode", "Details of your MasterNode")
 	RegisterValidatorCmd.Flags().Int64Var(&amount, "tokens", 0, "Amount of tokens to be staked.")
 	RegisterValidatorCmd.MarkFlagRequired("tokens")
+	RegisterValidatorCmd.Flags().StringVar(&nodeAddress, "client", "", "Node address to query info. Example: tcp://123.123.123.123:46657")
 }
 
 func registerValidator(cmd *cobra.Command, args []string) error {
@@ -44,7 +45,14 @@ func registerValidator(cmd *cobra.Command, args []string) error {
 		}
 	}()
 
-	context := client.NewCoreContextFromConfig(config)
+	var context client.CoreContext
+
+	if nodeAddress == "" {
+		context = client.NewCoreContextFromConfig(config)
+	} else {
+		context = client.NewCoreContextFromConfigWithClient(config, nodeAddress)
+	}
+
 
 	if moniker == "" {
 		moniker = config.BaseConfig.Moniker
