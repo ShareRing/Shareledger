@@ -260,7 +260,7 @@ func (d Dec) String() string {
 // evaluate as an integer and return left padded string
 func (d Dec) ToLeftPaddedWithDecimals(totalDigits int8) string {
 	intStr := d.Int.String()
-	fmt.Println("InStr:", intStr)
+	// fmt.Println("InStr:", intStr)
 	fcode := `%0` + strconv.Itoa(int(totalDigits)) + `s`
 	return fmt.Sprintf(fcode, intStr)
 }

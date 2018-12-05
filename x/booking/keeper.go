@@ -86,11 +86,11 @@ func (k Keeper) Book(ctx sdk.Context, msg msg.MsgBook) (types.Booking, error) {
 
 	renterCoins := renterAcc.GetCoins()
 
-	fmt.Printf("RENTER COINS: %v\n", renterCoins)
+	// fmt.Printf("RENTER COINS: %v\n", renterCoins)
 
 	renterCoinsAfter := renterCoins.Minus(types.NewCoin(constants.BOOKING_DENOM, value))
 
-	fmt.Printf("RENTER COINS AFTER: %v\n", renterCoinsAfter)
+	// fmt.Printf("RENTER COINS AFTER: %v\n", renterCoinsAfter)
 
 	if !renterCoinsAfter.IsNotNegative() {
 		return types.Booking{}, fmt.Errorf(constants.BOOKING_INSUFFICIENT_BALANCE,

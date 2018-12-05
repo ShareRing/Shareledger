@@ -209,7 +209,7 @@ func handleMsgWithdraw(
 
 	vdi, amount, err := k.WithdrawDelReward(ctx, msg.ValidatorAddr, msg.DelegatorAddr)
 
-	fmt.Printf("validator dist info: %v\n", vdi)
+	// fmt.Printf("validator dist info: %v\n", vdi)
 
 	if err != nil {
 		return err.Result()

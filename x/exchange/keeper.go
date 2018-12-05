@@ -206,7 +206,7 @@ func (k Keeper) BuyCoin(
 	toDenom string,
 	buyingAmount types.Dec,
 ) (err error) {
-	fmt.Printf("BUY COIN\n")
+	// fmt.Printf("BUY COIN\n")
 	exr, err := k.RetrieveExchangeRate(ctx, fromDenom, toDenom)
 
 	if err != nil {

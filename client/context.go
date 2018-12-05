@@ -31,16 +31,14 @@ type CoreContext struct {
 }
 
 type SHRAccount1 struct {
-	Address sdk.Address  `json:"address"`
-	Coins   types.Coins  `json:"coins"`
-	PubKey  []byte 		 `json:"pub_key"`
-	Nonce   int64        `json:"nonce"`
+	Address sdk.Address `json:"address"`
+	Coins   types.Coins `json:"coins"`
+	PubKey  []byte      `json:"pub_key"`
+	Nonce   int64       `json:"nonce"`
 }
 
 func NewCoreContextFromConfig(config *cfg.Config) CoreContext {
 	proto, addr := getRPCAddress(config, 0)
-
-	// fmt.Println("Connect to:", proto+"://"+addr)
 
 	return CoreContext{
 		Client:  rpcclient.NewHTTP(proto+"://"+addr, "/websocket"),
@@ -50,8 +48,6 @@ func NewCoreContextFromConfig(config *cfg.Config) CoreContext {
 }
 
 func NewCoreContextFromConfigWithClient(config *cfg.Config, client string) CoreContext {
-
-	// fmt.Println("Connect to:", proto+"://"+addr)
 
 	return CoreContext{
 		Client:  rpcclient.NewHTTP(client, "/websocket"),
@@ -126,29 +122,20 @@ func (c CoreContext) RegisterValidator(
 		Delegation:    delegation,
 	}
 
-	fmt.Println("Client: ", c.Client)
-
-	fmt.Println("Construct Transaction\n")
 	authTx, err := c.ConstructTransaction(msgCreateValidator)
 	if err != nil {
 		return err
 	}
-
-	fmt.Println("Construct Tendermint transaction\n")
 
 	tdmTx, err := c.ConstructTendermintTransaction(authTx)
 	if err != nil {
 		return err
 	}
 
-	fmt.Println("Broadcast Tx")
-
-	result, err := c.Client.BroadcastTxSync(tdmTx)
+	_, err = c.Client.BroadcastTxSync(tdmTx)
 	if err != nil {
 		return err
 	}
-
-	fmt.Printf("RegisterValidator: %v\n", result)
 
 	return nil
 }
@@ -156,25 +143,21 @@ func (c CoreContext) RegisterValidator(
 func (c CoreContext) LoadBalance(amount int64, denom string) error {
 	msgLoad := bmsg.NewMsgLoad(c.PrivKey.PubKey().Address(), types.NewCoin(denom, amount))
 
-	fmt.Println("Construct Transaction\n")
 	authTx, err := c.ConstructTransaction(msgLoad)
 	if err != nil {
 		return err
 	}
 
-	fmt.Println("Construct Tendermint transaction\n")
 	tdmTx, err := c.ConstructTendermintTransaction(authTx)
 	if err != nil {
 		return err
 	}
 
-	fmt.Println("Broadcast Tx")
-	result, err := c.Client.BroadcastTxSync(tdmTx)
+	_, err = c.Client.BroadcastTxSync(tdmTx)
 	if err != nil {
 		return err
 	}
 
-	fmt.Printf("LoadBalance: %v\n", result)
 	return nil
 
 }
@@ -204,7 +187,6 @@ func (c CoreContext) CheckBalance() error {
 		return err
 	}
 
-	fmt.Printf("%v\n", account.Coins)
 	return nil
 }
 
