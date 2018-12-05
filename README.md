@@ -6,12 +6,6 @@ ShareLedger currently ultilizes a dual-token mechanism, SharePay (SHRP) and Shar
 
 
 
-## Requirements ##
-
-* [`go`](https://golang.org/doc/install) - compile tool. Version >=1.10
-* [`dep`](https://github.com/golang/dep) - package management tool
-* [`tendermint`](https://github.com/tendermint/tendermint) - consensus algorithm v.0.21.0
-
 ## Build ##
 
 * `make get_vendor_deps` to install neccesary dependant packace to `vendor` folder
@@ -19,7 +13,7 @@ ShareLedger currently ultilizes a dual-token mechanism, SharePay (SHRP) and Shar
 
 ## Install Shareledger ##
 
-The fatest and easiest way to install `Shareledger` is to run our os-specfic application which guides you through four steps to setup and run a MasterNode. [TODO](https://todo.com)
+The fatest and easiest way to install `Shareledger` is to run our os-specfic application which guides you through four steps to setup and run a MasterNode. [TO BE RELEASED](https://sharering.network)
 
 
 ### From Binary
@@ -29,7 +23,12 @@ To download pre-built binaries, see the [releases page](https://github.com/share
 
 ### From Source
 
-You'll need `go`[installed](https://golang.org/doc/install)
+### Requirements ##
+
+* [`go`](https://golang.org/doc/install) - compile tool. Version >=1.10
+* [`dep`](https://github.com/golang/dep) - package management tool
+* [`tendermint`](https://github.com/tendermint/tendermint) - consensus algorithm v.0.21.0
+* [`make`](https://www.gnu.org/software/make/) -  compile tool
 
 
 #### Get Source Code
