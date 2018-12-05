@@ -58,7 +58,7 @@ To start a one-node ShareLedger
 ./build/shareledger node
 ```
 
-Type `shareledger -h` to get more detailed information on how to execute ShareLedger
+Type `./build/shareledger -h` to get more detailed information on how to execute ShareLedger
 
 
 #### Upgrade
