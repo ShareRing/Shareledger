@@ -58,11 +58,11 @@ This will compile ShareLedger and put the binary in `./build`
 
 To start a one-node ShareLedger
 ```
-shareledger init
-shareledger node
+./build/shareledger init
+./build/shareledger node
 ```
 
-Type `shareledger -h` to get more detailed information on how to execute ShareLedger
+Type `./build/shareledger -h` to get more detailed information on how to execute ShareLedger
 
 
 #### Upgrade
