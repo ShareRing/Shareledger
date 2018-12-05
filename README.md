@@ -1,6 +1,6 @@
-# ShareLedger #
+# Shareledger #
 
-ShareLedger is a custom-designed distributed blockchain with [Tendermint](https://github.com/tendermint/tendermint) as a Byzantine-Fault Tolerant State Machine. ShareLedger provides essential building blocks for any rental/sharing services on top of it.
+Shareledger is a custom-designed distributed blockchain with [Tendermint](https://github.com/tendermint/tendermint) as a Byzantine-Fault Tolerant State Machine. ShareLedger provides essential building blocks for any rental/sharing services on top of it.
 
 ShareLedger currently ultilizes a dual-token mechanism, SharePay (SHRP) and ShareToken (SHR). The former provides a stable currency for any additional services running on top of ShareLedger while the latter acts as an ultility token.
 
@@ -17,9 +17,9 @@ ShareLedger currently ultilizes a dual-token mechanism, SharePay (SHRP) and Shar
 * `make get_vendor_deps` to install neccesary dependant packace to `vendor` folder
 * `make build` to build ShareLedger 
 
-## Install ShareLedger ##
+## Install Shareledger ##
 
-The fatest and easiest way to install `ShareLedger` is to run our os-specfic application which guides you through four steps to setup and run a MasterNode. [TODO](https://todo.com)
+The fatest and easiest way to install `Shareledger` is to run our os-specfic application which guides you through four steps to setup and run a MasterNode. [TODO](https://todo.com)
 
 
 ### From Binary
