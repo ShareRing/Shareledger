@@ -207,7 +207,7 @@ func handleMsgWithdraw(
 	k keeper.Keeper,
 ) sdk.Result {
 
-	vdi, amount, err := k.WithdrawDelReward(ctx, msg.ValidatorAddr, msg.DelegatorAddr)
+	_, amount, err := k.WithdrawDelReward(ctx, msg.ValidatorAddr, msg.DelegatorAddr)
 
 	// fmt.Printf("validator dist info: %v\n", vdi)
 
