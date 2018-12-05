@@ -5,12 +5,6 @@ Shareledger is a custom-designed distributed blockchain with [Tendermint](https:
 ShareLedger currently ultilizes a dual-token mechanism, SharePay (SHRP) and ShareToken (SHR). The former provides a stable currency for any additional services running on top of ShareLedger while the latter acts as an ultility token.
 
 
-
-## Build ##
-
-* `make get_vendor_deps` to install neccesary dependant packace to `vendor` folder
-* `make build` to build ShareLedger 
-
 ## Install Shareledger ##
 
 The fatest and easiest way to install `Shareledger` is to run our os-specfic application which guides you through four steps to setup and run a MasterNode. [TO BE RELEASED](https://sharering.network)
