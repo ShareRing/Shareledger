@@ -40,11 +40,12 @@ func showBalance(cmd *cobra.Command, args []string) (err error) {
 		context = client.NewCoreContextFromConfigWithClient(config, nodeAddress)
 	}
 
-	err = context.CheckBalance()
+	res, err := context.CheckBalance(context.PrivKey.PubKey().Address())
 	if err != nil {
 		return err
 	}
 
+	fmt.Printf("%v\n",res)
 	return nil
 
 }

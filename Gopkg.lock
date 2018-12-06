@@ -22,7 +22,7 @@
   name = "github.com/btcsuite/btcd"
   packages = ["btcec"]
   pruneopts = "UT"
-  revision = "3dcf298fed2d5fd65918dc560b3942b2aa0629e8"
+  revision = "7d2daa5bfef28c5e282571bc06416516936115ee"
 
 [[projects]]
   branch = "master"
@@ -53,8 +53,8 @@
   name = "github.com/ethereum/go-ethereum"
   packages = ["crypto/sha3"]
   pruneopts = "UT"
-  revision = "58632d44021bf095b43a1bb2443e6e3690a94739"
-  version = "v1.8.18"
+  revision = "dae82f098570e15d44584f0d7f350713f4774727"
+  version = "v1.8.19"
 
 [[projects]]
   digest = "1:abeb38ade3f32a92943e5be54f55ed6d6e3b6602761d74b4aab4c9dd45c18abd"
@@ -313,7 +313,7 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:2c4379920afd63d262751932c18dfaa30d92ee8241403a919cd7a3e4cf9561d6"
+  digest = "1:685fdfea42d825ebd39ee0994354b46c374cf2c2b2d97a41a8dee1807c6a9b62"
   name = "github.com/syndtr/goleveldb"
   packages = [
     "leveldb",
@@ -330,7 +330,7 @@
     "leveldb/util",
   ]
   pruneopts = "UT"
-  revision = "d5f8e13ca70d404acb9f9f8daab06b3818425145"
+  revision = "b001fa50d6b27f3f0bb175a87d0cb55426d0a0ae"
 
 [[projects]]
   digest = "1:724b6cffc872768cfbea9e577bdcc75e4ba84f074238b12d09bfcbfc830434f1"
@@ -426,12 +426,11 @@
   source = "bitbucket.org/shareringvn/tendermint"
 
 [[projects]]
-  digest = "1:f1fcf40d65f6d77bf5d8f5ac15c3003df6c938031c83849a1e88f77360d8e68d"
+  digest = "1:439df8c1f31ec22a020dbebd204e07ccb4179349b93fa58adcc3bdff5368641d"
   name = "github.com/tendermint/tmlibs"
   packages = [
     "autofile",
     "bech32",
-    "cli",
     "clist",
     "common",
     "db",
@@ -460,11 +459,11 @@
     "salsa20/salsa",
   ]
   pruneopts = "UT"
-  revision = "c05539cddb594cf33f1f0f5871d2964e9f813749"
+  revision = "505ab145d0a99da450461ae2c1a9f6cd10d1f447"
 
 [[projects]]
   branch = "master"
-  digest = "1:6ca51c5d8a610b3da56856df7a8f8f3e075eba8d5f7a4acbadd79b2d2a368054"
+  digest = "1:7a2e3d6819e7a97a877f8604e737901c6941e76d56ae98a51a1ca2f13de351fb"
   name = "golang.org/x/net"
   packages = [
     "context",
@@ -476,15 +475,15 @@
     "trace",
   ]
   pruneopts = "UT"
-  revision = "adae6a3d119ae4890b46832a2e88a95adc62b8e7"
+  revision = "351d144fa1fc0bd934e2408202be0c29f25e35a0"
 
 [[projects]]
   branch = "master"
-  digest = "1:225564f71149334315118db714e1ea87513e4a11cf4acb27e26bc7577cebfa0b"
+  digest = "1:9399de11945e643d7131cf070736122b76800d92d57a80494bd9a4e73e6979f3"
   name = "golang.org/x/sys"
   packages = ["unix"]
   pruneopts = "UT"
-  revision = "62eef0e2fa9b2c385f7b2778e763486da6880d37"
+  revision = "a5c9d58dba9a56f97aaa86f55e638b718c5a6c42"
 
 [[projects]]
   digest = "1:a2ab62866c75542dd18d2b069fec854577a20211d7c0ea6ae746072a1dccdd18"
@@ -543,12 +542,12 @@
   version = "v1.7.5"
 
 [[projects]]
-  digest = "1:342378ac4dcb378a5448dd723f0784ae519383532f5e70ade24132c4c8693202"
+  digest = "1:4d2e5a73dc1500038e504a8d78b986630e3626dc027bc030ba5c75da257cdb96"
   name = "gopkg.in/yaml.v2"
   packages = ["."]
   pruneopts = "UT"
-  revision = "5420a8b6744d3b0345ab293f6fcba19c978f1183"
-  version = "v2.2.1"
+  revision = "51d6538a90f86fe93ac480b35f37b2be17fef232"
+  version = "v2.2.2"
 
 [solve-meta]
   analyzer-name = "dep"
@@ -566,7 +565,6 @@
     "github.com/spf13/viper",
     "github.com/stretchr/testify/assert",
     "github.com/stretchr/testify/require",
-    "github.com/tendermint/abci/server",
     "github.com/tendermint/abci/types",
     "github.com/tendermint/go-amino",
     "github.com/tendermint/go-crypto",
@@ -580,7 +578,6 @@
     "github.com/tendermint/tendermint/rpc/lib/types",
     "github.com/tendermint/tendermint/types",
     "github.com/tendermint/tendermint/version",
-    "github.com/tendermint/tmlibs/cli",
     "github.com/tendermint/tmlibs/common",
     "github.com/tendermint/tmlibs/db",
     "github.com/tendermint/tmlibs/log",

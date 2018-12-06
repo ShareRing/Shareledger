@@ -53,17 +53,18 @@ func registerValidator(cmd *cobra.Command, args []string) error {
 		context = client.NewCoreContextFromConfigWithClient(config, nodeAddress)
 	}
 
-
 	if moniker == "" {
 		moniker = config.BaseConfig.Moniker
 	}
 
 	fmt.Printf("Amount=%d Moniker=%s Website=%s Details=%s\n", amount, moniker, website, details)
 
-	err := context.RegisterValidator(amount, moniker, "", website, details)
+	res, err := context.RegisterValidator(amount, moniker, "", website, details)
 	if err != nil {
 		return err
 	}
+
+	fmt.Printf("%v\n", res)
 
 	return nil
 }

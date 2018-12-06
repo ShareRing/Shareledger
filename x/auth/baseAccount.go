@@ -42,6 +42,13 @@ type SHRAccount struct {
 	Nonce   int64        `json:"nonce"`
 }
 
+type SHRAccountJSON struct {
+	Address sdk.Address `json:"address"`
+	Coins   types.Coins `json:"coins"`
+	PubKey  []byte      `json:"pub_key"`
+	Nonce   int64       `json:"nonce"`
+}
+
 // NewSHRAccountWithAddress create  a SHRAccount with address
 func NewSHRAccountWithAddress(addr sdk.Address) *SHRAccount {
 	return &SHRAccount{

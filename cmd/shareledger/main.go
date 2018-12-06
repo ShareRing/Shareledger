@@ -18,6 +18,8 @@ func main() {
 		subcommands.RegisterValidatorCmd,
 		subcommands.ShowAddressCmd,
 		subcommands.ShowBalanceCmd,
+		subcommands.SendCoinCmd,
+		subcommands.LoadCoinCmd,
 	)
 
 	rootCmd.Execute()
