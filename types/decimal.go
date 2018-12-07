@@ -247,13 +247,22 @@ func (d Dec) Quo(d2 Dec) Dec {
 	return Dec{chopped}
 }
 
+// func (d Dec) String() string {
+// 	str := d.ToLeftPaddedWithDecimals(Precision)
+// 	placement := len(str) - Precision
+// 	if placement < 0 {
+// 		panic("too few decimal digits")
+// 	}
+// 	return str[:placement] + "." + str[placement:]
+// }
+
+// String - replace cosmos String() as Cosmos doesn't discard unneccessary trailling zero
 func (d Dec) String() string {
-	str := d.ToLeftPaddedWithDecimals(Precision)
-	placement := len(str) - Precision
-	if placement < 0 {
-		panic("too few decimal digits")
+	ret, err := d.MarshalAmino()
+	if err != nil {
+		panic(err)
 	}
-	return str[:placement] + "." + str[placement:]
+	return ret
 }
 
 // TODO panic if negative or if totalDigits < len(initStr)???

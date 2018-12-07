@@ -58,6 +58,7 @@ func sendCoin(cmd *cobra.Command, args []string) error {
 	addr := sdk.Address(addressBytes)
 
 	dec, err := types.NewDecFromStr(coinAmount)
+	fmt.Printf("coin:%s dec:%v\n", coinAmount, dec)
 
 	if err != nil {
 		return err

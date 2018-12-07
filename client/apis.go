@@ -102,22 +102,22 @@ func CheckBalanceAPI(
 	if err != nil {
 		return balance, err
 	}
-
 	for _, coin := range coins {
 		if coin.Denom == "SHR" {
-			shr, err := coin.Amount.MarshalJSON()
-			if err != nil {
-				return balance, err
-			}
-			balance.SHR = fmt.Sprintf("%s", shr)
+			// shr, err := coin.Amount.MarshalAmino()
+			// if err != nil {
+			// 	return balance, err
+			// }
+			// balance.SHR = fmt.Sprintf("%s", shr)
+			balance.SHR = coin.Amount.String()
 		}
 		if coin.Denom == "SHRP" {
-			shrp, err := coin.Amount.MarshalJSON()
-			if err != nil {
-				return balance, err
-			}
-			balance.SHRP = fmt.Sprintf("%s", shrp)
-
+			// shrp, err := coin.Amount.MarshalAmino()
+			// if err != nil {
+			// 	return balance, err
+			// }
+			// balance.SHRP = fmt.Sprintf("%s", shrp)
+			balance.SHRP = coin.Amount.String()
 		}
 	}
 
