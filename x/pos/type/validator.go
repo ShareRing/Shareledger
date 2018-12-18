@@ -349,18 +349,29 @@ func (v Validator) GetStatus() types.BondStatus { return v.Status }
 func (v Validator) GetOwner() sdk.Address   { return v.Owner }
 func (v Validator) GetPubKey() types.PubKey { return v.PubKey }
 func (v Validator) GetPower() types.Dec {
+
+	if v.BondedTokens().IsZero() {
+		// fmt.Printf("BondedTokens")
+		return types.ZeroDec()
+	}
 	//calculate power based on Logarit
 	bondedToken := v.BondedTokens().RoundInt64()
 	//s := fmt.Sprintf("%v", math.Log2(float64(bondedToken)))
 	power := int64(math.Log2(float64(bondedToken)))
-	if power > 20 {
+
+	// fmt.Printf("Power: %d\n", power)
+
+	if power >= 20 {
 		power = power - 20
 	}
+	// fmt.Printf("Power1: %d\n", power)
 	if power <= 0 {
+		// fmt.Printf("Power2: %d\n", power)
 		return types.OneDec()
 	}
 	return types.NewDec(power)
 }
+
 func (v Validator) GetDelegatorShares() types.Dec { return v.DelegatorShares }
 func (v Validator) GetBondHeight() int64          { return v.BondHeight }
 

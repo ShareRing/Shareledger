@@ -64,6 +64,8 @@ func handleMsgCreateValidator(ctx sdk.Context, msg message.MsgCreateValidator, k
 		return posTypes.ErrInSufficientMasterNodeToken(k.Codespace()).Result()
 	}
 	validator := posTypes.NewValidator(msg.ValidatorAddr, msg.PubKey, msg.Description)
+	// Update delegator shares = 0
+	validator.DelegatorShares = types.ZeroDec()
 	/*	commission := NewCommissionWithTime(
 			msg.Commission.Rate, msg.Commission.MaxChangeRate,
 			msg.Commission.MaxChangeRate, ctx.BlockHeader().Time,

@@ -183,11 +183,66 @@ func (c CoreContext) CheckBalance() error {
 	var account SHRAccount1
 
 	err = json.Unmarshal([]byte(result.Response.Log), &account)
+
+	fmt.Printf("%v\n", account.Coins)
+
 	if err != nil {
 		return err
 	}
 
 	return nil
+}
+
+func (c CoreContext) CheckValidatorDistInfo() error {
+	queryValidatorDist := pos.QueryValidatorDistParams{
+		ValidatorAddr: c.PrivKey.PubKey().Address(),
+	}
+
+	req, err := c.Codec.MarshalBinary(queryValidatorDist)
+	if err != nil {
+		return err
+	}
+
+	result, err := c.Client.ABCIQuery("app/custom/pos/validatorDistInfo", req)
+	if err != nil {
+		return err
+	}
+
+	var vdi posTypes.ValidatorDistInfo
+
+	err = json.Unmarshal(result.Response.Value, &vdi)
+
+	if err != nil {
+		return err
+	}
+
+	fmt.Printf("%v\n", vdi.RewardAccum)
+
+	return nil
+
+}
+
+func (c CoreContext) WithdrawBlockReward() error {
+	address := c.PrivKey.PubKey().Address()
+	msgWithdraw := pmsg.NewMsgWithdraw(address, address)
+
+	authTx, err := c.ConstructTransaction(msgWithdraw)
+	if err != nil {
+		return err
+	}
+
+	tdmTx, err := c.ConstructTendermintTransaction(authTx)
+	if err != nil {
+		return err
+	}
+
+	_, err = c.Client.BroadcastTxSync(tdmTx)
+	if err != nil {
+		return err
+	}
+
+	return nil
+
 }
 
 //----------------------------------------------------------

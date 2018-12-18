@@ -99,7 +99,8 @@ func initFilesWithConfig(config *cfg.Config) error {
 		}
 		genDoc.Validators = []tmtypes.GenesisValidator{{
 			PubKey: pubKey,
-			Power:  1,
+			Power:  genesisState.StakeData.Validators[0].ABCIValidator().Power,
+			Name: genesisState.StakeData.Validators[0].Description.Moniker,
 		}}
 
 		genDoc.AppStateJSON = json.RawMessage(genesisState.ToJSON())

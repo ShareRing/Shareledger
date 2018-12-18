@@ -18,6 +18,8 @@ func main() {
 		subcommands.RegisterValidatorCmd,
 		subcommands.ShowAddressCmd,
 		subcommands.ShowBalanceCmd,
+		subcommands.ShowVdiCmd,
+		subcommands.WithdrawBlockRewardCmd,
 	)
 
 	rootCmd.Execute()

@@ -253,6 +253,7 @@ func (k Keeper) GetValidatorSetUpdates(ctx sdk.Context) []abci.Validator {
 	// The persistent set is updated later in this function.
 	// (see LastValidatorPowerKey).
 	last := k.getLastValidatorsByAddr(ctx)
+	fmt.Printf("GetLastValidatorsByAddress: %v\n", last)
 
 	// Iterate over validators, highest power to lowest.
 	iterator := sdk.KVStoreReversePrefixIterator(store, ValidatorsByPowerIndexKey)
@@ -262,6 +263,8 @@ func (k Keeper) GetValidatorSetUpdates(ctx sdk.Context) []abci.Validator {
 		// fetch the validator
 		valAddr := sdk.Address(iterator.Value())
 		validator := k.mustGetValidator(ctx, valAddr)
+
+		fmt.Printf("Validator: %X\n", valAddr)
 
 		if validator.Revoked {
 			panic("should never retrieve a Revoked validator from the power store")
@@ -296,6 +299,7 @@ func (k Keeper) GetValidatorSetUpdates(ctx sdk.Context) []abci.Validator {
 		newPowerBytes := k.cdc.MustMarshalBinary(sdk.NewInt(newPower))
 		// update the validator set if power has changed
 		if !found || !bytes.Equal(oldPowerBytes, newPowerBytes) {
+			fmt.Printf("Found! %X\n", validator.Owner)
 			updates = append(updates, validator.ABCIValidator())
 
 			// Assert that the validator had updated its ValidatorDistInfo.FeePoolWithdrawalHeight.
@@ -315,7 +319,9 @@ func (k Keeper) GetValidatorSetUpdates(ctx sdk.Context) []abci.Validator {
 		count++
 		totalPower = totalPower.Add(sdk.NewInt(newPower))
 	}
-
+	for _, val := range updates {
+		fmt.Printf("Validator Update/validator Address=%X Power=%d\n", val.Address, val.Power)
+	}
 	// sort the no-longer-bonded validators
 	noLongerBonded := k.sortNoLongerBonded(last)
 
@@ -324,6 +330,8 @@ func (k Keeper) GetValidatorSetUpdates(ctx sdk.Context) []abci.Validator {
 
 		// fetch the validator
 		validator := k.mustGetValidator(ctx, sdk.Address(valAddrBytes))
+
+		fmt.Printf("NoLongerBonded: %X\n", validator.Owner)
 
 		// bonded to unbonding
 		k.bondedToUnbonding(ctx, validator)
@@ -339,7 +347,9 @@ func (k Keeper) GetValidatorSetUpdates(ctx sdk.Context) []abci.Validator {
 	if len(updates) > 0 {
 		k.SetLastTotalPower(ctx, totalPower)
 	}
-
+	for _, val := range updates {
+		fmt.Printf("Validator Update/validator Address=%X Power=%d\n", val.Address, val.Power)
+	}
 	return updates
 
 }

@@ -12,19 +12,34 @@ import (
 	posTypes "github.com/sharering/shareledger/x/pos/type"
 )
 
-var validatorDistCache = make(map[string]*list.Element, MaxCacheLength)
-var validatorDistCacheList = list.New()
+// Cache for each check and deliver call
+var validatorDistCacheDeliver = make(map[string]*list.Element, MaxCacheLength)
+var validatorDistCacheListDeliver = list.New()
+var validatorDistCacheCheck = make(map[string]*list.Element, MaxCacheLength)
+var validatorDistCacheListCheck = list.New()
 
 func (k Keeper) GetValidatorDistInfo(
 	ctx sdk.Context, addr sdk.Address,
 ) (
 	vdi posTypes.ValidatorDistInfo, found bool,
 ) {
+	var validatorDistCache *(map[string]*list.Element)
+	var validatorDistCacheList *(*list.List)
+
+	// CHECK and DELIVER should have different cache
+	// Note: Simulate alter DELIVER cache
+	if ctx.IsCheckTx() {
+		validatorDistCache = &validatorDistCacheCheck
+		validatorDistCacheList = &validatorDistCacheListCheck
+	} else {
+		validatorDistCache = &validatorDistCacheDeliver
+		validatorDistCacheList = &validatorDistCacheListDeliver
+	}
 
 	// If exist in cache, return cached value
-	if vdiElem, ok := validatorDistCache[string(addr)]; ok {
+	if vdiElem, ok := (*validatorDistCache)[string(addr)]; ok {
 		// Update frequency in validatorCacheList
-		validatorCacheList.MoveToBack(vdiElem)
+		(*validatorCacheList).MoveToBack(vdiElem)
 
 		return vdiElem.Value.(posTypes.ValidatorDistInfo), true
 	}
@@ -40,13 +55,13 @@ func (k Keeper) GetValidatorDistInfo(
 
 	vdi = posTypes.MustUnmarshalValidatorDist(k.cdc, value)
 
-	vdiElem := validatorDistCacheList.PushBack(vdi)
-	validatorDistCache[string(addr)] = vdiElem
+	vdiElem := (*validatorDistCacheList).PushBack(vdi)
+	(*validatorDistCache)[string(addr)] = vdiElem
 
 	// If exceeding MaxCacheLength, delete the LRU item, meaning in the front of the queue
-	if validatorDistCacheList.Len() > MaxCacheLength {
-		vdiToRemove := validatorDistCacheList.Remove(validatorDistCacheList.Front()).(*list.Element)
-		delete(validatorDistCache, string(vdiToRemove.Value.(posTypes.ValidatorDistInfo).ValidatorAddr))
+	if (*validatorDistCacheList).Len() > MaxCacheLength {
+		vdiToRemove := (*validatorDistCacheList).Remove((*validatorDistCacheList).Front()).(*list.Element)
+		delete((*validatorDistCache), string(vdiToRemove.Value.(posTypes.ValidatorDistInfo).ValidatorAddr))
 	}
 
 	return vdi, true
@@ -58,17 +73,30 @@ func (k Keeper) SetValidatorDistInfo(
 	store := ctx.KVStore(k.storeKey)
 	bz := posTypes.MustMarshalValidatorDist(k.cdc, vdi)
 
-	// Update cache if exists in cache
-	if vdiElem, ok := validatorDistCache[string(vdi.ValidatorAddr)]; ok {
-		validatorDistCacheList.Remove(vdiElem)
-		vdiElem = validatorDistCacheList.PushBack(vdi)
-		validatorDistCache[string(vdi.ValidatorAddr)] = vdiElem
-	} else {
-		vdiElem = validatorCacheList.PushBack(vdi)
-		validatorDistCache[string(vdi.ValidatorAddr)] = vdiElem
+	// If this is for Deliver, update deliver
+	if !ctx.IsCheckTx() {
+		// Remove from cache if exists in cache
+		vdiElem, ok := validatorDistCacheDeliver[string(vdi.ValidatorAddr)]
+		if ok {
+			(*validatorDistCacheListDeliver).Remove(vdiElem)
+		}
+		vdiElem = validatorDistCacheListDeliver.PushBack(vdi)
+		validatorDistCacheDeliver[string(vdi.ValidatorAddr)] = vdiElem
 	}
 
+	// Check cache is always updated, even in deliverCtx
+	// Remove from cache if exists in cache
+	vdiElem, ok := validatorDistCacheCheck[string(vdi.ValidatorAddr)]
+	if ok {
+		(*validatorDistCacheListCheck).Remove(vdiElem)
+	}
+	vdiElem = validatorDistCacheListCheck.PushBack(vdi)
+	validatorDistCacheCheck[string(vdi.ValidatorAddr)] = vdiElem
+
 	store.Set(GetValidatorDistKey(vdi.ValidatorAddr), bz)
+
+	// validatorDistCacheCheck = validatorDistCacheDeliver
+	// validatorDistCacheListCheck = validatorDistCacheListDeliver
 }
 
 // UpdateBlockReward is called everytime this validator is selected as forger
@@ -80,7 +108,7 @@ func (k Keeper) UpdateBlockReward(
 ) (
 	posTypes.ValidatorDistInfo, sdk.Error,
 ) {
-
+	fmt.Printf("CHECK TX?? %v\n", ctx.IsCheckTx())
 	vdi, found := k.GetValidatorDistInfo(ctx, validatorAddr)
 
 	if !found {
@@ -134,14 +162,15 @@ func (k Keeper) UpdateDelAccum(
 
 	// Distribute RewardAccum to Delegator of this validator
 	for _, delegation := range allDelegations {
-
+		fmt.Printf("Delegation: %X\n", delegation.DelegatorAddr)
 		// TODO time consuming, need a way to retrieve all delegators of a validator
 		if bytes.Equal(delegation.ValidatorAddr, vdi.ValidatorAddr) {
-
+			fmt.Printf("Validator: %X\n", delegation.ValidatorAddr)
 			// Update current Height, total Reward Accum
 			delegation = delegation.UpdateDelAccum(currentHeight, totalRewardAccum, validator.DelegatorShares)
 
 			totalShare = totalShare.Add(delegation.Shares)
+			fmt.Printf("TotalShare: %v\n", totalShare)
 
 			// Save to store
 			k.SetDelegation(ctx, delegation)
@@ -149,9 +178,13 @@ func (k Keeper) UpdateDelAccum(
 	}
 
 	// Distribute RewardAccum to Validator
-	validatorShare := types.NewDec(100).Sub(totalShare)
+	// totalShare in coins
+	validatorShare := types.OneDec().Sub(totalShare.Quo(validator.DelegatorShares))
+	fmt.Printf("totalShares(%v)/DelegatorShare(%v)=validatorShare(%v)\n", totalShare, validator.DelegatorShares, validatorShare)
 
+	fmt.Printf("ValidatorReward Before: %v\n", vdi.ValidatorReward)
 	vdi.ValidatorReward = vdi.ValidatorReward.Plus(totalRewardAccum.Mul(validatorShare))
+	fmt.Printf("ValidatorReward After: %v\n", vdi.ValidatorReward)
 
 	// Done with distribution, RewardAccum is set to Zero
 	vdi.RewardAccum = types.NewZeroPOSCoin()
@@ -192,19 +225,45 @@ func (k Keeper) WithdrawDelReward(
 			types.NewZeroPOSCoin(),
 			sdk.ErrInternal(fmt.Sprintf(constants.POS_DELEGATION_NOT_FOUND, delegatorAddr))
 	}
-
 	rewardCoin := delegation.RewardAccum
+	fmt.Printf("Withdrawed RewardCoin: %v\n", rewardCoin)
 
 	// Reset this delegation RewardAccum to Zero
 	delegation.RewardAccum = types.NewZeroPOSCoin()
+	// Save new delegation
+	dtxt, _ := delegation.HumanReadableString()
+	fmt.Printf("Set delegation: %s\n", dtxt)
+	k.SetDelegation(ctx, delegation)
+
+	// if this withdraw is from validator
+	if bytes.Equal(validatorAddr[:], delegatorAddr[:]) {
+		fmt.Printf("Withdrawal is from Validator\n")
+		rewardCoin = rewardCoin.Plus(vdi.RewardAccum)
+		vdi.RewardAccum = types.NewZeroPOSCoin()
+		txt := vdi.HumanReadableString()
+		fmt.Printf("Set validator: %s\n", txt)
+		k.SetValidatorDistInfo(ctx, vdi)
+	}
+
+	fmt.Printf("Reward Coin: %v\n", rewardCoin)
+
+	coins := k.bankKeeper.GetCoins(ctx, delegatorAddr)
+	fmt.Printf("Before update balance: %v\n", coins)
 
 	// update balance of delegator
-
-	_, err = k.bankKeeper.AddCoin(
+	after, err := k.bankKeeper.AddCoin(
 		ctx,
 		delegatorAddr,
 		rewardCoin,
 	)
+	if err != nil {
+		return vdi,
+			types.NewZeroPOSCoin(),
+			sdk.ErrInternal(fmt.Sprintf(constants.POS_WITHDRAWAL_ERROR, err.Error()))
+	}
+
+	err = k.bankKeeper.SetCoins(ctx, validatorAddr, after)
+	fmt.Printf("After update balance %v\n", after)
 
 	if err != nil {
 		return vdi,

@@ -7,26 +7,22 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var (
-	nodeAddress string
-)
-
-var ShowBalanceCmd = &cobra.Command{
-	Use:   "show_balance",
-	Short: "show current balance of this masternode",
-	RunE:  showBalance,
+var ShowVdiCmd = &cobra.Command{
+	Use:   "show_val_dist_info",
+	Short: "show current earning of this masternode",
+	RunE:  showVdiCmd,
 }
 
 func init() {
-	ShowBalanceCmd.Flags().StringVar(&nodeAddress, "client", "", "Node address to query info. Example: tcp://127.0.0.1:46657")
+	ShowVdiCmd.Flags().StringVar(&nodeAddress, "client", "", "Node address to query info. Example: tcp://127.0.0.1:46657")
 }
 
-func showBalance(cmd *cobra.Command, args []string) (err error) {
+func showVdiCmd(cmd *cobra.Command, args []string) (err error) {
 
 	defer func() {
 		if r := recover(); r != nil {
 			fmt.Println(r)
-			err = fmt.Errorf("Error in balance retrieval")
+			err = fmt.Errorf("Error in showing this masternode earning")
 		}
 	}()
 
@@ -40,7 +36,7 @@ func showBalance(cmd *cobra.Command, args []string) (err error) {
 		context = client.NewCoreContextFromConfigWithClient(config, nodeAddress)
 	}
 
-	err = context.CheckBalance()
+	err = context.CheckValidatorDistInfo()
 	if err != nil {
 		return err
 	}

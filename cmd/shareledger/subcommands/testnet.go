@@ -115,7 +115,7 @@ func testnetFiles(cmd *cobra.Command, args []string) error {
 		// Update Moniker for Validator tendermint
 		genVals[i] = types.GenesisValidator{
 			PubKey: pubKey,
-			Power:  1,
+			Power:  genesisState.StakeData.Validators[0].ABCIValidator().Power,
 			Name:   getMoniker(i),
 		}
 
