@@ -72,6 +72,7 @@ func (c CoreContext) ConstructTendermintTransaction(tx auth.AuthTx) (tdmtx tdmty
 
 	// amino encode
 	encodedTx, err := c.Codec.MarshalBinary(tx)
+	// fmt.Printf("Tx: %x\n", encodedTx)
 	if err != nil {
 		return tdmtx, err
 	}
@@ -240,6 +241,66 @@ func (c CoreContext) WithdrawBlockReward() error {
 	if err != nil {
 		return err
 	}
+
+	return nil
+
+}
+
+func (c CoreContext) BeginUnbonding(amount int64) error {
+
+	address := c.PrivKey.PubKey().Address()
+
+	msgBeginUnbonding := pmsg.NewMsgBeginUnbonding(
+		address,
+		address,
+		types.NewDec(amount),
+	)
+
+	authTx, err := c.ConstructTransaction(msgBeginUnbonding)
+	if err != nil {
+		return err
+	}
+
+	tdmTx, err := c.ConstructTendermintTransaction(authTx)
+	if err != nil {
+		return err
+	}
+
+	result, err := c.Client.BroadcastTxSync(tdmTx)
+	if err != nil {
+		return err
+	}
+
+	fmt.Printf("Result: %v\n", result)
+
+	return nil
+
+}
+
+func (c CoreContext) CompleteUnbonding() error {
+	address := c.PrivKey.PubKey().Address()
+
+	msgCompleteUnbonding := pmsg.NewMsgCompleteUnbonding(
+		address,
+		address,
+	)
+
+	authTx, err := c.ConstructTransaction(msgCompleteUnbonding)
+	if err != nil {
+		return err
+	}
+
+	tdmTx, err := c.ConstructTendermintTransaction(authTx)
+	if err != nil {
+		return err
+	}
+
+	result, err := c.Client.BroadcastTxSync(tdmTx)
+	if err != nil {
+		return err
+	}
+
+	fmt.Printf("Result: %v\n", result)
 
 	return nil
 

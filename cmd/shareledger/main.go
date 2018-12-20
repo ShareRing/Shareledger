@@ -20,6 +20,8 @@ func main() {
 		subcommands.ShowBalanceCmd,
 		subcommands.ShowVdiCmd,
 		subcommands.WithdrawBlockRewardCmd,
+		subcommands.BeginUnbondingCmd,
+		subcommands.CompleteUnbondingCmd,
 	)
 
 	rootCmd.Execute()

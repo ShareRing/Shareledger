@@ -83,7 +83,7 @@ func verifySignature(ctx sdk.Context,
 	// verify signature
 	if !sig.Verify(signBytes) {
 		return nil,
-			sdk.ErrUnauthorized("Signature Verification failed.").Result()
+			sdk.ErrUnauthorized(fmt.Sprintf("Signature Verification failed. %s\n", signBytes)).Result()
 	}
 
 	// Update nonce
