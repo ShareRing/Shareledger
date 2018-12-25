@@ -3,7 +3,7 @@ package handlers
 import (
 	"fmt"
 
-	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 
 	"github.com/sharering/shareledger/types"
 	"github.com/sharering/shareledger/utils"
@@ -61,7 +61,7 @@ func HandleMsgSend(am auth.AccountMapper) sdk.Handler {
 }
 
 // Convenience Handlers
-func handleFrom(ctx sdk.Context, am auth.AccountMapper, from sdk.Address, amt types.Coin) sdk.Result {
+func handleFrom(ctx sdk.Context, am auth.AccountMapper, from sdk.AccAddress, amt types.Coin) sdk.Result {
 
 	acc := am.GetAccount(ctx, from)
 
@@ -90,7 +90,7 @@ func handleFrom(ctx sdk.Context, am auth.AccountMapper, from sdk.Address, amt ty
 	return sdk.Result{Log: acc.GetCoins().String()}
 }
 
-func handleTo(ctx sdk.Context, am auth.AccountMapper, to sdk.Address, amt types.Coin) sdk.Result {
+func handleTo(ctx sdk.Context, am auth.AccountMapper, to sdk.AccAddress, amt types.Coin) sdk.Result {
 	// Add msg amount to receiver account
 	acc := am.GetAccount(ctx, to)
 

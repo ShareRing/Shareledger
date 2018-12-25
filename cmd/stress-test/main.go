@@ -10,8 +10,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
-	"bitbucket.org/shareringvn/cosmos-sdk/wire"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 
 	"github.com/sharering/shareledger/app"
 	"github.com/sharering/shareledger/types"
@@ -192,7 +191,7 @@ func spamSendTx(cmd *cobra.Command, in []string) error {
 func Spam(wg *sync.WaitGroup,
 	pubKeys []types.PubKeySecp256k1,
 	privKeys []types.PrivKeySecp256k1,
-	cdc *wire.Codec,
+	cdc *amino.Codec,
 	stat chan time.Duration) {
 
 	fromIdx := rand.Intn(len(pubKeys))
@@ -262,7 +261,7 @@ func collectStatistics(received chan time.Duration) {
 
 // ---------------- UTILITIES -----------------------
 
-func encodeMsg(cdc *wire.Codec, privKey types.PrivKey, pubKey types.PubKey, msg sdk.Msg, nonce int64) string {
+func encodeMsg(cdc *amino.Codec, privKey types.PrivKey, pubKey types.PubKey, msg sdk.Msg, nonce int64) string {
 
 	// Sign Transaction
 	authTx := auth.GetAuthTx(pubKey,
@@ -280,7 +279,7 @@ func encodeMsg(cdc *wire.Codec, privKey types.PrivKey, pubKey types.PubKey, msg 
 	return "0x" + hex.EncodeToString(tx)
 }
 
-func encodeQuery(cdc *wire.Codec, queryTx types.SHRTx) string {
+func encodeQuery(cdc *amino.Codec, queryTx types.SHRTx) string {
 	// Amino encoding
 	tx, err := cdc.MarshalBinary(queryTx)
 
@@ -292,7 +291,7 @@ func encodeQuery(cdc *wire.Codec, queryTx types.SHRTx) string {
 	return "0x" + hex.EncodeToString(tx)
 }
 
-func getCodec() *wire.Codec {
+func getCodec() *amino.Codec {
 	cdc := app.MakeCodec()
 
 	cdc = bank.RegisterCodec(cdc)
@@ -312,7 +311,7 @@ func testNet() {
 
 }
 
-func balanceQuery(cdc *wire.Codec, address sdk.Address) string {
+func balanceQuery(cdc *amino.Codec, address sdk.AccAddress) string {
 	checkMsg := bmsg.NewMsgCheck(address)
 
 	queryTx := types.NewQueryTx(checkMsg)
@@ -321,7 +320,7 @@ func balanceQuery(cdc *wire.Codec, address sdk.Address) string {
 
 }
 
-func nonceQuery(cdc *wire.Codec, address sdk.Address) string {
+func nonceQuery(cdc *amino.Codec, address sdk.AccAddress) string {
 	nonceMsg := auth.NewMsgNonce(address)
 
 	queryTx := types.NewQueryTx(nonceMsg)

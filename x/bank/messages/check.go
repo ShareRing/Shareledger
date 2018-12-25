@@ -3,7 +3,7 @@ package messages
 import (
 	"encoding/json"
 
-	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/sharering/shareledger/constants"
 )
 
@@ -15,13 +15,15 @@ var _ sdk.Msg = MsgCheck{}
 
 // MsgCheck to send coins from Input to Output
 type MsgCheck struct {
-	Account sdk.Address `json:"account"`
+	Account sdk.AccAddress `json:"account"`
 }
 
 // NewMsgCheck
-func NewMsgCheck(account sdk.Address) MsgCheck {
+func NewMsgCheck(account sdk.AccAddress) MsgCheck {
 	return MsgCheck{account}
 }
+
+func (msg MsgCheck) Route() string { return constants.MESSAGE_BANK }
 
 // Implements Msg.
 func (msg MsgCheck) Type() string { return constants.MESSAGE_BANK }
@@ -45,8 +47,8 @@ func (msg MsgCheck) GetSignBytes() []byte {
 }
 
 // Implements Msg. Return the signer.
-func (msg MsgCheck) GetSigners() []sdk.Address {
-	return []sdk.Address{msg.Account}
+func (msg MsgCheck) GetSigners() []sdk.AccAddress {
+	return []sdk.AccAddress{msg.Account}
 }
 
 // Returns the sdk.Tags for the message

@@ -7,9 +7,9 @@ import (
 	dbm "github.com/tendermint/tmlibs/db"
 	"github.com/tendermint/tmlibs/log"
 
-	bapp "bitbucket.org/shareringvn/cosmos-sdk/baseapp"
-	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
-	"bitbucket.org/shareringvn/cosmos-sdk/wire"
+	bapp "github.com/cosmos/cosmos-sdk/baseapp"
+	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/tendermint/go-amino"
 
 	"github.com/sharering/shareledger/constants"
 
@@ -19,7 +19,7 @@ import (
 
 type TestShareLedgerApp struct {
 	*bapp.BaseApp
-	cdc *wire.Codec
+	cdc *amino.Codec
 
 	// keys to access the substores
 	// bankKey *sdk.KVStoreKey

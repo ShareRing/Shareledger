@@ -3,18 +3,18 @@ package message
 import (
 	"encoding/json"
 
-	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/sharering/shareledger/constants"
 	posTypes "github.com/sharering/shareledger/x/pos/type"
 )
 
 // MsgWithdraw - struct for bonding transactions
 type MsgWithdraw struct {
-	DelegatorAddr sdk.Address `json:"delegatorAddress"`
-	ValidatorAddr sdk.Address `json:"validatorAddress"`
+	DelegatorAddr sdk.AccAddress `json:"delegatorAddress"`
+	ValidatorAddr sdk.AccAddress `json:"validatorAddress"`
 }
 
-func NewMsgWithdraw(delAddr sdk.Address, valAddr sdk.Address) MsgWithdraw {
+func NewMsgWithdraw(delAddr sdk.AccAddress, valAddr sdk.AccAddress) MsgWithdraw {
 	return MsgWithdraw{
 		DelegatorAddr: delAddr,
 		ValidatorAddr: valAddr,
@@ -26,8 +26,8 @@ var _ sdk.Msg = MsgWithdraw{}
 //nolint
 func (msg MsgWithdraw) Type() string { return constants.MESSAGE_POS }
 
-func (msg MsgWithdraw) GetSigners() []sdk.Address {
-	return []sdk.Address{msg.DelegatorAddr}
+func (msg MsgWithdraw) GetSigners() []sdk.AccAddress {
+	return []sdk.AccAddress{msg.DelegatorAddr}
 }
 
 // get the bytes for the message signer to sign on

@@ -1,7 +1,7 @@
 package types
 
 import (
-	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
 var _ SHRTx = QueryTx{}

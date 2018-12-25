@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 
 	"github.com/sharering/shareledger/constants"
 	"github.com/sharering/shareledger/types"
@@ -16,7 +16,7 @@ type MsgExchange struct {
 	FromDenom string      `json:"from_denom"`
 	ToDenom   string      `json:"to_denom"`
 	Amount    types.Dec   `json:"amount"`
-	Reserve   sdk.Address `json:"reserve"`
+	Reserve   sdk.AccAddress `json:"reserve"`
 }
 
 var _ sdk.Msg = MsgExchange{}
@@ -25,7 +25,7 @@ func NewMsgExchange(
 	from string,
 	to string,
 	amount types.Dec,
-	reserve sdk.Address,
+	reserve sdk.AccAddress,
 ) MsgExchange {
 	return MsgExchange{
 		FromDenom: from,
@@ -76,8 +76,8 @@ func (msg MsgExchange) String() string {
 	return fmt.Sprintf("ExchangeRate/MsgExchange{%s}", msg.GetSignBytes())
 }
 
-func (msg MsgExchange) GetSigners() []sdk.Address {
-	return []sdk.Address{}
+func (msg MsgExchange) GetSigners() []sdk.AccAddress {
+	return []sdk.AccAddress{}
 }
 
 func (msg MsgExchange) Tags() sdk.Tags {

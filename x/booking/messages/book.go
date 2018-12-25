@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/sharering/shareledger/constants"
 	tags "github.com/sharering/shareledger/x/booking/tags"
 )
@@ -21,6 +21,10 @@ func NewMsgBook(uuid string, duration int64) MsgBook {
 		UUID:     uuid,
 		Duration: duration,
 	}
+}
+
+func (msg MsgBook) Route() string {
+	return constants.MESSAGE_BOOKING
 }
 
 func (msg MsgBook) Type() string {
@@ -50,9 +54,9 @@ func (msg MsgBook) String() string {
 	return fmt.Sprintf("Booking/MsgBook{UUID: %s}", msg.UUID)
 }
 
-func (msg MsgBook) GetSigners() []sdk.Address {
-	//return []sdk.Address{msg.Renter}
-	return []sdk.Address{}
+func (msg MsgBook) GetSigners() []sdk.AccAddress {
+	//return []sdk.AccAddress{msg.Renter}
+	return []sdk.AccAddress{}
 }
 
 func (msg MsgBook) Tags() sdk.Tags {

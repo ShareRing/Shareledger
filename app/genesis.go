@@ -1,7 +1,7 @@
 package app
 
 import (
-	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/sharering/shareledger/types"
 	"github.com/sharering/shareledger/x/auth"
 	"github.com/sharering/shareledger/x/pos"
@@ -26,7 +26,7 @@ func (gs *GenesisState) ToJSON() []byte {
 
 // GenesisAccount doesn't need pubkey or sequence
 type GenesisAccount struct {
-	Address sdk.Address `json:"address"`
+	Address sdk.AccAddress `json:"address"`
 	Coins   types.Coins `json:"coins"`
 }
 

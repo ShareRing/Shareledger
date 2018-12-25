@@ -3,15 +3,15 @@ package auth
 import (
 	"fmt"
 
-	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/sharering/shareledger/constants"
-	//"bitbucket.org/shareringvn/cosmos-sdk/wire"
+	//"github.com/tendermint/go-amino"
 	//"github.com/sharering/shareledger/types"
 )
 
 func NewAnteHandler(am AccountMapper) sdk.AnteHandler {
 	return func(
-		ctx sdk.Context, tx sdk.Tx,
+		ctx sdk.Context, tx sdk.Tx, simulate bool,
 	) (_ sdk.Context, _ sdk.Result, abort bool) {
 
 		authTx, ok := tx.(AuthTx)

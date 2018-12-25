@@ -3,7 +3,7 @@ package posTypes
 import (
 	"fmt"
 
-	"bitbucket.org/shareringvn/cosmos-sdk/wire"
+	"github.com/tendermint/go-amino"
 	"github.com/sharering/shareledger/types"
 )
 
@@ -19,8 +19,8 @@ type Pool struct {
 
 /*
 func (p Pool) Equal(p2 Pool) bool {
-	bz1 := MsgCdc.MustMarshalBinary(&p)
-	bz2 := MsgCdc.MustMarshalBinary(&p2)
+	bz1 := MsgCdc.MustMarshalBinaryLengthPrefixed(&p)
+	bz2 := MsgCdc.MustMarshalBinaryLengthPrefixed(&p2)
 	return bytes.Equal(bz1, bz2)
 }*/
 
@@ -87,7 +87,7 @@ func (p Pool) HumanReadableString() string {
 }
 
 // unmarshal the current pool value from store key or panics
-func MustUnmarshalPool(cdc *wire.Codec, value []byte) Pool {
+func MustUnmarshalPool(cdc *amino.Codec, value []byte) Pool {
 	pool, err := UnmarshalPool(cdc, value)
 	if err != nil {
 		panic(err)
@@ -96,8 +96,8 @@ func MustUnmarshalPool(cdc *wire.Codec, value []byte) Pool {
 }
 
 // unmarshal the current pool value from store key
-func UnmarshalPool(cdc *wire.Codec, value []byte) (pool Pool, err error) {
-	err = cdc.UnmarshalBinary(value, &pool)
+func UnmarshalPool(cdc *amino.Codec, value []byte) (pool Pool, err error) {
+	err = cdc.UnmarshalBinaryLengthPrefixed(value, &pool)
 	if err != nil {
 		return
 	}

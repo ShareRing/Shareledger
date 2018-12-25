@@ -3,7 +3,7 @@ package messages
 import (
 	"encoding/json"
 
-	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/sharering/shareledger/constants"
 	"github.com/sharering/shareledger/types"
 	tags "github.com/sharering/shareledger/x/bank/tags"
@@ -17,14 +17,16 @@ var _ sdk.Msg = MsgLoad{}
 
 // Load coins to an account
 type MsgLoad struct {
-	Account sdk.Address `json:"address"`
+	Account sdk.AccAddress `json:"address"`
 	Amount  types.Coin  `json:"amount"`
 }
 
 // NewMsgLoad
-func NewMsgLoad(account sdk.Address, amt types.Coin) MsgLoad {
+func NewMsgLoad(account sdk.AccAddress, amt types.Coin) MsgLoad {
 	return MsgLoad{account, amt}
 }
+
+func (msg MsgLoad) Route() string { return constants.MESSAGE_BANK }
 
 // Implement Msg
 func (msg MsgLoad) Type() string { return constants.MESSAGE_BANK }
@@ -49,9 +51,9 @@ func (msg MsgLoad) GetSignBytes() []byte {
 	return bz
 }
 
-func (msg MsgLoad) GetSigners() []sdk.Address {
-	return []sdk.Address{}
-	//return []sdk.Address{msg.Account}
+func (msg MsgLoad) GetSigners() []sdk.AccAddress {
+	return []sdk.AccAddress{}
+	//return []sdk.AccAddress{msg.Account}
 }
 
 func (msg MsgLoad) Tags() sdk.Tags {

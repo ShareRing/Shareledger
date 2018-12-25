@@ -6,13 +6,13 @@ import (
 	"strconv"
 	"strings"
 
-	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
-	"bitbucket.org/shareringvn/cosmos-sdk/wire"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	cfg "github.com/tendermint/tendermint/config"
 	"github.com/tendermint/tendermint/privval"
 	rpcclient "github.com/tendermint/tendermint/rpc/client"
 	tdmtypes "github.com/tendermint/tendermint/types"
 	cmn "github.com/tendermint/tmlibs/common"
+	"github.com/tendermint/go-amino"
 
 	"github.com/sharering/shareledger/app"
 	"github.com/sharering/shareledger/types"
@@ -27,11 +27,11 @@ import (
 type CoreContext struct {
 	Client  rpcclient.Client
 	PrivKey types.PrivKeySecp256k1
-	Codec   *wire.Codec
+	Codec   *amino.Codec
 }
 
 type SHRAccount1 struct {
-	Address sdk.Address `json:"address"`
+	Address sdk.AccAddress `json:"address"`
 	Coins   types.Coins `json:"coins"`
 	PubKey  []byte      `json:"pub_key"`
 	Nonce   int64       `json:"nonce"`
@@ -368,7 +368,7 @@ func getPrivKey(config *cfg.Config) types.PrivKeySecp256k1 {
 
 }
 
-func getCodec() *wire.Codec {
+func getCodec() *amino.Codec {
 	cdc := app.MakeCodec()
 	cdc = auth.RegisterCodec(cdc)
 	cdc = pos.RegisterCodec(cdc)

@@ -4,8 +4,8 @@ import (
 	"bytes"
 	"fmt"
 
-	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
-	"bitbucket.org/shareringvn/cosmos-sdk/wire"
+	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/tendermint/go-amino"
 	"github.com/google/go-cmp/cmp"
 
 	"github.com/sharering/shareledger/constants"
@@ -20,10 +20,10 @@ type Keeper struct {
 	assetKey   sdk.StoreKey // asset key
 	//accountKey sdk.StoreKey // account key
 	accountMapper auth.AccountMapper // account mapper
-	cdc           *wire.Codec
+	cdc           *amino.Codec
 }
 
-func NewKeeper(bookingKey sdk.StoreKey, assetKey sdk.StoreKey, am auth.AccountMapper, cdc *wire.Codec) Keeper {
+func NewKeeper(bookingKey sdk.StoreKey, assetKey sdk.StoreKey, am auth.AccountMapper, cdc *amino.Codec) Keeper {
 	return Keeper{
 		bookingKey:    bookingKey,
 		assetKey:      assetKey,

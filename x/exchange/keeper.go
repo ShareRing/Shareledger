@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 
 	"github.com/sharering/shareledger/constants"
 	"github.com/sharering/shareledger/types"
@@ -142,8 +142,8 @@ func (k Keeper) DeleteExchangeRate(
 
 func (k Keeper) SellCoin(
 	ctx sdk.Context,
-	account sdk.Address,
-	reserveAddress sdk.Address,
+	account sdk.AccAddress,
+	reserveAddress sdk.AccAddress,
 	fromDenom string,
 	toDenom string,
 	sellingAmount types.Dec,
@@ -200,8 +200,8 @@ func (k Keeper) SellCoin(
 
 func (k Keeper) BuyCoin(
 	ctx sdk.Context,
-	account sdk.Address,
-	reserveAddress sdk.Address,
+	account sdk.AccAddress,
+	reserveAddress sdk.AccAddress,
 	fromDenom string,
 	toDenom string,
 	buyingAmount types.Dec,

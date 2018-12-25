@@ -7,11 +7,12 @@ import (
 	"sort"
 
 	abci "github.com/tendermint/abci/types"
-	crypto "github.com/tendermint/go-crypto"
+	crypto "github.com/tendermint/tendermint/crypto"
+	"github.com/tendermint/tendermint/crypto/secp256k1"
 	tmtypes "github.com/tendermint/tendermint/types"
 
-	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
-	"bitbucket.org/shareringvn/cosmos-sdk/wire"
+	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/tendermint/go-amino"
 	"github.com/sharering/shareledger/types"
 )
 
@@ -25,7 +26,7 @@ var MaxPartialToken types.Dec = types.NewDec(2) //100/2
 // exchange rate. Voting power can be calculated as total bonds multiplied by
 // exchange rate.
 type Validator struct {
-	Owner   sdk.Address      `json:"owner"`   // sender of BondTx - UnbondTx returns here
+	Owner   sdk.AccAddress      `json:"owner"`   // sender of BondTx - UnbondTx returns here
 	PubKey  types.PubKey     `json:"pub_key"` // pubkey of validator
 	Revoked bool             `json:"revoked"` // has the validator  been revoked from bonded status?
 	Status  types.BondStatus `json:"status"`  // validator status (bonded/unbonding/unbonded)
@@ -65,7 +66,7 @@ type validatorValue struct {
 }
 
 // NewValidator - initialize a new validator
-func NewValidator(owner sdk.Address, pubKey types.PubKey, description Description) Validator {
+func NewValidator(owner sdk.AccAddress, pubKey types.PubKey, description Description) Validator {
 	return Validator{
 		Owner:   owner,
 		PubKey:  pubKey,
@@ -116,7 +117,7 @@ func NewDescription(moniker, identity, website, details string) Description {
 	}
 }
 
-func (v Validator) GetABCIPubKey() crypto.PubKeySecp256k1 {
+func (v Validator) GetABCIPubKey() secp256k1.PubKeySecp256k1 {
 	if pk, ok := v.GetPubKey().(types.PubKeySecp256k1); ok {
 		return pk.ToABCIPubKey()
 	} else {
@@ -278,7 +279,7 @@ func (v Validator) IsDelegatingTokenValid(pool Pool, tokenAMount types.Dec) bool
 }
 
 // unmarshal a redelegation from a store key and value
-func UnmarshalValidator(cdc *wire.Codec, owner sdk.Address, value []byte) (validator Validator, err error) {
+func UnmarshalValidator(cdc *amino.Codec, owner sdk.AccAddress, value []byte) (validator Validator, err error) {
 	//TODO: Checking owner address
 	/*
 		if len(owner) != types.ADDRESSLENGTH {
@@ -287,7 +288,7 @@ func UnmarshalValidator(cdc *wire.Codec, owner sdk.Address, value []byte) (valid
 		}*/
 
 	var storeValue validatorValue
-	err = cdc.UnmarshalBinary(value, &storeValue)
+	err = cdc.UnmarshalBinaryLengthPrefixed(value, &storeValue)
 	if err != nil {
 		return
 	}
@@ -309,7 +310,7 @@ func UnmarshalValidator(cdc *wire.Codec, owner sdk.Address, value []byte) (valid
 }
 
 // unmarshal a redelegation from a store key and value
-func MustUnmarshalValidator(cdc *wire.Codec, operatorAddr, value []byte) Validator {
+func MustUnmarshalValidator(cdc *amino.Codec, operatorAddr, value []byte) Validator {
 	validator, err := UnmarshalValidator(cdc, operatorAddr, value)
 	if err != nil {
 		panic(err)
@@ -318,7 +319,7 @@ func MustUnmarshalValidator(cdc *wire.Codec, operatorAddr, value []byte) Validat
 }
 
 // return the redelegation without fields contained within the key for the store
-func MustMarshalValidator(cdc *wire.Codec, validator Validator) []byte {
+func MustMarshalValidator(cdc *amino.Codec, validator Validator) []byte {
 	val := validatorValue{
 		PubKey:             validator.PubKey,
 		Revoked:            validator.Revoked,
@@ -332,7 +333,7 @@ func MustMarshalValidator(cdc *wire.Codec, validator Validator) []byte {
 		UnbondingHeight:    validator.UnbondingHeight,
 		UnbondingMinTime:   validator.UnbondingMinTime,
 	}
-	return cdc.MustMarshalBinary(val)
+	return cdc.MustMarshalBinaryLengthPrefixed(val)
 }
 
 //______________________________________________________________________
@@ -346,7 +347,7 @@ const DoNotModifyDesc = "[do-not-modify]"
 func (v Validator) GetMoniker() string          { return v.Description.Moniker }
 func (v Validator) GetStatus() types.BondStatus { return v.Status }
 
-func (v Validator) GetOwner() sdk.Address   { return v.Owner }
+func (v Validator) GetOwner() sdk.AccAddress   { return v.Owner }
 func (v Validator) GetPubKey() types.PubKey { return v.PubKey }
 func (v Validator) GetPower() types.Dec {
 

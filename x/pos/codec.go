@@ -1,11 +1,11 @@
 package pos
 
 import (
-	"bitbucket.org/shareringvn/cosmos-sdk/wire"
 	msg "github.com/sharering/shareledger/x/pos/message"
+	amino "github.com/tendermint/go-amino"
 )
 
-func RegisterCodec(cdc *wire.Codec) *wire.Codec {
+func RegisterCodec(cdc *amino.Codec) *amino.Codec {
 	cdc.RegisterConcrete(msg.MsgCreateValidator{}, "shareledger/pos/MsgCreateValidator", nil)
 	cdc.RegisterConcrete(msg.MsgEditValidator{}, "shareledger/pos/EditValidator", nil)
 	cdc.RegisterConcrete(msg.MsgDelegate{}, "shareledger/pos/MsgDelegate", nil)

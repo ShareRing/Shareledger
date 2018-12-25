@@ -2,20 +2,20 @@ package types
 
 import (
 	"fmt"
-	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	"encoding/json"
 )
 
 // Simple Booking struct
 type Booking struct {
 	BookingID   string      `json:"bookingId"`
-	Renter      sdk.Address `json:"renter"`
+	Renter      sdk.AccAddress `json:"renter"`
 	UUID        string      `json:"uuid"`
 	Duration    int64       `json:"duration"`
 	IsCompleted bool        `json:"is_completed"`
 }
 
-func NewBooking(_bid string, _acc sdk.Address, _uuid string, _dur int64, _isCompleted bool) Booking {
+func NewBooking(_bid string, _acc sdk.AccAddress, _uuid string, _dur int64, _isCompleted bool) Booking {
 	return Booking{
 		BookingID: _bid,
 		Renter:    _acc,

@@ -1,11 +1,11 @@
 package asset
 
 import (
-	"errors"
 	"encoding/json"
+	"errors"
 
-	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
-	"bitbucket.org/shareringvn/cosmos-sdk/wire"
+	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/tendermint/go-amino"
 
 	"github.com/sharering/shareledger/types"
 	msg "github.com/sharering/shareledger/x/asset/messages"
@@ -14,11 +14,11 @@ import (
 // Keeper data type
 type Keeper struct {
 	storeKey sdk.StoreKey // key used to access the store from the Context.
-	cdc      *wire.Codec
+	cdc      *amino.Codec
 }
 
 // NewKeeper - Returns the Keeper
-func NewKeeper(key sdk.StoreKey, cdc *wire.Codec) Keeper {
+func NewKeeper(key sdk.StoreKey, cdc *amino.Codec) Keeper {
 	return Keeper{
 		storeKey: key,
 		cdc:      cdc,
@@ -31,7 +31,6 @@ func (k Keeper) CreateAsset(ctx sdk.Context, msg msg.MsgCreate) (types.Asset, er
 	store := ctx.KVStore(k.storeKey)
 
 	asset := types.NewAsset(msg.UUID, msg.Creator, msg.Hash, msg.Status, msg.Fee)
-
 
 	assetBytes, err := json.Marshal(asset)
 
@@ -63,10 +62,8 @@ func (k Keeper) RetrieveAsset(ctx sdk.Context, msg msg.MsgRetrieve) (types.Asset
 		return types.Asset{}, errors.New("Asset decoding error")
 	}
 
-
 	return asset, nil
 }
-
 
 func (k Keeper) UpdateAsset(ctx sdk.Context, msg msg.MsgUpdate) (types.Asset, error) {
 
@@ -84,7 +81,6 @@ func (k Keeper) UpdateAsset(ctx sdk.Context, msg msg.MsgUpdate) (types.Asset, er
 	if derr != nil {
 		return types.Asset{}, errors.New("Asset decoding error")
 	}
-
 
 	asset = types.NewAsset(msg.UUID, msg.Creator, msg.Hash, msg.Status, msg.Fee)
 

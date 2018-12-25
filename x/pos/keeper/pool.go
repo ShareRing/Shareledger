@@ -1,7 +1,7 @@
 package keeper
 
 import (
-	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	posTypes "github.com/sharering/shareledger/x/pos/type"
 )
 
@@ -19,6 +19,6 @@ func (k Keeper) GetPool(ctx sdk.Context) (pool posTypes.Pool) {
 // set the pool
 func (k Keeper) SetPool(ctx sdk.Context, pool posTypes.Pool) {
 	store := ctx.KVStore(k.storeKey)
-	b := k.cdc.MustMarshalBinary(pool)
+	b := k.cdc.MustMarshalBinaryLengthPrefixed(pool)
 	store.Set(PoolKey, b)
 }

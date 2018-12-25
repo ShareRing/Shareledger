@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/sharering/shareledger/constants"
 	"github.com/sharering/shareledger/types"
 	tags "github.com/sharering/shareledger/x/bank/tags"
@@ -19,14 +19,16 @@ var _ sdk.Msg = MsgBurn{}
 
 // Load coins to an account
 type MsgBurn struct {
-	Account sdk.Address `json:"address"`
+	Account sdk.AccAddress `json:"address"`
 	Amount  types.Coin  `json:"amount"`
 }
 
 // NewMsgBurn
-func NewMsgBurn(account sdk.Address, amt types.Coin) MsgBurn {
+func NewMsgBurn(account sdk.AccAddress, amt types.Coin) MsgBurn {
 	return MsgBurn{account, amt}
 }
+
+func (msg MsgBurn) Route() string { return constants.MESSAGE_BANK }
 
 // Implement Msg
 func (msg MsgBurn) Type() string { return constants.MESSAGE_BANK }
@@ -56,8 +58,8 @@ func (msg MsgBurn) GetSignBytes() []byte {
 	return bz
 }
 
-func (msg MsgBurn) GetSigners() []sdk.Address {
-	return []sdk.Address{}
+func (msg MsgBurn) GetSigners() []sdk.AccAddress {
+	return []sdk.AccAddress{}
 }
 
 func (msg MsgBurn) Tags() sdk.Tags {

@@ -4,7 +4,7 @@ import (
 	// "encoding/hex"
     "encoding/json"
 	"fmt"
-	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	// "strconv"
 )
 
@@ -12,7 +12,7 @@ import (
 type Asset struct {
 	UUID    string      `json:"uuid"`
 	Hash    []byte      `json:"hash"`
-	Creator sdk.Address `json:"creator"`
+	Creator sdk.AccAddress `json:"creator"`
 	Status  bool        `json:"status"`
 	Fee     int64       `json:"fee"`
 }
@@ -29,7 +29,7 @@ func (a Asset) String() string {
 //--------------------------------------------------------
 
 //Asset defines basic information of Assets in ShareRing Platform
-func NewAsset(uuid string, creator sdk.Address, hash []byte, status bool, fee int64) Asset {
+func NewAsset(uuid string, creator sdk.AccAddress, hash []byte, status bool, fee int64) Asset {
 	return Asset{
 		UUID:    uuid,
 		Creator: creator,

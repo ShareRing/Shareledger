@@ -3,7 +3,7 @@ package keeper
 import (
 	"bytes"
 
-	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 
 	"github.com/sharering/shareledger/types"
 	posTypes "github.com/sharering/shareledger/x/pos/type"
@@ -11,7 +11,7 @@ import (
 
 // return a specific delegation
 func (k Keeper) GetDelegation(ctx sdk.Context,
-	delAddr sdk.Address, valAddr sdk.Address) (
+	delAddr sdk.AccAddress, valAddr sdk.AccAddress) (
 	delegation posTypes.Delegation, found bool) {
 
 	store := ctx.KVStore(k.storeKey)
@@ -53,7 +53,7 @@ func (k Keeper) RemoveDelegation(ctx sdk.Context, delegation posTypes.Delegation
 }
 
 // Perform a delegation, set/update everything necessary within the store.
-func (k Keeper) Delegate(ctx sdk.Context, delAddr sdk.Address, bondAmt types.Coin,
+func (k Keeper) Delegate(ctx sdk.Context, delAddr sdk.AccAddress, bondAmt types.Coin,
 	validator posTypes.Validator, subtractAccount bool) (newShares types.Dec, err sdk.Error) {
 
 	//checking if the validator hold valid token number:
@@ -92,7 +92,7 @@ func (k Keeper) Delegate(ctx sdk.Context, delAddr sdk.Address, bondAmt types.Coi
 }
 
 // get info for begin functions: MinTime and CreationHeight
-func (k Keeper) getBeginInfo(ctx sdk.Context, params posTypes.Params, valSrcAddr sdk.Address) (
+func (k Keeper) getBeginInfo(ctx sdk.Context, params posTypes.Params, valSrcAddr sdk.AccAddress) (
 	minTime int64, height int64, completeNow bool) {
 
 	validator, found := k.GetValidator(ctx, valSrcAddr)
@@ -119,7 +119,7 @@ func (k Keeper) getBeginInfo(ctx sdk.Context, params posTypes.Params, valSrcAddr
 }
 
 // return a given amount of all the delegator unbonding-delegations
-func (k Keeper) GetUnbondingDelegations(ctx sdk.Context, delegator sdk.Address,
+func (k Keeper) GetUnbondingDelegations(ctx sdk.Context, delegator sdk.AccAddress,
 	maxRetrieve uint16) (unbondingDelegations []posTypes.UnbondingDelegation) {
 
 	unbondingDelegations = make([]posTypes.UnbondingDelegation, maxRetrieve)
@@ -140,7 +140,7 @@ func (k Keeper) GetUnbondingDelegations(ctx sdk.Context, delegator sdk.Address,
 
 // return a unbonding delegation
 func (k Keeper) GetUnbondingDelegation(ctx sdk.Context,
-	delAddr sdk.Address, valAddr sdk.Address) (ubd posTypes.UnbondingDelegation, found bool) {
+	delAddr sdk.AccAddress, valAddr sdk.AccAddress) (ubd posTypes.UnbondingDelegation, found bool) {
 
 	store := ctx.KVStore(k.storeKey)
 	key := GetUBDKey(delAddr, valAddr)
@@ -173,7 +173,7 @@ func (k Keeper) RemoveUnbondingDelegation(ctx sdk.Context, ubd posTypes.Unbondin
 // begin unbonding an unbonding record
 
 func (k Keeper) BeginUnbonding(ctx sdk.Context,
-	delAddr sdk.Address, valAddr sdk.Address, sharesAmount types.Dec) sdk.Error {
+	delAddr sdk.AccAddress, valAddr sdk.AccAddress, sharesAmount types.Dec) sdk.Error {
 
 	// TODO quick fix, instead we should use an index, see https://github.com/cosmos/cosmos-sdk/issues/1402
 	_, found := k.GetUnbondingDelegation(ctx, delAddr, valAddr)
@@ -213,7 +213,7 @@ func (k Keeper) BeginUnbonding(ctx sdk.Context,
 }
 
 // unbond the the delegation return
-func (k Keeper) unbond(ctx sdk.Context, delAddr sdk.Address, valAddr sdk.Address,
+func (k Keeper) unbond(ctx sdk.Context, delAddr sdk.AccAddress, valAddr sdk.AccAddress,
 	shares types.Dec) (amount types.Dec, err sdk.Error) {
 
 	//k.OnDelegationSharesModified(ctx, delAddr, valAddr)
@@ -271,7 +271,7 @@ func (k Keeper) unbond(ctx sdk.Context, delAddr sdk.Address, valAddr sdk.Address
 }
 
 // complete unbonding an unbonding record
-func (k Keeper) CompleteUnbonding(ctx sdk.Context, delAddr sdk.Address, valAddr sdk.Address) sdk.Error {
+func (k Keeper) CompleteUnbonding(ctx sdk.Context, delAddr sdk.AccAddress, valAddr sdk.AccAddress) sdk.Error {
 
 	ubd, found := k.GetUnbondingDelegation(ctx, delAddr, valAddr)
 	if !found {
@@ -293,8 +293,8 @@ func (k Keeper) CompleteUnbonding(ctx sdk.Context, delAddr sdk.Address, valAddr 
 	return nil
 }
 
-func (k Keeper) BeginRedelegation(ctx sdk.Context, delAddr sdk.Address,
-	valSrcAddr, valDstAddr sdk.Address, sharesAmount types.Dec) sdk.Error {
+func (k Keeper) BeginRedelegation(ctx sdk.Context, delAddr sdk.AccAddress,
+	valSrcAddr, valDstAddr sdk.AccAddress, sharesAmount types.Dec) sdk.Error {
 
 	// check if this is a transitive redelegation
 	if k.HasReceivingRedelegation(ctx, delAddr, valSrcAddr) {
@@ -340,8 +340,8 @@ func (k Keeper) BeginRedelegation(ctx sdk.Context, delAddr sdk.Address,
 }
 
 // complete unbonding an ongoing redelegation
-func (k Keeper) CompleteRedelegation(ctx sdk.Context, delAddr sdk.Address,
-	valSrcAddr, valDstAddr sdk.Address) sdk.Error {
+func (k Keeper) CompleteRedelegation(ctx sdk.Context, delAddr sdk.AccAddress,
+	valSrcAddr, valDstAddr sdk.AccAddress) sdk.Error {
 
 	red, found := k.GetRedelegation(ctx, delAddr, valSrcAddr, valDstAddr)
 	if !found {
@@ -361,7 +361,7 @@ func (k Keeper) CompleteRedelegation(ctx sdk.Context, delAddr sdk.Address,
 //_____________________________________________________________________________________
 
 // return a given amount of all the delegator redelegations
-func (k Keeper) GetRedelegations(ctx sdk.Context, delegator sdk.Address,
+func (k Keeper) GetRedelegations(ctx sdk.Context, delegator sdk.AccAddress,
 	maxRetrieve uint16) (redelegations []posTypes.Redelegation) {
 	redelegations = make([]posTypes.Redelegation, maxRetrieve)
 
@@ -381,7 +381,7 @@ func (k Keeper) GetRedelegations(ctx sdk.Context, delegator sdk.Address,
 
 // return a redelegation
 func (k Keeper) GetRedelegation(ctx sdk.Context,
-	delAddr sdk.Address, valSrcAddr, valDstAddr sdk.Address) (red posTypes.Redelegation, found bool) {
+	delAddr sdk.AccAddress, valSrcAddr, valDstAddr sdk.AccAddress) (red posTypes.Redelegation, found bool) {
 
 	store := ctx.KVStore(k.storeKey)
 	key := GetREDKey(delAddr, valSrcAddr, valDstAddr)
@@ -396,7 +396,7 @@ func (k Keeper) GetRedelegation(ctx sdk.Context,
 
 // check if validator is receiving a redelegation
 func (k Keeper) HasReceivingRedelegation(ctx sdk.Context,
-	delAddr sdk.Address, valDstAddr sdk.Address) bool {
+	delAddr sdk.AccAddress, valDstAddr sdk.AccAddress) bool {
 
 	store := ctx.KVStore(k.storeKey)
 	prefix := GetREDsByDelToValDstIndexKey(delAddr, valDstAddr)

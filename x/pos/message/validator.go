@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 
-	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/sharering/shareledger/constants"
 	types "github.com/sharering/shareledger/types"
 	posTypes "github.com/sharering/shareledger/x/pos/type"
@@ -16,8 +16,8 @@ var _ sdk.Msg = MsgEditValidator{}
 // MsgCreateValidator - struct for unbonding transactions
 type MsgCreateValidator struct {
 	Description   posTypes.Description
-	DelegatorAddr sdk.Address  `json:"delegator_address"`
-	ValidatorAddr sdk.Address  `json:"validator_address"`
+	DelegatorAddr sdk.AccAddress  `json:"delegator_address"`
+	ValidatorAddr sdk.AccAddress  `json:"validator_address"`
 	PubKey        types.PubKey `json:"pubkey"`
 	Delegation    types.Coin   `json:"delegation"`
 }
@@ -28,14 +28,14 @@ func (msg MsgCreateValidator) Type() string {
 }
 
 // Return address(es) that must sign over msg.GetSignBytes()
-func (msg MsgCreateValidator) GetSigners() []sdk.Address {
+func (msg MsgCreateValidator) GetSigners() []sdk.AccAddress {
 	// delegator is first signer so delegator pays fees
-	addrs := []sdk.Address{msg.DelegatorAddr}
+	addrs := []sdk.AccAddress{msg.DelegatorAddr}
 
 	if !bytes.Equal(msg.DelegatorAddr.Bytes(), msg.ValidatorAddr.Bytes()) {
 		// if validator addr is not same as delegator addr, validator must sign
 		// msg as well
-		addrs = append(addrs, sdk.Address(msg.ValidatorAddr))
+		addrs = append(addrs, sdk.AccAddress(msg.ValidatorAddr))
 	}
 	return addrs
 }
@@ -44,8 +44,8 @@ func (msg MsgCreateValidator) GetSigners() []sdk.Address {
 func (msg MsgCreateValidator) GetSignBytes() []byte {
 	b, err := json.Marshal(struct {
 		Description   posTypes.Description `json:"description"`
-		DelegatorAddr sdk.Address          `json:"delegatorAddress"`
-		ValidatorAddr sdk.Address          `json:"validatorAddress"`
+		DelegatorAddr sdk.AccAddress          `json:"delegatorAddress"`
+		ValidatorAddr sdk.AccAddress          `json:"validatorAddress"`
 		PubKey        types.PubKey         `json:"pubKey"`
 		Delegation    types.Coin           `json:"delegation"`
 	}{
@@ -82,10 +82,10 @@ func (msg MsgCreateValidator) ValidateBasic() sdk.Error {
 
 type MsgEditValidator struct {
 	posTypes.Description
-	ValidatorAddr sdk.Address `json:"address"`
+	ValidatorAddr sdk.AccAddress `json:"address"`
 }
 
-func NewMsgEditValidator(valAddr sdk.Address, description posTypes.Description) MsgEditValidator {
+func NewMsgEditValidator(valAddr sdk.AccAddress, description posTypes.Description) MsgEditValidator {
 	return MsgEditValidator{
 		Description:   description,
 		ValidatorAddr: valAddr,
@@ -95,15 +95,15 @@ func NewMsgEditValidator(valAddr sdk.Address, description posTypes.Description) 
 //nolint
 
 func (msg MsgEditValidator) Type() string { return constants.MESSAGE_POS }
-func (msg MsgEditValidator) GetSigners() []sdk.Address {
-	return []sdk.Address{sdk.Address(msg.ValidatorAddr)}
+func (msg MsgEditValidator) GetSigners() []sdk.AccAddress {
+	return []sdk.AccAddress{sdk.AccAddress(msg.ValidatorAddr)}
 }
 
 // get the bytes for the message signer to sign on
 func (msg MsgEditValidator) GetSignBytes() []byte {
 	b, err := json.Marshal(struct {
 		posTypes.Description
-		ValidatorAddr sdk.Address `json:"validatorAddress"`
+		ValidatorAddr sdk.AccAddress `json:"validatorAddress"`
 	}{
 		Description:   msg.Description,
 		ValidatorAddr: msg.ValidatorAddr,

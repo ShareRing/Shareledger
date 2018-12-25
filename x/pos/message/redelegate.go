@@ -3,7 +3,7 @@ package message
 import (
 	"encoding/json"
 
-	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	types "github.com/sharering/shareledger/types"
 	posTypes "github.com/sharering/shareledger/x/pos/type"
 )
@@ -12,14 +12,14 @@ import (
 
 // MsgDelegate - struct for bonding transactions
 type MsgBeginRedelegate struct {
-	DelegatorAddr    sdk.Address `json:"delegatorAddress"`
-	ValidatorSrcAddr sdk.Address `json:"validatorSrcAddress"`
-	ValidatorDstAddr sdk.Address `json:"validatorDstAddress"`
+	DelegatorAddr    sdk.AccAddress `json:"delegatorAddress"`
+	ValidatorSrcAddr sdk.AccAddress `json:"validatorSrcAddress"`
+	ValidatorDstAddr sdk.AccAddress `json:"validatorDstAddress"`
 	SharesAmount     types.Dec   `json:"shareAmount"`
 }
 
-func NewMsgBeginRedelegate(delAddr sdk.Address, valSrcAddr,
-	valDstAddr sdk.Address, sharesAmount types.Dec) MsgBeginRedelegate {
+func NewMsgBeginRedelegate(delAddr sdk.AccAddress, valSrcAddr,
+	valDstAddr sdk.AccAddress, sharesAmount types.Dec) MsgBeginRedelegate {
 
 	return MsgBeginRedelegate{
 		DelegatorAddr:    delAddr,
@@ -32,16 +32,16 @@ func NewMsgBeginRedelegate(delAddr sdk.Address, valSrcAddr,
 //nolint
 
 func (msg MsgBeginRedelegate) Type() string { return "BeginRedelegate" }
-func (msg MsgBeginRedelegate) GetSigners() []sdk.Address {
-	return []sdk.Address{msg.DelegatorAddr}
+func (msg MsgBeginRedelegate) GetSigners() []sdk.AccAddress {
+	return []sdk.AccAddress{msg.DelegatorAddr}
 }
 
 // get the bytes for the message signer to sign on
 func (msg MsgBeginRedelegate) GetSignBytes() []byte {
 	b, err := /*MsgCdc.MarshalJSON*/ json.Marshal(struct {
-		DelegatorAddr    sdk.Address `json:"delegatorAddress"`
-		ValidatorSrcAddr sdk.Address `json:"validatorSrcAddress"`
-		ValidatorDstAddr sdk.Address `json:"validatorDstAddress"`
+		DelegatorAddr    sdk.AccAddress `json:"delegatorAddress"`
+		ValidatorSrcAddr sdk.AccAddress `json:"validatorSrcAddress"`
+		ValidatorDstAddr sdk.AccAddress `json:"validatorDstAddress"`
 		SharesAmount     string      `json:"shareAmount"`
 	}{
 		DelegatorAddr:    msg.DelegatorAddr,
@@ -74,13 +74,13 @@ func (msg MsgBeginRedelegate) ValidateBasic() sdk.Error {
 
 // MsgDelegate - struct for bonding transactions
 type MsgCompleteRedelegate struct {
-	DelegatorAddr    sdk.Address `json:"delegatorAddress"`
-	ValidatorSrcAddr sdk.Address `json:"validatorSrcAddress"`
-	ValidatorDstAddr sdk.Address `json:"validatorDstAddress"`
+	DelegatorAddr    sdk.AccAddress `json:"delegatorAddress"`
+	ValidatorSrcAddr sdk.AccAddress `json:"validatorSrcAddress"`
+	ValidatorDstAddr sdk.AccAddress `json:"validatorDstAddress"`
 }
 
 func NewMsgCompleteRedelegate(delegatorAddr, validatorSrcAddr,
-	validatorDstAddr sdk.Address) MsgCompleteRedelegate {
+	validatorDstAddr sdk.AccAddress) MsgCompleteRedelegate {
 
 	return MsgCompleteRedelegate{
 		DelegatorAddr:    delegatorAddr,
@@ -91,8 +91,8 @@ func NewMsgCompleteRedelegate(delegatorAddr, validatorSrcAddr,
 
 //nolint
 func (msg MsgCompleteRedelegate) Type() string { return "CompleteRedelegate" }
-func (msg MsgCompleteRedelegate) GetSigners() []sdk.Address {
-	return []sdk.Address{msg.DelegatorAddr}
+func (msg MsgCompleteRedelegate) GetSigners() []sdk.AccAddress {
+	return []sdk.AccAddress{msg.DelegatorAddr}
 }
 
 // get the bytes for the message signer to sign on

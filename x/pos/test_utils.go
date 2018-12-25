@@ -1,7 +1,7 @@
 package pos
 
 import (
-	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	// "github.com/tendermint/tendermint/crypto"
 	// "github.com/tendermint/tendermint/crypto/ed25519"
 
@@ -19,6 +19,6 @@ var (
 	addr2  = pk2.Address()
 	addr3  = pk3.Address()
 
-	emptyAddr   sdk.Address
+	emptyAddr   sdk.AccAddress
 	emptyPubkey types.PubKey
 )

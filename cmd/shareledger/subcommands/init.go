@@ -8,7 +8,8 @@ import (
 
 	"github.com/spf13/cobra"
 
-	crypto "github.com/tendermint/go-crypto"
+	crypto "github.com/tendermint/tendermint/crypto"
+	"github.com/tendermint/tendermint/crypto/secp256k1"
 	cfg "github.com/tendermint/tendermint/config"
 	"github.com/tendermint/tendermint/p2p"
 	"github.com/tendermint/tendermint/privval"
@@ -59,7 +60,7 @@ func initFilesWithConfig(config *cfg.Config) error {
 		logger.Info("Found private validator", "path", privValFile)
 	} else {
 		pv = privval.GenFilePV(privValFile)
-		var newPrivKey crypto.PrivKeySecp256k1
+		var newPrivKey secp256k1.PrivKeySecp256k1
 
 		if privKeyParam == "" {
 			newPrivKey = crypto.GenPrivKeySecp256k1()
@@ -132,7 +133,7 @@ func genGenesisState(pv *privval.FilePV) (app.GenesisState, crypto.PubKey) {
 	// save new priv_validator.json
 	pv.Save()
 
-	privK, ok := pv.PrivKey.(crypto.PrivKeySecp256k1)
+	privK, ok := pv.PrivKey.(secp256k1.PrivKeySecp256k1)
 
 	if !ok {
 		panic(ok)

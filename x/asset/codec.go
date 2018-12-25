@@ -1,12 +1,12 @@
 package asset
 
 import (
-	"bitbucket.org/shareringvn/cosmos-sdk/wire"
+	"github.com/tendermint/go-amino"
 	"github.com/sharering/shareledger/x/asset/messages"
 )
 
-// RegisterWire registers messages into the wire codec
-func RegisterCodec(cdc *wire.Codec) *wire.Codec {
+// RegisterWire registers messages into the amino.codec
+func RegisterCodec(cdc *amino.Codec) *amino.Codec {
 	cdc.RegisterConcrete(messages.MsgCreate{}, "shareledger/asset/MsgCreate", nil)
 	cdc.RegisterConcrete(messages.MsgRetrieve{}, "shareledger/asset/MsgRetrieve", nil)
 	cdc.RegisterConcrete(messages.MsgUpdate{}, "shareledger/asset/MsgUpdate", nil)

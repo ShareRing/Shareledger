@@ -1,11 +1,11 @@
 package pos
 
 import (
-	"fmt"
 	"encoding/json"
+	"fmt"
 
-	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
-	wire "bitbucket.org/shareringvn/cosmos-sdk/wire"
+	sdk "github.com/cosmos/cosmos-sdk/types"
+	amino "github.com/tendermint/go-amino"
 
 	"github.com/sharering/shareledger/constants"
 	keep "github.com/sharering/shareledger/x/pos/keeper"
@@ -30,7 +30,7 @@ const (
 
 // creates a querier for staking REST endpoints
 
-func NewQuerier(k keep.Keeper, cdc *wire.Codec) sdk.Querier {
+func NewQuerier(k keep.Keeper, cdc *amino.Codec) sdk.Querier {
 	return func(ctx sdk.Context, path []string, req abci.RequestQuery) (res []byte, err sdk.Error) {
 		switch path[0] {
 		case QueryValidators:
@@ -66,13 +66,13 @@ func NewQuerier(k keep.Keeper, cdc *wire.Codec) sdk.Querier {
 // - 'custom/stake/delegator'
 // - 'custom/stake/delegatorValidators'
 type QueryDelegatorParams struct {
-	DelegatorAddr sdk.Address
+	DelegatorAddr sdk.AccAddress
 }
 
 // defines the params for the following queries:
 // - 'custom/stake/validator'
 type QueryValidatorParams struct {
-	ValidatorAddr sdk.Address
+	ValidatorAddr sdk.AccAddress
 }
 
 // defines the params for the following queries:
@@ -80,20 +80,20 @@ type QueryValidatorParams struct {
 // - 'custom/stake/unbondingDelegation'
 // - 'custom/stake/delegatorValidator'
 type QueryBondsParams struct {
-	DelegatorAddr sdk.Address
-	ValidatorAddr sdk.Address
+	DelegatorAddr sdk.AccAddress
+	ValidatorAddr sdk.AccAddress
 }
 
 type QueryValidatorDistParams struct {
-	ValidatorAddr sdk.Address
+	ValidatorAddr sdk.AccAddress
 }
 
 type QueryDelegationParams struct {
-	ValidatorAddr sdk.Address
-	DelegatorAddr sdk.Address
+	ValidatorAddr sdk.AccAddress
+	DelegatorAddr sdk.AccAddress
 }
 
-func queryValidators(ctx sdk.Context, cdc *wire.Codec, k keep.Keeper) (res []byte, err sdk.Error) {
+func queryValidators(ctx sdk.Context, cdc *amino.Codec, k keep.Keeper) (res []byte, err sdk.Error) {
 	stakeParams := k.GetParams(ctx)
 	validators := k.GetValidators(ctx, stakeParams.MaxValidators)
 
@@ -104,11 +104,11 @@ func queryValidators(ctx sdk.Context, cdc *wire.Codec, k keep.Keeper) (res []byt
 	return res, nil
 }
 
-func queryValidator(ctx sdk.Context, cdc *wire.Codec, req abci.RequestQuery, k keep.Keeper) (res []byte, err sdk.Error) {
+func queryValidator(ctx sdk.Context, cdc *amino.Codec, req abci.RequestQuery, k keep.Keeper) (res []byte, err sdk.Error) {
 	var params QueryValidatorParams
 
 	//errRes := cdc.UnmarshalJSON(req.Data, &params)
-	errRes := cdc.UnmarshalBinary(req.Data, &params)
+	errRes := cdc.UnmarshalBinaryLengthPrefixed(req.Data, &params)
 	if errRes != nil {
 		return []byte{}, sdk.ErrUnknownAddress(fmt.Sprintf("incorrectly formatted request address: %s", err.Error()))
 	}
@@ -128,7 +128,7 @@ func queryValidator(ctx sdk.Context, cdc *wire.Codec, req abci.RequestQuery, k k
 
 func queryValidatorDistInfo(
 	ctx sdk.Context,
-	cdc *wire.Codec,
+	cdc *amino.Codec,
 	req abci.RequestQuery,
 	k keep.Keeper,
 ) (
@@ -136,7 +136,7 @@ func queryValidatorDistInfo(
 ) {
 	var params QueryValidatorDistParams
 
-	errRes := cdc.UnmarshalBinary(req.Data, &params)
+	errRes := cdc.UnmarshalBinaryLengthPrefixed(req.Data, &params)
 
 	if errRes != nil {
 		return []byte{},
@@ -160,7 +160,7 @@ func queryValidatorDistInfo(
 
 func queryDelegation(
 	ctx sdk.Context,
-	cdc *wire.Codec,
+	cdc *amino.Codec,
 	req abci.RequestQuery,
 	k keep.Keeper,
 ) (
@@ -168,7 +168,7 @@ func queryDelegation(
 ) {
 	var params QueryDelegationParams
 
-	errRes := cdc.UnmarshalBinary(req.Data, &params)
+	errRes := cdc.UnmarshalBinaryLengthPrefixed(req.Data, &params)
 
 	if errRes != nil {
 		return []byte{},
@@ -192,7 +192,7 @@ func queryDelegation(
 }
 
 /*
-func queryDelegator(ctx sdk.Context, cdc *wire.Codec, req abci.RequestQuery, k keep.Keeper) (res []byte, err sdk.Error) {
+func queryDelegator(ctx sdk.Context, cdc *amino.Codec, req abci.RequestQuery, k keep.Keeper) (res []byte, err sdk.Error) {
 	var params QueryDelegatorParams
 	errRes := cdc.UnmarshalJSON(req.Data, &params)
 	if errRes != nil {

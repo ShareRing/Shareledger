@@ -2,7 +2,7 @@ package utils
 
 import (
 	"encoding/json"
-	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
 func Store(store sdk.KVStore, key []byte, value interface{}) error {

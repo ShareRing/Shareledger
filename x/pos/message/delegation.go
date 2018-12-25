@@ -3,7 +3,7 @@ package message
 import (
 	"encoding/json"
 
-	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/sharering/shareledger/constants"
 	types "github.com/sharering/shareledger/types"
 	posTypes "github.com/sharering/shareledger/x/pos/type"
@@ -11,12 +11,12 @@ import (
 
 // MsgDelegate - struct for bonding transactions
 type MsgDelegate struct {
-	DelegatorAddr sdk.Address `json:"delegatorAddress"`
-	ValidatorAddr sdk.Address `json:"validatorAddress"`
+	DelegatorAddr sdk.AccAddress `json:"delegatorAddress"`
+	ValidatorAddr sdk.AccAddress `json:"validatorAddress"`
 	Delegation    types.Coin  `json:"delegation"`
 }
 
-func NewMsgDelegate(delAddr sdk.Address, valAddr sdk.Address, delegation types.Coin) MsgDelegate {
+func NewMsgDelegate(delAddr sdk.AccAddress, valAddr sdk.AccAddress, delegation types.Coin) MsgDelegate {
 	return MsgDelegate{
 		DelegatorAddr: delAddr,
 		ValidatorAddr: valAddr,
@@ -29,8 +29,8 @@ var _ sdk.Msg = MsgDelegate{}
 //nolint
 func (msg MsgDelegate) Type() string { return constants.MESSAGE_POS }
 
-func (msg MsgDelegate) GetSigners() []sdk.Address {
-	return []sdk.Address{msg.DelegatorAddr}
+func (msg MsgDelegate) GetSigners() []sdk.AccAddress {
+	return []sdk.AccAddress{msg.DelegatorAddr}
 }
 
 // get the bytes for the message signer to sign on

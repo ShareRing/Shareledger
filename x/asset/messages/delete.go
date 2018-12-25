@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/sharering/shareledger/constants"
 )
 
@@ -19,6 +19,11 @@ func NewMsgDelete(uuid string) MsgDelete {
 	return MsgDelete{
 		UUID: uuid,
 	}
+}
+
+// Type Implements Msg
+func (msg MsgDelete) Route() string {
+	return constants.MESSAGE_ASSET
 }
 
 // Type Implements Msg
@@ -49,8 +54,8 @@ func (msg MsgDelete) String() string {
 	return fmt.Sprintf("Asset/MsgDelete{%s}", msg.UUID)
 }
 
-func (msg MsgDelete) GetSigners() []sdk.Address {
-	return []sdk.Address{}
+func (msg MsgDelete) GetSigners() []sdk.AccAddress {
+	return []sdk.AccAddress{}
 }
 
 func (msg MsgDelete) Tags() sdk.Tags {

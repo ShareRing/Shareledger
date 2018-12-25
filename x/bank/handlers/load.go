@@ -3,7 +3,7 @@ package handlers
 import (
 	"fmt"
 
-	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 
 	"github.com/sharering/shareledger/utils"
 	"github.com/sharering/shareledger/constants"

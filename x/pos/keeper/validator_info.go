@@ -5,7 +5,7 @@ import (
 	"container/list"
 	"fmt"
 
-	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 
 	"github.com/sharering/shareledger/constants"
 	"github.com/sharering/shareledger/types"
@@ -19,7 +19,7 @@ var validatorDistCacheCheck = make(map[string]*list.Element, MaxCacheLength)
 var validatorDistCacheListCheck = list.New()
 
 func (k Keeper) GetValidatorDistInfo(
-	ctx sdk.Context, addr sdk.Address,
+	ctx sdk.Context, addr sdk.AccAddress,
 ) (
 	vdi posTypes.ValidatorDistInfo, found bool,
 ) {
@@ -102,7 +102,7 @@ func (k Keeper) SetValidatorDistInfo(
 // UpdateBlockReward is called everytime this validator is selected as forger
 func (k Keeper) UpdateBlockReward(
 	ctx sdk.Context,
-	validatorAddr sdk.Address,
+	validatorAddr sdk.AccAddress,
 	commissionRate types.Dec,
 	rewardPerBlock types.Coin,
 ) (
@@ -138,7 +138,7 @@ func (k Keeper) UpdateBlockReward(
 // UpdateDelAccum - Update Delegation Accum of a certain delegator is called everytime reward delegation settlement
 func (k Keeper) UpdateDelAccum(
 	ctx sdk.Context,
-	validatorAddr sdk.Address,
+	validatorAddr sdk.AccAddress,
 	currentHeight int64,
 ) (
 	posTypes.ValidatorDistInfo, sdk.Error,
@@ -194,8 +194,8 @@ func (k Keeper) UpdateDelAccum(
 
 func (k Keeper) WithdrawDelReward(
 	ctx sdk.Context,
-	validatorAddr sdk.Address,
-	delegatorAddr sdk.Address,
+	validatorAddr sdk.AccAddress,
+	delegatorAddr sdk.AccAddress,
 ) (posTypes.ValidatorDistInfo, types.Coin, sdk.Error) {
 
 	currentHeight := ctx.BlockHeight()

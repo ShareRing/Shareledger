@@ -4,7 +4,7 @@ import (
 	"encoding/hex"
 	"fmt"
 
-	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/sharering/shareledger/constants"
 	"github.com/sharering/shareledger/types"
 	"github.com/sharering/shareledger/utils"
@@ -12,10 +12,10 @@ import (
 )
 
 type Reserve struct {
-	Address sdk.Address
+	Address sdk.AccAddress
 }
 
-func NewReserve(addr sdk.Address) Reserve {
+func NewReserve(addr sdk.AccAddress) Reserve {
 	return Reserve{
 		Address: addr,
 	}
@@ -54,7 +54,7 @@ func GetAllReserve() []Reserve {
 			panic(err)
 		}
 
-		var addr sdk.Address
+		var addr sdk.AccAddress
 		copy(addr[:], decoded)
 
 		allRes = append(allRes, NewReserve(addr))

@@ -5,13 +5,13 @@ import (
 	"fmt"
 	"strconv"
 
-	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/sharering/shareledger/constants"
 	"github.com/sharering/shareledger/types"
 )
 
 type MsgCreate struct {
-	Creator sdk.Address `json:"creator"`
+	Creator sdk.AccAddress `json:"creator"`
 	Hash    []byte      `json:"hash"`
 	UUID    string      `json:"uuid"`
 	Status  bool        `json:"status"`
@@ -21,7 +21,7 @@ type MsgCreate struct {
 // enforce the msg type at compile time
 var _ sdk.Msg = MsgCreate{}
 
-func NewMsgCreate(creator sdk.Address, hash []byte, uuid string, status bool, fee int64) MsgCreate {
+func NewMsgCreate(creator sdk.AccAddress, hash []byte, uuid string, status bool, fee int64) MsgCreate {
 	return MsgCreate{
 		Creator: creator,
 		Hash:    hash,
@@ -29,6 +29,10 @@ func NewMsgCreate(creator sdk.Address, hash []byte, uuid string, status bool, fe
 		Fee:     fee,
 		Status:  status,
 	}
+}
+
+func (msg MsgCreate) Route() string {
+	return constants.MESSAGE_ASSET
 }
 
 // Type Implements Msg
@@ -59,8 +63,8 @@ func (msg MsgCreate) String() string {
 	return fmt.Sprintf("Asset/MsgCreation{%s}", msg.UUID)
 }
 
-func (msg MsgCreate) GetSigners() []sdk.Address {
-	return []sdk.Address{msg.Creator}
+func (msg MsgCreate) GetSigners() []sdk.AccAddress {
+	return []sdk.AccAddress{msg.Creator}
 }
 
 func (msg MsgCreate) Tags() sdk.Tags {

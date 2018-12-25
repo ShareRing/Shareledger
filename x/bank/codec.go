@@ -1,11 +1,11 @@
 package bank
 
 import (
-	"bitbucket.org/shareringvn/cosmos-sdk/wire"
 	msg "github.com/sharering/shareledger/x/bank/messages"
+	"github.com/tendermint/go-amino"
 )
 
-func RegisterCodec(cdc *wire.Codec) *wire.Codec {
+func RegisterCodec(cdc *amino.Codec) *amino.Codec {
 	cdc.RegisterConcrete(msg.MsgSend{}, "shareledger/bank/MsgSend", nil)
 	cdc.RegisterConcrete(msg.MsgCheck{}, "shareledger/bank/MsgCheck", nil)
 	cdc.RegisterConcrete(msg.MsgLoad{}, "shareledger/bank/MsgLoad", nil)

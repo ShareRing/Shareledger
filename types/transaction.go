@@ -4,8 +4,8 @@ import (
 	//"encoding/json"
 	"fmt"
 
-	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
-	"bitbucket.org/shareringvn/cosmos-sdk/wire"
+	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/tendermint/go-amino"
 )
 
 //-----------------------------------------------------------------
@@ -63,7 +63,7 @@ func (tx BasicTx) VerifySignature() bool {
 }
 
 // JSON decode MsgSend.
-func GetTxDecoder(cdc *wire.Codec) func([]byte) (sdk.Tx, sdk.Error) {
+func GetTxDecoder(cdc *amino.Codec) func([]byte) (sdk.Tx, sdk.Error) {
 	return func(txBytes []byte) (sdk.Tx, sdk.Error) {
 		var tx = BasicTx{}
 

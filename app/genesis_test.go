@@ -6,8 +6,6 @@ import (
 	"testing"
 	"time"
 
-	"bitbucket.org/shareringvn/cosmos-sdk/wire"
-	"github.com/tendermint/go-crypto"
 	tmtypes "github.com/tendermint/tendermint/types"
 
 	"github.com/sharering/shareledger/types"

@@ -1,7 +1,7 @@
 package auth
 
 import (
-	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
 type contextKey int // local to auth module

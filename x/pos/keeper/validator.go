@@ -5,7 +5,7 @@ import (
 	"container/list"
 	"fmt"
 
-	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	abci "github.com/tendermint/abci/types"
 
 	"github.com/sharering/shareledger/types"
@@ -26,7 +26,7 @@ var validatorCache = make(map[string]cachedValidator, MaxCacheLength)
 var validatorCacheList = list.New()
 
 // get a single validator
-func (k Keeper) GetValidator(ctx sdk.Context, addr sdk.Address) (validator posTypes.Validator, found bool) {
+func (k Keeper) GetValidator(ctx sdk.Context, addr sdk.AccAddress) (validator posTypes.Validator, found bool) {
 	store := ctx.KVStore(k.storeKey)
 	value := store.Get(GetValidatorKey(addr))
 	if value == nil {
@@ -77,7 +77,7 @@ func (k Keeper) GetValidators(ctx sdk.Context, maxRetrieve uint16) (validators [
 	return validators[:i] // trim if the array length < maxRetrieve
 }
 
-func (k Keeper) mustGetValidator(ctx sdk.Context, addr sdk.Address) posTypes.Validator {
+func (k Keeper) mustGetValidator(ctx sdk.Context, addr sdk.AccAddress) posTypes.Validator {
 	validator, found := k.GetValidator(ctx, addr)
 	if !found {
 		panic(fmt.Sprintf("validator record not found for address: %X\n", addr))
@@ -115,7 +115,7 @@ func (k Keeper) AddValidatorTokensAndShares(ctx sdk.Context, validator posTypes.
 }
 
 // remove the validator record and associated indexes
-func (k Keeper) RemoveValidator(ctx sdk.Context, address sdk.Address) {
+func (k Keeper) RemoveValidator(ctx sdk.Context, address sdk.AccAddress) {
 
 	validator, found := k.GetValidator(ctx, address)
 	if !found {
@@ -126,7 +126,7 @@ func (k Keeper) RemoveValidator(ctx sdk.Context, address sdk.Address) {
 	store := ctx.KVStore(k.storeKey)
 	pool := k.GetPool(ctx)
 	store.Delete(GetValidatorKey(address))
-	store.Delete(GetValidatorByConsAddrKey(sdk.Address(validator.PubKey.Address())))
+	store.Delete(GetValidatorByConsAddrKey(sdk.AccAddress(validator.PubKey.Address())))
 	store.Delete(GetValidatorsByPowerIndexKey(validator, pool))
 
 }
@@ -261,7 +261,7 @@ func (k Keeper) GetValidatorSetUpdates(ctx sdk.Context) []abci.Validator {
 	for ; iterator.Valid() && count < int(maxValidators); iterator.Next() {
 
 		// fetch the validator
-		valAddr := sdk.Address(iterator.Value())
+		valAddr := sdk.AccAddress(iterator.Value())
 		validator := k.mustGetValidator(ctx, valAddr)
 
 		fmt.Printf("Validator: %X\n", valAddr)
@@ -296,7 +296,7 @@ func (k Keeper) GetValidatorSetUpdates(ctx sdk.Context) []abci.Validator {
 
 		// calculate the new power bytes
 		newPower := validator.BondedTokens().RoundInt64()
-		newPowerBytes := k.cdc.MustMarshalBinary(sdk.NewInt(newPower))
+		newPowerBytes := k.cdc.MustMarshalBinaryLengthPrefixed(sdk.NewInt(newPower))
 		// update the validator set if power has changed
 		if !found || !bytes.Equal(oldPowerBytes, newPowerBytes) {
 			fmt.Printf("Found! %X\n", validator.Owner)
@@ -329,7 +329,7 @@ func (k Keeper) GetValidatorSetUpdates(ctx sdk.Context) []abci.Validator {
 	for _, valAddrBytes := range noLongerBonded {
 
 		// fetch the validator
-		validator := k.mustGetValidator(ctx, sdk.Address(valAddrBytes))
+		validator := k.mustGetValidator(ctx, sdk.AccAddress(valAddrBytes))
 
 		fmt.Printf("NoLongerBonded: %X\n", validator.Owner)
 
@@ -337,7 +337,7 @@ func (k Keeper) GetValidatorSetUpdates(ctx sdk.Context) []abci.Validator {
 		k.bondedToUnbonding(ctx, validator)
 
 		// delete from the bonded validator index
-		k.DeleteLastValidatorPower(ctx, sdk.Address(valAddrBytes))
+		k.DeleteLastValidatorPower(ctx, sdk.AccAddress(valAddrBytes))
 
 		// update the validator set
 		updates = append(updates, validator.ABCIValidatorZero())

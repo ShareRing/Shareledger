@@ -4,9 +4,8 @@ import (
 	"fmt"
 	"reflect"
 
-	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
-
-	"bitbucket.org/shareringvn/cosmos-sdk/wire"
+	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/tendermint/go-amino"
 
 	"github.com/sharering/shareledger/constants"
 	"github.com/sharering/shareledger/types"
@@ -20,12 +19,12 @@ type AccountMapper struct {
 	// The prototypical BaseAccount concrete type
 	proto BaseAccount
 
-	// The wire codec for binary encoding/decoding of accounts
-	cdc *wire.Codec
+	// The amino.codec for binary encoding/decoding of accounts
+	cdc *amino.Codec
 }
 
 // NewAccountMapper returns a new sdk.AccountMapper
-func NewAccountMapper(cdc *wire.Codec, key sdk.StoreKey, proto BaseAccount) AccountMapper {
+func NewAccountMapper(cdc *amino.Codec, key sdk.StoreKey, proto BaseAccount) AccountMapper {
 	return AccountMapper{
 		key:   key,
 		cdc:   cdc,
@@ -34,18 +33,18 @@ func NewAccountMapper(cdc *wire.Codec, key sdk.StoreKey, proto BaseAccount) Acco
 }
 
 // NewAccountWithAddress
-func (am AccountMapper) NewAccountWithAddress(ctx sdk.Context, addr sdk.Address) BaseAccount {
+func (am AccountMapper) NewAccountWithAddress(ctx sdk.Context, addr sdk.AccAddress) BaseAccount {
 	acc := am.clonePrototype()
 	acc.SetAddress(addr)
 	return acc
 }
 
-func AddressToKey(addr sdk.Address) []byte {
+func AddressToKey(addr sdk.AccAddress) []byte {
 	return append([]byte(constants.PREFIX_ADDRESS), addr.Bytes()...)
 }
 
 // Implements BaseAccount
-func (am AccountMapper) GetAccount(ctx sdk.Context, addr sdk.Address) BaseAccount {
+func (am AccountMapper) GetAccount(ctx sdk.Context, addr sdk.AccAddress) BaseAccount {
 	store := ctx.KVStore(am.key)
 	accBytes := store.Get(AddressToKey(addr))
 	if accBytes == nil {
@@ -62,7 +61,7 @@ func (am AccountMapper) SetAccount(ctx sdk.Context, acc BaseAccount) {
 	store.Set(AddressToKey(addr), bz)
 }
 
-func (am AccountMapper) GetPubKey(ctx sdk.Context, addr sdk.Address) (types.PubKey, sdk.Error) {
+func (am AccountMapper) GetPubKey(ctx sdk.Context, addr sdk.AccAddress) (types.PubKey, sdk.Error) {
 	acc := am.GetAccount(ctx, addr)
 	if acc == nil {
 		return nil, sdk.ErrUnknownAddress(addr.String())
@@ -70,7 +69,7 @@ func (am AccountMapper) GetPubKey(ctx sdk.Context, addr sdk.Address) (types.PubK
 	return acc.GetPubKey(), nil
 }
 
-func (am AccountMapper) GetNonce(ctx sdk.Context, addr sdk.Address) (int64, sdk.Error) {
+func (am AccountMapper) GetNonce(ctx sdk.Context, addr sdk.AccAddress) (int64, sdk.Error) {
 	acc := am.GetAccount(ctx, addr)
 	if acc == nil {
 		return 0, nil
@@ -79,7 +78,7 @@ func (am AccountMapper) GetNonce(ctx sdk.Context, addr sdk.Address) (int64, sdk.
 	return acc.GetNonce(), nil
 }
 
-func (am AccountMapper) SetNonce(ctx sdk.Context, addr sdk.Address, newNonce int64) sdk.Error {
+func (am AccountMapper) SetNonce(ctx sdk.Context, addr sdk.AccAddress, newNonce int64) sdk.Error {
 	acc := am.GetAccount(ctx, addr)
 	if acc == nil {
 		return sdk.ErrUnknownAddress(addr.String())

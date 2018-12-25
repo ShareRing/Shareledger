@@ -1,7 +1,7 @@
 package types
 
 import (
-	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
 // status of a validator
@@ -32,7 +32,7 @@ func BondStatusToString(b BondStatus) string {
 type Validator interface {
 	GetMoniker() string      // moniker of the validator
 	GetStatus() BondStatus   // status of the validator
-	GetOwner() sdk.Address   // owner address to receive/return validators coins
+	GetOwner() sdk.AccAddress   // owner address to receive/return validators coins
 	GetPubKey() PubKey       // validation pubkey
 	GetPower() Dec           // validation power
 	GetDelegatorShares() Dec // Total out standing delegator shares
@@ -49,7 +49,7 @@ type ValidatorSet interface {
 	IterateValidatorsBonded(sdk.Context,
 		func(index int64, validator Validator) (stop bool))
 
-	Validator(sdk.Context, sdk.Address) Validator // get a particular validator by owner address
+	Validator(sdk.Context, sdk.AccAddress) Validator // get a particular validator by owner address
 	TotalPower(sdk.Context) Dec                   // total power of the validator set
 	Slash(sdk.Context, PubKey, int64, Dec)        // slash the validator and delegators of the validator, specifying offence height & slash fraction
 	Revoke(sdk.Context, PubKey)                   // revoke a validator
@@ -60,8 +60,8 @@ type ValidatorSet interface {
 
 // delegation bond for a delegated proof of stake system
 type Delegation interface {
-	GetDelegator() sdk.Address // delegator address for the bond
-	GetValidator() sdk.Address // validator owner address for the bond
+	GetDelegator() sdk.AccAddress // delegator address for the bond
+	GetValidator() sdk.AccAddress // validator owner address for the bond
 	GetBondShares() Dec        // amount of validator's shares
 }
 
@@ -71,6 +71,6 @@ type DelegationSet interface {
 
 	// iterate through all delegations from one delegator by validator-address,
 	//   execute func for each validator
-	IterateDelegations(ctx sdk.Context, delegator sdk.Address,
+	IterateDelegations(ctx sdk.Context, delegator sdk.AccAddress,
 		fn func(index int64, delegation Delegation) (stop bool))
 }

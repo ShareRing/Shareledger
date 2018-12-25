@@ -3,7 +3,7 @@ package bank
 import (
 	"fmt"
 
-	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/sharering/shareledger/types"
 	"github.com/sharering/shareledger/x/auth"
 )
@@ -21,14 +21,14 @@ func NewKeeper(_am auth.AccountMapper) Keeper {
 
 func (k Keeper) GetCoins(
 	ctx sdk.Context,
-	addr sdk.Address,
+	addr sdk.AccAddress,
 ) types.Coins {
 	return getCoins(ctx, k.am, addr)
 }
 
 func (k Keeper) SetCoins(
 	ctx sdk.Context,
-	addr sdk.Address,
+	addr sdk.AccAddress,
 	amt types.Coins,
 ) sdk.Error {
  	return setCoins(ctx, k.am , addr, amt)
@@ -36,7 +36,7 @@ func (k Keeper) SetCoins(
 
 func (k Keeper) SubtractCoins(
 	ctx sdk.Context,
-	addr sdk.Address,
+	addr sdk.AccAddress,
 	amt types.Coins,
 ) (types.Coins, sdk.Error) {
 
@@ -45,7 +45,7 @@ func (k Keeper) SubtractCoins(
 
 func (k Keeper) AddCoins(
 	ctx sdk.Context,
-	addr sdk.Address,
+	addr sdk.AccAddress,
 	amt types.Coins,
 ) (types.Coins, sdk.Error) {
 
@@ -54,7 +54,7 @@ func (k Keeper) AddCoins(
 
 func (k Keeper) SubtractCoin(
 	ctx sdk.Context,
-	addr sdk.Address,
+	addr sdk.AccAddress,
 	amt types.Coin,
 ) (types.Coins, sdk.Error) {
 
@@ -63,7 +63,7 @@ func (k Keeper) SubtractCoin(
 
 func (k Keeper) AddCoin(
 	ctx sdk.Context,
-	addr sdk.Address,
+	addr sdk.AccAddress,
 	amt types.Coin,
 ) (types.Coins, sdk.Error) {
 
@@ -80,7 +80,7 @@ func (k Keeper) AddCoin(
 func subtractCoin(
 	ctx sdk.Context,
 	am auth.AccountMapper,
-	addr sdk.Address,
+	addr sdk.AccAddress,
 	amt types.Coin,
 ) (types.Coins, sdk.Error) {
 
@@ -101,7 +101,7 @@ func subtractCoin(
 func substractCoins(
 	ctx sdk.Context,
 	am auth.AccountMapper,
-	addr sdk.Address,
+	addr sdk.AccAddress,
 	amt types.Coins,
 ) (types.Coins, sdk.Error) {
 
@@ -121,7 +121,7 @@ func substractCoins(
 func addCoin(
 	ctx sdk.Context,
 	am auth.AccountMapper,
-	addr sdk.Address,
+	addr sdk.AccAddress,
 	amt types.Coin,
 ) (types.Coins, sdk.Error) {
 
@@ -140,7 +140,7 @@ func addCoin(
 func addCoins(
 	ctx sdk.Context,
 	am auth.AccountMapper,
-	addr sdk.Address,
+	addr sdk.AccAddress,
 	amt types.Coins,
 ) (types.Coins, sdk.Error) {
 
@@ -158,7 +158,7 @@ func addCoins(
 
 //______________________________________________________________________________________________
 
-func getCoins(ctx sdk.Context, am auth.AccountMapper, addr sdk.Address) types.Coins {
+func getCoins(ctx sdk.Context, am auth.AccountMapper, addr sdk.AccAddress) types.Coins {
 
 	acc := am.GetAccount(ctx, addr)
 
@@ -169,7 +169,7 @@ func getCoins(ctx sdk.Context, am auth.AccountMapper, addr sdk.Address) types.Co
 	return acc.GetCoins()
 }
 
-func setCoins(ctx sdk.Context, am auth.AccountMapper, addr sdk.Address, amt types.Coins) sdk.Error {
+func setCoins(ctx sdk.Context, am auth.AccountMapper, addr sdk.AccAddress, amt types.Coins) sdk.Error {
 
 	acc := am.GetAccount(ctx, addr)
 

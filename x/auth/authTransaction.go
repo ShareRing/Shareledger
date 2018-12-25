@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"strconv"
 
-	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
-	"bitbucket.org/shareringvn/cosmos-sdk/wire"
+	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/tendermint/go-amino"
 
 	"github.com/sharering/shareledger/constants"
 	"github.com/sharering/shareledger/types"
@@ -59,14 +59,14 @@ func (tx AuthTx) VerifySignature() bool {
 }
 
 // JSON decode MsgSend.
-func GetTxDecoder(cdc *wire.Codec) func([]byte) (sdk.Tx, sdk.Error) {
+func GetTxDecoder(cdc *amino.Codec) func([]byte) (sdk.Tx, sdk.Error) {
 	return func(txBytes []byte) (sdk.Tx, sdk.Error) {
 		var tx types.SHRTx
 
 		//fmt.Println("TxDecoder:", txBytes)
 		//err := json.Unmarshal(txBytes, &tx)
 		//err := cdc.UnmarshalJSON(txBytes, &tx)
-		err := cdc.UnmarshalBinary(txBytes, &tx)
+		err := cdc.UnmarshalBinaryLengthPrefixed(txBytes, &tx)
 
 		if err != nil {
 			constants.LOGGER.Error("Error in decoding Tx", "err", err.Error())

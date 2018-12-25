@@ -3,7 +3,7 @@ package pos
 import (
 	"fmt"
 
-	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 
 	"github.com/sharering/shareledger/constants"
 	types "github.com/sharering/shareledger/types"
@@ -52,7 +52,7 @@ func handleMsgCreateValidator(ctx sdk.Context, msg message.MsgCreateValidator, k
 		return posTypes.ErrValidatorOwnerExists(k.Codespace()).Result()
 	}
 	/*
-		_, found = k.GetValidatorByConsAddr(ctx, sdk.Address(msg.PubKey.Address()))
+		_, found = k.GetValidatorByConsAddr(ctx, sdk.AccAddress(msg.PubKey.Address()))
 		if found {
 			return posTypes.ErrValidatorPubKeyExists(k.Codespace()).Result()
 		}*/

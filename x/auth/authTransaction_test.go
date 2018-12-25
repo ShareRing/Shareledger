@@ -7,7 +7,7 @@ import (
 	//"fmt"
 
 	"github.com/btcsuite/btcd/btcec"
-	crypto "github.com/tendermint/go-crypto"
+	crypto "github.com/tendermint/tendermint/crypto"
 
 	"github.com/sharering/shareledger/types"
 	"github.com/sharering/shareledger/x/asset/messages"

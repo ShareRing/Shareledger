@@ -6,11 +6,12 @@ import (
 	"encoding/json"
 	"fmt"
 
-	secp256k1 "github.com/btcsuite/btcd/btcec"
+	"github.com/btcsuite/btcd/btcec"
 	sha3 "github.com/ethereum/go-ethereum/crypto/sha3"
 
-	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
-	crypto "github.com/tendermint/go-crypto"
+	sdk "github.com/cosmos/cosmos-sdk/types"
+	crypto "github.com/tendermint/tendermint/crypto"
+	"github.com/tendermint/tendermint/crypto/secp256k1"
 
 	// Library for test
 	"github.com/landonia/crypto/bip39"
@@ -28,7 +29,7 @@ const (
 //----------------------------------------
 
 type PubKey interface {
-	Address() sdk.Address
+	Address() sdk.AccAddress
 	Bytes() []byte
 	VerifyBytes(msg []byte, sig Signature) bool
 	Equals(PubKey) bool
@@ -62,13 +63,13 @@ func NilPubKeySecp256k1() PubKeySecp256k1 {
 }
 
 // Implements Bitcoin style addresses: RIPEMD160(SHA256(pubkey))
-func (pubKey PubKeySecp256k1) Address() sdk.Address {
+func (pubKey PubKeySecp256k1) Address() sdk.AccAddress {
 	hasherSHA256 := sha3.NewKeccak256()
 	//hasherSHA256.Write([]byte("0x"))
 	hasherSHA256.Write(pubKey[:]) // does not error
 	var sha []byte
 	sha = hasherSHA256.Sum(sha)
-	return sdk.Address(sha[12:])
+	return sdk.AccAddress(sha[12:])
 }
 
 func (pubKey PubKeySecp256k1) Bytes() []byte {
@@ -88,12 +89,12 @@ func (pubKey PubKeySecp256k1) VerifyBytes(msg []byte, sig_ Signature) bool {
 		return false
 	}
 
-	pub__, err := secp256k1.ParsePubKey(pubKey[:], secp256k1.S256())
+	pub__, err := btcec.ParsePubKey(pubKey[:], btcec.S256())
 	if err != nil {
 		return false
 	}
 
-	sig__, err := secp256k1.ParseDERSignature(sig[:], secp256k1.S256())
+	sig__, err := btcec.ParseDERSignature(sig[:], btcec.S256())
 	if err != nil {
 		return false
 	}
@@ -112,10 +113,10 @@ func (pubKey PubKeySecp256k1) Equals(other PubKey) bool {
 	}
 }
 
-func (pubKey PubKeySecp256k1) ToABCIPubKey() crypto.PubKeySecp256k1 {
-	var pk crypto.PubKeySecp256k1
+func (pubKey PubKeySecp256k1) ToABCIPubKey() secp256k1.PubKeySecp256k1 {
+	var pk secp256k1.PubKeySecp256k1
 
-	pub__, err := secp256k1.ParsePubKey(pubKey[:], secp256k1.S256())
+	pub__, err := btcec.ParsePubKey(pubKey[:], btcec.S256())
 
 	if err != nil {
 		panic(err)
@@ -134,7 +135,7 @@ func GetTestPubKey() PubKeySecp256k1 {
 		panic("Error in DecodeString")
 	}
 
-	_, pubKey_ := secp256k1.PrivKeyFromBytes(secp256k1.S256(), pkBytes)
+	_, pubKey_ := btcec.PrivKeyFromBytes(btcec.S256(), pkBytes)
 
 	serPubKey := pubKey_.SerializeUncompressed()
 	var pubKey PubKeySecp256k1
@@ -160,7 +161,7 @@ func GenerateKeyPair() (PubKeySecp256k1, PrivKeySecp256k1) {
 
 	privKeyBytes := crypto.Sha256([]byte(mnemonics.String())) // 32 bytes
 
-	_, pubK := secp256k1.PrivKeyFromBytes(secp256k1.S256(), privKeyBytes)
+	_, pubK := btcec.PrivKeyFromBytes(btcec.S256(), privKeyBytes)
 
 	serPubKey := pubK.SerializeUncompressed()
 
@@ -186,8 +187,8 @@ func ConvertToPubKey(pubKey []byte) PubKeySecp256k1 {
 	// }
 
 	// Convert to PubKey in btcec
-	// btPubKey, err := secp256k1.ParsePubKey(tmPubKey[:], secp256k1.S256())
-	btPubKey, err := secp256k1.ParsePubKey(pubKey[:], secp256k1.S256())
+	// btPubKey, err := btcec.ParsePubKey(tmPubKey[:], btcec.S256())
+	btPubKey, err := btcec.ParsePubKey(pubKey[:], btcec.S256())
 
 	if err != nil {
 		panic("Cannot parse PubKey in Secp256k1")

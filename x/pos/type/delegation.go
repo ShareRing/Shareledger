@@ -3,8 +3,8 @@ package posTypes
 import (
 	"fmt"
 
-	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
-	"bitbucket.org/shareringvn/cosmos-sdk/wire"
+	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/tendermint/go-amino"
 	"github.com/sharering/shareledger/types"
 )
 
@@ -12,8 +12,8 @@ import (
 // owned by one delegator, and is associated with the voting power of one
 // pubKey.
 type Delegation struct {
-	DelegatorAddr    sdk.Address `json:"delegator_addr"`
-	ValidatorAddr    sdk.Address `json:"validator_addr"`
+	DelegatorAddr    sdk.AccAddress `json:"delegator_addr"`
+	ValidatorAddr    sdk.AccAddress `json:"validator_addr"`
 	Shares           types.Dec   `json:"shares"`
 	Height           int64       `json:"height"`           // Last height bond updated
 	RewardAccum      types.Coin  `json:"reward_accum"`     // reward accumulation of this block til withdrawal_height
@@ -36,18 +36,18 @@ type DelegationSummary struct {
 }
 */
 // return the delegation without fields contained within the key for the store
-func MustMarshalDelegation(cdc *wire.Codec, delegation Delegation) []byte {
+func MustMarshalDelegation(cdc *amino.Codec, delegation Delegation) []byte {
 	val := delegationValue{
 		delegation.Shares,
 		delegation.Height,
 		delegation.RewardAccum,
 		delegation.WithdrawalHeight,
 	}
-	return cdc.MustMarshalBinary(val)
+	return cdc.MustMarshalBinaryLengthPrefixed(val)
 }
 
 // return the delegation without fields contained within the key for the store
-func MustUnmarshalDelegation(cdc *wire.Codec, key, value []byte) Delegation {
+func MustUnmarshalDelegation(cdc *amino.Codec, key, value []byte) Delegation {
 	delegation, err := UnmarshalDelegation(cdc, key, value)
 	if err != nil {
 		panic(err)
@@ -56,9 +56,9 @@ func MustUnmarshalDelegation(cdc *wire.Codec, key, value []byte) Delegation {
 }
 
 // return the delegation without fields contained within the key for the store
-func UnmarshalDelegation(cdc *wire.Codec, key, value []byte) (delegation Delegation, err error) {
+func UnmarshalDelegation(cdc *amino.Codec, key, value []byte) (delegation Delegation, err error) {
 	var storeValue delegationValue
-	err = cdc.UnmarshalBinary(value, &storeValue)
+	err = cdc.UnmarshalBinaryLengthPrefixed(value, &storeValue)
 	if err != nil {
 		//err = fmt.Errorf("%v: %v", ErrNoDelegation(DefaultCodespace).Data(), err)
 		return
@@ -70,8 +70,8 @@ func UnmarshalDelegation(cdc *wire.Codec, key, value []byte) (delegation Delegat
 		return
 	}
 
-	delAddr := sdk.Address(addrs[:types.ADDRESSLENGTH])
-	valAddr := sdk.Address(addrs[types.ADDRESSLENGTH:])
+	delAddr := sdk.AccAddress(addrs[:types.ADDRESSLENGTH])
+	valAddr := sdk.AccAddress(addrs[types.ADDRESSLENGTH:])
 
 	return Delegation{
 		DelegatorAddr:    delAddr,
@@ -87,8 +87,8 @@ func UnmarshalDelegation(cdc *wire.Codec, key, value []byte) (delegation Delegat
 // var _ sdk.Delegation = Delegation{}
 
 // nolint - for sdk.Delegation
-func (b Delegation) GetDelegator() sdk.Address { return b.DelegatorAddr }
-func (b Delegation) GetValidator() sdk.Address { return b.ValidatorAddr }
+func (b Delegation) GetDelegator() sdk.AccAddress { return b.DelegatorAddr }
+func (b Delegation) GetValidator() sdk.AccAddress { return b.ValidatorAddr }
 func (b Delegation) GetBondShares() types.Dec  { return b.Shares }
 
 // UpdateDelReward updating reward accumulation
@@ -125,8 +125,8 @@ func (b Delegation) HumanReadableString() (string, error) {
 
 // UnbondingDelegation reflects a delegation's passive unbonding queue.
 type UnbondingDelegation struct {
-	DelegatorAddr  sdk.Address `json:"delegator_addr"`  // delegator
-	ValidatorAddr  sdk.Address `json:"validator_addr"`  // validator unbonding from operator addr
+	DelegatorAddr  sdk.AccAddress `json:"delegator_addr"`  // delegator
+	ValidatorAddr  sdk.AccAddress `json:"validator_addr"`  // validator unbonding from operator addr
 	CreationHeight int64       `json:"creation_height"` // height which the unbonding took place
 	MinTime        int64       `json:"min_time"`        // unix time for unbonding completion  /*time.Time*/
 	InitialBalance types.Coin  `json:"initial_balance"` // atoms initially scheduled to receive at completion
@@ -141,18 +141,18 @@ type ubdValue struct {
 }
 
 // return the unbonding delegation without fields contained within the key for the store
-func MustMarshalUBD(cdc *wire.Codec, ubd UnbondingDelegation) []byte {
+func MustMarshalUBD(cdc *amino.Codec, ubd UnbondingDelegation) []byte {
 	val := ubdValue{
 		ubd.CreationHeight,
 		ubd.MinTime,
 		ubd.InitialBalance,
 		ubd.Balance,
 	}
-	return cdc.MustMarshalBinary(val)
+	return cdc.MustMarshalBinaryLengthPrefixed(val)
 }
 
 // unmarshal a unbonding delegation from a store key and value
-func MustUnmarshalUBD(cdc *wire.Codec, key, value []byte) UnbondingDelegation {
+func MustUnmarshalUBD(cdc *amino.Codec, key, value []byte) UnbondingDelegation {
 	ubd, err := UnmarshalUBD(cdc, key, value)
 	if err != nil {
 		panic(err)
@@ -161,9 +161,9 @@ func MustUnmarshalUBD(cdc *wire.Codec, key, value []byte) UnbondingDelegation {
 }
 
 // unmarshal a unbonding delegation from a store key and value
-func UnmarshalUBD(cdc *wire.Codec, key, value []byte) (ubd UnbondingDelegation, err error) {
+func UnmarshalUBD(cdc *amino.Codec, key, value []byte) (ubd UnbondingDelegation, err error) {
 	var storeValue ubdValue
-	err = cdc.UnmarshalBinary(value, &storeValue)
+	err = cdc.UnmarshalBinaryLengthPrefixed(value, &storeValue)
 	if err != nil {
 		return
 	}
@@ -173,8 +173,8 @@ func UnmarshalUBD(cdc *wire.Codec, key, value []byte) (ubd UnbondingDelegation, 
 		//err = fmt.Errorf("%v", ErrBadDelegationAddr(DefaultCodespace).Data())
 		return
 	}
-	delAddr := sdk.Address(addrs[:types.ADDRESSLENGTH])
-	valAddr := sdk.Address(addrs[types.ADDRESSLENGTH:])
+	delAddr := sdk.AccAddress(addrs[:types.ADDRESSLENGTH])
+	valAddr := sdk.AccAddress(addrs[types.ADDRESSLENGTH:])
 
 	return UnbondingDelegation{
 		DelegatorAddr:  delAddr,
@@ -188,9 +188,9 @@ func UnmarshalUBD(cdc *wire.Codec, key, value []byte) (ubd UnbondingDelegation, 
 
 // Redelegation reflects a delegation's passive re-delegation queue.
 type Redelegation struct {
-	DelegatorAddr    sdk.Address `json:"delegator_addr"`     // delegator
-	ValidatorSrcAddr sdk.Address `json:"validator_src_addr"` // validator redelegation source operator addr
-	ValidatorDstAddr sdk.Address `json:"validator_dst_addr"` // validator redelegation destination operator addr
+	DelegatorAddr    sdk.AccAddress `json:"delegator_addr"`     // delegator
+	ValidatorSrcAddr sdk.AccAddress `json:"validator_src_addr"` // validator redelegation source operator addr
+	ValidatorDstAddr sdk.AccAddress `json:"validator_dst_addr"` // validator redelegation destination operator addr
 	CreationHeight   int64       `json:"creation_height"`    // height which the redelegation took place
 	MinTime          int64       `json:"min_time"`           // unix time for redelegation completion
 	InitialBalance   types.Coin  `json:"initial_balance"`    // initial balance when redelegation started
@@ -209,7 +209,7 @@ type redValue struct {
 }
 
 // return the redelegation without fields contained within the key for the store
-func MustMarshalRED(cdc *wire.Codec, red Redelegation) []byte {
+func MustMarshalRED(cdc *amino.Codec, red Redelegation) []byte {
 	val := redValue{
 		red.CreationHeight,
 		red.MinTime,
@@ -218,11 +218,11 @@ func MustMarshalRED(cdc *wire.Codec, red Redelegation) []byte {
 		red.SharesSrc,
 		red.SharesDst,
 	}
-	return cdc.MustMarshalBinary(val)
+	return cdc.MustMarshalBinaryLengthPrefixed(val)
 }
 
 // unmarshal a redelegation from a store key and value
-func MustUnmarshalRED(cdc *wire.Codec, key, value []byte) Redelegation {
+func MustUnmarshalRED(cdc *amino.Codec, key, value []byte) Redelegation {
 	red, err := UnmarshalRED(cdc, key, value)
 	if err != nil {
 		panic(err)
@@ -231,9 +231,9 @@ func MustUnmarshalRED(cdc *wire.Codec, key, value []byte) Redelegation {
 }
 
 // unmarshal a redelegation from a store key and value
-func UnmarshalRED(cdc *wire.Codec, key, value []byte) (red Redelegation, err error) {
+func UnmarshalRED(cdc *amino.Codec, key, value []byte) (red Redelegation, err error) {
 	var storeValue redValue
-	err = cdc.UnmarshalBinary(value, &storeValue)
+	err = cdc.UnmarshalBinaryLengthPrefixed(value, &storeValue)
 	if err != nil {
 		return
 	}
@@ -243,9 +243,9 @@ func UnmarshalRED(cdc *wire.Codec, key, value []byte) (red Redelegation, err err
 		//err = fmt.Errorf("%v", posTypes.ErrBadRedelegationAddr(DefaultCodespace).Data())
 		return
 	}
-	delAddr := sdk.Address(addrs[:types.ADDRESSLENGTH])
-	valSrcAddr := sdk.Address(addrs[types.ADDRESSLENGTH : 2*types.ADDRESSLENGTH])
-	valDstAddr := sdk.Address(addrs[2*types.ADDRESSLENGTH:])
+	delAddr := sdk.AccAddress(addrs[:types.ADDRESSLENGTH])
+	valSrcAddr := sdk.AccAddress(addrs[types.ADDRESSLENGTH : 2*types.ADDRESSLENGTH])
+	valDstAddr := sdk.AccAddress(addrs[2*types.ADDRESSLENGTH:])
 
 	return Redelegation{
 		DelegatorAddr:    delAddr,

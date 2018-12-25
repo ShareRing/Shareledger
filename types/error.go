@@ -156,7 +156,7 @@ type Error interface {
 	ABCICode() ABCICodeType
 	WithDefaultCodespace(codespace CodespaceType) Error
 	Trace(msg string) Error
-	T() interface{}
+	// T() interface{}
 	Result() Result
 	QueryResult() abci.ResponseQuery
 }
@@ -170,14 +170,14 @@ func newErrorWithRootCodespace(code CodeType, msg string) *sdkError {
 	return newError(CodespaceRoot, code, msg)
 }
 
-func newError(codespace CodespaceType, code CodeType, msg string) *sdkError {
-	if msg == "" {
-		msg = CodeToDefaultMsg(code)
+func newError(codespace CodespaceType, code CodeType, format string, args ...interface{}) *sdkError {
+	if format == "" {
+		format = CodeToDefaultMsg(code)
 	}
 	return &sdkError{
 		codespace: codespace,
 		code:      code,
-		err:       cmn.NewErrorWithT(code, msg),
+		err:       cmn.NewError(format, args...),
 	}
 }
 
@@ -223,7 +223,7 @@ func (err *sdkError) Trace(msg string) Error {
 	return &sdkError{
 		codespace: err.codespace,
 		code:      err.code,
-		err:       err.err.Trace(msg),
+		err:       err.err.Trace(0, msg),
 	}
 }
 
@@ -240,9 +240,9 @@ func (err *sdkError) WithDefaultCodespace(cs CodespaceType) Error {
 	}
 }
 
-func (err *sdkError) T() interface{} {
-	return err.err.T()
-}
+// func (err *sdkError) T() interface{} {
+// 	return err.err.T()
+// }
 
 func (err *sdkError) Result() Result {
 	return Result{

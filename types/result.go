@@ -2,7 +2,7 @@ package types
 
 
 import (
-	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 // Result is the union of ResponseDeliverTx and ResponseCheckTx.
 type Result struct {

@@ -5,7 +5,7 @@ import (
 
 	"github.com/pkg/errors"
 
-	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	abci "github.com/tendermint/abci/types"
 
 	"github.com/sharering/shareledger/constants"

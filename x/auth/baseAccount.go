@@ -5,7 +5,7 @@ import (
 	"errors"
 	"fmt"
 
-	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	constants "github.com/sharering/shareledger/constants"
 
 	"github.com/sharering/shareledger/types"
@@ -16,8 +16,8 @@ import (
 type BaseAccount interface {
 	types.Account
 
-	GetAddress() sdk.Address
-	SetAddress(sdk.Address) error // errors if already set
+	GetAddress() sdk.AccAddress
+	SetAddress(sdk.AccAddress) error // errors if already set
 
 	GetPubKey() types.PubKey // can return nil
 	SetPubKey(types.PubKey) error
@@ -36,14 +36,14 @@ var _ BaseAccount = (*SHRAccount)(nil)
 
 // SHRAccount - a ShareLedger account
 type SHRAccount struct {
-	Address sdk.Address  `json:"address"`
+	Address sdk.AccAddress  `json:"address"`
 	Coins   types.Coins  `json:"coins"`
 	PubKey  types.PubKey `json:"pub_key"`
 	Nonce   int64        `json:"nonce"`
 }
 
 // NewSHRAccountWithAddress create  a SHRAccount with address
-func NewSHRAccountWithAddress(addr sdk.Address) *SHRAccount {
+func NewSHRAccountWithAddress(addr sdk.AccAddress) *SHRAccount {
 	return &SHRAccount{
 		Address: addr,
 		Coins:   types.NewDefaultCoins(),
@@ -60,11 +60,11 @@ func (acc SHRAccount) String() string {
 	}
 }
 
-func (acc SHRAccount) GetAddress() sdk.Address {
+func (acc SHRAccount) GetAddress() sdk.AccAddress {
 	return acc.Address
 }
 
-func (acc *SHRAccount) SetAddress(addr sdk.Address) error {
+func (acc *SHRAccount) SetAddress(addr sdk.AccAddress) error {
 	if len(acc.Address) != 0 {
 		return errors.New(constants.SHRACCOUNT_INVALID_ADDRESS)
 	}

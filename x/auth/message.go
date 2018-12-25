@@ -1,7 +1,7 @@
 package auth
 
 import (
-	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	"fmt"
 
 	"github.com/sharering/shareledger/constants"
@@ -10,12 +10,16 @@ import (
 var _ sdk.Msg = MsgNonce{}
 
 type MsgNonce struct {
-	Address sdk.Address `json:"address"`
+	Address sdk.AccAddress `json:"address"`
 }
 
 
-func NewMsgNonce(account sdk.Address) MsgNonce {
+func NewMsgNonce(account sdk.AccAddress) MsgNonce {
 	return MsgNonce{account}
+}
+
+func (msg MsgNonce) Route() string {
+	return constants.MESSAGE_AUTH
 }
 
 func (msg MsgNonce) Type() string {
@@ -37,8 +41,8 @@ func (msg MsgNonce) String() string {
 	return fmt.Sprintf("Auth/MsgNonce{%s}", msg.Address)
 }
 
-func (msg MsgNonce) GetSigners() []sdk.Address {
-	return []sdk.Address{}
+func (msg MsgNonce) GetSigners() []sdk.AccAddress {
+	return []sdk.AccAddress{}
 }
 
 func (msg MsgNonce) Tags() sdk.Tags {

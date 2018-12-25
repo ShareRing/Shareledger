@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/sharering/shareledger/constants"
 	tags "github.com/sharering/shareledger/x/booking/tags"
 )
@@ -19,6 +19,10 @@ func NewMsgComplete(bookingId string) MsgComplete {
 	return MsgComplete{
 		BookingID: bookingId,
 	}
+}
+
+func (msg MsgComplete) Route() string {
+	return constants.MESSAGE_BOOKING
 }
 
 func (msg MsgComplete) Type() string {
@@ -48,9 +52,9 @@ func (msg MsgComplete) String() string {
 	return fmt.Sprintf("Booking/MsgComplete{BookingID: %s}", msg.BookingID)
 }
 
-func (msg MsgComplete) GetSigners() []sdk.Address {
-	//return []sdk.Address{msg.Renter}
-	return []sdk.Address{}
+func (msg MsgComplete) GetSigners() []sdk.AccAddress {
+	//return []sdk.AccAddress{msg.Renter}
+	return []sdk.AccAddress{}
 }
 
 func (msg MsgComplete) Tags() sdk.Tags {

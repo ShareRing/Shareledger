@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 
 	"github.com/sharering/shareledger/constants"
 	"github.com/sharering/shareledger/types"
@@ -66,8 +66,8 @@ func (msg MsgCreate) String() string {
 	return fmt.Sprintf("ExchangeRate/MsgCreate{%s}", msg.GetSignBytes())
 }
 
-func (msg MsgCreate) GetSigners() []sdk.Address {
-	return []sdk.Address{}
+func (msg MsgCreate) GetSigners() []sdk.AccAddress {
+	return []sdk.AccAddress{}
 }
 
 func (msg MsgCreate) Tags() sdk.Tags {

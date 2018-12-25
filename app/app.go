@@ -9,9 +9,9 @@ import (
 	dbm "github.com/tendermint/tmlibs/db"
 	"github.com/tendermint/tmlibs/log"
 
-	bapp "bitbucket.org/shareringvn/cosmos-sdk/baseapp"
-	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
-	"bitbucket.org/shareringvn/cosmos-sdk/wire"
+	bapp "github.com/cosmos/cosmos-sdk/baseapp"
+	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/tendermint/go-amino"
 
 	"github.com/sharering/shareledger/constants"
 	"github.com/sharering/shareledger/types"
@@ -36,7 +36,7 @@ var (
 
 type ShareLedgerApp struct {
 	*bapp.BaseApp
-	cdc *wire.Codec
+	cdc *amino.Codec
 
 	// keys to access the substores
 	assetKey   *sdk.KVStoreKey
@@ -224,8 +224,8 @@ func EndBlocker(am auth.AccountMapper, keeper pKeeper.Keeper) sdk.EndBlocker {
 	}
 }
 
-func MakeCodec() *wire.Codec {
-	cdc := wire.NewCodec()
+func MakeCodec() *amino.Codec {
+	cdc := amino.NewCodec()
 	cdc.RegisterInterface((*types.SHRTx)(nil), nil)
 	cdc.RegisterConcrete(types.BasicTx{}, "shareledger/BasicTx", nil)
 	cdc.RegisterConcrete(auth.AuthTx{}, "shareledger/AuthTx", nil)

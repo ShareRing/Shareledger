@@ -1,5 +1,5 @@
 PACKAGES=$(shell go list ./... | grep -v '/vendor/')
-PACKAGES_NOCLITEST=$(shell go list ./... | grep -v '/vendor/' | grep -v bitbucket.org/shareringvn/cosmos-sdk/cmd/gaia/cli_test)
+PACKAGES_NOCLITEST=$(shell go list ./... | grep -v '/vendor/' | grep -v github.com/cosmos/cosmos-sdk/cmd/gaia/cli_test)
 COMMIT_HASH:=$(shell git rev-parse --short HEAD)
 BUILD_FLAGS=-ldflags "-X github.com/sharering/shareledger/version.GitCommit=${COMMIT_HASH}"
 

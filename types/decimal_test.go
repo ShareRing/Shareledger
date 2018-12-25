@@ -288,7 +288,7 @@ func TestSerializationGocodecBinary(t *testing.T) {
 	require.NoError(t, err)
 
 	var d2 Dec
-	err = cdc.UnmarshalBinary(bz, &d2)
+	err = cdc.UnmarshalBinaryLengthPrefixed(bz, &d2)
 	require.NoError(t, err)
 	require.True(t, d.Equal(d2), "original: %v, unmarshalled: %v", d, d2)
 }
@@ -306,7 +306,7 @@ func TestEmbeddedStructSerializationGocodec(t *testing.T) {
 	require.Nil(t, err)
 
 	var obj2 testDEmbedStruct
-	err = cdc.UnmarshalBinary(bz, &obj2)
+	err = cdc.UnmarshalBinaryLengthPrefixed(bz, &obj2)
 	require.Nil(t, err)
 
 	require.Equal(t, obj.Field1, obj2.Field1)

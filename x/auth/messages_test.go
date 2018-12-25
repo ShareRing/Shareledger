@@ -3,8 +3,8 @@ package auth
 import (
 	"testing"
 
-	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
-	"bitbucket.org/shareringvn/cosmos-sdk/wire"
+	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/tendermint/go-amino"
 
 	"github.com/sharering/shareledger/types"
 )
@@ -20,7 +20,7 @@ func TestQueryTransaction(t *testing.T) {
 	queryTx := types.NewQueryTx(nonceMsg)
 
 	// register codec
-	cdc := wire.NewCodec()
+	cdc := amino.NewCodec()
 	cdc.RegisterInterface((*types.SHRTx)(nil), nil)
 	cdc.RegisterConcrete(types.BasicTx{}, "shareledger/BasicTx", nil)
 	cdc.RegisterConcrete(types.QueryTx{}, "shareledger/QueryTx", nil)

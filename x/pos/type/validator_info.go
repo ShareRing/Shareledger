@@ -3,8 +3,8 @@ package posTypes
 import (
 	"fmt"
 
-	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
-	"bitbucket.org/shareringvn/cosmos-sdk/wire"
+	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/tendermint/go-amino"
 
 	"github.com/sharering/shareledger/types"
 )
@@ -20,7 +20,7 @@ import (
 // * Commission = Commission kept by this Validator
 
 type ValidatorDistInfo struct {
-	ValidatorAddr    sdk.Address `json:"validator_addr"`    // Validator Address
+	ValidatorAddr    sdk.AccAddress `json:"validator_addr"`    // Validator Address
 	RewardAccum      types.Coin  `json:"reward_accum"`      // Block Reward accumulation since BlockHeight, excluding commission
 	Commission       types.Coin  `json:"commision"`         // total commission
 	WithdrawalHeight int64       `json:"withdrawal_height"` // Latest blockheight that performs reward distribution
@@ -29,7 +29,7 @@ type ValidatorDistInfo struct {
 
 // NewValidatorDistInfo - return new ValidatorDistInfo
 func NewValidatorDistInfo(
-	validatorAddress sdk.Address,
+	validatorAddress sdk.AccAddress,
 	currentHeight int64,
 ) ValidatorDistInfo {
 	return ValidatorDistInfo{
@@ -42,17 +42,17 @@ func NewValidatorDistInfo(
 }
 
 func MustMarshalValidatorDist(
-	cdc *wire.Codec, vdi ValidatorDistInfo,
+	cdc *amino.Codec, vdi ValidatorDistInfo,
 ) []byte {
-	return cdc.MustMarshalBinary(vdi)
+	return cdc.MustMarshalBinaryLengthPrefixed(vdi)
 }
 
 func UnmarshalValidatorDist(
-	cdc *wire.Codec, value []byte,
+	cdc *amino.Codec, value []byte,
 ) (
 	vdi ValidatorDistInfo, err error,
 ) {
-	err = cdc.UnmarshalBinary(value, &vdi)
+	err = cdc.UnmarshalBinaryLengthPrefixed(value, &vdi)
 	if err != nil {
 		return
 	}
@@ -61,7 +61,7 @@ func UnmarshalValidatorDist(
 }
 
 func MustUnmarshalValidatorDist(
-	cdc *wire.Codec, value []byte,
+	cdc *amino.Codec, value []byte,
 ) ValidatorDistInfo {
 	vdi, err := UnmarshalValidatorDist(cdc, value)
 	if err != nil {

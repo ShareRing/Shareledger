@@ -5,9 +5,10 @@ import (
 	"encoding/hex"
 	"fmt"
 
-	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/btcsuite/btcd/btcec"
-	crypto "github.com/tendermint/go-crypto"
+	crypto "github.com/tendermint/tendermint/crypto"
+	"github.com/tendermint/tendermint/crypto/secp256k1"
 )
 
 type PrivKey interface {
@@ -98,7 +99,7 @@ func (privKey PrivKeySecp256k1) PubKey() PubKeySecp256k1 {
 }
 
 func ConvertToPrivKey(privKey crypto.PrivKey) PrivKeySecp256k1 {
-	privK, ok := privKey.(crypto.PrivKeySecp256k1)
+	privK, ok := privKey.(secp256k1.PrivKeySecp256k1)
 
 	if !ok {
 		panic("PrivateKey is not of type Secp256k1")
@@ -109,7 +110,7 @@ func ConvertToPrivKey(privKey crypto.PrivKey) PrivKeySecp256k1 {
 	return privateKey
 }
 
-func GetCryptoPrivKey(input string) crypto.PrivKeySecp256k1 {
+func GetCryptoPrivKey(input string) secp256k1.PrivKeySecp256k1 {
 	privKeyBytes, err := hex.DecodeString(input)
 
 	if err != nil {
@@ -120,5 +121,5 @@ func GetCryptoPrivKey(input string) crypto.PrivKeySecp256k1 {
 
 	privKey32 := [32]byte{}
 	copy(privKey32[:], privK.Serialize())
-	return crypto.PrivKeySecp256k1(privKey32)
+	return secp256k1.PrivKeySecp256k1(privKey32)
 }

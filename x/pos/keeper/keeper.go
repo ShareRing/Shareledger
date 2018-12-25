@@ -4,24 +4,24 @@ import (
 	"bytes"
 	"sort"
 
-	"bitbucket.org/shareringvn/cosmos-sdk/wire"
 	"github.com/sharering/shareledger/types"
 	bank "github.com/sharering/shareledger/x/bank"
 	posTypes "github.com/sharering/shareledger/x/pos/type"
+	"github.com/tendermint/go-amino"
 
-	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
 type Keeper struct {
 	storeKey   sdk.StoreKey
-	cdc        *wire.Codec
+	cdc        *amino.Codec
 	bankKeeper bank.Keeper
 
 	// codespace
 	codespace sdk.CodespaceType
 }
 
-func NewKeeper(posKey sdk.StoreKey, bk bank.Keeper, cdc *wire.Codec) Keeper {
+func NewKeeper(posKey sdk.StoreKey, bk bank.Keeper, cdc *amino.Codec) Keeper {
 	keeper := Keeper{
 		storeKey:   posKey,
 		cdc:        cdc,
@@ -56,7 +56,7 @@ func (k Keeper) GetParams(ctx sdk.Context) (params posTypes.Params) {
 func (k Keeper) SetParams(ctx sdk.Context, params posTypes.Params) {
 	store := ctx.KVStore(k.storeKey)
 
-	b := k.cdc.MustMarshalBinary(params)
+	b := k.cdc.MustMarshalBinaryLengthPrefixed(params)
 
 	store.Set(ParamKey, b)
 
@@ -85,27 +85,27 @@ func (k Keeper) GetIntraTxCounter(ctx sdk.Context) int16 {
 // set the current in-block validator operation counter
 func (k Keeper) SetIntraTxCounter(ctx sdk.Context, counter int16) {
 	store := ctx.KVStore(k.storeKey)
-	bz := k.cdc.MustMarshalBinary(counter)
+	bz := k.cdc.MustMarshalBinaryLengthPrefixed(counter)
 	store.Set(IntraTxCounterKey, bz)
 }
 
 // Set the last total validator power.
 func (k Keeper) SetLastTotalPower(ctx sdk.Context, power sdk.Int) {
 	store := ctx.KVStore(k.storeKey)
-	b := k.cdc.MustMarshalBinary(power)
+	b := k.cdc.MustMarshalBinaryLengthPrefixed(power)
 	store.Set(LastTotalPowerKey, b)
 }
 
 // Delete the last validator power.
-func (k Keeper) DeleteLastValidatorPower(ctx sdk.Context, operator sdk.Address) {
+func (k Keeper) DeleteLastValidatorPower(ctx sdk.Context, operator sdk.AccAddress) {
 	store := ctx.KVStore(k.storeKey)
 	store.Delete(GetLastValidatorPowerKey(operator))
 }
 
 // Set the last validator power.
-func (k Keeper) SetLastValidatorPower(ctx sdk.Context, operator sdk.Address, power sdk.Int) {
+func (k Keeper) SetLastValidatorPower(ctx sdk.Context, operator sdk.AccAddress, power sdk.Int) {
 	store := ctx.KVStore(k.storeKey)
-	bz := k.cdc.MustMarshalBinary(power)
+	bz := k.cdc.MustMarshalBinaryLengthPrefixed(power)
 	store.Set(GetLastValidatorPowerKey(operator), bz)
 }
 
