@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/sharering/shareledger/constants"
 	types "github.com/sharering/shareledger/types"
 	posTypes "github.com/sharering/shareledger/x/pos/type"
 )
@@ -15,7 +16,7 @@ type MsgBeginRedelegate struct {
 	DelegatorAddr    sdk.AccAddress `json:"delegatorAddress"`
 	ValidatorSrcAddr sdk.AccAddress `json:"validatorSrcAddress"`
 	ValidatorDstAddr sdk.AccAddress `json:"validatorDstAddress"`
-	SharesAmount     types.Dec   `json:"shareAmount"`
+	SharesAmount     types.Dec      `json:"shareAmount"`
 }
 
 func NewMsgBeginRedelegate(delAddr sdk.AccAddress, valSrcAddr,
@@ -31,7 +32,8 @@ func NewMsgBeginRedelegate(delAddr sdk.AccAddress, valSrcAddr,
 
 //nolint
 
-func (msg MsgBeginRedelegate) Type() string { return "BeginRedelegate" }
+func (msg MsgBeginRedelegate) Type() string  { return "BeginRedelegate" }
+func (msg MsgBeginRedelegate) Route() string { return constants.MESSAGE_POS }
 func (msg MsgBeginRedelegate) GetSigners() []sdk.AccAddress {
 	return []sdk.AccAddress{msg.DelegatorAddr}
 }
@@ -42,7 +44,7 @@ func (msg MsgBeginRedelegate) GetSignBytes() []byte {
 		DelegatorAddr    sdk.AccAddress `json:"delegatorAddress"`
 		ValidatorSrcAddr sdk.AccAddress `json:"validatorSrcAddress"`
 		ValidatorDstAddr sdk.AccAddress `json:"validatorDstAddress"`
-		SharesAmount     string      `json:"shareAmount"`
+		SharesAmount     string         `json:"shareAmount"`
 	}{
 		DelegatorAddr:    msg.DelegatorAddr,
 		ValidatorSrcAddr: msg.ValidatorSrcAddr,
@@ -90,7 +92,8 @@ func NewMsgCompleteRedelegate(delegatorAddr, validatorSrcAddr,
 }
 
 //nolint
-func (msg MsgCompleteRedelegate) Type() string { return "CompleteRedelegate" }
+func (msg MsgCompleteRedelegate) Type() string  { return constants.MESSAGE_POS }
+func (msg MsgCompleteRedelegate) Route() string { return constants.MESSAGE_POS }
 func (msg MsgCompleteRedelegate) GetSigners() []sdk.AccAddress {
 	return []sdk.AccAddress{msg.DelegatorAddr}
 }

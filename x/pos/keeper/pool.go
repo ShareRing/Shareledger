@@ -12,7 +12,7 @@ func (k Keeper) GetPool(ctx sdk.Context) (pool posTypes.Pool) {
 	if b == nil {
 		panic("Stored pool should not have been nil")
 	}
-	k.cdc.MustUnmarshalBinary(b, &pool)
+	k.cdc.MustUnmarshalBinaryLengthPrefixed(b, &pool)
 	return
 }
 

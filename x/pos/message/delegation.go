@@ -13,7 +13,7 @@ import (
 type MsgDelegate struct {
 	DelegatorAddr sdk.AccAddress `json:"delegatorAddress"`
 	ValidatorAddr sdk.AccAddress `json:"validatorAddress"`
-	Delegation    types.Coin  `json:"delegation"`
+	Delegation    types.Coin     `json:"delegation"`
 }
 
 func NewMsgDelegate(delAddr sdk.AccAddress, valAddr sdk.AccAddress, delegation types.Coin) MsgDelegate {
@@ -28,6 +28,8 @@ var _ sdk.Msg = MsgDelegate{}
 
 //nolint
 func (msg MsgDelegate) Type() string { return constants.MESSAGE_POS }
+
+func (msg MsgDelegate) Route() string { return constants.MESSAGE_POS }
 
 func (msg MsgDelegate) GetSigners() []sdk.AccAddress {
 	return []sdk.AccAddress{msg.DelegatorAddr}

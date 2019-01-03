@@ -6,7 +6,7 @@ import (
 	"fmt"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	abci "github.com/tendermint/abci/types"
+	abci "github.com/tendermint/tendermint/abci/types"
 
 	"github.com/sharering/shareledger/types"
 	posTypes "github.com/sharering/shareledger/x/pos/type"
@@ -188,7 +188,7 @@ func (k Keeper) beginUnbondingValidator(ctx sdk.Context, validator posTypes.Vali
 	validator, pool = validator.UpdateStatus(pool, types.Unbonding)
 	k.SetPool(ctx, pool)
 
-	validator.UnbondingMinTime = ctx.BlockHeader().Time + int64(params.UnbondingTime)
+	validator.UnbondingMinTime = ctx.BlockHeader().Time.Add(params.UnbondingTime)
 	validator.UnbondingHeight = ctx.BlockHeader().Height
 
 	// save the now unbonded validator record and power index
@@ -237,14 +237,14 @@ func (k Keeper) unbondingToUnbonded(ctx sdk.Context, validator posTypes.Validato
 	return k.completeUnbondingValidator(ctx, validator)
 }
 
-func (k Keeper) GetValidatorSetUpdates(ctx sdk.Context) []abci.Validator {
+func (k Keeper) GetValidatorSetUpdates(ctx sdk.Context) []abci.ValidatorUpdate {
 	/*var abciValidators []abci.Validator
 	validators := k.GetValidators(ctx, 100)
 	for _, val := range validators {
 		abciValidators = append(abciValidators, val.ABCIValidator())
 	}
 	return abciValidators*/
-	var updates []abci.Validator
+	var updates []abci.ValidatorUpdate
 	store := ctx.KVStore(k.storeKey)
 	maxValidators := k.GetParams(ctx).MaxValidators
 	totalPower := sdk.ZeroInt()
@@ -300,7 +300,7 @@ func (k Keeper) GetValidatorSetUpdates(ctx sdk.Context) []abci.Validator {
 		// update the validator set if power has changed
 		if !found || !bytes.Equal(oldPowerBytes, newPowerBytes) {
 			fmt.Printf("Found! %X\n", validator.Owner)
-			updates = append(updates, validator.ABCIValidator())
+			updates = append(updates, validator.ABCIValidatorUpdate())
 
 			// Assert that the validator had updated its ValidatorDistInfo.FeePoolWithdrawalHeight.
 			// This hook is extremely useful, otherwise lazy accum bugs will be difficult to solve.
@@ -319,9 +319,7 @@ func (k Keeper) GetValidatorSetUpdates(ctx sdk.Context) []abci.Validator {
 		count++
 		totalPower = totalPower.Add(sdk.NewInt(newPower))
 	}
-	for _, val := range updates {
-		fmt.Printf("Validator Update/validator Address=%X Power=%d\n", val.Address, val.Power)
-	}
+
 	// sort the no-longer-bonded validators
 	noLongerBonded := k.sortNoLongerBonded(last)
 
@@ -347,9 +345,10 @@ func (k Keeper) GetValidatorSetUpdates(ctx sdk.Context) []abci.Validator {
 	if len(updates) > 0 {
 		k.SetLastTotalPower(ctx, totalPower)
 	}
-	for _, val := range updates {
-		fmt.Printf("Validator Update/validator Address=%X Power=%d\n", val.Address, val.Power)
-	}
+	/*
+		for _, val := range updates {
+			fmt.Printf("Validator Update/validator Address=%X Power=%d\n", val.Owner, val.Power)
+		}*/
 	return updates
 
 }

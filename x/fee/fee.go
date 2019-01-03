@@ -13,7 +13,9 @@ import (
 	"github.com/sharering/shareledger/x/exchange"
 )
 
-func NewFeeHandler(am auth.AccountMapper, exchangeKey *sdk.KVStoreKey) sdk.FeeHandler {
+type FeeHandler func(sdk.Context, sdk.Result) (sdk.Result, bool)
+
+func NewFeeHandler(am auth.AccountMapper, exchangeKey *sdk.KVStoreKey) FeeHandler {
 	return func(
 		ctx sdk.Context,
 		result sdk.Result,

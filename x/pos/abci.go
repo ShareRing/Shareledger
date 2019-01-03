@@ -5,14 +5,14 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/sharering/shareledger/x/pos/keeper"
-	abci "github.com/tendermint/abci/types"
+	abci "github.com/tendermint/tendermint/abci/types"
 
 	"github.com/sharering/shareledger/constants"
 	"github.com/sharering/shareledger/types"
 	posTypes "github.com/sharering/shareledger/x/pos/type"
 )
 
-func EndBlocker(ctx sdk.Context, k keeper.Keeper, proposer types.PubKeySecp256k1) []abci.Validator {
+func EndBlocker(ctx sdk.Context, k keeper.Keeper, proposer types.PubKeySecp256k1) []abci.ValidatorUpdate {
 
 	// Proposer exists
 	if !proposer.Equals(types.NilPubKeySecp256k1()) {
@@ -47,14 +47,14 @@ func EndBlocker(ctx sdk.Context, k keeper.Keeper, proposer types.PubKeySecp256k1
 		// fmt.Printf("ValidatorDistInfo: %v\n", vdi.HumanReadableString())
 	}
 
-	var valUpdates []abci.Validator
+	var valUpdates []abci.ValidatorUpdate
 	if ValidatorChanged {
 		valUpdates = k.GetValidatorSetUpdates(ctx) //work-around to get all ABCIValidators -> need to update
-		for _, val := range valUpdates {
+		/*for _, val := range valUpdates {
 			fmt.Printf("Validator Update/abci Address=%X Power=%d\n", val.Address, val.Power)
-		}
+		}*/
 	} else {
-		valUpdates = []abci.Validator{}
+		valUpdates = []abci.ValidatorUpdate{}
 	}
 	//TODO: return updated Validators list
 	return valUpdates

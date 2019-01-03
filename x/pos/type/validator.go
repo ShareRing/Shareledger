@@ -5,15 +5,17 @@ import (
 	"fmt"
 	"math"
 	"sort"
+	"time"
 
-	abci "github.com/tendermint/abci/types"
-	crypto "github.com/tendermint/tendermint/crypto"
+	//abci "github.com/tendermint/abci/types"
+	abci "github.com/tendermint/tendermint/abci/types"
+	//crypto "github.com/tendermint/tendermint/crypto"
 	"github.com/tendermint/tendermint/crypto/secp256k1"
 	tmtypes "github.com/tendermint/tendermint/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/tendermint/go-amino"
 	"github.com/sharering/shareledger/types"
+	"github.com/tendermint/go-amino"
 )
 
 var MaxPartialToken types.Dec = types.NewDec(2) //100/2
@@ -26,7 +28,7 @@ var MaxPartialToken types.Dec = types.NewDec(2) //100/2
 // exchange rate. Voting power can be calculated as total bonds multiplied by
 // exchange rate.
 type Validator struct {
-	Owner   sdk.AccAddress      `json:"owner"`   // sender of BondTx - UnbondTx returns here
+	Owner   sdk.AccAddress   `json:"owner"`   // sender of BondTx - UnbondTx returns here
 	PubKey  types.PubKey     `json:"pub_key"` // pubkey of validator
 	Revoked bool             `json:"revoked"` // has the validator  been revoked from bonded status?
 	Status  types.BondStatus `json:"status"`  // validator status (bonded/unbonding/unbonded)
@@ -39,7 +41,7 @@ type Validator struct {
 	BondHeight         int64       `json:"bond_height"`           // earliest height as a bonded validator
 	BondIntraTxCounter int16       `json:"bond_intra_tx_counter"` // block-local tx index of validator change
 	UnbondingHeight    int64       `json:"unbonding_height"`      // if unbonding, height at which this validator has begun unbonding
-	UnbondingMinTime   int64       `json:"unbonding_time"`        // time.Time  // if unbonding, min time for the validator to complete unbonding
+	UnbondingMinTime   time.Time   `json:"unbonding_time"`        // time.Time  // if unbonding, min time for the validator to complete unbonding
 	//	ProposerRewardPool sdk.Coins   `json:"proposer_reward_pool"`  // XXX reward pool collected from being the proposer
 
 }
@@ -62,7 +64,7 @@ type validatorValue struct {
 	BondHeight         int64
 	BondIntraTxCounter int16
 	UnbondingHeight    int64
-	UnbondingMinTime   int64 //time.Time
+	UnbondingMinTime   time.Time
 }
 
 // NewValidator - initialize a new validator
@@ -80,7 +82,7 @@ func NewValidator(owner sdk.AccAddress, pubKey types.PubKey, description Descrip
 		BondHeight:         int64(0),
 		BondIntraTxCounter: int16(0),
 		UnbondingHeight:    int64(0),
-		UnbondingMinTime:   int64(0), //time.Unix(0, 0).UTC(),
+		UnbondingMinTime:   time.Unix(0, 0).UTC(),
 		//ProposerRewardPool: sdk.Coins{},
 	}
 }
@@ -128,22 +130,29 @@ func (v Validator) GetABCIPubKey() secp256k1.PubKeySecp256k1 {
 
 // validator which fulfills abci validator interface for use in Tendermint
 // ABCIValidator returns an abci.Validator from a staked validator type.
-func (v Validator) ABCIValidator() abci.Validator {
-	return abci.Validator{
-		PubKey:  tmtypes.TM2PB.PubKey(v.GetABCIPubKey()),
-		Address: v.GetABCIPubKey().Address(),
+func (v Validator) ABCIValidatorUpdate() abci.ValidatorUpdate {
+	return abci.ValidatorUpdate{
+		PubKey: tmtypes.TM2PB.PubKey(v.GetABCIPubKey()),
+		//Address: v.GetABCIPubKey().Address(),
 		// Address: v.GetPubKey().Address(),
 		Power: v.GetPower().RoundInt64(), //v.BondedTokens().RoundInt64(),
 	}
 }
 
 // ABCIValidator returns an abci.Validator from a staked validator type.
-func (v Validator) ABCIValidatorZero() abci.Validator {
-	return abci.Validator{
-		PubKey:  tmtypes.TM2PB.PubKey(v.GetABCIPubKey()),
-		Address: v.GetABCIPubKey().Address(),
+func (v Validator) ABCIValidatorZero() abci.ValidatorUpdate {
+	return abci.ValidatorUpdate{
+		PubKey: tmtypes.TM2PB.PubKey(v.GetABCIPubKey()),
+		//Address: v.GetABCIPubKey().Address(),
 		// Address: v.GetPubKey().Address(),
 		Power: 0,
+	}
+}
+
+func (v Validator) ABCIValidator() abci.Validator {
+	return abci.Validator{
+		Address: v.GetABCIPubKey().Address(),
+		Power:   v.GetPower().RoundInt64(),
 	}
 }
 
@@ -347,8 +356,8 @@ const DoNotModifyDesc = "[do-not-modify]"
 func (v Validator) GetMoniker() string          { return v.Description.Moniker }
 func (v Validator) GetStatus() types.BondStatus { return v.Status }
 
-func (v Validator) GetOwner() sdk.AccAddress   { return v.Owner }
-func (v Validator) GetPubKey() types.PubKey { return v.PubKey }
+func (v Validator) GetOwner() sdk.AccAddress { return v.Owner }
+func (v Validator) GetPubKey() types.PubKey  { return v.PubKey }
 func (v Validator) GetPower() types.Dec {
 
 	if v.BondedTokens().IsZero() {

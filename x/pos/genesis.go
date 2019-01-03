@@ -6,7 +6,7 @@ import (
 	"github.com/pkg/errors"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	abci "github.com/tendermint/abci/types"
+	abci "github.com/tendermint/tendermint/abci/types"
 
 	"github.com/sharering/shareledger/constants"
 	"github.com/sharering/shareledger/types"
@@ -22,9 +22,9 @@ type GenesisState struct {
 	Bonds      []posTypes.Delegation `json:"bonds"`
 }
 
-func InitGenesis(ctx sdk.Context, keeper keeper.Keeper, data GenesisState) ([]abci.Validator, error) {
+func InitGenesis(ctx sdk.Context, keeper keeper.Keeper, data GenesisState) ([]abci.ValidatorUpdate, error) {
 
-	var abciVals []abci.Validator
+	var abciVals []abci.ValidatorUpdate
 	keeper.SetPool(ctx, data.Pool)
 	keeper.SetParams(ctx, data.Params)
 	keeper.InitIntraTxCounter(ctx)
@@ -33,15 +33,15 @@ func InitGenesis(ctx sdk.Context, keeper keeper.Keeper, data GenesisState) ([]ab
 
 		constants.LOGGER.Info("Validator",
 			"ShareledgerAddress", fmt.Sprintf("%X", validator.Owner),
-			"TendermintAddress", fmt.Sprintf("%X", validator.ABCIValidator().Address),
+			"TendermintPubKey", fmt.Sprintf("%X", validator.ABCIValidatorUpdate().PubKey),
 			"tokens", fmt.Sprintf("%v", validator.Tokens),
-			"power", fmt.Sprintf("%d", validator.ABCIValidator().Power),
+			"power", fmt.Sprintf("%d", validator.ABCIValidatorUpdate().Power),
 		)
 
 		if validator.DelegatorShares.IsZero() {
 			return abciVals, errors.Errorf("genesis validator cannot have zero delegator shares, validator: %v", validator)
 		}
-		abciVals = append(abciVals, validator.ABCIValidator())
+		abciVals = append(abciVals, validator.ABCIValidatorUpdate())
 
 		keeper.SetValidator(ctx, validator)
 		keeper.SetValidatorByPowerIndex(ctx, validator, data.Pool)
@@ -80,7 +80,7 @@ func GenerateGenesis(pubKey types.PubKeySecp256k1) GenesisState {
 		posTypes.NewDescription("sharering", "", "sharering.network", ""))
 
 	validator.Tokens, _ = types.NewDecFromStr("2000000") // avoid zero tokens
-	validator.Status =  types.Bonded
+	validator.Status = types.Bonded
 
 	pool := posTypes.InitialPool()
 	pool.LooseTokens = types.NewDec(3000000000) //hard-code with 3 billion loose-token

@@ -11,13 +11,13 @@ import (
 	"github.com/sharering/shareledger/types"
 )
 
+var _ sdk.Msg = MsgCreate{}
+
 type MsgCreate struct {
 	FromDenom string    `json:"from_denom"`
 	ToDenom   string    `json:"to_denom"`
 	Rate      types.Dec `json:"rate"`
 }
-
-var _ sdk.Msg = MsgCreate{}
 
 func NewMsgCreate(
 	from string,
@@ -35,6 +35,7 @@ func NewMsgCreate(
 func (msg MsgCreate) Type() string {
 	return constants.MESSAGE_EXCHANGE_RATE
 }
+func (msg MsgCreate) Route() string { return constants.MESSAGE_EXCHANGE_RATE }
 
 func (msg MsgCreate) ValidateBasic() sdk.Error {
 	if msg.FromDenom == msg.ToDenom {

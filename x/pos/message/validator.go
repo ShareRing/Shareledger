@@ -16,16 +16,17 @@ var _ sdk.Msg = MsgEditValidator{}
 // MsgCreateValidator - struct for unbonding transactions
 type MsgCreateValidator struct {
 	Description   posTypes.Description
-	DelegatorAddr sdk.AccAddress  `json:"delegator_address"`
-	ValidatorAddr sdk.AccAddress  `json:"validator_address"`
-	PubKey        types.PubKey `json:"pubkey"`
-	Delegation    types.Coin   `json:"delegation"`
+	DelegatorAddr sdk.AccAddress `json:"delegator_address"`
+	ValidatorAddr sdk.AccAddress `json:"validator_address"`
+	PubKey        types.PubKey   `json:"pubkey"`
+	Delegation    types.Coin     `json:"delegation"`
 }
 
 // Type Implements Msg
 func (msg MsgCreateValidator) Type() string {
 	return constants.MESSAGE_POS
 }
+func (msg MsgCreateValidator) Route() string { return constants.MESSAGE_POS }
 
 // Return address(es) that must sign over msg.GetSignBytes()
 func (msg MsgCreateValidator) GetSigners() []sdk.AccAddress {
@@ -44,8 +45,8 @@ func (msg MsgCreateValidator) GetSigners() []sdk.AccAddress {
 func (msg MsgCreateValidator) GetSignBytes() []byte {
 	b, err := json.Marshal(struct {
 		Description   posTypes.Description `json:"description"`
-		DelegatorAddr sdk.AccAddress          `json:"delegatorAddress"`
-		ValidatorAddr sdk.AccAddress          `json:"validatorAddress"`
+		DelegatorAddr sdk.AccAddress       `json:"delegatorAddress"`
+		ValidatorAddr sdk.AccAddress       `json:"validatorAddress"`
 		PubKey        types.PubKey         `json:"pubKey"`
 		Delegation    types.Coin           `json:"delegation"`
 	}{
@@ -94,7 +95,8 @@ func NewMsgEditValidator(valAddr sdk.AccAddress, description posTypes.Descriptio
 
 //nolint
 
-func (msg MsgEditValidator) Type() string { return constants.MESSAGE_POS }
+func (msg MsgEditValidator) Type() string  { return constants.MESSAGE_POS }
+func (msg MsgEditValidator) Route() string { return constants.MESSAGE_POS }
 func (msg MsgEditValidator) GetSigners() []sdk.AccAddress {
 	return []sdk.AccAddress{sdk.AccAddress(msg.ValidatorAddr)}
 }
@@ -126,4 +128,3 @@ func (msg MsgEditValidator) ValidateBasic() sdk.Error {
 
 	return nil
 }
-

@@ -11,12 +11,12 @@ import (
 	"github.com/sharering/shareledger/types"
 )
 
+var _ sdk.Msg = MsgDelete{}
+
 type MsgDelete struct {
 	FromDenom string `json:"from_denom"`
 	ToDenom   string `json:"to_denom"`
 }
-
-var _ sdk.Msg = MsgDelete{}
 
 func NewMsgDelete(
 	from string,
@@ -32,6 +32,8 @@ func NewMsgDelete(
 func (msg MsgDelete) Type() string {
 	return constants.MESSAGE_EXCHANGE_RATE
 }
+
+func (msg MsgDelete) Route() string { return constants.MESSAGE_EXCHANGE_RATE }
 
 func (msg MsgDelete) ValidateBasic() sdk.Error {
 	if msg.FromDenom == msg.ToDenom {

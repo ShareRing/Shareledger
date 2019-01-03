@@ -48,7 +48,7 @@ func (k Keeper) GetParams(ctx sdk.Context) (params posTypes.Params) {
 		panic("Stored params should not have been nil")
 	}
 
-	k.cdc.MustUnmarshalBinary(b, &params)
+	k.cdc.MustUnmarshalBinaryLengthPrefixed(b, &params)
 	return
 }
 
@@ -78,7 +78,7 @@ func (k Keeper) GetIntraTxCounter(ctx sdk.Context) int16 {
 	store := ctx.KVStore(k.storeKey)
 	b := store.Get(IntraTxCounterKey)
 	var counter int16
-	k.cdc.MustUnmarshalBinary(b, &counter)
+	k.cdc.MustUnmarshalBinaryLengthPrefixed(b, &counter)
 	return counter
 }
 

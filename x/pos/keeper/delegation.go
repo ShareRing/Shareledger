@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"bytes"
+	"time"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
@@ -93,15 +94,15 @@ func (k Keeper) Delegate(ctx sdk.Context, delAddr sdk.AccAddress, bondAmt types.
 
 // get info for begin functions: MinTime and CreationHeight
 func (k Keeper) getBeginInfo(ctx sdk.Context, params posTypes.Params, valSrcAddr sdk.AccAddress) (
-	minTime int64, height int64, completeNow bool) {
+	minTime time.Time, height int64, completeNow bool) {
 
 	validator, found := k.GetValidator(ctx, valSrcAddr)
 	switch {
 	case !found || validator.Status == types.Bonded:
 
 		// the longest wait - just unbonding period from now
-		//minTime = ctx.BlockHeader().Time.Add(params.UnbondingTime)
-		minTime = ctx.BlockHeader().Time + int64(params.UnbondingTime)
+		minTime = ctx.BlockHeader().Time.Add(params.UnbondingTime)
+		//minTime = ctx.BlockHeader().Time + int64(params.UnbondingTime)
 		height = ctx.BlockHeader().Height
 		return minTime, height, false
 
@@ -280,7 +281,7 @@ func (k Keeper) CompleteUnbonding(ctx sdk.Context, delAddr sdk.AccAddress, valAd
 
 	// ensure that enough time has passed
 	ctxTime := ctx.BlockHeader().Time
-	if ubd.MinTime > ctxTime {
+	if ubd.MinTime.After(ctxTime) {
 		// TODO:
 		//return posTypes.ErrNotMature(k.Codespace(), "unbonding", "unit-time", ubd.MinTime, ctxTime)
 	}
@@ -350,7 +351,7 @@ func (k Keeper) CompleteRedelegation(ctx sdk.Context, delAddr sdk.AccAddress,
 
 	// ensure that enough time has passed
 	ctxTime := ctx.BlockHeader().Time
-	if red.MinTime > ctxTime { //red.MinTime.After(ctxTime) {
+	if red.MinTime.After(ctxTime) {
 		return posTypes.ErrNotMature(k.Codespace(), "redelegation", "unit-time", red.MinTime, ctxTime)
 	}
 

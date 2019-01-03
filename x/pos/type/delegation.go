@@ -2,10 +2,11 @@ package posTypes
 
 import (
 	"fmt"
+	"time"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/tendermint/go-amino"
 	"github.com/sharering/shareledger/types"
+	"github.com/tendermint/go-amino"
 )
 
 // Delegation represents the bond with tokens held by an account.  It is
@@ -14,10 +15,10 @@ import (
 type Delegation struct {
 	DelegatorAddr    sdk.AccAddress `json:"delegator_addr"`
 	ValidatorAddr    sdk.AccAddress `json:"validator_addr"`
-	Shares           types.Dec   `json:"shares"`
-	Height           int64       `json:"height"`           // Last height bond updated
-	RewardAccum      types.Coin  `json:"reward_accum"`     // reward accumulation of this block til withdrawal_height
-	WithdrawalHeight int64       `json:"withdrawal_height` // latest withdrawal height
+	Shares           types.Dec      `json:"shares"`
+	Height           int64          `json:"height"`           // Last height bond updated
+	RewardAccum      types.Coin     `json:"reward_accum"`     // reward accumulation of this block til withdrawal_height
+	WithdrawalHeight int64          `json:"withdrawal_height` // latest withdrawal height
 }
 
 type delegationValue struct {
@@ -89,7 +90,7 @@ func UnmarshalDelegation(cdc *amino.Codec, key, value []byte) (delegation Delega
 // nolint - for sdk.Delegation
 func (b Delegation) GetDelegator() sdk.AccAddress { return b.DelegatorAddr }
 func (b Delegation) GetValidator() sdk.AccAddress { return b.ValidatorAddr }
-func (b Delegation) GetBondShares() types.Dec  { return b.Shares }
+func (b Delegation) GetBondShares() types.Dec     { return b.Shares }
 
 // UpdateDelReward updating reward accumulation
 func (b Delegation) UpdateDelAccum(
@@ -127,15 +128,15 @@ func (b Delegation) HumanReadableString() (string, error) {
 type UnbondingDelegation struct {
 	DelegatorAddr  sdk.AccAddress `json:"delegator_addr"`  // delegator
 	ValidatorAddr  sdk.AccAddress `json:"validator_addr"`  // validator unbonding from operator addr
-	CreationHeight int64       `json:"creation_height"` // height which the unbonding took place
-	MinTime        int64       `json:"min_time"`        // unix time for unbonding completion  /*time.Time*/
-	InitialBalance types.Coin  `json:"initial_balance"` // atoms initially scheduled to receive at completion
-	Balance        types.Coin  `json:"balance"`         // atoms to receive at completion
+	CreationHeight int64          `json:"creation_height"` // height which the unbonding took place
+	MinTime        time.Time      `json:"min_time"`        // unix time for unbonding completion  /*time.Time*/
+	InitialBalance types.Coin     `json:"initial_balance"` // atoms initially scheduled to receive at completion
+	Balance        types.Coin     `json:"balance"`         // atoms to receive at completion
 }
 
 type ubdValue struct {
 	CreationHeight int64
-	MinTime        int64 //time.Time
+	MinTime        time.Time
 	InitialBalance types.Coin
 	Balance        types.Coin
 }
@@ -191,17 +192,17 @@ type Redelegation struct {
 	DelegatorAddr    sdk.AccAddress `json:"delegator_addr"`     // delegator
 	ValidatorSrcAddr sdk.AccAddress `json:"validator_src_addr"` // validator redelegation source operator addr
 	ValidatorDstAddr sdk.AccAddress `json:"validator_dst_addr"` // validator redelegation destination operator addr
-	CreationHeight   int64       `json:"creation_height"`    // height which the redelegation took place
-	MinTime          int64       `json:"min_time"`           // unix time for redelegation completion
-	InitialBalance   types.Coin  `json:"initial_balance"`    // initial balance when redelegation started
-	Balance          types.Coin  `json:"balance"`            // current balance
-	SharesSrc        types.Dec   `json:"shares_src"`         // amount of source shares redelegating
-	SharesDst        types.Dec   `json:"shares_dst"`         // amount of destination shares redelegating
+	CreationHeight   int64          `json:"creation_height"`    // height which the redelegation took place
+	MinTime          time.Time      `json:"min_time"`           // unix time for redelegation completion
+	InitialBalance   types.Coin     `json:"initial_balance"`    // initial balance when redelegation started
+	Balance          types.Coin     `json:"balance"`            // current balance
+	SharesSrc        types.Dec      `json:"shares_src"`         // amount of source shares redelegating
+	SharesDst        types.Dec      `json:"shares_dst"`         // amount of destination shares redelegating
 }
 
 type redValue struct {
 	CreationHeight int64
-	MinTime        int64 //time.Time
+	MinTime        time.Time
 	InitialBalance types.Coin
 	Balance        types.Coin
 	SharesSrc      types.Dec

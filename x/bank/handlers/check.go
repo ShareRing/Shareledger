@@ -6,6 +6,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
 	"github.com/sharering/shareledger/x/auth"
+	Err "github.com/sharering/shareledger/x/bank/error"
 	"github.com/sharering/shareledger/x/bank/messages"
 )
 
@@ -22,7 +23,7 @@ func HandleMsgCheck(am auth.AccountMapper) sdk.Handler {
 		if !ok {
 			// Create custom error message and return result
 			// Note: Using unreserved error codespace
-			return sdk.NewError(2, 1, "MsgCheck is malformed").Result()
+			return sdk.NewError(Err.BankCodespace, Err.MsgMailedFormBank, "MsgCheck is malformed").Result()
 		}
 
 		account := am.GetAccount(ctx, checkMsg.Account)

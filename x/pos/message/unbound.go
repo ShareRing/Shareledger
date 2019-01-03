@@ -13,7 +13,7 @@ import (
 type MsgBeginUnbonding struct {
 	DelegatorAddr sdk.AccAddress `json:"delegatorAddress"`
 	ValidatorAddr sdk.AccAddress `json:"validatorAddress"`
-	SharesAmount  types.Dec   `json:"sharesAmount"`
+	SharesAmount  types.Dec      `json:"sharesAmount"`
 }
 
 func NewMsgBeginUnbonding(delAddr sdk.AccAddress, valAddr sdk.AccAddress, sharesAmount types.Dec) MsgBeginUnbonding {
@@ -25,8 +25,9 @@ func NewMsgBeginUnbonding(delAddr sdk.AccAddress, valAddr sdk.AccAddress, shares
 }
 
 //nolint
-func (msg MsgBeginUnbonding) Type() string              { return constants.MESSAGE_POS }
-func (msg MsgBeginUnbonding) Name() string              { return "begin_unbonding" }
+func (msg MsgBeginUnbonding) Type() string                 { return constants.MESSAGE_POS }
+func (msg MsgBeginUnbonding) Route() string                { return constants.MESSAGE_POS }
+func (msg MsgBeginUnbonding) Name() string                 { return "begin_unbonding" }
 func (msg MsgBeginUnbonding) GetSigners() []sdk.AccAddress { return []sdk.AccAddress{msg.DelegatorAddr} }
 
 // get the bytes for the message signer to sign on
@@ -35,7 +36,7 @@ func (msg MsgBeginUnbonding) GetSignBytes() []byte {
 	b, err := json.Marshal(struct {
 		DelegatorAddr sdk.AccAddress `json:"delegatorAddress"`
 		ValidatorAddr sdk.AccAddress `json:"validatorAddress"`
-		SharesAmount  string      `json:"sharesAmount"`
+		SharesAmount  string         `json:"sharesAmount"`
 	}{
 		DelegatorAddr: msg.DelegatorAddr,
 		ValidatorAddr: msg.ValidatorAddr,
@@ -77,8 +78,9 @@ func NewMsgCompleteUnbonding(delAddr sdk.AccAddress, valAddr sdk.AccAddress) Msg
 }
 
 //nolint
-func (msg MsgCompleteUnbonding) Type() string { return constants.MESSAGE_POS }
-func (msg MsgCompleteUnbonding) Name() string { return "complete_unbonding" }
+func (msg MsgCompleteUnbonding) Type() string  { return constants.MESSAGE_POS }
+func (msg MsgCompleteUnbonding) Route() string { return constants.MESSAGE_POS }
+func (msg MsgCompleteUnbonding) Name() string  { return "complete_unbonding" }
 func (msg MsgCompleteUnbonding) GetSigners() []sdk.AccAddress {
 	return []sdk.AccAddress{msg.DelegatorAddr}
 }

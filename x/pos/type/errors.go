@@ -3,6 +3,7 @@ package posTypes
 
 import (
 	"fmt"
+	"time"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
@@ -12,7 +13,7 @@ import (
 type CodeType = sdk.CodeType
 
 const (
-	DefaultCodespace sdk.CodespaceType = 4
+	DefaultCodespace sdk.CodespaceType = "POS"
 
 	CodeInvalidValidator  CodeType = 101
 	CodeInvalidDelegation CodeType = 102
@@ -145,7 +146,7 @@ func ErrBadSharesPercent(codespace sdk.CodespaceType) sdk.Error {
 	return sdk.NewError(codespace, CodeInvalidDelegation, "shares percent must be >0 and <=1")
 }
 
-func ErrNotMature(codespace sdk.CodespaceType, operation, descriptor string, got, min int64) sdk.Error {
+func ErrNotMature(codespace sdk.CodespaceType, operation, descriptor string, got, min time.Time) sdk.Error {
 	msg := fmt.Sprintf("%v is not mature requires a min %v of %v, currently it is %v",
 		operation, descriptor, got, min)
 	return sdk.NewError(codespace, CodeUnauthorized, msg)

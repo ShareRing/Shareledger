@@ -26,6 +26,8 @@ var _ sdk.Msg = MsgWithdraw{}
 //nolint
 func (msg MsgWithdraw) Type() string { return constants.MESSAGE_POS }
 
+func (msg MsgWithdraw) Route() string { return constants.MESSAGE_POS }
+
 func (msg MsgWithdraw) GetSigners() []sdk.AccAddress {
 	return []sdk.AccAddress{msg.DelegatorAddr}
 }

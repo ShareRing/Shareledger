@@ -13,9 +13,9 @@ import (
 )
 
 type MsgExchange struct {
-	FromDenom string      `json:"from_denom"`
-	ToDenom   string      `json:"to_denom"`
-	Amount    types.Dec   `json:"amount"`
+	FromDenom string         `json:"from_denom"`
+	ToDenom   string         `json:"to_denom"`
+	Amount    types.Dec      `json:"amount"`
 	Reserve   sdk.AccAddress `json:"reserve"`
 }
 
@@ -39,6 +39,8 @@ func NewMsgExchange(
 func (msg MsgExchange) Type() string {
 	return constants.MESSAGE_EXCHANGE_RATE
 }
+
+func (msg MsgExchange) Route() string { return constants.MESSAGE_EXCHANGE_RATE }
 
 func (msg MsgExchange) ValidateBasic() sdk.Error {
 	if msg.FromDenom == msg.ToDenom {

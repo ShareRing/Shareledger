@@ -9,6 +9,7 @@ import (
 	"github.com/sharering/shareledger/constants"
 	"github.com/sharering/shareledger/utils"
 	"github.com/sharering/shareledger/x/auth"
+	Err "github.com/sharering/shareledger/x/bank/error"
 	"github.com/sharering/shareledger/x/bank/messages"
 )
 
@@ -19,7 +20,7 @@ func HandleMsgBurn(am auth.AccountMapper) sdk.Handler {
 	return func(ctx sdk.Context, msg sdk.Msg) sdk.Result {
 		burnMsg, ok := msg.(messages.MsgBurn)
 		if !ok {
-			return sdk.NewError(2, 1, "MsgBurn is malformed").Result()
+			return sdk.NewError(Err.BankCodespace, Err.MsgMailedFormBank, "MsgBurn is malformed").Result()
 		}
 
 		// IMPORTANT

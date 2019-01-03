@@ -5,9 +5,10 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	"github.com/sharering/shareledger/utils"
 	"github.com/sharering/shareledger/constants"
+	"github.com/sharering/shareledger/utils"
 	"github.com/sharering/shareledger/x/auth"
+	Err "github.com/sharering/shareledger/x/bank/error"
 	"github.com/sharering/shareledger/x/bank/messages"
 )
 
@@ -18,7 +19,7 @@ func HandleMsgLoad(am auth.AccountMapper) sdk.Handler {
 	return func(ctx sdk.Context, msg sdk.Msg) sdk.Result {
 		loadMsg, ok := msg.(messages.MsgLoad)
 		if !ok {
-			return sdk.NewError(2, 1, "MsgLoad is malformed").Result()
+			return sdk.NewError(Err.BankCodespace, Err.MsgMailedFormBank, "MsgLoad is malformed").Result()
 		}
 
 		// IMPORTANT

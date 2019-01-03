@@ -3,9 +3,9 @@ package app
 import (
 	"fmt"
 
-	cmn "github.com/tendermint/tmlibs/common"
-	dbm "github.com/tendermint/tmlibs/db"
-	"github.com/tendermint/tmlibs/log"
+	cmn "github.com/tendermint/tendermint/libs/common"
+	dbm "github.com/tendermint/tendermint/libs/db"
+	"github.com/tendermint/tendermint/libs/log"
 
 	bapp "github.com/cosmos/cosmos-sdk/baseapp"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -37,14 +37,14 @@ func NewTestShareLedgerApp(logger log.Logger, db dbm.DB) *TestShareLedgerApp {
 	cdc := MakeCodec()
 
 	// Create the base application object.
-	baseApp := bapp.NewBaseApp(appName, cdc, logger, db)
+	baseApp := bapp.NewBaseApp(appName, logger, db, auth.GetTxDecoder(cdc))
 
 	authKey := sdk.NewKVStoreKey(constants.STORE_AUTH)
 	//bankKey := sdk.NewKVStoreKey(constants.STORE_BANK)
 
 	// Mount Store
 
-	baseApp.MountStoresIAVL(authKey)
+	baseApp.MountStores(authKey)
 	err := baseApp.LoadLatestVersion(authKey)
 	if err != nil {
 		cmn.Exit(err.Error())
@@ -67,7 +67,7 @@ func NewTestShareLedgerApp(logger log.Logger, db dbm.DB) *TestShareLedgerApp {
 		accountMapper: accountMapper,
 	}
 
-	app.SetTxDecoder(auth.GetTxDecoder(cdc))
+	//app.SetTxDecoder(auth.GetTxDecoder(cdc))
 	app.SetAnteHandler(auth.NewAnteHandler(accountMapper))
 	app.Router().
 		AddRoute(constants.MESSAGE_AUTH, auth.NewHandler(accountMapper))

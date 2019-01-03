@@ -11,7 +11,7 @@ import (
 	keep "github.com/sharering/shareledger/x/pos/keeper"
 	posTypes "github.com/sharering/shareledger/x/pos/type"
 
-	abci "github.com/tendermint/abci/types"
+	abci "github.com/tendermint/tendermint/abci/types"
 )
 
 // query endpoints supported by the staking Querier

@@ -33,6 +33,8 @@ func (msg MsgRetrieve) Type() string {
 	return constants.MESSAGE_EXCHANGE_RATE
 }
 
+func (msg MsgRetrieve) Route() string { return constants.MESSAGE_EXCHANGE_RATE }
+
 func (msg MsgRetrieve) ValidateBasic() sdk.Error {
 	if msg.FromDenom == msg.ToDenom {
 		return sdk.ErrInternal(fmt.Sprintf(constants.EXC_SAME_DENOM, msg.FromDenom))

@@ -1,13 +1,12 @@
 package app
 
 import (
-	"fmt"
 	"os"
 
-	abci "github.com/tendermint/abci/types"
-	cmn "github.com/tendermint/tmlibs/common"
-	dbm "github.com/tendermint/tmlibs/db"
-	"github.com/tendermint/tmlibs/log"
+	abci "github.com/tendermint/tendermint/abci/types"
+	cmn "github.com/tendermint/tendermint/libs/common"
+	dbm "github.com/tendermint/tendermint/libs/db"
+	"github.com/tendermint/tendermint/libs/log"
 
 	bapp "github.com/cosmos/cosmos-sdk/baseapp"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -21,7 +20,6 @@ import (
 	"github.com/sharering/shareledger/x/bank"
 	"github.com/sharering/shareledger/x/booking"
 	"github.com/sharering/shareledger/x/exchange"
-	"github.com/sharering/shareledger/x/fee"
 	"github.com/sharering/shareledger/x/pos"
 	pKeeper "github.com/sharering/shareledger/x/pos/keeper"
 )
@@ -61,7 +59,7 @@ func NewShareLedgerApp(logger log.Logger, db dbm.DB) *ShareLedgerApp {
 	cdc := MakeCodec()
 
 	// Create the base application object.
-	baseApp := bapp.NewBaseApp(appName, cdc, logger, db)
+	baseApp := bapp.NewBaseApp(appName /*cdc,*/, logger, db, auth.GetTxDecoder(cdc))
 
 	assetKey := sdk.NewKVStoreKey(constants.STORE_ASSET)
 	bookingKey := sdk.NewKVStoreKey(constants.STORE_BOOKING)
@@ -73,7 +71,7 @@ func NewShareLedgerApp(logger log.Logger, db dbm.DB) *ShareLedgerApp {
 
 	// Mount Store
 
-	baseApp.MountStoresIAVL(authKey, assetKey, bookingKey, posKey, exchangeKey)
+	baseApp.MountStores(authKey, assetKey, bookingKey, posKey, exchangeKey) //replace baseApp.MountStoresIAVL
 	err := baseApp.LoadLatestVersion(authKey)
 	if err != nil {
 		cmn.Exit(err.Error())
@@ -104,14 +102,14 @@ func NewShareLedgerApp(logger log.Logger, db dbm.DB) *ShareLedgerApp {
 	app.SetupBooking(bookingKey, assetKey, accountMapper)
 	app.SetupExchange(exchangeKey, accountMapper)
 
-	app.SetTxDecoder(auth.GetTxDecoder(cdc))
+	//app.SetTxDecoder(auth.GetTxDecoder(cdc))
 	app.SetAnteHandler(auth.NewAnteHandler(accountMapper))
 	app.Router().
 		AddRoute(constants.MESSAGE_AUTH, auth.NewHandler(accountMapper))
 	app.cdc = auth.RegisterCodec(app.cdc)
 
 	// Set Tx Fee Calculation
-	app.SetFeeHandler(fee.NewFeeHandler(accountMapper, exchangeKey))
+	//app.SetFeeHandler(fee.NewFeeHandler(accountMapper, exchangeKey))
 
 	// Register InitChain
 	logger.Info("Register Init Chainer")
@@ -163,7 +161,7 @@ func (app *ShareLedgerApp) InitChainer(ctx sdk.Context, req abci.RequestInitChai
 	}
 	for _, val := range abciVals {
 		constants.LOGGER.Info("Validator Init",
-			"Address", fmt.Sprintf("%X", val.Address),
+			//"Address", fmt.Sprintf("%X", val.Address),
 			"Power", val.Power,
 			"PubKey", val.PubKey,
 		)
@@ -191,7 +189,7 @@ func BeginBlocker(ctx sdk.Context, req abci.RequestBeginBlock) (res abci.Respons
 func EndBlocker(am auth.AccountMapper, keeper pKeeper.Keeper) sdk.EndBlocker {
 	return func(ctx sdk.Context, req abci.RequestEndBlock) abci.ResponseEndBlock {
 
-		proposer := ctx.BlockHeader().Proposer
+		proposer := ctx.BlockHeader().ProposerAddress //.Proposer
 
 		//	fmt.Printf("Proposer: %v\n", proposer)
 		//	fmt.Printf("Proposer PubKey: %v\n", proposer.PubKey)
@@ -208,7 +206,7 @@ func EndBlocker(am auth.AccountMapper, keeper pKeeper.Keeper) sdk.EndBlocker {
 		validatorUpdates := pos.EndBlocker(ctx, keeper, pubKey)
 		for _, val := range validatorUpdates {
 			constants.LOGGER.Info("Validator Update",
-				"Address", fmt.Sprintf("%X", val.Address),
+				//"Address", fmt.Sprintf("%X", val.Address),
 				"Power", val.Power,
 				"PubKey", val.PubKey,
 			)
