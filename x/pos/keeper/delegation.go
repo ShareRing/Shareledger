@@ -281,6 +281,7 @@ func (k Keeper) CompleteUnbonding(ctx sdk.Context, delAddr sdk.Address, valAddr 
 	// ensure that enough time has passed
 	ctxTime := ctx.BlockHeader().Time
 	if ubd.MinTime > ctxTime {
+		// TODO:
 		//return posTypes.ErrNotMature(k.Codespace(), "unbonding", "unit-time", ubd.MinTime, ctxTime)
 	}
 

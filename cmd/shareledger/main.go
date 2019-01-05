@@ -18,8 +18,10 @@ func main() {
 		subcommands.RegisterValidatorCmd,
 		subcommands.ShowAddressCmd,
 		subcommands.ShowBalanceCmd,
-		subcommands.SendCoinCmd,
-		subcommands.LoadCoinCmd,
+		subcommands.ShowVdiCmd,
+		subcommands.WithdrawBlockRewardCmd,
+		subcommands.BeginUnbondingCmd,
+		subcommands.CompleteUnbondingCmd,
 	)
 
 	rootCmd.Execute()

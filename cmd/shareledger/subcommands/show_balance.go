@@ -18,7 +18,7 @@ var ShowBalanceCmd = &cobra.Command{
 }
 
 func init() {
-	ShowBalanceCmd.Flags().StringVar(&nodeAddress, "client", "", "Node address to query info. Example: tcp://123.123.123.123:46657")
+	ShowBalanceCmd.Flags().StringVar(&nodeAddress, "client", "", "Node address to query info. Example: tcp://127.0.0.1:46657")
 }
 
 func showBalance(cmd *cobra.Command, args []string) (err error) {

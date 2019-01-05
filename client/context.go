@@ -30,12 +30,11 @@ type CoreContext struct {
 	Codec   *wire.Codec
 }
 
-func NewCoreContextWithClient(privKey string, client string) CoreContext {
-	return CoreContext{
-		Client:  rpcclient.NewHTTP(client, "/websocket"),
-		PrivKey: types.ConvertToPrivKey(types.GetCryptoPrivKey(privKey)), // convert to crypto.PrivKeySecp256k1 then Shareledger.PrivKeySecp256k1
-		Codec:   getCodec(),
-	}
+type SHRAccount1 struct {
+	Address sdk.Address `json:"address"`
+	Coins   types.Coins `json:"coins"`
+	PubKey  []byte      `json:"pub_key"`
+	Nonce   int64       `json:"nonce"`
 }
 
 func NewCoreContextFromConfig(config *cfg.Config) CoreContext {
@@ -73,6 +72,7 @@ func (c CoreContext) ConstructTendermintTransaction(tx auth.AuthTx) (tdmtx tdmty
 
 	// amino encode
 	encodedTx, err := c.Codec.MarshalBinary(tx)
+	// fmt.Printf("Tx: %x\n", encodedTx)
 	if err != nil {
 		return tdmtx, err
 	}
@@ -133,12 +133,12 @@ func (c CoreContext) RegisterValidator(
 		return res, err
 	}
 
-	tdmres, err := c.Client.BroadcastTxSync(tdmTx)
+	_, err = c.Client.BroadcastTxSync(tdmTx)
 	if err != nil {
 		return res, err
 	}
 
-	return convertBroadcastResult(tdmres), nil
+	return nil
 }
 
 func (c CoreContext) LoadBalance(to sdk.Address, amount types.Coin) (res Response, err error) {
@@ -155,12 +155,12 @@ func (c CoreContext) LoadBalance(to sdk.Address, amount types.Coin) (res Respons
 		return res, err
 	}
 
-	tdmres, err := c.Client.BroadcastTxSync(tdmTx)
+	_, err = c.Client.BroadcastTxSync(tdmTx)
 	if err != nil {
 		return res, err
 	}
 
-	return convertBroadcastResult(tdmres), nil
+	return nil
 
 }
 
@@ -186,34 +186,125 @@ func (c CoreContext) CheckBalance(address sdk.Address) (coins types.Coins, err e
 	var account auth.SHRAccountJSON
 
 	err = json.Unmarshal([]byte(result.Response.Log), &account)
-	if err != nil {
-		return coins, err
-	}
 
 	fmt.Printf("%v\n", account.Coins)
-	return account.Coins, nil
+
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
-func (c CoreContext) SendCoins(to sdk.Address, amt types.Coin) (res Response, err error) {
+func (c CoreContext) CheckValidatorDistInfo() error {
+	queryValidatorDist := pos.QueryValidatorDistParams{
+		ValidatorAddr: c.PrivKey.PubKey().Address(),
+	}
 
-	msgSend := bmsg.NewMsgSend(to, amt)
-
-	authTx, err := c.ConstructTransaction(msgSend)
+	req, err := c.Codec.MarshalBinary(queryValidatorDist)
 	if err != nil {
-		return res, err
+		return err
+	}
+
+	result, err := c.Client.ABCIQuery("app/custom/pos/validatorDistInfo", req)
+	if err != nil {
+		return err
+	}
+
+	var vdi posTypes.ValidatorDistInfo
+
+	err = json.Unmarshal(result.Response.Value, &vdi)
+
+	if err != nil {
+		return err
+	}
+
+	fmt.Printf("%v\n", vdi.RewardAccum)
+
+	return nil
+
+}
+
+func (c CoreContext) WithdrawBlockReward() error {
+	address := c.PrivKey.PubKey().Address()
+	msgWithdraw := pmsg.NewMsgWithdraw(address, address)
+
+	authTx, err := c.ConstructTransaction(msgWithdraw)
+	if err != nil {
+		return err
 	}
 
 	tdmTx, err := c.ConstructTendermintTransaction(authTx)
 	if err != nil {
-		return res, err
+		return err
 	}
 
-	tdmres, err := c.Client.BroadcastTxSync(tdmTx)
+	_, err = c.Client.BroadcastTxSync(tdmTx)
 	if err != nil {
-		return res, err
+		return coins, err
 	}
 
-	return convertBroadcastResult(tdmres), nil
+	return nil
+
+}
+
+func (c CoreContext) BeginUnbonding(amount int64) error {
+
+	address := c.PrivKey.PubKey().Address()
+
+	msgBeginUnbonding := pmsg.NewMsgBeginUnbonding(
+		address,
+		address,
+		types.NewDec(amount),
+	)
+
+	authTx, err := c.ConstructTransaction(msgBeginUnbonding)
+	if err != nil {
+		return err
+	}
+
+	tdmTx, err := c.ConstructTendermintTransaction(authTx)
+	if err != nil {
+		return err
+	}
+
+	result, err := c.Client.BroadcastTxSync(tdmTx)
+	if err != nil {
+		return err
+	}
+
+	fmt.Printf("Result: %v\n", result)
+
+	return nil
+
+}
+
+func (c CoreContext) CompleteUnbonding() error {
+	address := c.PrivKey.PubKey().Address()
+
+	msgCompleteUnbonding := pmsg.NewMsgCompleteUnbonding(
+		address,
+		address,
+	)
+
+	authTx, err := c.ConstructTransaction(msgCompleteUnbonding)
+	if err != nil {
+		return err
+	}
+
+	tdmTx, err := c.ConstructTendermintTransaction(authTx)
+	if err != nil {
+		return err
+	}
+
+	result, err := c.Client.BroadcastTxSync(tdmTx)
+	if err != nil {
+		return err
+	}
+
+	fmt.Printf("Result: %v\n", result)
+
+	return nil
 
 }
 

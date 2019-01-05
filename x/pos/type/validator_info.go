@@ -76,7 +76,7 @@ func (vdi ValidatorDistInfo) HumanReadableString() string {
 	resp += fmt.Sprintf("Validator Address: %x\n", vdi.ValidatorAddr)
 	resp += fmt.Sprintf("Reward Accum: %s\n", vdi.RewardAccum.String())
 	resp += fmt.Sprintf("Commission: %s\n", vdi.Commission.String())
-	resp += fmt.Sprintf("WithdrawlHeight: %d\n", vdi.WithdrawalHeight)
+	resp += fmt.Sprintf("WithdrawalHeight: %d\n", vdi.WithdrawalHeight)
 	resp += fmt.Sprintf("ValidatorReward: %s\n", vdi.ValidatorReward.String())
 
 	return resp

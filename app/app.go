@@ -161,7 +161,13 @@ func (app *ShareLedgerApp) InitChainer(ctx sdk.Context, req abci.RequestInitChai
 	if err != nil {
 		panic(err)
 	}
-
+	for _, val := range abciVals {
+		constants.LOGGER.Info("Validator Init",
+			"Address", fmt.Sprintf("%X", val.Address),
+			"Power", val.Power,
+			"PubKey", val.PubKey,
+		)
+	}
 	return abci.ResponseInitChain{
 		Validators: abciVals, //use the validator defined in stake
 	}

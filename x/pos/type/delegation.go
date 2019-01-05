@@ -97,10 +97,12 @@ func (b Delegation) UpdateDelAccum(
 	totalRewardAccum types.Coin,
 	totalShares types.Dec,
 ) Delegation {
-
+	fmt.Printf("TotalRewardAccum: %v\n", totalRewardAccum)
+	fmt.Printf("Shares/TotalShares: %v/%v\n", b.Shares, totalShares)
 	rewardCoin := totalRewardAccum.Mul(b.Shares).Quo(totalShares)
-
+	fmt.Printf("RewardCoin: %v\n", rewardCoin)
 	b.RewardAccum = b.RewardAccum.Plus(rewardCoin)
+	fmt.Printf("RewardAccum: %v\n", b.RewardAccum)
 
 	b.WithdrawalHeight = currentHeight
 
@@ -113,10 +115,10 @@ func (b Delegation) HumanReadableString() (string, error) {
 	resp := "Delegation \n"
 	resp += fmt.Sprintf("Delegator: %s\n", b.DelegatorAddr.String())
 	resp += fmt.Sprintf("Validator: %s\n", b.ValidatorAddr.String())
-	resp += fmt.Sprintf("Shares: %s", b.Shares.String())
-	resp += fmt.Sprintf("Height: %d", b.Height)
-	resp += fmt.Sprintf("RewardAccum: %s", b.RewardAccum)
-	resp += fmt.Sprintf("WithdrawalHeigh: %s", b.WithdrawalHeight)
+	resp += fmt.Sprintf("Shares: %s\n", b.Shares.String())
+	resp += fmt.Sprintf("Height: %d\n", b.Height)
+	resp += fmt.Sprintf("RewardAccum: %s\n", b.RewardAccum)
+	resp += fmt.Sprintf("WithdrawalHeight: %d\n", b.WithdrawalHeight)
 
 	return resp, nil
 }

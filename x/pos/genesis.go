@@ -2,6 +2,7 @@ package pos
 
 import (
 	"fmt"
+
 	"github.com/pkg/errors"
 
 	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
@@ -33,6 +34,8 @@ func InitGenesis(ctx sdk.Context, keeper keeper.Keeper, data GenesisState) ([]ab
 		constants.LOGGER.Info("Validator",
 			"ShareledgerAddress", fmt.Sprintf("%X", validator.Owner),
 			"TendermintAddress", fmt.Sprintf("%X", validator.ABCIValidator().Address),
+			"tokens", fmt.Sprintf("%v", validator.Tokens),
+			"power", fmt.Sprintf("%d", validator.ABCIValidator().Power),
 		)
 
 		if validator.DelegatorShares.IsZero() {
@@ -76,8 +79,8 @@ func GenerateGenesis(pubKey types.PubKeySecp256k1) GenesisState {
 		pubKey,
 		posTypes.NewDescription("sharering", "", "sharering.network", ""))
 
-
-	validator.Tokens = types.OneDec() // avoid zero tokens
+	validator.Tokens, _ = types.NewDecFromStr("2000000") // avoid zero tokens
+	validator.Status =  types.Bonded
 
 	pool := posTypes.InitialPool()
 	pool.LooseTokens = types.NewDec(3000000000) //hard-code with 3 billion loose-token

@@ -31,6 +31,7 @@ func (msg MsgBeginUnbonding) GetSigners() []sdk.Address { return []sdk.Address{m
 
 // get the bytes for the message signer to sign on
 func (msg MsgBeginUnbonding) GetSignBytes() []byte {
+	shareAmount, _ := msg.SharesAmount.MarshalAmino()
 	b, err := json.Marshal(struct {
 		DelegatorAddr sdk.Address `json:"delegatorAddress"`
 		ValidatorAddr sdk.Address `json:"validatorAddress"`
@@ -38,7 +39,7 @@ func (msg MsgBeginUnbonding) GetSignBytes() []byte {
 	}{
 		DelegatorAddr: msg.DelegatorAddr,
 		ValidatorAddr: msg.ValidatorAddr,
-		SharesAmount:  msg.SharesAmount.String(),
+		SharesAmount:  shareAmount,
 	})
 	if err != nil {
 		panic(err)
