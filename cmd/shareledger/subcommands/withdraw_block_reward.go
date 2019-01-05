@@ -36,7 +36,7 @@ func withdrawBlockReward(cmd *cobra.Command, args []string) (err error) {
 		context = client.NewCoreContextFromConfigWithClient(config, nodeAddress)
 	}
 
-	err = context.WithdrawBlockReward()
+	_, err = context.WithdrawBlockReward()
 	if err != nil {
 		return err
 	}

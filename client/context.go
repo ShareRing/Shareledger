@@ -37,6 +37,14 @@ type SHRAccount1 struct {
 	Nonce   int64       `json:"nonce"`
 }
 
+func NewCoreContextWithClient(privKey string, client string) CoreContext {
+	return CoreContext{
+		Client:  rpcclient.NewHTTP(client, "/websocket"),
+		PrivKey: types.ConvertToPrivKey(types.GetCryptoPrivKey(privKey)), // convert to crypto.PrivKeySecp256k1 then Shareledger.PrivKeySecp256k1
+		Codec:   getCodec(),
+	}
+}
+
 func NewCoreContextFromConfig(config *cfg.Config) CoreContext {
 	proto, addr := getRPCAddress(config, 0)
 
@@ -101,7 +109,6 @@ func (c CoreContext) GetNonce() (int64, error) {
 	}
 	return nonce, nil
 }
-
 func (c CoreContext) RegisterValidator(
 	amount int64, // Amount of tokens to be staked
 	moniker string, // name
@@ -133,12 +140,12 @@ func (c CoreContext) RegisterValidator(
 		return res, err
 	}
 
-	_, err = c.Client.BroadcastTxSync(tdmTx)
+	tdmres, err := c.Client.BroadcastTxSync(tdmTx)
 	if err != nil {
 		return res, err
 	}
 
-	return nil
+	return convertBroadcastResult(tdmres), nil
 }
 
 func (c CoreContext) LoadBalance(to sdk.Address, amount types.Coin) (res Response, err error) {
@@ -155,12 +162,12 @@ func (c CoreContext) LoadBalance(to sdk.Address, amount types.Coin) (res Respons
 		return res, err
 	}
 
-	_, err = c.Client.BroadcastTxSync(tdmTx)
+	tdmres, err := c.Client.BroadcastTxSync(tdmTx)
 	if err != nil {
 		return res, err
 	}
 
-	return nil
+	return convertBroadcastResult(tdmres), nil
 
 }
 
@@ -186,14 +193,35 @@ func (c CoreContext) CheckBalance(address sdk.Address) (coins types.Coins, err e
 	var account auth.SHRAccountJSON
 
 	err = json.Unmarshal([]byte(result.Response.Log), &account)
-
-	fmt.Printf("%v\n", account.Coins)
-
 	if err != nil {
-		return err
+		return coins, err
 	}
 
-	return nil
+	fmt.Printf("%v\n", account.Coins)
+	return account.Coins, nil
+}
+
+func (c CoreContext) SendCoins(to sdk.Address, amt types.Coin) (res Response, err error) {
+
+	msgSend := bmsg.NewMsgSend(to, amt)
+
+	authTx, err := c.ConstructTransaction(msgSend)
+	if err != nil {
+		return res, err
+	}
+
+	tdmTx, err := c.ConstructTendermintTransaction(authTx)
+	if err != nil {
+		return res, err
+	}
+
+	tdmres, err := c.Client.BroadcastTxSync(tdmTx)
+	if err != nil {
+		return res, err
+	}
+
+	return convertBroadcastResult(tdmres), nil
+
 }
 
 func (c CoreContext) CheckValidatorDistInfo() error {
@@ -225,26 +253,27 @@ func (c CoreContext) CheckValidatorDistInfo() error {
 
 }
 
-func (c CoreContext) WithdrawBlockReward() error {
+func (c CoreContext) WithdrawBlockReward() (res Response, err error ) {
 	address := c.PrivKey.PubKey().Address()
 	msgWithdraw := pmsg.NewMsgWithdraw(address, address)
 
 	authTx, err := c.ConstructTransaction(msgWithdraw)
+
 	if err != nil {
-		return err
+		return res, err
 	}
 
 	tdmTx, err := c.ConstructTendermintTransaction(authTx)
 	if err != nil {
-		return err
+		return res, err
 	}
 
-	_, err = c.Client.BroadcastTxSync(tdmTx)
+	tdmres, err := c.Client.BroadcastTxSync(tdmTx)
 	if err != nil {
-		return coins, err
+		return res, err
 	}
 
-	return nil
+	return convertBroadcastResult(tdmres), nil
 
 }
 
