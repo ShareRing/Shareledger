@@ -32,7 +32,7 @@ var (
 	hostnamePrefix          string
 	startingIPAddress       string
 	p2pPort                 int
-	rpcPort 				int
+	rpcPort                 int
 	listIPAddress           string
 	listMonikers            string
 )
@@ -148,7 +148,7 @@ func testnetFiles(cmd *cobra.Command, args []string) error {
 
 	appGenesisState.StakeData.Validators = stateVals
 
-	genDoc.AppStateJSON = json.RawMessage(appGenesisState.ToJSON())
+	genDoc.AppState = json.RawMessage(appGenesisState.ToJSON())
 
 	// Write genesis file.
 	for i := 0; i < nValidators+nNonValidators; i++ {

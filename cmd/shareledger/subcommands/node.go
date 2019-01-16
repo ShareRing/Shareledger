@@ -10,13 +10,15 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 
-	abci "github.com/tendermint/abci/types"
+	abci "github.com/tendermint/tendermint/abci/types"
 	cfg "github.com/tendermint/tendermint/config"
+	cmn "github.com/tendermint/tendermint/libs/common"
+	dbm "github.com/tendermint/tendermint/libs/db"
+	"github.com/tendermint/tendermint/libs/log"
 	"github.com/tendermint/tendermint/node"
+	"github.com/tendermint/tendermint/p2p"
 	pvm "github.com/tendermint/tendermint/privval"
 	"github.com/tendermint/tendermint/proxy"
-	dbm "github.com/tendermint/tmlibs/db"
-	"github.com/tendermint/tmlibs/log"
 
 	"github.com/sharering/shareledger/app"
 	"github.com/sharering/shareledger/constants"
@@ -104,14 +106,21 @@ func startCombo(cmd *cobra.Command, args []string) error {
 
 	db, err := dbm.NewGoLevelDB("shareledgerd", filepath.Join(rootDir, "data"))
 
+	nodeKey, err := p2p.LoadOrGenNodeKey(config.NodeKeyFile())
+	if err != nil {
+		return err
+	}
+
 	shareledgerApp := app.NewShareLedgerApp(logger, db)
 
 	n, err := node.NewNode(
 		config,
-		pvm.LoadOrGenFilePV(config.PrivValidatorFile()),
+		pvm.LoadOrGenFilePV(config.PrivValidatorFile() /*, config.PrivValidatorStateFile()*/),
+		nodeKey,
 		proxy.NewLocalClientCreator(shareledgerApp),
 		node.DefaultGenesisDocProviderFunc(config),
 		node.DefaultDBProvider,
+		node.DefaultMetricsProvider(config.Instrumentation),
 		logger,
 	)
 
@@ -120,14 +129,18 @@ func startCombo(cmd *cobra.Command, args []string) error {
 	}
 
 	err = n.Start()
-
 	if err != nil {
 		return err
 	}
 
-	// Trap signal, run forever
-	n.RunForever()
-	return nil
+	cmn.TrapSignal(func() {
+		if n.IsRunning() {
+			_ = n.Stop()
+		}
+	})
+
+	// run forever (the node will not be returned)
+	select {}
 }
 
 // ParseLogLevel parses complex log level - comma-separated

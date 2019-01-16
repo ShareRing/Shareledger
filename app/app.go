@@ -114,7 +114,7 @@ func NewShareLedgerApp(logger log.Logger, db dbm.DB) *ShareLedgerApp {
 	// Register InitChain
 	logger.Info("Register Init Chainer")
 	app.SetInitChainer(app.InitChainer)
-	app.SetEndBlocker(EndBlocker(accountMapper, app.posKeeper))
+	//app.SetEndBlocker(EndBlocker(accountMapper, app.posKeeper))
 	app.SetBeginBlocker(BeginBlocker)
 
 	return app
@@ -186,10 +186,16 @@ func BeginBlocker(ctx sdk.Context, req abci.RequestBeginBlock) (res abci.Respons
 }
 
 // application updates every end block
-func EndBlocker(am auth.AccountMapper, keeper pKeeper.Keeper) sdk.EndBlocker {
+/*func EndBlocker(am auth.AccountMapper, keeper pKeeper.Keeper) sdk.EndBlocker {
 	return func(ctx sdk.Context, req abci.RequestEndBlock) abci.ResponseEndBlock {
 
 		proposer := ctx.BlockHeader().ProposerAddress //.Proposer
+		voteInfos = ctx.VoteInfos()
+
+		for _, info := range voteInfos {
+			if bytes.Equal(info.Validator.Address,proposer)
+
+		}
 
 		//	fmt.Printf("Proposer: %v\n", proposer)
 		//	fmt.Printf("Proposer PubKey: %v\n", proposer.PubKey)
@@ -220,7 +226,7 @@ func EndBlocker(am auth.AccountMapper, keeper pKeeper.Keeper) sdk.EndBlocker {
 		// Add these new validators to the addr -> pubkey map.
 		// return abci.ResponseEndBlock{}
 	}
-}
+}*/
 
 func MakeCodec() *amino.Codec {
 	cdc := amino.NewCodec()

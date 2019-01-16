@@ -7,12 +7,12 @@ import (
 	"strings"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/tendermint/go-amino"
 	cfg "github.com/tendermint/tendermint/config"
+	cmn "github.com/tendermint/tendermint/libs/common"
 	"github.com/tendermint/tendermint/privval"
 	rpcclient "github.com/tendermint/tendermint/rpc/client"
 	tdmtypes "github.com/tendermint/tendermint/types"
-	cmn "github.com/tendermint/tmlibs/common"
-	"github.com/tendermint/go-amino"
 
 	"github.com/sharering/shareledger/app"
 	"github.com/sharering/shareledger/types"
@@ -32,9 +32,9 @@ type CoreContext struct {
 
 type SHRAccount1 struct {
 	Address sdk.AccAddress `json:"address"`
-	Coins   types.Coins `json:"coins"`
-	PubKey  []byte      `json:"pub_key"`
-	Nonce   int64       `json:"nonce"`
+	Coins   types.Coins    `json:"coins"`
+	PubKey  []byte         `json:"pub_key"`
+	Nonce   int64          `json:"nonce"`
 }
 
 func NewCoreContextFromConfig(config *cfg.Config) CoreContext {
@@ -71,7 +71,7 @@ func (c CoreContext) ConstructTransaction(msg sdk.Msg) (auth.AuthTx, error) {
 func (c CoreContext) ConstructTendermintTransaction(tx auth.AuthTx) (tdmtx tdmtypes.Tx, err error) {
 
 	// amino encode
-	encodedTx, err := c.Codec.MarshalBinary(tx)
+	encodedTx, err := c.Codec.MarshalBinaryLengthPrefixed(tx)
 	// fmt.Printf("Tx: %x\n", encodedTx)
 	if err != nil {
 		return tdmtx, err
@@ -85,7 +85,7 @@ func (c CoreContext) GetNonce() (int64, error) {
 	nonceMsg := auth.NewMsgNonce(c.PrivKey.PubKey().Address())
 	queryTx := types.NewQueryTx(nonceMsg)
 
-	encodedTx, err := c.Codec.MarshalBinary(queryTx)
+	encodedTx, err := c.Codec.MarshalBinaryLengthPrefixed(queryTx)
 	if err != nil {
 		return -1, err
 	}
@@ -199,7 +199,7 @@ func (c CoreContext) CheckValidatorDistInfo() error {
 		ValidatorAddr: c.PrivKey.PubKey().Address(),
 	}
 
-	req, err := c.Codec.MarshalBinary(queryValidatorDist)
+	req, err := c.Codec.MarshalBinaryLengthPrefixed(queryValidatorDist)
 	if err != nil {
 		return err
 	}

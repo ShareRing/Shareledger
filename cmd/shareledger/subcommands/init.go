@@ -2,19 +2,20 @@ package subcommands
 
 import (
 	"encoding/json"
+	"fmt"
 	"path/filepath"
 	"strconv"
 	"time"
 
 	"github.com/spf13/cobra"
 
+	cfg "github.com/tendermint/tendermint/config"
 	crypto "github.com/tendermint/tendermint/crypto"
 	"github.com/tendermint/tendermint/crypto/secp256k1"
-	cfg "github.com/tendermint/tendermint/config"
+	cmn "github.com/tendermint/tendermint/libs/common"
 	"github.com/tendermint/tendermint/p2p"
 	"github.com/tendermint/tendermint/privval"
 	tmtypes "github.com/tendermint/tendermint/types"
-	cmn "github.com/tendermint/tmlibs/common"
 
 	"github.com/sharering/shareledger/app"
 	"github.com/sharering/shareledger/types"
@@ -33,7 +34,7 @@ const (
 
 var (
 	persistentPeers string
-	privKeyParam         string
+	privKeyParam    string
 )
 
 func init() {
@@ -63,7 +64,7 @@ func initFilesWithConfig(config *cfg.Config) error {
 		var newPrivKey secp256k1.PrivKeySecp256k1
 
 		if privKeyParam == "" {
-			newPrivKey = crypto.GenPrivKeySecp256k1()
+			newPrivKey = secp256k1.GenPrivKeySecp256k1([]byte{})
 		} else {
 			newPrivKey = types.GetCryptoPrivKey(privKeyParam)
 		}
@@ -95,16 +96,16 @@ func initFilesWithConfig(config *cfg.Config) error {
 		logger.Info("Found genesis file", "path", genFile)
 	} else {
 		genDoc := tmtypes.GenesisDoc{
-			ChainID:     cmn.Fmt("test-chain-%v", cmn.RandStr(6)),
+			ChainID:     fmt.Sprintf("test-chain-%v", cmn.RandStr(6)),
 			GenesisTime: time.Now(),
 		}
 		genDoc.Validators = []tmtypes.GenesisValidator{{
 			PubKey: pubKey,
 			Power:  genesisState.StakeData.Validators[0].ABCIValidator().Power,
-			Name: genesisState.StakeData.Validators[0].Description.Moniker,
+			Name:   genesisState.StakeData.Validators[0].Description.Moniker,
 		}}
 
-		genDoc.AppStateJSON = json.RawMessage(genesisState.ToJSON())
+		genDoc.AppState = json.RawMessage(genesisState.ToJSON())
 
 		if err := genDoc.SaveAs(genFile); err != nil {
 			return err
