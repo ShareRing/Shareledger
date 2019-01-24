@@ -22,6 +22,7 @@ func main() {
 		subcommands.WithdrawBlockRewardCmd,
 		subcommands.BeginUnbondingCmd,
 		subcommands.CompleteUnbondingCmd,
+		subcommands.SendCoinCmd,
 	)
 
 	rootCmd.Execute()

@@ -417,7 +417,7 @@ func (d *Dec) UnmarshalAmino(text string) (err error) {
 	if !ok {
 		return err
 	}
-
+	fmt.Printf("Text: %s\n", text)
 	textBytes := ToBig([]byte(text), Separator, Precision)
 
 	err = tempInt.UnmarshalText(textBytes)
@@ -556,10 +556,14 @@ func RemoveSeparator(input []byte, sep byte) []byte {
 	} else if sepPos != -1 {
 		output := append([]byte(""), input[:sepPos]...)
 		output = append(output, input[sepPos+1:]...)
-
 		// remove leading zero
 		for output[0] == '0' {
-			output = output[1:]
+			if len(output) > 1 {
+				output = output[1:]
+			} else {
+				// if output = "00000", return "0"
+				return []byte("0")
+			}
 		}
 		return output
 	} else {
