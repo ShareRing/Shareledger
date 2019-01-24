@@ -4,6 +4,13 @@
 - Support for multiple stable coins 
 - KYC information storage
 
+## [0.1.2] - 2019-01-24
+### Added
+- Command line commands `send_coins`
+
+### Fixed
+- Decimal unmarshal with 0.0
+
 
 ## [0.1.1] - 2019-01-05
 ### Added
