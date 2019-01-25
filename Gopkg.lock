@@ -272,7 +272,6 @@
   revision = "56726106282f1985ea77d5305743db7231b0c0a8"
 
 [[projects]]
-  branch = "master"
   digest = "1:ce62b400185bf6b16ef6088011b719e449f5c15c4adb6821589679f752c2788e"
   name = "github.com/prometheus/common"
   packages = [
@@ -282,10 +281,11 @@
   ]
   pruneopts = "UT"
   revision = "2998b132700a7d019ff618c06a234b47c1f3f681"
+  version = "v0.1.0"
 
 [[projects]]
   branch = "master"
-  digest = "1:08eb8b60450efe841e37512d66ce366a87d187505d7c67b99307a6c1803483a2"
+  digest = "1:f532f2cdb9e9e4a8fad5a7e944482f4dd12650228e4a7a6c8492a0d069ce0690"
   name = "github.com/prometheus/procfs"
   packages = [
     ".",
@@ -294,7 +294,7 @@
     "xfs",
   ]
   pruneopts = "UT"
-  revision = "b1a0a9a36d7453ba0f62578b99712f3a6c5f82d1"
+  revision = "bf6a532e95b1f7a62adf0ab5050a5bb2237ad2f4"
 
 [[projects]]
   digest = "1:c4556a44e350b50a490544d9b06e9fba9c286c21d6c0e47f54f3a9214597298c"
@@ -493,15 +493,15 @@
   version = "v0.27.4"
 
 [[projects]]
-  digest = "1:b97247853a9ddc82f593fbacff672b8cae8ae82d7bb9b91436098328703c476c"
+  digest = "1:57187daea6b96f6ad690b10924bd363429f4f274215c7f88ccc48ada11019553"
   name = "github.com/tendermint/tmlibs"
   packages = [
     "common",
     "log",
   ]
   pruneopts = "UT"
-  revision = "49596e0a1f48866603813df843c9409fc19805c6"
-  version = "v0.9.0"
+  revision = "692f1d86a6e2c0efa698fd1e4541b68c74ffaf38"
+  version = "v0.8.4"
 
 [[projects]]
   digest = "1:e5a695493953035afc78ef3247a37cee520120bc575fc252729c2c51c20727c9"
@@ -542,14 +542,14 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:bf30a7a75f44ee01ed0088750bdb4e18e738cfd8aa335802094d26d10110032b"
+  digest = "1:9f139000806d2b29ae06c1a0162b4e82e6883f1f1f21d50b86b7c1d891e5dd3f"
   name = "golang.org/x/sys"
   packages = [
     "cpu",
     "unix",
   ]
   pruneopts = "UT"
-  revision = "a457fd036447854c0c02e89ea439481bdcf941a2"
+  revision = "b90733256f2e882e81d52f9126de08df5615afd9"
 
 [[projects]]
   digest = "1:a2ab62866c75542dd18d2b069fec854577a20211d7c0ea6ae746072a1dccdd18"
@@ -580,7 +580,7 @@
   name = "google.golang.org/genproto"
   packages = ["googleapis/rpc/status"]
   pruneopts = "UT"
-  revision = "db91494dd46c1fdcbbde05e5ff5eb56df8f7d79a"
+  revision = "8819c946db4494a2259bf100a377f51aa585d893"
 
 [[projects]]
   digest = "1:9ab5a33d8cb5c120602a34d2e985ce17956a4e8c2edce7e6961568f95e40c09a"

@@ -69,14 +69,6 @@ func NewShareLedgerApp(logger log.Logger, db dbm.DB) *ShareLedgerApp {
 	exchangeKey := sdk.NewKVStoreKey(constants.STORE_EXCHANGE)
 	//bankKey := sdk.NewKVStoreKey(constants.STORE_BANK)
 
-	// Mount Store
-
-	baseApp.MountStores(authKey, assetKey, bookingKey, posKey, exchangeKey) //replace baseApp.MountStoresIAVL
-	err := baseApp.LoadLatestVersion(authKey)
-	if err != nil {
-		cmn.Exit(err.Error())
-	}
-
 	// accountMapper for Auth Module storing and Bank module
 	accountMapper := auth.NewAccountMapper(
 		cdc,
@@ -117,6 +109,12 @@ func NewShareLedgerApp(logger log.Logger, db dbm.DB) *ShareLedgerApp {
 	//app.SetEndBlocker(EndBlocker(accountMapper, app.posKeeper))
 	app.SetBeginBlocker(BeginBlocker)
 
+	//  Mount Store
+	baseApp.MountStores(authKey, assetKey, bookingKey, posKey, exchangeKey) //replace baseApp.MountStoresIAVL
+	err := baseApp.LoadLatestVersion(authKey)
+	if err != nil {
+		cmn.Exit(err.Error())
+	}
 	return app
 }
 
