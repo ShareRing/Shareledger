@@ -41,3 +41,19 @@ var RESERVE_ACCOUNTS = []string{
 	"405C725BC461DCA455B8AA84769E8ACE6B3763F4",
 	"B87D5A84F7DCE488BA2FCBDD2057023561BC05A4",
 }
+
+//bench32 prefix
+// Bech32PrefixAccAddr defines the Bech32 prefix of an account's address
+const (
+	Bech32PrefixAccAddr = "shareledger"
+	// Bech32PrefixAccPub defines the Bech32 prefix of an account's public key
+	Bech32PrefixAccPub = "shareledgerpub"
+	// Bech32PrefixValAddr defines the Bech32 prefix of a validator's operator address
+	Bech32PrefixValAddr = "shareledgervaloper"
+	// Bech32PrefixValPub defines the Bech32 prefix of a validator's operator public key
+	Bech32PrefixValPub = "shareledgervaloperpub"
+	// Bech32PrefixConsAddr defines the Bech32 prefix of a consensus node address
+	Bech32PrefixConsAddr = "shareledgervalcons"
+	// Bech32PrefixConsPub defines the Bech32 prefix of a consensus node public key
+	Bech32PrefixConsPub = "shareledgervalconspub"
+)

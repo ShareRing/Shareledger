@@ -36,10 +36,10 @@ var _ BaseAccount = (*SHRAccount)(nil)
 
 // SHRAccount - a ShareLedger account
 type SHRAccount struct {
-	Address sdk.AccAddress  `json:"address"`
-	Coins   types.Coins  `json:"coins"`
-	PubKey  types.PubKey `json:"pub_key"`
-	Nonce   int64        `json:"nonce"`
+	Address sdk.AccAddress `json:"address"`
+	Coins   types.Coins    `json:"coins"`
+	PubKey  types.PubKey   `json:"pub_key"`
+	Nonce   int64          `json:"nonce"`
 }
 
 // NewSHRAccountWithAddress create  a SHRAccount with address
