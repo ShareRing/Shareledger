@@ -7,10 +7,10 @@ import (
 	cmn "github.com/tendermint/tendermint/libs/common"
 	dbm "github.com/tendermint/tendermint/libs/db"
 	"github.com/tendermint/tendermint/libs/log"
+	amino "github.com/tendermint/go-amino"
 
 	bapp "github.com/cosmos/cosmos-sdk/baseapp"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/tendermint/go-amino"
 
 	"github.com/sharering/shareledger/constants"
 	"github.com/sharering/shareledger/types"
@@ -105,6 +105,8 @@ func NewShareLedgerApp(logger log.Logger, db dbm.DB) *ShareLedgerApp {
 	app.SetAnteHandler(auth.NewAnteHandler(accountMapper))
 	app.Router().
 		AddRoute(constants.MESSAGE_AUTH, auth.NewHandler(accountMapper))
+	app.QueryRouter().
+		AddRoute(constants.MESSAGE_AUTH, auth.NewQuerier(accountMapper, app.cdc))
 	app.cdc = auth.RegisterCodec(app.cdc)
 
 	// Set Tx Fee Calculation
