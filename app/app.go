@@ -268,6 +268,9 @@ func (app *ShareLedgerApp) SetupBank(am auth.AccountMapper) {
 	// Note the handler gets access to the account store.
 	app.Router().
 		AddRoute("bank", bank.NewHandler(am))
+	
+	app.QueryRouter().
+		AddRoute(constants.MESSAGE_BANK, bank.NewQuerier(am, app.cdc))
 
 }
 
