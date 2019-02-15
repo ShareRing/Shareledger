@@ -5,7 +5,7 @@ import (
 
 	cmn "github.com/tendermint/tendermint/libs/common"
 
-	abci "github.com/tendermint/abci/types"
+	abci "github.com/tendermint/tendermint/abci/types"
 )
 
 // ABCICodeType - combined codetype / codespace
