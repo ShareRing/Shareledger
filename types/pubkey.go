@@ -7,7 +7,8 @@ import (
 	"fmt"
 
 	"github.com/btcsuite/btcd/btcec"
-	sha3 "github.com/ethereum/go-ethereum/crypto/sha3"
+	// sha3 "github.com/ethereum/go-ethereum/crypto/sha3"
+	sha3 "golang.org/x/crypto/sha3"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	crypto "github.com/tendermint/tendermint/crypto"
@@ -64,7 +65,7 @@ func NilPubKeySecp256k1() PubKeySecp256k1 {
 
 // Implements Bitcoin style addresses: RIPEMD160(SHA256(pubkey))
 func (pubKey PubKeySecp256k1) Address() sdk.AccAddress {
-	hasherSHA256 := sha3.NewKeccak256()
+	hasherSHA256 := sha3.NewLegacyKeccak256()
 	//hasherSHA256.Write([]byte("0x"))
 	hasherSHA256.Write(pubKey[:]) // does not error
 	var sha []byte
