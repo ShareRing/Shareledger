@@ -110,7 +110,7 @@ func queryValidator(ctx sdk.Context, cdc *amino.Codec, req abci.RequestQuery, k 
 	//errRes := cdc.UnmarshalJSON(req.Data, &params)
 	errRes := cdc.UnmarshalBinaryLengthPrefixed(req.Data, &params)
 	if errRes != nil {
-		return []byte{}, sdk.ErrUnknownAddress(fmt.Sprintf("incorrectly formatted request address: %s", err.Error()))
+		return []byte{}, sdk.ErrUnknownAddress(fmt.Sprintf("incorrectly formatted request address: %s", errRes.Error()))
 	}
 
 	validator, found := k.GetValidator(ctx, params.ValidatorAddr)
