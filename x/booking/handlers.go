@@ -7,7 +7,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
 	"github.com/sharering/shareledger/constants"
-	"github.com/sharering/shareledger/utils"
+	// "github.com/sharering/shareledger/utils"
 	"github.com/sharering/shareledger/x/booking/messages"
 )
 
@@ -41,13 +41,13 @@ func handleBooking(ctx sdk.Context, k Keeper, msg messages.MsgBook) sdk.Result {
 		return sdk.ErrInternal(err.Error()).Result()
 	}
 
-	fee, denom := utils.GetMsgFee(msg)
+	// fee, denom := utils.GetMsgFee(msg)
 
 	return sdk.Result{
 		Log:       fmt.Sprintf("%s", booking.String()),
 		Tags:      msg.Tags(),
-		FeeAmount: fee,
-		FeeDenom:  denom,
+		// FeeAmount: fee,
+		// FeeDenom:  denom,
 	}
 }
 
@@ -59,12 +59,12 @@ func handleComplete(ctx sdk.Context, k Keeper, msg messages.MsgComplete) sdk.Res
 		return sdk.ErrInternal(err.Error()).Result()
 	}
 
-	fee, denom := utils.GetMsgFee(msg)
+	// fee, denom := utils.GetMsgFee(msg)
 
 	return sdk.Result{
 		Log:       fmt.Sprintf("Completed %s", booking.String()),
 		Tags:      msg.Tags(),
-		FeeAmount: fee,
-		FeeDenom:  denom,
+		// FeeAmount: fee,
+		// FeeDenom:  denom,
 	}
 }

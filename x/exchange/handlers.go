@@ -6,7 +6,7 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	"github.com/sharering/shareledger/utils"
+	// "github.com/sharering/shareledger/utils"
 	"github.com/sharering/shareledger/x/auth"
 	"github.com/sharering/shareledger/x/exchange/messages"
 )
@@ -45,13 +45,13 @@ func handleMsgCreate(
 
 	// TODO: MsgFee is based on name of Msg. Currently, Asset and This module ( Exchagne) share the same set of names
 	// Create, Delete, Update
-	fee, denom := utils.GetMsgFee(msg)
+	// fee, denom := utils.GetMsgFee(msg)
 
 	return sdk.Result{
 		Log:       fmt.Sprintf("%s", exr),
 		Tags:      msg.Tags(),
-		FeeAmount: fee,
-		FeeDenom:  denom,
+		// FeeAmount: fee,
+		// FeeDenom:  denom,
 	}
 }
 
@@ -69,13 +69,13 @@ func handleMsgUpdate(
 
 	// TODO: MsgFee is based on name of Msg. Currently, Asset and This module ( Exchagne) share the same set of names
 	// Create, Delete, Update
-	fee, denom := utils.GetMsgFee(msg)
+	// fee, denom := utils.GetMsgFee(msg)
 
 	return sdk.Result{
 		Log:       fmt.Sprintf("%s", exr),
 		Tags:      msg.Tags(),
-		FeeAmount: fee,
-		FeeDenom:  denom,
+		// FeeAmount: fee,
+		// FeeDenom:  denom,
 	}
 }
 
@@ -93,13 +93,13 @@ func handleMsgDelete(
 
 	// TODO: MsgFee is based on name of Msg. Currently, Asset and This module ( Exchagne) share the same set of names
 	// Create, Delete, Update
-	fee, denom := utils.GetMsgFee(msg)
+	// fee, denom := utils.GetMsgFee(msg)
 
 	return sdk.Result{
 		Log:       fmt.Sprintf("%s", exr),
 		Tags:      msg.Tags(),
-		FeeAmount: fee,
-		FeeDenom:  denom,
+		// FeeAmount: fee,
+		// FeeDenom:  denom,
 	}
 }
 

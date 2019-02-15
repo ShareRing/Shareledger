@@ -100,8 +100,8 @@ func handleMsgCreateValidator(ctx sdk.Context, msg message.MsgCreateValidator, k
 	tags := sdk.NewTags(
 		tags.Event, tags.ValidatorCreated,
 		tags.Validator, msg.ValidatorAddr.String(),
-		tags.Moniker, msg.Description.Moniker),
-		tags.Identity, msg.Description.Identity),
+		tags.Moniker, msg.Description.Moniker,
+		tags.Identity, msg.Description.Identity,
 	)
 
 	return sdk.Result{

@@ -6,7 +6,7 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/sharering/shareledger/constants"
-	"github.com/sharering/shareledger/utils"
+	// "github.com/sharering/shareledger/utils"
 	"github.com/sharering/shareledger/x/asset/messages"
 )
 
@@ -43,13 +43,13 @@ func handleAssetCreation(ctx sdk.Context, k Keeper, msg messages.MsgCreate) sdk.
 		return sdk.ErrInternal(err.Error()).Result()
 	}
 
-	fee, denom := utils.GetMsgFee(msg)
+	// fee, denom := utils.GetMsgFee(msg)
 
 	return sdk.Result{
 		Log:       fmt.Sprintf("%s", asset),
 		Tags:      msg.Tags(),
-		FeeAmount: fee,
-		FeeDenom:  denom,
+		// FeeAmount: fee,
+		// FeeDenom:  denom,
 	}
 }
 
@@ -73,13 +73,13 @@ func handleAssetUpdate(ctx sdk.Context, k Keeper, msg messages.MsgUpdate) sdk.Re
 		return sdk.ErrInternal(err.Error()).Result()
 	}
 
-	fee, denom := utils.GetMsgFee(msg)
+	// fee, denom := utils.GetMsgFee(msg)
 
 	return sdk.Result{
 		Log:       fmt.Sprintf("%s", asset),
 		Tags:      msg.Tags(),
-		FeeAmount: fee,
-		FeeDenom:  denom,
+		// FeeAmount: fee,
+		// FeeDenom:  denom,
 	}
 }
 
@@ -90,12 +90,12 @@ func handleAssetDelete(ctx sdk.Context, k Keeper, msg messages.MsgDelete) sdk.Re
 		return sdk.ErrInternal(err.Error()).Result()
 	}
 
-	fee, denom := utils.GetMsgFee(msg)
+	// fee, denom := utils.GetMsgFee(msg)
 
 	return sdk.Result{
 		Log:       fmt.Sprintf("%s", asset),
 		Tags:      msg.Tags(),
-		FeeAmount: fee,
-		FeeDenom:  denom,
+		// FeeAmount: fee,
+		// FeeDenom:  denom,
 	}
 }

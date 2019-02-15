@@ -6,7 +6,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
 	"github.com/sharering/shareledger/types"
-	"github.com/sharering/shareledger/utils"
+	// "github.com/sharering/shareledger/utils"
 	"github.com/sharering/shareledger/x/auth"
 	Err "github.com/sharering/shareledger/x/bank/error"
 	"github.com/sharering/shareledger/x/bank/messages"
@@ -49,14 +49,14 @@ func HandleMsgSend(am auth.AccountMapper) sdk.Handler {
 		res := fmt.Sprintf("{\"from\":%v, \"to\":%v}", resF.Log, resT.Log)
 		// Return a success (Code 0).
 		// Add list of key-value pair descriptors ("tags").
-		fee, denom := utils.GetMsgFee(msg)
+		// fee, denom := utils.GetMsgFee(msg)
 
 		return sdk.Result{
 			Log:       res,
 			Data:      append(resF.Data, resT.Data...),
 			Tags:      sendMsg.Tags().AppendTag(tags.FromAddress, signer.GetAddress().String()),
-			FeeAmount: fee,
-			FeeDenom:  denom,
+			// FeeAmount: fee,
+			// FeeDenom:  denom,
 		}
 	}
 }
