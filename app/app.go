@@ -3,11 +3,11 @@ package app
 import (
 	"os"
 
+	amino "github.com/tendermint/go-amino"
 	abci "github.com/tendermint/tendermint/abci/types"
 	cmn "github.com/tendermint/tendermint/libs/common"
 	dbm "github.com/tendermint/tendermint/libs/db"
 	"github.com/tendermint/tendermint/libs/log"
-	amino "github.com/tendermint/go-amino"
 
 	bapp "github.com/cosmos/cosmos-sdk/baseapp"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -132,7 +132,7 @@ func NewShareLedgerApp(logger log.Logger, db dbm.DB) *ShareLedgerApp {
 func (app *ShareLedgerApp) InitChainer(ctx sdk.Context, req abci.RequestInitChain) abci.ResponseInitChain {
 
 	stateJSON := req.AppStateBytes
-	app.Logger.Info("Init Chain",
+	app.Logger().Info("Init Chain",
 		"time", req.Time,
 		"ChainID", req.ChainId,
 		"ConsensusParams", req.ConsensusParams,
@@ -268,7 +268,7 @@ func (app *ShareLedgerApp) SetupBank(am auth.AccountMapper) {
 	// Note the handler gets access to the account store.
 	app.Router().
 		AddRoute("bank", bank.NewHandler(am))
-	
+
 	app.QueryRouter().
 		AddRoute(constants.MESSAGE_BANK, bank.NewQuerier(am, app.cdc))
 
