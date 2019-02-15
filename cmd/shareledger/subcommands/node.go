@@ -115,7 +115,7 @@ func startCombo(cmd *cobra.Command, args []string) error {
 
 	n, err := node.NewNode(
 		config,
-		pvm.LoadOrGenFilePV(config.PrivValidatorFile() /*, config.PrivValidatorStateFile()*/),
+		pvm.LoadOrGenFilePV(config.PrivValidatorKeyFile() , config.PrivValidatorStateFile()),
 		nodeKey,
 		proxy.NewLocalClientCreator(shareledgerApp),
 		node.DefaultGenesisDocProviderFunc(config),

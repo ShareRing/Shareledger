@@ -63,14 +63,18 @@ func initFiles(cmd *cobra.Command, args []string) error {
 
 func initFilesWithConfig(config *cfg.Config) error {
 	// private validator
-	privValFile := config.PrivValidatorFile()
-	logger.Info("PrivateValidator File:", "filePath", privValFile)
+	privValKeyFile := config.PrivValidatorKeyFile()
+	logger.Info("PrivateValidator KeyFile:", "filePath", privValKeyFile)
+
+	privValStateFile := config.PrivValidatorStateFile()
+	logger.Info("PrivateValidator StateFile:", "filePath", privValStateFile)
+
 	var pv *privval.FilePV
-	if cmn.FileExists(privValFile) {
-		pv = privval.LoadFilePV(privValFile)
-		logger.Info("Found private validator", "path", privValFile)
+	if cmn.FileExists(privValKeyFile) {
+		pv = privval.LoadFilePV(privValKeyFile, privValStateFile)
+		logger.Info("Found private validator", "path", privValKeyFile)
 	} else {
-		pv = privval.GenFilePV(privValFile)
+		pv = privval.GenFilePV(privValKeyFile, privValStateFile)
 		var newPrivKey secp256k1.PrivKeySecp256k1
 
 		if privKeyParam == "" {
@@ -78,12 +82,12 @@ func initFilesWithConfig(config *cfg.Config) error {
 		} else {
 			newPrivKey = types.GetCryptoPrivKey(privKeyParam)
 		}
-		pv.PrivKey = newPrivKey
-		pv.PubKey = pv.PrivKey.PubKey()
-		pv.Address = pv.PubKey.Address()
+		pv.Key.PrivKey = newPrivKey
+		pv.Key.PubKey = pv.Key.PrivKey.PubKey()
+		pv.Key.Address = pv.Key.PubKey.Address()
 
 		pv.Save()
-		logger.Info("Generated private validator", "path", privValFile)
+		logger.Info("Generated private validator", "path", privValKeyFile)
 	}
 
 	nodeKeyFile := config.NodeKeyFile()
@@ -144,7 +148,7 @@ func genGenesisState(pv *privval.FilePV) (app.GenesisState, crypto.PubKey) {
 	// save new priv_validator.json
 	pv.Save()
 
-	privK, ok := pv.PrivKey.(secp256k1.PrivKeySecp256k1)
+	privK, ok := pv.Key.PrivKey.(secp256k1.PrivKeySecp256k1)
 
 	if !ok {
 		panic(ok)
@@ -155,5 +159,5 @@ func genGenesisState(pv *privval.FilePV) (app.GenesisState, crypto.PubKey) {
 	pubKey := privKey.PubKey()
 
 	gs := app.GenerateGenesisState(pubKey)
-	return gs, pv.PubKey
+	return gs, pv.Key.PubKey
 }

@@ -12,7 +12,6 @@ import (
 	"github.com/sharering/shareledger/types"
 )
 
-
 // ShowPrivKeyCmd dumps node's Private Key to the standard output.
 var ShowAddressCmd = &cobra.Command{
 	Use:   "show_address",
@@ -20,15 +19,15 @@ var ShowAddressCmd = &cobra.Command{
 	RunE:  showAddress,
 }
 
-
 func showAddress(cmd *cobra.Command, args []string) error {
-	privValFile := config.PrivValidatorFile()
+	privValKeyFile := config.PrivValidatorKeyFile()
+	privValStateFile := config.PrivValidatorStateFile()
 
 	var pv *privval.FilePV
 
-	if cmn.FileExists(privValFile) {
-		pv = privval.LoadFilePV(privValFile)
-		privateKey := types.ConvertToPrivKey(pv.PrivKey)
+	if cmn.FileExists(privValKeyFile) {
+		pv = privval.LoadFilePV(privValKeyFile, privValStateFile)
+		privateKey := types.ConvertToPrivKey(pv.Key.PrivKey)
 
 		fmt.Printf("%x\n", privateKey.PubKey().Address()[:])
 		return nil

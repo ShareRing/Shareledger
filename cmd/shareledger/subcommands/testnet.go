@@ -108,8 +108,10 @@ func testnetFiles(cmd *cobra.Command, args []string) error {
 
 		initFilesWithConfig(config)
 
-		pvFile := filepath.Join(nodeDir, config.BaseConfig.PrivValidator)
-		pv := privval.LoadFilePV(pvFile)
+		pvKeyFile := filepath.Join(nodeDir, config.BaseConfig.PrivValidatorKey)
+		pvStateFile := filepath.Join(nodeDir, config.BaseConfig.PrivValidatorState)
+
+		pv := privval.LoadFilePV(pvKeyFile, pvStateFile)
 		genesisState, pubKey := genGenesisState(pv)
 
 		// Update Moniker for Validator tendermint

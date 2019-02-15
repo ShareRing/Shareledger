@@ -356,14 +356,14 @@ func getRPCAddress(config *cfg.Config, index int) (string, string) {
 }
 
 func getPrivKey(config *cfg.Config) types.PrivKeySecp256k1 {
-	privValFile := config.PrivValidatorFile()
+	privValFile := config.PrivValidatorKeyFile()
 
 	if !cmn.FileExists(privValFile) {
 		panic("Private Key file does not exist")
 	}
 
-	pv := privval.LoadFilePV(privValFile)
-	privKey := types.ConvertToPrivKey(pv.PrivKey)
+	pv := privval.LoadFilePV(privValFile, config.PrivValidatorStateFile())
+	privKey := types.ConvertToPrivKey(pv.Key.PrivKey)
 	return privKey
 
 }

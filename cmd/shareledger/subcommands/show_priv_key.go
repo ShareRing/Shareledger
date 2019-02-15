@@ -28,13 +28,14 @@ func init() {
 }
 
 func showPrivKey(cmd *cobra.Command, args []string) error {
-	privValFile := config.PrivValidatorFile()
+	privValKeyFile := config.PrivValidatorKeyFile()
+	privValStateFile := config.PrivValidatorStateFile()
 
 	var pv *privval.FilePV
 
-	if cmn.FileExists(privValFile) {
-		pv = privval.LoadFilePV(privValFile)
-		privateKey := types.ConvertToPrivKey(pv.PrivKey)
+	if cmn.FileExists(privValKeyFile) {
+		pv = privval.LoadFilePV(privValKeyFile, privValStateFile)
+		privateKey := types.ConvertToPrivKey(pv.Key.PrivKey)
 
 		fmt.Printf("%x\n", privateKey[:])
 
@@ -45,8 +46,8 @@ func showPrivKey(cmd *cobra.Command, args []string) error {
 			fmt.Printf("Address   : %X\n", publicKey.Address()[:])
 
 			fmt.Printf("\n***TENDERMINT****\n\n")
-			fmt.Printf("Public Key: %x\n", pv.PubKey)
-			fmt.Printf("Address   : %X\n", pv.Address[:])
+			fmt.Printf("Public Key: %x\n", pv.Key.PubKey)
+			fmt.Printf("Address   : %X\n", pv.Key.Address[:])
 
 		}
 		return nil
