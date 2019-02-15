@@ -68,13 +68,13 @@ func (msg MsgCreate) GetSigners() []sdk.AccAddress {
 }
 
 func (msg MsgCreate) Tags() sdk.Tags {
-	return sdk.NewTags("msg.module", []byte("asset")).
-		AppendTag("msg.action", []byte("create")).
-		AppendTag("asset.creator", []byte(msg.Creator.String())).
-		AppendTag("asset.UUID", []byte(msg.UUID)).
-		AppendTag("asset.Hash", []byte(msg.Hash)).
-		AppendTag("asset.Status", []byte(strconv.FormatBool(msg.Status))).
-		AppendTag("asset.Fee", []byte(strconv.Itoa(int(msg.Fee))))
+	return sdk.NewTags("msg.module", "asset").
+		AppendTag("msg.action", "create").
+		AppendTag("asset.creator", msg.Creator.String()).
+		AppendTag("asset.UUID", msg.UUID).
+		AppendTag("asset.Hash", fmt.Sprintf("%X", msg.Hash)).
+		AppendTag("asset.Status", strconv.FormatBool(msg.Status)).
+		AppendTag("asset.Fee", strconv.Itoa(int(msg.Fee)))
 }
 
 //------------------------------------------

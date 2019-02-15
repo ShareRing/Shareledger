@@ -99,9 +99,9 @@ func handleMsgCreateValidator(ctx sdk.Context, msg message.MsgCreateValidator, k
 
 	tags := sdk.NewTags(
 		tags.Event, tags.ValidatorCreated,
-		tags.Validator, []byte(msg.ValidatorAddr.String()),
-		tags.Moniker, []byte(msg.Description.Moniker),
-		tags.Identity, []byte(msg.Description.Identity),
+		tags.Validator, msg.ValidatorAddr.String(),
+		tags.Moniker, msg.Description.Moniker),
+		tags.Identity, msg.Description.Identity),
 	)
 
 	return sdk.Result{
@@ -133,8 +133,8 @@ func handleMsgDelegate(ctx sdk.Context, msg message.MsgDelegate, k keeper.Keeper
 
 	tags := sdk.NewTags(
 		tags.Event, tags.Delegated,
-		tags.Delegator, []byte(msg.DelegatorAddr.String()),
-		tags.Validator, []byte(msg.ValidatorAddr.String()),
+		tags.Delegator, msg.DelegatorAddr.String(),
+		tags.Validator, msg.ValidatorAddr.String(),
 	)
 
 	return sdk.Result{
@@ -150,8 +150,8 @@ func handleMsgBeginUnbonding(ctx sdk.Context, msg message.MsgBeginUnbonding, k k
 
 	tags := sdk.NewTags(
 		tags.Event, tags.BeginUnbonding,
-		tags.Delegator, []byte(msg.DelegatorAddr.String()),
-		tags.Validator, []byte(msg.ValidatorAddr.String()),
+		tags.Delegator, msg.DelegatorAddr.String(),
+		tags.Validator, msg.ValidatorAddr.String(),
 	)
 	return sdk.Result{Tags: tags}
 }
@@ -165,8 +165,8 @@ func handleMsgCompleteUnbonding(ctx sdk.Context, msg message.MsgCompleteUnbondin
 
 	tags := sdk.NewTags(
 		tags.Event, tags.CompleteUnbonding,
-		tags.Delegator, []byte(msg.DelegatorAddr.String()),
-		tags.Validator, []byte(msg.ValidatorAddr.String()),
+		tags.Delegator, msg.DelegatorAddr.String(),
+		tags.Validator, msg.ValidatorAddr.String(),
 	)
 
 	return sdk.Result{Tags: tags}
@@ -181,9 +181,9 @@ func handleMsgBeginRedelegate(ctx sdk.Context, msg message.MsgBeginRedelegate, k
 
 	tags := sdk.NewTags(
 		tags.Event, tags.BeginRedelegation,
-		tags.Delegator, []byte(msg.DelegatorAddr.String()),
-		tags.SrcValidator, []byte(msg.ValidatorSrcAddr.String()),
-		tags.DstValidator, []byte(msg.ValidatorDstAddr.String()),
+		tags.Delegator, msg.DelegatorAddr.String(),
+		tags.SrcValidator, msg.ValidatorSrcAddr.String(),
+		tags.DstValidator, msg.ValidatorDstAddr.String(),
 	)
 	return sdk.Result{Tags: tags}
 }
@@ -196,9 +196,9 @@ func handleMsgCompleteRedelegate(ctx sdk.Context, msg message.MsgCompleteRedeleg
 
 	tags := sdk.NewTags(
 		tags.Event, tags.CompleteRedelegation,
-		tags.Delegator, []byte(msg.DelegatorAddr.String()),
-		tags.SrcValidator, []byte(msg.ValidatorSrcAddr.String()),
-		tags.DstValidator, []byte(msg.ValidatorDstAddr.String()),
+		tags.Delegator, msg.DelegatorAddr.String(),
+		tags.SrcValidator, msg.ValidatorSrcAddr.String(),
+		tags.DstValidator, msg.ValidatorDstAddr.String(),
 	)
 	return sdk.Result{Tags: tags}
 }
@@ -219,8 +219,8 @@ func handleMsgWithdraw(
 
 	tags := sdk.NewTags(
 		tags.Event, tags.CompleteUnbonding,
-		tags.Delegator, []byte(msg.DelegatorAddr.String()),
-		tags.Validator, []byte(msg.ValidatorAddr.String()),
+		tags.Delegator, msg.DelegatorAddr.String(),
+		tags.Validator, msg.ValidatorAddr.String(),
 	)
 
 	return sdk.Result{
@@ -257,9 +257,9 @@ func handleMsgEditValidator(ctx sdk.Context, msg message.MsgEditValidator, k kee
 
 	tags := sdk.NewTags(
 		tags.Event, tags.EditValidator,
-		tags.DstValidator, []byte(msg.ValidatorAddr.String()),
-		tags.Moniker, []byte(description.Moniker),
-		tags.Identity, []byte(description.Identity),
+		tags.DstValidator, msg.ValidatorAddr.String(),
+		tags.Moniker, description.Moniker,
+		tags.Identity, description.Identity,
 	)
 
 	return sdk.Result{

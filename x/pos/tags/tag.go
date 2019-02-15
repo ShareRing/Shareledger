@@ -13,12 +13,12 @@ var (
 
 	//Value -  []byte
 
-	ValidatorCreated     = []byte("ValidatorCreated")
-	EditValidator        = []byte("EditValidator")
-	Delegated            = []byte("Delegated")
-	BeginUnbonding       = []byte("BeginUnbonding")
-	CompleteUnbonding    = []byte("CompleteUnbonding")
-	Withdraw             = []byte("Witdrawed")
-	BeginRedelegation    = []byte("BeginRedelegation")
-	CompleteRedelegation = []byte("CompleteRedelegation")
+	ValidatorCreated     = "ValidatorCreated"
+	EditValidator        = "EditValidator"
+	Delegated            = "Delegated"
+	BeginUnbonding       = "BeginUnbonding"
+	CompleteUnbonding    = "CompleteUnbonding"
+	Withdraw             = "Witdrawed"
+	BeginRedelegation    = "BeginRedelegation"
+	CompleteRedelegation = "CompleteRedelegation"
 )

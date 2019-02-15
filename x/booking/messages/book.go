@@ -61,5 +61,5 @@ func (msg MsgBook) GetSigners() []sdk.AccAddress {
 
 func (msg MsgBook) Tags() sdk.Tags {
 	return sdk.NewTags(tags.Event, tags.BookingStarted).
-		AppendTag(tags.UUID, []byte(msg.UUID))
+		AppendTag(tags.UUID, string(msg.UUID))
 }

@@ -10,6 +10,6 @@ var (
 
 	//Value -  []byte
 
-	BookingCompleted = []byte("BookingCompleted")
-	BookingStarted   = []byte("BookingStarted")
+	BookingCompleted = "BookingCompleted"
+	BookingStarted   = "BookingStarted"
 )

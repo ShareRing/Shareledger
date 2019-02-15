@@ -61,7 +61,7 @@ func (msg MsgSend) GetSigners() []sdk.AccAddress {
 
 // Returns the sdk.Tags for the message
 func (msg MsgSend) Tags() sdk.Tags {
-	return sdk.NewTags(tags.ToAddress, []byte(msg.To.String())).
-		AppendTag(tags.Amount, []byte(msg.Amount.String())).
+	return sdk.NewTags(tags.ToAddress, msg.To.String()).
+		AppendTag(tags.Amount, msg.Amount.String()).
 		AppendTag(tags.Event, tags.Transfered)
 }

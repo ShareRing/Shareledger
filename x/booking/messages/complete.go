@@ -59,5 +59,5 @@ func (msg MsgComplete) GetSigners() []sdk.AccAddress {
 
 func (msg MsgComplete) Tags() sdk.Tags {
 	return sdk.NewTags(tags.Event, tags.BookingCompleted).
-		AppendTag(tags.BookingId, []byte(msg.BookingID))
+		AppendTag(tags.BookingId, msg.BookingID)
 }

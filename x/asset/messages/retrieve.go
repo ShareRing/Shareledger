@@ -59,7 +59,7 @@ func (msg MsgRetrieve) GetSigners() []sdk.AccAddress {
 }
 
 func (msg MsgRetrieve) Tags() sdk.Tags {
-	return sdk.NewTags("msg.module", []byte("asset")).
-		AppendTag("msg.action", []byte("retrieve")).
-		AppendTag("asset.UUID", []byte(msg.UUID))
+	return sdk.NewTags("msg.module", "asset").
+		AppendTag("msg.action", "retrieve").
+		AppendTag("asset.UUID", msg.UUID)
 }

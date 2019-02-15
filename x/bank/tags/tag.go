@@ -9,6 +9,6 @@ var (
 	AccountAddress = "AccountAddress"
 
 	//Value -  []byte
-	Transfered = []byte("Transfered") //Transfer event fromAddress To Address
-	Credit     = []byte("Credit")     //event for credit
+	Transfered = "Transfered" //Transfer event fromAddress To Address
+	Credit     = "Credit"     //event for credit
 )

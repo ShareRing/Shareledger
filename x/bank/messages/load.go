@@ -57,8 +57,8 @@ func (msg MsgLoad) GetSigners() []sdk.AccAddress {
 }
 
 func (msg MsgLoad) Tags() sdk.Tags {
-	return sdk.NewTags(tags.AccountAddress, []byte(msg.Account.String())).
-		AppendTag(tags.Amount, []byte(msg.Amount.String())).
+	return sdk.NewTags(tags.AccountAddress, msg.Account.String()).
+		AppendTag(tags.Amount, msg.Amount.String()).
 		AppendTag(tags.Event, tags.Credit)
 
 }

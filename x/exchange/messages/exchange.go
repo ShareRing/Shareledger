@@ -83,8 +83,8 @@ func (msg MsgExchange) GetSigners() []sdk.AccAddress {
 }
 
 func (msg MsgExchange) Tags() sdk.Tags {
-	return sdk.NewTags("msg.module", []byte("exchangerate")).
-		AppendTag("fromDenom", []byte(msg.FromDenom)).
-		AppendTag("toDenom", []byte(msg.ToDenom)).
-		AppendTag("amount", []byte(msg.Amount.String()))
+	return sdk.NewTags("msg.module", "exchangerate").
+		AppendTag("fromDenom", msg.FromDenom).
+		AppendTag("toDenom", msg.ToDenom).
+		AppendTag("amount", msg.Amount.String())
 }

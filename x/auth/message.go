@@ -46,5 +46,5 @@ func (msg MsgNonce) GetSigners() []sdk.AccAddress {
 }
 
 func (msg MsgNonce) Tags() sdk.Tags {
-	return sdk.NewTags("checkNonce", []byte(msg.Address.String()))
+	return sdk.NewTags("checkNonce", msg.Address.String())
 }

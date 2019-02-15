@@ -54,7 +54,7 @@ func HandleMsgSend(am auth.AccountMapper) sdk.Handler {
 		return sdk.Result{
 			Log:       res,
 			Data:      append(resF.Data, resT.Data...),
-			Tags:      sendMsg.Tags().AppendTag(tags.FromAddress, []byte(signer.GetAddress().String())),
+			Tags:      sendMsg.Tags().AppendTag(tags.FromAddress, signer.GetAddress().String()),
 			FeeAmount: fee,
 			FeeDenom:  denom,
 		}

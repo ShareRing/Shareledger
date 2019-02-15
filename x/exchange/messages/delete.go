@@ -66,7 +66,7 @@ func (msg MsgDelete) GetSigners() []sdk.AccAddress {
 }
 
 func (msg MsgDelete) Tags() sdk.Tags {
-	return sdk.NewTags("msg.module", []byte("exchangerate")).
-		AppendTag("fromDenom", []byte(msg.FromDenom)).
-		AppendTag("toDenom", []byte(msg.ToDenom))
+	return sdk.NewTags("msg.module", "exchangerate").
+		AppendTag("fromDenom", msg.FromDenom).
+		AppendTag("toDenom", msg.ToDenom)
 }
