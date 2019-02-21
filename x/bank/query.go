@@ -1,7 +1,6 @@
 package bank
 
 import (
-	"encoding/json"
 	"fmt"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -46,10 +45,10 @@ func queryBalance(
 		account = auth.NewSHRAccountWithAddress(params.Address)
 	}
 
-	res, err1 := json.Marshal(account.GetCoins().String())
-	if err1 != nil {
-		return []byte{}, sdk.ErrInternal(fmt.Sprintf("couldnot marshal result to JSON: %s", err1.Error()))
-	}
+	res =  []byte(account.GetCoins().String())
+	// if err1 != nil {
+	// 	return []byte{}, sdk.ErrInternal(fmt.Sprintf("couldnot marshal result to JSON: %s", err1.Error()))
+	// }
 
 	return res, nil
 }
