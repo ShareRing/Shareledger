@@ -69,8 +69,8 @@ func NewTestShareLedgerApp(logger log.Logger, db dbm.DB) *TestShareLedgerApp {
 
 	//app.SetTxDecoder(auth.GetTxDecoder(cdc))
 	app.SetAnteHandler(auth.NewAnteHandler(accountMapper))
-	app.Router().
-		AddRoute(constants.MESSAGE_AUTH, auth.NewHandler(accountMapper))
+	// app.Router().
+		// AddRoute(constants.MESSAGE_AUTH, auth.NewHandler(accountMapper))
 	app.cdc = auth.RegisterCodec(app.cdc)
 
 	app.SetupBank(accountMapper)
@@ -94,8 +94,8 @@ func (app *TestShareLedgerApp) SetupBank(am auth.AccountMapper) {
 	app.bankKeeper = bank.NewKeeper(am /*, cdc*/)
 	// Register message routes.
 	// Note the handler gets access to the account store.
-	app.Router().
-		AddRoute("bank", bank.NewHandler(am))
+	// app.Router().
+		// AddRoute("bank", bank.NewHandler(am))
 	app.Router().
 		AddRoute("test", GetHandler())
 
