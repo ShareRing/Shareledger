@@ -9,10 +9,12 @@ import (
 	"github.com/sharering/shareledger/x/auth"
 	"github.com/sharering/shareledger/x/bank/handlers"
 	"github.com/sharering/shareledger/x/bank/messages"
+
+	sdkTypes "github.com/sharering/shareledger/cosmos-wrapper/types"
 )
 
-func NewHandler(am auth.AccountMapper) sdk.Handler {
-	return func(ctx sdk.Context, msg sdk.Msg) sdk.Result {
+func NewHandler(am auth.AccountMapper) sdkTypes.Handler {
+	return func(ctx sdk.Context, msg sdk.Msg) sdkTypes.Result {
 		constants.LOGGER.Info(
 			"Msg for Bank Module",
 			"type", reflect.TypeOf(msg),
@@ -20,8 +22,8 @@ func NewHandler(am auth.AccountMapper) sdk.Handler {
 		)
 
 		switch msg := msg.(type) {
-		case messages.MsgCheck:
-			return handlers.HandleMsgCheck(am)(ctx, msg)
+		// case messages.MsgCheck:
+		// return handlers.HandleMsgCheck(am)(ctx, msg)
 		case messages.MsgLoad:
 			return handlers.HandleMsgLoad(am)(ctx, msg)
 		case messages.MsgSend:
@@ -30,7 +32,7 @@ func NewHandler(am auth.AccountMapper) sdk.Handler {
 			return handlers.HandleMsgBurn(am)(ctx, msg)
 		default:
 			errMsg := "Unrecognized bank Msg type" + reflect.TypeOf(msg).Name()
-			return sdk.ErrUnknownRequest(errMsg).Result()
+			return sdkTypes.NewResult(sdk.ErrUnknownRequest(errMsg).Result())
 		}
 	}
 }

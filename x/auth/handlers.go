@@ -7,22 +7,29 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
 	"github.com/sharering/shareledger/constants"
+
+	sdkTypes "github.com/sharering/shareledger/cosmos-wrapper/types"
 )
 
-func NewHandler(am AccountMapper) sdk.Handler {
-	return func(ctx sdk.Context, msg sdk.Msg) sdk.Result {
+func NewHandler(am AccountMapper) sdkTypes.Handler {
+	return func(ctx sdk.Context, msg sdk.Msg) sdkTypes.Result {
 		constants.LOGGER.Info(
 			"Msg for Auth Module",
 			"type", reflect.TypeOf(msg),
 			"msg", msg,
 		)
 
+		var ret sdk.Result
+
 		switch msg := msg.(type) {
 		case MsgNonce:
-			return handleNonceQuery(ctx, am, msg)
+			ret = handleNonceQuery(ctx, am, msg)
 		default:
 			errMsg := "Unrecognized Auth Msg type" + reflect.TypeOf(msg).Name()
-			return sdk.ErrUnknownRequest(errMsg).Result()
+			ret = sdk.ErrUnknownRequest(errMsg).Result()
+		}
+		return sdkTypes.Result{
+			Result: ret,
 		}
 	}
 }

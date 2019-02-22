@@ -9,8 +9,10 @@ import (
 	dbm "github.com/tendermint/tendermint/libs/db"
 	"github.com/tendermint/tendermint/libs/log"
 
-	bapp "github.com/cosmos/cosmos-sdk/baseapp"
+	// bapp "github.com/cosmos/cosmos-sdk/baseapp"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+
+	bapp "github.com/sharering/shareledger/cosmos-wrapper/baseapp"
 
 	"github.com/sharering/shareledger/constants"
 	"github.com/sharering/shareledger/types"
@@ -20,6 +22,7 @@ import (
 	"github.com/sharering/shareledger/x/bank"
 	"github.com/sharering/shareledger/x/booking"
 	"github.com/sharering/shareledger/x/exchange"
+	"github.com/sharering/shareledger/x/fee"
 	"github.com/sharering/shareledger/x/pos"
 	pKeeper "github.com/sharering/shareledger/x/pos/keeper"
 )
@@ -103,14 +106,17 @@ func NewShareLedgerApp(logger log.Logger, db dbm.DB) *ShareLedgerApp {
 
 	//app.SetTxDecoder(auth.GetTxDecoder(cdc))
 	app.SetAnteHandler(auth.NewAnteHandler(accountMapper))
-	app.Router().
-		AddRoute(constants.MESSAGE_AUTH, auth.NewHandler(accountMapper))
+
+	// app.Router().
+	// AddRoute(constants.MESSAGE_AUTH, auth.NewHandler(accountMapper))
+
+
 	app.QueryRouter().
 		AddRoute(constants.MESSAGE_AUTH, auth.NewQuerier(accountMapper, app.cdc))
 	app.cdc = auth.RegisterCodec(app.cdc)
 
 	// Set Tx Fee Calculation
-	//app.SetFeeHandler(fee.NewFeeHandler(accountMapper, exchangeKey))
+	app.SetFeeHandler(fee.NewFeeHandler(accountMapper, exchangeKey))
 
 	// Register InitChain
 	logger.Info("Register Init Chainer")
@@ -266,8 +272,10 @@ func (app *ShareLedgerApp) SetupBank(am auth.AccountMapper) {
 	app.bankKeeper = bank.NewKeeper(am /*, cdc*/)
 	// Register message routes.
 	// Note the handler gets access to the account store.
-	app.Router().
-		AddRoute("bank", bank.NewHandler(am))
+
+	app.AddRoute("bank", bank.NewHandler(am))
+	// app.Router().
+	// 	AddRoute("bank", bank.NewHandler(am))
 
 	app.QueryRouter().
 		AddRoute(constants.MESSAGE_BANK, bank.NewQuerier(am, app.cdc))

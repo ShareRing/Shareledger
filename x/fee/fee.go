@@ -2,6 +2,7 @@ package fee
 
 import (
 	"fmt"
+	"strconv"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
@@ -11,19 +12,21 @@ import (
 	"github.com/sharering/shareledger/x/auth"
 	"github.com/sharering/shareledger/x/bank"
 	"github.com/sharering/shareledger/x/exchange"
+
+	sdkTypes "github.com/sharering/shareledger/cosmos-wrapper/types"
 )
 
-type FeeHandler func(sdk.Context, sdk.Result) (sdk.Result, bool)
+type FeeHandler func(sdk.Context, sdkTypes.Result) (sdk.Result, bool)
 
 func NewFeeHandler(am auth.AccountMapper, exchangeKey *sdk.KVStoreKey) FeeHandler {
 	return func(
 		ctx sdk.Context,
-		result sdk.Result,
+		result sdkTypes.Result,
 	) (_ sdk.Result, abort bool) {
 		// Several tx don't return fee
 
 		if result.FeeDenom == "" && result.FeeAmount == 0 {
-			return result, false
+			return result.CosmosResult(), false
 		}
 
 		txFee := types.NewCoin(result.FeeDenom, result.FeeAmount)
@@ -74,7 +77,11 @@ func NewFeeHandler(am auth.AccountMapper, exchangeKey *sdk.KVStoreKey) FeeHandle
 		}
 
 		// if everything succeed, original result
-		return result, false
+		result.Tags = result.Tags.
+			AppendTag(FeeDenom, result.FeeDenom).
+			AppendTag(FeeAmount, strconv.FormatInt(result.FeeAmount, 10))
+
+		return result.CosmosResult(), false
 	}
 
 }

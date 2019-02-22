@@ -6,11 +6,13 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
 	"github.com/sharering/shareledger/types"
-	// "github.com/sharering/shareledger/utils"
+	"github.com/sharering/shareledger/utils"
 	"github.com/sharering/shareledger/x/auth"
 	Err "github.com/sharering/shareledger/x/bank/error"
 	"github.com/sharering/shareledger/x/bank/messages"
 	tags "github.com/sharering/shareledger/x/bank/tags"
+
+	sdkTypes "github.com/sharering/shareledger/cosmos-wrapper/types"
 )
 
 //------------------------------------------------------------------
@@ -19,14 +21,14 @@ import (
 // Handle MsgSend.
 // NOTE: msg.From, msg.To, and msg.Amount were already validated
 // in ValidateBasic().
-func HandleMsgSend(am auth.AccountMapper) sdk.Handler {
-	return func(ctx sdk.Context, msg sdk.Msg) sdk.Result {
+func HandleMsgSend(am auth.AccountMapper) sdkTypes.Handler {
+	return func(ctx sdk.Context, msg sdk.Msg) sdkTypes.Result {
 		sendMsg, ok := msg.(messages.MsgSend)
 
 		if !ok {
 			// Create custom error message and return result
 			// Note: Using unreserved error codespace
-			return sdk.NewError(Err.BankCodespace, Err.MsgMailedFormBank, "MsgSend is malformed").Result()
+			return sdkTypes.NewResult(sdk.NewError(Err.BankCodespace, Err.MsgMailedFormBank, "MsgSend is malformed").Result())
 		}
 
 		// Get signer from signatures
@@ -38,25 +40,27 @@ func HandleMsgSend(am auth.AccountMapper) sdk.Handler {
 
 		// From account is deduced from signature
 		if resF = handleFrom(ctx, am, signer.GetAddress(), sendMsg.Amount); !resF.IsOK() {
-			return resF
+			return sdkTypes.NewResult(resF)
 		}
 
 		// Credit the receiver.
 		if resT = handleTo(ctx, am, sendMsg.To, sendMsg.Amount); !resT.IsOK() {
-			return resT
+			return sdkTypes.NewResult(resT)
 		}
 
 		res := fmt.Sprintf("{\"from\":%v, \"to\":%v}", resF.Log, resT.Log)
 		// Return a success (Code 0).
 		// Add list of key-value pair descriptors ("tags").
-		// fee, denom := utils.GetMsgFee(msg)
+		fee, denom := utils.GetMsgFee(msg)
 
-		return sdk.Result{
-			Log:       res,
-			Data:      append(resF.Data, resT.Data...),
-			Tags:      sendMsg.Tags().AppendTag(tags.FromAddress, signer.GetAddress().String()),
-			// FeeAmount: fee,
-			// FeeDenom:  denom,
+		return sdkTypes.Result{
+			Result: sdk.Result{
+				Log:       res,
+				Data:      append(resF.Data, resT.Data...),
+				Tags:      sendMsg.Tags().AppendTag(tags.FromAddress, signer.GetAddress().String()),
+			},
+			FeeAmount: fee,
+			FeeDenom:  denom,
 		}
 	}
 }
