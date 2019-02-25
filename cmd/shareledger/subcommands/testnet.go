@@ -100,7 +100,15 @@ func testnetFiles(cmd *cobra.Command, args []string) error {
 		nodeDir := filepath.Join(outputDir, nodeDirName)
 		config.SetRoot(nodeDir)
 
+		// create config dir
 		err := os.MkdirAll(filepath.Join(nodeDir, "config"), nodeDirPerm)
+		if err != nil {
+			_ = os.RemoveAll(outputDir)
+			return err
+		}
+
+		// create data dir
+		err = os.MkdirAll(filepath.Join(nodeDir, "data"), nodeDirPerm)
 		if err != nil {
 			_ = os.RemoveAll(outputDir)
 			return err
