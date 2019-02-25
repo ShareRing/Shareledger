@@ -6,28 +6,43 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	// "github.com/sharering/shareledger/utils"
+	"github.com/sharering/shareledger/utils"
 	"github.com/sharering/shareledger/x/auth"
 	"github.com/sharering/shareledger/x/exchange/messages"
+
+	sdkTypes "github.com/sharering/shareledger/cosmos-wrapper/types"
 )
 
-func NewHandler(k Keeper) sdk.Handler {
-	return func(ctx sdk.Context, msg sdk.Msg) sdk.Result {
+func NewHandler(k Keeper) sdkTypes.Handler {
+	return func(ctx sdk.Context, msg sdk.Msg) sdkTypes.Result {
+		var ret sdk.Result
 		switch msg := msg.(type) {
 		case messages.MsgCreate:
-			return handleMsgCreate(ctx, k, msg)
+			ret = handleMsgCreate(ctx, k, msg)
 		case messages.MsgRetrieve:
-			return handleMsgRetrieve(ctx, k, msg)
+			ret = handleMsgRetrieve(ctx, k, msg)
 		case messages.MsgUpdate:
-			return handleMsgUpdate(ctx, k, msg)
+			ret = handleMsgUpdate(ctx, k, msg)
 		case messages.MsgDelete:
-			return handleMsgDelete(ctx, k, msg)
+			ret = handleMsgDelete(ctx, k, msg)
 		case messages.MsgExchange:
-			return handleMsgExchange(ctx, k, msg)
+			ret = handleMsgExchange(ctx, k, msg)
 		default:
 			errMsg := fmt.Sprintf("Unrecognized trace Msg type: %v", reflect.TypeOf(msg).Name())
-			return sdk.ErrUnknownRequest(errMsg).Result()
+			return sdkTypes.NewResult(sdk.ErrUnknownRequest(errMsg).Result())
 		}
+
+		if !ret.IsOK() {
+			return sdkTypes.NewResult(ret)
+		}
+
+		fee, denom := utils.GetMsgFee(msg)
+		return sdkTypes.Result{
+			Result:    ret,
+			FeeDenom:  denom,
+			FeeAmount: fee,
+		}
+
 	}
 }
 
@@ -48,8 +63,8 @@ func handleMsgCreate(
 	// fee, denom := utils.GetMsgFee(msg)
 
 	return sdk.Result{
-		Log:       fmt.Sprintf("%s", exr),
-		Tags:      msg.Tags(),
+		Log:  fmt.Sprintf("%s", exr),
+		Tags: msg.Tags(),
 		// FeeAmount: fee,
 		// FeeDenom:  denom,
 	}
@@ -72,8 +87,8 @@ func handleMsgUpdate(
 	// fee, denom := utils.GetMsgFee(msg)
 
 	return sdk.Result{
-		Log:       fmt.Sprintf("%s", exr),
-		Tags:      msg.Tags(),
+		Log:  fmt.Sprintf("%s", exr),
+		Tags: msg.Tags(),
 		// FeeAmount: fee,
 		// FeeDenom:  denom,
 	}
@@ -96,8 +111,8 @@ func handleMsgDelete(
 	// fee, denom := utils.GetMsgFee(msg)
 
 	return sdk.Result{
-		Log:       fmt.Sprintf("%s", exr),
-		Tags:      msg.Tags(),
+		Log:  fmt.Sprintf("%s", exr),
+		Tags: msg.Tags(),
 		// FeeAmount: fee,
 		// FeeDenom:  denom,
 	}

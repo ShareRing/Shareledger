@@ -304,9 +304,10 @@ func (app *ShareLedgerApp) SetupBooking(bookingKey *sdk.KVStoreKey,
 		am,
 		app.cdc)
 
-	app.Router().
-		AddRoute("booking", booking.NewHandler(app.bookingKeeper))
-
+	// app.Router().
+		// AddRoute("booking", booking.NewHandler(app.bookingKeeper))
+	
+	app.AddRoute("booking", booking.NewHandler(app.bookingKeeper))
 	// app.MountStoresIAVL(bookingKey)
 
 }
@@ -328,5 +329,7 @@ func (app *ShareLedgerApp) SetupExchange(exchangeKey *sdk.KVStoreKey, am auth.Ac
 	app.cdc = exchange.RegisterCodec(app.cdc)
 	bankKeeper := bank.NewKeeper(am)
 	app.exchangeKeeper = exchange.NewKeeper(exchangeKey, bankKeeper)
-	app.Router().AddRoute("exchangerate", exchange.NewHandler(app.exchangeKeeper))
+
+	app.AddRoute("exchangerate", exchange.NewHandler(app.exchangeKeeper))
+	// app.Router().AddRoute("exchangerate", exchange.NewHandler(app.exchangeKeeper))
 }

@@ -7,12 +7,14 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
 	"github.com/sharering/shareledger/constants"
-	// "github.com/sharering/shareledger/utils"
+	"github.com/sharering/shareledger/utils"
 	"github.com/sharering/shareledger/x/booking/messages"
+
+	sdkTypes "github.com/sharering/shareledger/cosmos-wrapper/types"
 )
 
-func NewHandler(k Keeper) sdk.Handler {
-	return func(ctx sdk.Context, msg sdk.Msg) sdk.Result {
+func NewHandler(k Keeper) sdkTypes.Handler {
+	return func(ctx sdk.Context, msg sdk.Msg) sdkTypes.Result {
 
 		constants.LOGGER.Info(
 			"Msg for Asset Module",
@@ -20,16 +22,31 @@ func NewHandler(k Keeper) sdk.Handler {
 			"msg", msg,
 		)
 
+		var ret sdk.Result
+
 		switch msg := msg.(type) {
 		case messages.MsgBook:
-			return handleBooking(ctx, k, msg)
+			ret = handleBooking(ctx, k, msg)
 		case messages.MsgComplete:
-			return handleComplete(ctx, k, msg)
+			ret = handleComplete(ctx, k, msg)
 
 		default:
 			errMsg := fmt.Sprintf("Unrecognized trace Msg type: %v", reflect.TypeOf(msg).Name())
-			return sdk.ErrUnknownRequest(errMsg).Result()
+			return sdkTypes.NewResult(sdk.ErrUnknownRequest(errMsg).Result())
 		}
+
+		if !ret.IsOK() {
+			return sdkTypes.NewResult(ret)
+		}
+
+		fee, denom := utils.GetMsgFee(msg)
+
+		return sdkTypes.Result{
+			Result: ret,
+			FeeDenom: denom,
+			FeeAmount: fee,
+		}
+
 	}
 }
 
@@ -44,8 +61,8 @@ func handleBooking(ctx sdk.Context, k Keeper, msg messages.MsgBook) sdk.Result {
 	// fee, denom := utils.GetMsgFee(msg)
 
 	return sdk.Result{
-		Log:       fmt.Sprintf("%s", booking.String()),
-		Tags:      msg.Tags(),
+		Log:  fmt.Sprintf("%s", booking.String()),
+		Tags: msg.Tags(),
 		// FeeAmount: fee,
 		// FeeDenom:  denom,
 	}
@@ -62,8 +79,8 @@ func handleComplete(ctx sdk.Context, k Keeper, msg messages.MsgComplete) sdk.Res
 	// fee, denom := utils.GetMsgFee(msg)
 
 	return sdk.Result{
-		Log:       fmt.Sprintf("Completed %s", booking.String()),
-		Tags:      msg.Tags(),
+		Log:  fmt.Sprintf("Completed %s", booking.String()),
+		Tags: msg.Tags(),
 		// FeeAmount: fee,
 		// FeeDenom:  denom,
 	}
