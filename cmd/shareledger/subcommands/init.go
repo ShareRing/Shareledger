@@ -78,7 +78,8 @@ func initFilesWithConfig(config *cfg.Config) error {
 		var newPrivKey secp256k1.PrivKeySecp256k1
 
 		if privKeyParam == "" {
-			newPrivKey = secp256k1.GenPrivKeySecp256k1([]byte{})
+			// newPrivKey = secp256k1.GenPrivKeySecp256k1([]byte{})
+			newPrivKey = secp256k1.GenPrivKey()
 		} else {
 			newPrivKey = types.GetCryptoPrivKey(privKeyParam)
 		}
