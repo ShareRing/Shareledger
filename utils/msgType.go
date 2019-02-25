@@ -26,5 +26,9 @@ func GetMsgFee(msg sdk.Msg) (int64, string) {
 
 	msgLevel := constants.LEVELS[msgType]
 
+	if  msgLevel == constants.NONE {
+		return int64(0), ""
+	}
+
 	return int64(constants.FEE_LEVELS[msgLevel]), constants.FEE_DENOM
 }

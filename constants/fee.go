@@ -4,9 +4,10 @@ package constants
 type FeeLevel int
 
 const (
-	HIGH FeeLevel = 0
-	MED  FeeLevel = 1
-	LOW  FeeLevel = 2
+	NONE FeeLevel = 0
+	HIGH FeeLevel = 1
+	MED  FeeLevel = 2
+	LOW  FeeLevel = 3
 )
 
 var LEVELS = map[string]FeeLevel{
@@ -22,6 +23,7 @@ var FEE_LEVELS = map[FeeLevel]int{
 	HIGH: 3,
 	MED:  2,
 	LOW:  1,
+	NONE: 0,
 }
 
 const FEE_DENOM = "SHR"
