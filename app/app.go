@@ -25,10 +25,11 @@ import (
 	"github.com/sharering/shareledger/x/fee"
 	"github.com/sharering/shareledger/x/pos"
 	pKeeper "github.com/sharering/shareledger/x/pos/keeper"
+	"github.com/sharering/shareledger/version"
 )
 
-const (
-	appName = "ShareLedger_v0.0.1"
+var (
+	appName = "Shareledger-" + version.Version
 )
 
 var (
