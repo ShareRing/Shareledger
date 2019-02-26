@@ -17,8 +17,6 @@ import (
 	"github.com/tendermint/tendermint/privval"
 	tmtypes "github.com/tendermint/tendermint/types"
 
-	sdk "github.com/cosmos/cosmos-sdk/types"
-
 	"github.com/sharering/shareledger/app"
 	"github.com/sharering/shareledger/types"
 )

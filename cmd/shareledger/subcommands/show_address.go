@@ -29,7 +29,7 @@ func showAddress(cmd *cobra.Command, args []string) error {
 		pv = privval.LoadFilePV(privValKeyFile, privValStateFile)
 		privateKey := types.ConvertToPrivKey(pv.Key.PrivKey)
 
-		fmt.Printf("%x\n", privateKey.PubKey().Address()[:])
+		fmt.Printf("%s\n", privateKey.PubKey().Address().String())
 		return nil
 
 	}

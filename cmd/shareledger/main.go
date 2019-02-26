@@ -1,8 +1,6 @@
 package main
 
 import (
-	"fmt"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
 	"github.com/sharering/shareledger/cmd/shareledger/subcommands"
