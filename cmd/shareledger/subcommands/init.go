@@ -105,6 +105,7 @@ func initFilesWithConfig(config *cfg.Config) error {
 			GenesisTime: time.Now(),
 		}
 		genDoc.Validators = []tmtypes.GenesisValidator{{
+			Address: pubKey.Address(),
 			PubKey: pubKey,
 			Power:  genesisState.StakeData.Validators[0].ABCIValidator().Power,
 			Name:   genesisState.StakeData.Validators[0].Description.Moniker,
