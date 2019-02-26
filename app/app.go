@@ -61,12 +61,6 @@ func NewShareLedgerApp(logger log.Logger, db dbm.DB) *ShareLedgerApp {
 
 	cdc := MakeCodec()
 
-	//set bench32 prefix
-	config := sdk.GetConfig()
-	config.SetBech32PrefixForAccount(constants.Bech32PrefixAccAddr, constants.Bech32PrefixAccPub)
-	config.SetBech32PrefixForValidator(constants.Bech32PrefixValAddr, constants.Bech32PrefixValPub)
-	config.SetBech32PrefixForConsensusNode(constants.Bech32PrefixConsAddr, constants.Bech32PrefixConsPub)
-	config.Seal()
 
 	// Create the base application object.
 	baseApp := bapp.NewBaseApp(appName /*cdc,*/, logger, db, auth.GetTxDecoder(cdc))

@@ -20,7 +20,6 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
 	"github.com/sharering/shareledger/app"
-	"github.com/sharering/shareledger/constants"
 	"github.com/sharering/shareledger/types"
 )
 
@@ -51,13 +50,6 @@ func init() {
 }
 
 func initFiles(cmd *cobra.Command, args []string) error {
-	//set bench32 prefix
-	sdkConfig := sdk.GetConfig()
-	sdkConfig.SetBech32PrefixForAccount(constants.Bech32PrefixAccAddr, constants.Bech32PrefixAccPub)
-	sdkConfig.SetBech32PrefixForValidator(constants.Bech32PrefixValAddr, constants.Bech32PrefixValPub)
-	sdkConfig.SetBech32PrefixForConsensusNode(constants.Bech32PrefixConsAddr, constants.Bech32PrefixConsPub)
-	sdkConfig.Seal()
-
 	return initFilesWithConfig(config)
 }
 
@@ -158,6 +150,7 @@ func genGenesisState(pv *privval.FilePV) (app.GenesisState, crypto.PubKey) {
 	// privKey in ShareLedger PrivKeySecp256k1
 	privKey := types.NewPrivKeySecp256k1(privK[:])
 	pubKey := privKey.PubKey()
+
 
 	gs := app.GenerateGenesisState(pubKey)
 	return gs, pv.Key.PubKey
