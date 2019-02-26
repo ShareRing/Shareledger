@@ -82,20 +82,22 @@ func (c CoreContext) ConstructTendermintTransaction(tx auth.AuthTx) (tdmtx tdmty
 }
 
 func (c CoreContext) GetNonce() (int64, error) {
-	nonceMsg := auth.NewMsgNonce(c.PrivKey.PubKey().Address())
-	queryTx := types.NewQueryTx(nonceMsg)
+	nonceQuery := auth.QueryNonceParams{
+		Address: c.PrivKey.PubKey().Address(),
+	}
 
-	encodedTx, err := c.Codec.MarshalBinaryLengthPrefixed(queryTx)
+	// queryTx := types.NewQueryTx(nonceMsg)
+
+	encodedTx, err := c.Codec.MarshalBinaryLengthPrefixed(nonceQuery)
 	if err != nil {
 		return -1, err
 	}
 
-	res, err := c.Client.ABCIQuery("app/query", encodedTx)
+	res, err := c.Client.ABCIQuery("custom/auth/nonce", encodedTx)
 	if err != nil {
 		return -1, err
 	}
-
-	nonce, err := strconv.ParseInt(res.Response.Log, 10, 64)
+	nonce, err := strconv.ParseInt(string(res.Response.Value), 10, 64)
 	if err != nil {
 		return -1, err
 	}
@@ -128,10 +130,12 @@ func (c CoreContext) RegisterValidator(
 		return err
 	}
 
+
 	tdmTx, err := c.ConstructTendermintTransaction(authTx)
 	if err != nil {
 		return err
 	}
+
 
 	_, err = c.Client.BroadcastTxSync(tdmTx)
 	if err != nil {

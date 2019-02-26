@@ -53,7 +53,6 @@ func registerValidator(cmd *cobra.Command, args []string) error {
 		context = client.NewCoreContextFromConfigWithClient(config, nodeAddress)
 	}
 
-
 	if moniker == "" {
 		moniker = config.BaseConfig.Moniker
 	}
@@ -62,8 +61,11 @@ func registerValidator(cmd *cobra.Command, args []string) error {
 
 	err := context.RegisterValidator(amount, moniker, "", website, details)
 	if err != nil {
+		fmt.Printf("Registration failed. Error : %s\n", err)
 		return err
 	}
+
+	fmt.Println("Registration succeeded!")
 
 	return nil
 }
