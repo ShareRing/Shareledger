@@ -27,9 +27,11 @@ var (
 	RedelegationByValSrcIndexKey     = []byte{0x0B} // prefix for each key for an redelegation, by source validator operator
 	RedelegationByValDstIndexKey     = []byte{0x0C} // prefix for each key for an redelegation, by destination validator operator
 	ValidatorDistKey                 = []byte{0x0D} // prefix for each key for validator distribution information
+	ValidatorsTDMAddrKey             = []byte{0x0E} // prefix for mapping from TDM address to Shareledger address
 	// Last* values are const during a block.
 	LastValidatorPowerKey = []byte{0x11} // prefix for each key to a validator index, for bonded validators
 	LastTotalPowerKey     = []byte{0x12} // prefix for the total power
+
 )
 
 // gets the key for the validator with address
@@ -46,6 +48,10 @@ func GetValidatorDistKey(operatorAddr sdk.AccAddress) []byte {
 // VALUE: validator operator address ([]byte)
 func GetValidatorByConsAddrKey(addr sdk.AccAddress) []byte {
 	return append(ValidatorsByConsAddrKey, addr.Bytes()...)
+}
+
+func GetTdmAddressKey(tdmAddress []byte) []byte {
+	return append(ValidatorsTDMAddrKey, tdmAddress...)
 }
 
 //______________________________________________________________________________
