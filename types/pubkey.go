@@ -197,3 +197,24 @@ func ConvertToPubKey(pubKey []byte) PubKeySecp256k1 {
 
 	return NewPubKeySecp256k1(btPubKey.SerializeUncompressed())
 }
+
+func ConvertToTDMPubKey(pubKey PubKey) secp256k1.PubKeySecp256k1 {
+	secp256k1Key, ok := pubKey.(PubKeySecp256k1)
+
+	if !ok {
+		panic("PubKey is not of Secp256k1")
+	}
+	btPubKey, err := btcec.ParsePubKey(secp256k1Key[:], btcec.S256())
+
+	if err != nil {
+		panic("Cannot parse PubKey in Secp256k1")
+	}
+
+	b := btPubKey.SerializeCompressed()
+
+	var key secp256k1.PubKeySecp256k1
+
+	copy(key[:], b)
+
+	return key
+}
