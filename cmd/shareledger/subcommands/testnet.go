@@ -150,11 +150,15 @@ func testnetFiles(cmd *cobra.Command, args []string) error {
 		initFilesWithConfig(config)
 	}
 
+	consensusParams := types.DefaultConsensusParams()
+	consensusParams.Validator = types.ValidatorParams{[]string{types.ABCIPubKeyTypeSecp256k1}}
+
 	// Generate genesis doc from generated validators
 	genDoc := &types.GenesisDoc{
-		GenesisTime: time.Now(),
-		ChainID:     "chain-" + cmn.RandStr(6),
-		Validators:  genVals,
+		GenesisTime: 	 time.Now(),
+		ChainID:     	 "chain-" + cmn.RandStr(6),
+		Validators:  	 genVals,
+		ConsensusParams: consensusParams,
 	}
 
 	appGenesisState.StakeData.Validators = stateVals

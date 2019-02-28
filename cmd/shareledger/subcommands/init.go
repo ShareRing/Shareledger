@@ -100,15 +100,19 @@ func initFilesWithConfig(config *cfg.Config) error {
 	if cmn.FileExists(genFile) {
 		logger.Info("Found genesis file", "path", genFile)
 	} else {
+		consensusParams := tmtypes.DefaultConsensusParams()
+		consensusParams.Validator = tmtypes.ValidatorParams{[]string{tmtypes.ABCIPubKeyTypeSecp256k1}}
+
 		genDoc := tmtypes.GenesisDoc{
-			ChainID:     fmt.Sprintf("test-chain-%v", cmn.RandStr(6)),
-			GenesisTime: time.Now(),
+			ChainID:         fmt.Sprintf("test-chain-%v", cmn.RandStr(6)),
+			GenesisTime:     time.Now(),
+			ConsensusParams:	 consensusParams,
 		}
 		genDoc.Validators = []tmtypes.GenesisValidator{{
 			Address: pubKey.Address(),
-			PubKey: pubKey,
-			Power:  genesisState.StakeData.Validators[0].ABCIValidator().Power,
-			Name:   genesisState.StakeData.Validators[0].Description.Moniker,
+			PubKey:  pubKey,
+			Power:   genesisState.StakeData.Validators[0].ABCIValidator().Power,
+			Name:    genesisState.StakeData.Validators[0].Description.Moniker,
 		}}
 
 		genDoc.AppState = json.RawMessage(genesisState.ToJSON())
@@ -150,6 +154,21 @@ func genGenesisState(pv *privval.FilePV) (app.GenesisState, crypto.PubKey) {
 	privKey := types.NewPrivKeySecp256k1(privK[:])
 	pubKey := privKey.PubKey()
 
+	tpk, ok := pv.Key.PubKey.(secp256k1.PubKeySecp256k1)
+	if !ok {
+		panic(ok)
+	}
+
+	// tpk1 := types.ConvertToPubKey(tpk[:])
+
+	// fmt.Printf("Shareledger PubKey: %x\n", pubKey[:])
+	// fmt.Printf("Tendermint PubKey : %x\n", tpk1[:])
+
+	// fmt.Printf("Shareledger address: %x\n", pubKey.Address()[:])
+	// fmt.Printf("Bech32 address     : %s\n", pubKey.Address().String())
+	// fmt.Printf("Tendermint address : %x\n", pv.Key.PubKey.Address()[:])
+
+	// fmt.Printf("Our TDM address    : %x\n", types.ConvertToTDMPubKey(pubKey).Address()[:])
 
 	gs := app.GenerateGenesisState(pubKey)
 	return gs, pv.Key.PubKey

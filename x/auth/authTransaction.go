@@ -5,7 +5,7 @@ import (
 	"strconv"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/tendermint/go-amino"
+	amino "github.com/tendermint/go-amino"
 
 	"github.com/sharering/shareledger/constants"
 	"github.com/sharering/shareledger/types"
@@ -63,7 +63,7 @@ func GetTxDecoder(cdc *amino.Codec) func([]byte) (sdk.Tx, sdk.Error) {
 	return func(txBytes []byte) (sdk.Tx, sdk.Error) {
 		var tx types.SHRTx
 
-		//fmt.Println("TxDecoder:", txBytes)
+		//fmt.Printf("TxDecoder: %x\n", txBytes)
 		//err := json.Unmarshal(txBytes, &tx)
 		//err := cdc.UnmarshalJSON(txBytes, &tx)
 		err := cdc.UnmarshalBinaryLengthPrefixed(txBytes, &tx)
