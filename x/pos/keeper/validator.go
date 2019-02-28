@@ -90,6 +90,12 @@ func (k Keeper) SetValidator(ctx sdk.Context, validator posTypes.Validator) {
 	store := ctx.KVStore(k.storeKey)
 	bz := posTypes.MustMarshalValidator(k.cdc, validator)
 	store.Set(GetValidatorKey(validator.Owner), bz)
+
+	k.SetAddressByTDMAddress(
+		ctx,
+		types.ConvertToTDMPubKey(validator.PubKey).Address()[:],
+		validator.Owner,
+	)
 }
 
 // Update the tokens of an existing validator, update the validators power index key

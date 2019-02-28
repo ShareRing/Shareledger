@@ -5,7 +5,7 @@ import (
 	posTypes "github.com/sharering/shareledger/x/pos/type"
 )
 
-// GetValidatorByTDMAddress - return
+// GetValidatorByTDMAddress - get validator by Tendermint Address
 func (k Keeper) GetValidatorByTDMAddress(
 	ctx sdk.Context, tdmAddress []byte,
 ) (
