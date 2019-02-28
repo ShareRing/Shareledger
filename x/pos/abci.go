@@ -1,6 +1,7 @@
 package pos
 
 import (
+	"bytes"
 	"fmt"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -12,21 +13,16 @@ import (
 	posTypes "github.com/sharering/shareledger/x/pos/type"
 )
 
-func EndBlocker(ctx sdk.Context, k keeper.Keeper, proposer types.PubKeySecp256k1) []abci.ValidatorUpdate {
+func EndBlocker(ctx sdk.Context, k keeper.Keeper, proposerAddress []byte) []abci.ValidatorUpdate {
 
 	// Proposer exists
-	if !proposer.Equals(types.NilPubKeySecp256k1()) {
+	if !bytes.Equal(proposerAddress, []byte{}) {
 
-		address := proposer.Address()
-
-		validator, found := k.GetValidator(ctx, address)
+		validator, found := k.GetValidatorByTDMAddress(ctx, proposerAddress)
 
 		if !found {
 			panic(posTypes.ErrNoValidatorFound(posTypes.DefaultCodespace).Error())
 		}
-
-		// txt, _ := validator.HumanReadableString()
-		// fmt.Println("UpdateBlockReward", txt)
 
 		vdi, err := k.UpdateBlockReward(
 			ctx,
@@ -34,6 +30,7 @@ func EndBlocker(ctx sdk.Context, k keeper.Keeper, proposer types.PubKeySecp256k1
 			validator.CommissionRate,
 			types.NewPOSCoin(constants.POS_BLOCK_REWARD),
 		)
+
 		if err != nil {
 			panic(err.Error())
 		}

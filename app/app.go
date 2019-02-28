@@ -17,6 +17,7 @@ import (
 	"github.com/sharering/shareledger/constants"
 	"github.com/sharering/shareledger/types"
 
+	"github.com/sharering/shareledger/version"
 	"github.com/sharering/shareledger/x/asset"
 	"github.com/sharering/shareledger/x/auth"
 	"github.com/sharering/shareledger/x/bank"
@@ -25,7 +26,6 @@ import (
 	"github.com/sharering/shareledger/x/fee"
 	"github.com/sharering/shareledger/x/pos"
 	pKeeper "github.com/sharering/shareledger/x/pos/keeper"
-	"github.com/sharering/shareledger/version"
 )
 
 var (
@@ -61,7 +61,6 @@ type ShareLedgerApp struct {
 func NewShareLedgerApp(logger log.Logger, db dbm.DB) *ShareLedgerApp {
 
 	cdc := MakeCodec()
-
 
 	// Create the base application object.
 	baseApp := bapp.NewBaseApp(appName /*cdc,*/, logger, db, auth.GetTxDecoder(cdc))
@@ -105,7 +104,6 @@ func NewShareLedgerApp(logger log.Logger, db dbm.DB) *ShareLedgerApp {
 	// app.Router().
 	// AddRoute(constants.MESSAGE_AUTH, auth.NewHandler(accountMapper))
 
-
 	app.QueryRouter().
 		AddRoute(constants.MESSAGE_AUTH, auth.NewQuerier(accountMapper, app.cdc))
 	app.cdc = auth.RegisterCodec(app.cdc)
@@ -116,7 +114,7 @@ func NewShareLedgerApp(logger log.Logger, db dbm.DB) *ShareLedgerApp {
 	// Register InitChain
 	logger.Info("Register Init Chainer")
 	app.SetInitChainer(app.InitChainer)
-	//app.SetEndBlocker(EndBlocker(accountMapper, app.posKeeper))
+	app.SetEndBlocker(EndBlocker(accountMapper, app.posKeeper))
 	app.SetBeginBlocker(BeginBlocker)
 
 	//  Mount Store
@@ -174,6 +172,7 @@ func (app *ShareLedgerApp) InitChainer(ctx sdk.Context, req abci.RequestInitChai
 			"PubKey", val.PubKey,
 		)
 	}
+
 	return abci.ResponseInitChain{
 		Validators: abciVals, //use the validator defined in stake
 	}
@@ -194,33 +193,16 @@ func BeginBlocker(ctx sdk.Context, req abci.RequestBeginBlock) (res abci.Respons
 }
 
 // application updates every end block
-/*func EndBlocker(am auth.AccountMapper, keeper pKeeper.Keeper) sdk.EndBlocker {
+func EndBlocker(am auth.AccountMapper, keeper pKeeper.Keeper) sdk.EndBlocker {
 	return func(ctx sdk.Context, req abci.RequestEndBlock) abci.ResponseEndBlock {
 
 		proposer := ctx.BlockHeader().ProposerAddress //.Proposer
-		voteInfos = ctx.VoteInfos()
 
-		for _, info := range voteInfos {
-			if bytes.Equal(info.Validator.Address,proposer)
+		validatorUpdates := pos.EndBlocker(ctx, keeper, proposer)
 
-		}
-
-		//	fmt.Printf("Proposer: %v\n", proposer)
-		//	fmt.Printf("Proposer PubKey: %v\n", proposer.PubKey)
-
-		var pubKey types.PubKeySecp256k1
-
-		if len(proposer.PubKey.GetData()) > 1 {
-			pubKey = types.ConvertToPubKey(proposer.PubKey.GetData())
-			// fmt.Printf("Address: %s\n", pubKey.Address())
-		} else {
-			pubKey = types.NilPubKeySecp256k1()
-		}
-
-		validatorUpdates := pos.EndBlocker(ctx, keeper, pubKey)
 		for _, val := range validatorUpdates {
 			constants.LOGGER.Info("Validator Update",
-				//"Address", fmt.Sprintf("%X", val.Address),
+				// "Address", fmt.Sprintf("%X", val.Address),
 				"Power", val.Power,
 				"PubKey", val.PubKey,
 			)
@@ -230,11 +212,8 @@ func BeginBlocker(ctx sdk.Context, req abci.RequestBeginBlock) (res abci.Respons
 		return abci.ResponseEndBlock{
 			ValidatorUpdates: validatorUpdates,
 		}
-
-		// Add these new validators to the addr -> pubkey map.
-		// return abci.ResponseEndBlock{}
 	}
-}*/
+}
 
 func MakeCodec() *amino.Codec {
 	cdc := amino.NewCodec()
@@ -300,8 +279,8 @@ func (app *ShareLedgerApp) SetupBooking(bookingKey *sdk.KVStoreKey,
 		app.cdc)
 
 	// app.Router().
-		// AddRoute("booking", booking.NewHandler(app.bookingKeeper))
-	
+	// AddRoute("booking", booking.NewHandler(app.bookingKeeper))
+
 	app.AddRoute("booking", booking.NewHandler(app.bookingKeeper))
 	// app.MountStoresIAVL(bookingKey)
 
