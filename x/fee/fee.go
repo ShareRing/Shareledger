@@ -26,6 +26,10 @@ func NewFeeHandler(am auth.AccountMapper, exchangeKey *sdk.KVStoreKey) FeeHandle
 		// Several tx don't return fee
 
 		if result.FeeDenom == "" && result.FeeAmount == 0 {
+			// if everything succeed, original result
+			result.Tags = result.Tags.
+				AppendTag(FeeDenom, constants.FEE_DENOM).
+				AppendTag(FeeAmount, strconv.FormatInt(int64(constants.NONE), 10)) 
 			return result.CosmosResult(), false
 		}
 
