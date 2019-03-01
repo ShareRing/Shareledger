@@ -12,6 +12,7 @@ import (
 	cmn "github.com/tendermint/tendermint/libs/common"
 	"github.com/tendermint/tendermint/privval"
 	rpcclient "github.com/tendermint/tendermint/rpc/client"
+	rpcTypes "github.com/tendermint/tendermint/rpc/core/types"
 	tdmtypes "github.com/tendermint/tendermint/types"
 
 	"github.com/sharering/shareledger/app"
@@ -95,9 +96,11 @@ func (c CoreContext) GetNonce() (int64, error) {
 	}
 
 	res, err := c.Client.ABCIQuery("custom/auth/nonce", encodedTx)
+
 	if err != nil {
 		return -1, err
 	}
+
 	nonce, err := strconv.ParseInt(string(res.Response.Value), 10, 64)
 	if err != nil {
 		return -1, err
@@ -137,19 +140,14 @@ func (c CoreContext) RegisterValidator(
 	}
 
 	r, err := c.Client.BroadcastTxCommit(tdmTx)
+
 	if err != nil {
 		return err
 	}
 
-	if r.DeliverTx.GetCode() != 0 {
-		return fmt.Errorf(utils.CleanupTDMLog(r.DeliverTx.GetLog()))
-	}
+	err, _ = processTDMResponse(r)
 
-	if r.CheckTx.GetCode() != 0 {
-		return fmt.Errorf(utils.CleanupTDMLog(r.CheckTx.GetLog()))
-	}
-
-	return nil
+	return err
 }
 
 func (c CoreContext) LoadBalance(amount int64, denom string) error {
@@ -165,38 +163,34 @@ func (c CoreContext) LoadBalance(amount int64, denom string) error {
 		return err
 	}
 
-	_, err = c.Client.BroadcastTxSync(tdmTx)
+	r, err := c.Client.BroadcastTxCommit(tdmTx)
 	if err != nil {
 		return err
 	}
 
-	return nil
+	err, _ = processTDMResponse(r)
+
+	return err
 
 }
 
 func (c CoreContext) CheckBalance() error {
-	msgCheck := bmsg.NewMsgCheck(c.PrivKey.PubKey().Address())
+	balanceQuery := bank.QueryBalanceParams{
+		Address: c.PrivKey.PubKey().Address(),
+	}
 
-	authTx, err := c.ConstructTransaction(msgCheck)
+	encodedTx, err := c.Codec.MarshalBinaryLengthPrefixed(balanceQuery)
 	if err != nil {
 		return err
 	}
 
-	tdmTx, err := c.ConstructTendermintTransaction(authTx)
+	res, err := c.Client.ABCIQuery("custom/bank/balance", encodedTx)
+
 	if err != nil {
 		return err
 	}
 
-	result, err := c.Client.ABCIQuery("app/query", cmn.HexBytes(tdmTx))
-	if err != nil {
-		return err
-	}
-
-	var account SHRAccount1
-
-	err = json.Unmarshal([]byte(result.Response.Log), &account)
-
-	fmt.Printf("%v\n", account.Coins)
+	fmt.Printf(string(res.Response.Value))
 
 	if err != nil {
 		return err
@@ -235,7 +229,9 @@ func (c CoreContext) CheckValidatorDistInfo() error {
 }
 
 func (c CoreContext) WithdrawBlockReward() error {
+
 	address := c.PrivKey.PubKey().Address()
+
 	msgWithdraw := pmsg.NewMsgWithdraw(address, address)
 
 	authTx, err := c.ConstructTransaction(msgWithdraw)
@@ -248,12 +244,15 @@ func (c CoreContext) WithdrawBlockReward() error {
 		return err
 	}
 
-	_, err = c.Client.BroadcastTxSync(tdmTx)
+	r, err := c.Client.BroadcastTxCommit(tdmTx)
+
 	if err != nil {
 		return err
 	}
 
-	return nil
+	err, _ = processTDMResponse(r)
+
+	return err
 
 }
 
@@ -277,14 +276,14 @@ func (c CoreContext) BeginUnbonding(amount int64) error {
 		return err
 	}
 
-	result, err := c.Client.BroadcastTxSync(tdmTx)
+	result, err := c.Client.BroadcastTxCommit(tdmTx)
 	if err != nil {
 		return err
 	}
 
-	fmt.Printf("Result: %v\n", result)
+	err, _ = processTDMResponse(result)
 
-	return nil
+	return err
 
 }
 
@@ -306,14 +305,14 @@ func (c CoreContext) CompleteUnbonding() error {
 		return err
 	}
 
-	result, err := c.Client.BroadcastTxSync(tdmTx)
+	result, err := c.Client.BroadcastTxCommit(tdmTx)
 	if err != nil {
 		return err
 	}
 
-	fmt.Printf("Result: %v\n", result)
+	err, _ = processTDMResponse(result)
 
-	return nil
+	return err
 
 }
 
@@ -385,4 +384,17 @@ func getCodec() *amino.Codec {
 	cdc = pos.RegisterCodec(cdc)
 	cdc = bank.RegisterCodec(cdc)
 	return cdc
+}
+
+func processTDMResponse(resp *rpcTypes.ResultBroadcastTxCommit) (err error, output string) {
+
+	if resp.DeliverTx.GetCode() != 0 {
+		return fmt.Errorf(utils.CleanupTDMLog(resp.DeliverTx.GetLog())), output
+	}
+
+	if resp.CheckTx.GetCode() != 0 {
+		return fmt.Errorf(utils.CleanupTDMLog(resp.CheckTx.GetLog())), output
+	}
+
+	return nil, utils.CleanupTDMLog(resp.DeliverTx.GetLog())
 }
