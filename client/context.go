@@ -16,13 +16,13 @@ import (
 
 	"github.com/sharering/shareledger/app"
 	"github.com/sharering/shareledger/types"
+	"github.com/sharering/shareledger/utils"
 	"github.com/sharering/shareledger/x/auth"
 	"github.com/sharering/shareledger/x/bank"
 	bmsg "github.com/sharering/shareledger/x/bank/messages"
 	"github.com/sharering/shareledger/x/pos"
 	pmsg "github.com/sharering/shareledger/x/pos/message"
 	posTypes "github.com/sharering/shareledger/x/pos/type"
-	"github.com/sharering/shareledger/utils"
 )
 
 type CoreContext struct {
@@ -143,6 +143,10 @@ func (c CoreContext) RegisterValidator(
 
 	if r.DeliverTx.GetCode() != 0 {
 		return fmt.Errorf(utils.CleanupTDMLog(r.DeliverTx.GetLog()))
+	}
+
+	if r.CheckTx.GetCode() != 0 {
+		return fmt.Errorf(utils.CleanupTDMLog(r.CheckTx.GetLog()))
 	}
 
 	return nil
