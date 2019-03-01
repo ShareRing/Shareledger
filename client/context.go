@@ -1,7 +1,7 @@
 package client
 
 import (
-	"encoding/json"
+	// "encoding/json"
 	"fmt"
 	"strconv"
 	"strings"
@@ -209,14 +209,14 @@ func (c CoreContext) CheckValidatorDistInfo() error {
 		return err
 	}
 
-	result, err := c.Client.ABCIQuery("app/custom/pos/validatorDistInfo", req)
+	result, err := c.Client.ABCIQuery("custom/pos/validatorDistInfo", req)
 	if err != nil {
 		return err
 	}
 
 	var vdi posTypes.ValidatorDistInfo
 
-	err = json.Unmarshal(result.Response.Value, &vdi)
+	err = c.Codec.UnmarshalJSON(result.Response.Value, &vdi)
 
 	if err != nil {
 		return err
