@@ -7,7 +7,7 @@ import (
 
 	// "github.com/tendermint/tendermint/p2p"
 	"github.com/tendermint/tendermint/privval"
-	cmn "github.com/tendermint/tmlibs/common"
+	cmn "github.com/tendermint/tendermint/libs/common"
 
 	"github.com/sharering/shareledger/types"
 )

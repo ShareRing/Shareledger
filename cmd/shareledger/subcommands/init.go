@@ -154,10 +154,10 @@ func genGenesisState(pv *privval.FilePV) (app.GenesisState, crypto.PubKey) {
 	privKey := types.NewPrivKeySecp256k1(privK[:])
 	pubKey := privKey.PubKey()
 
-	tpk, ok := pv.Key.PubKey.(secp256k1.PubKeySecp256k1)
-	if !ok {
-		panic(ok)
-	}
+	// tpk, ok := pv.Key.PubKey.(secp256k1.PubKeySecp256k1)
+	// if !ok {
+	// 	panic(ok)
+	// }
 
 	// tpk1 := types.ConvertToPubKey(tpk[:])
 

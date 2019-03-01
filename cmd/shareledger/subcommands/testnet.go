@@ -16,7 +16,7 @@ import (
 	"github.com/tendermint/tendermint/p2p"
 	"github.com/tendermint/tendermint/privval"
 	"github.com/tendermint/tendermint/types"
-	cmn "github.com/tendermint/tmlibs/common"
+	cmn "github.com/tendermint/tendermint/libs/common"
 
 	"github.com/sharering/shareledger/app"
 	posTypes "github.com/sharering/shareledger/x/pos/type"
@@ -95,7 +95,7 @@ func testnetFiles(cmd *cobra.Command, args []string) error {
 	var appGenesisState app.GenesisState
 
 	for i := 0; i < nValidators; i++ {
-		// nodeDirName := cmn.Fmt("%s%d", nodeDirPrefix, i)
+		// nodeDirName := fmt.Sprintf("%s%d", nodeDirPrefix, i)
 		nodeDirName := getMoniker(i)
 		nodeDir := filepath.Join(outputDir, nodeDirName)
 		config.SetRoot(nodeDir)
@@ -138,7 +138,7 @@ func testnetFiles(cmd *cobra.Command, args []string) error {
 	}
 
 	for i := 0; i < nNonValidators; i++ {
-		nodeDir := filepath.Join(outputDir, cmn.Fmt("%s%d", nodeDirPrefix, i+nValidators))
+		nodeDir := filepath.Join(outputDir, fmt.Sprintf("%s%d", nodeDirPrefix, i+nValidators))
 		config.SetRoot(nodeDir)
 
 		err := os.MkdirAll(filepath.Join(nodeDir, "config"), nodeDirPerm)
@@ -171,7 +171,7 @@ func testnetFiles(cmd *cobra.Command, args []string) error {
 		if i < nValidators {
 			nodeDir = filepath.Join(outputDir, getMoniker(i))
 		} else {
-			nodeDir = filepath.Join(outputDir, cmn.Fmt("%s%d", nodeDirPrefix, i))
+			nodeDir = filepath.Join(outputDir, fmt.Sprintf("%s%d", nodeDirPrefix, i))
 		}
 
 		if err := genDoc.SaveAs(filepath.Join(nodeDir, config.BaseConfig.Genesis)); err != nil {
@@ -254,7 +254,7 @@ func getMoniker(i int) string {
 
 		return monikers[i]
 	}
-	return cmn.Fmt("%s%d", nodeDirPrefix, i)
+	return fmt.Sprintf("%s%d", nodeDirPrefix, i)
 
 }
 
@@ -265,7 +265,7 @@ func populatePersistentPeersInConfigAndWriteIt(config *cfg.Config) error {
 		if i < nValidators {
 			nodeDir = filepath.Join(outputDir, getMoniker(i))
 		} else {
-			nodeDir = filepath.Join(outputDir, cmn.Fmt("%s%d", nodeDirPrefix, i))
+			nodeDir = filepath.Join(outputDir, fmt.Sprintf("%s%d", nodeDirPrefix, i))
 		}
 
 		config.SetRoot(nodeDir)
@@ -283,7 +283,7 @@ func populatePersistentPeersInConfigAndWriteIt(config *cfg.Config) error {
 		if i < nValidators {
 			nodeDir = filepath.Join(outputDir, getMoniker(i))
 		} else {
-			nodeDir = filepath.Join(outputDir, cmn.Fmt("%s%d", nodeDirPrefix, i))
+			nodeDir = filepath.Join(outputDir, fmt.Sprintf("%s%d", nodeDirPrefix, i))
 		}
 
 		config.SetRoot(nodeDir)
