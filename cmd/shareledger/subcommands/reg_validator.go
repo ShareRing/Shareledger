@@ -32,7 +32,7 @@ func init() {
 	// RegisterValidatorCmd.Flags().StringVar(&identity, "identity", "", "Identity Signature (ex: uPort or Keybase)")
 	RegisterValidatorCmd.Flags().StringVar(&website, "website", "sharering.network", "Website link")
 	RegisterValidatorCmd.Flags().StringVar(&details, "details", "ShareLedger Masternode", "Details of your MasterNode")
-	RegisterValidatorCmd.Flags().Int64Var(&amount, "tokens", 0, "Amount of tokens to be staked.")
+	RegisterValidatorCmd.Flags().Int64Var(&amount, "tokens", 0, "Amount of tokens to be staked. Minimum 2 millions")
 	RegisterValidatorCmd.MarkFlagRequired("tokens")
 	RegisterValidatorCmd.Flags().StringVar(&nodeAddress, "client", "", "Node address to query info. Example: tcp://127.0.0.1:46657")
 }
@@ -57,11 +57,11 @@ func registerValidator(cmd *cobra.Command, args []string) error {
 		moniker = config.BaseConfig.Moniker
 	}
 
-	fmt.Printf("Amount=%d Moniker=%s Website=%s Details=%s\n", amount, moniker, website, details)
+	// fmt.Printf("Amount=%d Moniker=%s Website=%s Details=%s\n", amount, moniker, website, details)
 
 	err := context.RegisterValidator(amount, moniker, "", website, details)
 	if err != nil {
-		fmt.Printf("Registration failed. Error : %s\n", err)
+		// fmt.Printf("Registration failed. Error : %s\n", err)
 		return err
 	}
 

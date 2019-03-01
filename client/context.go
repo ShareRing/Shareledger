@@ -22,6 +22,7 @@ import (
 	"github.com/sharering/shareledger/x/pos"
 	pmsg "github.com/sharering/shareledger/x/pos/message"
 	posTypes "github.com/sharering/shareledger/x/pos/type"
+	"github.com/sharering/shareledger/utils"
 )
 
 type CoreContext struct {
@@ -130,16 +131,18 @@ func (c CoreContext) RegisterValidator(
 		return err
 	}
 
-
 	tdmTx, err := c.ConstructTendermintTransaction(authTx)
 	if err != nil {
 		return err
 	}
 
-
-	_, err = c.Client.BroadcastTxSync(tdmTx)
+	r, err := c.Client.BroadcastTxCommit(tdmTx)
 	if err != nil {
 		return err
+	}
+
+	if r.DeliverTx.GetCode() != 0 {
+		return fmt.Errorf(utils.CleanupTDMLog(r.DeliverTx.GetLog()))
 	}
 
 	return nil
