@@ -5,7 +5,7 @@ import (
 	"errors"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/tendermint/go-amino"
+	amino "github.com/tendermint/go-amino"
 
 	"github.com/sharering/shareledger/types"
 	msg "github.com/sharering/shareledger/x/asset/messages"
@@ -45,11 +45,11 @@ func (k Keeper) CreateAsset(ctx sdk.Context, msg msg.MsgCreate) (types.Asset, er
 	return asset, nil
 }
 
-func (k Keeper) RetrieveAsset(ctx sdk.Context, msg msg.MsgRetrieve) (types.Asset, error) {
+func (k Keeper) RetrieveAsset(ctx sdk.Context, params QueryAssetParams) (types.Asset, error) {
 
 	store := ctx.KVStore(k.storeKey)
 
-	assetBytes := store.Get([]byte(msg.UUID))
+	assetBytes := store.Get([]byte(params.UUID))
 
 	if assetBytes == nil {
 		return types.Asset{}, errors.New("Asset is not found")

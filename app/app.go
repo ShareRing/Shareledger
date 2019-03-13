@@ -265,6 +265,9 @@ func (app *ShareLedgerApp) SetupAsset(assetKey *sdk.KVStoreKey) {
 	app.Router().
 		AddRoute("asset", asset.NewHandler(keeper))
 
+	app.QueryRouter().
+		AddRoute("asset", asset.NewQuerier(keeper, app.cdc))
+
 	// app.MountStoresIAVL(assetKey)
 }
 

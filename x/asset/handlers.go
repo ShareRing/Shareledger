@@ -22,8 +22,6 @@ func NewHandler(k Keeper) sdk.Handler {
 
 		case messages.MsgCreate:
 			return handleAssetCreation(ctx, k, msg)
-		case messages.MsgRetrieve:
-			return handleAssetRetrieval(ctx, k, msg)
 		case messages.MsgUpdate:
 			return handleAssetUpdate(ctx, k, msg)
 		case messages.MsgDelete:
@@ -50,19 +48,6 @@ func handleAssetCreation(ctx sdk.Context, k Keeper, msg messages.MsgCreate) sdk.
 		Tags:      msg.Tags(),
 		// FeeAmount: fee,
 		// FeeDenom:  denom,
-	}
-}
-
-func handleAssetRetrieval(ctx sdk.Context, k Keeper, msg messages.MsgRetrieve) sdk.Result {
-
-	asset, err := k.RetrieveAsset(ctx, msg)
-	if err != nil {
-		return sdk.ErrInternal(err.Error()).Result()
-	}
-
-	return sdk.Result{
-		Log:  fmt.Sprintf("%s", asset),
-		Tags: msg.Tags(),
 	}
 }
 
