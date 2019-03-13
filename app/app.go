@@ -309,4 +309,6 @@ func (app *ShareLedgerApp) SetupExchange(exchangeKey *sdk.KVStoreKey, am auth.Ac
 
 	app.AddRoute("exchangerate", exchange.NewHandler(app.exchangeKeeper))
 	// app.Router().AddRoute("exchangerate", exchange.NewHandler(app.exchangeKeeper))
+	app.QueryRouter().
+		AddRoute("exchangerate", exchange.NewQuerier(app.exchangeKeeper, app.cdc))
 }

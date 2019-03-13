@@ -19,8 +19,6 @@ func NewHandler(k Keeper) sdkTypes.Handler {
 		switch msg := msg.(type) {
 		case messages.MsgCreate:
 			ret = handleMsgCreate(ctx, k, msg)
-		case messages.MsgRetrieve:
-			ret = handleMsgRetrieve(ctx, k, msg)
 		case messages.MsgUpdate:
 			ret = handleMsgUpdate(ctx, k, msg)
 		case messages.MsgDelete:
@@ -63,7 +61,7 @@ func handleMsgCreate(
 	// fee, denom := utils.GetMsgFee(msg)
 
 	return sdk.Result{
-		Log:  fmt.Sprintf("%s", exr),
+		Log: exr.String(),
 		Tags: msg.Tags(),
 		// FeeAmount: fee,
 		// FeeDenom:  denom,
@@ -118,23 +116,6 @@ func handleMsgDelete(
 	}
 }
 
-func handleMsgRetrieve(
-	ctx sdk.Context,
-	k Keeper,
-	msg messages.MsgRetrieve,
-) sdk.Result {
-
-	exr, err := k.RetrieveExchangeRate(ctx, msg.FromDenom, msg.ToDenom)
-
-	if err != nil {
-		return sdk.ErrInternal(err.Error()).Result()
-	}
-
-	return sdk.Result{
-		Log:  fmt.Sprintf("%s", exr),
-		Tags: msg.Tags(),
-	}
-}
 
 func handleMsgExchange(
 	ctx sdk.Context,

@@ -2,6 +2,7 @@ package types
 
 import (
 	"fmt"
+	"encoding/json"
 
 	"github.com/sharering/shareledger/constants"
 	"github.com/sharering/shareledger/types"
@@ -54,4 +55,12 @@ func (e ExchangeRate) Obtain(buyingCoin types.Coin) (sellingCoin types.Coin) {
 	sellingAmount := buyingCoin.Amount.Quo(e.Rate)
 
 	return types.NewCoinFromDec(e.FromDenom, sellingAmount)
+}
+
+func (e ExchangeRate) String() string{
+	b, err := json.Marshal(e)
+	if err != nil {
+		panic(err)
+	}
+	return fmt.Sprintf("%s", b) 
 }
