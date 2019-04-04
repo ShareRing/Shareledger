@@ -17,5 +17,5 @@ func GenUUID(inp interface{}) (string, error) {
 	h.Write(enc)
 	hash := h.Sum(nil)
 
-	return hex.EncodeToString(hash)[:4], nil
+	return hex.EncodeToString(hash)[:20], nil
 }

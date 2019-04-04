@@ -79,8 +79,8 @@ func handleComplete(ctx sdk.Context, k Keeper, msg messages.MsgComplete) sdk.Res
 	// fee, denom := utils.GetMsgFee(msg)
 
 	return sdk.Result{
-		Log:  fmt.Sprintf("Completed %s", booking.String()),
-		Tags: msg.Tags(),
+		Log:       booking.String(),
+		Tags:      msg.Tags(),
 		// FeeAmount: fee,
 		// FeeDenom:  denom,
 	}
