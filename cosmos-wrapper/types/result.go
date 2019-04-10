@@ -9,8 +9,9 @@ import (
 // The new Result is embedded inside Shareledger's Result
 type Result struct {
 	sdk.Result
-	FeeDenom string
+	FeeDenom  string
 	FeeAmount int64
+	Signer    sdk.AccAddress
 }
 
 func NewResult(r sdk.Result) Result {
