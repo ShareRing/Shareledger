@@ -24,6 +24,7 @@ import (
 	"github.com/sharering/shareledger/x/booking"
 	"github.com/sharering/shareledger/x/exchange"
 	"github.com/sharering/shareledger/x/fee"
+	"github.com/sharering/shareledger/x/identity"
 	"github.com/sharering/shareledger/x/pos"
 	pKeeper "github.com/sharering/shareledger/x/pos/keeper"
 )
@@ -72,6 +73,7 @@ func NewShareLedgerApp(logger log.Logger, db dbm.DB) *ShareLedgerApp {
 	posKey := sdk.NewKVStoreKey(constants.STORE_POS)
 	exchangeKey := sdk.NewKVStoreKey(constants.STORE_EXCHANGE)
 	//bankKey := sdk.NewKVStoreKey(constants.STORE_BANK)
+	identityKey := sdk.NewKVStoreKey(constants.STORE_IDENTITY)
 
 	// accountMapper for Auth Module storing and Bank module
 	accountMapper := auth.NewAccountMapper(
@@ -97,6 +99,7 @@ func NewShareLedgerApp(logger log.Logger, db dbm.DB) *ShareLedgerApp {
 	app.SetupPOS(posKey, accountMapper)
 	app.SetupBooking(bookingKey, assetKey, accountMapper)
 	app.SetupExchange(exchangeKey, accountMapper)
+	app.SetupIdentity(identityKey, accountMapper)
 
 	//app.SetTxDecoder(auth.GetTxDecoder(cdc))
 	app.SetAnteHandler(auth.NewAnteHandler(accountMapper))
@@ -118,7 +121,7 @@ func NewShareLedgerApp(logger log.Logger, db dbm.DB) *ShareLedgerApp {
 	app.SetBeginBlocker(BeginBlocker)
 
 	//  Mount Store
-	baseApp.MountStores(authKey, assetKey, bookingKey, posKey, exchangeKey) //replace baseApp.MountStoresIAVL
+	baseApp.MountStores(authKey, assetKey, bookingKey, posKey, exchangeKey, identityKey) //replace baseApp.MountStoresIAVL
 	err := baseApp.LoadLatestVersion(authKey)
 	if err != nil {
 		cmn.Exit(err.Error())
@@ -311,4 +314,15 @@ func (app *ShareLedgerApp) SetupExchange(exchangeKey *sdk.KVStoreKey, am auth.Ac
 	// app.Router().AddRoute("exchangerate", exchange.NewHandler(app.exchangeKeeper))
 	app.QueryRouter().
 		AddRoute("exchangerate", exchange.NewQuerier(app.exchangeKeeper, app.cdc))
+}
+
+func (app *ShareLedgerApp) SetupIdentity(identityKey *sdk.KVStoreKey, am auth.AccountMapper) {
+	app.cdc = identity.RegisterCodec(app.cdc)
+
+	keeper := identity.NewKeeper(identityKey)
+
+	app.AddRoute("identity", identity.NewHandler(keeper, am))
+	app.QueryRouter().
+		AddRoute("identity", identity.NewQuerier(keeper, app.cdc))
+
 }
