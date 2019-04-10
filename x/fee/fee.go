@@ -29,7 +29,7 @@ func NewFeeHandler(am auth.AccountMapper, exchangeKey *sdk.KVStoreKey) FeeHandle
 			// if everything succeed, original result
 			result.Tags = result.Tags.
 				AppendTag(FeeDenom, constants.FEE_DENOM).
-				AppendTag(FeeAmount, strconv.FormatInt(int64(constants.NONE), 10)) 
+				AppendTag(FeeAmount, strconv.FormatInt(int64(constants.NONE), 10))
 			return result.CosmosResult(), false
 		}
 
@@ -37,7 +37,14 @@ func NewFeeHandler(am auth.AccountMapper, exchangeKey *sdk.KVStoreKey) FeeHandle
 
 		keeper := bank.NewKeeper(am)
 
-		signer := auth.GetSigner(ctx).GetAddress()
+		// Get signer either from context or from result
+		// signer from result is special case of Identity
+		var signer sdk.AccAddress
+		if result.Signer == nil {
+			signer = auth.GetSigner(ctx).GetAddress()
+		} else {
+			signer = result.Signer
+		}
 
 		// abort due to fee has invalid denom or negative amount
 		if !(txFee.HasValidDenom() && txFee.IsNotNegative()) {
