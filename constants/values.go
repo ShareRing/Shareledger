@@ -6,6 +6,7 @@ import "time"
 const DEFAULT_DENOM = "SHR"
 const DEFAULT_AMOUNT = 0
 const PREFIX_ADDRESS = "account:" // address to string to store in Auth Module
+const PREFIX_IDENTITY = "id:"     // address to string to store in Identity Module
 
 // STORE
 const STORE_BANK = "bank"
@@ -14,6 +15,7 @@ const STORE_ASSET = "asset"
 const STORE_AUTH = "auth"
 const STORE_POS = "pos"
 const STORE_EXCHANGE = "excrate"
+const STORE_IDENTITY = "identity"
 
 // MESSAGE TYPE
 const MESSAGE_AUTH = "auth"
@@ -22,6 +24,7 @@ const MESSAGE_BANK = "bank"
 const MESSAGE_BOOKING = "booking"
 const MESSAGE_POS = "pos"
 const MESSAGE_EXCHANGE_RATE = "exchangerate"
+const MESSAGE_IDENTITY = "identity"
 
 // ALLOWED DENOM
 var DENOM_LIST = map[string]bool{"SHRP": true, "SHR": true}

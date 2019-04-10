@@ -17,6 +17,9 @@ var LEVELS = map[string]FeeLevel{
 	"MsgDelete":   LOW,
 	"MsgBook":     HIGH,
 	"MsgComplete": MED,
+	"MsgIDCreate": HIGH,
+	"MsgIDUpdate": HIGH,
+	"MsgIDDelete": HIGH,
 }
 
 var FEE_LEVELS = map[FeeLevel]int{
