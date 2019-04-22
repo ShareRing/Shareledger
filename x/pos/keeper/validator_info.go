@@ -108,7 +108,7 @@ func (k Keeper) UpdateBlockReward(
 ) (
 	posTypes.ValidatorDistInfo, sdk.Error,
 ) {
-	fmt.Printf("CHECK TX?? %v\n", ctx.IsCheckTx())
+	// fmt.Printf("CHECK TX?? %v\n", ctx.IsCheckTx())
 	vdi, found := k.GetValidatorDistInfo(ctx, validatorAddr)
 
 	if !found {
