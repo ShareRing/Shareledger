@@ -76,10 +76,11 @@ func NewShareLedgerApp(logger log.Logger, db dbm.DB) *ShareLedgerApp {
 	identityKey := sdk.NewKVStoreKey(constants.STORE_IDENTITY)
 
 	// accountMapper for Auth Module storing and Bank module
+	var addr sdk.AccAddress
 	accountMapper := auth.NewAccountMapper(
 		cdc,
 		authKey,
-		&auth.SHRAccount{},
+		auth.NewSHRAccountWithAddress(addr),
 	)
 
 	// Determine how transactions are decoded.

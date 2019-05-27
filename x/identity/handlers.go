@@ -49,7 +49,6 @@ func NewHandler(k Keeper, am auth.AccountMapper) sdkTypes.Handler {
 		// Get fee
 		fee, denom := utils.GetMsgFee(msg)
 
-		fmt.Printf("ADDRESS: %s\n", address)
 
 		return sdkTypes.Result{
 			Result:    ret,
@@ -62,7 +61,7 @@ func NewHandler(k Keeper, am auth.AccountMapper) sdkTypes.Handler {
 
 type idStruct struct {
 	Address sdk.AccAddress `json:"address"`
-	Hash    string         `json:"string"`
+	Hash    string         `json:"hash"`
 }
 
 func newIdStruct(address sdk.AccAddress, hash string) idStruct {

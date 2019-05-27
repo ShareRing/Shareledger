@@ -17,9 +17,7 @@ func StringToAddress(input string) sdk.AccAddress {
 	if err != nil {
 		panic(err)
 	}
-	var address sdk.AccAddress
-	copy(address[:], decoded)
-	return address
+	return sdk.AccAddress(decoded)
 }
 
 func CleanupTDMLog(input string) string {

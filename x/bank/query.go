@@ -45,7 +45,7 @@ func queryBalance(
 		account = auth.NewSHRAccountWithAddress(params.Address)
 	}
 
-	res =  []byte(account.GetCoins().String())
+	res = []byte(account.GetCoins().String())
 	// if err1 != nil {
 	// 	return []byte{}, sdk.ErrInternal(fmt.Sprintf("couldnot marshal result to JSON: %s", err1.Error()))
 	// }

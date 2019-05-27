@@ -16,9 +16,6 @@ func NewKeeper(_am auth.AccountMapper) Keeper {
 	return Keeper{am: _am}
 }
 
-
-
-
 func (k Keeper) GetCoins(
 	ctx sdk.Context,
 	addr sdk.AccAddress,
@@ -31,7 +28,7 @@ func (k Keeper) SetCoins(
 	addr sdk.AccAddress,
 	amt types.Coins,
 ) sdk.Error {
- 	return setCoins(ctx, k.am , addr, amt)
+	return setCoins(ctx, k.am, addr, amt)
 }
 
 func (k Keeper) SubtractCoins(
@@ -70,10 +67,7 @@ func (k Keeper) AddCoin(
 	return addCoin(ctx, k.am, addr, amt)
 }
 
-
 //-------------------------------------------------------------------------
-
-
 
 //-------------------------------------------------------------------------
 
@@ -163,7 +157,7 @@ func getCoins(ctx sdk.Context, am auth.AccountMapper, addr sdk.AccAddress) types
 	acc := am.GetAccount(ctx, addr)
 
 	if acc == nil {
-		return types.Coins{}
+		return types.NewDefaultCoins()
 	}
 
 	return acc.GetCoins()
@@ -174,7 +168,8 @@ func setCoins(ctx sdk.Context, am auth.AccountMapper, addr sdk.AccAddress, amt t
 	acc := am.GetAccount(ctx, addr)
 
 	if acc == nil {
-		acc = am.NewAccountWithAddress(ctx, addr)
+		// acc = am.NewAccountWithAddress(ctx, addr)
+		acc = auth.NewSHRAccountWithAddress(addr)
 	}
 
 	// UPdate new coins to  accounts
