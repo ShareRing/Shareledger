@@ -3,11 +3,11 @@ package baseapp
 import (
 	bapp "github.com/cosmos/cosmos-sdk/baseapp"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	dbm "github.com/tendermint/tendermint/libs/db"
 	log "github.com/tendermint/tendermint/libs/log"
+	dbm "github.com/tendermint/tm-db"
 
-	fee "github.com/sharering/shareledger/x/fee"
 	sdkTypes "github.com/sharering/shareledger/cosmos-wrapper/types"
+	fee "github.com/sharering/shareledger/x/fee"
 )
 
 // BaseApp - wrapper around BaseApp
@@ -24,8 +24,7 @@ func NewBaseApp(
 	}
 }
 
-
-func (app *BaseApp) AddRoute(path string, handler sdkTypes.Handler) bapp.Router{
+func (app *BaseApp) AddRoute(path string, handler sdkTypes.Handler) bapp.Router {
 	// Wrap around every handler to ensure Fee is Called
 	newHandler := func(ctx sdk.Context, msg sdk.Msg) sdk.Result {
 
