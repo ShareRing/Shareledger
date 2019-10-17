@@ -24,7 +24,7 @@ func NewBaseApp(
 	}
 }
 
-func (app *BaseApp) AddRoute(path string, handler sdkTypes.Handler) bapp.Router {
+func (app *BaseApp) AddRoute(path string, handler sdkTypes.Handler) sdk.Router {
 	// Wrap around every handler to ensure Fee is Called
 	newHandler := func(ctx sdk.Context, msg sdk.Msg) sdk.Result {
 

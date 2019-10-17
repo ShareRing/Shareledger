@@ -13,12 +13,12 @@ import (
 	abci "github.com/tendermint/tendermint/abci/types"
 	cfg "github.com/tendermint/tendermint/config"
 	cmn "github.com/tendermint/tendermint/libs/common"
-	dbm "github.com/tendermint/tm-db"
 	"github.com/tendermint/tendermint/libs/log"
 	"github.com/tendermint/tendermint/node"
 	"github.com/tendermint/tendermint/p2p"
 	pvm "github.com/tendermint/tendermint/privval"
 	"github.com/tendermint/tendermint/proxy"
+	dbm "github.com/tendermint/tm-db"
 
 	"github.com/sharering/shareledger/app"
 	"github.com/sharering/shareledger/constants"
@@ -115,7 +115,7 @@ func startCombo(cmd *cobra.Command, args []string) error {
 
 	n, err := node.NewNode(
 		config,
-		pvm.LoadOrGenFilePV(config.PrivValidatorKeyFile() , config.PrivValidatorStateFile()),
+		pvm.LoadOrGenFilePV(config.PrivValidatorKeyFile(), config.PrivValidatorStateFile()),
 		nodeKey,
 		proxy.NewLocalClientCreator(shareledgerApp),
 		node.DefaultGenesisDocProviderFunc(config),
@@ -133,7 +133,7 @@ func startCombo(cmd *cobra.Command, args []string) error {
 		return err
 	}
 
-	cmn.TrapSignal(func() {
+	cmn.TrapSignal(nil, func() {
 		if n.IsRunning() {
 			_ = n.Stop()
 		}
