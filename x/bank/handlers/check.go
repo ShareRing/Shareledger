@@ -28,16 +28,26 @@ func HandleMsgCheck(am auth.AccountMapper) sdk.Handler {
 
 		account := am.GetAccount(ctx, checkMsg.Account)
 		if account != nil {
+			event := sdk.NewEvent(
+				EventTypeCheck,
+				sdk.NewAttribute(AttributeAccountAddress, checkMsg.Account.String()),
+			)
+			ctx.EventManager().EmitEvent(event)
 			return sdk.Result{
-				Log:  account.String(),
-				Tags: checkMsg.Tags(),
+				Log:    account.String(),
+				Events: ctx.EventManager().Events(),
 			}
 		} else {
 			shrAcc := auth.NewSHRAccountWithAddress(checkMsg.Account)
 			account = shrAcc
+			event := sdk.NewEvent(
+				EventTypeCheck,
+				sdk.NewAttribute(AttributeAccountAddress, checkMsg.Account.String()),
+			)
+			ctx.EventManager().EmitEvent(event)
 			return sdk.Result{
-				Log:  account.String(),
-				Tags: checkMsg.Tags(),
+				Log:    account.String(),
+				Events: ctx.EventManager().Events(),
 			}
 		}
 

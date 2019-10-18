@@ -10,7 +10,6 @@ import (
 	"github.com/sharering/shareledger/x/auth"
 	Err "github.com/sharering/shareledger/x/bank/error"
 	"github.com/sharering/shareledger/x/bank/messages"
-	tags "github.com/sharering/shareledger/x/bank/tags"
 
 	sdkTypes "github.com/sharering/shareledger/cosmos-wrapper/types"
 )
@@ -52,12 +51,19 @@ func HandleMsgSend(am auth.AccountMapper) sdkTypes.Handler {
 		// Return a success (Code 0).
 		// Add list of key-value pair descriptors ("tags").
 		fee, denom := utils.GetMsgFee(msg)
-
+		event := sdk.NewEvent(
+			EventTypeSend,
+			sdk.NewAttribute(AttributeToAddress, sendMsg.To.String()),
+			sdk.NewAttribute(AttributeAmount, sendMsg.Amount.String()),
+			sdk.NewAttribute(AttributeEvent, ValueTransfered),
+			sdk.NewAttribute(AttributeFromAddress, signer.GetAddress().String()),
+		)
+		ctx.EventManager().EmitEvent(event)
 		return sdkTypes.Result{
 			Result: sdk.Result{
-				Log:       res,
-				Data:      append(resF.Data, resT.Data...),
-				Tags:      sendMsg.Tags().AppendTag(tags.FromAddress, signer.GetAddress().String()),
+				Log:    res,
+				Data:   append(resF.Data, resT.Data...),
+				Events: ctx.EventManager().Events(),
 			},
 			FeeAmount: fee,
 			FeeDenom:  denom,

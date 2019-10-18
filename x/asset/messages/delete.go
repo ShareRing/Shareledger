@@ -58,8 +58,8 @@ func (msg MsgDelete) GetSigners() []sdk.AccAddress {
 	return []sdk.AccAddress{}
 }
 
-func (msg MsgDelete) Tags() sdk.Tags {
-	return sdk.NewTags("msg.module", "asset").
-		AppendTag("msg.action", "delete").
-		AppendTag("asset.UUID", msg.UUID)
-}
+// func (msg MsgDelete) Tags() sdk.Tags {
+// 	return sdk.NewTags("msg.module", "asset").
+// 		AppendTag("msg.action", "delete").
+// 		AppendTag("asset.UUID", msg.UUID)
+// }

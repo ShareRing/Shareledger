@@ -59,10 +59,15 @@ func handleMsgCreate(
 	// TODO: MsgFee is based on name of Msg. Currently, Asset and This module ( Exchagne) share the same set of names
 	// Create, Delete, Update
 	// fee, denom := utils.GetMsgFee(msg)
-
+	event := sdk.NewEvent(
+		EventTypeExchangeCreate,
+		sdk.NewAttribute(AttributeFromDenom, msg.FromDenom),
+		sdk.NewAttribute(AttributeToDenom, msg.ToDenom),
+	)
+	ctx.EventManager().EmitEvent(event)
 	return sdk.Result{
-		Log: exr.String(),
-		Tags: msg.Tags(),
+		Log:    exr.String(),
+		Events: ctx.EventManager().Events(),
 		// FeeAmount: fee,
 		// FeeDenom:  denom,
 	}
@@ -83,10 +88,15 @@ func handleMsgUpdate(
 	// TODO: MsgFee is based on name of Msg. Currently, Asset and This module ( Exchagne) share the same set of names
 	// Create, Delete, Update
 	// fee, denom := utils.GetMsgFee(msg)
-
+	event := sdk.NewEvent(
+		EventTypeExchangeUpdate,
+		sdk.NewAttribute(AttributeFromDenom, msg.FromDenom),
+		sdk.NewAttribute(AttributeToDenom, msg.ToDenom),
+	)
+	ctx.EventManager().EmitEvent(event)
 	return sdk.Result{
-		Log:  fmt.Sprintf("%s", exr),
-		Tags: msg.Tags(),
+		Log:    fmt.Sprintf("%s", exr),
+		Events: ctx.EventManager().Events(),
 		// FeeAmount: fee,
 		// FeeDenom:  denom,
 	}
@@ -107,15 +117,19 @@ func handleMsgDelete(
 	// TODO: MsgFee is based on name of Msg. Currently, Asset and This module ( Exchagne) share the same set of names
 	// Create, Delete, Update
 	// fee, denom := utils.GetMsgFee(msg)
-
+	event := sdk.NewEvent(
+		EventTypeExchangeDelete,
+		sdk.NewAttribute(AttributeFromDenom, msg.FromDenom),
+		sdk.NewAttribute(AttributeToDenom, msg.ToDenom),
+	)
+	ctx.EventManager().EmitEvent(event)
 	return sdk.Result{
-		Log:  fmt.Sprintf("%s", exr),
-		Tags: msg.Tags(),
+		Log:    fmt.Sprintf("%s", exr),
+		Events: ctx.EventManager().Events(),
 		// FeeAmount: fee,
 		// FeeDenom:  denom,
 	}
 }
-
 
 func handleMsgExchange(
 	ctx sdk.Context,
@@ -141,11 +155,17 @@ func handleMsgExchange(
 	if err != nil {
 		return sdk.ErrInternal(err.Error()).Result()
 	}
-
+	event := sdk.NewEvent(
+		EventTypeExchange,
+		sdk.NewAttribute(AttributeFromDenom, msg.FromDenom),
+		sdk.NewAttribute(AttributeToDenom, msg.ToDenom),
+		sdk.NewAttribute(AttributeAmount, msg.Amount.String()),
+	)
+	ctx.EventManager().EmitEvent(event)
 	balanceAfter := k.bankKeeper.GetCoins(ctx, address)
 
 	return sdk.Result{
-		Log:  fmt.Sprintf("%s", balanceAfter.String()),
-		Tags: msg.Tags(),
+		Log:    fmt.Sprintf("%s", balanceAfter.String()),
+		Events: ctx.EventManager().Events(),
 	}
 }

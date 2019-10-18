@@ -70,9 +70,3 @@ func (msg MsgCreate) String() string {
 func (msg MsgCreate) GetSigners() []sdk.AccAddress {
 	return []sdk.AccAddress{}
 }
-
-func (msg MsgCreate) Tags() sdk.Tags {
-	return sdk.NewTags("msg.module", "exchangerate").
-		AppendTag("fromDenom", msg.FromDenom).
-		AppendTag("toDenom", msg.ToDenom)
-}

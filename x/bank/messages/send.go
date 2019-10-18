@@ -7,7 +7,6 @@ import (
 
 	"github.com/sharering/shareledger/constants"
 	types "github.com/sharering/shareledger/types"
-	tags "github.com/sharering/shareledger/x/bank/tags"
 )
 
 //------------------------------------------------------------------
@@ -19,7 +18,7 @@ var _ sdk.Msg = MsgSend{}
 // MsgSend to send coins from Input to Output
 type MsgSend struct {
 	To     sdk.AccAddress `json:"to"`
-	Amount types.Coin  `json:"amount"`
+	Amount types.Coin     `json:"amount"`
 }
 
 // NewMsgSend
@@ -57,11 +56,4 @@ func (msg MsgSend) GetSignBytes() []byte {
 func (msg MsgSend) GetSigners() []sdk.AccAddress {
 	//return []sdk.AccAddress{msg.From}
 	return []sdk.AccAddress{}
-}
-
-// Returns the sdk.Tags for the message
-func (msg MsgSend) Tags() sdk.Tags {
-	return sdk.NewTags(tags.ToAddress, msg.To.String()).
-		AppendTag(tags.Amount, msg.Amount.String()).
-		AppendTag(tags.Event, tags.Transfered)
 }

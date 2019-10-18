@@ -16,7 +16,7 @@ import (
 func NewHandler(k Keeper, am auth.AccountMapper) sdkTypes.Handler {
 
 	return func(ctx sdk.Context, msg sdk.Msg) sdkTypes.Result {
-
+		ctx.WithEventManager(sdk.NewEventManager())
 		// check Signer, only valid reserve accounts are priviledged to perform Identity
 		signer := auth.GetSigner(ctx)
 
@@ -48,7 +48,6 @@ func NewHandler(k Keeper, am auth.AccountMapper) sdkTypes.Handler {
 
 		// Get fee
 		fee, denom := utils.GetMsgFee(msg)
-
 
 		return sdkTypes.Result{
 			Result:    ret,
@@ -87,10 +86,15 @@ func handleIDCreation(ctx sdk.Context, k Keeper, msg MsgIDCreate) sdk.Result {
 	}
 
 	k.Store(ctx, msg.Address, msg.Hash)
-
+	event := sdk.NewEvent(
+		EventTypeIDCreate,
+		sdk.NewAttribute(AttributeAddress, msg.Address.String()),
+		sdk.NewAttribute(AttributeHash, msg.Hash),
+	)
+	ctx.EventManager().EmitEvent(event)
 	return sdk.Result{
-		Log:  newIdStruct(msg.Address, msg.Hash).String(),
-		Tags: msg.Tags(),
+		Log:    newIdStruct(msg.Address, msg.Hash).String(),
+		Events: ctx.EventManager().Events(),
 	}
 }
 
@@ -102,10 +106,15 @@ func handleIDUpdate(ctx sdk.Context, k Keeper, msg MsgIDUpdate) sdk.Result {
 	}
 
 	k.Store(ctx, msg.Address, msg.Hash)
-
+	event := sdk.NewEvent(
+		EventTypeIDUpdate,
+		sdk.NewAttribute(AttributeAddress, msg.Address.String()),
+		sdk.NewAttribute(AttributeHash, msg.Hash),
+	)
+	ctx.EventManager().EmitEvent(event)
 	return sdk.Result{
-		Log:  newIdStruct(msg.Address, msg.Hash).String(),
-		Tags: msg.Tags(),
+		Log:    newIdStruct(msg.Address, msg.Hash).String(),
+		Events: ctx.EventManager().Events(),
 	}
 }
 
@@ -117,9 +126,14 @@ func handleIDDeletion(ctx sdk.Context, k Keeper, msg MsgIDDelete) sdk.Result {
 	}
 
 	k.Delete(ctx, msg.Address)
+	event := sdk.NewEvent(
+		EventTypeIDDelete,
+		sdk.NewAttribute(AttributeAddress, msg.Address.String()),
+	)
+	ctx.EventManager().EmitEvent(event)
 
 	return sdk.Result{
-		Log:  newIdStruct(msg.Address, hash).String(),
-		Tags: msg.Tags(),
+		Log:    newIdStruct(msg.Address, hash).String(),
+		Events: ctx.EventManager().Events(),
 	}
 }

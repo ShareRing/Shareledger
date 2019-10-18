@@ -15,7 +15,7 @@ import (
 
 func NewHandler(k Keeper) sdkTypes.Handler {
 	return func(ctx sdk.Context, msg sdk.Msg) sdkTypes.Result {
-
+		ctx.WithEventManager(sdk.NewEventManager())
 		constants.LOGGER.Info(
 			"Msg for Asset Module",
 			"type", reflect.TypeOf(msg),
@@ -42,8 +42,8 @@ func NewHandler(k Keeper) sdkTypes.Handler {
 		fee, denom := utils.GetMsgFee(msg)
 
 		return sdkTypes.Result{
-			Result: ret,
-			FeeDenom: denom,
+			Result:    ret,
+			FeeDenom:  denom,
 			FeeAmount: fee,
 		}
 
@@ -59,10 +59,14 @@ func handleBooking(ctx sdk.Context, k Keeper, msg messages.MsgBook) sdk.Result {
 	}
 
 	// fee, denom := utils.GetMsgFee(msg)
-
+	event := sdk.NewEvent(
+		EventTypeBookingStart,
+		sdk.NewAttribute(AttributeUUID, string(msg.UUID)),
+	)
+	ctx.EventManager().EmitEvent(event)
 	return sdk.Result{
-		Log:  fmt.Sprintf("%s", booking.String()),
-		Tags: msg.Tags(),
+		Log:    fmt.Sprintf("%s", booking.String()),
+		Events: ctx.EventManager().Events(),
 		// FeeAmount: fee,
 		// FeeDenom:  denom,
 	}
@@ -77,10 +81,14 @@ func handleComplete(ctx sdk.Context, k Keeper, msg messages.MsgComplete) sdk.Res
 	}
 
 	// fee, denom := utils.GetMsgFee(msg)
-
+	event := sdk.NewEvent(
+		EventTypeBookingComplete,
+		sdk.NewAttribute(AttributeBookingID, string(msg.BookingID)),
+	)
+	ctx.EventManager().EmitEvent(event)
 	return sdk.Result{
-		Log:       booking.String(),
-		Tags:      msg.Tags(),
+		Log:    booking.String(),
+		Events: ctx.EventManager().Events(),
 		// FeeAmount: fee,
 		// FeeDenom:  denom,
 	}

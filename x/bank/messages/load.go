@@ -6,7 +6,6 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/sharering/shareledger/constants"
 	"github.com/sharering/shareledger/types"
-	tags "github.com/sharering/shareledger/x/bank/tags"
 )
 
 //----------------------------------------------------------------
@@ -18,7 +17,7 @@ var _ sdk.Msg = MsgLoad{}
 // Load coins to an account
 type MsgLoad struct {
 	Account sdk.AccAddress `json:"address"`
-	Amount  types.Coin  `json:"amount"`
+	Amount  types.Coin     `json:"amount"`
 }
 
 // NewMsgLoad
@@ -54,11 +53,4 @@ func (msg MsgLoad) GetSignBytes() []byte {
 func (msg MsgLoad) GetSigners() []sdk.AccAddress {
 	return []sdk.AccAddress{}
 	//return []sdk.AccAddress{msg.Account}
-}
-
-func (msg MsgLoad) Tags() sdk.Tags {
-	return sdk.NewTags(tags.AccountAddress, msg.Account.String()).
-		AppendTag(tags.Amount, msg.Amount.String()).
-		AppendTag(tags.Event, tags.Credit)
-
 }

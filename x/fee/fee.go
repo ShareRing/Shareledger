@@ -24,12 +24,19 @@ func NewFeeHandler(am auth.AccountMapper, exchangeKey *sdk.KVStoreKey) FeeHandle
 		result sdkTypes.Result,
 	) (_ sdk.Result, abort bool) {
 		// Several tx don't return fee
-
+		ctx.WithEventManager(sdk.NewEventManager())
 		if result.FeeDenom == "" && result.FeeAmount == 0 {
 			// if everything succeed, original result
-			result.Tags = result.Tags.
-				AppendTag(FeeDenom, constants.FEE_DENOM).
-				AppendTag(FeeAmount, strconv.FormatInt(int64(constants.NONE), 10))
+			event := sdk.NewEvent(
+				EventTypeCollectFee,
+				sdk.NewAttribute(AttributeFeeDenom, constants.FEE_DENOM),
+				sdk.NewAttribute(AttributeFeeAmount, strconv.FormatInt(int64(constants.NONE), 10)),
+			)
+			ctx.EventManager().EmitEvent(event)
+
+			result.Events = ctx.EventManager().Events()
+			// 	AppendTag(FeeDenom, constants.FEE_DENOM).
+			// 	AppendTag(FeeAmount, strconv.FormatInt(int64(constants.NONE), 10))
 			return result.CosmosResult(), false
 		}
 
@@ -88,9 +95,14 @@ func NewFeeHandler(am auth.AccountMapper, exchangeKey *sdk.KVStoreKey) FeeHandle
 		}
 
 		// if everything succeed, original result
-		result.Tags = result.Tags.
-			AppendTag(FeeDenom, result.FeeDenom).
-			AppendTag(FeeAmount, strconv.FormatInt(result.FeeAmount, 10))
+		event := sdk.NewEvent(
+			EventTypeCollectFee,
+			sdk.NewAttribute(AttributeFeeDenom, constants.FEE_DENOM),
+			sdk.NewAttribute(AttributeFeeAmount, strconv.FormatInt(int64(constants.NONE), 10)),
+		)
+		ctx.EventManager().EmitEvent(event)
+
+		result.Events = ctx.EventManager().Events()
 
 		return result.CosmosResult(), false
 	}

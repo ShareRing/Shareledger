@@ -6,7 +6,6 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/sharering/shareledger/constants"
-	tags "github.com/sharering/shareledger/x/booking/tags"
 )
 
 type MsgBook struct {
@@ -57,9 +56,4 @@ func (msg MsgBook) String() string {
 func (msg MsgBook) GetSigners() []sdk.AccAddress {
 	//return []sdk.AccAddress{msg.Renter}
 	return []sdk.AccAddress{}
-}
-
-func (msg MsgBook) Tags() sdk.Tags {
-	return sdk.NewTags(tags.Event, tags.BookingStarted).
-		AppendTag(tags.UUID, string(msg.UUID))
 }

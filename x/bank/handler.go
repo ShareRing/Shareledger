@@ -15,6 +15,7 @@ import (
 
 func NewHandler(am auth.AccountMapper) sdkTypes.Handler {
 	return func(ctx sdk.Context, msg sdk.Msg) sdkTypes.Result {
+		ctx.WithEventManager(sdk.NewEventManager())
 		constants.LOGGER.Info(
 			"Msg for Bank Module",
 			"type", reflect.TypeOf(msg),

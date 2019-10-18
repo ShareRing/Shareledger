@@ -64,13 +64,6 @@ func (msg MsgIDCreate) GetSigners() []sdk.AccAddress {
 	return []sdk.AccAddress{}
 }
 
-// Tags ....
-func (msg MsgIDCreate) Tags() sdk.Tags {
-	return sdk.NewTags(Address, msg.Address.String()).
-		AppendTag(Hash, msg.Hash).
-		AppendTag(Event, CreatedEvent)
-}
-
 //------- UPDATE -----
 
 type MsgIDUpdate struct {
@@ -127,13 +120,6 @@ func (msg MsgIDUpdate) GetSigners() []sdk.AccAddress {
 	return []sdk.AccAddress{}
 }
 
-// Tags ....
-func (msg MsgIDUpdate) Tags() sdk.Tags {
-	return sdk.NewTags(Address, msg.Address.String()).
-		AppendTag(Hash, msg.Hash).
-		AppendTag(Event, UpdatedEvent)
-}
-
 //-------- DELETED -----
 
 type MsgIDDelete struct {
@@ -186,10 +172,4 @@ func (msg MsgIDDelete) String() string {
 // GetSigners ...
 func (msg MsgIDDelete) GetSigners() []sdk.AccAddress {
 	return []sdk.AccAddress{}
-}
-
-// Tags ....
-func (msg MsgIDDelete) Tags() sdk.Tags {
-	return sdk.NewTags(Address, msg.Address.String()).
-		AppendTag(Event, DeletedEvent)
 }

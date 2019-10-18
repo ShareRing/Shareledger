@@ -9,7 +9,6 @@ import (
 	types "github.com/sharering/shareledger/types"
 	"github.com/sharering/shareledger/x/pos/keeper"
 	"github.com/sharering/shareledger/x/pos/message"
-	"github.com/sharering/shareledger/x/pos/tags"
 	posTypes "github.com/sharering/shareledger/x/pos/type"
 )
 
@@ -19,6 +18,7 @@ var (
 
 func NewHandler(k keeper.Keeper) sdk.Handler {
 	return func(ctx sdk.Context, msg sdk.Msg) sdk.Result {
+		ctx.WithEventManager(sdk.NewEventManager())
 		// NOTE msg already has validate basic run
 		switch msg := msg.(type) {
 		case message.MsgCreateValidator:
@@ -97,15 +97,17 @@ func handleMsgCreateValidator(ctx sdk.Context, msg message.MsgCreateValidator, k
 	// This variable is reset at the beginning of a block
 	ValidatorChanged = true
 
-	tags := sdk.NewTags(
-		tags.Event, tags.ValidatorCreated,
-		tags.Validator, msg.ValidatorAddr.String(),
-		tags.Moniker, msg.Description.Moniker,
-		tags.Identity, msg.Description.Identity,
+	event := sdk.NewEvent(
+		EventTypeValidatorCreated,
+		sdk.NewAttribute(AttributeValidator, msg.ValidatorAddr.String()),
+		sdk.NewAttribute(AttributeMoniker, msg.Description.Moniker),
+		sdk.NewAttribute(AttributeIdentity, msg.Description.Identity),
 	)
 
+	ctx.EventManager().EmitEvent(event)
+
 	return sdk.Result{
-		Tags: tags,
+		Events: ctx.EventManager().Events(),
 	}
 }
 
@@ -130,15 +132,15 @@ func handleMsgDelegate(ctx sdk.Context, msg message.MsgDelegate, k keeper.Keeper
 
 	// call the hook if present
 	//k.OnDelegationCreated(ctx, msg.DelegatorAddr, validator.OperatorAddr)
-
-	tags := sdk.NewTags(
-		tags.Event, tags.Delegated,
-		tags.Delegator, msg.DelegatorAddr.String(),
-		tags.Validator, msg.ValidatorAddr.String(),
+	event := sdk.NewEvent(
+		EventTypeDelegated,
+		sdk.NewAttribute(AttributeDelegator, msg.DelegatorAddr.String()),
+		sdk.NewAttribute(AttributeValidator, msg.ValidatorAddr.String()),
 	)
+	ctx.EventManager().EmitEvent(event)
 
 	return sdk.Result{
-		Tags: tags,
+		Events: ctx.EventManager().Events(),
 	}
 }
 
@@ -147,15 +149,17 @@ func handleMsgBeginUnbonding(ctx sdk.Context, msg message.MsgBeginUnbonding, k k
 	if err != nil {
 		return err.Result()
 	}
-
-	tags := sdk.NewTags(
-		tags.Event, tags.BeginUnbonding,
-		tags.Delegator, msg.DelegatorAddr.String(),
-		tags.Validator, msg.ValidatorAddr.String(),
+	event := sdk.NewEvent(
+		EventTypeBeginUnbonding,
+		sdk.NewAttribute(AttributeDelegator, msg.DelegatorAddr.String()),
+		sdk.NewAttribute(AttributeValidator, msg.ValidatorAddr.String()),
 	)
-	return sdk.Result{Tags: tags}
-}
+	ctx.EventManager().EmitEvent(event)
 
+	return sdk.Result{
+		Events: ctx.EventManager().Events(),
+	}
+}
 func handleMsgCompleteUnbonding(ctx sdk.Context, msg message.MsgCompleteUnbonding, k keeper.Keeper) sdk.Result {
 
 	err := k.CompleteUnbonding(ctx, msg.DelegatorAddr, msg.ValidatorAddr)
@@ -163,13 +167,16 @@ func handleMsgCompleteUnbonding(ctx sdk.Context, msg message.MsgCompleteUnbondin
 		return err.Result()
 	}
 
-	tags := sdk.NewTags(
-		tags.Event, tags.CompleteUnbonding,
-		tags.Delegator, msg.DelegatorAddr.String(),
-		tags.Validator, msg.ValidatorAddr.String(),
+	event := sdk.NewEvent(
+		EventTypeCompleteUnbonding,
+		sdk.NewAttribute(AttributeDelegator, msg.DelegatorAddr.String()),
+		sdk.NewAttribute(AttributeValidator, msg.ValidatorAddr.String()),
 	)
+	ctx.EventManager().EmitEvent(event)
 
-	return sdk.Result{Tags: tags}
+	return sdk.Result{
+		Events: ctx.EventManager().Events(),
+	}
 }
 
 func handleMsgBeginRedelegate(ctx sdk.Context, msg message.MsgBeginRedelegate, k keeper.Keeper) sdk.Result {
@@ -179,13 +186,18 @@ func handleMsgBeginRedelegate(ctx sdk.Context, msg message.MsgBeginRedelegate, k
 		return err.Result()
 	}
 
-	tags := sdk.NewTags(
-		tags.Event, tags.BeginRedelegation,
-		tags.Delegator, msg.DelegatorAddr.String(),
-		tags.SrcValidator, msg.ValidatorSrcAddr.String(),
-		tags.DstValidator, msg.ValidatorDstAddr.String(),
+	event := sdk.NewEvent(
+		EventTypeBeginRedelegation,
+		sdk.NewAttribute(AttributeDelegator, msg.DelegatorAddr.String()),
+		sdk.NewAttribute(AttributeSrcValidator, msg.ValidatorSrcAddr.String()),
+		sdk.NewAttribute(AttributeDstValidator, msg.ValidatorDstAddr.String()),
 	)
-	return sdk.Result{Tags: tags}
+	ctx.EventManager().EmitEvent(event)
+
+	return sdk.Result{
+		Events: ctx.EventManager().Events(),
+	}
+
 }
 
 func handleMsgCompleteRedelegate(ctx sdk.Context, msg message.MsgCompleteRedelegate, k keeper.Keeper) sdk.Result {
@@ -194,13 +206,18 @@ func handleMsgCompleteRedelegate(ctx sdk.Context, msg message.MsgCompleteRedeleg
 		return err.Result()
 	}
 
-	tags := sdk.NewTags(
-		tags.Event, tags.CompleteRedelegation,
-		tags.Delegator, msg.DelegatorAddr.String(),
-		tags.SrcValidator, msg.ValidatorSrcAddr.String(),
-		tags.DstValidator, msg.ValidatorDstAddr.String(),
+	event := sdk.NewEvent(
+		EventTypeCompleteRedelegation,
+		sdk.NewAttribute(AttributeDelegator, msg.DelegatorAddr.String()),
+		sdk.NewAttribute(AttributeSrcValidator, msg.ValidatorSrcAddr.String()),
+		sdk.NewAttribute(AttributeDstValidator, msg.ValidatorDstAddr.String()),
 	)
-	return sdk.Result{Tags: tags}
+	ctx.EventManager().EmitEvent(event)
+
+	return sdk.Result{
+		Events: ctx.EventManager().Events(),
+	}
+
 }
 
 func handleMsgWithdraw(
@@ -217,15 +234,16 @@ func handleMsgWithdraw(
 		return err.Result()
 	}
 
-	tags := sdk.NewTags(
-		tags.Event, tags.CompleteUnbonding,
-		tags.Delegator, msg.DelegatorAddr.String(),
-		tags.Validator, msg.ValidatorAddr.String(),
+	event := sdk.NewEvent(
+		EventTypeWithdraw,
+		sdk.NewAttribute(AttributeDelegator, msg.DelegatorAddr.String()),
+		sdk.NewAttribute(AttributeValidator, msg.ValidatorAddr.String()),
 	)
+	ctx.EventManager().EmitEvent(event)
 
 	return sdk.Result{
-		Tags: tags,
-		Log:  fmt.Sprintf("%s", amount),
+		Log:    fmt.Sprintf("%s", amount),
+		Events: ctx.EventManager().Events(),
 	}
 }
 
@@ -255,14 +273,16 @@ func handleMsgEditValidator(ctx sdk.Context, msg message.MsgEditValidator, k kee
 
 	k.SetValidator(ctx, validator)
 
-	tags := sdk.NewTags(
-		tags.Event, tags.EditValidator,
-		tags.DstValidator, msg.ValidatorAddr.String(),
-		tags.Moniker, description.Moniker,
-		tags.Identity, description.Identity,
+	event := sdk.NewEvent(
+		EventTypeEditValidator,
+		sdk.NewAttribute(AttributeDstValidator, msg.ValidatorAddr.String()),
+		sdk.NewAttribute(AttributeMoniker, description.Moniker),
+		sdk.NewAttribute(AttributeIdentity, description.Identity),
 	)
 
+	ctx.EventManager().EmitEvent(event)
+
 	return sdk.Result{
-		Tags: tags,
+		Events: ctx.EventManager().Events(),
 	}
 }

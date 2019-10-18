@@ -1,8 +1,9 @@
 package auth
 
 import (
-	sdk "github.com/cosmos/cosmos-sdk/types"
 	"fmt"
+
+	sdk "github.com/cosmos/cosmos-sdk/types"
 
 	"github.com/sharering/shareledger/constants"
 )
@@ -12,7 +13,6 @@ var _ sdk.Msg = MsgNonce{}
 type MsgNonce struct {
 	Address sdk.AccAddress `json:"address"`
 }
-
 
 func NewMsgNonce(account sdk.AccAddress) MsgNonce {
 	return MsgNonce{account}
@@ -43,8 +43,4 @@ func (msg MsgNonce) String() string {
 
 func (msg MsgNonce) GetSigners() []sdk.AccAddress {
 	return []sdk.AccAddress{}
-}
-
-func (msg MsgNonce) Tags() sdk.Tags {
-	return sdk.NewTags("checkNonce", msg.Address.String())
 }

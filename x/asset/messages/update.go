@@ -3,7 +3,6 @@ package messages
 import (
 	"encoding/json"
 	"fmt"
-	"strconv"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/sharering/shareledger/constants"
@@ -11,10 +10,10 @@ import (
 
 type MsgUpdate struct {
 	Creator sdk.AccAddress `json:"creator"`
-	Hash    []byte      `json:"hash"`
-	UUID    string      `json:"uuid"`
-	Status  bool        `json:"status"`
-	Fee     int64       `json:"fee"`
+	Hash    []byte         `json:"hash"`
+	UUID    string         `json:"uuid"`
+	Status  bool           `json:"status"`
+	Fee     int64          `json:"fee"`
 }
 
 // enforce the msg type at compile time
@@ -65,14 +64,4 @@ func (msg MsgUpdate) String() string {
 
 func (msg MsgUpdate) GetSigners() []sdk.AccAddress {
 	return []sdk.AccAddress{msg.Creator}
-}
-
-func (msg MsgUpdate) Tags() sdk.Tags {
-	return sdk.NewTags("msg.module", "asset").
-		AppendTag("msg.action", "update").
-		AppendTag("asset.creator", msg.Creator.String()).
-		AppendTag("asset.UUID", msg.UUID).
-		AppendTag("asset.Hash", fmt.Sprintf("%X", msg.Hash)).
-		AppendTag("asset.Status", strconv.FormatBool(msg.Status)).
-		AppendTag("asset.Fee", strconv.Itoa(int(msg.Fee)))
 }

@@ -13,6 +13,7 @@ import (
 
 func NewHandler(am AccountMapper) sdkTypes.Handler {
 	return func(ctx sdk.Context, msg sdk.Msg) sdkTypes.Result {
+		ctx.WithEventManager(sdk.NewEventManager())
 		constants.LOGGER.Info(
 			"Msg for Auth Module",
 			"type", reflect.TypeOf(msg),
@@ -39,8 +40,13 @@ func handleNonceQuery(ctx sdk.Context, am AccountMapper, msg MsgNonce) sdk.Resul
 	if err != nil {
 		return err.Result()
 	}
+	event := sdk.NewEvent(
+		EventTypeCheckNonce,
+		sdk.NewAttribute(AttributeAccountAddress, msg.Address.String()),
+	)
+	ctx.EventManager().EmitEvent(event)
 	return sdk.Result{
-		Log:  strconv.FormatInt(nonce, 10), // use FormatInt so as to accept int64 type
-		Tags: msg.Tags(),
+		Log:    strconv.FormatInt(nonce, 10), // use FormatInt so as to accept int64 type
+		Events: ctx.EventManager().Events(),
 	}
 }

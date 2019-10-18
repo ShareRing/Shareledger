@@ -65,8 +65,8 @@ func (msg MsgRetrieve) GetSigners() []sdk.AccAddress {
 	return []sdk.AccAddress{}
 }
 
-func (msg MsgRetrieve) Tags() sdk.Tags {
-	return sdk.NewTags("msg.module", "exchangerate").
-		AppendTag("fromDenom", msg.FromDenom).
-		AppendTag("toDenom", msg.ToDenom)
-}
+// func (msg MsgRetrieve) Tags() sdk.Tags {
+// 	return sdk.NewTags("msg.module", "exchangerate").
+// 		AppendTag("fromDenom", msg.FromDenom).
+// 		AppendTag("toDenom", msg.ToDenom)
+// }

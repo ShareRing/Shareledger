@@ -44,11 +44,18 @@ func HandleMsgBurn(am auth.AccountMapper) sdkTypes.Handler {
 			return sdkTypes.NewResult(resT)
 		}
 
+		event := sdk.NewEvent(
+			EventTypeBurn,
+			sdk.NewAttribute(AttributeAccountAddress, burnMsg.Account.String()),
+			sdk.NewAttribute(AttributeAmount, burnMsg.Amount.String()),
+			sdk.NewAttribute(AttributeEvent, ValueCredit),
+		)
+		ctx.EventManager().EmitEvent(event)
 		return sdkTypes.Result{
 			Result: sdk.Result{
-				Log:  resT.Log,
-				Data: resT.Data,
-				Tags: burnMsg.Tags(),
+				Log:    resT.Log,
+				Data:   resT.Data,
+				Events: ctx.EventManager().Events(),
 			},
 		}
 	}

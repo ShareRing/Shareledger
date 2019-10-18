@@ -40,12 +40,18 @@ func HandleMsgLoad(am auth.AccountMapper) sdkTypes.Handler {
 		if resT = handleTo(ctx, am, loadMsg.Account, loadMsg.Amount); !resT.IsOK() {
 			return sdkTypes.NewResult(resT)
 		}
+
+		event := sdk.NewEvent(
+			EventTypeLoad,
+			sdk.NewAttribute(AttributeAccountAddress, loadMsg.Account.String()),
+			sdk.NewAttribute(AttributeAmount, loadMsg.Amount.String()),
+		)
+		ctx.EventManager().EmitEvent(event)
 		return sdkTypes.Result{
 			Result: sdk.Result{
-				Log:  resT.Log,
-				Data: resT.Data,
-				Tags: loadMsg.Tags(),
-
+				Log:    resT.Log,
+				Data:   resT.Data,
+				Events: ctx.EventManager().Events(),
 			},
 		}
 	}

@@ -50,8 +50,3 @@ func (msg MsgCheck) GetSignBytes() []byte {
 func (msg MsgCheck) GetSigners() []sdk.AccAddress {
 	return []sdk.AccAddress{msg.Account}
 }
-
-// Returns the sdk.Tags for the message
-func (msg MsgCheck) Tags() sdk.Tags {
-	return sdk.NewTags("check", msg.Account.String())
-}

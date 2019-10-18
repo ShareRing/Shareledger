@@ -6,7 +6,6 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/sharering/shareledger/constants"
-	tags "github.com/sharering/shareledger/x/booking/tags"
 )
 
 type MsgComplete struct {
@@ -55,9 +54,4 @@ func (msg MsgComplete) String() string {
 func (msg MsgComplete) GetSigners() []sdk.AccAddress {
 	//return []sdk.AccAddress{msg.Renter}
 	return []sdk.AccAddress{}
-}
-
-func (msg MsgComplete) Tags() sdk.Tags {
-	return sdk.NewTags(tags.Event, tags.BookingCompleted).
-		AppendTag(tags.BookingId, msg.BookingID)
 }
