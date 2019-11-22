@@ -4,7 +4,7 @@ import (
 	"encoding/hex"
 	"fmt"
 
-	sdk "bitbucket.org/shareringvn/cosmos-sdk/types"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/spf13/cobra"
 
 	"github.com/sharering/shareledger/client"
@@ -55,7 +55,7 @@ func sendCoin(cmd *cobra.Command, args []string) error {
 		return err
 	}
 
-	addr := sdk.Address(addressBytes)
+	addr := sdk.AccAddress(addressBytes)
 
 	dec, err := types.NewDecFromStr(coinAmount)
 	fmt.Printf("coin:%s dec:%v\n", coinAmount, dec)

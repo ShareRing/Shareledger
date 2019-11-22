@@ -158,7 +158,7 @@ func (c CoreContext) RegisterValidator(
 	return err
 }
 
-func (c CoreContext) LoadBalance(to sdk.Address, amount types.Coin) (res Response, err error) {
+func (c CoreContext) LoadBalance(to sdk.AccAddress, amount types.Coin) (res Response, err error) {
 
 	msgLoad := bmsg.NewMsgLoad(to, amount)
 
@@ -172,14 +172,12 @@ func (c CoreContext) LoadBalance(to sdk.Address, amount types.Coin) (res Respons
 		return res, err
 	}
 
-	r, err := c.Client.BroadcastTxCommit(tdmTx)
+	tdmres, err := c.Client.BroadcastTxSync(tdmTx)
 	if err != nil {
 		return res, err
 	}
 
-	err, _ = processTDMResponse(r)
-
-	return err
+	return convertBroadcastResult(tdmres), nil
 
 }
 
@@ -208,7 +206,7 @@ func (c CoreContext) CheckBalance() error {
 	return nil
 }
 
-func (c CoreContext) SendCoins(to sdk.Address, amt types.Coin) (res Response, err error) {
+func (c CoreContext) SendCoins(to sdk.AccAddress, amt types.Coin) (res Response, err error) {
 
 	msgSend := bmsg.NewMsgSend(to, amt)
 
@@ -222,7 +220,7 @@ func (c CoreContext) SendCoins(to sdk.Address, amt types.Coin) (res Response, er
 		return res, err
 	}
 
-	tdmres, err := c.Client.BroadcastTxCommit(tdmTx)
+	tdmres, err := c.Client.BroadcastTxSync(tdmTx)
 	if err != nil {
 		return res, err
 	}
@@ -267,20 +265,19 @@ func (c CoreContext) WithdrawBlockReward() error {
 	msgWithdraw := pmsg.NewMsgWithdraw(address, address)
 
 	authTx, err := c.ConstructTransaction(msgWithdraw)
-
 	if err != nil {
-		return res, err
+		return err
 	}
 
 	tdmTx, err := c.ConstructTendermintTransaction(authTx)
 	if err != nil {
-		return res, err
+		return err
 	}
 
 	r, err := c.Client.BroadcastTxCommit(tdmTx)
 
 	if err != nil {
-		return res, err
+		return err
 	}
 
 	err, _ = processTDMResponse(r)
