@@ -116,6 +116,7 @@ func (c CoreContext) GetNonce() (int64, error) {
 	}
 	return nonce, nil
 }
+
 func (c CoreContext) RegisterValidator(
 	amount int64, // Amount of tokens to be staked
 	moniker string, // name
@@ -158,26 +159,27 @@ func (c CoreContext) RegisterValidator(
 	return err
 }
 
-func (c CoreContext) LoadBalance(to sdk.AccAddress, amount types.Coin) (res Response, err error) {
+func (c CoreContext) LoadBalance(to sdk.AccAddress, amount types.Coin) (err error) {
 
 	msgLoad := bmsg.NewMsgLoad(to, amount)
 
 	authTx, err := c.ConstructTransaction(msgLoad)
 	if err != nil {
-		return res, err
+		return err
 	}
 
 	tdmTx, err := c.ConstructTendermintTransaction(authTx)
 	if err != nil {
-		return res, err
+		return err
 	}
 
-	tdmres, err := c.Client.BroadcastTxSync(tdmTx)
+	r, err := c.Client.BroadcastTxCommit(tdmTx)
 	if err != nil {
-		return res, err
+		return err
 	}
+	err, _ = processTDMResponse(r)
 
-	return convertBroadcastResult(tdmres), nil
+	return err
 
 }
 
@@ -206,26 +208,27 @@ func (c CoreContext) CheckBalance() error {
 	return nil
 }
 
-func (c CoreContext) SendCoins(to sdk.AccAddress, amt types.Coin) (res Response, err error) {
+func (c CoreContext) SendCoins(to sdk.AccAddress, amt types.Coin) (err error) {
 
 	msgSend := bmsg.NewMsgSend(to, amt)
 
 	authTx, err := c.ConstructTransaction(msgSend)
 	if err != nil {
-		return res, err
+		return err
 	}
 
 	tdmTx, err := c.ConstructTendermintTransaction(authTx)
 	if err != nil {
-		return res, err
+		return err
 	}
 
-	tdmres, err := c.Client.BroadcastTxSync(tdmTx)
+	r, err := c.Client.BroadcastTxCommit(tdmTx)
 	if err != nil {
-		return res, err
+		return err
 	}
+	err, _ = processTDMResponse(r)
 
-	return convertBroadcastResult(tdmres), nil
+	return err
 
 }
 

@@ -16,12 +16,12 @@ func LoadBalanceAPI(
 	toAddress string, // receiving address
 	amount string, // amount, decimal is possible
 	denom string, // SHR or SHRP
-) (res Response, err error) {
+) (err error) {
 
 	// convert string to sdk.AccAddress
 	addressBytes, err := hex.DecodeString(toAddress)
 	if err != nil {
-		return res, err
+		return err
 	}
 
 	addr := sdk.AccAddress(addressBytes)
@@ -29,7 +29,7 @@ func LoadBalanceAPI(
 	dec, err := types.NewDecFromStr(amount)
 
 	if err != nil {
-		return res, err
+		return err
 	}
 
 	coin := types.NewCoinFromDec(denom, dec)
@@ -45,12 +45,12 @@ func SendCoinAPI(
 	toAddress string, // *address* of the receiver
 	amount string, // amount, decimal is possible Ex: 1.23
 	denom string,
-) (res Response, err error) {
+) (err error) {
 
 	// convert string to sdk.AccAddress
 	addressBytes, err := hex.DecodeString(toAddress)
 	if err != nil {
-		return res, err
+		return err
 	}
 
 	addr := sdk.AccAddress(addressBytes)
@@ -58,7 +58,7 @@ func SendCoinAPI(
 	dec, err := types.NewDecFromStr(amount)
 
 	if err != nil {
-		return res, err
+		return err
 	}
 
 	coin := types.NewCoinFromDec(denom, dec)

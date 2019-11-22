@@ -64,12 +64,10 @@ func loadCoin(cmd *cobra.Command, args []string) error {
 
 	fmt.Printf("Address=%X Amount=%s\n", addr, dec)
 
-	res, err := context.LoadBalance(addr, amount)
+	err = context.LoadBalance(addr, amount)
 	if err != nil {
 		return err
 	}
-
-	fmt.Printf("%v\n", res)
 
 	return nil
 }

@@ -68,12 +68,10 @@ func sendCoin(cmd *cobra.Command, args []string) error {
 
 	fmt.Printf("Address=%X Amount=%s\n", addr, dec)
 
-	res, err := context.SendCoins(addr, amount)
+	err = context.SendCoins(addr, amount)
 	if err != nil {
 		return err
 	}
-
-	fmt.Printf("%v\n", res)
 
 	return nil
 }
