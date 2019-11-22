@@ -2,6 +2,7 @@ package client
 
 import (
 	// "encoding/json"
+
 	"fmt"
 	"strconv"
 	"strings"
@@ -37,6 +38,14 @@ type SHRAccount1 struct {
 	Coins   types.Coins    `json:"coins"`
 	PubKey  []byte         `json:"pub_key"`
 	Nonce   int64          `json:"nonce"`
+}
+
+func NewCoreContextWithClient(privKey string, client string) CoreContext {
+	return CoreContext{
+		Client:  rpcclient.NewHTTP(client, "/websocket"),
+		PrivKey: types.ConvertToPrivKey(types.GetCryptoPrivKey(privKey)), // convert to crypto.PrivKeySecp256k1 then Shareledger.PrivKeySecp256k1
+		Codec:   getCodec(),
+	}
 }
 
 func NewCoreContextFromConfig(config *cfg.Config) CoreContext {
@@ -107,7 +116,6 @@ func (c CoreContext) GetNonce() (int64, error) {
 	}
 	return nonce, nil
 }
-
 func (c CoreContext) RegisterValidator(
 	amount int64, // Amount of tokens to be staked
 	moniker string, // name
@@ -150,22 +158,23 @@ func (c CoreContext) RegisterValidator(
 	return err
 }
 
-func (c CoreContext) LoadBalance(amount int64, denom string) error {
-	msgLoad := bmsg.NewMsgLoad(c.PrivKey.PubKey().Address(), types.NewCoin(denom, amount))
+func (c CoreContext) LoadBalance(to sdk.Address, amount types.Coin) (res Response, err error) {
+
+	msgLoad := bmsg.NewMsgLoad(to, amount)
 
 	authTx, err := c.ConstructTransaction(msgLoad)
 	if err != nil {
-		return err
+		return res, err
 	}
 
 	tdmTx, err := c.ConstructTendermintTransaction(authTx)
 	if err != nil {
-		return err
+		return res, err
 	}
 
 	r, err := c.Client.BroadcastTxCommit(tdmTx)
 	if err != nil {
-		return err
+		return res, err
 	}
 
 	err, _ = processTDMResponse(r)
@@ -197,6 +206,29 @@ func (c CoreContext) CheckBalance() error {
 	}
 
 	return nil
+}
+
+func (c CoreContext) SendCoins(to sdk.Address, amt types.Coin) (res Response, err error) {
+
+	msgSend := bmsg.NewMsgSend(to, amt)
+
+	authTx, err := c.ConstructTransaction(msgSend)
+	if err != nil {
+		return res, err
+	}
+
+	tdmTx, err := c.ConstructTendermintTransaction(authTx)
+	if err != nil {
+		return res, err
+	}
+
+	tdmres, err := c.Client.BroadcastTxCommit(tdmTx)
+	if err != nil {
+		return res, err
+	}
+
+	return convertBroadcastResult(tdmres), nil
+
 }
 
 func (c CoreContext) CheckValidatorDistInfo() error {
@@ -235,19 +267,20 @@ func (c CoreContext) WithdrawBlockReward() error {
 	msgWithdraw := pmsg.NewMsgWithdraw(address, address)
 
 	authTx, err := c.ConstructTransaction(msgWithdraw)
+
 	if err != nil {
-		return err
+		return res, err
 	}
 
 	tdmTx, err := c.ConstructTendermintTransaction(authTx)
 	if err != nil {
-		return err
+		return res, err
 	}
 
 	r, err := c.Client.BroadcastTxCommit(tdmTx)
 
 	if err != nil {
-		return err
+		return res, err
 	}
 
 	err, _ = processTDMResponse(r)
