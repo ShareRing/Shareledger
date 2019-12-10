@@ -1,10 +1,11 @@
 package handlers
 
 const (
-	EventTypeLoad  = "load"
-	EventTypeSend  = "send"
-	EventTypeCheck = "check"
-	EventTypeBurn  = "burn"
+	EventTypeLoad        = "load"
+	EventTypeSend        = "send"
+	EventTypeTransferShr = "transferShr"
+	EventTypeCheck       = "check"
+	EventTypeBurn        = "burn"
 
 	AttributeFromAddress = "FromAddress"
 	AttributeToAddress   = "ToAddress"
