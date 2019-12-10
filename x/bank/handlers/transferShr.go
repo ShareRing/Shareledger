@@ -47,6 +47,8 @@ func HandleMsgTransferShr(am auth.AccountMapper) sdkTypes.Handler {
 			return sdkTypes.NewResult(resT)
 		}
 
+		// TODO: Collect Fee in reserve account
+		//**************************************************************
 		res := fmt.Sprintf("{\"from\":%v, \"to\":%v}", resF.Log, resT.Log)
 		// Return a success (Code 0).
 		// Add list of key-value pair descriptors ("tags").
@@ -84,14 +86,13 @@ func handleFromTransferShr(ctx sdk.Context, am auth.AccountMapper, from sdk.AccA
 
 	// Deduct msg amount from sender account.
 	senderCoins := acc.GetCoins()
-
+	feeCoin := getTransferShrFee()
 	senderCoinsAfter := senderCoins.Minus(amt)
-
+	senderCoinsAfter = senderCoins.Minus(feeCoin)
 	// If any coin has negative amount, return insufficient coins error.
 	if !senderCoinsAfter.IsNotNegative() {
 		return sdk.ErrInsufficientCoins("Insufficient coins in account").Result()
 	}
-
 	// Set acc coins to new amount.
 	acc.SetCoins(senderCoinsAfter)
 
@@ -128,5 +129,5 @@ func handleToTransferShr(ctx sdk.Context, am auth.AccountMapper, to sdk.AccAddre
 }
 
 func getTransferShrFee() types.Coin {
-
+	return types.NewCoin("SHR", 4)
 }
