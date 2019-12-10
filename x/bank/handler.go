@@ -29,6 +29,8 @@ func NewHandler(am auth.AccountMapper) sdkTypes.Handler {
 			return handlers.HandleMsgLoad(am)(ctx, msg)
 		case messages.MsgSend:
 			return handlers.HandleMsgSend(am)(ctx, msg)
+		case messages.MsgTransferShr:
+			return handlers.HandleMsgTransferShr(am)(ctx, msg)
 		case messages.MsgBurn:
 			return handlers.HandleMsgBurn(am)(ctx, msg)
 		default:
