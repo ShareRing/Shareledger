@@ -45,6 +45,9 @@ var RESERVE_ACCOUNTS = []string{
 	"B87D5A84F7DCE488BA2FCBDD2057023561BC05A4",
 }
 
+// Account to collect fee
+var FEE_COLLECTOR = "2EE80FE1CE663E711C35601DD206BC3AACEAF7E9"
+
 //bench32 prefix
 // Bech32PrefixAccAddr defines the Bech32 prefix of an account's address
 const (
