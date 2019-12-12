@@ -11,16 +11,16 @@ const (
 )
 
 var LEVELS = map[string]FeeLevel{
-	"MsgSend":        LOW,
-	"MsgTransferShr": LOW,
-	"MsgCreate":      HIGH,
-	"MsgUpdate":      MED,
-	"MsgDelete":      LOW,
-	"MsgBook":        HIGH,
-	"MsgComplete":    MED,
-	"MsgIDCreate":    HIGH,
-	"MsgIDUpdate":    HIGH,
-	"MsgIDDelete":    HIGH,
+	"MsgSend":         LOW,
+	"MsgTransferCoin": LOW,
+	"MsgCreate":       HIGH,
+	"MsgUpdate":       MED,
+	"MsgDelete":       LOW,
+	"MsgBook":         HIGH,
+	"MsgComplete":     MED,
+	"MsgIDCreate":     HIGH,
+	"MsgIDUpdate":     HIGH,
+	"MsgIDDelete":     HIGH,
 }
 
 var FEE_LEVELS = map[FeeLevel]int{
