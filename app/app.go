@@ -2,12 +2,13 @@ package app
 
 import (
 	"os"
+	"path/filepath"
 
 	amino "github.com/tendermint/go-amino"
 	abci "github.com/tendermint/tendermint/abci/types"
 	cmn "github.com/tendermint/tendermint/libs/common"
-	dbm "github.com/tendermint/tm-db"
 	"github.com/tendermint/tendermint/libs/log"
+	dbm "github.com/tendermint/tm-db"
 
 	// bapp "github.com/cosmos/cosmos-sdk/baseapp"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -27,6 +28,8 @@ import (
 	"github.com/sharering/shareledger/x/identity"
 	"github.com/sharering/shareledger/x/pos"
 	pKeeper "github.com/sharering/shareledger/x/pos/keeper"
+	"github.com/sharering/shareledger/x/slashing"
+	"github.com/spf13/viper"
 )
 
 var (
@@ -39,8 +42,9 @@ var (
 
 type ShareLedgerApp struct {
 	*bapp.BaseApp
-	cdc *amino.Codec
-
+	cdc          *amino.Codec
+	database     dbm.DB
+	currentBatch dbm.Batch
 	// keys to access the substores
 	assetKey   *sdk.KVStoreKey
 	bookingKey *sdk.KVStoreKey
@@ -51,6 +55,7 @@ type ShareLedgerApp struct {
 	//keepers
 	bankKeeper     bank.Keeper
 	posKeeper      pKeeper.Keeper
+	slashingKeeper slashing.Keeper
 	bookingKeeper  booking.Keeper
 	assetKeeper    asset.Keeper
 	exchangeKeeper exchange.Keeper
@@ -71,6 +76,7 @@ func NewShareLedgerApp(logger log.Logger, db dbm.DB) *ShareLedgerApp {
 	//accountKey := sdk.NewKVStoreKey(constants.STORE_BANK)
 	authKey := sdk.NewKVStoreKey(constants.STORE_AUTH)
 	posKey := sdk.NewKVStoreKey(constants.STORE_POS)
+	slashKey := sdk.NewKVStoreKey(constants.STORE_SLASH)
 	exchangeKey := sdk.NewKVStoreKey(constants.STORE_EXCHANGE)
 	//bankKey := sdk.NewKVStoreKey(constants.STORE_BANK)
 	identityKey := sdk.NewKVStoreKey(constants.STORE_IDENTITY)
@@ -88,6 +94,7 @@ func NewShareLedgerApp(logger log.Logger, db dbm.DB) *ShareLedgerApp {
 
 	app := &ShareLedgerApp{
 		BaseApp:    baseApp,
+		database:   createAppDB(),
 		cdc:        cdc,
 		assetKey:   assetKey,
 		bookingKey: bookingKey,
@@ -98,6 +105,7 @@ func NewShareLedgerApp(logger log.Logger, db dbm.DB) *ShareLedgerApp {
 	app.SetupAsset(assetKey)
 	app.SetupBank(accountMapper)
 	app.SetupPOS(posKey, accountMapper)
+	app.slashingKeeper = slashing.NewKeeper(slashKey, app.posKeeper, app.database)
 	app.SetupBooking(bookingKey, assetKey, accountMapper)
 	app.SetupExchange(exchangeKey, accountMapper)
 	app.SetupIdentity(identityKey, accountMapper)
@@ -118,9 +126,8 @@ func NewShareLedgerApp(logger log.Logger, db dbm.DB) *ShareLedgerApp {
 	// Register InitChain
 	logger.Info("Register Init Chainer")
 	app.SetInitChainer(app.InitChainer)
-	app.SetEndBlocker(EndBlocker(accountMapper, app.posKeeper))
-	app.SetBeginBlocker(BeginBlocker)
-
+	app.SetEndBlocker(app.EndBlocker(accountMapper, app.posKeeper))
+	app.SetBeginBlocker(app.BeginBlocker)
 	//  Mount Store
 	baseApp.MountStores(authKey, assetKey, bookingKey, posKey, exchangeKey, identityKey) //replace baseApp.MountStoresIAVL
 	err := baseApp.LoadLatestVersion(authKey)
@@ -128,6 +135,16 @@ func NewShareLedgerApp(logger log.Logger, db dbm.DB) *ShareLedgerApp {
 		cmn.Exit(err.Error())
 	}
 	return app
+}
+
+func createAppDB() dbm.DB {
+	rootDir := viper.GetString("home")
+	path := filepath.Join(rootDir, "data")
+	shareledgerDB, err := dbm.NewGoLevelDB("myapp", path)
+	if err != nil {
+		panic(err)
+	}
+	return shareledgerDB
 }
 
 // InitChainer will set initial balances for accounts as well as initial coin metadata
@@ -183,13 +200,15 @@ func (app *ShareLedgerApp) InitChainer(ctx sdk.Context, req abci.RequestInitChai
 
 }
 
-func BeginBlocker(ctx sdk.Context, req abci.RequestBeginBlock) (res abci.ResponseBeginBlock) {
+func (app *ShareLedgerApp) BeginBlocker(ctx sdk.Context, req abci.RequestBeginBlock) (res abci.ResponseBeginBlock) {
+	app.currentBatch = app.database.NewBatch()
 
 	// Save BlockHeader and Height to Context
 	ctx.WithBlockHeader(req.Header).WithBlockHeight(req.Header.Height)
 
 	// Reset this variable at the beginning of a block
-	pos.ValidatorChanged = false
+
+	slashing.BeginBlocker(ctx, req, app.slashingKeeper, app.currentBatch)
 
 	//fmt.Printf("BeginBlocker: %v\n", req.Header.Proposer)
 
@@ -197,7 +216,7 @@ func BeginBlocker(ctx sdk.Context, req abci.RequestBeginBlock) (res abci.Respons
 }
 
 // application updates every end block
-func EndBlocker(am auth.AccountMapper, keeper pKeeper.Keeper) sdk.EndBlocker {
+func (app *ShareLedgerApp) EndBlocker(am auth.AccountMapper, keeper pKeeper.Keeper) sdk.EndBlocker {
 	return func(ctx sdk.Context, req abci.RequestEndBlock) abci.ResponseEndBlock {
 
 		proposer := ctx.BlockHeader().ProposerAddress //.Proposer
@@ -211,7 +230,7 @@ func EndBlocker(am auth.AccountMapper, keeper pKeeper.Keeper) sdk.EndBlocker {
 				"PubKey", val.PubKey,
 			)
 		}
-
+		app.currentBatch.Write()
 		// Add these new validators to the addr -> pubkey map.
 		return abci.ResponseEndBlock{
 			ValidatorUpdates: validatorUpdates,

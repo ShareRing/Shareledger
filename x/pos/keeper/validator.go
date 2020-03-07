@@ -263,6 +263,7 @@ func (k Keeper) GetValidatorSetUpdates(ctx sdk.Context) []abci.ValidatorUpdate {
 
 	// Iterate over validators, highest power to lowest.
 	iterator := sdk.KVStoreReversePrefixIterator(store, ValidatorsByPowerIndexKey)
+	defer iterator.Close()
 	count := 0
 	for ; iterator.Valid() && count < int(maxValidators); iterator.Next() {
 
@@ -407,4 +408,37 @@ func (k Keeper) completeUnbondingValidator(ctx sdk.Context, validator posTypes.V
 	k.SetPool(ctx, pool)
 	k.SetValidator(ctx, validator)
 	return validator
+}
+
+func (k Keeper) GetValidatorByConsAddr(ctx sdk.Context, consAddr sdk.AccAddress) (validator posTypes.Validator, found bool) {
+	store := ctx.KVStore(k.storeKey)
+	opAddr := store.Get(GetTdmAddressKey(consAddr.Bytes()))
+	if opAddr == nil {
+		return validator, false
+	}
+	return k.GetValidator(ctx, sdk.AccAddress(opAddr))
+}
+
+func (k Keeper) mustGetValidatorByConsAddr(ctx sdk.Context, consAddr sdk.AccAddress) posTypes.Validator {
+	validator, found := k.GetValidatorByConsAddr(ctx, consAddr)
+	if !found {
+		panic(fmt.Errorf("validator with consensus-Address %s not found", consAddr))
+	}
+	return validator
+}
+
+func (k Keeper) revokeValidator(ctx sdk.Context, validator posTypes.Validator) {
+	pool := k.GetPool(ctx)
+	if validator.Revoked {
+		panic(fmt.Sprintf("cannot revoke already revoked validator, validator: %v\n", validator))
+	}
+	validator.Revoked = true
+	k.SetValidator(ctx, validator)
+	k.DeleteValidatorByPowerIndex(ctx, validator, pool)
+}
+
+func (k Keeper) Revoke(ctx sdk.Context, consAddr sdk.AccAddress) {
+	validator := k.mustGetValidatorByConsAddr(ctx, consAddr)
+	k.revokeValidator(ctx, validator)
+	return
 }

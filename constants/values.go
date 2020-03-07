@@ -14,6 +14,7 @@ const STORE_BOOKING = "booking"
 const STORE_ASSET = "asset"
 const STORE_AUTH = "auth"
 const STORE_POS = "pos"
+const STORE_SLASH = "slash"
 const STORE_EXCHANGE = "excrate"
 const STORE_IDENTITY = "identity"
 

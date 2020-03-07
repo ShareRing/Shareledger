@@ -12,10 +12,6 @@ import (
 	posTypes "github.com/sharering/shareledger/x/pos/type"
 )
 
-var (
-	ValidatorChanged = false
-)
-
 func NewHandler(k keeper.Keeper) sdk.Handler {
 	return func(ctx sdk.Context, msg sdk.Msg) sdk.Result {
 		ctx.WithEventManager(sdk.NewEventManager())
@@ -95,8 +91,6 @@ func handleMsgCreateValidator(ctx sdk.Context, msg message.MsgCreateValidator, k
 
 	// Update ValidatorChanged
 	// This variable is reset at the beginning of a block
-	ValidatorChanged = true
-
 	event := sdk.NewEvent(
 		EventTypeValidatorCreated,
 		sdk.NewAttribute(AttributeValidator, msg.ValidatorAddr.String()),

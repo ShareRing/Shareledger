@@ -45,14 +45,7 @@ func EndBlocker(ctx sdk.Context, k keeper.Keeper, proposerAddress []byte) []abci
 	}
 
 	var valUpdates []abci.ValidatorUpdate
-	if ValidatorChanged {
-		valUpdates = k.GetValidatorSetUpdates(ctx) //work-around to get all ABCIValidators -> need to update
-		/*for _, val := range valUpdates {
-			fmt.Printf("Validator Update/abci Address=%X Power=%d\n", val.Address, val.Power)
-		}*/
-	} else {
-		valUpdates = []abci.ValidatorUpdate{}
-	}
+	valUpdates = k.GetValidatorSetUpdates(ctx) //work-around to get all ABCIValidators -> need to update
 	//TODO: return updated Validators list
 	return valUpdates
 }
