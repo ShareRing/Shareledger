@@ -184,7 +184,6 @@ func GetLastValidatorPowerKey(operator sdk.AccAddress) []byte {
 // NOTE the larger values are of higher value
 // nolint: unparam
 func getValidatorPowerRank(validator posTypes.Validator) []byte {
-
 	potentialPower := validator.Tokens
 
 	// todo: deal with cases above 2**64, ref https://github.com/cosmos/cosmos-sdk/issues/2439#issuecomment-427167556
@@ -196,15 +195,14 @@ func getValidatorPowerRank(validator posTypes.Validator) []byte {
 	powerBytesLen := len(powerBytes)
 
 	// key is of format prefix || powerbytes || heightBytes || counterBytes
-	key := make([]byte, 1+powerBytesLen+8+2)
+	key := make([]byte, 1+powerBytesLen+sdk.AddrLen)
 
 	key[0] = ValidatorsByPowerIndexKey[0]
 	copy(key[1:powerBytesLen+1], powerBytes)
-
-	// include heightBytes height is inverted (older validators first)
-	binary.BigEndian.PutUint64(key[powerBytesLen+1:powerBytesLen+9], ^uint64(validator.BondHeight))
-	// include counterBytes, counter is inverted (first txns have priority)
-	binary.BigEndian.PutUint16(key[powerBytesLen+9:powerBytesLen+11], ^uint16(validator.BondIntraTxCounter))
-
+	operAddrInvr := sdk.CopyBytes(validator.Owner)
+	for i, b := range operAddrInvr {
+		operAddrInvr[i] = ^b
+	}
+	copy(key[powerBytesLen+1:], operAddrInvr)
 	return key
 }
