@@ -23,7 +23,6 @@ type GenesisState struct {
 }
 
 func InitGenesis(ctx sdk.Context, keeper keeper.Keeper, data GenesisState) ([]abci.ValidatorUpdate, error) {
-
 	var abciVals []abci.ValidatorUpdate
 	keeper.SetPool(ctx, data.Pool)
 	keeper.SetParams(ctx, data.Params)
@@ -59,7 +58,6 @@ func InitGenesis(ctx sdk.Context, keeper keeper.Keeper, data GenesisState) ([]ab
 		keeper.SetDelegation(ctx, delegation)
 		//keeper.OnDelegationCreated(ctx, delegation.DelegatorAddr, delegation.ValidatorAddr)
 	}
-
 	return abciVals, nil
 
 }
@@ -80,7 +78,7 @@ func GenerateGenesis(pubKey types.PubKeySecp256k1) GenesisState {
 		posTypes.NewDescription("sharering", "", "sharering.network", ""))
 
 	validator.Tokens, _ = types.NewDecFromStr("2000000") // avoid zero tokens
-	validator.Status = types.Bonded
+	validator.Status = types.Unbonded
 
 	pool := posTypes.InitialPool()
 	pool.LooseTokens = types.NewDec(3000000000) //hard-code with 3 billion loose-token
