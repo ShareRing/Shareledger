@@ -106,7 +106,7 @@ func initFilesWithConfig(config *cfg.Config) error {
 		genDoc := tmtypes.GenesisDoc{
 			ChainID:         fmt.Sprintf("test-chain-%v", cmn.RandStr(6)),
 			GenesisTime:     time.Now(),
-			ConsensusParams:	 consensusParams,
+			ConsensusParams: consensusParams,
 		}
 		genDoc.Validators = []tmtypes.GenesisValidator{{
 			Address: pubKey.Address(),
@@ -127,9 +127,11 @@ func initFilesWithConfig(config *cfg.Config) error {
 	logger.Info("PersistentPeers", "peers", persistentPeers)
 	config.BaseConfig.Moniker = moniker
 	config.RPC.ListenAddress = listenAddress + strconv.Itoa(rpcPort)
+	config.RPC.CORSAllowedOrigins = []string{"*"}
 	config.P2P.ListenAddress = listenAddress + strconv.Itoa(p2pPort)
 	config.P2P.PersistentPeers = persistentPeers
-
+	config.Consensus.CreateEmptyBlocksInterval = 10 * time.Second
+	config.Consensus.CreateEmptyBlocks = false
 	// Rewrite config file
 	path := filepath.Join(config.BaseConfig.RootDir, ConfigDir, RootFile)
 	cfg.WriteConfigFile(path, config)
