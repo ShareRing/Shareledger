@@ -44,7 +44,7 @@ func (k Keeper) HandleValidatorSignature(ctx sdk.Context, batch db.Batch, addr c
 	latestBlocks = addLatestBlocks(latestBlocks, signed)
 	k.setLatestBlocksForValidator(batch, consAddr, latestBlocks)
 	missedBlocksCount := countLatestMissedBlocks(latestBlocks)
-	if missedBlocksCount > 72 {
+	if missedBlocksCount > 81 {
 		k.pk.Revoke(ctx, consAddr)
 		k.setLatestBlocksForValidator(batch, consAddr, []bool{})
 		ctx.EventManager().EmitEvent(
