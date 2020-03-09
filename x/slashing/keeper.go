@@ -57,7 +57,6 @@ func (k Keeper) HandleValidatorSignature(ctx sdk.Context, batch db.Batch, addr c
 			),
 		)
 	}
-
 }
 
 func (k Keeper) getLatestBlocksForValidator(address sdk.AccAddress) []bool {
