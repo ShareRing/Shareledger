@@ -1,0 +1,368 @@
+{
+  "app_hash": "",
+  "app_state": {
+    "asset": { "Assets": null },
+    "auth": {
+      "accounts": [
+        {
+          "type": "cosmos-sdk/Account",
+          "value": {
+            "account_number": 7,
+            "address": "shareledger1pddd4kn2xyuy7acj4fetfzrusu56ygjn0klqjj",
+            "coins": [
+              { "amount": "999982", "denom": "shr" },
+              { "amount": "1000000", "denom": "shrp" }
+            ],
+            "public_key": "shareledgerpub1addwnpepq23fll3c94ryxvuw3r5qxt3nm6pqtwfv0vagrw6v4z4tukglyxu2qeevacx",
+            "sequence": 5
+          }
+        },
+        {
+          "type": "cosmos-sdk/Account",
+          "value": {
+            "account_number": 4,
+            "address": "shareledger1pdn8c6npsvrd5ljksnq0m70ygd0n777tpnmjxc",
+            "coins": [
+              { "amount": "1000003", "denom": "shr" },
+              { "amount": "1000000", "denom": "shrp" }
+            ],
+            "public_key": "",
+            "sequence": 0
+          }
+        },
+        {
+          "type": "cosmos-sdk/Account",
+          "value": {
+            "account_number": 6,
+            "address": "shareledger1ywe8kjv98t7tnttt356g4k832lxhtw5ejdxl98",
+            "coins": [
+              { "amount": "999999", "denom": "shr" },
+              { "amount": "1000000", "denom": "shrp" }
+            ],
+            "public_key": "shareledgerpub1addwnpepqgltsv9gckrms783d47f487vd8suwx204ktp29daguv67zulc3epusnewkj",
+            "sequence": 1
+          }
+        },
+        {
+          "type": "cosmos-sdk/Account",
+          "value": {
+            "account_number": 3,
+            "address": "shareledger18ynvs356etaj08vtr4hkw563jnm75nldgqustq",
+            "coins": [
+              { "amount": "999988", "denom": "shr" },
+              { "amount": "1000000", "denom": "shrp" }
+            ],
+            "public_key": "shareledgerpub1addwnpepqwsh8jkvq83xx0gf4akwgthla00gkdwqk4jpq3kz6rgeatl6jrjrue5lsxu",
+            "sequence": 2
+          }
+        },
+        {
+          "type": "cosmos-sdk/ModuleAccount",
+          "value": {
+            "account_number": 1,
+            "address": "shareledger1fl48vsnmsdzcv85q5d2q4z5ajdha8yu3dltkcu",
+            "coins": [{ "amount": "1000000", "denom": "shr" }],
+            "name": "bonded_tokens_pool",
+            "permissions": ["burner", "staking"],
+            "public_key": "",
+            "sequence": 0
+          }
+        },
+        {
+          "type": "cosmos-sdk/ModuleAccount",
+          "value": {
+            "account_number": 2,
+            "address": "shareledger1tygms3xhhs3yv487phx3dw4a95jn7t7lelh8wg",
+            "coins": [],
+            "name": "not_bonded_tokens_pool",
+            "permissions": ["burner", "staking"],
+            "public_key": "",
+            "sequence": 0
+          }
+        },
+        {
+          "type": "cosmos-sdk/ModuleAccount",
+          "value": {
+            "account_number": 0,
+            "address": "shareledger1jv65s3grqf6v6jl3dp4t6c9t9rk99cd8lmx9g5",
+            "coins": [{ "amount": "28", "denom": "shr" }],
+            "name": "distribution",
+            "permissions": null,
+            "public_key": "",
+            "sequence": 0
+          }
+        },
+        {
+          "type": "cosmos-sdk/Account",
+          "value": {
+            "account_number": 5,
+            "address": "shareledger1kgcv40xdrrs94fqvnsq6y9epvhy7ecwshe89s6",
+            "coins": [{ "amount": "1000000", "denom": "shrp" }],
+            "public_key": "shareledgerpub1addwnpepqvx3rhgj364h7wtcu6alzd6j4u0dxcm97498mj8jp5w5k4dnjtr46kkrsa8",
+            "sequence": 1
+          }
+        },
+        {
+          "type": "cosmos-sdk/Account",
+          "value": {
+            "account_number": 8,
+            "address": "shareledger1u99yyw5yunntu62k298wu65ush6pce8hm74g0k",
+            "coins": [
+              { "amount": "1000000", "denom": "shr" },
+              { "amount": "1000000", "denom": "shrp" }
+            ],
+            "public_key": "",
+            "sequence": 0
+          }
+        },
+        {
+          "type": "cosmos-sdk/ModuleAccount",
+          "value": {
+            "account_number": 9,
+            "address": "shareledger17xpfvakm2amg962yls6f84z3kell8c5lgape2k",
+            "coins": [],
+            "name": "fee_collector",
+            "permissions": null,
+            "public_key": "",
+            "sequence": 0
+          }
+        }
+      ],
+      "params": {
+        "max_memo_characters": "256",
+        "sig_verify_cost_ed25519": "590",
+        "sig_verify_cost_secp256k1": "1000",
+        "tx_sig_limit": "7",
+        "tx_size_cost_per_byte": "10"
+      }
+    },
+    "bank": { "send_enabled": true },
+    "booking": { "Bookings": null },
+    "distribution": {
+      "delegator_starting_infos": [
+        {
+          "delegator_address": "shareledger1kgcv40xdrrs94fqvnsq6y9epvhy7ecwshe89s6",
+          "starting_info": {
+            "creation_height": "0",
+            "previous_period": "1",
+            "stake": "1000000.000000000000000000"
+          },
+          "validator_address": "shareledgervaloper1kgcv40xdrrs94fqvnsq6y9epvhy7ecwslyzqc3"
+        }
+      ],
+      "delegator_withdraw_infos": [],
+      "fee_pool": {
+        "community_pool": [{ "amount": "0.560000000000000000", "denom": "shr" }]
+      },
+      "outstanding_rewards": [
+        {
+          "outstanding_rewards": [
+            { "amount": "27.440000000000000000", "denom": "shr" }
+          ],
+          "validator_address": "shareledgervaloper1kgcv40xdrrs94fqvnsq6y9epvhy7ecwslyzqc3"
+        }
+      ],
+      "params": {
+        "base_proposer_reward": "0.010000000000000000",
+        "bonus_proposer_reward": "0.040000000000000000",
+        "community_tax": "0.020000000000000000",
+        "withdraw_addr_enabled": true
+      },
+      "previous_proposer": "shareledgervalcons17j2zysuzejak8zjjn7wzl60tu0zlfyqvcwztmd",
+      "validator_accumulated_commissions": [
+        {
+          "accumulated": [{ "amount": "2.744000000000000000", "denom": "shr" }],
+          "validator_address": "shareledgervaloper1kgcv40xdrrs94fqvnsq6y9epvhy7ecwslyzqc3"
+        }
+      ],
+      "validator_current_rewards": [
+        {
+          "rewards": {
+            "period": "2",
+            "rewards": [{ "amount": "24.696000000000000000", "denom": "shr" }]
+          },
+          "validator_address": "shareledgervaloper1kgcv40xdrrs94fqvnsq6y9epvhy7ecwslyzqc3"
+        }
+      ],
+      "validator_historical_rewards": [
+        {
+          "period": "1",
+          "rewards": { "cumulative_reward_ratio": null, "reference_count": 2 },
+          "validator_address": "shareledgervaloper1kgcv40xdrrs94fqvnsq6y9epvhy7ecwslyzqc3"
+        }
+      ],
+      "validator_slash_events": []
+    },
+    "doc": {
+      "Documents": [
+        {
+          "data": "d1",
+          "holder": "h1",
+          "issuer": "shareledger1pddd4kn2xyuy7acj4fetfzrusu56ygjn0klqjj",
+          "proof": "d1",
+          "version": 0
+        },
+        {
+          "data": "d2",
+          "holder": "h2",
+          "issuer": "shareledger1pddd4kn2xyuy7acj4fetfzrusu56ygjn0klqjj",
+          "proof": "d2",
+          "version": 0
+        },
+        {
+          "data": "data-data ",
+          "holder": "holder-data",
+          "issuer": "shareledger1pddd4kn2xyuy7acj4fetfzrusu56ygjn0klqjj",
+          "proof": "proof-data ",
+          "version": 0
+        },
+        {
+          "data": "d1",
+          "holder": "id1",
+          "issuer": "shareledger1pddd4kn2xyuy7acj4fetfzrusu56ygjn0klqjj",
+          "proof": "p1",
+          "version": 0
+        },
+        {
+          "data": "d2",
+          "holder": "id2",
+          "issuer": "shareledger1pddd4kn2xyuy7acj4fetfzrusu56ygjn0klqjj",
+          "proof": "p2",
+          "version": 0
+        }
+      ]
+    },
+    "electoral": {
+      "Addresses": ["shareledger1kgcv40xdrrs94fqvnsq6y9epvhy7ecwshe89s6"]
+    },
+    "gentlemint": {
+      "account_operators": [
+        {
+          "address": "shareledger1ywe8kjv98t7tnttt356g4k832lxhtw5ejdxl98",
+          "status": "active"
+        }
+      ],
+      "authority": "shareledger18ynvs356etaj08vtr4hkw563jnm75nldgqustq",
+      "document_issuer": [
+        {
+          "address": "shareledger1pddd4kn2xyuy7acj4fetfzrusu56ygjn0klqjj",
+          "status": "active"
+        }
+      ],
+      "exchange_rate": "200",
+      "id_signers": null,
+      "loader_keys": null,
+      "treasurer": "shareledger1pdn8c6npsvrd5ljksnq0m70ygd0n777tpnmjxc"
+    },
+    "genutil": { "gentxs": [] },
+    "id": { "IDs": [] },
+    "identity": { "IDSigners": null, "IDs": {} },
+    "slashing": {
+      "missed_blocks": {
+        "shareledgervalcons17j2zysuzejak8zjjn7wzl60tu0zlfyqvcwztmd": []
+      },
+      "params": {
+        "downtime_jail_duration": "600000000000",
+        "min_signed_per_window": "0.500000000000000000",
+        "signed_blocks_window": "100",
+        "slash_fraction_double_sign": "0.050000000000000000",
+        "slash_fraction_downtime": "0.010000000000000000"
+      },
+      "signing_infos": {
+        "shareledgervalcons17j2zysuzejak8zjjn7wzl60tu0zlfyqvcwztmd": {
+          "address": "shareledgervalcons17j2zysuzejak8zjjn7wzl60tu0zlfyqvcwztmd",
+          "index_offset": "20207",
+          "jailed_until": "1970-01-01T00:00:00Z",
+          "missed_blocks_counter": "0",
+          "start_height": "0",
+          "tombstoned": false
+        }
+      }
+    },
+    "staking": {
+      "delegations": [
+        {
+          "delegator_address": "shareledger1kgcv40xdrrs94fqvnsq6y9epvhy7ecwshe89s6",
+          "shares": "1000000.000000000000000000",
+          "validator_address": "shareledgervaloper1kgcv40xdrrs94fqvnsq6y9epvhy7ecwslyzqc3"
+        }
+      ],
+      "exported": true,
+      "last_total_power": "1",
+      "last_validator_powers": [
+        {
+          "Address": "shareledgervaloper1kgcv40xdrrs94fqvnsq6y9epvhy7ecwslyzqc3",
+          "Power": "1"
+        }
+      ],
+      "params": {
+        "bond_denom": "shr",
+        "historical_entries": 0,
+        "max_entries": 7,
+        "max_validators": 100,
+        "unbonding_time": "1814400000000000"
+      },
+      "redelegations": null,
+      "unbonding_delegations": null,
+      "validators": [
+        {
+          "commission": {
+            "commission_rates": {
+              "max_change_rate": "0.010000000000000000",
+              "max_rate": "0.200000000000000000",
+              "rate": "0.100000000000000000"
+            },
+            "update_time": "2021-02-02T06:38:32.788670114Z"
+          },
+          "consensus_pubkey": "shareledgervalconspub1zcjduepqduq4ynng6fmu9t5ln6y86mjvtmqks4qfvwjg3gvfujut86dgu4fslq7kmz",
+          "delegator_shares": "1000000.000000000000000000",
+          "description": {
+            "details": "",
+            "identity": "",
+            "moniker": "test",
+            "security_contact": "",
+            "website": ""
+          },
+          "jailed": false,
+          "min_self_delegation": "1",
+          "operator_address": "shareledgervaloper1kgcv40xdrrs94fqvnsq6y9epvhy7ecwslyzqc3",
+          "status": 2,
+          "tokens": "1000000",
+          "unbonding_height": "0",
+          "unbonding_time": "1970-01-01T00:00:00Z"
+        }
+      ]
+    },
+    "supply": {
+      "supply": [
+        { "amount": "6000000", "denom": "shr" },
+        { "amount": "6000000", "denom": "shrp" }
+      ]
+    }
+  },
+  "chain_id": "testing",
+  "consensus_params": {
+    "block": {
+      "max_bytes": "22020096",
+      "max_gas": "-1",
+      "time_iota_ms": "1000"
+    },
+    "evidence": {
+      "max_age_duration": "172800000000000",
+      "max_age_num_blocks": "100000"
+    },
+    "validator": { "pub_key_types": ["ed25519"] }
+  },
+  "genesis_time": "2021-02-02T06:38:32.788670114Z",
+  "validators": [
+    {
+      "address": "",
+      "name": "test",
+      "power": "1",
+      "pub_key": {
+        "type": "tendermint/PubKeyEd25519",
+        "value": "bwFSTmjSd8Kun56IfW5MXsFoVAljpIihieS4s+mo5VM="
+      }
+    }
+  ]
+}

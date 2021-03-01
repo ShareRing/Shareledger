@@ -1,0 +1,120 @@
+package cli
+
+import (
+	"bufio"
+
+	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
+
+	"bitbucket.org/shareringvietnam/shareledger-fix/x/gentlemint/types"
+	"github.com/cosmos/cosmos-sdk/client/context"
+	"github.com/cosmos/cosmos-sdk/codec"
+	sdk "github.com/cosmos/cosmos-sdk/types"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+
+	"bitbucket.org/shareringvietnam/shareledger-fix/x/myutils"
+	"github.com/cosmos/cosmos-sdk/x/auth"
+	"github.com/cosmos/cosmos-sdk/x/auth/client/utils"
+)
+
+func GetCmdEnrollDocIssuer(cdc *codec.Codec) *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "enroll-doc-issuer [address1] [address2] [address3]",
+		Short: "enroll document issuer",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			inBuf := bufio.NewReader(cmd.InOrStdin())
+
+			var cliCtx context.CLIContext
+			var txBldr auth.TxBuilder
+
+			keySeed := viper.GetString(myutils.FlagKeySeed)
+			if len(keySeed) > 0 {
+				seed, err := myutils.GetKeeySeedFromFile(keySeed)
+				if err != nil {
+					return err
+				}
+
+				cliCtx, txBldr, err = myutils.GetTxBldrAndCtxFromSeed(inBuf, cdc, seed)
+				if err != nil {
+					return err
+				}
+			} else {
+				txBldr = auth.NewTxBuilderFromCLI(inBuf).WithTxEncoder(utils.GetTxEncoder(cdc))
+				cliCtx = context.NewCLIContextWithInput(inBuf).WithCodec(cdc)
+			}
+
+			txBldr = txBldr.WithFees(minFeeShr)
+			if len(args) == 0 {
+				return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "Empty address list")
+			}
+
+			var accs []sdk.AccAddress
+			for _, a := range args {
+				addr, err := sdk.AccAddressFromBech32(a)
+				if err != nil {
+					return err
+				}
+				accs = append(accs, addr)
+			}
+			msg := types.NewMsgEnrollDocIssuers(cliCtx.GetFromAddress(), accs)
+			err := msg.ValidateBasic()
+			if err != nil {
+				return err
+			}
+			return utils.GenerateOrBroadcastMsgs(cliCtx, txBldr, []sdk.Msg{msg})
+		},
+	}
+	cmd.Flags().String(myutils.FlagKeySeed, "", "path to key_seed.json")
+	return cmd
+}
+
+func GetCmdRevokeDocIssuer(cdc *codec.Codec) *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "revoke-doc-issuer [address1] [address2] [address3]",
+		Short: "revoke document issuers",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			inBuf := bufio.NewReader(cmd.InOrStdin())
+
+			var cliCtx context.CLIContext
+			var txBldr auth.TxBuilder
+
+			keySeed := viper.GetString(myutils.FlagKeySeed)
+			if len(keySeed) > 0 {
+				seed, err := myutils.GetKeeySeedFromFile(keySeed)
+				if err != nil {
+					return err
+				}
+
+				cliCtx, txBldr, err = myutils.GetTxBldrAndCtxFromSeed(inBuf, cdc, seed)
+				if err != nil {
+					return err
+				}
+			} else {
+				txBldr = auth.NewTxBuilderFromCLI(inBuf).WithTxEncoder(utils.GetTxEncoder(cdc))
+				cliCtx = context.NewCLIContextWithInput(inBuf).WithCodec(cdc)
+			}
+
+			txBldr = txBldr.WithFees(minFeeShr)
+
+			if len(args) == 0 {
+				return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "Empty address list")
+			}
+			var accs []sdk.AccAddress
+			for _, a := range args {
+				addr, err := sdk.AccAddressFromBech32(a)
+				if err != nil {
+					return err
+				}
+				accs = append(accs, addr)
+			}
+			msg := types.NewMsgRevokeDocIssuers(cliCtx.GetFromAddress(), accs)
+			err := msg.ValidateBasic()
+			if err != nil {
+				return err
+			}
+			return utils.GenerateOrBroadcastMsgs(cliCtx, txBldr, []sdk.Msg{msg})
+		},
+	}
+	cmd.Flags().String(myutils.FlagKeySeed, "", "path to key_seed.json")
+	return cmd
+}
