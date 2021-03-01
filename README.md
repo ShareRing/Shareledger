@@ -66,3 +66,5 @@ make get_vendor_deps
 make build
 ```
 
+---
+Get code from branch feature/upgrade-2019-10-22
