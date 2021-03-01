@@ -12,5 +12,5 @@ const (
 	AttributeAssetUUID    = "asset.UUID"
 	AttributeAssetHash    = "asset.Hash"
 	AttributeAssetStatus  = "asset.Status"
-	AttributeAssetFee     = "asset.Fee"
+	AttributeAssetFee     = "asset.Rate"
 )
