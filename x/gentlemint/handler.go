@@ -1,8 +1,6 @@
 package gentlemint
 
 import (
-	"bytes"
-	"encoding/hex"
 	"fmt"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -226,7 +224,7 @@ func handleMsgBuySHR(ctx sdk.Context, keeper Keeper, msg MsgBuySHR) (*sdk.Result
 }
 
 func handleMsgBurnSHRP(ctx sdk.Context, keeper Keeper, msg MsgBurnSHRP) (*sdk.Result, error) {
-	if !IsTreasurer(msg.GetSigners()[0]) {
+	if !IsTreasurer(ctx, msg.GetSigners()[0], keeper) {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "Approver's Address is not Treasurer")
 	}
 	i, d, err := ParseCoinStr(msg.Amount)
@@ -247,7 +245,7 @@ func handleMsgBurnSHRP(ctx sdk.Context, keeper Keeper, msg MsgBurnSHRP) (*sdk.Re
 }
 
 func handleMsgBurnSHR(ctx sdk.Context, keeper Keeper, msg MsgBurnSHR) (*sdk.Result, error) {
-	if !IsTreasurer(msg.GetSigners()[0]) {
+	if !IsTreasurer(ctx, msg.GetSigners()[0], keeper) {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "Approver's Address is not Treasurer")
 	}
 	if err := msg.ValidateBasic(); err != nil {
@@ -309,7 +307,7 @@ func handleMsgRevokeSHRPLoader(ctx sdk.Context, keeper Keeper, msg MsgRevokeSHRP
 }
 
 func handleMsgSetExchange(ctx sdk.Context, k Keeper, msg MsgSetExchange) (*sdk.Result, error) {
-	if !IsTreasurer(msg.Approver) {
+	if !IsTreasurer(ctx, msg.Approver, k) {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "Only treasurer can set exchange rate")
 	}
 	k.SetExchangeRate(ctx, msg.Rate)
@@ -327,12 +325,10 @@ func IsAuthority(ctx sdk.Context, address sdk.AccAddress, k Keeper) bool {
 	return false
 }
 
-func IsTreasurer(address sdk.AccAddress) bool {
-	decoded, err := hex.DecodeString(TREASURER_ACC)
-	if err != nil {
-		panic(err)
-	}
-	if bytes.Equal(address[:], decoded) {
+func IsTreasurer(ctx sdk.Context, address sdk.AccAddress, k Keeper) bool {
+	treasurer := k.GetTreasurerAccount(ctx)
+
+	if treasurer == address.String() {
 		return true
 	}
 	return false
