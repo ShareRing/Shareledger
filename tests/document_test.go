@@ -338,12 +338,13 @@ func TestDocUpdate_NotExist_Issuer(t *testing.T) {
 	// Save key addresses for later use
 	accountOperator := f.KeyAddress(keyAccOp)
 	issuer := f.KeyAddress(keyIdSigner)
+	docIssuer := f.KeyAddress(keyDocIssuer)
 	holderId := "id-001"
 	proof := "c89efdaa54c0f20c7adf612882df0950f5a951637e0307cdcb4c672f298b8bc6"
 	data := "extradata-001"
 	// user1 := f.KeyAddress(keyUser1)
 	// Enroll doc issuer
-	f.EnrollDocIssuer([]sdk.AccAddress{issuer}, fmt.Sprintf("--from %s --yes --fees 1shr", accountOperator.String()))
+	f.EnrollDocIssuer([]sdk.AccAddress{issuer, docIssuer}, fmt.Sprintf("--from %s --yes --fees 1shr", accountOperator.String()))
 
 	// wait for a block confirmation
 	// tests.WaitForNextNBlocksTM(1, f.Port)
@@ -360,8 +361,8 @@ func TestDocUpdate_NotExist_Issuer(t *testing.T) {
 	require.Equal(t, data, doc.Data)
 
 	newData := "new-data"
-	ok, stdOut, _ := f.UdpateDoc(holderId, proof, newData, fmt.Sprintf("--from %s --yes --fees 1shr", accountOperator.String()))
-	require.Contains(t, stdOut, "is not document issuer")
+	ok, stdOut, _ := f.UdpateDoc(holderId, proof, newData, fmt.Sprintf("--from %s --yes --fees 1shr", docIssuer.String()))
+	require.Contains(t, stdOut, document.ErrDocNotExisted.Error())
 
 	require.True(t, ok)
 

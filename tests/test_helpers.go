@@ -203,6 +203,7 @@ func InitFixtures(t *testing.T) (f *Fixtures) {
 	f.AddGenesisAccount(f.KeyAddress(keyTreasurer), startCoins)
 	f.AddGenesisAccount(f.KeyAddress(keyValidator), startCoins)
 	f.AddGenesisAccount(f.KeyAddress(keyIdSigner), startCoins)
+	f.AddGenesisAccount(f.KeyAddress(keyDocIssuer), startCoins)
 
 	f.AddGenesisAccount(f.KeyAddress(keyUser1), startCoins)
 	f.AddGenesisAccount(f.KeyAddress(keyUser2), startCoins)

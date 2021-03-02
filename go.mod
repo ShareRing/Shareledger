@@ -3,7 +3,7 @@ module github.com/sharering/shareledger
 go 1.15
 
 require (
-	github.com/ShareRing/modules v0.0.0-20210301033550-b8a067e3c65b
+	github.com/ShareRing/modules v0.0.0-20210301092128-1153d7194985
 	github.com/cosmos/cosmos-sdk v0.38.3
 	github.com/gorilla/mux v1.7.4
 	github.com/spf13/cobra v1.0.0
