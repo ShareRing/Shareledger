@@ -11,17 +11,13 @@ The fatest and easiest way to install `Shareledger` is to run our os-specfic app
 
 
 ### From Binary
-
 To download pre-built binaries, see the [releases page](https://github.com/sharering/shareledger/releases).
-
 
 ### From Source
 
-### Requirements ##
+#### Requirements ##
 
-* [`go`](https://golang.org/doc/install) - compile tool. Version >=1.10
-* [`dep`](https://github.com/golang/dep) - package management tool
-* [`tendermint`](https://github.com/tendermint/tendermint) - consensus algorithm v.0.21.0
+* [`go`](https://golang.org/doc/install) - compile tool. Version >=1.15
 * [`make`](https://www.gnu.org/software/make/) -  compile tool
 
 
@@ -32,15 +28,7 @@ git clone https://github.com/sharering/shareledger.git
 cd shareledger
 ```
 
-
-#### Get Tools & Dependencies
-
-```
-make get_vendor_deps
-```
-
-
-#### Compile
+#### Compile (_Work on Linux only_)
 ```
 make build
 ```
@@ -48,23 +36,19 @@ make build
 This will compile ShareLedger and put the binary in `./build`
 
 
-#### Run
+# Run
 
-To start a one-node ShareLedger
+* To start a ShareLedger node
 ```
-./build/shareledger init
-./build/shareledger node
+./shareledger init
+./shareledger start
 ```
+* Start single node for testing purpose: [start single node](./docs/start-single-node.md)
 
-Type `./build/shareledger -h` to get more detailed information on how to execute ShareLedger
 
+    Run `./build/shareledger -h` _to get more detailed information on how to execute ShareLedger_
 
-#### Upgrade
-```
-git pull origin master
-make get_vendor_deps
-make build
-```
 
 ---
-Get code from branch feature/upgrade-2019-10-22
+## Notes
+* Get code from branch feature/upgrade-2019-10-22
