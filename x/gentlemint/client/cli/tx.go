@@ -9,12 +9,14 @@ import (
 	"github.com/spf13/viper"
 
 	"github.com/cosmos/cosmos-sdk/client"
+	"github.com/cosmos/cosmos-sdk/client/context"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/sharering/shareledger/x/gentlemint/types"
 
+	"github.com/cosmos/cosmos-sdk/x/auth"
 	"github.com/cosmos/cosmos-sdk/x/auth/client/utils"
 	"github.com/sharering/shareledger/x/myutils"
 )
@@ -67,18 +69,27 @@ func GetCmdLoadSHR(cdc *codec.Codec) *cobra.Command {
 		RunE: func(cmd *cobra.Command, args []string) error {
 			inBuf := bufio.NewReader(cmd.InOrStdin())
 
-			keySeed := viper.GetString(myutils.FlagKeySeed)
-			seed, err := myutils.GetKeeySeedFromFile(keySeed)
-			if err != nil {
-				return err
-			}
+			var cliCtx context.CLIContext
+			var txBldr auth.TxBuilder
 
-			cliCtx, txBldr, err := myutils.GetTxBldrAndCtxFromSeed(inBuf, cdc, seed)
-			if err != nil {
-				return err
+			keySeed := viper.GetString(myutils.FlagKeySeed)
+			if len(keySeed) > 0 {
+				seed, err := myutils.GetKeeySeedFromFile(keySeed)
+				if err != nil {
+					return err
+				}
+
+				cliCtx, txBldr, err = myutils.GetTxBldrAndCtxFromSeed(inBuf, cdc, seed)
+				if err != nil {
+					return err
+				}
+			} else {
+				txBldr = auth.NewTxBuilderFromCLI(inBuf).WithTxEncoder(utils.GetTxEncoder(cdc))
+				cliCtx = context.NewCLIContextWithInput(inBuf).WithCodec(cdc)
 			}
 
 			txBldr = txBldr.WithFees(minFeeShr)
+
 			to, err := sdk.AccAddressFromBech32(args[0])
 			if err != nil {
 				return err
@@ -107,15 +118,24 @@ func GetCmdLoadSHRP(cdc *codec.Codec) *cobra.Command {
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			inBuf := bufio.NewReader(cmd.InOrStdin())
-			keySeed := viper.GetString(myutils.FlagKeySeed)
-			seed, err := myutils.GetKeeySeedFromFile(keySeed)
-			if err != nil {
-				return err
-			}
 
-			cliCtx, txBldr, err := myutils.GetTxBldrAndCtxFromSeed(inBuf, cdc, seed)
-			if err != nil {
-				return err
+			var cliCtx context.CLIContext
+			var txBldr auth.TxBuilder
+
+			keySeed := viper.GetString(myutils.FlagKeySeed)
+			if len(keySeed) > 0 {
+				seed, err := myutils.GetKeeySeedFromFile(keySeed)
+				if err != nil {
+					return err
+				}
+
+				cliCtx, txBldr, err = myutils.GetTxBldrAndCtxFromSeed(inBuf, cdc, seed)
+				if err != nil {
+					return err
+				}
+			} else {
+				txBldr = auth.NewTxBuilderFromCLI(inBuf).WithTxEncoder(utils.GetTxEncoder(cdc))
+				cliCtx = context.NewCLIContextWithInput(inBuf).WithCodec(cdc)
 			}
 
 			txBldr = txBldr.WithFees(minFeeShr)
@@ -144,16 +164,25 @@ func GetCmdSendSHRP(cdc *codec.Codec) *cobra.Command {
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			inBuf := bufio.NewReader(cmd.InOrStdin())
+			var cliCtx context.CLIContext
+			var txBldr auth.TxBuilder
+
 			keySeed := viper.GetString(myutils.FlagKeySeed)
-			seed, err := myutils.GetKeeySeedFromFile(keySeed)
-			if err != nil {
-				return err
+			if len(keySeed) > 0 {
+				seed, err := myutils.GetKeeySeedFromFile(keySeed)
+				if err != nil {
+					return err
+				}
+
+				cliCtx, txBldr, err = myutils.GetTxBldrAndCtxFromSeed(inBuf, cdc, seed)
+				if err != nil {
+					return err
+				}
+			} else {
+				txBldr = auth.NewTxBuilderFromCLI(inBuf).WithTxEncoder(utils.GetTxEncoder(cdc))
+				cliCtx = context.NewCLIContextWithInput(inBuf).WithCodec(cdc)
 			}
 
-			cliCtx, txBldr, err := myutils.GetTxBldrAndCtxFromSeed(inBuf, cdc, seed)
-			if err != nil {
-				return err
-			}
 			txFee, err := myutils.GetFeeFromShrp(cdc, cliCtx, sendFee)
 
 			txBldr = txBldr.WithFees(txFee)
@@ -183,17 +212,30 @@ func GetCmdSendSHR(cdc *codec.Codec) *cobra.Command {
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			inBuf := bufio.NewReader(cmd.InOrStdin())
+
+			var cliCtx context.CLIContext
+			var txBldr auth.TxBuilder
+
 			keySeed := viper.GetString(myutils.FlagKeySeed)
-			seed, err := myutils.GetKeeySeedFromFile(keySeed)
-			if err != nil {
-				return err
+			if len(keySeed) > 0 {
+				seed, err := myutils.GetKeeySeedFromFile(keySeed)
+				if err != nil {
+					return err
+				}
+
+				cliCtx, txBldr, err = myutils.GetTxBldrAndCtxFromSeed(inBuf, cdc, seed)
+				if err != nil {
+					return err
+				}
+			} else {
+				txBldr = auth.NewTxBuilderFromCLI(inBuf).WithTxEncoder(utils.GetTxEncoder(cdc))
+				cliCtx = context.NewCLIContextWithInput(inBuf).WithCodec(cdc)
 			}
 
-			cliCtx, txBldr, err := myutils.GetTxBldrAndCtxFromSeed(inBuf, cdc, seed)
+			txFee, err := myutils.GetFeeFromShrp(cdc, cliCtx, sendFee)
 			if err != nil {
 				return err
 			}
-			txFee, err := myutils.GetFeeFromShrp(cdc, cliCtx, sendFee)
 
 			txBldr = txBldr.WithFees(txFee)
 
@@ -225,15 +267,23 @@ func GetCmdBuyCent(cdc *codec.Codec) *cobra.Command {
 		RunE: func(cmd *cobra.Command, args []string) error {
 			inBuf := bufio.NewReader(cmd.InOrStdin())
 
-			keySeed := viper.GetString(myutils.FlagKeySeed)
-			seed, err := myutils.GetKeeySeedFromFile(keySeed)
-			if err != nil {
-				return err
-			}
+			var cliCtx context.CLIContext
+			var txBldr auth.TxBuilder
 
-			cliCtx, txBldr, err := myutils.GetTxBldrAndCtxFromSeed(inBuf, cdc, seed)
-			if err != nil {
-				return err
+			keySeed := viper.GetString(myutils.FlagKeySeed)
+			if len(keySeed) > 0 {
+				seed, err := myutils.GetKeeySeedFromFile(keySeed)
+				if err != nil {
+					return err
+				}
+
+				cliCtx, txBldr, err = myutils.GetTxBldrAndCtxFromSeed(inBuf, cdc, seed)
+				if err != nil {
+					return err
+				}
+			} else {
+				txBldr = auth.NewTxBuilderFromCLI(inBuf).WithTxEncoder(utils.GetTxEncoder(cdc))
+				cliCtx = context.NewCLIContextWithInput(inBuf).WithCodec(cdc)
 			}
 
 			txBldr = txBldr.WithFees(minFeeShr)
@@ -263,15 +313,23 @@ func GetCmdBuySHR(cdc *codec.Codec) *cobra.Command {
 		RunE: func(cmd *cobra.Command, args []string) error {
 			inBuf := bufio.NewReader(cmd.InOrStdin())
 
-			keySeed := viper.GetString(myutils.FlagKeySeed)
-			seed, err := myutils.GetKeeySeedFromFile(keySeed)
-			if err != nil {
-				return err
-			}
+			var cliCtx context.CLIContext
+			var txBldr auth.TxBuilder
 
-			cliCtx, txBldr, err := myutils.GetTxBldrAndCtxFromSeed(inBuf, cdc, seed)
-			if err != nil {
-				return err
+			keySeed := viper.GetString(myutils.FlagKeySeed)
+			if len(keySeed) > 0 {
+				seed, err := myutils.GetKeeySeedFromFile(keySeed)
+				if err != nil {
+					return err
+				}
+
+				cliCtx, txBldr, err = myutils.GetTxBldrAndCtxFromSeed(inBuf, cdc, seed)
+				if err != nil {
+					return err
+				}
+			} else {
+				txBldr = auth.NewTxBuilderFromCLI(inBuf).WithTxEncoder(utils.GetTxEncoder(cdc))
+				cliCtx = context.NewCLIContextWithInput(inBuf).WithCodec(cdc)
 			}
 
 			txBldr = txBldr.WithFees(minFeeShr)
@@ -301,21 +359,29 @@ func GetCmdSetExchange(cdc *codec.Codec) *cobra.Command {
 		RunE: func(cmd *cobra.Command, args []string) error {
 			inBuf := bufio.NewReader(cmd.InOrStdin())
 
-			keySeed := viper.GetString(myutils.FlagKeySeed)
-			seed, err := myutils.GetKeeySeedFromFile(keySeed)
-			if err != nil {
-				return err
-			}
+			var cliCtx context.CLIContext
+			var txBldr auth.TxBuilder
 
-			cliCtx, txBldr, err := myutils.GetTxBldrAndCtxFromSeed(inBuf, cdc, seed)
-			if err != nil {
-				return err
+			keySeed := viper.GetString(myutils.FlagKeySeed)
+			if len(keySeed) > 0 {
+				seed, err := myutils.GetKeeySeedFromFile(keySeed)
+				if err != nil {
+					return err
+				}
+
+				cliCtx, txBldr, err = myutils.GetTxBldrAndCtxFromSeed(inBuf, cdc, seed)
+				if err != nil {
+					return err
+				}
+			} else {
+				txBldr = auth.NewTxBuilderFromCLI(inBuf).WithTxEncoder(utils.GetTxEncoder(cdc))
+				cliCtx = context.NewCLIContextWithInput(inBuf).WithCodec(cdc)
 			}
 
 			txBldr = txBldr.WithFees(minFeeShr)
 
 			msg := types.NewMsgSetExchange(cliCtx.GetFromAddress(), args[0])
-			err = msg.ValidateBasic()
+			err := msg.ValidateBasic()
 			if err != nil {
 				return err
 			}
@@ -335,22 +401,29 @@ func GetCmdBurnSHRP(cdc *codec.Codec) *cobra.Command {
 		RunE: func(cmd *cobra.Command, args []string) error {
 			inBuf := bufio.NewReader(cmd.InOrStdin())
 
-			keySeed := viper.GetString(myutils.FlagKeySeed)
-			seed, err := myutils.GetKeeySeedFromFile(keySeed)
-			if err != nil {
-				return err
-			}
+			var cliCtx context.CLIContext
+			var txBldr auth.TxBuilder
 
-			cliCtx, txBldr, err := myutils.GetTxBldrAndCtxFromSeed(inBuf, cdc, seed)
-			if err != nil {
-				return err
+			keySeed := viper.GetString(myutils.FlagKeySeed)
+			if len(keySeed) > 0 {
+				seed, err := myutils.GetKeeySeedFromFile(keySeed)
+				if err != nil {
+					return err
+				}
+
+				cliCtx, txBldr, err = myutils.GetTxBldrAndCtxFromSeed(inBuf, cdc, seed)
+				if err != nil {
+					return err
+				}
+			} else {
+				txBldr = auth.NewTxBuilderFromCLI(inBuf).WithTxEncoder(utils.GetTxEncoder(cdc))
+				cliCtx = context.NewCLIContextWithInput(inBuf).WithCodec(cdc)
 			}
 
 			txBldr = txBldr.WithFees(minFeeShr)
-
 			amt := args[0]
 			msg := types.NewMsgBurnSHRP(cliCtx.GetFromAddress(), amt)
-			err = msg.ValidateBasic()
+			err := msg.ValidateBasic()
 			if err != nil {
 				return err
 			}
@@ -370,15 +443,23 @@ func GetCmdBurnSHR(cdc *codec.Codec) *cobra.Command {
 		RunE: func(cmd *cobra.Command, args []string) error {
 			inBuf := bufio.NewReader(cmd.InOrStdin())
 
-			keySeed := viper.GetString(myutils.FlagKeySeed)
-			seed, err := myutils.GetKeeySeedFromFile(keySeed)
-			if err != nil {
-				return err
-			}
+			var cliCtx context.CLIContext
+			var txBldr auth.TxBuilder
 
-			cliCtx, txBldr, err := myutils.GetTxBldrAndCtxFromSeed(inBuf, cdc, seed)
-			if err != nil {
-				return err
+			keySeed := viper.GetString(myutils.FlagKeySeed)
+			if len(keySeed) > 0 {
+				seed, err := myutils.GetKeeySeedFromFile(keySeed)
+				if err != nil {
+					return err
+				}
+
+				cliCtx, txBldr, err = myutils.GetTxBldrAndCtxFromSeed(inBuf, cdc, seed)
+				if err != nil {
+					return err
+				}
+			} else {
+				txBldr = auth.NewTxBuilderFromCLI(inBuf).WithTxEncoder(utils.GetTxEncoder(cdc))
+				cliCtx = context.NewCLIContextWithInput(inBuf).WithCodec(cdc)
 			}
 
 			txBldr = txBldr.WithFees(minFeeShr)
@@ -407,15 +488,23 @@ func GetCmdEnrollSHRPLoader(cdc *codec.Codec) *cobra.Command {
 		RunE: func(cmd *cobra.Command, args []string) error {
 			inBuf := bufio.NewReader(cmd.InOrStdin())
 
-			keySeed := viper.GetString(myutils.FlagKeySeed)
-			seed, err := myutils.GetKeeySeedFromFile(keySeed)
-			if err != nil {
-				return err
-			}
+			var cliCtx context.CLIContext
+			var txBldr auth.TxBuilder
 
-			cliCtx, txBldr, err := myutils.GetTxBldrAndCtxFromSeed(inBuf, cdc, seed)
-			if err != nil {
-				return err
+			keySeed := viper.GetString(myutils.FlagKeySeed)
+			if len(keySeed) > 0 {
+				seed, err := myutils.GetKeeySeedFromFile(keySeed)
+				if err != nil {
+					return err
+				}
+
+				cliCtx, txBldr, err = myutils.GetTxBldrAndCtxFromSeed(inBuf, cdc, seed)
+				if err != nil {
+					return err
+				}
+			} else {
+				txBldr = auth.NewTxBuilderFromCLI(inBuf).WithTxEncoder(utils.GetTxEncoder(cdc))
+				cliCtx = context.NewCLIContextWithInput(inBuf).WithCodec(cdc)
 			}
 
 			txBldr = txBldr.WithFees(minFeeShr)
@@ -433,7 +522,7 @@ func GetCmdEnrollSHRPLoader(cdc *codec.Codec) *cobra.Command {
 			}
 
 			msg := types.NewMsgEnrollSHRPLoaders(cliCtx.GetFromAddress(), loaderAddresses)
-			err = msg.ValidateBasic()
+			err := msg.ValidateBasic()
 			if err != nil {
 				return err
 			}
@@ -451,15 +540,23 @@ func GetCmdEnrollSHRPLoaderFromFile(cdc *codec.Codec) *cobra.Command {
 		RunE: func(cmd *cobra.Command, args []string) error {
 			inBuf := bufio.NewReader(cmd.InOrStdin())
 
-			keySeed := viper.GetString(myutils.FlagKeySeed)
-			seed, err := myutils.GetKeeySeedFromFile(keySeed)
-			if err != nil {
-				return err
-			}
+			var cliCtx context.CLIContext
+			var txBldr auth.TxBuilder
 
-			cliCtx, txBldr, err := myutils.GetTxBldrAndCtxFromSeed(inBuf, cdc, seed)
-			if err != nil {
-				return err
+			keySeed := viper.GetString(myutils.FlagKeySeed)
+			if len(keySeed) > 0 {
+				seed, err := myutils.GetKeeySeedFromFile(keySeed)
+				if err != nil {
+					return err
+				}
+
+				cliCtx, txBldr, err = myutils.GetTxBldrAndCtxFromSeed(inBuf, cdc, seed)
+				if err != nil {
+					return err
+				}
+			} else {
+				txBldr = auth.NewTxBuilderFromCLI(inBuf).WithTxEncoder(utils.GetTxEncoder(cdc))
+				cliCtx = context.NewCLIContextWithInput(inBuf).WithCodec(cdc)
 			}
 
 			txBldr = txBldr.WithFees(minFeeShr)
@@ -514,15 +611,23 @@ func GetCmdRevokeSHRPLoader(cdc *codec.Codec) *cobra.Command {
 		RunE: func(cmd *cobra.Command, args []string) error {
 			inBuf := bufio.NewReader(cmd.InOrStdin())
 
-			keySeed := viper.GetString(myutils.FlagKeySeed)
-			seed, err := myutils.GetKeeySeedFromFile(keySeed)
-			if err != nil {
-				return err
-			}
+			var cliCtx context.CLIContext
+			var txBldr auth.TxBuilder
 
-			cliCtx, txBldr, err := myutils.GetTxBldrAndCtxFromSeed(inBuf, cdc, seed)
-			if err != nil {
-				return err
+			keySeed := viper.GetString(myutils.FlagKeySeed)
+			if len(keySeed) > 0 {
+				seed, err := myutils.GetKeeySeedFromFile(keySeed)
+				if err != nil {
+					return err
+				}
+
+				cliCtx, txBldr, err = myutils.GetTxBldrAndCtxFromSeed(inBuf, cdc, seed)
+				if err != nil {
+					return err
+				}
+			} else {
+				txBldr = auth.NewTxBuilderFromCLI(inBuf).WithTxEncoder(utils.GetTxEncoder(cdc))
+				cliCtx = context.NewCLIContextWithInput(inBuf).WithCodec(cdc)
 			}
 
 			txBldr = txBldr.WithFees(minFeeShr)
@@ -537,7 +642,7 @@ func GetCmdRevokeSHRPLoader(cdc *codec.Codec) *cobra.Command {
 			}
 
 			msg := types.NewMsgEnrollSHRPLoaders(cliCtx.GetFromAddress(), loaderAddresses)
-			err = msg.ValidateBasic()
+			err := msg.ValidateBasic()
 			if err != nil {
 				return err
 			}
@@ -553,16 +658,26 @@ func GetCmdRevokeSHRPLoaderFromFile(cdc *codec.Codec) *cobra.Command {
 		Use: "revoke-loaders-from-file [filepath]",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			inBuf := bufio.NewReader(cmd.InOrStdin())
+
+			var cliCtx context.CLIContext
+			var txBldr auth.TxBuilder
+
 			keySeed := viper.GetString(myutils.FlagKeySeed)
-			seed, err := myutils.GetKeeySeedFromFile(keySeed)
-			if err != nil {
-				return err
+			if len(keySeed) > 0 {
+				seed, err := myutils.GetKeeySeedFromFile(keySeed)
+				if err != nil {
+					return err
+				}
+
+				cliCtx, txBldr, err = myutils.GetTxBldrAndCtxFromSeed(inBuf, cdc, seed)
+				if err != nil {
+					return err
+				}
+			} else {
+				txBldr = auth.NewTxBuilderFromCLI(inBuf).WithTxEncoder(utils.GetTxEncoder(cdc))
+				cliCtx = context.NewCLIContextWithInput(inBuf).WithCodec(cdc)
 			}
 
-			cliCtx, txBldr, err := myutils.GetTxBldrAndCtxFromSeed(inBuf, cdc, seed)
-			if err != nil {
-				return err
-			}
 			txBldr = txBldr.WithFees(minFeeShr)
 
 			addrList, err := myutils.GetAddressFromFile(args[0])
