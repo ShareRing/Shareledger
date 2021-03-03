@@ -588,3 +588,126 @@ func TestGentlemint_RevokeIdSigner_NotAccountOperator(t *testing.T) {
 
 	f.Cleanup()
 }
+
+func TestGentlemint_EnrollSHRPLoader_Success(t *testing.T) {
+	t.Parallel()
+	f := InitFixtures(t)
+
+	// start gaiad server with minimum fees
+	minGasPrice, _ := sdk.NewDecFromStr("0.000006")
+	proc := f.GDStart(fmt.Sprintf("--minimum-gas-prices=%s", sdk.NewDecCoinFromDec(feeDenom, minGasPrice)))
+	defer proc.Stop(false)
+
+	// Save key addresses for later use
+	authority := f.KeyAddress(keyAuthority)
+	treasurer := f.KeyAddress(keyTreasurer)
+
+	enrollLoaderCmd := fmt.Sprintf("enroll-loaders %s", treasurer.String())
+
+	// Enroll
+	_, stdOut, _ := f.ExecuteGentlemintTxCommand(enrollLoaderCmd, fmt.Sprintf("--from %s --yes --fees 1shr", authority.String()))
+
+	txRepsonse := ParseStdOut(t, stdOut)
+	require.Equal(t, uint32(0), txRepsonse.Code)
+
+	f.Cleanup()
+}
+
+func TestGentlemint_RevokeSHRPLoader_Success(t *testing.T) {
+	t.Parallel()
+	f := InitFixtures(t)
+
+	// start gaiad server with minimum fees
+	minGasPrice, _ := sdk.NewDecFromStr("0.000006")
+	proc := f.GDStart(fmt.Sprintf("--minimum-gas-prices=%s", sdk.NewDecCoinFromDec(feeDenom, minGasPrice)))
+	defer proc.Stop(false)
+
+	// Save key addresses for later use
+	authority := f.KeyAddress(keyAuthority)
+	treasurer := f.KeyAddress(keyTreasurer)
+
+	enrollLoaderCmd := fmt.Sprintf("revoke-loaders %s", treasurer.String())
+
+	// Enroll
+	_, stdOut, _ := f.ExecuteGentlemintTxCommand(enrollLoaderCmd, fmt.Sprintf("--from %s --yes --fees 1shr", authority.String()))
+
+	txRepsonse := ParseStdOut(t, stdOut)
+	require.Equal(t, uint32(0), txRepsonse.Code)
+
+	f.Cleanup()
+}
+
+func TestGentlemint_SendSHR_Success(t *testing.T) {
+	t.Parallel()
+	f := InitFixtures(t)
+
+	// start gaiad server with minimum fees
+	minGasPrice, _ := sdk.NewDecFromStr("0.000006")
+	proc := f.GDStart(fmt.Sprintf("--minimum-gas-prices=%s", sdk.NewDecCoinFromDec(feeDenom, minGasPrice)))
+	defer proc.Stop(false)
+
+	// Save key addresses for later use
+	treasurer := f.KeyAddress(keyTreasurer)
+	emptyAccount := f.KeyAddress(keyEmtyUser)
+
+	amount := "100"
+	cmd := fmt.Sprintf("send-shr %s %s", emptyAccount.String(), amount)
+
+	// Enroll
+	_, stdOut, _ := f.ExecuteGentlemintTxCommand(cmd, fmt.Sprintf("--from %s --yes --fees 10shr", treasurer.String()))
+
+	txRepsonse := ParseStdOut(t, stdOut)
+	require.Equal(t, uint32(0), txRepsonse.Code)
+
+	balance := f.QueryAccount(emptyAccount)
+
+	require.Equal(t, amount, balance.GetCoins().AmountOf("shr").String())
+
+	f.Cleanup()
+}
+
+func TestGentlemint_SendSHRP_Success(t *testing.T) {
+	t.Parallel()
+	f := InitFixtures(t)
+
+	// start gaiad server with minimum fees
+	minGasPrice, _ := sdk.NewDecFromStr("0.000006")
+	proc := f.GDStart(fmt.Sprintf("--minimum-gas-prices=%s", sdk.NewDecCoinFromDec(feeDenom, minGasPrice)))
+	defer proc.Stop(false)
+
+	// Save key addresses for later use
+	authority := f.KeyAddress(keyAuthority)
+	treasurer := f.KeyAddress(keyTreasurer)
+
+	emptyAccount := f.KeyAddress(keyEmtyUser)
+	amount := "10"
+
+	loadCmd := fmt.Sprintf("load-shrp %s %s", treasurer.String(), amount)
+	enrollLoaderCmd := fmt.Sprintf("enroll-loaders %s", treasurer.String())
+
+	// Enroll
+	_, stdOut, _ := f.ExecuteGentlemintTxCommand(enrollLoaderCmd, fmt.Sprintf("--from %s --yes --fees 1shr", authority.String()))
+	tests.WaitForNextNBlocksTM(1, f.Port)
+
+	txRepsonse := ParseStdOut(t, stdOut)
+	require.Equal(t, uint32(0), txRepsonse.Code)
+
+	// Load
+	_, stdOut2, _ := f.ExecuteGentlemintTxCommand(loadCmd, fmt.Sprintf("--from %s --yes --fees 1shr", treasurer.String()))
+
+	txRepsonse2 := ParseStdOut(t, stdOut2)
+	require.Equal(t, uint32(0), txRepsonse2.Code)
+
+	// Send
+	cmd := fmt.Sprintf("send-shrp %s %s", emptyAccount.String(), amount)
+	_, stdOut3, _ := f.ExecuteGentlemintTxCommand(cmd, fmt.Sprintf("--from %s --yes --fees 10shr", treasurer.String()))
+
+	txRepsonse3 := ParseStdOut(t, stdOut3)
+	require.Equal(t, uint32(0), txRepsonse3.Code)
+
+	balance := f.QueryAccount(emptyAccount)
+
+	require.Equal(t, amount, balance.GetCoins().AmountOf("shrp").String())
+
+	f.Cleanup()
+}

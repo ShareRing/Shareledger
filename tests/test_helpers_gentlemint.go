@@ -6,6 +6,7 @@ package tests
 import (
 	"fmt"
 	"strings"
+	"testing"
 
 	"github.com/cosmos/cosmos-sdk/tests"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -137,4 +138,17 @@ func (f *Fixtures) QueryAllAccountOperator(flags ...string) []gentlemint.AccStat
 	err := cdc.UnmarshalJSON([]byte(out), &accs)
 	require.NoError(f.T, err, "out %v\n, err %v", out, err)
 	return accs
+}
+
+func (f *Fixtures) ExecuteGentlemintTxCommand(command string, flags ...string) (bool, string, string) {
+	cmd := fmt.Sprintf("%s tx gentlemint %s %v", f.GaiacliBinary, command, f.Flags())
+	return executeWriteRetStdStreams(f.T, addFlags(cmd, flags), DefaultKeyPass)
+}
+
+func ParseStdOut(t *testing.T, stdOut string) sdk.TxResponse {
+	txRepsonse := sdk.TxResponse{}
+	cdc := app.MakeCodec()
+	err := cdc.UnmarshalJSON([]byte(stdOut), &txRepsonse)
+	require.Nil(t, err)
+	return txRepsonse
 }
