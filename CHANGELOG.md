@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.1.0] - 2021-03-03
+### Added
+- Document module
+
+### Updated
+- Upgrade to cosmos sdk v0.38.3
+- Update Id module
+- Move hard-coded accounts to genesis.json file
+
+### Fixed
+- No
+
 ## [0.2.1] - 2019-03-01
 
 ### Added
