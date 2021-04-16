@@ -7,6 +7,7 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 
+	myutils "github.com/ShareRing/modules/utils"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/codec"
@@ -15,7 +16,6 @@ import (
 	"github.com/sharering/shareledger/x/identity/types"
 
 	"github.com/cosmos/cosmos-sdk/x/auth/client/utils"
-	"github.com/sharering/shareledger/x/myutils"
 )
 
 const (

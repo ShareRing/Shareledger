@@ -7,18 +7,18 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 
+	myutils "github.com/ShareRing/modules/utils"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/x/auth/client/utils"
 	"github.com/sharering/shareledger/x/booking/types"
-	"github.com/sharering/shareledger/x/myutils"
 )
 
-const (
-	bookFee     = 0.05
-	completeFee = 0.03
+var (
+	bookFee     = myutils.HIGHFEE
+	completeFee = myutils.MEDIUMFEE
 )
 
 func GetTxCmd(storeKey string, cdc *codec.Codec) *cobra.Command {

@@ -6,20 +6,21 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 
+	myutils "github.com/ShareRing/modules/utils"
+
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/context"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/sharering/shareledger/x/electoral/types"
-	"github.com/sharering/shareledger/x/myutils"
 
 	"github.com/cosmos/cosmos-sdk/x/auth"
 	"github.com/cosmos/cosmos-sdk/x/auth/client/utils"
 )
 
-const (
-	minFeeShr = "1shr"
+var (
+	minFeeShr = myutils.MINFEE.String() + "shr"
 )
 
 func GetTxCmd(storeKey string, cdc *codec.Codec) *cobra.Command {

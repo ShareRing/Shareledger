@@ -7,19 +7,19 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 
+	myutils "github.com/ShareRing/modules/utils"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/x/auth/client/utils"
 	"github.com/sharering/shareledger/x/asset/types"
-	"github.com/sharering/shareledger/x/myutils"
 )
 
-const (
-	creationFee = 0.05
-	updateFee   = 0.03
-	deleteFee   = 0.01
+var (
+	creationFee = myutils.HIGHFEE
+	updateFee   = myutils.MEDIUMFEE
+	deleteFee   = myutils.LOWFEE
 )
 
 func GetTxCmd(storeKey string, cdc *codec.Codec) *cobra.Command {

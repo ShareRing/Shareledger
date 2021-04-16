@@ -3,10 +3,11 @@ package cli
 import (
 	"bufio"
 	"fmt"
-	"strconv"
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+
+	myutils "github.com/ShareRing/modules/utils"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/context"
@@ -18,12 +19,11 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/x/auth"
 	"github.com/cosmos/cosmos-sdk/x/auth/client/utils"
-	"github.com/sharering/shareledger/x/myutils"
 )
 
-const (
-	minFeeShr = "1shr"
-	sendFee   = 0.02
+var (
+	minFeeShr = myutils.MINFEE.String() + "shr"
+	sendFee   = myutils.LOWFEE
 )
 
 func GetTxCmd(storeKey string, cdc *codec.Codec) *cobra.Command {
@@ -37,7 +37,6 @@ func GetTxCmd(storeKey string, cdc *codec.Codec) *cobra.Command {
 
 	gentlemintTxCmd.AddCommand(flags.PostCommands(
 		GetCmdLoadSHR(cdc),
-		GetCmdBuyCent(cdc),
 		GetCmdBuySHR(cdc),
 		GetCmdSetExchange(cdc),
 		GetCmdEnrollSHRPLoader(cdc),
@@ -94,10 +93,11 @@ func GetCmdLoadSHR(cdc *codec.Codec) *cobra.Command {
 			if err != nil {
 				return err
 			}
-			amt, err := strconv.Atoi(args[1])
-			if err != nil {
-				return err
-			}
+			// amt, err := strconv.Atoi(args[1])
+			// if err != nil {
+			// 	return err
+			// }
+			amt := args[1]
 			msg := types.NewMsgLoadSHR(cliCtx.GetFromAddress(), to, amt)
 			err = msg.ValidateBasic()
 			if err != nil {
@@ -243,61 +243,16 @@ func GetCmdSendSHR(cdc *codec.Codec) *cobra.Command {
 			if err != nil {
 				return err
 			}
-			amt, err := strconv.Atoi(args[1])
-			if err != nil {
-				return err
-			}
+			// amt, err := strconv.Atoi(args[1])
+			// if err != nil {
+			// 	return err
+			// }
+			amt := args[1]
 			msg := types.NewMsgSendSHR(cliCtx.GetFromAddress(), to, amt)
 			err = msg.ValidateBasic()
 			if err != nil {
 				return err
 			}
-			return utils.GenerateOrBroadcastMsgs(cliCtx, txBldr, []sdk.Msg{msg})
-		},
-	}
-	cmd.Flags().String(myutils.FlagKeySeed, "", "path to key_seed.json")
-	return cmd
-}
-
-func GetCmdBuyCent(cdc *codec.Codec) *cobra.Command {
-	cmd := &cobra.Command{
-		Use:   "buy-cent [amount]",
-		Short: "bid for existing name or claim new name",
-		Args:  cobra.ExactArgs(1),
-		RunE: func(cmd *cobra.Command, args []string) error {
-			inBuf := bufio.NewReader(cmd.InOrStdin())
-
-			var cliCtx context.CLIContext
-			var txBldr auth.TxBuilder
-
-			keySeed := viper.GetString(myutils.FlagKeySeed)
-			if len(keySeed) > 0 {
-				seed, err := myutils.GetKeeySeedFromFile(keySeed)
-				if err != nil {
-					return err
-				}
-
-				cliCtx, txBldr, err = myutils.GetTxBldrAndCtxFromSeed(inBuf, cdc, seed)
-				if err != nil {
-					return err
-				}
-			} else {
-				txBldr = auth.NewTxBuilderFromCLI(inBuf).WithTxEncoder(utils.GetTxEncoder(cdc))
-				cliCtx = context.NewCLIContextWithInput(inBuf).WithCodec(cdc)
-			}
-
-			txBldr = txBldr.WithFees(minFeeShr)
-
-			amt, err := strconv.Atoi(args[0])
-			if err != nil {
-				return err
-			}
-			msg := types.NewMsgBuyCent(cliCtx.GetFromAddress(), amt)
-			err = msg.ValidateBasic()
-			if err != nil {
-				return err
-			}
-
 			return utils.GenerateOrBroadcastMsgs(cliCtx, txBldr, []sdk.Msg{msg})
 		},
 	}
@@ -334,12 +289,9 @@ func GetCmdBuySHR(cdc *codec.Codec) *cobra.Command {
 
 			txBldr = txBldr.WithFees(minFeeShr)
 
-			amt, err := strconv.Atoi(args[0])
-			if err != nil {
-				return err
-			}
+			amt := args[0]
 			msg := types.NewMsgBuySHR(cliCtx.GetFromAddress(), amt)
-			err = msg.ValidateBasic()
+			err := msg.ValidateBasic()
 			if err != nil {
 				return err
 			}
@@ -421,6 +373,7 @@ func GetCmdBurnSHRP(cdc *codec.Codec) *cobra.Command {
 			}
 
 			txBldr = txBldr.WithFees(minFeeShr)
+
 			amt := args[0]
 			msg := types.NewMsgBurnSHRP(cliCtx.GetFromAddress(), amt)
 			err := msg.ValidateBasic()
@@ -464,12 +417,13 @@ func GetCmdBurnSHR(cdc *codec.Codec) *cobra.Command {
 
 			txBldr = txBldr.WithFees(minFeeShr)
 
-			amt, err := strconv.Atoi(args[0])
-			if err != nil {
-				return err
-			}
+			// amt, err := strconv.Atoi(args[0])
+			// if err != nil {
+			// 	return err
+			// }
+			amt := args[0]
 			msg := types.NewMsgBurnSHR(cliCtx.GetFromAddress(), amt)
-			err = msg.ValidateBasic()
+			err := msg.ValidateBasic()
 			if err != nil {
 				return err
 			}

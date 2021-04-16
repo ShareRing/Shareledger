@@ -13,9 +13,10 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/sharering/shareledger/x/gentlemint/types"
 
+	myutils "github.com/ShareRing/modules/utils"
+
 	"github.com/cosmos/cosmos-sdk/x/auth"
 	"github.com/cosmos/cosmos-sdk/x/auth/client/utils"
-	"github.com/sharering/shareledger/x/myutils"
 )
 
 func GetCmdEnrollIdSigners(cdc *codec.Codec) *cobra.Command {
@@ -96,6 +97,7 @@ func GetCmdEnrollIdSignersFromFile(cdc *codec.Codec) *cobra.Command {
 			}
 
 			txBldr = txBldr.WithFees(minFeeShr)
+
 			addrList, err := myutils.GetAddressFromFile(args[0])
 			if err != nil {
 				return err

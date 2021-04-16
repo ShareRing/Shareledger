@@ -2,8 +2,8 @@ package keeper
 
 import (
 	"fmt"
-	"strconv"
 
+	myutil "github.com/ShareRing/modules/utils"
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
@@ -15,15 +15,19 @@ import (
 )
 
 const (
-	MaxSHRSupply        = int64(4396000000)
-	ExchangeRateKey     = "exchange_shrp_to_shr"
-	DefaultExchangeRate = "200"
-	ShrpToCentRate      = 100
-	AuthorityKey        = "A"
-	TreasurerKey        = "T"
-	IdSignerKey         = "IDS"
-	DocIssuerKey        = "DOCIS"
-	AccOpKey            = "ACCOP"
+	ExchangeRateKey = "exchange_shrp_to_shr"
+
+	ShrpToCentRate = 100
+	AuthorityKey   = "A"
+	TreasurerKey   = "T"
+	IdSignerKey    = "IDS"
+	DocIssuerKey   = "DOCIS"
+	AccOpKey       = "ACCOP"
+)
+
+var (
+	DefaultExchangeRate = sdk.NewInt(200)
+	MaxSHRSupply        = sdk.NewInt(4396000000).Mul(myutil.SHRDecimal)
 )
 
 type Keeper struct {
@@ -157,19 +161,19 @@ func (k Keeper) IsSHRPLoaderPresent(ctx sdk.Context, address string) bool {
 func (k Keeper) ShrMintPossible(ctx sdk.Context, amt sdk.Int) bool {
 	total := k.supplyKeeper.GetSupply(ctx).GetTotal()
 	newAmt := total.AmountOf("shr").Add(amt)
-	if newAmt.GTE(sdk.NewInt(MaxSHRSupply)) {
+	if newAmt.GTE(MaxSHRSupply) {
 		return false
 	}
 	return true
 }
 
-func (k Keeper) GetExchangeRate(ctx sdk.Context) string {
+func (k Keeper) GetExchangeRate(ctx sdk.Context) sdk.Int {
 	if !k.IsExchangeRatePresent(ctx) {
 		return DefaultExchangeRate
 	}
 	store := ctx.KVStore((k.storeKey))
 	bz := store.Get([]byte(ExchangeRateKey))
-	var rate string
+	var rate sdk.Int
 	k.cdc.MustUnmarshalBinaryBare(bz, &rate)
 	return rate
 }
@@ -216,49 +220,52 @@ func (k Keeper) BuyShr(ctx sdk.Context, shrAmt sdk.Int, addr sdk.AccAddress) err
 		return types.ErrSHRSupplyExceeded
 	}
 
-	rateStr := k.GetExchangeRate(ctx)
-	rate, err := strconv.ParseFloat(rateStr, 64)
-	if err != nil {
-		return err
-	}
+	rate := k.GetExchangeRate(ctx)
+	// rate, err := strconv.ParseFloat(rateStr, 64)
+	// if err != nil {
+	// 	return err
+	// }
 
-	conv := float64(shrAmt.Int64()) / rate
+	// conv := float64(shrAmt.Int64()) / rate
 
 	oldCoins := k.GetCoins(ctx, addr)
 	addedCoins := sdk.NewCoins(sdk.NewCoin("shr", shrAmt))
 	removedCoins := sdk.NewCoins()
 
-	i, d, err := ParseCoinFloat(conv)
-	if err != nil {
-		return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, err.Error())
-	}
-	shrpAmt := sdk.NewInt(i)
-	centAmt := sdk.NewInt(d)
+	// i, d, err := ParseCoinFloat(conv)
+	// if err != nil {
+	// 	return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, err.Error())
+	// }
+	// shrpAmt := sdk.NewInt(i)
+	// centAmt := sdk.NewInt(d)
+	shrpAmt := shrAmt.Mul(myutil.RateDecimal).Quo(rate)
 
 	if !oldCoins.AmountOf("shrp").GT(shrpAmt) {
-		return sdkerrors.ErrInsufficientFunds
+		return sdkerrors.Wrap(sdkerrors.ErrInsufficientFunds, fmt.Sprintf("Need %sSHRP, balance %sSHRP", shrpAmt.String(), oldCoins.AmountOf("shrp").String()))
 	}
-	if !oldCoins.AmountOf("cent").GT(centAmt) {
-		shrpAmt = shrpAmt.AddRaw(int64(1))
-		addedCoins = addedCoins.Add(sdk.NewCoin("cent", sdk.NewInt(int64(ShrpToCentRate))))
-	}
-
-	removedCoins = removedCoins.Add(sdk.NewCoin("cent", centAmt), sdk.NewCoin("shrp", shrpAmt))
+	// if !oldCoins.AmountOf("cent").GT(centAmt) {
+	// 	shrpAmt = shrpAmt.AddRaw(int64(1))
+	// 	addedCoins = addedCoins.Add(sdk.NewCoin("cent", sdk.NewInt(int64(ShrpToCentRate))))
+	// }
+	fmt.Println("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 1")
+	removedCoins = removedCoins.Add(sdk.NewCoin("shrp", shrpAmt))
 
 	if _, err := k.AddCoins(ctx, addr, addedCoins); err != nil {
 		return err
 	}
-
+	fmt.Println("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 11")
 	if _, err := k.SubtractCoins(ctx, addr, removedCoins); err != nil {
 		return err
 	}
-
+	fmt.Println("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 12")
 	if err := k.SupplyMintCoins(ctx, addedCoins); err != nil {
 		return err
 	}
+	fmt.Println("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 13")
 	if err := k.SupplyBurnCoins(ctx, removedCoins); err != nil {
 		return err
 	}
+	fmt.Println("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 2")
 	return nil
 }
 

@@ -3,12 +3,13 @@ package cli
 import (
 	"fmt"
 
+	myutils "github.com/ShareRing/modules/utils"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/context"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/codec"
 	"github.com/sharering/shareledger/x/gentlemint/types"
-	"github.com/sharering/shareledger/x/myutils"
+
 	"github.com/spf13/cobra"
 )
 

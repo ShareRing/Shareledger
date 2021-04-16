@@ -6,6 +6,8 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 
+	myutils "github.com/ShareRing/modules/utils"
+
 	"github.com/cosmos/cosmos-sdk/client/context"
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -14,7 +16,6 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/x/auth"
 	"github.com/cosmos/cosmos-sdk/x/auth/client/utils"
-	"github.com/sharering/shareledger/x/myutils"
 )
 
 func GetCmdEnrollDocIssuer(cdc *codec.Codec) *cobra.Command {
@@ -44,6 +45,7 @@ func GetCmdEnrollDocIssuer(cdc *codec.Codec) *cobra.Command {
 			}
 
 			txBldr = txBldr.WithFees(minFeeShr)
+
 			if len(args) == 0 {
 				return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "Empty address list")
 			}
@@ -109,6 +111,7 @@ func GetCmdRevokeDocIssuer(cdc *codec.Codec) *cobra.Command {
 			}
 			msg := types.NewMsgRevokeDocIssuers(cliCtx.GetFromAddress(), accs)
 			err := msg.ValidateBasic()
+
 			if err != nil {
 				return err
 			}

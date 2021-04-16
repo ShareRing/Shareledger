@@ -1,6 +1,7 @@
 package types
 
 import (
+	"fmt"
 	"strconv"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -24,10 +25,10 @@ const (
 type MsgLoadSHR struct {
 	Approver sdk.AccAddress `json:"approver"`
 	Receiver sdk.AccAddress `json:"receiver"`
-	Amount   int            `json:"amount"`
+	Amount   string         `json:"amount"`
 }
 
-func NewMsgLoadSHR(approver, receiver sdk.AccAddress, amount int) MsgLoadSHR {
+func NewMsgLoadSHR(approver, receiver sdk.AccAddress, amount string) MsgLoadSHR {
 	return MsgLoadSHR{
 		Approver: approver,
 		Receiver: receiver,
@@ -50,8 +51,12 @@ func (msg MsgLoadSHR) ValidateBasic() error {
 	if msg.Receiver.Empty() {
 		return sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, msg.Receiver.String())
 	}
-	if msg.Amount <= 0 {
-		return sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "Amount must be positive")
+	// if msg.Amount <= 0 {
+	// 	return sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "Amount must be positive")
+	// }
+	amount, ok := sdk.NewIntFromString(msg.Amount)
+	if !ok || amount.LTE(sdk.ZeroInt()) {
+		return sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, fmt.Sprintf("Invalid amount number %s", msg.Amount))
 	}
 	return nil
 }
@@ -105,10 +110,10 @@ func (msg MsgBuyCent) GetSigners() []sdk.AccAddress {
 
 type MsgBuySHR struct {
 	Buyer  sdk.AccAddress `json:"buyer"`
-	Amount int            `json:"amount"`
+	Amount string         `json:"amount"`
 }
 
-func NewMsgBuySHR(buyer sdk.AccAddress, amount int) MsgBuySHR {
+func NewMsgBuySHR(buyer sdk.AccAddress, amount string) MsgBuySHR {
 	return MsgBuySHR{
 		Buyer:  buyer,
 		Amount: amount,
@@ -128,8 +133,9 @@ func (msg MsgBuySHR) ValidateBasic() error {
 		return sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, msg.Buyer.String())
 	}
 
-	if msg.Amount <= 0 {
-		return sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "Amount must be positive")
+	amount, ok := sdk.NewIntFromString(msg.Amount)
+	if !ok || amount.LTE(sdk.ZeroInt()) {
+		return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "Amount must be positive")
 	}
 	return nil
 }
@@ -167,8 +173,12 @@ func (msg MsgBurnSHRP) ValidateBasic() error {
 		return sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, msg.Approver.String())
 	}
 
-	if _, _, err := ParseCoinStr(msg.Amount); err != nil {
-		return err
+	// if _, _, err := ParseCoinStr(msg.Amount); err != nil {
+	// 	return err
+	// }
+	amount, ok := sdk.NewIntFromString(msg.Amount)
+	if !ok || amount.LTE(sdk.ZeroInt()) {
+		return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "Amount must be positive")
 	}
 	return nil
 }
@@ -183,10 +193,10 @@ func (msg MsgBurnSHRP) GetSigners() []sdk.AccAddress {
 
 type MsgBurnSHR struct {
 	Approver sdk.AccAddress `json:"approver"`
-	Amount   int            `json:"amount"`
+	Amount   string         `json:"amount"`
 }
 
-func NewMsgBurnSHR(approver sdk.AccAddress, amt int) MsgBurnSHR {
+func NewMsgBurnSHR(approver sdk.AccAddress, amt string) MsgBurnSHR {
 	return MsgBurnSHR{
 		Approver: approver,
 		Amount:   amt,
@@ -205,7 +215,8 @@ func (msg MsgBurnSHR) ValidateBasic() error {
 	if msg.Approver.Empty() {
 		return sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, msg.Approver.String())
 	}
-	if !(msg.Amount > 0) {
+	amount, ok := sdk.NewIntFromString(msg.Amount)
+	if !ok || amount.LTE(sdk.ZeroInt()) {
 		return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "Amount must be positive")
 	}
 	return nil
@@ -248,8 +259,12 @@ func (msg MsgLoadSHRP) ValidateBasic() error {
 	if msg.Receiver.Empty() {
 		return sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, msg.Receiver.String())
 	}
-	if _, _, err := ParseCoinStr(msg.Amount); err != nil {
-		return err
+	// if _, _, err := ParseCoinStr(msg.Amount); err != nil {
+	// 	return err
+	// }
+	amount, ok := sdk.NewIntFromString(msg.Amount)
+	if !ok || amount.LTE(sdk.ZeroInt()) {
+		return sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, fmt.Sprintf("Invalid amount number %s", msg.Amount))
 	}
 	return nil
 }
@@ -291,9 +306,14 @@ func (msg MsgSendSHRP) ValidateBasic() error {
 	if msg.Receiver.Empty() {
 		return sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, msg.Receiver.String())
 	}
-	if _, _, err := ParseCoinStr(msg.Amount); err != nil {
-		return err
+	amount, ok := sdk.NewIntFromString(msg.Amount)
+	if !ok || amount.LTE(sdk.NewInt(0)) {
+		return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "Amount must be positive")
 	}
+
+	// if _, _, err := ParseCoinStr(msg.Amount); err != nil {
+	// 	return err
+	// }
 	return nil
 }
 
@@ -308,10 +328,10 @@ func (msg MsgSendSHRP) GetSigners() []sdk.AccAddress {
 type MsgSendSHR struct {
 	Sender   sdk.AccAddress `json:"sender"`
 	Receiver sdk.AccAddress `json:"receiver"`
-	Amount   int            `json:"amount"`
+	Amount   string         `json:"amount"`
 }
 
-func NewMsgSendSHR(sender, receiver sdk.AccAddress, amount int) MsgSendSHR {
+func NewMsgSendSHR(sender, receiver sdk.AccAddress, amount string) MsgSendSHR {
 	return MsgSendSHR{
 		Sender:   sender,
 		Receiver: receiver,
@@ -334,9 +354,14 @@ func (msg MsgSendSHR) ValidateBasic() error {
 	if msg.Receiver.Empty() {
 		return sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, msg.Receiver.String())
 	}
-	if !(msg.Amount > 0) {
-		return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "Amount must be possitive")
+
+	amount, ok := sdk.NewIntFromString(msg.Amount)
+	if !ok || amount.LTE(sdk.NewInt(0)) {
+		return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "Amount must be positive")
 	}
+	// if !(msg.Amount > 0) {
+	// 	return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "Amount must be positive")
+	// }
 	return nil
 }
 
@@ -458,7 +483,8 @@ func (msg MsgSetExchange) ValidateBasic() error {
 	if msg.Approver.Empty() {
 		return sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, msg.Approver.String())
 	}
-	if _, _, err := ParseCoinStr(msg.Rate); err != nil {
+	rate, ok := sdk.NewIntFromString(msg.Rate)
+	if !ok || rate.LTE(sdk.NewInt(0)) {
 		return ErrInvalidExchangeRate
 	}
 	return nil

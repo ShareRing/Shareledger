@@ -1,8 +1,11 @@
 package gatecheck
 
 import (
-	"strconv"
-
+	"github.com/ShareRing/modules/document"
+	doctypes "github.com/ShareRing/modules/document/types"
+	"github.com/ShareRing/modules/id"
+	idtypes "github.com/ShareRing/modules/id/types"
+	myutils "github.com/ShareRing/modules/utils"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/cosmos/cosmos-sdk/x/auth/ante"
@@ -12,13 +15,13 @@ import (
 )
 
 const (
-	FEE_LEVEL_HIGH   = "HIGH"
-	HIGHFEE          = 0.05
+	FEE_LEVEL_HIGH = "HIGH"
+	// HIGHFEE          = 0.05
 	FEE_LEVEL_MEDIUM = "MEDIUM"
-	MEDIUMFEE        = 0.03
-	FEE_LEVEL_LOW    = "LOW"
-	LOWFEE           = 0.02
-	MINFEE           = 0.01
+	// MEDIUMFEE        = 0.03
+	FEE_LEVEL_LOW = "LOW"
+	// LOWFEE           = 0.02
+	// MINFEE           = 0.01
 	SKIP_CHECK_LEVEL = "SKIP"
 )
 
@@ -35,16 +38,17 @@ func NewCheckFeeDecorator(gk gentlemint.Keeper) CheckFeeDecorator {
 func (cfd CheckFeeDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate bool, next sdk.AnteHandler) (newCtx sdk.Context, err error) {
 	msgs := tx.GetMsgs()
 	msg := msgs[0]
-	feeLevel := getFeeLevel(msg)
+	feeLevel, multiplier := getFeeLevel(msg)
 	if feeLevel == SKIP_CHECK_LEVEL {
 		return next(ctx, tx, simulate)
 	}
-	exRateStr := cfd.gk.GetExchangeRate(ctx)
-	exRate, err := strconv.ParseFloat(exRateStr, 64)
-	if err != nil {
-		return ctx, err
-	}
-	requiredFees := getRequiredFees(feeLevel, exRate)
+	exRate := cfd.gk.GetExchangeRate(ctx)
+	// exRate, err := strconv.ParseFloat(exRateStr, 64)
+	// if err != nil {
+	// 	return ctx, err
+	// }
+
+	requiredFees := getRequiredFees(feeLevel, exRate, int64(multiplier))
 
 	feeTx, _ := tx.(ante.FeeTx)
 	fee := feeTx.GetFee()
@@ -54,32 +58,39 @@ func (cfd CheckFeeDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate boo
 	return next(ctx, tx, simulate)
 }
 
-func getFeeLevel(msg sdk.Msg) string {
+func getFeeLevel(msg sdk.Msg) (string, int) {
 	switch msg.Type() {
-	case asset.TypeAssetCreateMsg, booking.TypeBookMsg:
-		return FEE_LEVEL_HIGH
-	case asset.TypeAssetUpdateMsg, booking.TypeBookCompleteMsg:
-		return FEE_LEVEL_MEDIUM
+	case asset.TypeAssetCreateMsg, booking.TypeBookMsg, document.TypeMsgCreateDoc, document.TypeMsgRevokeDoc:
+		return FEE_LEVEL_HIGH, 1
+	case asset.TypeAssetUpdateMsg, booking.TypeBookCompleteMsg, document.TypeMsgUpdateDoc, id.TypeMsgCreateID, id.TypeMsgUpdateID, id.TypeMsgReplaceIdOwner:
+		return FEE_LEVEL_MEDIUM, 1
 	case asset.TypeAssetDeleteMsg, "send", gentlemint.TypesSendSHRP, gentlemint.TypeSendSHR:
-		return FEE_LEVEL_LOW
+		return FEE_LEVEL_LOW, 1
+	case document.TypeMsgCreateDocInBatch:
+		m := msg.(doctypes.MsgCreateDocBatch)
+		return FEE_LEVEL_HIGH, len(m.Holder)
+	case id.TypeMsgCreateIDBatch:
+		m := msg.(idtypes.MsgCreateIdBatch)
+		return FEE_LEVEL_HIGH, len(m.Id)
 	default:
-		return SKIP_CHECK_LEVEL
+		return SKIP_CHECK_LEVEL, 1
 	}
 }
 
-func getRequiredFees(feeLevel string, exRate float64) sdk.Coins {
-	var shrAmt int64
-	var fiatFee float64
+// Calculate the SHR amount based on the fee level and the exchange rate
+func getRequiredFees(feeLevel string, exRate sdk.Int, multiplier int64) sdk.Coins {
+	var fiatFee sdk.Int
 	switch feeLevel {
 	case FEE_LEVEL_HIGH:
-		fiatFee = HIGHFEE
+		fiatFee = myutils.HIGHFEE
 	case FEE_LEVEL_MEDIUM:
-		fiatFee = MEDIUMFEE
+		fiatFee = myutils.MEDIUMFEE
 	case FEE_LEVEL_LOW:
-		fiatFee = LOWFEE
+		fiatFee = myutils.LOWFEE
 	default:
-		fiatFee = MINFEE
+		fiatFee = myutils.MINFEE
 	}
-	shrAmt = int64(fiatFee*exRate) + 1
-	return sdk.NewCoins(sdk.NewCoin("shr", sdk.NewInt(shrAmt)))
+
+	shrAmt := fiatFee.Mul(exRate)
+	return sdk.NewCoins(sdk.NewCoin("shr", shrAmt.Mul(sdk.NewInt(multiplier))))
 }

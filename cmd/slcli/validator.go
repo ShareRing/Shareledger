@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"strings"
 
+	myutils "github.com/ShareRing/modules/utils"
+
 	"github.com/cosmos/cosmos-sdk/client/context"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/codec"
@@ -16,13 +18,12 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/slashing"
 	"github.com/cosmos/cosmos-sdk/x/staking/client/cli"
 	"github.com/cosmos/cosmos-sdk/x/staking/types"
-	"github.com/sharering/shareledger/x/myutils"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
 
-const (
-	minFeeShr = "1shr"
+var (
+	minFeeShr = myutils.MINFEE.String() + "shr"
 )
 
 func GetCmdCreateValidator(cdc *codec.Codec) *cobra.Command {

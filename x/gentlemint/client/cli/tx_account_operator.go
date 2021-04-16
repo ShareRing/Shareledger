@@ -6,6 +6,7 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 
+	myutils "github.com/ShareRing/modules/utils"
 	"github.com/cosmos/cosmos-sdk/client/context"
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -14,7 +15,6 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/x/auth"
 	"github.com/cosmos/cosmos-sdk/x/auth/client/utils"
-	"github.com/sharering/shareledger/x/myutils"
 )
 
 func GetCmdEnrollAccountOperators(cdc *codec.Codec) *cobra.Command {
@@ -44,6 +44,7 @@ func GetCmdEnrollAccountOperators(cdc *codec.Codec) *cobra.Command {
 			}
 
 			txBldr = txBldr.WithFees(minFeeShr)
+
 			if len(args) == 0 {
 				return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "Empty address list")
 			}
@@ -95,7 +96,6 @@ func GetCmdRevokeAccountOperator(cdc *codec.Codec) *cobra.Command {
 				txBldr = auth.NewTxBuilderFromCLI(inBuf).WithTxEncoder(utils.GetTxEncoder(cdc))
 				cliCtx = context.NewCLIContextWithInput(inBuf).WithCodec(cdc)
 			}
-
 			txBldr = txBldr.WithFees(minFeeShr)
 
 			if len(args) == 0 {

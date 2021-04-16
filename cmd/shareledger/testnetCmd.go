@@ -24,7 +24,6 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/supply"
 	"github.com/sharering/shareledger/x/electoral"
 	"github.com/sharering/shareledger/x/gentlemint"
-	"github.com/sharering/shareledger/x/myutils"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"github.com/tendermint/go-amino"
@@ -33,6 +32,8 @@ import (
 	tmos "github.com/tendermint/tendermint/libs/os"
 	"github.com/tendermint/tendermint/types"
 	tmtime "github.com/tendermint/tendermint/types/time"
+
+	myutils "github.com/ShareRing/modules/utils"
 )
 
 const (

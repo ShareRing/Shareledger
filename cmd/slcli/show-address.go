@@ -3,10 +3,11 @@ package main
 import (
 	"fmt"
 
+	myutils "github.com/ShareRing/modules/utils"
 	clkeys "github.com/cosmos/cosmos-sdk/client/keys"
 	"github.com/cosmos/cosmos-sdk/crypto/keys"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/sharering/shareledger/x/myutils"
+
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )

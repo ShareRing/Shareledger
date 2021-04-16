@@ -3,12 +3,13 @@ package main
 import (
 	"bufio"
 
+	myutils "github.com/ShareRing/modules/utils"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/x/auth/client/utils"
 	"github.com/cosmos/cosmos-sdk/x/distribution/types"
-	"github.com/sharering/shareledger/x/myutils"
+
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
