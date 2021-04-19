@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	myutils "github.com/ShareRing/modules/utils"
+	shareringUtils "github.com/ShareRing/modules/utils"
 	clkeys "github.com/cosmos/cosmos-sdk/client/keys"
 	"github.com/cosmos/cosmos-sdk/crypto/keys"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -24,14 +24,14 @@ func ShowAddressCmd() *cobra.Command {
 		Short: "show address from seed file",
 		RunE:  showAddress,
 	}
-	cmd.Flags().String(myutils.FlagKeySeed, "", "path to key_seed.json")
+	cmd.Flags().String(shareringUtils.FlagKeySeed, "", "path to key_seed.json")
 	cmd.Flags().String(FlagBechPrefix, "acc", "address format account/validator")
 	return cmd
 }
 
 func showAddress(cmd *cobra.Command, args []string) error {
-	keySeed := viper.GetString(myutils.FlagKeySeed)
-	seed, err := myutils.GetKeeySeedFromFile(keySeed)
+	keySeed := viper.GetString(shareringUtils.FlagKeySeed)
+	seed, err := shareringUtils.GetKeeySeedFromFile(keySeed)
 	if err != nil {
 		return err
 	}

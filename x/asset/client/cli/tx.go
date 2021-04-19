@@ -7,7 +7,7 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 
-	myutils "github.com/ShareRing/modules/utils"
+	shareringUtils "github.com/ShareRing/modules/utils"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/codec"
@@ -17,9 +17,9 @@ import (
 )
 
 var (
-	creationFee = myutils.HIGHFEE
-	updateFee   = myutils.MEDIUMFEE
-	deleteFee   = myutils.LOWFEE
+	creationFee = shareringUtils.HIGHFEE
+	updateFee   = shareringUtils.MEDIUMFEE
+	deleteFee   = shareringUtils.LOWFEE
 )
 
 func GetTxCmd(storeKey string, cdc *codec.Codec) *cobra.Command {
@@ -47,18 +47,18 @@ func GetCmdCreateAsset(cdc *codec.Codec) *cobra.Command {
 		RunE: func(cmd *cobra.Command, args []string) error {
 			inBuf := bufio.NewReader(cmd.InOrStdin())
 
-			keySeed := viper.GetString(myutils.FlagKeySeed)
-			seed, err := myutils.GetKeeySeedFromFile(keySeed)
+			keySeed := viper.GetString(shareringUtils.FlagKeySeed)
+			seed, err := shareringUtils.GetKeeySeedFromFile(keySeed)
 			if err != nil {
 				return err
 			}
 
-			cliCtx, txBldr, err := myutils.GetTxBldrAndCtxFromSeed(inBuf, cdc, seed)
+			cliCtx, txBldr, err := shareringUtils.GetTxBldrAndCtxFromSeed(inBuf, cdc, seed)
 			if err != nil {
 				return err
 			}
 
-			txFee, err := myutils.GetFeeFromShrp(cdc, cliCtx, creationFee)
+			txFee, err := shareringUtils.GetFeeFromShrp(cdc, cliCtx, creationFee)
 			if err != nil {
 				return err
 			}
@@ -82,7 +82,7 @@ func GetCmdCreateAsset(cdc *codec.Codec) *cobra.Command {
 			return utils.GenerateOrBroadcastMsgs(cliCtx, txBldr, []sdk.Msg{msg})
 		},
 	}
-	cmd.Flags().String(myutils.FlagKeySeed, "", "path to key_seed.json")
+	cmd.Flags().String(shareringUtils.FlagKeySeed, "", "path to key_seed.json")
 	return cmd
 }
 
@@ -93,18 +93,18 @@ func GetCmdUpdateAsset(cdc *codec.Codec) *cobra.Command {
 		RunE: func(cmd *cobra.Command, args []string) error {
 			inBuf := bufio.NewReader(cmd.InOrStdin())
 
-			keySeed := viper.GetString(myutils.FlagKeySeed)
-			seed, err := myutils.GetKeeySeedFromFile(keySeed)
+			keySeed := viper.GetString(shareringUtils.FlagKeySeed)
+			seed, err := shareringUtils.GetKeeySeedFromFile(keySeed)
 			if err != nil {
 				return err
 			}
 
-			cliCtx, txBldr, err := myutils.GetTxBldrAndCtxFromSeed(inBuf, cdc, seed)
+			cliCtx, txBldr, err := shareringUtils.GetTxBldrAndCtxFromSeed(inBuf, cdc, seed)
 			if err != nil {
 				return err
 			}
 
-			txFee, err := myutils.GetFeeFromShrp(cdc, cliCtx, updateFee)
+			txFee, err := shareringUtils.GetFeeFromShrp(cdc, cliCtx, updateFee)
 
 			if err != nil {
 				return err
@@ -131,7 +131,7 @@ func GetCmdUpdateAsset(cdc *codec.Codec) *cobra.Command {
 			return utils.GenerateOrBroadcastMsgs(cliCtx, txBldr, []sdk.Msg{msg})
 		},
 	}
-	cmd.Flags().String(myutils.FlagKeySeed, "", "path to key_seed.json")
+	cmd.Flags().String(shareringUtils.FlagKeySeed, "", "path to key_seed.json")
 	return cmd
 }
 
@@ -142,18 +142,18 @@ func GetCmdDeleteAsset(cdc *codec.Codec) *cobra.Command {
 		RunE: func(cmd *cobra.Command, args []string) error {
 			inBuf := bufio.NewReader(cmd.InOrStdin())
 
-			keySeed := viper.GetString(myutils.FlagKeySeed)
-			seed, err := myutils.GetKeeySeedFromFile(keySeed)
+			keySeed := viper.GetString(shareringUtils.FlagKeySeed)
+			seed, err := shareringUtils.GetKeeySeedFromFile(keySeed)
 			if err != nil {
 				return err
 			}
 
-			cliCtx, txBldr, err := myutils.GetTxBldrAndCtxFromSeed(inBuf, cdc, seed)
+			cliCtx, txBldr, err := shareringUtils.GetTxBldrAndCtxFromSeed(inBuf, cdc, seed)
 			if err != nil {
 				return err
 			}
 
-			txFee, err := myutils.GetFeeFromShrp(cdc, cliCtx, deleteFee)
+			txFee, err := shareringUtils.GetFeeFromShrp(cdc, cliCtx, deleteFee)
 			if err != nil {
 				return err
 			}
@@ -167,6 +167,6 @@ func GetCmdDeleteAsset(cdc *codec.Codec) *cobra.Command {
 			return utils.GenerateOrBroadcastMsgs(cliCtx, txBldr, []sdk.Msg{msg})
 		},
 	}
-	cmd.Flags().String(myutils.FlagKeySeed, "", "path to key_seed.json")
+	cmd.Flags().String(shareringUtils.FlagKeySeed, "", "path to key_seed.json")
 	return cmd
 }

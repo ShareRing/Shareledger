@@ -3,7 +3,7 @@ package main
 import (
 	"bufio"
 
-	myutils "github.com/ShareRing/modules/utils"
+	shareringUtils "github.com/ShareRing/modules/utils"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -25,13 +25,13 @@ func GetCmdWithdrawRewards(cdc *codec.Codec) *cobra.Command {
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			inBuf := bufio.NewReader(cmd.InOrStdin())
-			keySeed := viper.GetString(myutils.FlagKeySeed)
-			seed, err := myutils.GetKeeySeedFromFile(keySeed)
+			keySeed := viper.GetString(shareringUtils.FlagKeySeed)
+			seed, err := shareringUtils.GetKeeySeedFromFile(keySeed)
 			if err != nil {
 				return err
 			}
 
-			cliCtx, txBldr, err := myutils.GetTxBldrAndCtxFromSeed(inBuf, cdc, seed)
+			cliCtx, txBldr, err := shareringUtils.GetTxBldrAndCtxFromSeed(inBuf, cdc, seed)
 			if err != nil {
 				return err
 			}
@@ -50,7 +50,7 @@ func GetCmdWithdrawRewards(cdc *codec.Codec) *cobra.Command {
 			return utils.GenerateOrBroadcastMsgs(cliCtx, txBldr, msgs)
 		},
 	}
-	cmd.Flags().String(myutils.FlagKeySeed, "", "path to key_seed.json file")
+	cmd.Flags().String(shareringUtils.FlagKeySeed, "", "path to key_seed.json file")
 	cmd.Flags().Bool(flagCommission, false, "also withdraw validator's commission")
 	cmd = flags.PostCommands(cmd)[0]
 	return cmd

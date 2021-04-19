@@ -33,7 +33,7 @@ import (
 	"github.com/tendermint/tendermint/types"
 	tmtime "github.com/tendermint/tendermint/types/time"
 
-	myutils "github.com/ShareRing/modules/utils"
+	shareringUtils "github.com/ShareRing/modules/utils"
 )
 
 const (
@@ -327,7 +327,7 @@ func collectGenFiles(
 func createKeyAndGenesisAccount(addr sdk.AccAddress, keyHome, keyName string, inBuf *bufio.Reader, power int64) (authexported.GenesisAccount, sdk.AccAddress, string, error) {
 	var err error
 	if addr == nil {
-		addr, err = myutils.CreateKeySeed(keyHome, keyName)
+		addr, err = shareringUtils.CreateKeySeed(keyHome, keyName)
 		if err != nil {
 			return nil, nil, "", err
 		}
@@ -353,11 +353,11 @@ func writeStakingGenTx(gentxsDir string, power int64, addr sdk.AccAddress, valPu
 		sdk.OneInt(),
 	)
 	tx := auth.NewStdTx([]sdk.Msg{msg}, auth.StdFee{}, []auth.StdSignature{}, peerAddr)
-	seed, err := myutils.GetKeeySeedFromFile(seedPath)
+	seed, err := shareringUtils.GetKeeySeedFromFile(seedPath)
 	if err != nil {
 		return err
 	}
-	_, txBldr, err := myutils.GetTxBldrAndCtxFromSeed(inBuf, cdc, seed)
+	_, txBldr, err := shareringUtils.GetTxBldrAndCtxFromSeed(inBuf, cdc, seed)
 	if err != nil {
 		return err
 	}

@@ -5,7 +5,7 @@ import (
 	doctypes "github.com/ShareRing/modules/document/types"
 	"github.com/ShareRing/modules/id"
 	idtypes "github.com/ShareRing/modules/id/types"
-	myutils "github.com/ShareRing/modules/utils"
+	shareringUtils "github.com/ShareRing/modules/utils"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/cosmos/cosmos-sdk/x/auth/ante"
@@ -82,13 +82,13 @@ func getRequiredFees(feeLevel string, exRate sdk.Int, multiplier int64) sdk.Coin
 	var fiatFee sdk.Int
 	switch feeLevel {
 	case FEE_LEVEL_HIGH:
-		fiatFee = myutils.HIGHFEE
+		fiatFee = shareringUtils.HIGHFEE
 	case FEE_LEVEL_MEDIUM:
-		fiatFee = myutils.MEDIUMFEE
+		fiatFee = shareringUtils.MEDIUMFEE
 	case FEE_LEVEL_LOW:
-		fiatFee = myutils.LOWFEE
+		fiatFee = shareringUtils.LOWFEE
 	default:
-		fiatFee = myutils.MINFEE
+		fiatFee = shareringUtils.MINFEE
 	}
 
 	shrAmt := fiatFee.Mul(exRate)

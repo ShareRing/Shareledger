@@ -6,7 +6,7 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 
-	myutils "github.com/ShareRing/modules/utils"
+	shareringUtils "github.com/ShareRing/modules/utils"
 
 	"github.com/cosmos/cosmos-sdk/client/context"
 	"github.com/cosmos/cosmos-sdk/codec"
@@ -28,14 +28,14 @@ func GetCmdEnrollDocIssuer(cdc *codec.Codec) *cobra.Command {
 			var cliCtx context.CLIContext
 			var txBldr auth.TxBuilder
 
-			keySeed := viper.GetString(myutils.FlagKeySeed)
+			keySeed := viper.GetString(shareringUtils.FlagKeySeed)
 			if len(keySeed) > 0 {
-				seed, err := myutils.GetKeeySeedFromFile(keySeed)
+				seed, err := shareringUtils.GetKeeySeedFromFile(keySeed)
 				if err != nil {
 					return err
 				}
 
-				cliCtx, txBldr, err = myutils.GetTxBldrAndCtxFromSeed(inBuf, cdc, seed)
+				cliCtx, txBldr, err = shareringUtils.GetTxBldrAndCtxFromSeed(inBuf, cdc, seed)
 				if err != nil {
 					return err
 				}
@@ -66,7 +66,7 @@ func GetCmdEnrollDocIssuer(cdc *codec.Codec) *cobra.Command {
 			return utils.GenerateOrBroadcastMsgs(cliCtx, txBldr, []sdk.Msg{msg})
 		},
 	}
-	cmd.Flags().String(myutils.FlagKeySeed, "", "path to key_seed.json")
+	cmd.Flags().String(shareringUtils.FlagKeySeed, "", "path to key_seed.json")
 	return cmd
 }
 
@@ -80,14 +80,14 @@ func GetCmdRevokeDocIssuer(cdc *codec.Codec) *cobra.Command {
 			var cliCtx context.CLIContext
 			var txBldr auth.TxBuilder
 
-			keySeed := viper.GetString(myutils.FlagKeySeed)
+			keySeed := viper.GetString(shareringUtils.FlagKeySeed)
 			if len(keySeed) > 0 {
-				seed, err := myutils.GetKeeySeedFromFile(keySeed)
+				seed, err := shareringUtils.GetKeeySeedFromFile(keySeed)
 				if err != nil {
 					return err
 				}
 
-				cliCtx, txBldr, err = myutils.GetTxBldrAndCtxFromSeed(inBuf, cdc, seed)
+				cliCtx, txBldr, err = shareringUtils.GetTxBldrAndCtxFromSeed(inBuf, cdc, seed)
 				if err != nil {
 					return err
 				}
@@ -118,6 +118,6 @@ func GetCmdRevokeDocIssuer(cdc *codec.Codec) *cobra.Command {
 			return utils.GenerateOrBroadcastMsgs(cliCtx, txBldr, []sdk.Msg{msg})
 		},
 	}
-	cmd.Flags().String(myutils.FlagKeySeed, "", "path to key_seed.json")
+	cmd.Flags().String(shareringUtils.FlagKeySeed, "", "path to key_seed.json")
 	return cmd
 }

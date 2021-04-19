@@ -3,7 +3,7 @@ package gentlemint
 import (
 	"fmt"
 
-	myutils "github.com/ShareRing/modules/utils"
+	shareringUtils "github.com/ShareRing/modules/utils"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/sharering/shareledger/x/gentlemint/types"
@@ -14,7 +14,7 @@ const (
 )
 
 var (
-	requiredSHRAmt = myutils.SHRDecimal.Mul(sdk.NewInt(10))
+	requiredSHRAmt = shareringUtils.SHRDecimal.Mul(sdk.NewInt(10))
 )
 
 func NewHandler(keeper Keeper) sdk.Handler {
@@ -116,7 +116,7 @@ func handleMsgLoadSHRP(ctx sdk.Context, keeper Keeper, msg MsgLoadSHRP) (*sdk.Re
 		}
 	}
 	// return 1 SHR fee spent by the loader
-	reimbursed := sdk.NewCoin("shr", myutils.OneSHR)
+	reimbursed := sdk.NewCoin("shr", shareringUtils.OneSHR)
 
 	if err := keeper.SendCoins(ctx, msg.Receiver, msg.Approver, sdk.NewCoins(reimbursed)); err != nil {
 		return nil, err

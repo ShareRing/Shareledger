@@ -22,6 +22,10 @@ github.com/Knetic/govaluate v3.0.1-0.20171022003610-9aa49832a739+incompatible/go
 github.com/OneOfOne/xxhash v1.2.2/go.mod h1:HSdplMjZKSmBqAxg5vPj2TmRDmfkzw+cTzAElWljhcU=
 github.com/ShareRing/modules v0.1.0 h1:o81tM/nqwpVbWgLXOgYaxvgDWco2McsYX6B3iA2m2Oc=
 github.com/ShareRing/modules v0.1.0/go.mod h1:2Xj1p/yDkhNjCId+JYWi60Qo/OfleqpVQ9jzd6NiNmI=
+github.com/ShareRing/modules v0.1.1-0.20210416082311-79cd7ff56725 h1:59ORvYZMBIZXSwa/h80T0GT8ExYDkQ8HIzwt2CQkCc8=
+github.com/ShareRing/modules v0.1.1-0.20210416082311-79cd7ff56725/go.mod h1:qMqIfUanPquMs242gMElAPrs8C3AnHGf/Fa8dwpiaZo=
+github.com/ShareRing/modules v0.1.1-0.20210419025427-e04763ce9786 h1:MNBDJ7oVw0sumnb2OEvv+jh7m9Om6fSEARh9oo14rL8=
+github.com/ShareRing/modules v0.1.1-0.20210419025427-e04763ce9786/go.mod h1:qMqIfUanPquMs242gMElAPrs8C3AnHGf/Fa8dwpiaZo=
 github.com/Shopify/sarama v1.19.0/go.mod h1:FVkBWblsNy7DGZRfXLU0O9RCGt5g3g3yEuWXgklEdEo=
 github.com/Shopify/toxiproxy v2.1.4+incompatible/go.mod h1:OXgGpZ6Cli1/URJOF1DMxUHB2q5Ap20/P/eIdh4G0pI=
 github.com/VividCortex/gohistogram v1.0.0 h1:6+hBz+qvs0JOrrNhhmR7lFxo5sINxBCGXrdtl/UvroE=

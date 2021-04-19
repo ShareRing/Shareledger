@@ -6,7 +6,7 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 
-	myutils "github.com/ShareRing/modules/utils"
+	shareringUtils "github.com/ShareRing/modules/utils"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/context"
@@ -20,7 +20,7 @@ import (
 )
 
 var (
-	minFeeShr = myutils.MINFEE.String() + "shr"
+	minFeeShr = shareringUtils.MINFEE.String() + "shr"
 )
 
 func GetTxCmd(storeKey string, cdc *codec.Codec) *cobra.Command {
@@ -52,14 +52,14 @@ func GetCmdEnroll(cdc *codec.Codec) *cobra.Command {
 			var txBldr auth.TxBuilder
 
 			// Get key from key seed
-			keySeed := viper.GetString(myutils.FlagKeySeed)
+			keySeed := viper.GetString(shareringUtils.FlagKeySeed)
 			if len(keySeed) > 0 {
-				seed, err := myutils.GetKeeySeedFromFile(keySeed)
+				seed, err := shareringUtils.GetKeeySeedFromFile(keySeed)
 				if err != nil {
 					return err
 				}
 
-				cliCtx, txBldr, err = myutils.GetTxBldrAndCtxFromSeed(inBuf, cdc, seed)
+				cliCtx, txBldr, err = shareringUtils.GetTxBldrAndCtxFromSeed(inBuf, cdc, seed)
 				if err != nil {
 					return err
 				}
@@ -84,7 +84,7 @@ func GetCmdEnroll(cdc *codec.Codec) *cobra.Command {
 			return utils.GenerateOrBroadcastMsgs(cliCtx, txBldr, []sdk.Msg{msg})
 		},
 	}
-	cmd.Flags().String(myutils.FlagKeySeed, "", "path to key_seed.json")
+	cmd.Flags().String(shareringUtils.FlagKeySeed, "", "path to key_seed.json")
 	return cmd
 }
 
@@ -96,13 +96,13 @@ func GetCmdRevoke(cdc *codec.Codec) *cobra.Command {
 		RunE: func(cmd *cobra.Command, args []string) error {
 			inBuf := bufio.NewReader(cmd.InOrStdin())
 
-			keySeed := viper.GetString(myutils.FlagKeySeed)
-			seed, err := myutils.GetKeeySeedFromFile(keySeed)
+			keySeed := viper.GetString(shareringUtils.FlagKeySeed)
+			seed, err := shareringUtils.GetKeeySeedFromFile(keySeed)
 			if err != nil {
 				return err
 			}
 
-			cliCtx, txBldr, err := myutils.GetTxBldrAndCtxFromSeed(inBuf, cdc, seed)
+			cliCtx, txBldr, err := shareringUtils.GetTxBldrAndCtxFromSeed(inBuf, cdc, seed)
 			if err != nil {
 				return err
 			}
@@ -121,6 +121,6 @@ func GetCmdRevoke(cdc *codec.Codec) *cobra.Command {
 			return utils.GenerateOrBroadcastMsgs(cliCtx, txBldr, []sdk.Msg{msg})
 		},
 	}
-	cmd.Flags().String(myutils.FlagKeySeed, "", "path to key_seed.json")
+	cmd.Flags().String(shareringUtils.FlagKeySeed, "", "path to key_seed.json")
 	return cmd
 }
