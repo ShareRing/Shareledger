@@ -71,7 +71,7 @@ func getFeeLevel(msg sdk.Msg) (string, int) {
 		return FEE_LEVEL_HIGH, len(m.Holder)
 	case id.TypeMsgCreateIDBatch:
 		m := msg.(idtypes.MsgCreateIdBatch)
-		return FEE_LEVEL_HIGH, len(m.Id)
+		return FEE_LEVEL_MEDIUM, len(m.Id)
 	default:
 		return SKIP_CHECK_LEVEL, 1
 	}
