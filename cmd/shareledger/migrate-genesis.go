@@ -8,7 +8,11 @@ import (
 	"github.com/cosmos/cosmos-sdk/server"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	auth "github.com/cosmos/cosmos-sdk/x/auth"
+	"github.com/cosmos/cosmos-sdk/x/distribution"
 	"github.com/cosmos/cosmos-sdk/x/genutil"
+	"github.com/cosmos/cosmos-sdk/x/slashing"
+	"github.com/cosmos/cosmos-sdk/x/staking"
+	"github.com/cosmos/cosmos-sdk/x/supply"
 	gentlemint "github.com/sharering/shareledger/x/gentlemint"
 	oldId "github.com/sharering/shareledger/x/identity"
 	"github.com/spf13/cobra"
@@ -76,12 +80,11 @@ func FromV1_1_0(inputFilePath, outputFilePath string, cdc *codec.Codec) error {
 		return fmt.Errorf("failed to unmarshal old genesis state: %w", err)
 	}
 
+	// Auth module
 	var authState auth.GenesisState
 	if appState[auth.ModuleName] != nil {
 		cdc.MustUnmarshalJSON(appState[auth.ModuleName], &authState)
 	}
-
-	// Update balance
 	for i := 0; i < len(authState.Accounts); i++ {
 		acc := authState.Accounts[i]
 		coins := acc.GetCoins()
@@ -108,12 +111,132 @@ func FromV1_1_0(inputFilePath, outputFilePath string, cdc *codec.Codec) error {
 	}
 
 	authStateBz, err := cdc.MarshalJSON(authState)
-
 	if err != nil {
 		return fmt.Errorf("failed to marshal auth genesis state: %w", err)
 	}
-
 	appState[auth.ModuleName] = authStateBz
+
+	// Staking module
+	var stakingState staking.GenesisState
+	if appState[staking.ModuleName] != nil {
+		cdc.MustUnmarshalJSON(appState[staking.ModuleName], &stakingState)
+	}
+
+	stakingState.LastTotalPower = stakingState.LastTotalPower.Mul(utils.SHRDecimal)
+	for i := 0; i < len(stakingState.LastValidatorPowers); i++ {
+		stakingState.LastValidatorPowers[i].Power = stakingState.LastValidatorPowers[i].Power * utils.SHRDecimal.Int64()
+	}
+
+	for i := 0; i < len(stakingState.Validators); i++ {
+		stakingState.Validators[i].DelegatorShares = stakingState.Validators[i].DelegatorShares.MulInt(utils.SHRDecimal)
+		stakingState.Validators[i].Tokens = stakingState.Validators[i].Tokens.Mul(utils.SHRDecimal)
+		stakingState.Validators[i].UnbondingHeight = 0
+	}
+
+	for i := 0; i < len(stakingState.Delegations); i++ {
+		stakingState.Delegations[i].Shares = stakingState.Delegations[i].Shares.MulInt(utils.SHRDecimal)
+	}
+
+	for i := 0; i < len(stakingState.UnbondingDelegations); i++ {
+		for j := 0; j < len(stakingState.UnbondingDelegations[i].Entries); j++ {
+			stakingState.UnbondingDelegations[i].Entries[j].InitialBalance = stakingState.UnbondingDelegations[i].Entries[j].InitialBalance.Mul(utils.SHRDecimal)
+			stakingState.UnbondingDelegations[i].Entries[j].Balance = stakingState.UnbondingDelegations[i].Entries[j].Balance.Mul(utils.SHRDecimal)
+			stakingState.UnbondingDelegations[i].Entries[j].CreationHeight = 0
+		}
+	}
+
+	for i := 0; i < len(stakingState.Redelegations); i++ {
+		for j := 0; j < len(stakingState.Redelegations[i].Entries); j++ {
+			stakingState.Redelegations[i].Entries[j].InitialBalance = stakingState.Redelegations[i].Entries[j].InitialBalance.Mul(utils.SHRDecimal)
+			stakingState.Redelegations[i].Entries[j].SharesDst = stakingState.Redelegations[i].Entries[j].SharesDst.MulInt(utils.SHRDecimal)
+			stakingState.Redelegations[i].Entries[j].CreationHeight = 0
+		}
+	}
+
+	stakingStateBz, err := cdc.MarshalJSON(stakingState)
+	if err != nil {
+		return fmt.Errorf("failed to marshal auth genesis state: %w", err)
+	}
+	appState[staking.ModuleName] = stakingStateBz
+
+	// Distribution module
+	var distState distribution.GenesisState
+	if appState[distribution.ModuleName] != nil {
+		cdc.MustUnmarshalJSON(appState[distribution.ModuleName], &distState)
+	}
+
+	feePool := distState.FeePool
+	feePool.CommunityPool = decimalize(feePool.CommunityPool)
+	distState.FeePool = feePool
+
+	for i := 0; i < len(distState.OutstandingRewards); i++ {
+		distState.OutstandingRewards[i].OutstandingRewards = decimalize(distState.OutstandingRewards[i].OutstandingRewards)
+	}
+
+	for i := 0; i < len(distState.ValidatorAccumulatedCommissions); i++ {
+		distState.ValidatorAccumulatedCommissions[i].Accumulated = decimalize(distState.ValidatorAccumulatedCommissions[i].Accumulated)
+	}
+
+	for i := 0; i < len(distState.ValidatorHistoricalRewards); i++ {
+		distState.ValidatorHistoricalRewards[i].Rewards.CumulativeRewardRatio = decimalize(distState.ValidatorHistoricalRewards[i].Rewards.CumulativeRewardRatio)
+	}
+
+	for i := 0; i < len(distState.ValidatorCurrentRewards); i++ {
+		distState.ValidatorCurrentRewards[i].Rewards.Rewards = decimalize(distState.ValidatorCurrentRewards[i].Rewards.Rewards)
+	}
+
+	for i := 0; i < len(distState.DelegatorStartingInfos); i++ {
+		distState.DelegatorStartingInfos[i].StartingInfo.Stake = distState.DelegatorStartingInfos[i].StartingInfo.Stake.MulInt(utils.SHRPDecimal)
+		distState.DelegatorStartingInfos[i].StartingInfo.Height = 0
+	}
+
+	distStateBz, err := cdc.MarshalJSON(distState)
+	if err != nil {
+		return fmt.Errorf("failed to marshal auth genesis state: %w", err)
+	}
+	appState[distribution.ModuleName] = distStateBz
+
+	// Slashing module
+	var slashingState slashing.GenesisState
+	if appState[slashing.ModuleName] != nil {
+		cdc.MustUnmarshalJSON(appState[slashing.ModuleName], &slashingState)
+	}
+
+	for k, v := range slashingState.SigningInfos {
+		v.StartHeight = 0
+		slashingState.SigningInfos[k] = v
+	}
+
+	slashingStateBz, err := cdc.MarshalJSON(slashingState)
+	if err != nil {
+		return fmt.Errorf("failed to marshal auth genesis state: %w", err)
+	}
+	appState[slashing.ModuleName] = slashingStateBz
+
+	// Supply module
+	var supplyState supply.GenesisState
+	if appState[supply.ModuleName] != nil {
+		cdc.MustUnmarshalJSON(appState[supply.ModuleName], &supplyState)
+	}
+
+	var supplyCoins sdk.Coins
+	for i := 0; i < supplyState.Supply.Len(); i++ {
+		coin := supplyState.Supply[i]
+		var newCoin sdk.Coin
+		if coin.Denom == "shr" {
+			newCoin = sdk.NewCoin(coin.Denom, coin.Amount.Mul(utils.SHRDecimal))
+		} else if coin.Denom == "shrp" {
+			newCoin = sdk.NewCoin(coin.Denom, coin.Amount.Mul(utils.SHRPDecimal))
+		}
+		supplyCoins = supplyCoins.Add(newCoin)
+	}
+	supplyState.Supply = supplyCoins
+
+	supplyStateBz, err := cdc.MarshalJSON(supplyState)
+	if err != nil {
+		return fmt.Errorf("failed to marshal auth genesis state: %w", err)
+	}
+	appState[supply.ModuleName] = supplyStateBz
 
 	appStateJSON, err := cdc.MarshalJSON(appState)
 	if err != nil {
@@ -122,6 +245,21 @@ func FromV1_1_0(inputFilePath, outputFilePath string, cdc *codec.Codec) error {
 
 	genDoc.AppState = appStateJSON
 	return genutil.ExportGenesisFile(genDoc, outputFilePath)
+}
+
+func decimalize(input sdk.DecCoins) sdk.DecCoins {
+	var newCoins sdk.DecCoins
+	for i := 0; i < len(input); i++ {
+		coin := input[i]
+		var newCoin sdk.DecCoin
+		if coin.Denom == "shr" {
+			newCoin = sdk.NewDecCoinFromDec(coin.Denom, coin.Amount.MulInt(utils.SHRDecimal))
+		} else if coin.Denom == "shrp" {
+			newCoin = sdk.NewDecCoinFromDec(coin.Denom, coin.Amount.MulInt(utils.SHRPDecimal))
+		}
+		newCoins = newCoins.Add(newCoin)
+	}
+	return newCoins
 }
 
 func AddGenesisCustomMigrate(
