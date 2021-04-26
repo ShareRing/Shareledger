@@ -14,6 +14,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/staking"
 	"github.com/cosmos/cosmos-sdk/x/supply"
 	gentlemint "github.com/sharering/shareledger/x/gentlemint"
+	"github.com/sharering/shareledger/x/identity"
 	oldId "github.com/sharering/shareledger/x/identity"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -240,6 +241,14 @@ func FromV1_1_0(inputFilePath, outputFilePath string, cdc *codec.Codec) error {
 		return fmt.Errorf("failed to marshal auth genesis state: %w", err)
 	}
 	appState[supply.ModuleName] = supplyStateBz
+
+	// Reset old id module
+	var identityState identity.GenesisState
+	identityStateBz, err := cdc.MarshalJSON(identityState)
+	if err != nil {
+		return fmt.Errorf("failed to marshal auth genesis state: %w", err)
+	}
+	appState[oldId.ModuleName] = identityStateBz
 
 	appStateJSON, err := cdc.MarshalJSON(appState)
 	if err != nil {
