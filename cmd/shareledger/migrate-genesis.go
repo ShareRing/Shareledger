@@ -122,9 +122,12 @@ func FromV1_1_0(inputFilePath, outputFilePath string, cdc *codec.Codec) error {
 		cdc.MustUnmarshalJSON(appState[staking.ModuleName], &stakingState)
 	}
 
-	stakingState.LastTotalPower = stakingState.LastTotalPower.Mul(utils.SHRDecimal)
+	// The default power = token/10^6 and we apply 10^8 decimal
+	// so the power will be mutiplied by 10^2 = 100
+	multiplier := int64(100)
+	stakingState.LastTotalPower = stakingState.LastTotalPower.Mul(sdk.NewInt(multiplier))
 	for i := 0; i < len(stakingState.LastValidatorPowers); i++ {
-		stakingState.LastValidatorPowers[i].Power = stakingState.LastValidatorPowers[i].Power * utils.SHRDecimal.Int64()
+		stakingState.LastValidatorPowers[i].Power = stakingState.LastValidatorPowers[i].Power * multiplier
 	}
 
 	for i := 0; i < len(stakingState.Validators); i++ {
