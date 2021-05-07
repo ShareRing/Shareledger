@@ -125,10 +125,10 @@ func FromV1_1_0(inputFilePath, outputFilePath string, cdc *codec.Codec) error {
 
 	// The default power = token/10^6 and we apply 10^8 decimal
 	// so the power will be mutiplied by 10^2 = 100
-	multiplier := int64(100)
-	stakingState.LastTotalPower = stakingState.LastTotalPower.Mul(sdk.NewInt(multiplier))
+	powerMultiplier := int64(100)
+	stakingState.LastTotalPower = stakingState.LastTotalPower.Mul(sdk.NewInt(powerMultiplier))
 	for i := 0; i < len(stakingState.LastValidatorPowers); i++ {
-		stakingState.LastValidatorPowers[i].Power = stakingState.LastValidatorPowers[i].Power * multiplier
+		stakingState.LastValidatorPowers[i].Power = stakingState.LastValidatorPowers[i].Power * powerMultiplier
 	}
 
 	for i := 0; i < len(stakingState.Validators); i++ {
@@ -256,6 +256,13 @@ func FromV1_1_0(inputFilePath, outputFilePath string, cdc *codec.Codec) error {
 	}
 
 	genDoc.AppState = appStateJSON
+
+	// Update gendoc
+	// Validators info
+	for i := 0; i < len(genDoc.Validators); i++ {
+		genDoc.Validators[i].Power = genDoc.Validators[i].Power * powerMultiplier
+	}
+
 	return genutil.ExportGenesisFile(genDoc, outputFilePath)
 }
 
