@@ -193,6 +193,9 @@ func FromV1_1_0(inputFilePath, outputFilePath string, cdc *codec.Codec) error {
 		distState.DelegatorStartingInfos[i].StartingInfo.Stake = distState.DelegatorStartingInfos[i].StartingInfo.Stake.MulInt(utils.SHRPDecimal)
 		distState.DelegatorStartingInfos[i].StartingInfo.Height = 0
 	}
+	for i := 0; i < len(distState.ValidatorSlashEvents); i++ {
+		distState.ValidatorSlashEvents[i].Height = 0
+	}
 
 	distStateBz, err := cdc.MarshalJSON(distState)
 	if err != nil {
