@@ -5,7 +5,7 @@ import (
 )
 
 var (
-	ErrSHRSupplyExceeded   = sdkerrors.New(ModuleName, 1, "SHR supply exceeded")
+	ErrSHRSupplyExceeded   = sdkerrors.Register(ModuleName, 1, "SHR supply exceeded")
 	ErrInvalidExchangeRate = sdkerrors.New(ModuleName, 2, "Invalid exchange rate")
 	ErrDoesNotExist        = sdkerrors.New(ModuleName, 3, "Does not exist")
 

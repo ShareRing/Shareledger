@@ -6,6 +6,7 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 
+	shareringUtils "github.com/ShareRing/modules/utils"
 	"github.com/cosmos/cosmos-sdk/client/context"
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -14,7 +15,6 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/x/auth"
 	"github.com/cosmos/cosmos-sdk/x/auth/client/utils"
-	"github.com/sharering/shareledger/x/myutils"
 )
 
 func GetCmdEnrollAccountOperators(cdc *codec.Codec) *cobra.Command {
@@ -27,14 +27,14 @@ func GetCmdEnrollAccountOperators(cdc *codec.Codec) *cobra.Command {
 			var cliCtx context.CLIContext
 			var txBldr auth.TxBuilder
 
-			keySeed := viper.GetString(myutils.FlagKeySeed)
+			keySeed := viper.GetString(shareringUtils.FlagKeySeed)
 			if len(keySeed) > 0 {
-				seed, err := myutils.GetKeeySeedFromFile(keySeed)
+				seed, err := shareringUtils.GetKeeySeedFromFile(keySeed)
 				if err != nil {
 					return err
 				}
 
-				cliCtx, txBldr, err = myutils.GetTxBldrAndCtxFromSeed(inBuf, cdc, seed)
+				cliCtx, txBldr, err = shareringUtils.GetTxBldrAndCtxFromSeed(inBuf, cdc, seed)
 				if err != nil {
 					return err
 				}
@@ -44,6 +44,7 @@ func GetCmdEnrollAccountOperators(cdc *codec.Codec) *cobra.Command {
 			}
 
 			txBldr = txBldr.WithFees(minFeeShr)
+
 			if len(args) == 0 {
 				return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "Empty address list")
 			}
@@ -66,7 +67,7 @@ func GetCmdEnrollAccountOperators(cdc *codec.Codec) *cobra.Command {
 			return utils.GenerateOrBroadcastMsgs(cliCtx, txBldr, []sdk.Msg{msg})
 		},
 	}
-	cmd.Flags().String(myutils.FlagKeySeed, "", "path to key_seed.json")
+	cmd.Flags().String(shareringUtils.FlagKeySeed, "", "path to key_seed.json")
 	return cmd
 }
 
@@ -80,14 +81,14 @@ func GetCmdRevokeAccountOperator(cdc *codec.Codec) *cobra.Command {
 			var cliCtx context.CLIContext
 			var txBldr auth.TxBuilder
 
-			keySeed := viper.GetString(myutils.FlagKeySeed)
+			keySeed := viper.GetString(shareringUtils.FlagKeySeed)
 			if len(keySeed) > 0 {
-				seed, err := myutils.GetKeeySeedFromFile(keySeed)
+				seed, err := shareringUtils.GetKeeySeedFromFile(keySeed)
 				if err != nil {
 					return err
 				}
 
-				cliCtx, txBldr, err = myutils.GetTxBldrAndCtxFromSeed(inBuf, cdc, seed)
+				cliCtx, txBldr, err = shareringUtils.GetTxBldrAndCtxFromSeed(inBuf, cdc, seed)
 				if err != nil {
 					return err
 				}
@@ -95,7 +96,6 @@ func GetCmdRevokeAccountOperator(cdc *codec.Codec) *cobra.Command {
 				txBldr = auth.NewTxBuilderFromCLI(inBuf).WithTxEncoder(utils.GetTxEncoder(cdc))
 				cliCtx = context.NewCLIContextWithInput(inBuf).WithCodec(cdc)
 			}
-
 			txBldr = txBldr.WithFees(minFeeShr)
 
 			if len(args) == 0 {
@@ -118,6 +118,6 @@ func GetCmdRevokeAccountOperator(cdc *codec.Codec) *cobra.Command {
 			return utils.GenerateOrBroadcastMsgs(cliCtx, txBldr, []sdk.Msg{msg})
 		},
 	}
-	cmd.Flags().String(myutils.FlagKeySeed, "", "path to key_seed.json")
+	cmd.Flags().String(shareringUtils.FlagKeySeed, "", "path to key_seed.json")
 	return cmd
 }

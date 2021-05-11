@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.1.1] - 2021-05-11
+### Added
+- No
+
+### Updated
+- Remove old Id module
+- Decimalization
+
+### Fixed
+- No
+
+
 ## [1.1.0] - 2021-03-03
 ### Added
 - Document module

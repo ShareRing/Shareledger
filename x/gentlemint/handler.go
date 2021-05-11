@@ -3,17 +3,18 @@ package gentlemint
 import (
 	"fmt"
 
+	shareringUtils "github.com/ShareRing/modules/utils"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/sharering/shareledger/x/gentlemint/types"
 )
 
 const (
-	AUTH_ACC         = "EA719F0F48FB9874731F6F5C2D5E67163D9E8115"
-	TREASURER_ACC    = "0B81C88B87E81CF33A1EFF10AC11A1AB394195C3"
 	ShrpLoaderPrefix = "shrploader"
-	requiredSHRAmt   = 10
-	ShrpToCentRate   = 100
+)
+
+var (
+	requiredSHRAmt = shareringUtils.SHRDecimal.Mul(sdk.NewInt(10))
 )
 
 func NewHandler(keeper Keeper) sdk.Handler {
@@ -27,8 +28,8 @@ func NewHandler(keeper Keeper) sdk.Handler {
 			return handleMsgSendSHRP(ctx, keeper, msg)
 		case MsgSendSHR:
 			return handleMsgSendSHR(ctx, keeper, msg)
-		case MsgBuyCent:
-			return handleMsgBuyCent(ctx, keeper, msg)
+		// case MsgBuyCent:
+		// 	return handleMsgBuyCent(ctx, keeper, msg)
 		case MsgBurnSHRP:
 			return handleMsgBurnSHRP(ctx, keeper, msg)
 		case MsgBurnSHR:
@@ -64,10 +65,8 @@ func handleMsgLoadSHR(ctx sdk.Context, keeper Keeper, msg MsgLoadSHR) (*sdk.Resu
 	if !IsAuthority(ctx, msg.GetSigners()[0], keeper) {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "Approver's Address is not authority")
 	}
-	if msg.Amount <= 0 {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "Amount must be positive")
-	}
-	amt := sdk.NewInt(int64(msg.Amount))
+
+	amt, _ := sdk.NewIntFromString(msg.Amount)
 	if !keeper.ShrMintPossible(ctx, amt) {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "SHR possible mint exceeded")
 	}
@@ -81,18 +80,28 @@ func handleMsgLoadSHR(ctx sdk.Context, keeper Keeper, msg MsgLoadSHR) (*sdk.Resu
 	}, nil
 }
 
+// Load SHRP function is used to load the given amount of SHRP to the given recepient
+// - Tx fee is 0.01 SHRP
+// - Automatically buy 10SHR for the recepient
+// - Send 1SHR from recepient to loader as the loading fee
 func handleMsgLoadSHRP(ctx sdk.Context, keeper Keeper, msg MsgLoadSHRP) (*sdk.Result, error) {
 	if !IsSHRPLoader(ctx, msg.GetSigners()[0], keeper) {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "Approver's Address is not an Enrolled SHRP Loader")
 	}
-	i, d, err := types.ParseCoinStr(msg.Amount)
-	if err != nil {
-		return nil, err
-	}
-	shrpAmt := sdk.NewInt(i)
-	centAmt := sdk.NewInt(d)
+	// i, d, err := types.ParseCoinStr(msg.Amount)
+	// if err != nil {
+	// 	return nil, err
+	// }
+	// shrpAmt := sdk.NewInt(i)
+	// centAmt := sdk.NewInt(d)
 
-	amt := sdk.NewCoins(sdk.NewCoin("cent", centAmt), sdk.NewCoin("shrp", shrpAmt))
+	// amt := sdk.NewCoins(sdk.NewCoin("cent", centAmt), sdk.NewCoin("shrp", shrpAmt))
+	// if err := keeper.LoadCoins(ctx, msg.Receiver, amt); err != nil {
+	// 	return nil, err
+	// }
+
+	shrpAmt, _ := sdk.NewIntFromString(msg.Amount)
+	amt := sdk.NewCoins(sdk.NewCoin("shrp", shrpAmt))
 	if err := keeper.LoadCoins(ctx, msg.Receiver, amt); err != nil {
 		return nil, err
 	}
@@ -100,11 +109,14 @@ func handleMsgLoadSHRP(ctx sdk.Context, keeper Keeper, msg MsgLoadSHRP) (*sdk.Re
 	oldCoins := keeper.GetCoins(ctx, msg.Receiver)
 	oldShr := oldCoins.AmountOf("shr")
 	// if there is less that 10 shr in the wallet, buy 10 shr
-	if oldShr.LT(sdk.NewInt(int64(requiredSHRAmt))) {
-		keeper.BuyShr(ctx, sdk.NewInt(int64(requiredSHRAmt)), msg.Receiver)
+	if oldShr.LT(requiredSHRAmt) {
+		err := keeper.BuyShr(ctx, requiredSHRAmt, msg.Receiver)
+		if err != nil {
+			return nil, sdkerrors.Wrap(err, "Can not buy SHR")
+		}
 	}
 	// return 1 SHR fee spent by the loader
-	reimbursed := sdk.NewCoin("shr", sdk.NewInt(int64(1)))
+	reimbursed := sdk.NewCoin("shr", shareringUtils.OneSHR)
 
 	if err := keeper.SendCoins(ctx, msg.Receiver, msg.Approver, sdk.NewCoins(reimbursed)); err != nil {
 		return nil, err
@@ -116,35 +128,35 @@ func handleMsgLoadSHRP(ctx sdk.Context, keeper Keeper, msg MsgLoadSHRP) (*sdk.Re
 }
 
 func handleMsgSendSHRP(ctx sdk.Context, keeper Keeper, msg MsgSendSHRP) (*sdk.Result, error) {
-	if err := msg.ValidateBasic(); err != nil {
-		return nil, err
-	}
-	i, d, err := types.ParseCoinStr(msg.Amount)
-	if err != nil {
-		return nil, err
-	}
-	shrpAmt := sdk.NewInt(i)
-	centAmt := sdk.NewInt(d)
-	oldCoins := keeper.GetCoins(ctx, msg.Sender)
-	if oldCoins.AmountOf("cent").LT(centAmt) {
-		if oldCoins.AmountOf("shrp").LTE(shrpAmt) {
-			return nil, sdkerrors.ErrInsufficientFunds
-		}
-		if _, err := keeper.SubtractCoins(ctx, msg.Sender, sdk.NewCoins(sdk.NewCoin("shrp", sdk.NewInt(int64(1))))); err != nil {
-			return nil, err
-		}
-		if _, err := keeper.AddCoins(ctx, msg.Sender, sdk.NewCoins(sdk.NewCoin("cent", sdk.NewInt(int64(100))))); err != nil {
-			return nil, err
-		}
-		if err := keeper.SupplyBurnCoins(ctx, sdk.NewCoins(sdk.NewCoin("shrp", sdk.NewInt(int64(1))))); err != nil {
-			return nil, err
-		}
-		if err := keeper.SupplyMintCoins(ctx, sdk.NewCoins(sdk.NewCoin("cent", sdk.NewInt(int64(100))))); err != nil {
-			return nil, err
-		}
-	}
-
-	amt := sdk.NewCoins(sdk.NewCoin("cent", centAmt), sdk.NewCoin("shrp", shrpAmt))
+	// if err := msg.ValidateBasic(); err != nil {
+	// 	return nil, err
+	// }
+	// i, d, err := types.ParseCoinStr(msg.Amount)
+	// if err != nil {
+	// 	return nil, err
+	// }
+	// shrpAmt := sdk.NewInt(i)
+	// centAmt := sdk.NewInt(d)
+	// oldCoins := keeper.GetCoins(ctx, msg.Sender)
+	// if oldCoins.AmountOf("cent").LT(centAmt) {
+	// 	if oldCoins.AmountOf("shrp").LTE(shrpAmt) {
+	// 		return nil, sdkerrors.ErrInsufficientFunds
+	// 	}
+	// 	if _, err := keeper.SubtractCoins(ctx, msg.Sender, sdk.NewCoins(sdk.NewCoin("shrp", sdk.NewInt(int64(1))))); err != nil {
+	// 		return nil, err
+	// 	}
+	// 	if _, err := keeper.AddCoins(ctx, msg.Sender, sdk.NewCoins(sdk.NewCoin("cent", sdk.NewInt(int64(100))))); err != nil {
+	// 		return nil, err
+	// 	}
+	// 	if err := keeper.SupplyBurnCoins(ctx, sdk.NewCoins(sdk.NewCoin("shrp", sdk.NewInt(int64(1))))); err != nil {
+	// 		return nil, err
+	// 	}
+	// 	if err := keeper.SupplyMintCoins(ctx, sdk.NewCoins(sdk.NewCoin("cent", sdk.NewInt(int64(100))))); err != nil {
+	// 		return nil, err
+	// 	}
+	// }
+	shrpAmt, _ := sdk.NewIntFromString(msg.Amount)
+	amt := sdk.NewCoins(sdk.NewCoin("shrp", shrpAmt))
 	if err := keeper.SendCoins(ctx, msg.Sender, msg.Receiver, amt); err != nil {
 		return nil, err
 	}
@@ -154,11 +166,13 @@ func handleMsgSendSHRP(ctx sdk.Context, keeper Keeper, msg MsgSendSHRP) (*sdk.Re
 	}, nil
 }
 
+// Automatically buy SHR using SHRP if the SHR balane is not enough
 func handleMsgSendSHR(ctx sdk.Context, keeper Keeper, msg MsgSendSHR) (*sdk.Result, error) {
-	if err := msg.ValidateBasic(); err != nil {
-		return nil, err
-	}
-	shrAmt := sdk.NewInt(int64(msg.Amount))
+	// if err := msg.ValidateBasic(); err != nil {
+	// 	return nil, err
+	// }
+	// shrAmt := sdk.NewInt(int64(msg.Amount))
+	shrAmt, _ := sdk.NewIntFromString(msg.Amount)
 	oldCoins := keeper.GetCoins(ctx, msg.Sender)
 	if oldCoins.AmountOf("shr").LT(shrAmt) {
 		shrToBuy := oldCoins.AmountOf("shr").Sub(shrAmt)
@@ -208,11 +222,8 @@ func handleMsgBuyCent(ctx sdk.Context, keeper Keeper, msg MsgBuyCent) (*sdk.Resu
 }
 
 func handleMsgBuySHR(ctx sdk.Context, keeper Keeper, msg MsgBuySHR) (*sdk.Result, error) {
-	err := msg.ValidateBasic()
-	if err != nil {
-		return nil, err
-	}
-	shrAmt := sdk.NewInt(int64(msg.Amount))
+	shrAmt, _ := sdk.NewIntFromString(msg.Amount)
+
 	if err := keeper.BuyShr(ctx, shrAmt, msg.Buyer); err != nil {
 		return nil, err
 	}
@@ -227,14 +238,16 @@ func handleMsgBurnSHRP(ctx sdk.Context, keeper Keeper, msg MsgBurnSHRP) (*sdk.Re
 	if !IsTreasurer(ctx, msg.GetSigners()[0], keeper) {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "Approver's Address is not Treasurer")
 	}
-	i, d, err := ParseCoinStr(msg.Amount)
-	if err != nil {
-		return nil, err
-	}
+	// i, d, err := ParseCoinStr(msg.Amount)
+	// if err != nil {
+	// 	return nil, err
+	// }
 
-	shrpAmt := sdk.NewInt(i)
-	centAmt := sdk.NewInt(d)
-	amt := sdk.NewCoins(sdk.NewCoin("cent", centAmt), sdk.NewCoin("shrp", shrpAmt))
+	// shrpAmt := sdk.NewInt(i)
+	// centAmt := sdk.NewInt(d)
+	// amt := sdk.NewCoins(sdk.NewCoin("cent", centAmt), sdk.NewCoin("shrp", shrpAmt))
+	shrpAmt, _ := sdk.NewIntFromString(msg.Amount)
+	amt := sdk.NewCoins(sdk.NewCoin("shrp", shrpAmt))
 	if err := keeper.BurnCoins(ctx, msg.Approver, amt); err != nil {
 		return nil, err
 	}
@@ -248,10 +261,10 @@ func handleMsgBurnSHR(ctx sdk.Context, keeper Keeper, msg MsgBurnSHR) (*sdk.Resu
 	if !IsTreasurer(ctx, msg.GetSigners()[0], keeper) {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "Approver's Address is not Treasurer")
 	}
-	if err := msg.ValidateBasic(); err != nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, err.Error())
-	}
-	shrAmt := sdk.NewInt(int64(msg.Amount))
+	// if err := msg.ValidateBasic(); err != nil {
+	// 	return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, err.Error())
+	// }
+	shrAmt, _ := sdk.NewIntFromString(msg.Amount)
 	amt := sdk.NewCoins(sdk.NewCoin("shr", shrAmt))
 	if err := keeper.BurnCoins(ctx, msg.Approver, amt); err != nil {
 		return nil, err
