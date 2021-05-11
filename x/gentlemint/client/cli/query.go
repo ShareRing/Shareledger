@@ -3,12 +3,13 @@ package cli
 import (
 	"fmt"
 
+	shareringUtils "github.com/ShareRing/modules/utils"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/context"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/codec"
 	"github.com/sharering/shareledger/x/gentlemint/types"
-	"github.com/sharering/shareledger/x/myutils"
+
 	"github.com/spf13/cobra"
 )
 
@@ -64,7 +65,7 @@ func CmdGetLoadersFromFile(queryRoute string, cdc *codec.Codec) *cobra.Command {
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cliCtx := context.NewCLIContext().WithCodec(cdc)
-			addrList, err := myutils.GetAddressFromFile(args[0])
+			addrList, err := shareringUtils.GetAddressFromFile(args[0])
 			if err != nil {
 				return err
 			}

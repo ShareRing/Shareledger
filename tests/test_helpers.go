@@ -35,6 +35,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/staking"
 
 	idtypes "github.com/ShareRing/modules/id/types"
+	shareringUtils "github.com/ShareRing/modules/utils"
 )
 
 const (
@@ -74,7 +75,7 @@ var (
 		// sdk.NewCoin(fee2Denom, sdk.TokensFromConsensusPower(1000000)),
 		// sdk.NewCoin(feeDenom, sdk.TokensFromConsensusPower(1000000)),
 		// sdk.NewCoin(fooDenom, sdk.TokensFromConsensusPower(1000)),
-		sdk.NewCoin(denom, sdk.TokensFromConsensusPower(15)),
+		sdk.NewCoin(denom, shareringUtils.SHRDecimal.Mul(sdk.NewInt(int64(1000)))),
 	)
 
 	vestingCoins = sdk.NewCoins(

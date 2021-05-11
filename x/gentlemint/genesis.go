@@ -93,7 +93,7 @@ func ExportGenesis(ctx sdk.Context, k Keeper) GenesisState {
 
 	return GenesisState{
 		LoaderKeys:       loaderKeys,
-		ExchangeRate:     exchangeRate,
+		ExchangeRate:     exchangeRate.String(),
 		Authority:        authorityAcc,
 		Treasurer:        treasurer,
 		IdSigners:        idSigners,

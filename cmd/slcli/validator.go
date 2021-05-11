@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"strings"
 
+	shareringUtils "github.com/ShareRing/modules/utils"
+
 	"github.com/cosmos/cosmos-sdk/client/context"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/codec"
@@ -16,13 +18,12 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/slashing"
 	"github.com/cosmos/cosmos-sdk/x/staking/client/cli"
 	"github.com/cosmos/cosmos-sdk/x/staking/types"
-	"github.com/sharering/shareledger/x/myutils"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
 
-const (
-	minFeeShr = "1shr"
+var (
+	minFeeShr = shareringUtils.MINFEE.String() + "shr"
 )
 
 func GetCmdCreateValidator(cdc *codec.Codec) *cobra.Command {
@@ -31,13 +32,13 @@ func GetCmdCreateValidator(cdc *codec.Codec) *cobra.Command {
 		Short: "create new validator initialized with a self-delegation to it",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			inBuf := bufio.NewReader(cmd.InOrStdin())
-			keySeed := viper.GetString(myutils.FlagKeySeed)
-			seed, err := myutils.GetKeeySeedFromFile(keySeed)
+			keySeed := viper.GetString(shareringUtils.FlagKeySeed)
+			seed, err := shareringUtils.GetKeeySeedFromFile(keySeed)
 			if err != nil {
 				return err
 			}
 
-			cliCtx, txBldr, err := myutils.GetTxBldrAndCtxFromSeed(inBuf, cdc, seed)
+			cliCtx, txBldr, err := shareringUtils.GetTxBldrAndCtxFromSeed(inBuf, cdc, seed)
 			if err != nil {
 				return err
 			}
@@ -64,7 +65,7 @@ func GetCmdCreateValidator(cdc *codec.Codec) *cobra.Command {
 	cmd.Flags().String(cli.FlagMinSelfDelegation, "", "The minimum self delegation required on the validator")
 	cmd.Flags().String(cli.FlagNodeID, "", "NodeID")
 	cmd.Flags().String(cli.FlagIP, "", "Node ip address")
-	cmd.Flags().String(myutils.FlagKeySeed, "", "path to key_seed.json file")
+	cmd.Flags().String(shareringUtils.FlagKeySeed, "", "path to key_seed.json file")
 	cmd.MarkFlagRequired(cli.FlagAmount)
 	cmd.MarkFlagRequired(cli.FlagPubKey)
 	cmd.MarkFlagRequired(cli.FlagMoniker)
@@ -158,13 +159,13 @@ func GetCmdEditValidator(cdc *codec.Codec) *cobra.Command {
 		Short: "edit an existing validator account",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			inBuf := bufio.NewReader(cmd.InOrStdin())
-			keySeed := viper.GetString(myutils.FlagKeySeed)
-			seed, err := myutils.GetKeeySeedFromFile(keySeed)
+			keySeed := viper.GetString(shareringUtils.FlagKeySeed)
+			seed, err := shareringUtils.GetKeeySeedFromFile(keySeed)
 			if err != nil {
 				return err
 			}
 
-			cliCtx, txBldr, err := myutils.GetTxBldrAndCtxFromSeed(inBuf, cdc, seed)
+			cliCtx, txBldr, err := shareringUtils.GetTxBldrAndCtxFromSeed(inBuf, cdc, seed)
 			if err != nil {
 				return err
 			}
@@ -217,7 +218,7 @@ func GetCmdEditValidator(cdc *codec.Codec) *cobra.Command {
 	cmd.Flags().String(cli.FlagDetails, types.DoNotModifyDesc, "The validator's (optional) details")
 	cmd.Flags().String(cli.FlagCommissionRate, "", "The new commission rate percentage")
 	cmd.Flags().String(cli.FlagMinSelfDelegation, "", "The minimum self delegation required on the validator")
-	cmd.Flags().String(myutils.FlagKeySeed, "", "path to key_seed.json file")
+	cmd.Flags().String(shareringUtils.FlagKeySeed, "", "path to key_seed.json file")
 	cmd = flags.PostCommands(cmd)[0]
 	return cmd
 }
@@ -238,13 +239,13 @@ $ %s tx staking delegate cosmosvaloper1l2rsakp388kuv9k8qzq6lrm9taddae7fpx59wm 10
 		),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			inBuf := bufio.NewReader(cmd.InOrStdin())
-			keySeed := viper.GetString(myutils.FlagKeySeed)
-			seed, err := myutils.GetKeeySeedFromFile(keySeed)
+			keySeed := viper.GetString(shareringUtils.FlagKeySeed)
+			seed, err := shareringUtils.GetKeeySeedFromFile(keySeed)
 			if err != nil {
 				return err
 			}
 
-			cliCtx, txBldr, err := myutils.GetTxBldrAndCtxFromSeed(inBuf, cdc, seed)
+			cliCtx, txBldr, err := shareringUtils.GetTxBldrAndCtxFromSeed(inBuf, cdc, seed)
 			if err != nil {
 				return err
 			}
@@ -266,7 +267,7 @@ $ %s tx staking delegate cosmosvaloper1l2rsakp388kuv9k8qzq6lrm9taddae7fpx59wm 10
 			return utils.GenerateOrBroadcastMsgs(cliCtx, txBldr, []sdk.Msg{msg})
 		},
 	}
-	cmd.Flags().String(myutils.FlagKeySeed, "", "path to key_seed.json file")
+	cmd.Flags().String(shareringUtils.FlagKeySeed, "", "path to key_seed.json file")
 	cmd = flags.PostCommands(cmd)[0]
 	return cmd
 }
@@ -288,13 +289,13 @@ $ %s tx staking unbond cosmosvaloper1gghjut3ccd8ay0zduzj64hwre2fxs9ldmqhffj 100s
 		RunE: func(cmd *cobra.Command, args []string) error {
 			inBuf := bufio.NewReader(cmd.InOrStdin())
 
-			keySeed := viper.GetString(myutils.FlagKeySeed)
-			seed, err := myutils.GetKeeySeedFromFile(keySeed)
+			keySeed := viper.GetString(shareringUtils.FlagKeySeed)
+			seed, err := shareringUtils.GetKeeySeedFromFile(keySeed)
 			if err != nil {
 				return err
 			}
 
-			cliCtx, txBldr, err := myutils.GetTxBldrAndCtxFromSeed(inBuf, cdc, seed)
+			cliCtx, txBldr, err := shareringUtils.GetTxBldrAndCtxFromSeed(inBuf, cdc, seed)
 			if err != nil {
 				return err
 			}
@@ -316,7 +317,7 @@ $ %s tx staking unbond cosmosvaloper1gghjut3ccd8ay0zduzj64hwre2fxs9ldmqhffj 100s
 			return utils.GenerateOrBroadcastMsgs(cliCtx, txBldr, []sdk.Msg{msg})
 		},
 	}
-	cmd.Flags().String(myutils.FlagKeySeed, "", "path to key_seed.json file")
+	cmd.Flags().String(shareringUtils.FlagKeySeed, "", "path to key_seed.json file")
 	cmd = flags.PostCommands(cmd)[0]
 	return cmd
 }
@@ -336,13 +337,13 @@ $ %s tx staking unbond cosmosvaloper1gghjut3ccd8ay0zduzj64hwre2fxs9ldmqhffj --ke
 		RunE: func(cmd *cobra.Command, args []string) error {
 			inBuf := bufio.NewReader(cmd.InOrStdin())
 
-			keySeed := viper.GetString(myutils.FlagKeySeed)
-			seed, err := myutils.GetKeeySeedFromFile(keySeed)
+			keySeed := viper.GetString(shareringUtils.FlagKeySeed)
+			seed, err := shareringUtils.GetKeeySeedFromFile(keySeed)
 			if err != nil {
 				return err
 			}
 
-			cliCtx, txBldr, err := myutils.GetTxBldrAndCtxFromSeed(inBuf, cdc, seed)
+			cliCtx, txBldr, err := shareringUtils.GetTxBldrAndCtxFromSeed(inBuf, cdc, seed)
 			if err != nil {
 				return err
 			}
@@ -358,7 +359,7 @@ $ %s tx staking unbond cosmosvaloper1gghjut3ccd8ay0zduzj64hwre2fxs9ldmqhffj --ke
 			return utils.GenerateOrBroadcastMsgs(cliCtx, txBldr, []sdk.Msg{msg})
 		},
 	}
-	cmd.Flags().String(myutils.FlagKeySeed, "", "path to key_seed.json file")
+	cmd.Flags().String(shareringUtils.FlagKeySeed, "", "path to key_seed.json file")
 	cmd = flags.PostCommands(cmd)[0]
 	return cmd
 }

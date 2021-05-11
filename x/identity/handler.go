@@ -10,20 +10,21 @@ import (
 
 func NewHandler(keeper Keeper) sdk.Handler {
 	return func(ctx sdk.Context, msg sdk.Msg) (*sdk.Result, error) {
-		switch msg := msg.(type) {
-		case MsgCreateId:
-			return handleMsgCreateId(ctx, keeper, msg)
-		case MsgUpdateId:
-			return handleMsgUpdateId(ctx, keeper, msg)
-		case MsgDeleteId:
-			return handleMsgDeleteId(ctx, keeper, msg)
-		case MsgEnrollIDSigners:
-			return handleMsgEnrollIdSigners(ctx, keeper, msg)
-		case MsgRevokeIDSigners:
-			return handleMsgRevokeIdSigners(ctx, keeper, msg)
-		default:
-			return nil, sdkerrors.Wrap(sdkerrors.ErrUnknownRequest, fmt.Sprintf("Unrecognized identity Msg type: %v", msg.Type()))
-		}
+		return nil, sdkerrors.Wrap(sdkerrors.ErrUnknownRequest, fmt.Sprintf("Unrecognized identity Msg type: %v [Deprecated: Old module]", msg.Type()))
+		// switch msg := msg.(type) {
+		// case MsgCreateId:
+		// 	return handleMsgCreateId(ctx, keeper, msg)
+		// case MsgUpdateId:
+		// 	return handleMsgUpdateId(ctx, keeper, msg)
+		// case MsgDeleteId:
+		// 	return handleMsgDeleteId(ctx, keeper, msg)
+		// case MsgEnrollIDSigners:
+		// 	return handleMsgEnrollIdSigners(ctx, keeper, msg)
+		// case MsgRevokeIDSigners:
+		// 	return handleMsgRevokeIdSigners(ctx, keeper, msg)
+		// default:
+		// 	return nil, sdkerrors.Wrap(sdkerrors.ErrUnknownRequest, fmt.Sprintf("Unrecognized identity Msg type: %v", msg.Type()))
+		// }
 	}
 }
 

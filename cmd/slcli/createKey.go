@@ -10,10 +10,10 @@ import (
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/crypto/keys"
 	"github.com/cosmos/cosmos-sdk/server"
-	"github.com/sharering/shareledger/x/myutils"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 
+	shareringUtils "github.com/ShareRing/modules/utils"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
@@ -57,7 +57,7 @@ func createKeyCmd() *cobra.Command {
 				os.RemoveAll(cliHome)
 				return err
 			}
-			if err := myutils.WriteFile("key_seed.json", cliHome, cliPrint); err != nil {
+			if err := shareringUtils.WriteFile("key_seed.json", cliHome, cliPrint); err != nil {
 				os.RemoveAll(cliHome)
 				return err
 			}
@@ -83,7 +83,7 @@ func createKeyInMemCmd() *cobra.Command {
 				return err
 			}
 			keyName := viper.GetString(flagKeyName)
-			addr, err := myutils.CreateKeySeed(cliHome, keyName)
+			addr, err := shareringUtils.CreateKeySeed(cliHome, keyName)
 			if err != nil {
 				return err
 			}
@@ -101,13 +101,13 @@ func getKeyFromSeedCmd() *cobra.Command {
 		Use:   "get-key-from-seed",
 		Short: "get private key from seed",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			keySeed := viper.GetString(myutils.FlagKeySeed)
+			keySeed := viper.GetString(shareringUtils.FlagKeySeed)
 			privFile := viper.GetString(flagPrivFile)
-			seed, err := myutils.GetKeeySeedFromFile(keySeed)
+			seed, err := shareringUtils.GetKeeySeedFromFile(keySeed)
 			if err != nil {
 				return err
 			}
-			priv, err := myutils.GetPrivKeyFromSeed(seed)
+			priv, err := shareringUtils.GetPrivKeyFromSeed(seed)
 			if err != nil {
 				return err
 			}
@@ -115,10 +115,10 @@ func getKeyFromSeedCmd() *cobra.Command {
 			if err != nil {
 				return err
 			}
-			return myutils.WriteFile(privFile, "./", data)
+			return shareringUtils.WriteFile(privFile, "./", data)
 		},
 	}
-	cmd.Flags().String(myutils.FlagKeySeed, "", "path to key_seed.json file")
+	cmd.Flags().String(shareringUtils.FlagKeySeed, "", "path to key_seed.json file")
 	cmd.Flags().String(flagPrivFile, "priv.json", "name of private key file")
 	return cmd
 }
@@ -131,7 +131,7 @@ func getKeyFromMnemonicCmd() *cobra.Command {
 			mnemonic := viper.GetString("mnemonic")
 			index := viper.GetInt32(flagAmount)
 
-			privs, addrs, err := myutils.GetPrivKeysFromMnemonic(mnemonic, uint32(index))
+			privs, addrs, err := shareringUtils.GetPrivKeysFromMnemonic(mnemonic, uint32(index))
 			if err != nil {
 				return err
 			}
@@ -175,7 +175,7 @@ func createKeyBatchCmd() *cobra.Command {
 					os.RemoveAll(cliHome)
 					return err
 				}
-				if err := myutils.WriteFile(fmt.Sprintf("key_seed_%d.json", i), cliHome, cliPrint); err != nil {
+				if err := shareringUtils.WriteFile(fmt.Sprintf("key_seed_%d.json", i), cliHome, cliPrint); err != nil {
 					os.RemoveAll(cliHome)
 					return err
 				}
@@ -186,7 +186,7 @@ func createKeyBatchCmd() *cobra.Command {
 				os.RemoveAll(cliHome)
 				return err
 			}
-			if err := myutils.WriteFile("address_list.json", cliHome, data); err != nil {
+			if err := shareringUtils.WriteFile("address_list.json", cliHome, data); err != nil {
 				os.RemoveAll(cliHome)
 				return err
 			}
@@ -205,7 +205,7 @@ func getKeysFromDirCmd() *cobra.Command {
 		Short: "get private keys from folder and export them to a file",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			privFile := viper.GetString(flagPrivFile)
-			privs, err := myutils.GetKeysFromDir(args[0])
+			privs, err := shareringUtils.GetKeysFromDir(args[0])
 			if err != nil {
 				return err
 			}
@@ -213,10 +213,10 @@ func getKeysFromDirCmd() *cobra.Command {
 			if err != nil {
 				return err
 			}
-			return myutils.WriteFile(privFile, "./", data)
+			return shareringUtils.WriteFile(privFile, "./", data)
 		},
 	}
-	cmd.Flags().String(myutils.FlagKeySeed, "", "path to key_seed.json file")
+	cmd.Flags().String(shareringUtils.FlagKeySeed, "", "path to key_seed.json file")
 	cmd.Flags().String(flagPrivFile, "priv.json", "name of private key file")
 	return cmd
 }

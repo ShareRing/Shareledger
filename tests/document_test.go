@@ -27,12 +27,12 @@ func TestDocCreate_Success(t *testing.T) {
 	data := "extradata-001"
 
 	// Enroll doc issuer
-	f.EnrollDocIssuer([]sdk.AccAddress{issuer}, fmt.Sprintf("--from %s --yes --fees 1shr", accOperator.String()))
+	f.EnrollDocIssuer([]sdk.AccAddress{issuer}, fmt.Sprintf("--from %s --yes --fees 10shr", accOperator.String()))
 
 	// wait for a block confirmation
 	tests.WaitForNextNBlocksTM(1, f.Port)
 
-	f.CreateNewDoc(holderId, proof, data, fmt.Sprintf("--from %s --yes --fees 1shr", issuer.String()))
+	f.CreateNewDoc(holderId, proof, data, fmt.Sprintf("--from %s --yes", issuer.String()))
 
 	// wait for a block confirmation
 	tests.WaitForNextNBlocksTM(1, f.Port)
@@ -49,7 +49,6 @@ func TestDocCreate_Success(t *testing.T) {
 func TestDocCreate_Duplicate(t *testing.T) {
 	t.Parallel()
 	f := InitFixtures(t)
-
 	// start gaiad server with minimum fees
 	minGasPrice, _ := sdk.NewDecFromStr("0.000006")
 	proc := f.GDStart(fmt.Sprintf("--minimum-gas-prices=%s", sdk.NewDecCoinFromDec(feeDenom, minGasPrice)))
@@ -63,12 +62,12 @@ func TestDocCreate_Duplicate(t *testing.T) {
 	data := "extradata-001"
 
 	// Enroll doc issuer
-	f.EnrollDocIssuer([]sdk.AccAddress{issuer}, fmt.Sprintf("--from %s --yes --fees 1shr", accountOperator.String()))
+	f.EnrollDocIssuer([]sdk.AccAddress{issuer}, fmt.Sprintf("--from %s --yes --fees 10shr", accountOperator.String()))
 
 	// wait for a block confirmation
 	tests.WaitForNextNBlocksTM(1, f.Port)
 
-	f.CreateNewDoc(holderId, proof, data, fmt.Sprintf("--from %s --yes --fees 1shr", issuer.String()))
+	f.CreateNewDoc(holderId, proof, data, fmt.Sprintf("--from %s --yes ", issuer.String()))
 
 	// wait for a block confirmation
 	tests.WaitForNextNBlocksTM(1, f.Port)
@@ -79,7 +78,7 @@ func TestDocCreate_Duplicate(t *testing.T) {
 	require.Equal(t, issuer.String(), doc.Issuer.String())
 	require.Equal(t, data, doc.Data)
 
-	ok, stdOut, _ := f.CreateNewDoc(holderId, proof, data, fmt.Sprintf("--from %s --yes --fees 1shr", issuer.String()))
+	ok, stdOut, _ := f.CreateNewDoc(holderId, proof, data, fmt.Sprintf("--from %s --yes ", issuer.String()))
 
 	require.True(t, ok)
 	require.Contains(t, stdOut, document.ErrDocExisted.Error())
@@ -104,12 +103,12 @@ func TestDocCreateInBatch_Success(t *testing.T) {
 	datas := []string{"extradata-001", "extradata-002", "extradata-003"}
 
 	// Enroll doc issuer
-	f.EnrollDocIssuer([]sdk.AccAddress{issuer}, fmt.Sprintf("--from %s --yes --fees 1shr", accountOperator.String()))
+	f.EnrollDocIssuer([]sdk.AccAddress{issuer}, fmt.Sprintf("--from %s --yes --fees 10shr", accountOperator.String()))
 
 	// wait for a block confirmation
 	tests.WaitForNextNBlocksTM(1, f.Port)
 
-	ok, stdOut, stdErr := f.CreateNewDocInBatch(holderIds, proofs, datas, fmt.Sprintf("--from %s --yes --fees 1shr", issuer.String()))
+	ok, stdOut, stdErr := f.CreateNewDocInBatch(holderIds, proofs, datas, fmt.Sprintf("--from %s --yes ", issuer.String()))
 	fmt.Println(stdOut)
 	fmt.Println(stdErr)
 
@@ -148,17 +147,17 @@ func TestDocCreateInBatch_Duplicate(t *testing.T) {
 	datas := []string{"extradata-001", "extradata-002", "extradata-003"}
 
 	// Enroll doc issuer
-	f.EnrollDocIssuer([]sdk.AccAddress{issuer}, fmt.Sprintf("--from %s --yes --fees 1shr", accountOperator.String()))
+	f.EnrollDocIssuer([]sdk.AccAddress{issuer}, fmt.Sprintf("--from %s --yes --fees 10shr", accountOperator.String()))
 
 	// wait for a block confirmation
 	// tests.WaitForNextNBlocksTM(1, f.Port)
 
-	f.CreateNewDoc(holderIds[2], proofs[2], "test2222", fmt.Sprintf("--from %s --yes --fees 1shr", issuer.String()))
+	f.CreateNewDoc(holderIds[2], proofs[2], "test2222", fmt.Sprintf("--from %s --yes ", issuer.String()))
 
 	// wait for a block confirmation
 	tests.WaitForNextNBlocksTM(1, f.Port)
 
-	ok, stdOut, _ := f.CreateNewDocInBatch(holderIds, proofs, datas, fmt.Sprintf("--from %s --yes --fees 1shr", issuer.String()))
+	ok, stdOut, _ := f.CreateNewDocInBatch(holderIds, proofs, datas, fmt.Sprintf("--from %s --yes ", issuer.String()))
 
 	// wait for a block confirmation
 	tests.WaitForNextNBlocksTM(1, f.Port)
@@ -166,16 +165,37 @@ func TestDocCreateInBatch_Duplicate(t *testing.T) {
 	require.True(t, ok)
 	require.Contains(t, stdOut, document.ErrDocExisted.Error())
 
-	// for i := 0; i < len(holderIds); i++ {
-	// 	doc := f.QueryDocByProof(proofs[i])
-	// 	fmt.Println(doc.String())
-	// 	// require.NotNil(t, doc)
-	// 	// require.Equal(t, proofs[i], doc.Proof)
-	// 	// require.Equal(t, issuer.String(), doc.Issuer.String())
-	// 	// require.Equal(t, datas[i], doc.Data)
-	// 	// require.Equal(t, holderIds[i], doc.Holder)
+	f.Cleanup()
+}
 
-	// }
+func TestDocCreateInBatch_LowFee(t *testing.T) {
+	t.Parallel()
+	f := InitFixtures(t)
+
+	// start gaiad server with minimum fees
+	minGasPrice, _ := sdk.NewDecFromStr("0.000006")
+	proc := f.GDStart(fmt.Sprintf("--minimum-gas-prices=%s", sdk.NewDecCoinFromDec(feeDenom, minGasPrice)))
+	defer proc.Stop(false)
+
+	// Save key addresses for later use
+	accountOperator := f.KeyAddress(keyAccOp)
+	issuer := f.KeyAddress(keyIdSigner)
+	holderIds := []string{"id-001", "id-002", "id-003"}
+	proofs := []string{"a89efdaa54c0f20c7adf612882df0950f5a951637e0307cdcb4c672f298b8bc6", "b89efdaa54c0f20c7adf612882df0950f5a951637e0307cdcb4c672f298b8bc7", "c89efdaa54c0f20c7adf612882df0950f5a951637e0307cdcb4c672f298b8bc8"}
+	datas := []string{"extradata-001", "extradata-002", "extradata-003"}
+
+	// Enroll doc issuer
+	f.EnrollDocIssuer([]sdk.AccAddress{issuer}, fmt.Sprintf("--from %s --yes --fees 10shr", accountOperator.String()))
+
+	// wait for a block confirmation
+	// tests.WaitForNextNBlocksTM(1, f.Port)
+
+	ok, stdOut, _ := f.CreateNewDocInBatch(holderIds, proofs, datas, fmt.Sprintf("--from %s --yes --fees 290000000shr", issuer.String()))
+	// wait for a block confirmation
+	tests.WaitForNextNBlocksTM(1, f.Port)
+
+	require.True(t, ok)
+	require.Contains(t, stdOut, "required: 3000000000shr")
 
 	f.Cleanup()
 }
@@ -197,12 +217,12 @@ func TestDocUpdate_Success(t *testing.T) {
 	data := "extradata-001"
 
 	// Enroll doc issuer
-	f.EnrollDocIssuer([]sdk.AccAddress{issuer}, fmt.Sprintf("--from %s --yes --fees 1shr", accountOperator.String()))
+	f.EnrollDocIssuer([]sdk.AccAddress{issuer}, fmt.Sprintf("--from %s --yes --fees 10shr", accountOperator.String()))
 
 	// wait for a block confirmation
 	// tests.WaitForNextNBlocksTM(1, f.Port)
 
-	f.CreateNewDoc(holderId, proof, data, fmt.Sprintf("--from %s --yes --fees 1shr", issuer.String()))
+	f.CreateNewDoc(holderId, proof, data, fmt.Sprintf("--from %s --yes ", issuer.String()))
 
 	// wait for a block confirmation
 	tests.WaitForNextNBlocksTM(1, f.Port)
@@ -214,7 +234,7 @@ func TestDocUpdate_Success(t *testing.T) {
 	require.Equal(t, data, doc.Data)
 
 	newData := "new-data"
-	ok, _, _ := f.UdpateDoc(holderId, proof, newData, fmt.Sprintf("--from %s --yes --fees 1shr", issuer.String()))
+	ok, _, _ := f.UdpateDoc(holderId, proof, newData, fmt.Sprintf("--from %s --yes ", issuer.String()))
 
 	require.True(t, ok)
 
@@ -224,6 +244,51 @@ func TestDocUpdate_Success(t *testing.T) {
 	require.Equal(t, issuer.String(), docUpdated.Issuer.String())
 	require.Equal(t, newData, docUpdated.Data)
 	require.Equal(t, doc.Version+1, docUpdated.Version)
+
+	f.Cleanup()
+}
+
+func TestDocUpdate_LowFee(t *testing.T) {
+	t.Parallel()
+	f := InitFixtures(t)
+
+	// start gaiad server with minimum fees
+	minGasPrice, _ := sdk.NewDecFromStr("0.000006")
+	proc := f.GDStart(fmt.Sprintf("--minimum-gas-prices=%s", sdk.NewDecCoinFromDec(feeDenom, minGasPrice)))
+	defer proc.Stop(false)
+
+	// Save key addresses for later use
+	accountOperator := f.KeyAddress(keyAccOp)
+	issuer := f.KeyAddress(keyIdSigner)
+	holderId := "id-001"
+	proof := "c89efdaa54c0f20c7adf612882df0950f5a951637e0307cdcb4c672f298b8bc6"
+	data := "extradata-001"
+
+	// Enroll doc issuer
+	f.EnrollDocIssuer([]sdk.AccAddress{issuer}, fmt.Sprintf("--from %s --yes --fees 10shr", accountOperator.String()))
+
+	// wait for a block confirmation
+	// tests.WaitForNextNBlocksTM(1, f.Port)
+
+	f.CreateNewDoc(holderId, proof, data, fmt.Sprintf("--from %s --yes ", issuer.String()))
+
+	// wait for a block confirmation
+	tests.WaitForNextNBlocksTM(1, f.Port)
+
+	doc := f.QueryDocByProof(proof)
+	require.NotNil(t, doc)
+	require.Equal(t, proof, doc.Proof)
+	require.Equal(t, issuer.String(), doc.Issuer.String())
+	require.Equal(t, data, doc.Data)
+
+	newData := "new-data"
+
+	ok, stdOut, _ := f.UdpateDoc(holderId, proof, newData, fmt.Sprintf("--from %s --yes --fees=10shr", issuer.String()))
+
+	tests.WaitForNextNBlocksTM(1, f.Port)
+
+	require.True(t, ok)
+	require.Contains(t, stdOut, "required: 600000000shr")
 
 	f.Cleanup()
 }
@@ -245,12 +310,12 @@ func TestDocUpdate_NotExist_Holder(t *testing.T) {
 	data := "extradata-001"
 
 	// Enroll doc issuer
-	f.EnrollDocIssuer([]sdk.AccAddress{issuer}, fmt.Sprintf("--from %s --yes --fees 1shr", accountOperator.String()))
+	f.EnrollDocIssuer([]sdk.AccAddress{issuer}, fmt.Sprintf("--from %s --yes --fees 10shr", accountOperator.String()))
 
 	// wait for a block confirmation
 	// tests.WaitForNextNBlocksTM(1, f.Port)
 
-	f.CreateNewDoc(holderId, proof, data, fmt.Sprintf("--from %s --yes --fees 1shr", issuer.String()))
+	f.CreateNewDoc(holderId, proof, data, fmt.Sprintf("--from %s --yes ", issuer.String()))
 
 	// wait for a block confirmation
 	tests.WaitForNextNBlocksTM(1, f.Port)
@@ -262,7 +327,7 @@ func TestDocUpdate_NotExist_Holder(t *testing.T) {
 	require.Equal(t, data, doc.Data)
 
 	newData := "new-data"
-	ok, stdOut, _ := f.UdpateDoc(holderId+"1", proof, newData, fmt.Sprintf("--from %s --yes --fees 1shr", issuer.String()))
+	ok, stdOut, _ := f.UdpateDoc(holderId+"1", proof, newData, fmt.Sprintf("--from %s --yes ", issuer.String()))
 	require.Contains(t, stdOut, document.ErrDocNotExisted.Error())
 
 	require.True(t, ok)
@@ -294,12 +359,12 @@ func TestDocUpdate_NotExist_Proof(t *testing.T) {
 	data := "extradata-001"
 
 	// Enroll doc issuer
-	f.EnrollDocIssuer([]sdk.AccAddress{issuer}, fmt.Sprintf("--from %s --yes --fees 1shr", accountOperator.String()))
+	f.EnrollDocIssuer([]sdk.AccAddress{issuer}, fmt.Sprintf("--from %s --yes --fees 10shr", accountOperator.String()))
 
 	// wait for a block confirmation
 	// tests.WaitForNextNBlocksTM(1, f.Port)
 
-	f.CreateNewDoc(holderId, proof, data, fmt.Sprintf("--from %s --yes --fees 1shr", issuer.String()))
+	f.CreateNewDoc(holderId, proof, data, fmt.Sprintf("--from %s --yes ", issuer.String()))
 
 	// wait for a block confirmation
 	tests.WaitForNextNBlocksTM(1, f.Port)
@@ -311,7 +376,7 @@ func TestDocUpdate_NotExist_Proof(t *testing.T) {
 	require.Equal(t, data, doc.Data)
 
 	newData := "new-data"
-	ok, stdOut, _ := f.UdpateDoc(holderId, proof+"1", newData, fmt.Sprintf("--from %s --yes --fees 1shr", issuer.String()))
+	ok, stdOut, _ := f.UdpateDoc(holderId, proof+"1", newData, fmt.Sprintf("--from %s --yes ", issuer.String()))
 	require.Contains(t, stdOut, document.ErrDocNotExisted.Error())
 
 	require.True(t, ok)
@@ -344,12 +409,12 @@ func TestDocUpdate_NotExist_Issuer(t *testing.T) {
 	data := "extradata-001"
 	// user1 := f.KeyAddress(keyUser1)
 	// Enroll doc issuer
-	f.EnrollDocIssuer([]sdk.AccAddress{issuer, docIssuer}, fmt.Sprintf("--from %s --yes --fees 1shr", accountOperator.String()))
+	f.EnrollDocIssuer([]sdk.AccAddress{issuer, docIssuer}, fmt.Sprintf("--from %s --yes --fees 10shr", accountOperator.String()))
 
 	// wait for a block confirmation
 	// tests.WaitForNextNBlocksTM(1, f.Port)
 
-	f.CreateNewDoc(holderId, proof, data, fmt.Sprintf("--from %s --yes --fees 1shr", issuer.String()))
+	f.CreateNewDoc(holderId, proof, data, fmt.Sprintf("--from %s --yes ", issuer.String()))
 
 	// wait for a block confirmation
 	tests.WaitForNextNBlocksTM(1, f.Port)
@@ -361,7 +426,7 @@ func TestDocUpdate_NotExist_Issuer(t *testing.T) {
 	require.Equal(t, data, doc.Data)
 
 	newData := "new-data"
-	ok, stdOut, _ := f.UdpateDoc(holderId, proof, newData, fmt.Sprintf("--from %s --yes --fees 1shr", docIssuer.String()))
+	ok, stdOut, _ := f.UdpateDoc(holderId, proof, newData, fmt.Sprintf("--from %s --yes ", docIssuer.String()))
 	require.Contains(t, stdOut, document.ErrDocNotExisted.Error())
 
 	require.True(t, ok)
@@ -393,18 +458,18 @@ func TestDocRevoke_Success(t *testing.T) {
 	datas := []string{"extradata-001", "extradata-002", "extradata-003"}
 
 	// Enroll doc issuer
-	f.EnrollDocIssuer([]sdk.AccAddress{issuer}, fmt.Sprintf("--from %s --yes --fees 1shr", accountOperator.String()))
+	f.EnrollDocIssuer([]sdk.AccAddress{issuer}, fmt.Sprintf("--from %s --yes --fees 10shr", accountOperator.String()))
 
 	// wait for a block confirmation
 	// tests.WaitForNextNBlocksTM(1, f.Port)
 
-	ok, _, _ := f.CreateNewDocInBatch(holderIds, proofs, datas, fmt.Sprintf("--from %s --yes --fees 1shr", issuer.String()))
+	ok, _, _ := f.CreateNewDocInBatch(holderIds, proofs, datas, fmt.Sprintf("--from %s --yes ", issuer.String()))
 
 	require.True(t, ok)
 	// wait for a block confirmation
 	tests.WaitForNextNBlocksTM(1, f.Port)
 
-	revokeRs, _, _ := f.RevokeDoc(holderIds[2], proofs[2], fmt.Sprintf("--from %s --yes --fees 1shr", issuer.String()))
+	revokeRs, _, _ := f.RevokeDoc(holderIds[2], proofs[2], fmt.Sprintf("--from %s --yes ", issuer.String()))
 
 	tests.WaitForNextNBlocksTM(1, f.Port)
 
@@ -430,6 +495,40 @@ func TestDocRevoke_Success(t *testing.T) {
 	f.Cleanup()
 }
 
+func TestDocRevoke_LowFee(t *testing.T) {
+	t.Parallel()
+	f := InitFixtures(t)
+
+	// start gaiad server with minimum fees
+	minGasPrice, _ := sdk.NewDecFromStr("0.000006")
+	proc := f.GDStart(fmt.Sprintf("--minimum-gas-prices=%s", sdk.NewDecCoinFromDec(feeDenom, minGasPrice)))
+	defer proc.Stop(false)
+
+	// Save key addresses for later use
+	accountOperator := f.KeyAddress(keyAccOp)
+	issuer := f.KeyAddress(keyIdSigner)
+	holderIds := []string{"id-001", "id-002", "id-003"}
+	proofs := []string{"a89efdaa54c0f20c7adf612882df0950f5a951637e0307cdcb4c672f298b8bc6", "b89efdaa54c0f20c7adf612882df0950f5a951637e0307cdcb4c672f298b8bc7", "c89efdaa54c0f20c7adf612882df0950f5a951637e0307cdcb4c672f298b8bc8"}
+	datas := []string{"extradata-001", "extradata-002", "extradata-003"}
+
+	// Enroll doc issuer
+	f.EnrollDocIssuer([]sdk.AccAddress{issuer}, fmt.Sprintf("--from %s --yes --fees 10shr", accountOperator.String()))
+	ok, _, _ := f.CreateNewDocInBatch(holderIds, proofs, datas, fmt.Sprintf("--from %s --yes ", issuer.String()))
+
+	require.True(t, ok)
+	// wait for a block confirmation
+	tests.WaitForNextNBlocksTM(1, f.Port)
+
+	ok, stdOut, _ := f.RevokeDoc(holderIds[2], proofs[2], fmt.Sprintf("--from %s --yes --fees 10shr", issuer.String()))
+
+	tests.WaitForNextNBlocksTM(1, f.Port)
+
+	require.True(t, ok)
+	require.Contains(t, stdOut, "required: 1000000000shr")
+
+	f.Cleanup()
+}
+
 func TestDocRevoke_NotExist(t *testing.T) {
 	t.Parallel()
 	f := InitFixtures(t)
@@ -447,18 +546,18 @@ func TestDocRevoke_NotExist(t *testing.T) {
 	datas := []string{"extradata-001", "extradata-002", "extradata-003"}
 
 	// Enroll doc issuer
-	f.EnrollDocIssuer([]sdk.AccAddress{issuer}, fmt.Sprintf("--from %s --yes --fees 1shr", accountOperator.String()))
+	f.EnrollDocIssuer([]sdk.AccAddress{issuer}, fmt.Sprintf("--from %s --yes --fees 10shr", accountOperator.String()))
 
 	// wait for a block confirmation
 	// tests.WaitForNextNBlocksTM(1, f.Port)
 
-	ok, _, _ := f.CreateNewDocInBatch(holderIds, proofs, datas, fmt.Sprintf("--from %s --yes --fees 1shr", issuer.String()))
+	ok, _, _ := f.CreateNewDocInBatch(holderIds, proofs, datas, fmt.Sprintf("--from %s --yes ", issuer.String()))
 
 	require.True(t, ok)
 	// wait for a block confirmation
 	tests.WaitForNextNBlocksTM(1, f.Port)
 
-	revokeRs, stdOut, _ := f.RevokeDoc(holderIds[2], "not-exist", fmt.Sprintf("--from %s --yes --fees 1shr", issuer.String()))
+	revokeRs, stdOut, _ := f.RevokeDoc(holderIds[2], "not-exist", fmt.Sprintf("--from %s --yes ", issuer.String()))
 
 	tests.WaitForNextNBlocksTM(1, f.Port)
 
@@ -495,12 +594,12 @@ func TestDocQuery_ByHolder_OK(t *testing.T) {
 	datas := []string{"extradata-001", "extradata-002", "extradata-003"}
 
 	// Enroll doc issuer
-	f.EnrollDocIssuer([]sdk.AccAddress{issuer}, fmt.Sprintf("--from %s --yes --fees 1shr", accOperator.String()))
+	f.EnrollDocIssuer([]sdk.AccAddress{issuer}, fmt.Sprintf("--from %s --yes --fees 10shr", accOperator.String()))
 
 	// wait for a block confirmation
 	// tests.WaitForNextNBlocksTM(1, f.Port)
 
-	ok, stdOut, stdErr := f.CreateNewDocInBatch(holderIds, proofs, datas, fmt.Sprintf("--from %s --yes --fees 1shr", issuer.String()))
+	ok, stdOut, stdErr := f.CreateNewDocInBatch(holderIds, proofs, datas, fmt.Sprintf("--from %s --yes ", issuer.String()))
 	fmt.Println(stdOut)
 	fmt.Println(stdErr)
 
@@ -513,6 +612,39 @@ func TestDocQuery_ByHolder_OK(t *testing.T) {
 
 	fmt.Println(docOf1)
 	require.Equal(t, 2, len(docOf1))
+
+	f.Cleanup()
+}
+
+func TestDocCreate_LowFee(t *testing.T) {
+
+	t.Parallel()
+	f := InitFixtures(t)
+
+	// start gaiad server with minimum fees
+	minGasPrice, _ := sdk.NewDecFromStr("0.000006")
+	proc := f.GDStart(fmt.Sprintf("--minimum-gas-prices=%s", sdk.NewDecCoinFromDec(feeDenom, minGasPrice)))
+	defer proc.Stop(false)
+
+	// Save key addresses for later use
+	accOperator := f.KeyAddress(keyAccOp)
+	issuer := f.KeyAddress(keyIdSigner)
+	holderId := "id-001"
+	proof := "c89efdaa54c0f20c7adf612882df0950f5a951637e0307cdcb4c672f298b8bc6"
+	data := "extradata-001"
+
+	// Enroll doc issuer
+	f.EnrollDocIssuer([]sdk.AccAddress{issuer}, fmt.Sprintf("--from %s --yes --fees 100000000shr", accOperator.String()))
+
+	// wait for a block confirmation
+	tests.WaitForNextNBlocksTM(1, f.Port)
+
+	revokeRs, stdOut, _ := f.CreateNewDoc(holderId, proof, data, fmt.Sprintf("--from %s --yes --fees 2shr", issuer.String()))
+	require.True(t, revokeRs)
+	require.Contains(t, stdOut, "insufficient fee")
+
+	// wait for a block confirmation
+	// tests.WaitForNextNBlocksTM(1, f.Port)
 
 	f.Cleanup()
 }

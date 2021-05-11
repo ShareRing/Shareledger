@@ -3,10 +3,11 @@ package cli
 import (
 	"bufio"
 	"fmt"
-	"strconv"
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+
+	shareringUtils "github.com/ShareRing/modules/utils"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/context"
@@ -18,12 +19,11 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/x/auth"
 	"github.com/cosmos/cosmos-sdk/x/auth/client/utils"
-	"github.com/sharering/shareledger/x/myutils"
 )
 
-const (
-	minFeeShr = "1shr"
-	sendFee   = 0.02
+var (
+	minFeeShr = shareringUtils.MINFEE.String() + "shr"
+	sendFee   = shareringUtils.LOWFEE
 )
 
 func GetTxCmd(storeKey string, cdc *codec.Codec) *cobra.Command {
@@ -37,7 +37,6 @@ func GetTxCmd(storeKey string, cdc *codec.Codec) *cobra.Command {
 
 	gentlemintTxCmd.AddCommand(flags.PostCommands(
 		GetCmdLoadSHR(cdc),
-		GetCmdBuyCent(cdc),
 		GetCmdBuySHR(cdc),
 		GetCmdSetExchange(cdc),
 		GetCmdEnrollSHRPLoader(cdc),
@@ -72,14 +71,14 @@ func GetCmdLoadSHR(cdc *codec.Codec) *cobra.Command {
 			var cliCtx context.CLIContext
 			var txBldr auth.TxBuilder
 
-			keySeed := viper.GetString(myutils.FlagKeySeed)
+			keySeed := viper.GetString(shareringUtils.FlagKeySeed)
 			if len(keySeed) > 0 {
-				seed, err := myutils.GetKeeySeedFromFile(keySeed)
+				seed, err := shareringUtils.GetKeeySeedFromFile(keySeed)
 				if err != nil {
 					return err
 				}
 
-				cliCtx, txBldr, err = myutils.GetTxBldrAndCtxFromSeed(inBuf, cdc, seed)
+				cliCtx, txBldr, err = shareringUtils.GetTxBldrAndCtxFromSeed(inBuf, cdc, seed)
 				if err != nil {
 					return err
 				}
@@ -94,10 +93,11 @@ func GetCmdLoadSHR(cdc *codec.Codec) *cobra.Command {
 			if err != nil {
 				return err
 			}
-			amt, err := strconv.Atoi(args[1])
-			if err != nil {
-				return err
-			}
+			// amt, err := strconv.Atoi(args[1])
+			// if err != nil {
+			// 	return err
+			// }
+			amt := args[1]
 			msg := types.NewMsgLoadSHR(cliCtx.GetFromAddress(), to, amt)
 			err = msg.ValidateBasic()
 			if err != nil {
@@ -107,7 +107,7 @@ func GetCmdLoadSHR(cdc *codec.Codec) *cobra.Command {
 			return utils.GenerateOrBroadcastMsgs(cliCtx, txBldr, []sdk.Msg{msg})
 		},
 	}
-	cmd.Flags().String(myutils.FlagKeySeed, "", "path to key_seed.json")
+	cmd.Flags().String(shareringUtils.FlagKeySeed, "", "path to key_seed.json")
 	return cmd
 }
 
@@ -122,14 +122,14 @@ func GetCmdLoadSHRP(cdc *codec.Codec) *cobra.Command {
 			var cliCtx context.CLIContext
 			var txBldr auth.TxBuilder
 
-			keySeed := viper.GetString(myutils.FlagKeySeed)
+			keySeed := viper.GetString(shareringUtils.FlagKeySeed)
 			if len(keySeed) > 0 {
-				seed, err := myutils.GetKeeySeedFromFile(keySeed)
+				seed, err := shareringUtils.GetKeeySeedFromFile(keySeed)
 				if err != nil {
 					return err
 				}
 
-				cliCtx, txBldr, err = myutils.GetTxBldrAndCtxFromSeed(inBuf, cdc, seed)
+				cliCtx, txBldr, err = shareringUtils.GetTxBldrAndCtxFromSeed(inBuf, cdc, seed)
 				if err != nil {
 					return err
 				}
@@ -153,7 +153,7 @@ func GetCmdLoadSHRP(cdc *codec.Codec) *cobra.Command {
 			return utils.GenerateOrBroadcastMsgs(cliCtx, txBldr, []sdk.Msg{msg})
 		},
 	}
-	cmd.Flags().String(myutils.FlagKeySeed, "", "path to key_seed.json")
+	cmd.Flags().String(shareringUtils.FlagKeySeed, "", "path to key_seed.json")
 	return cmd
 }
 
@@ -167,14 +167,14 @@ func GetCmdSendSHRP(cdc *codec.Codec) *cobra.Command {
 			var cliCtx context.CLIContext
 			var txBldr auth.TxBuilder
 
-			keySeed := viper.GetString(myutils.FlagKeySeed)
+			keySeed := viper.GetString(shareringUtils.FlagKeySeed)
 			if len(keySeed) > 0 {
-				seed, err := myutils.GetKeeySeedFromFile(keySeed)
+				seed, err := shareringUtils.GetKeeySeedFromFile(keySeed)
 				if err != nil {
 					return err
 				}
 
-				cliCtx, txBldr, err = myutils.GetTxBldrAndCtxFromSeed(inBuf, cdc, seed)
+				cliCtx, txBldr, err = shareringUtils.GetTxBldrAndCtxFromSeed(inBuf, cdc, seed)
 				if err != nil {
 					return err
 				}
@@ -183,7 +183,7 @@ func GetCmdSendSHRP(cdc *codec.Codec) *cobra.Command {
 				cliCtx = context.NewCLIContextWithInput(inBuf).WithCodec(cdc)
 			}
 
-			txFee, err := myutils.GetFeeFromShrp(cdc, cliCtx, sendFee)
+			txFee, err := shareringUtils.GetFeeFromShrp(cdc, cliCtx, sendFee)
 
 			txBldr = txBldr.WithFees(txFee)
 
@@ -200,7 +200,7 @@ func GetCmdSendSHRP(cdc *codec.Codec) *cobra.Command {
 			return utils.GenerateOrBroadcastMsgs(cliCtx, txBldr, []sdk.Msg{msg})
 		},
 	}
-	cmd.Flags().String(myutils.FlagKeySeed, "", "path to key_seed.json")
+	cmd.Flags().String(shareringUtils.FlagKeySeed, "", "path to key_seed.json")
 	return cmd
 }
 
@@ -216,14 +216,14 @@ func GetCmdSendSHR(cdc *codec.Codec) *cobra.Command {
 			var cliCtx context.CLIContext
 			var txBldr auth.TxBuilder
 
-			keySeed := viper.GetString(myutils.FlagKeySeed)
+			keySeed := viper.GetString(shareringUtils.FlagKeySeed)
 			if len(keySeed) > 0 {
-				seed, err := myutils.GetKeeySeedFromFile(keySeed)
+				seed, err := shareringUtils.GetKeeySeedFromFile(keySeed)
 				if err != nil {
 					return err
 				}
 
-				cliCtx, txBldr, err = myutils.GetTxBldrAndCtxFromSeed(inBuf, cdc, seed)
+				cliCtx, txBldr, err = shareringUtils.GetTxBldrAndCtxFromSeed(inBuf, cdc, seed)
 				if err != nil {
 					return err
 				}
@@ -232,7 +232,7 @@ func GetCmdSendSHR(cdc *codec.Codec) *cobra.Command {
 				cliCtx = context.NewCLIContextWithInput(inBuf).WithCodec(cdc)
 			}
 
-			txFee, err := myutils.GetFeeFromShrp(cdc, cliCtx, sendFee)
+			txFee, err := shareringUtils.GetFeeFromShrp(cdc, cliCtx, sendFee)
 			if err != nil {
 				return err
 			}
@@ -243,10 +243,11 @@ func GetCmdSendSHR(cdc *codec.Codec) *cobra.Command {
 			if err != nil {
 				return err
 			}
-			amt, err := strconv.Atoi(args[1])
-			if err != nil {
-				return err
-			}
+			// amt, err := strconv.Atoi(args[1])
+			// if err != nil {
+			// 	return err
+			// }
+			amt := args[1]
 			msg := types.NewMsgSendSHR(cliCtx.GetFromAddress(), to, amt)
 			err = msg.ValidateBasic()
 			if err != nil {
@@ -255,53 +256,7 @@ func GetCmdSendSHR(cdc *codec.Codec) *cobra.Command {
 			return utils.GenerateOrBroadcastMsgs(cliCtx, txBldr, []sdk.Msg{msg})
 		},
 	}
-	cmd.Flags().String(myutils.FlagKeySeed, "", "path to key_seed.json")
-	return cmd
-}
-
-func GetCmdBuyCent(cdc *codec.Codec) *cobra.Command {
-	cmd := &cobra.Command{
-		Use:   "buy-cent [amount]",
-		Short: "bid for existing name or claim new name",
-		Args:  cobra.ExactArgs(1),
-		RunE: func(cmd *cobra.Command, args []string) error {
-			inBuf := bufio.NewReader(cmd.InOrStdin())
-
-			var cliCtx context.CLIContext
-			var txBldr auth.TxBuilder
-
-			keySeed := viper.GetString(myutils.FlagKeySeed)
-			if len(keySeed) > 0 {
-				seed, err := myutils.GetKeeySeedFromFile(keySeed)
-				if err != nil {
-					return err
-				}
-
-				cliCtx, txBldr, err = myutils.GetTxBldrAndCtxFromSeed(inBuf, cdc, seed)
-				if err != nil {
-					return err
-				}
-			} else {
-				txBldr = auth.NewTxBuilderFromCLI(inBuf).WithTxEncoder(utils.GetTxEncoder(cdc))
-				cliCtx = context.NewCLIContextWithInput(inBuf).WithCodec(cdc)
-			}
-
-			txBldr = txBldr.WithFees(minFeeShr)
-
-			amt, err := strconv.Atoi(args[0])
-			if err != nil {
-				return err
-			}
-			msg := types.NewMsgBuyCent(cliCtx.GetFromAddress(), amt)
-			err = msg.ValidateBasic()
-			if err != nil {
-				return err
-			}
-
-			return utils.GenerateOrBroadcastMsgs(cliCtx, txBldr, []sdk.Msg{msg})
-		},
-	}
-	cmd.Flags().String(myutils.FlagKeySeed, "", "path to key_seed.json")
+	cmd.Flags().String(shareringUtils.FlagKeySeed, "", "path to key_seed.json")
 	return cmd
 }
 
@@ -316,14 +271,14 @@ func GetCmdBuySHR(cdc *codec.Codec) *cobra.Command {
 			var cliCtx context.CLIContext
 			var txBldr auth.TxBuilder
 
-			keySeed := viper.GetString(myutils.FlagKeySeed)
+			keySeed := viper.GetString(shareringUtils.FlagKeySeed)
 			if len(keySeed) > 0 {
-				seed, err := myutils.GetKeeySeedFromFile(keySeed)
+				seed, err := shareringUtils.GetKeeySeedFromFile(keySeed)
 				if err != nil {
 					return err
 				}
 
-				cliCtx, txBldr, err = myutils.GetTxBldrAndCtxFromSeed(inBuf, cdc, seed)
+				cliCtx, txBldr, err = shareringUtils.GetTxBldrAndCtxFromSeed(inBuf, cdc, seed)
 				if err != nil {
 					return err
 				}
@@ -334,12 +289,9 @@ func GetCmdBuySHR(cdc *codec.Codec) *cobra.Command {
 
 			txBldr = txBldr.WithFees(minFeeShr)
 
-			amt, err := strconv.Atoi(args[0])
-			if err != nil {
-				return err
-			}
+			amt := args[0]
 			msg := types.NewMsgBuySHR(cliCtx.GetFromAddress(), amt)
-			err = msg.ValidateBasic()
+			err := msg.ValidateBasic()
 			if err != nil {
 				return err
 			}
@@ -347,7 +299,7 @@ func GetCmdBuySHR(cdc *codec.Codec) *cobra.Command {
 			return utils.GenerateOrBroadcastMsgs(cliCtx, txBldr, []sdk.Msg{msg})
 		},
 	}
-	cmd.Flags().String(myutils.FlagKeySeed, "", "path to key_seed.json")
+	cmd.Flags().String(shareringUtils.FlagKeySeed, "", "path to key_seed.json")
 	return cmd
 }
 
@@ -362,14 +314,14 @@ func GetCmdSetExchange(cdc *codec.Codec) *cobra.Command {
 			var cliCtx context.CLIContext
 			var txBldr auth.TxBuilder
 
-			keySeed := viper.GetString(myutils.FlagKeySeed)
+			keySeed := viper.GetString(shareringUtils.FlagKeySeed)
 			if len(keySeed) > 0 {
-				seed, err := myutils.GetKeeySeedFromFile(keySeed)
+				seed, err := shareringUtils.GetKeeySeedFromFile(keySeed)
 				if err != nil {
 					return err
 				}
 
-				cliCtx, txBldr, err = myutils.GetTxBldrAndCtxFromSeed(inBuf, cdc, seed)
+				cliCtx, txBldr, err = shareringUtils.GetTxBldrAndCtxFromSeed(inBuf, cdc, seed)
 				if err != nil {
 					return err
 				}
@@ -389,7 +341,7 @@ func GetCmdSetExchange(cdc *codec.Codec) *cobra.Command {
 			return utils.GenerateOrBroadcastMsgs(cliCtx, txBldr, []sdk.Msg{msg})
 		},
 	}
-	cmd.Flags().String(myutils.FlagKeySeed, "", "path to key_seed.json")
+	cmd.Flags().String(shareringUtils.FlagKeySeed, "", "path to key_seed.json")
 	return cmd
 }
 
@@ -404,14 +356,14 @@ func GetCmdBurnSHRP(cdc *codec.Codec) *cobra.Command {
 			var cliCtx context.CLIContext
 			var txBldr auth.TxBuilder
 
-			keySeed := viper.GetString(myutils.FlagKeySeed)
+			keySeed := viper.GetString(shareringUtils.FlagKeySeed)
 			if len(keySeed) > 0 {
-				seed, err := myutils.GetKeeySeedFromFile(keySeed)
+				seed, err := shareringUtils.GetKeeySeedFromFile(keySeed)
 				if err != nil {
 					return err
 				}
 
-				cliCtx, txBldr, err = myutils.GetTxBldrAndCtxFromSeed(inBuf, cdc, seed)
+				cliCtx, txBldr, err = shareringUtils.GetTxBldrAndCtxFromSeed(inBuf, cdc, seed)
 				if err != nil {
 					return err
 				}
@@ -421,6 +373,7 @@ func GetCmdBurnSHRP(cdc *codec.Codec) *cobra.Command {
 			}
 
 			txBldr = txBldr.WithFees(minFeeShr)
+
 			amt := args[0]
 			msg := types.NewMsgBurnSHRP(cliCtx.GetFromAddress(), amt)
 			err := msg.ValidateBasic()
@@ -431,7 +384,7 @@ func GetCmdBurnSHRP(cdc *codec.Codec) *cobra.Command {
 			return utils.GenerateOrBroadcastMsgs(cliCtx, txBldr, []sdk.Msg{msg})
 		},
 	}
-	cmd.Flags().String(myutils.FlagKeySeed, "", "path to key_seed.json")
+	cmd.Flags().String(shareringUtils.FlagKeySeed, "", "path to key_seed.json")
 	return cmd
 }
 
@@ -446,14 +399,14 @@ func GetCmdBurnSHR(cdc *codec.Codec) *cobra.Command {
 			var cliCtx context.CLIContext
 			var txBldr auth.TxBuilder
 
-			keySeed := viper.GetString(myutils.FlagKeySeed)
+			keySeed := viper.GetString(shareringUtils.FlagKeySeed)
 			if len(keySeed) > 0 {
-				seed, err := myutils.GetKeeySeedFromFile(keySeed)
+				seed, err := shareringUtils.GetKeeySeedFromFile(keySeed)
 				if err != nil {
 					return err
 				}
 
-				cliCtx, txBldr, err = myutils.GetTxBldrAndCtxFromSeed(inBuf, cdc, seed)
+				cliCtx, txBldr, err = shareringUtils.GetTxBldrAndCtxFromSeed(inBuf, cdc, seed)
 				if err != nil {
 					return err
 				}
@@ -464,12 +417,13 @@ func GetCmdBurnSHR(cdc *codec.Codec) *cobra.Command {
 
 			txBldr = txBldr.WithFees(minFeeShr)
 
-			amt, err := strconv.Atoi(args[0])
-			if err != nil {
-				return err
-			}
+			// amt, err := strconv.Atoi(args[0])
+			// if err != nil {
+			// 	return err
+			// }
+			amt := args[0]
 			msg := types.NewMsgBurnSHR(cliCtx.GetFromAddress(), amt)
-			err = msg.ValidateBasic()
+			err := msg.ValidateBasic()
 			if err != nil {
 				return err
 			}
@@ -477,7 +431,7 @@ func GetCmdBurnSHR(cdc *codec.Codec) *cobra.Command {
 			return utils.GenerateOrBroadcastMsgs(cliCtx, txBldr, []sdk.Msg{msg})
 		},
 	}
-	cmd.Flags().String(myutils.FlagKeySeed, "", "path to key_seed.json")
+	cmd.Flags().String(shareringUtils.FlagKeySeed, "", "path to key_seed.json")
 	return cmd
 }
 
@@ -491,14 +445,14 @@ func GetCmdEnrollSHRPLoader(cdc *codec.Codec) *cobra.Command {
 			var cliCtx context.CLIContext
 			var txBldr auth.TxBuilder
 
-			keySeed := viper.GetString(myutils.FlagKeySeed)
+			keySeed := viper.GetString(shareringUtils.FlagKeySeed)
 			if len(keySeed) > 0 {
-				seed, err := myutils.GetKeeySeedFromFile(keySeed)
+				seed, err := shareringUtils.GetKeeySeedFromFile(keySeed)
 				if err != nil {
 					return err
 				}
 
-				cliCtx, txBldr, err = myutils.GetTxBldrAndCtxFromSeed(inBuf, cdc, seed)
+				cliCtx, txBldr, err = shareringUtils.GetTxBldrAndCtxFromSeed(inBuf, cdc, seed)
 				if err != nil {
 					return err
 				}
@@ -529,7 +483,7 @@ func GetCmdEnrollSHRPLoader(cdc *codec.Codec) *cobra.Command {
 			return utils.GenerateOrBroadcastMsgs(cliCtx, txBldr, []sdk.Msg{msg})
 		},
 	}
-	cmd.Flags().String(myutils.FlagKeySeed, "", "path to key_seed.json")
+	cmd.Flags().String(shareringUtils.FlagKeySeed, "", "path to key_seed.json")
 	return cmd
 }
 
@@ -543,14 +497,14 @@ func GetCmdEnrollSHRPLoaderFromFile(cdc *codec.Codec) *cobra.Command {
 			var cliCtx context.CLIContext
 			var txBldr auth.TxBuilder
 
-			keySeed := viper.GetString(myutils.FlagKeySeed)
+			keySeed := viper.GetString(shareringUtils.FlagKeySeed)
 			if len(keySeed) > 0 {
-				seed, err := myutils.GetKeeySeedFromFile(keySeed)
+				seed, err := shareringUtils.GetKeeySeedFromFile(keySeed)
 				if err != nil {
 					return err
 				}
 
-				cliCtx, txBldr, err = myutils.GetTxBldrAndCtxFromSeed(inBuf, cdc, seed)
+				cliCtx, txBldr, err = shareringUtils.GetTxBldrAndCtxFromSeed(inBuf, cdc, seed)
 				if err != nil {
 					return err
 				}
@@ -561,7 +515,7 @@ func GetCmdEnrollSHRPLoaderFromFile(cdc *codec.Codec) *cobra.Command {
 
 			txBldr = txBldr.WithFees(minFeeShr)
 
-			addrList, err := myutils.GetAddressFromFile(args[0])
+			addrList, err := shareringUtils.GetAddressFromFile(args[0])
 			if err != nil {
 				return err
 			}
@@ -600,7 +554,7 @@ func GetCmdEnrollSHRPLoaderFromFile(cdc *codec.Codec) *cobra.Command {
 			return nil
 		},
 	}
-	cmd.Flags().String(myutils.FlagKeySeed, "", "path to key_seed.json")
+	cmd.Flags().String(shareringUtils.FlagKeySeed, "", "path to key_seed.json")
 	return cmd
 }
 
@@ -614,14 +568,14 @@ func GetCmdRevokeSHRPLoader(cdc *codec.Codec) *cobra.Command {
 			var cliCtx context.CLIContext
 			var txBldr auth.TxBuilder
 
-			keySeed := viper.GetString(myutils.FlagKeySeed)
+			keySeed := viper.GetString(shareringUtils.FlagKeySeed)
 			if len(keySeed) > 0 {
-				seed, err := myutils.GetKeeySeedFromFile(keySeed)
+				seed, err := shareringUtils.GetKeeySeedFromFile(keySeed)
 				if err != nil {
 					return err
 				}
 
-				cliCtx, txBldr, err = myutils.GetTxBldrAndCtxFromSeed(inBuf, cdc, seed)
+				cliCtx, txBldr, err = shareringUtils.GetTxBldrAndCtxFromSeed(inBuf, cdc, seed)
 				if err != nil {
 					return err
 				}
@@ -649,7 +603,7 @@ func GetCmdRevokeSHRPLoader(cdc *codec.Codec) *cobra.Command {
 			return utils.GenerateOrBroadcastMsgs(cliCtx, txBldr, []sdk.Msg{msg})
 		},
 	}
-	cmd.Flags().String(myutils.FlagKeySeed, "", "path to key_seed.json")
+	cmd.Flags().String(shareringUtils.FlagKeySeed, "", "path to key_seed.json")
 	return cmd
 }
 
@@ -662,14 +616,14 @@ func GetCmdRevokeSHRPLoaderFromFile(cdc *codec.Codec) *cobra.Command {
 			var cliCtx context.CLIContext
 			var txBldr auth.TxBuilder
 
-			keySeed := viper.GetString(myutils.FlagKeySeed)
+			keySeed := viper.GetString(shareringUtils.FlagKeySeed)
 			if len(keySeed) > 0 {
-				seed, err := myutils.GetKeeySeedFromFile(keySeed)
+				seed, err := shareringUtils.GetKeeySeedFromFile(keySeed)
 				if err != nil {
 					return err
 				}
 
-				cliCtx, txBldr, err = myutils.GetTxBldrAndCtxFromSeed(inBuf, cdc, seed)
+				cliCtx, txBldr, err = shareringUtils.GetTxBldrAndCtxFromSeed(inBuf, cdc, seed)
 				if err != nil {
 					return err
 				}
@@ -680,7 +634,7 @@ func GetCmdRevokeSHRPLoaderFromFile(cdc *codec.Codec) *cobra.Command {
 
 			txBldr = txBldr.WithFees(minFeeShr)
 
-			addrList, err := myutils.GetAddressFromFile(args[0])
+			addrList, err := shareringUtils.GetAddressFromFile(args[0])
 			if err != nil {
 				return err
 			}
@@ -719,6 +673,6 @@ func GetCmdRevokeSHRPLoaderFromFile(cdc *codec.Codec) *cobra.Command {
 			return nil
 		},
 	}
-	cmd.Flags().String(myutils.FlagKeySeed, "", "path to key_seed.json")
+	cmd.Flags().String(shareringUtils.FlagKeySeed, "", "path to key_seed.json")
 	return cmd
 }
