@@ -2,16 +2,18 @@ package main
 
 import (
 	"fmt"
+	"math/big"
+	"time"
 
 	"github.com/cosmos/cosmos-sdk/codec"
 	"github.com/cosmos/cosmos-sdk/server"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/x/distribution"
 	"github.com/cosmos/cosmos-sdk/x/genutil"
+	"github.com/cosmos/cosmos-sdk/x/gov"
 	"github.com/cosmos/cosmos-sdk/x/slashing"
 	"github.com/cosmos/cosmos-sdk/x/staking"
 	gentlemint "github.com/sharering/shareledger/x/gentlemint"
-	"github.com/sharering/shareledger/x/identity"
 	oldId "github.com/sharering/shareledger/x/identity"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -76,6 +78,42 @@ func FromV1_1_0(inputFilePath, outputFilePath string, cdc *codec.Codec) error {
 	if err != nil {
 		return fmt.Errorf("failed to unmarshal old genesis state: %w", err)
 	}
+
+	const voting_period time.Duration = 432000000000000
+	max_deposit_period := gov.DefaultPeriod
+	// Add gov module
+	govState := gov.NewGenesisState(
+		1,
+		gov.NewDepositParams(
+			sdk.NewCoins(
+				sdk.Coin{
+					Denom:  "shr",
+					Amount: sdk.NewInt(20000000),
+				},
+			),
+			max_deposit_period,
+		),
+		gov.NewVotingParams(voting_period),
+		gov.NewTallyParams(
+			sdk.Dec{Int: big.NewInt(334000000000000000)},
+			sdk.Dec{Int: big.NewInt(500000000000000000)},
+			sdk.Dec{Int: big.NewInt(334000000000000000)}),
+	)
+	govStatebz, err := cdc.MarshalJSON(govState)
+	if err != nil {
+		return fmt.Errorf("failed to marshal gov genesis state: %w", err)
+	}
+	appState[gov.ModuleName] = govStatebz
+
+	// Add upgrade module
+
+	// Reset old id module
+	// var identityState identity.GenesisState
+	// identityStateBz, err := cdc.MarshalJSON(identityState)
+	// if err != nil {
+	// 	return fmt.Errorf("failed to marshal auth genesis state: %w", err)
+	// }
+	// appState[oldId.ModuleName] = identityStateBz
 
 	// Staking module
 	var stakingState staking.GenesisState
@@ -143,12 +181,12 @@ func FromV1_1_0(inputFilePath, outputFilePath string, cdc *codec.Codec) error {
 	appState[slashing.ModuleName] = slashingStateBz
 
 	// Reset old id module
-	var identityState identity.GenesisState
-	identityStateBz, err := cdc.MarshalJSON(identityState)
-	if err != nil {
-		return fmt.Errorf("failed to marshal auth genesis state: %w", err)
-	}
-	appState[oldId.ModuleName] = identityStateBz
+	// var identityState identity.GenesisState
+	// identityStateBz, err := cdc.MarshalJSON(identityState)
+	// if err != nil {
+	// 	return fmt.Errorf("failed to marshal auth genesis state: %w", err)
+	// }
+	// appState[oldId.ModuleName] = identityStateBz
 
 	appStateJSON, err := cdc.MarshalJSON(appState)
 	if err != nil {
