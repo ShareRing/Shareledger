@@ -79,8 +79,8 @@ func FromV1_1_0(inputFilePath, outputFilePath string, cdc *codec.Codec) error {
 		return fmt.Errorf("failed to unmarshal old genesis state: %w", err)
 	}
 
-	const voting_period time.Duration = 432000000000000
-	max_deposit_period := gov.DefaultPeriod
+	const voting_period time.Duration = 432000000000000 // 5 days
+	max_deposit_period := gov.DefaultPeriod             // 2 days
 	// Add gov module
 	govState := gov.NewGenesisState(
 		1,
@@ -106,14 +106,6 @@ func FromV1_1_0(inputFilePath, outputFilePath string, cdc *codec.Codec) error {
 	appState[gov.ModuleName] = govStatebz
 
 	// Add upgrade module
-
-	// Reset old id module
-	// var identityState identity.GenesisState
-	// identityStateBz, err := cdc.MarshalJSON(identityState)
-	// if err != nil {
-	// 	return fmt.Errorf("failed to marshal auth genesis state: %w", err)
-	// }
-	// appState[oldId.ModuleName] = identityStateBz
 
 	// Staking module
 	var stakingState staking.GenesisState
