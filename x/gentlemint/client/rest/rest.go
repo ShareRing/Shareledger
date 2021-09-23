@@ -10,4 +10,5 @@ import (
 
 func RegisterRoutes(cliCtx context.CLIContext, r *mux.Router, storeName string) {
 	r.HandleFunc(fmt.Sprintf("/%s", storeName), nil).Methods("GET")
+	r.HandleFunc(fmt.Sprintf("/%s/exchange", storeName), QueryExchangeRateHandleFn(cliCtx)).Methods("GET")
 }
