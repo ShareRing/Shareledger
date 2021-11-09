@@ -8,5 +8,8 @@ import (
 
 // x/id module sentinel errors
 var (
-	ErrSample = sdkerrors.Register(ModuleName, 1100, "sample error")
+	ErrIdNotExisted    = sdkerrors.Register(ModuleName, 2, "Id does not exist")
+	ErrIdExisted       = sdkerrors.Register(ModuleName, 3, "Id existed")
+	InvalidData        = sdkerrors.Register(ModuleName, 4, "Invalid data")
+	ErrWrongBackupAddr = sdkerrors.Register(ModuleName, 5, "Wrong backup address")
 )

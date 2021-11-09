@@ -91,9 +91,9 @@ import (
 	documentmodulekeeper "github.com/ShareRing/Shareledger/x/document/keeper"
 	documentmoduletypes "github.com/ShareRing/Shareledger/x/document/types"
 	idmodule "github.com/ShareRing/Shareledger/x/id"
+	i "github.com/ShareRing/Shareledger/x/id/interfaces"
 	idmodulekeeper "github.com/ShareRing/Shareledger/x/id/keeper"
 	idmoduletypes "github.com/ShareRing/Shareledger/x/id/types"
-	// this line is used by starport scaffolding # stargate/app/moduleImport
 )
 
 const (
@@ -356,10 +356,12 @@ func New(
 	)
 	documentModule := documentmodule.NewAppModule(appCodec, app.DocumentKeeper)
 
+	var gmKeeper i.IGentlemintKeeper
 	app.IdKeeper = *idmodulekeeper.NewKeeper(
 		appCodec,
 		keys[idmoduletypes.StoreKey],
 		keys[idmoduletypes.MemStoreKey],
+		gmKeeper,
 	)
 	idModule := idmodule.NewAppModule(appCodec, app.IdKeeper)
 
