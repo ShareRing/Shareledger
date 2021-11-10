@@ -87,6 +87,9 @@ import (
 	"github.com/tendermint/spm/openapiconsole"
 
 	"github.com/ShareRing/Shareledger/docs"
+	assetmodule "github.com/ShareRing/Shareledger/x/asset"
+	assetmodulekeeper "github.com/ShareRing/Shareledger/x/asset/keeper"
+	assetmoduletypes "github.com/ShareRing/Shareledger/x/asset/types"
 	documentmodule "github.com/ShareRing/Shareledger/x/document"
 	documentmodulekeeper "github.com/ShareRing/Shareledger/x/document/keeper"
 	documentmoduletypes "github.com/ShareRing/Shareledger/x/document/types"
@@ -145,6 +148,7 @@ var (
 		vesting.AppModuleBasic{},
 		documentmodule.AppModuleBasic{},
 		idmodule.AppModuleBasic{},
+		assetmodule.AppModuleBasic{},
 		// this line is used by starport scaffolding # stargate/app/moduleBasic
 	)
 
@@ -216,6 +220,8 @@ type App struct {
 	DocumentKeeper documentmodulekeeper.Keeper
 
 	IdKeeper idmodulekeeper.Keeper
+
+	AssetKeeper assetmodulekeeper.Keeper
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
 	// the module manager
@@ -251,6 +257,7 @@ func New(
 		evidencetypes.StoreKey, ibctransfertypes.StoreKey, capabilitytypes.StoreKey,
 		documentmoduletypes.StoreKey,
 		idmoduletypes.StoreKey,
+		assetmoduletypes.StoreKey,
 		// this line is used by starport scaffolding # stargate/app/storeKey
 	)
 	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey)
@@ -365,6 +372,13 @@ func New(
 	)
 	idModule := idmodule.NewAppModule(appCodec, app.IdKeeper)
 
+	app.AssetKeeper = *assetmodulekeeper.NewKeeper(
+		appCodec,
+		keys[assetmoduletypes.StoreKey],
+		keys[assetmoduletypes.MemStoreKey],
+	)
+	assetModule := assetmodule.NewAppModule(appCodec, app.AssetKeeper)
+
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
 
 	// Create static IBC router, add transfer route, then set and seal it
@@ -405,6 +419,7 @@ func New(
 		transferModule,
 		documentModule,
 		idModule,
+		assetModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
 	)
 
@@ -441,6 +456,7 @@ func New(
 		ibctransfertypes.ModuleName,
 		documentmoduletypes.ModuleName,
 		idmoduletypes.ModuleName,
+		assetmoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/initGenesis
 	)
 
@@ -630,6 +646,7 @@ func initParamsKeeper(appCodec codec.BinaryCodec, legacyAmino *codec.LegacyAmino
 	paramsKeeper.Subspace(ibchost.ModuleName)
 	paramsKeeper.Subspace(documentmoduletypes.ModuleName)
 	paramsKeeper.Subspace(idmoduletypes.ModuleName)
+	paramsKeeper.Subspace(assetmoduletypes.ModuleName)
 	// this line is used by starport scaffolding # stargate/app/paramSubspace
 
 	return paramsKeeper
