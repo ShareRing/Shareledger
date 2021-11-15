@@ -15,6 +15,8 @@ validator:
 client:
   openapi:
     path: "docs/static/openapi.yml"
+build:
+  binary: "shareledger"
 # faucet:
 #   name: bob
 #   coins: ["5token", "100000stake"]
@@ -24,3 +26,17 @@ genesis:
     staking:
       params:
         bond_denom: "shr"
+    crisis:
+      constant_fee:
+        denom: "shr"
+    gov:
+      deposit_params:
+        min_deposit:
+          - amount: "10000000"
+            denom: "shr"
+    mint:
+      params:
+        mint_denom: "shr"
+init:
+  client:
+    chain-id: "ShareRing-VoyagerNet"
