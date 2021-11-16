@@ -12696,6 +12696,48 @@ paths:
           type: string
       tags:
         - Query
+  '/shareledger/voter/{address}':
+    get:
+      summary: Balance queries the balance of a single coin for a single account.
+      operationId: ShareRingShareledgerElectoralVoter
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              voter:
+                type: object
+                properties:
+                  address:
+                    type: string
+                  status:
+                    type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: address
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
   '/shareledger/id/address/{address}':
     get:
       summary: Balance queries the balance of a single coin for a single account.
@@ -20246,6 +20288,27 @@ definitions:
           version:
             type: integer
             format: int32
+  ShareRing.shareledger.electoral.MsgEnrollVoterResponse:
+    type: object
+  ShareRing.shareledger.electoral.MsgRevokeVoterResponse:
+    type: object
+  ShareRing.shareledger.electoral.QueryVoterResponse:
+    type: object
+    properties:
+      voter:
+        type: object
+        properties:
+          address:
+            type: string
+          status:
+            type: string
+  ShareRing.shareledger.electoral.Voter:
+    type: object
+    properties:
+      address:
+        type: string
+      status:
+        type: string
   ShareRing.shareledger.id.BaseID:
     type: object
     properties:

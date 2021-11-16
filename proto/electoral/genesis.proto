@@ -1,0 +1,11 @@
+syntax = "proto3";
+package ShareRing.shareledger.electoral;
+
+import "gogoproto/gogo.proto";
+
+option go_package = "github.com/ShareRing/Shareledger/x/electoral/types";
+
+// GenesisState defines the electoral module's genesis state.
+message GenesisState {
+    repeated string addresses = 1 [(gogoproto.nullable) = true];
+}

@@ -1,0 +1,29 @@
+syntax = "proto3";
+package ShareRing.shareledger.electoral;
+
+import "google/api/annotations.proto";
+import "gogoproto/gogo.proto";
+import "electoral/tx.proto";
+// import "cosmos/base/query/v1beta1/pagination.proto";
+
+option go_package = "github.com/ShareRing/Shareledger/x/electoral/types";
+
+// Query defines the gRPC querier service.
+service Query {
+    // Balance queries the balance of a single coin for a single account.
+    rpc Voter(QueryVoterRequest) returns (QueryVoterResponse) {
+        option (google.api.http).get = "/shareledger/voter/{address}";
+    }
+}
+
+message QueryVoterRequest {
+    option (gogoproto.equal)           = false;
+    option (gogoproto.goproto_getters) = false;
+
+    string address = 1;
+}
+
+
+message QueryVoterResponse {
+    Voter voter = 1;
+}
