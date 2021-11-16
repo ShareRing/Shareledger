@@ -92,6 +92,9 @@ func CmdCreateAsset() *cobra.Command {
 
 			//------------------------------
 			clientCtx, err := client.GetClientTxContext(cmd)
+			if err != nil {
+				return err
+			}
 
 			hash := []byte(args[0])
 			uuid := args[1]
@@ -163,6 +166,9 @@ func CmdUpdateAsset() *cobra.Command {
 
 			// return utils.GenerateOrBroadcastMsgs(cliCtx, txBldr, []sdk.Msg{msg})
 			clientCtx, err := client.GetClientTxContext(cmd)
+			if err != nil {
+				return err
+			}
 
 			hash := []byte(args[0])
 			uuid := args[1]
@@ -175,7 +181,7 @@ func CmdUpdateAsset() *cobra.Command {
 				return err
 			}
 
-			msg := types.NewMsgCreate(clientCtx.GetFromAddress().String(), hash, uuid, status, int64(rate))
+			msg := types.NewMsgUpdate(clientCtx.GetFromAddress().String(), hash, uuid, status, int64(rate))
 			err = msg.ValidateBasic()
 			if err != nil {
 				return err
@@ -183,6 +189,7 @@ func CmdUpdateAsset() *cobra.Command {
 			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), &msg)
 		},
 	}
+	flags.AddTxFlagsToCmd(cmd)
 
 	// cmd.Flags().String(client.FlagKeySeed, "", "path to key_seed.json")
 	return cmd
@@ -190,7 +197,7 @@ func CmdUpdateAsset() *cobra.Command {
 
 func CmdDeleteAsset() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:  "delete [hash] [uuid] [status] [fee]",
+		Use:  "delete [uuid]",
 		Args: cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			// inBuf := bufio.NewReader(cmd.InOrStdin())
@@ -220,6 +227,10 @@ func CmdDeleteAsset() *cobra.Command {
 			// return client.GenerateOrBroadcastMsgs(cliCtx, txBldr, []sdk.Msg{&msg})
 
 			clientCtx, err := client.GetClientTxContext(cmd)
+			if err != nil {
+				return err
+			}
+
 			uuid := args[0]
 			msg := types.NewMsgDelete(clientCtx.GetFromAddress().String(), uuid)
 			err = msg.ValidateBasic()
@@ -230,6 +241,7 @@ func CmdDeleteAsset() *cobra.Command {
 
 		},
 	}
+	flags.AddTxFlagsToCmd(cmd)
 
 	// cmd.Flags().String(client.FlagKeySeed, "", "path to key_seed.json")
 	return cmd
