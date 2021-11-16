@@ -8,5 +8,13 @@ import (
 
 // x/booking module sentinel errors
 var (
-	ErrSample = sdkerrors.Register(ModuleName, 1100, "sample error")
+	ErrAssetDoesNotExist      = sdkerrors.New(ModuleName, 1, "asset does not exist")
+	ErrIllegalAssetRate       = sdkerrors.New(ModuleName, 2, "asset is negative")
+	ErrAssetAlreadyBooked     = sdkerrors.New(ModuleName, 3, "asset is already booked")
+	ErrUnableToGenerateBookID = sdkerrors.New(ModuleName, 4, "unable to generate bookID")
+	ErrInvalidBooking         = sdkerrors.New(ModuleName, 5, "booking field values are invalid")
+	ErrNotBookerOfAsset       = sdkerrors.New(ModuleName, 6, "Signer didn't booking this booking")
+	ErrAssetNotBooked         = sdkerrors.New(ModuleName, 7, "Asset is not booked")
+	ErrBookingIsCompleted     = sdkerrors.New(ModuleName, 8, "Booking is completed")
+	ErrUUIDMismatch           = sdkerrors.New(ModuleName, 9, "uuid of booking and asset not matched")
 )
