@@ -6,12 +6,15 @@ import (
 	"time"
 
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
 
 	"github.com/ShareRing/Shareledger/x/asset/types"
+	"github.com/ShareRing/Shareledger/x/utils"
+	myutils "github.com/ShareRing/Shareledger/x/utils"
 )
 
 var (
@@ -96,6 +99,13 @@ func CmdCreateAsset() *cobra.Command {
 				return err
 			}
 
+			// seed implementation
+			keySeed := viper.GetString(myutils.FlagKeySeed)
+			clientCtx, err = myutils.CreateContextFromSeed(keySeed, clientCtx)
+			if err != nil {
+				return err
+			}
+
 			hash := []byte(args[0])
 			uuid := args[1]
 			status, err := strconv.ParseBool(args[2])
@@ -117,7 +127,7 @@ func CmdCreateAsset() *cobra.Command {
 	}
 	flags.AddTxFlagsToCmd(cmd)
 
-	// cmd.Flags().String(utils.FlagKeySeed, "", "path to key_seed.json")
+	cmd.Flags().String(utils.FlagKeySeed, "", "path to key_seed.json")
 
 	return cmd
 }
@@ -170,6 +180,13 @@ func CmdUpdateAsset() *cobra.Command {
 				return err
 			}
 
+			// seed implementation
+			keySeed := viper.GetString(myutils.FlagKeySeed)
+			clientCtx, err = myutils.CreateContextFromSeed(keySeed, clientCtx)
+			if err != nil {
+				return err
+			}
+
 			hash := []byte(args[0])
 			uuid := args[1]
 			status, err := strconv.ParseBool(args[2])
@@ -191,7 +208,7 @@ func CmdUpdateAsset() *cobra.Command {
 	}
 	flags.AddTxFlagsToCmd(cmd)
 
-	// cmd.Flags().String(client.FlagKeySeed, "", "path to key_seed.json")
+	cmd.Flags().String(myutils.FlagKeySeed, "", "path to key_seed.json")
 	return cmd
 }
 
@@ -231,6 +248,13 @@ func CmdDeleteAsset() *cobra.Command {
 				return err
 			}
 
+			// seed implementation
+			keySeed := viper.GetString(myutils.FlagKeySeed)
+			clientCtx, err = myutils.CreateContextFromSeed(keySeed, clientCtx)
+			if err != nil {
+				return err
+			}
+
 			uuid := args[0]
 			msg := types.NewMsgDelete(clientCtx.GetFromAddress().String(), uuid)
 			err = msg.ValidateBasic()
@@ -243,6 +267,6 @@ func CmdDeleteAsset() *cobra.Command {
 	}
 	flags.AddTxFlagsToCmd(cmd)
 
-	// cmd.Flags().String(client.FlagKeySeed, "", "path to key_seed.json")
+	cmd.Flags().String(myutils.FlagKeySeed, "", "path to key_seed.json")
 	return cmd
 }
