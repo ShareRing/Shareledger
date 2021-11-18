@@ -1,14 +1,14 @@
 accounts:
   - name: validator
-    coins: ["100000000shr"]
+    coins: ["100000000shr", "1000000000shrp"]
   - name: authority
-    coins: ["100000000shr"]
+    coins: ["100000000shr", "1000000000shrp"]
   - name: treasurer
-    coins: ["100000000shr"]
+    coins: ["100000000shr", "1000000000shrp"]
   - name: account-operator
-    coins: ["100000000shr"]
+    coins: ["100000000shr", "1000000000shrp"]
   - name: idsigner
-    coins: ["100000000shr"]
+    coins: ["100000000shr", "1000000000shrp"]
 validator:
   name: validator
   staked: "10000000shr"
