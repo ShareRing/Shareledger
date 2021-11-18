@@ -13,7 +13,6 @@ import (
 	"github.com/cosmos/cosmos-sdk/client/tx"
 
 	"github.com/ShareRing/Shareledger/x/asset/types"
-	"github.com/ShareRing/Shareledger/x/utils"
 	myutils "github.com/ShareRing/Shareledger/x/utils"
 )
 
@@ -101,9 +100,11 @@ func CmdCreateAsset() *cobra.Command {
 
 			// seed implementation
 			keySeed := viper.GetString(myutils.FlagKeySeed)
-			clientCtx, err = myutils.CreateContextFromSeed(keySeed, clientCtx)
-			if err != nil {
-				return err
+			if keySeed != "" {
+				clientCtx, err = myutils.CreateContextFromSeed(keySeed, clientCtx)
+				if err != nil {
+					return err
+				}
 			}
 
 			hash := []byte(args[0])
@@ -127,7 +128,7 @@ func CmdCreateAsset() *cobra.Command {
 	}
 	flags.AddTxFlagsToCmd(cmd)
 
-	cmd.Flags().String(utils.FlagKeySeed, "", "path to key_seed.json")
+	cmd.Flags().String(myutils.FlagKeySeed, "", "path to key_seed.json")
 
 	return cmd
 }
@@ -182,9 +183,11 @@ func CmdUpdateAsset() *cobra.Command {
 
 			// seed implementation
 			keySeed := viper.GetString(myutils.FlagKeySeed)
-			clientCtx, err = myutils.CreateContextFromSeed(keySeed, clientCtx)
-			if err != nil {
-				return err
+			if keySeed != "" {
+				clientCtx, err = myutils.CreateContextFromSeed(keySeed, clientCtx)
+				if err != nil {
+					return err
+				}
 			}
 
 			hash := []byte(args[0])
@@ -250,9 +253,11 @@ func CmdDeleteAsset() *cobra.Command {
 
 			// seed implementation
 			keySeed := viper.GetString(myutils.FlagKeySeed)
-			clientCtx, err = myutils.CreateContextFromSeed(keySeed, clientCtx)
-			if err != nil {
-				return err
+			if keySeed != "" {
+				clientCtx, err = myutils.CreateContextFromSeed(keySeed, clientCtx)
+				if err != nil {
+					return err
+				}
 			}
 
 			uuid := args[0]
