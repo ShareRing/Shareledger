@@ -11,7 +11,8 @@ import (
 )
 
 const (
-	FlagKeySeed = "key-seed"
+	FlagKeySeed  = "key-seed"
+	KeySeedUsage = "path to key_seed.json"
 )
 
 func GetKeySeedFromFile(seedPath string) (string, error) {

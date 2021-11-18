@@ -128,7 +128,7 @@ func CmdCreateAsset() *cobra.Command {
 	}
 	flags.AddTxFlagsToCmd(cmd)
 
-	cmd.Flags().String(myutils.FlagKeySeed, "", "path to key_seed.json")
+	cmd.Flags().String(myutils.FlagKeySeed, "", myutils.KeySeedUsage)
 
 	return cmd
 }
@@ -211,7 +211,7 @@ func CmdUpdateAsset() *cobra.Command {
 	}
 	flags.AddTxFlagsToCmd(cmd)
 
-	cmd.Flags().String(myutils.FlagKeySeed, "", "path to key_seed.json")
+	cmd.Flags().String(myutils.FlagKeySeed, "", myutils.KeySeedUsage)
 	return cmd
 }
 
@@ -272,6 +272,6 @@ func CmdDeleteAsset() *cobra.Command {
 	}
 	flags.AddTxFlagsToCmd(cmd)
 
-	cmd.Flags().String(myutils.FlagKeySeed, "", "path to key_seed.json")
+	cmd.Flags().String(myutils.FlagKeySeed, "", myutils.KeySeedUsage)
 	return cmd
 }

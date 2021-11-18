@@ -17,18 +17,18 @@ import (
 	myutils "github.com/ShareRing/Shareledger/x/utils"
 )
 
-const (
-	bookFee     = 0.05
-	completeFee = 0.03
-)
+// const (
+// 	bookFee     = 0.05
+// 	completeFee = 0.03
+// )
 
 var (
 	DefaultRelativePacketTimeoutTimestamp = uint64((time.Duration(10) * time.Minute).Nanoseconds())
 )
 
-const (
-	flagPacketTimeoutTimestamp = "packet-timeout-timestamp"
-)
+// const (
+// 	flagPacketTimeoutTimestamp = "packet-timeout-timestamp"
+// )
 
 // GetTxCmd returns the transaction commands for this module
 func GetTxCmd() *cobra.Command {
@@ -118,7 +118,7 @@ func GetCmdBook() *cobra.Command {
 	}
 
 	flags.AddTxFlagsToCmd(cmd)
-	cmd.Flags().String(myutils.FlagKeySeed, "", "path to key_seed.json")
+	cmd.Flags().String(myutils.FlagKeySeed, "", myutils.KeySeedUsage)
 
 	return cmd
 }
@@ -186,7 +186,7 @@ func GetCmdComplete() *cobra.Command {
 	}
 
 	flags.AddTxFlagsToCmd(cmd)
-	cmd.Flags().String(myutils.FlagKeySeed, "", "path to key_seed.json")
+	cmd.Flags().String(myutils.FlagKeySeed, "", myutils.KeySeedUsage)
 
 	return cmd
 }

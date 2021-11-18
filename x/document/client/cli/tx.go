@@ -6,12 +6,14 @@ import (
 	"time"
 
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
 
 	"github.com/ShareRing/Shareledger/x/document/types"
+	myutils "github.com/ShareRing/Shareledger/x/utils"
 )
 
 var (
@@ -60,6 +62,15 @@ $ create uid-159654 c89efdaa54c0f20c7adf612882df0950f5a951637e0307cdcb4c672f298b
 				return err
 			}
 
+			// seed implementation
+			keySeed := viper.GetString(myutils.FlagKeySeed)
+			if keySeed != "" {
+				clientCtx, err = myutils.CreateContextFromSeed(keySeed, clientCtx)
+				if err != nil {
+					return err
+				}
+			}
+
 			issuer := clientCtx.GetFromAddress()
 			holderId := args[0]
 			proof := args[1]
@@ -77,6 +88,7 @@ $ create uid-159654 c89efdaa54c0f20c7adf612882df0950f5a951637e0307cdcb4c672f298b
 	}
 
 	flags.AddTxFlagsToCmd(cmd)
+	cmd.Flags().String(myutils.FlagKeySeed, "", myutils.KeySeedUsage)
 
 	return cmd
 }
@@ -94,6 +106,15 @@ $ create uid-159654 c89efdaa54c0f20c7adf612882df0950f5a951637e0307cdcb4c672f298b
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
+			}
+
+			// seed implementation
+			keySeed := viper.GetString(myutils.FlagKeySeed)
+			if keySeed != "" {
+				clientCtx, err = myutils.CreateContextFromSeed(keySeed, clientCtx)
+				if err != nil {
+					return err
+				}
 			}
 
 			issuer := clientCtx.GetFromAddress()
@@ -115,6 +136,7 @@ $ create uid-159654 c89efdaa54c0f20c7adf612882df0950f5a951637e0307cdcb4c672f298b
 	}
 
 	flags.AddTxFlagsToCmd(cmd)
+	cmd.Flags().String(myutils.FlagKeySeed, "", myutils.KeySeedUsage)
 
 	return cmd
 }
@@ -132,6 +154,15 @@ $ update uid-159654 c89efdaa54c0f20c7adf612882df0950f5a951637e0307cdcb4c672f298b
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
+			}
+
+			// seed implementation
+			keySeed := viper.GetString(myutils.FlagKeySeed)
+			if keySeed != "" {
+				clientCtx, err = myutils.CreateContextFromSeed(keySeed, clientCtx)
+				if err != nil {
+					return err
+				}
 			}
 
 			issuer := clientCtx.GetFromAddress()
@@ -152,6 +183,7 @@ $ update uid-159654 c89efdaa54c0f20c7adf612882df0950f5a951637e0307cdcb4c672f298b
 	}
 
 	flags.AddTxFlagsToCmd(cmd)
+	cmd.Flags().String(myutils.FlagKeySeed, "", myutils.KeySeedUsage)
 
 	return cmd
 }
@@ -171,6 +203,15 @@ $ revoke uid-159654 c89efdaa54c0f20c7adf612882df0950f5a951637e0307cdcb4c672f298b
 				return err
 			}
 
+			// seed implementation
+			keySeed := viper.GetString(myutils.FlagKeySeed)
+			if keySeed != "" {
+				clientCtx, err = myutils.CreateContextFromSeed(keySeed, clientCtx)
+				if err != nil {
+					return err
+				}
+			}
+
 			issuer := clientCtx.GetFromAddress()
 
 			holderId := args[0]
@@ -187,6 +228,7 @@ $ revoke uid-159654 c89efdaa54c0f20c7adf612882df0950f5a951637e0307cdcb4c672f298b
 	}
 
 	flags.AddTxFlagsToCmd(cmd)
+	cmd.Flags().String(myutils.FlagKeySeed, "", myutils.KeySeedUsage)
 
 	return cmd
 }
