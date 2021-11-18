@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
@@ -13,6 +14,7 @@ import (
 
 	// "github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/ShareRing/Shareledger/x/booking/types"
+	myutils "github.com/ShareRing/Shareledger/x/utils"
 )
 
 const (
@@ -88,6 +90,15 @@ func GetCmdBook() *cobra.Command {
 				return err
 			}
 
+			// seed implementation
+			keySeed := viper.GetString(myutils.FlagKeySeed)
+			if keySeed != "" {
+				clientCtx, err = myutils.CreateContextFromSeed(keySeed, clientCtx)
+				if err != nil {
+					return err
+				}
+			}
+
 			uuid := args[0]
 			duration, err := strconv.Atoi(args[1])
 			if err != nil {
@@ -107,7 +118,7 @@ func GetCmdBook() *cobra.Command {
 	}
 
 	flags.AddTxFlagsToCmd(cmd)
-	// flags.String(utils.FlagKeySeed, "", "path to key_seed.json")
+	cmd.Flags().String(myutils.FlagKeySeed, "", "path to key_seed.json")
 
 	return cmd
 }
@@ -149,6 +160,15 @@ func GetCmdComplete() *cobra.Command {
 				return err
 			}
 
+			// seed implementation
+			keySeed := viper.GetString(myutils.FlagKeySeed)
+			if keySeed != "" {
+				clientCtx, err = myutils.CreateContextFromSeed(keySeed, clientCtx)
+				if err != nil {
+					return err
+				}
+			}
+
 			bookID := args[0]
 			if err != nil {
 				return err
@@ -166,7 +186,7 @@ func GetCmdComplete() *cobra.Command {
 	}
 
 	flags.AddTxFlagsToCmd(cmd)
-	// flags.String(utils.FlagKeySeed, "", "path to key_seed.json")
+	cmd.Flags().String(myutils.FlagKeySeed, "", "path to key_seed.json")
 
 	return cmd
 }
