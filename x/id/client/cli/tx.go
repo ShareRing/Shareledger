@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
@@ -12,6 +13,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
 	"github.com/ShareRing/Shareledger/x/id/types"
+	myutils "github.com/ShareRing/Shareledger/x/utils"
 )
 
 var (
@@ -58,6 +60,18 @@ $ create uid-159654 shareledger1s432u6zv95wpluxhf4qru2ewy58kc3w4tkzm3v shareledg
 
 			// cliCtx := context.NewCLIContextWithInput(inBuf).WithCodec()
 			clientCtx, err := client.GetClientTxContext(cmd)
+			if err != nil {
+				return err
+			}
+
+			// seed implementation
+			keySeed := viper.GetString(myutils.FlagKeySeed)
+			if keySeed != "" {
+				clientCtx, err = myutils.CreateContextFromSeed(keySeed, clientCtx)
+				if err != nil {
+					return err
+				}
+			}
 
 			id := args[0]
 
@@ -82,6 +96,7 @@ $ create uid-159654 shareledger1s432u6zv95wpluxhf4qru2ewy58kc3w4tkzm3v shareledg
 	}
 
 	flags.AddTxFlagsToCmd(cmd)
+	cmd.Flags().String(myutils.FlagKeySeed, "", myutils.KeySeedUsage)
 
 	return cmd
 }

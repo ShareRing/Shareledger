@@ -2,27 +2,28 @@ package cli
 
 import (
 	"fmt"
-	"time"
 
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 
 	"github.com/ShareRing/Shareledger/x/electoral/types"
+	myutils "github.com/ShareRing/Shareledger/x/utils"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
 )
 
-var (
-	DefaultRelativePacketTimeoutTimestamp = uint64((time.Duration(10) * time.Minute).Nanoseconds())
-)
+// var (
+// 	DefaultRelativePacketTimeoutTimestamp = uint64((time.Duration(10) * time.Minute).Nanoseconds())
+// )
 
-const (
-	flagPacketTimeoutTimestamp = "packet-timeout-timestamp"
-)
+// const (
+// 	flagPacketTimeoutTimestamp = "packet-timeout-timestamp"
+// )
 
-const (
-	minFeeShr = "1shr"
-)
+// const (
+// 	minFeeShr = "1shr"
+// )
 
 // GetTxCmd returns the transaction commands for this module
 func GetTxCmd() *cobra.Command {
@@ -86,6 +87,18 @@ func GetCmdEnroll() *cobra.Command {
 			// }
 			// return utils.GenerateOrBroadcastMsgs(cliCtx, txBldr, []sdk.Msg{msg})
 			clientCtx, err := client.GetClientTxContext(cmd)
+			if err != nil {
+				return err
+			}
+
+			// seed implementation
+			keySeed := viper.GetString(myutils.FlagKeySeed)
+			if keySeed != "" {
+				clientCtx, err = myutils.CreateContextFromSeed(keySeed, clientCtx)
+				if err != nil {
+					return err
+				}
+			}
 
 			voter := args[0]
 
@@ -99,7 +112,7 @@ func GetCmdEnroll() *cobra.Command {
 	}
 	flags.AddTxFlagsToCmd(cmd)
 
-	// cmd.Flags().String(utils.FlagKeySeed, "", "path to key_seed.json")
+	cmd.Flags().String(myutils.FlagKeySeed, "", myutils.KeySeedUsage)
 
 	return cmd
 }
@@ -137,6 +150,18 @@ func GetCmdRevoke() *cobra.Command {
 			// return utils.GenerateOrBroadcastMsgs(cliCtx, txBldr, []sdk.Msg{msg})
 
 			clientCtx, err := client.GetClientTxContext(cmd)
+			if err != nil {
+				return err
+			}
+
+			// seed implementation
+			keySeed := viper.GetString(myutils.FlagKeySeed)
+			if keySeed != "" {
+				clientCtx, err = myutils.CreateContextFromSeed(keySeed, clientCtx)
+				if err != nil {
+					return err
+				}
+			}
 
 			voter := args[0]
 
@@ -150,7 +175,7 @@ func GetCmdRevoke() *cobra.Command {
 	}
 	flags.AddTxFlagsToCmd(cmd)
 
-	// cmd.Flags().String(utils.FlagKeySeed, "", "path to key_seed.json")
+	cmd.Flags().String(myutils.FlagKeySeed, "", myutils.KeySeedUsage)
 
 	return cmd
 }
