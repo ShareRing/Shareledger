@@ -46,7 +46,7 @@ $ %s query %s proof 5wpluxhf4qru2ewy58kc3w4tkzm3v`, version.Name, types.ModuleNa
 			}
 
 			queryClient := types.NewQueryClient(cliCtx)
-			params := types.QueryDocumentByProofRequest{args[0]}
+			params := types.QueryDocumentByProofRequest{Proof: args[0]}
 			res, err := queryClient.DocumentByProof(cmd.Context(), &params)
 			if err != nil {
 				return err
@@ -74,7 +74,7 @@ $ %s query %s holder uid-11594`, version.Name, types.ModuleName)),
 			}
 
 			queryClient := types.NewQueryClient(cliCtx)
-			params := types.QueryDocumentByHolderIdRequest{args[0]}
+			params := types.QueryDocumentByHolderIdRequest{Id: args[0]}
 			res, err := queryClient.DocumentByHolderId(cmd.Context(), &params)
 			if err != nil {
 				return err

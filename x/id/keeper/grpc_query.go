@@ -21,10 +21,11 @@ func (k Querier) IdByAddress(ctx context.Context, req *types.QueryIdByAddressReq
 		return nil, status.Error(codes.InvalidArgument, "empty request")
 	}
 
-	address, err := sdk.AccAddressFromBech32(req.Address)
-	if err != nil {
-		return nil, status.Error(codes.Internal, err.Error())
-	}
+	address := sdk.AccAddress(req.Address)
+	// address, err := sdk.AccAddressFromBech32(req.Address)
+	// if err != nil {
+	// 	return nil, status.Error(codes.Internal, err.Error())
+	// }
 
 	sdkCtx := sdk.UnwrapSDKContext(ctx)
 	id := k.GetIdByAddress(sdkCtx, address)
