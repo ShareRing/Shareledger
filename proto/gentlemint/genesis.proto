@@ -1,0 +1,11 @@
+syntax = "proto3";
+package ShareRing.shareledger.gentlemint;
+
+// this line is used by starport scaffolding # genesis/proto/import
+
+option go_package = "github.com/ShareRing/Shareledger/x/gentlemint/types";
+
+// GenesisState defines the gentlemint module's genesis state.
+message GenesisState {
+    // this line is used by starport scaffolding # genesis/proto/state
+}

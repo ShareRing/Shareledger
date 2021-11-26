@@ -1,0 +1,23 @@
+syntax = "proto3";
+package ShareRing.shareledger.gentlemint;
+
+// this line is used by starport scaffolding # proto/tx/import
+
+option go_package = "github.com/ShareRing/Shareledger/x/gentlemint/types";
+
+// Msg defines the Msg service.
+service Msg {
+      rpc LoadShr(MsgLoadShr) returns (MsgLoadShrResponse);
+// this line is used by starport scaffolding # proto/tx/rpc
+}
+
+message MsgLoadShr {
+  string creator = 1;
+  string address = 2;
+  string amount = 3;
+}
+
+message MsgLoadShrResponse {
+}
+
+// this line is used by starport scaffolding # proto/tx/message

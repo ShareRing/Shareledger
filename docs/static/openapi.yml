@@ -20309,6 +20309,8 @@ definitions:
         type: string
       status:
         type: string
+  ShareRing.shareledger.gentlemint.MsgLoadShrResponse:
+    type: object
   ShareRing.shareledger.id.BaseID:
     type: object
     properties:
