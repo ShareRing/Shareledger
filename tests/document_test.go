@@ -2,12 +2,17 @@ package tests
 
 import (
 	"fmt"
+	"github.com/sharering/shareledger/x/gatecheck"
 	"testing"
 
 	"github.com/ShareRing/modules/document"
 	"github.com/cosmos/cosmos-sdk/tests"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stretchr/testify/require"
+)
+
+const (
+	DocCreateErrorCreateByNotDocIssuer = gatecheck.NotDocIssuerErr
 )
 
 func TestDocCreate_Success(t *testing.T) {
@@ -26,6 +31,7 @@ func TestDocCreate_Success(t *testing.T) {
 	proof := "c89efdaa54c0f20c7adf612882df0950f5a951637e0307cdcb4c672f298b8bc6"
 	data := "extradata-001"
 
+	t.Log("running")
 	// Enroll doc issuer
 	f.EnrollDocIssuer([]sdk.AccAddress{issuer}, fmt.Sprintf("--from %s --yes --fees 1shr", accOperator.String()))
 
@@ -514,5 +520,46 @@ func TestDocQuery_ByHolder_OK(t *testing.T) {
 	fmt.Println(docOf1)
 	require.Equal(t, 2, len(docOf1))
 
+	f.Cleanup()
+}
+
+func TestDocCreate_UnaAuthority(t *testing.T) {
+	t.Parallel()
+	f := InitFixtures(t)
+
+	// start gaiad server with minimum fees
+	minGasPrice, _ := sdk.NewDecFromStr("0.000006")
+	proc := f.GDStart(fmt.Sprintf("--minimum-gas-prices=%s", sdk.NewDecCoinFromDec(feeDenom, minGasPrice)))
+	defer proc.Stop(false)
+
+	// Save key addresses for later use
+	accOperator := f.KeyAddress(keyAccOp)
+	issuer := f.KeyAddress(keyIdSigner)
+	account4 := f.KeyAddress(keyUser4)
+	holderId := "id-001"
+	proof := "c89efdaa54c0f20c7adf612882df0950f5a951637e0307cdcb4c672f298b8bc6"
+	data := "extradata-001"
+
+
+	// Enroll doc issuer
+	f.EnrollDocIssuer([]sdk.AccAddress{issuer}, fmt.Sprintf("--from %s --yes --fees 1shr", accOperator.String()))
+
+	// wait for a block confirmation
+	tests.WaitForNextNBlocksTM(1, f.Port)
+
+	_, stdOut, _ := f.CreateNewDoc(holderId, proof, data, fmt.Sprintf("--from %s --yes --fees 1shr", account4.String()))
+
+	// wait for a block confirmation
+	tests.WaitForNextNBlocksTM(1, f.Port)
+
+	txResponse := ParseStdOut(t, stdOut)
+
+	require.Equal(t, ShareLedgerErrorCodeUnauthorized, txResponse.Code)
+	require.Contains(t, txResponse.RawLog, DocCreateErrorCreateByNotDocIssuer)
+
+	doc := f.QueryDocByProof(proof)
+	require.Empty(t, doc.Proof, "the proof should be empty cause the document wasn't created")
+	require.Empty(t, doc.Issuer, "the issuer should be empty cause the document wasn't created")
+	require.Empty(t, doc.Data, "the data should be empty cause the document wasn't created")
 	f.Cleanup()
 }

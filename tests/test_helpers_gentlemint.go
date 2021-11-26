@@ -152,3 +152,14 @@ func ParseStdOut(t *testing.T, stdOut string) sdk.TxResponse {
 	require.Nil(t, err)
 	return txRepsonse
 }
+
+func (f *Fixtures) QueryExchangeRate(from sdk.Address, flags ...string) string{
+	cmd := fmt.Sprintf("%s query gentlemint get-exchange %s %v", f.GaiacliBinary, from, f.Flags())
+	out, _ := tests.ExecuteT(f.T, addFlags(cmd, flags), "")
+
+	var exRate string
+	cdc := app.MakeCodec()
+	err := cdc.UnmarshalJSON([]byte(out), &exRate)
+	require.NoError(f.T, err, "out %v\n, err %v", out, err)
+	return exRate
+}

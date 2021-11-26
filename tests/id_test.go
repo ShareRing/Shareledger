@@ -396,3 +396,68 @@ func TestIdReplaceOwner_CallerIsNotBackup(t *testing.T) {
 
 	f.Cleanup()
 }
+
+//TestIdReplaceOwner_BackupIsExistedAnID
+func TestIdReplaceOwner_BackupIsExistedAnID(t *testing.T) {
+	t.Parallel()
+	f := InitFixtures(t)
+
+	// start gaiad server with minimum fees
+	minGasPrice, _ := sdk.NewDecFromStr("0.000006")
+	proc := f.GDStart(fmt.Sprintf("--minimum-gas-prices=%s", sdk.NewDecCoinFromDec(feeDenom, minGasPrice)))
+	defer proc.Stop(false)
+
+	// Save key addresses for later use
+	accountOperator := f.KeyAddress(keyAccOp)
+	issuer := f.KeyAddress(keyIdSigner)
+	owner := f.KeyAddress(keyUser1)
+	backup := f.KeyAddress(keyUser2)
+	id := "id-001"
+	extraData := "extradata-001"
+
+	// Enroll id signer
+	f.EnrollIdSigner([]sdk.AccAddress{issuer}, fmt.Sprintf("--from %s --yes --fees 1shr", accountOperator.String()))
+
+	//Create an ID for backup user2
+	// wait for a block confirmation
+	tests.WaitForNextNBlocksTM(1, f.Port)
+	id2  :="id-002"
+	f.CreateId(id2, backup, backup, extraData, fmt.Sprintf("--from %s --yes --fees 1shr", issuer.String()))
+
+	// wait for a block confirmation
+	tests.WaitForNextNBlocksTM(1, f.Port)
+
+
+	// wait for a block confirmation
+	tests.WaitForNextNBlocksTM(1, f.Port)
+
+	f.CreateId(id, backup, owner, extraData, fmt.Sprintf("--from %s --yes --fees 1shr", issuer.String()))
+
+	// wait for a block confirmation
+	tests.WaitForNextNBlocksTM(1, f.Port)
+
+	rsId := f.QueryIdById(id)
+
+	require.NotNil(t, rsId)
+	require.Equal(t, id, rsId.Id)
+	require.Equal(t, backup.String(), rsId.BackupAddr.String())
+	require.Equal(t, owner.String(), rsId.OwnerAddr.String())
+	require.Equal(t, issuer.String(), rsId.IssuerAddr.String())
+	require.Equal(t, extraData, rsId.ExtraData)
+
+	// Update id
+	_,stdOut,_:=f.ReplaceIdOwner(id, backup, fmt.Sprintf("--from %s --yes --fees 1shr", backup.String()))
+
+	require.Contains(t, stdOut, IDModuleFailIDExisted)
+
+	updatedId := f.QueryIdById(id)
+
+	require.NotNil(t, updatedId)
+	require.Equal(t, id, updatedId.Id)
+	require.Equal(t, backup.String(), updatedId.BackupAddr.String())
+	require.Equal(t, owner.String(), updatedId.OwnerAddr.String())
+	require.Equal(t, issuer.String(), updatedId.IssuerAddr.String())
+	require.Equal(t, extraData, updatedId.ExtraData)
+
+	f.Cleanup()
+}

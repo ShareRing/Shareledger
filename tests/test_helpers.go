@@ -49,6 +49,7 @@ const (
 	keyUser1     = "user1"
 	keyUser2     = "user2"
 	keyUser3     = "user3"
+	keyUser4     = "user4"
 	keyEmtyUser  = "emptyUser"
 
 	fooDenom  = "footoken"
@@ -60,6 +61,8 @@ const (
 	keyFooBarBaz = "foobarbaz"
 
 	DefaultKeyPass = "12345678"
+
+	IDModuleFailIDExisted = "Id existed"
 )
 
 var (
@@ -172,6 +175,7 @@ func InitFixtures(t *testing.T) (f *Fixtures) {
 	f.KeysDelete(keyUser1)
 	f.KeysDelete(keyUser2)
 	f.KeysDelete(keyUser3)
+	f.KeysDelete(keyUser4)
 	f.KeysDelete(keyEmtyUser)
 
 	f.KeysAdd(keyAuthority)
@@ -182,6 +186,7 @@ func InitFixtures(t *testing.T) (f *Fixtures) {
 	f.KeysAdd(keyUser1)
 	f.KeysAdd(keyUser2)
 	f.KeysAdd(keyUser3)
+	f.KeysAdd(keyUser4)
 	f.KeysAdd(keyEmtyUser)
 
 	f.KeysAdd(keyAccOp)
@@ -208,6 +213,7 @@ func InitFixtures(t *testing.T) (f *Fixtures) {
 	f.AddGenesisAccount(f.KeyAddress(keyUser1), startCoins)
 	f.AddGenesisAccount(f.KeyAddress(keyUser2), startCoins)
 	f.AddGenesisAccount(f.KeyAddress(keyUser3), startCoins)
+	f.AddGenesisAccount(f.KeyAddress(keyUser4), startCoins)
 
 	f.AddGenesisAccount(f.KeyAddress(keyAccOp), startCoins)
 
