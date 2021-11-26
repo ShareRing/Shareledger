@@ -6,6 +6,7 @@ import (
 	"github.com/tendermint/tendermint/libs/log"
 
 	"github.com/ShareRing/Shareledger/x/gentlemint/types"
+	myutil "github.com/ShareRing/modules/utils"
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
@@ -20,6 +21,10 @@ type (
 		bankKeeper    types.BankKeeper
 		accountKeeper types.AccountKeeper
 	}
+)
+
+var (
+	MaxSHRSupply = sdk.NewInt(4396000000).Mul(myutil.SHRDecimal)
 )
 
 func NewKeeper(
@@ -43,18 +48,23 @@ func (k Keeper) Logger(ctx sdk.Context) log.Logger {
 }
 
 func (k Keeper) ShrMintPossible(ctx sdk.Context, amt sdk.Int) bool {
-	total := k.bankKeeper.Get
+	total := k.bankKeeper.GetSupply(ctx, types.SHRDenom)
+	newAmt := total.Amount.Add(amt)
+	return newAmt.LT(MaxSHRSupply)
 }
 
-func (k Keeper) LoadCoins(ctx sdk.Context, toAddr sdk.AccAddress, amt sdk.Coins) error {
+// loadCoins mint amt coins to module address and then send coins to account toAddr
+func (k Keeper) loadCoins(ctx sdk.Context, toAddr sdk.AccAddress, amt sdk.Coins) error {
 	if !amt.IsValid() {
 		return sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, amt.String())
 	}
-	// moduleAcct := sdk.AccAddress(crypto.AddressHash([]byte(types.ModuleName)))
-	if err := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, toAddr, amt); err != nil {
-		return sdkerrors.Wrap(err, fmt.Sprintf("send coins to account %s", toAddr.String()))
+	if err := k.bankKeeper.MintCoins(ctx, types.ModuleName, amt); err != nil {
+		return sdkerrors.Wrapf(err, "mint %v coins to module %v", amt, types.ModuleName)
 	}
-	return k.bankKeeper.MintCoins(ctx, types.ModuleName, amt)
+	if err := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, toAddr, amt); err != nil {
+		return sdkerrors.Wrapf(err, "send coins to account %s", toAddr.String())
+	}
+	return nil
 }
 
 func (k Keeper) BurnCoins(ctx sdk.Context, addr sdk.AccAddress, amt sdk.Coins) error {

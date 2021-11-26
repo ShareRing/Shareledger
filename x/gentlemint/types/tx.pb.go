@@ -88,6 +88,7 @@ func (m *MsgLoadShr) GetAmount() string {
 }
 
 type MsgLoadShrResponse struct {
+	Log string `protobuf:"bytes,1,opt,name=log,proto3" json:"log,omitempty"`
 }
 
 func (m *MsgLoadShrResponse) Reset()         { *m = MsgLoadShrResponse{} }
@@ -123,15 +124,120 @@ func (m *MsgLoadShrResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_MsgLoadShrResponse proto.InternalMessageInfo
 
+func (m *MsgLoadShrResponse) GetLog() string {
+	if m != nil {
+		return m.Log
+	}
+	return ""
+}
+
+type MsgLoadShrp struct {
+	Creator string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+	Address string `protobuf:"bytes,2,opt,name=address,proto3" json:"address,omitempty"`
+	Amount  string `protobuf:"bytes,3,opt,name=amount,proto3" json:"amount,omitempty"`
+}
+
+func (m *MsgLoadShrp) Reset()         { *m = MsgLoadShrp{} }
+func (m *MsgLoadShrp) String() string { return proto.CompactTextString(m) }
+func (*MsgLoadShrp) ProtoMessage()    {}
+func (*MsgLoadShrp) Descriptor() ([]byte, []int) {
+	return fileDescriptor_d3542f4930ea9a46, []int{2}
+}
+func (m *MsgLoadShrp) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgLoadShrp) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgLoadShrp.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgLoadShrp) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgLoadShrp.Merge(m, src)
+}
+func (m *MsgLoadShrp) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgLoadShrp) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgLoadShrp.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgLoadShrp proto.InternalMessageInfo
+
+func (m *MsgLoadShrp) GetCreator() string {
+	if m != nil {
+		return m.Creator
+	}
+	return ""
+}
+
+func (m *MsgLoadShrp) GetAddress() string {
+	if m != nil {
+		return m.Address
+	}
+	return ""
+}
+
+func (m *MsgLoadShrp) GetAmount() string {
+	if m != nil {
+		return m.Amount
+	}
+	return ""
+}
+
+type MsgLoadShrpResponse struct {
+}
+
+func (m *MsgLoadShrpResponse) Reset()         { *m = MsgLoadShrpResponse{} }
+func (m *MsgLoadShrpResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgLoadShrpResponse) ProtoMessage()    {}
+func (*MsgLoadShrpResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_d3542f4930ea9a46, []int{3}
+}
+func (m *MsgLoadShrpResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgLoadShrpResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgLoadShrpResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgLoadShrpResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgLoadShrpResponse.Merge(m, src)
+}
+func (m *MsgLoadShrpResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgLoadShrpResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgLoadShrpResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgLoadShrpResponse proto.InternalMessageInfo
+
 func init() {
 	proto.RegisterType((*MsgLoadShr)(nil), "ShareRing.shareledger.gentlemint.MsgLoadShr")
 	proto.RegisterType((*MsgLoadShrResponse)(nil), "ShareRing.shareledger.gentlemint.MsgLoadShrResponse")
+	proto.RegisterType((*MsgLoadShrp)(nil), "ShareRing.shareledger.gentlemint.MsgLoadShrp")
+	proto.RegisterType((*MsgLoadShrpResponse)(nil), "ShareRing.shareledger.gentlemint.MsgLoadShrpResponse")
 }
 
 func init() { proto.RegisterFile("gentlemint/tx.proto", fileDescriptor_d3542f4930ea9a46) }
 
 var fileDescriptor_d3542f4930ea9a46 = []byte{
-	// 235 bytes of a gzipped FileDescriptorProto
+	// 282 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x12, 0x4e, 0x4f, 0xcd, 0x2b,
 	0xc9, 0x49, 0xcd, 0xcd, 0xcc, 0x2b, 0xd1, 0x2f, 0xa9, 0xd0, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17,
 	0x52, 0x08, 0xce, 0x48, 0x2c, 0x4a, 0x0d, 0xca, 0xcc, 0x4b, 0xd7, 0x2b, 0x06, 0xb1, 0x72, 0x52,
@@ -139,14 +245,17 @@ var fileDescriptor_d3542f4930ea9a46 = []byte{
 	0x13, 0x53, 0x82, 0x33, 0x8a, 0x84, 0x24, 0xb8, 0xd8, 0x93, 0x8b, 0x52, 0x13, 0x4b, 0xf2, 0x8b,
 	0x24, 0x18, 0x15, 0x18, 0x35, 0x38, 0x83, 0x60, 0x5c, 0x90, 0x4c, 0x62, 0x4a, 0x4a, 0x51, 0x6a,
 	0x71, 0xb1, 0x04, 0x13, 0x44, 0x06, 0xca, 0x15, 0x12, 0xe3, 0x62, 0x4b, 0xcc, 0xcd, 0x2f, 0xcd,
-	0x2b, 0x91, 0x60, 0x06, 0x4b, 0x40, 0x79, 0x4a, 0x22, 0x5c, 0x42, 0x08, 0x93, 0x83, 0x52, 0x8b,
-	0x0b, 0xf2, 0xf3, 0x8a, 0x53, 0x8d, 0x4a, 0xb8, 0x98, 0x7d, 0x8b, 0xd3, 0x85, 0x72, 0xb9, 0xd8,
-	0x61, 0x76, 0xea, 0xe8, 0x11, 0x72, 0xa4, 0x1e, 0xc2, 0x1c, 0x29, 0x13, 0x52, 0x54, 0xc3, 0x6c,
-	0x75, 0xf2, 0x3d, 0xf1, 0x48, 0x8e, 0xf1, 0xc2, 0x23, 0x39, 0xc6, 0x07, 0x8f, 0xe4, 0x18, 0x27,
-	0x3c, 0x96, 0x63, 0xb8, 0xf0, 0x58, 0x8e, 0xe1, 0xc6, 0x63, 0x39, 0x86, 0x28, 0xe3, 0xf4, 0xcc,
-	0x92, 0x8c, 0xd2, 0x24, 0xbd, 0xe4, 0xfc, 0x5c, 0x7d, 0xb8, 0xc9, 0x10, 0x16, 0xc4, 0x64, 0xfd,
-	0x0a, 0x7d, 0xe4, 0x90, 0xad, 0x2c, 0x48, 0x2d, 0x4e, 0x62, 0x03, 0x87, 0xae, 0x31, 0x20, 0x00,
-	0x00, 0xff, 0xff, 0x97, 0xb7, 0x2d, 0x46, 0x74, 0x01, 0x00, 0x00,
+	0x2b, 0x91, 0x60, 0x06, 0x4b, 0x40, 0x79, 0x4a, 0x6a, 0x5c, 0x42, 0x08, 0x93, 0x83, 0x52, 0x8b,
+	0x0b, 0xf2, 0xf3, 0x8a, 0x53, 0x85, 0x04, 0xb8, 0x98, 0x73, 0xf2, 0xd3, 0xa1, 0xa6, 0x83, 0x98,
+	0x4a, 0x91, 0x5c, 0xdc, 0x08, 0x75, 0x05, 0x54, 0x75, 0x82, 0x28, 0x97, 0x30, 0x92, 0xd1, 0x30,
+	0x37, 0x18, 0x3d, 0x63, 0xe4, 0x62, 0xf6, 0x2d, 0x4e, 0x17, 0xca, 0xe5, 0x62, 0x87, 0x79, 0x5c,
+	0x47, 0x8f, 0x50, 0x48, 0xe9, 0x21, 0x4c, 0x92, 0x32, 0x21, 0x45, 0x35, 0xdc, 0xeb, 0x05, 0x5c,
+	0x1c, 0x70, 0x5f, 0xea, 0x92, 0x62, 0x42, 0x81, 0x94, 0x29, 0x49, 0xca, 0x61, 0x36, 0x3a, 0xf9,
+	0x9e, 0x78, 0x24, 0xc7, 0x78, 0xe1, 0x91, 0x1c, 0xe3, 0x83, 0x47, 0x72, 0x8c, 0x13, 0x1e, 0xcb,
+	0x31, 0x5c, 0x78, 0x2c, 0xc7, 0x70, 0xe3, 0xb1, 0x1c, 0x43, 0x94, 0x71, 0x7a, 0x66, 0x49, 0x46,
+	0x69, 0x92, 0x5e, 0x72, 0x7e, 0xae, 0x3e, 0xdc, 0x68, 0x08, 0x0b, 0x62, 0xb4, 0x7e, 0x85, 0x3e,
+	0x72, 0x82, 0xaa, 0x2c, 0x48, 0x2d, 0x4e, 0x62, 0x03, 0x27, 0x2a, 0x63, 0x40, 0x00, 0x00, 0x00,
+	0xff, 0xff, 0x54, 0x2f, 0xaa, 0xb8, 0x6b, 0x02, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -162,6 +271,7 @@ const _ = grpc.SupportPackageIsVersion4
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type MsgClient interface {
 	LoadShr(ctx context.Context, in *MsgLoadShr, opts ...grpc.CallOption) (*MsgLoadShrResponse, error)
+	LoadShrp(ctx context.Context, in *MsgLoadShrp, opts ...grpc.CallOption) (*MsgLoadShrpResponse, error)
 }
 
 type msgClient struct {
@@ -181,9 +291,19 @@ func (c *msgClient) LoadShr(ctx context.Context, in *MsgLoadShr, opts ...grpc.Ca
 	return out, nil
 }
 
+func (c *msgClient) LoadShrp(ctx context.Context, in *MsgLoadShrp, opts ...grpc.CallOption) (*MsgLoadShrpResponse, error) {
+	out := new(MsgLoadShrpResponse)
+	err := c.cc.Invoke(ctx, "/ShareRing.shareledger.gentlemint.Msg/LoadShrp", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MsgServer is the server API for Msg service.
 type MsgServer interface {
 	LoadShr(context.Context, *MsgLoadShr) (*MsgLoadShrResponse, error)
+	LoadShrp(context.Context, *MsgLoadShrp) (*MsgLoadShrpResponse, error)
 }
 
 // UnimplementedMsgServer can be embedded to have forward compatible implementations.
@@ -192,6 +312,9 @@ type UnimplementedMsgServer struct {
 
 func (*UnimplementedMsgServer) LoadShr(ctx context.Context, req *MsgLoadShr) (*MsgLoadShrResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method LoadShr not implemented")
+}
+func (*UnimplementedMsgServer) LoadShrp(ctx context.Context, req *MsgLoadShrp) (*MsgLoadShrpResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method LoadShrp not implemented")
 }
 
 func RegisterMsgServer(s grpc1.Server, srv MsgServer) {
@@ -216,6 +339,24 @@ func _Msg_LoadShr_Handler(srv interface{}, ctx context.Context, dec func(interfa
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Msg_LoadShrp_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgLoadShrp)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).LoadShrp(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/ShareRing.shareledger.gentlemint.Msg/LoadShrp",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).LoadShrp(ctx, req.(*MsgLoadShrp))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var _Msg_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "ShareRing.shareledger.gentlemint.Msg",
 	HandlerType: (*MsgServer)(nil),
@@ -223,6 +364,10 @@ var _Msg_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "LoadShr",
 			Handler:    _Msg_LoadShr_Handler,
+		},
+		{
+			MethodName: "LoadShrp",
+			Handler:    _Msg_LoadShrp_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -293,6 +438,80 @@ func (m *MsgLoadShrResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
+	if len(m.Log) > 0 {
+		i -= len(m.Log)
+		copy(dAtA[i:], m.Log)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Log)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgLoadShrp) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgLoadShrp) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgLoadShrp) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Amount) > 0 {
+		i -= len(m.Amount)
+		copy(dAtA[i:], m.Amount)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Amount)))
+		i--
+		dAtA[i] = 0x1a
+	}
+	if len(m.Address) > 0 {
+		i -= len(m.Address)
+		copy(dAtA[i:], m.Address)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Address)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.Creator) > 0 {
+		i -= len(m.Creator)
+		copy(dAtA[i:], m.Creator)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Creator)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgLoadShrpResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgLoadShrpResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgLoadShrpResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
 	return len(dAtA) - i, nil
 }
 
@@ -329,6 +548,40 @@ func (m *MsgLoadShr) Size() (n int) {
 }
 
 func (m *MsgLoadShrResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Log)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	return n
+}
+
+func (m *MsgLoadShrp) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Creator)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	l = len(m.Address)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	l = len(m.Amount)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	return n
+}
+
+func (m *MsgLoadShrpResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -516,6 +769,234 @@ func (m *MsgLoadShrResponse) Unmarshal(dAtA []byte) error {
 		}
 		if fieldNum <= 0 {
 			return fmt.Errorf("proto: MsgLoadShrResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Log", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Log = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgLoadShrp) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgLoadShrp: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgLoadShrp: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Creator", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Creator = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Address", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Address = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Amount", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Amount = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgLoadShrpResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgLoadShrpResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgLoadShrpResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:

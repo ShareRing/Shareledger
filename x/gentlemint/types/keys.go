@@ -18,6 +18,7 @@ const (
 )
 
 const (
+	SHRDenom     = "shr"
 	AuthorityKey = "A"
 )
 
