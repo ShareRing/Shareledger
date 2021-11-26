@@ -34,6 +34,13 @@ build:
 	go build -tags cleveldb -ldflags '$(ldflags)' -mod=readonly -o build/slcli ./cmd/slcli
 	go build -mod=readonly -o build/debug ./cmd/debug
 
+build-macosM1:
+	CGO_CFLAGS="-I/opt/homebrew/Cellar/leveldb/1.23/include" CGO_LDFLAGS="-L//opt/homebrew/Cellar/leveldb/1.23/lib" go build -tags leveldb -ldflags '$(ldflags)' -mod=readonly -o build/shareledger ./cmd/shareledger
+	CGO_CFLAGS="-I/opt/homebrew/Cellar/leveldb/1.23/include" CGO_LDFLAGS="-L//opt/homebrew/Cellar/leveldb/1.23/lib"  go build -tags leveldb -ldflags '$(ldflags)' -mod=readonly -o build/slcli ./cmd/slcli
+	CGO_CFLAGS="-I/opt/homebrew/Cellar/leveldb/1.23/include" CGO_LDFLAGS="-L//opt/homebrew/Cellar/leveldb/1.23/lib"  go build -mod=readonly -o build/debug ./cmd/debug
+
+run_test:
+	go test ./tests...
 build-docker:
 	$(MAKE) -C testnet/docker/ all
 
