@@ -6,7 +6,6 @@ import (
 	"github.com/tendermint/tendermint/libs/log"
 
 	"github.com/ShareRing/Shareledger/x/gentlemint/types"
-	myutil "github.com/ShareRing/modules/utils"
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
@@ -24,7 +23,7 @@ type (
 )
 
 var (
-	MaxSHRSupply = sdk.NewInt(4396000000).Mul(myutil.SHRDecimal)
+	MaxSHRSupply = sdk.NewInt(4396000000)
 )
 
 func NewKeeper(
@@ -48,7 +47,7 @@ func (k Keeper) Logger(ctx sdk.Context) log.Logger {
 }
 
 func (k Keeper) ShrMintPossible(ctx sdk.Context, amt sdk.Int) bool {
-	total := k.bankKeeper.GetSupply(ctx, types.SHRDenom)
+	total := k.bankKeeper.GetSupply(ctx, types.DemonSHR)
 	newAmt := total.Amount.Add(amt)
 	return newAmt.LT(MaxSHRSupply)
 }
@@ -77,4 +76,12 @@ func (k Keeper) BurnCoins(ctx sdk.Context, addr sdk.AccAddress, amt sdk.Coins) e
 	}
 
 	return k.bankKeeper.BurnCoins(ctx, types.ModuleName, amt)
+}
+
+func (k Keeper) isAuthority(ctx sdk.Context, address sdk.AccAddress) bool {
+	panic("implement me")
+}
+
+func (k Keeper) isSHRPLoader(ctx sdk.Context, address sdk.AccAddress) bool {
+	panic("implement me")
 }

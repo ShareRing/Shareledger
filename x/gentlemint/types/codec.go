@@ -10,7 +10,11 @@ import (
 func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgLoadShr{}, "gentlemint/LoadShr", nil)
 	cdc.RegisterConcrete(&MsgLoadShrp{}, "gentlemint/LoadShrp", nil)
-// this line is used by starport scaffolding # 2
+	cdc.RegisterConcrete(&MsgBuyShr{}, "gentlemint/BuyShr", nil)
+	cdc.RegisterConcrete(&MsgBuyShr{}, "gentlemint/BuyShr", nil)
+	cdc.RegisterConcrete(&MsgBuyShr{}, "gentlemint/BuyShr", nil)
+	cdc.RegisterConcrete(&MsgSendShr{}, "gentlemint/SendShr", nil)
+	// this line is used by starport scaffolding # 2
 }
 
 func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
@@ -18,9 +22,21 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 		&MsgLoadShr{},
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
-	&MsgLoadShrp{},
-)
-// this line is used by starport scaffolding # 3
+		&MsgLoadShrp{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgBuyShr{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgBuyShr{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgBuyShr{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgSendShr{},
+	)
+	// this line is used by starport scaffolding # 3
 
 	msgservice.RegisterMsgServiceDesc(registry, &_Msg_serviceDesc)
 }

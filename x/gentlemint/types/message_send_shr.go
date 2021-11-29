@@ -5,25 +5,25 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
-var _ sdk.Msg = &MsgLoadShrp{}
+var _ sdk.Msg = &MsgSendShr{}
 
-func NewMsgLoadShrp(creator string, address string, amount string) *MsgLoadShrp {
-	return &MsgLoadShrp{
+func NewMsgSendShr(creator string, address string, amount string) *MsgSendShr {
+	return &MsgSendShr{
 		Creator: creator,
 		Address: address,
 		Amount:  amount,
 	}
 }
 
-func (msg *MsgLoadShrp) Route() string {
+func (msg *MsgSendShr) Route() string {
 	return RouterKey
 }
 
-func (msg *MsgLoadShrp) Type() string {
-	return "LoadShrp"
+func (msg *MsgSendShr) Type() string {
+	return "SendShr"
 }
 
-func (msg *MsgLoadShrp) GetSigners() []sdk.AccAddress {
+func (msg *MsgSendShr) GetSigners() []sdk.AccAddress {
 	creator, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		panic(err)
@@ -31,12 +31,12 @@ func (msg *MsgLoadShrp) GetSigners() []sdk.AccAddress {
 	return []sdk.AccAddress{creator}
 }
 
-func (msg *MsgLoadShrp) GetSignBytes() []byte {
+func (msg *MsgSendShr) GetSignBytes() []byte {
 	bz := ModuleCdc.MustMarshalJSON(msg)
 	return sdk.MustSortJSON(bz)
 }
 
-func (msg *MsgLoadShrp) ValidateBasic() error {
+func (msg *MsgSendShr) ValidateBasic() error {
 	_, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)

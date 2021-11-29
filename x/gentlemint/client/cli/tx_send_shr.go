@@ -13,10 +13,10 @@ import (
 
 var _ = strconv.Itoa(0)
 
-func CmdLoadShrp() *cobra.Command {
+func CmdSendShr() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "load-shrp [address] [amount]",
-		Short: "Broadcast message load-shrp",
+		Use:   "send-shr [address] [amount]",
+		Short: "Broadcast message send-shr",
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argAddress := args[0]
@@ -27,7 +27,7 @@ func CmdLoadShrp() *cobra.Command {
 				return err
 			}
 
-			msg := types.NewMsgLoadShrp(
+			msg := types.NewMsgSendShr(
 				clientCtx.GetFromAddress().String(),
 				argAddress,
 				argAmount,

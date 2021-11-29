@@ -20309,12 +20309,16 @@ definitions:
         type: string
       status:
         type: string
+  ShareRing.shareledger.gentlemint.MsgBuyShrResponse:
+    type: object
   ShareRing.shareledger.gentlemint.MsgLoadShrResponse:
     type: object
     properties:
       log:
         type: string
   ShareRing.shareledger.gentlemint.MsgLoadShrpResponse:
+    type: object
+  ShareRing.shareledger.gentlemint.MsgSendShrResponse:
     type: object
   ShareRing.shareledger.id.BaseID:
     type: object

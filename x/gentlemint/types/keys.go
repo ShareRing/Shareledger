@@ -1,5 +1,7 @@
 package types
 
+import sdk "github.com/cosmos/cosmos-sdk/types"
+
 const (
 	// ModuleName defines the module name
 	ModuleName = "gentlemint"
@@ -18,8 +20,18 @@ const (
 )
 
 const (
-	SHRDenom     = "shr"
+	DemonSHR     = "shr"
+	DenomSHRP    = "shrp"
+	DenomCent    = "cent"
 	AuthorityKey = "A"
+)
+
+var (
+	RequiredSHRAmt = sdk.NewInt(10)
+)
+
+var (
+	FeeLoadSHRP = sdk.NewCoins(sdk.NewCoin(DemonSHR, sdk.NewInt(1)))
 )
 
 func KeyPrefix(p string) []byte {

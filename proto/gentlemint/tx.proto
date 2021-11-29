@@ -9,6 +9,8 @@ option go_package = "github.com/ShareRing/Shareledger/x/gentlemint/types";
 service Msg {
       rpc LoadShr(MsgLoadShr) returns (MsgLoadShrResponse);
   rpc LoadShrp(MsgLoadShrp) returns (MsgLoadShrpResponse);
+  rpc BuyShr(MsgBuyShr) returns (MsgBuyShrResponse);
+  rpc SendShr(MsgSendShr) returns (MsgSendShrResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -29,6 +31,24 @@ message MsgLoadShrp {
 }
 
 message MsgLoadShrpResponse {
+  string log = 1;
+}
+
+message MsgBuyShr {
+  string creator = 1;
+  string amount = 2;
+}
+
+message MsgBuyShrResponse {
+}
+
+message MsgSendShr {
+  string creator = 1;
+  string address = 2;
+  string amount = 3;
+}
+
+message MsgSendShrResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message

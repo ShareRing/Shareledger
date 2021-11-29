@@ -8,21 +8,21 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestMsgLoadShrp_ValidateBasic(t *testing.T) {
+func TestMsgBuyShr_ValidateBasic(t *testing.T) {
 	tests := []struct {
 		name string
-		msg  MsgLoadShrp
+		msg  MsgBuyShr
 		err  error
 	}{
 		{
 			name: "invalid address",
-			msg: MsgLoadShrp{
+			msg: MsgBuyShr{
 				Creator: "invalid_address",
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
-			msg: MsgLoadShrp{
+			msg: MsgBuyShr{
 				Creator: sample.AccAddress(),
 			},
 		},

@@ -12,11 +12,15 @@ import (
 func (k msgServer) LoadShr(goCtx context.Context, msg *types.MsgLoadShr) (*types.MsgLoadShrResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
+	if !k.isAuthority(ctx, msg.GetSigners()[0]) {
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrUnauthorized, "Approver's Address is not authority")
+	}
+
 	amt, ok := sdk.NewIntFromString(msg.Amount)
 	if !ok {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, msg.Amount)
 	}
-	// TODO: Check Is Authority
+
 	if k.ShrMintPossible(ctx, amt) {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "SHR possible mint exceeded")
 	}

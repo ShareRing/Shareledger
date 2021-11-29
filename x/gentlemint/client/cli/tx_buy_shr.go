@@ -13,23 +13,21 @@ import (
 
 var _ = strconv.Itoa(0)
 
-func CmdLoadShrp() *cobra.Command {
+func CmdBuyShr() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "load-shrp [address] [amount]",
-		Short: "Broadcast message load-shrp",
-		Args:  cobra.ExactArgs(2),
+		Use:   "buy-shr [amount]",
+		Short: "Broadcast message buy-shr",
+		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			argAddress := args[0]
-			argAmount := args[1]
+			argAmount := args[0]
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
 			}
 
-			msg := types.NewMsgLoadShrp(
+			msg := types.NewMsgBuyShr(
 				clientCtx.GetFromAddress().String(),
-				argAddress,
 				argAmount,
 			)
 			if err := msg.ValidateBasic(); err != nil {
