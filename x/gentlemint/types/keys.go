@@ -28,10 +28,14 @@ const (
 
 var (
 	RequiredSHRAmt = sdk.NewInt(10)
+	MaxSHRSupply   = sdk.NewInt(4396000000)
 )
 
 var (
-	FeeLoadSHRP = sdk.NewCoins(sdk.NewCoin(DemonSHR, sdk.NewInt(1)))
+	OneShr          = sdk.NewCoins(sdk.NewCoin(DemonSHR, sdk.NewInt(1)))
+	OneShrP         = sdk.NewCoins(sdk.NewCoin(DenomSHRP, sdk.NewInt(1)))
+	OneHundredCents = sdk.NewCoins(sdk.NewCoin(DenomCent, sdk.NewInt(100)))
+	FeeLoadSHRP     = OneShr
 )
 
 func KeyPrefix(p string) []byte {

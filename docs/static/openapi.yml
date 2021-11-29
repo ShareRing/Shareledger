@@ -20318,7 +20318,12 @@ definitions:
         type: string
   ShareRing.shareledger.gentlemint.MsgLoadShrpResponse:
     type: object
+    properties:
+      log:
+        type: string
   ShareRing.shareledger.gentlemint.MsgSendShrResponse:
+    type: object
+  ShareRing.shareledger.gentlemint.MsgSendShrpResponse:
     type: object
   ShareRing.shareledger.id.BaseID:
     type: object
