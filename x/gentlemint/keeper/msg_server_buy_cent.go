@@ -15,11 +15,11 @@ func (k msgServer) BuyCent(goCtx context.Context, msg *types.MsgBuyCent) (*types
 	if err := msg.ValidateBasic(); err != nil {
 		return nil, err
 	}
+	buyerAddr := msg.GetSigners()[0]
 
 	amt, _ := sdk.NewIntFromString(msg.Amount)
 	shrpAmount := sdk.NewCoins(sdk.NewCoin(types.DenomSHRP, amt))
 	centAmount := sdk.NewCoins(sdk.NewCoin(types.DenomCent, amt.Mul(sdk.NewInt(100))))
-	buyerAddr := msg.GetSigners()[0]
 
 	if err := k.bankKeeper.SendCoinsFromAccountToModule(ctx, buyerAddr, types.ModuleName, shrpAmount); err != nil {
 		return nil, sdkerrors.Wrapf(err, "send %v to module %v", shrpAmount, types.ModuleName)
