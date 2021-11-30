@@ -20309,8 +20309,13 @@ definitions:
         type: string
       status:
         type: string
+  ShareRing.shareledger.gentlemint.MsgBurnShrpResponse:
+    type: object
   ShareRing.shareledger.gentlemint.MsgBuyCentResponse:
     type: object
+    properties:
+      log:
+        type: string
   ShareRing.shareledger.gentlemint.MsgBuyShrResponse:
     type: object
   ShareRing.shareledger.gentlemint.MsgLoadShrResponse:

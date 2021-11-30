@@ -21,17 +21,11 @@ func (k msgServer) BuyCent(goCtx context.Context, msg *types.MsgBuyCent) (*types
 	shrpAmount := sdk.NewCoins(sdk.NewCoin(types.DenomSHRP, amt))
 	centAmount := sdk.NewCoins(sdk.NewCoin(types.DenomCent, amt.Mul(sdk.NewInt(100))))
 
-	if err := k.bankKeeper.SendCoinsFromAccountToModule(ctx, buyerAddr, types.ModuleName, shrpAmount); err != nil {
-		return nil, sdkerrors.Wrapf(err, "send %v to module %v", shrpAmount, types.ModuleName)
+	if err := k.burnCoins(ctx, buyerAddr, shrpAmount); err != nil {
+		return nil, sdkerrors.Wrapf(err, "burns %v coins for address %v", shrpAmount, buyerAddr.String())
 	}
-	if err := k.bankKeeper.MintCoins(ctx, types.ModuleName, centAmount); err != nil {
-		return nil, sdkerrors.Wrapf(err, "mint %v in module %v", centAmount, types.ModuleName)
-	}
-	if err := k.bankKeeper.BurnCoins(ctx, types.ModuleName, shrpAmount); err != nil {
-		return nil, sdkerrors.Wrapf(err, "burns %v coins in module %v", shrpAmount, types.ModuleName)
-	}
-	if err := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, buyerAddr, centAmount); err != nil {
-		return nil, sdkerrors.Wrapf(err, "send %v coins to account %v", centAmount, buyerAddr.String())
+	if err := k.loadCoins(ctx, buyerAddr, centAmount); err != nil {
+		return nil, sdkerrors.Wrapf(err, "load %v coins for address %v", centAmount, buyerAddr.String())
 	}
 
 	log := fmt.Sprintf("Successfull exchange %v shrp to cent for address %s", msg.Amount, buyerAddr.String())

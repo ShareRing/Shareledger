@@ -66,7 +66,8 @@ func (k Keeper) loadCoins(ctx sdk.Context, toAddr sdk.AccAddress, amt sdk.Coins)
 	return nil
 }
 
-func (k Keeper) BurnCoins(ctx sdk.Context, addr sdk.AccAddress, amt sdk.Coins) error {
+// burnCoins send amt from address to module address then burning
+func (k Keeper) burnCoins(ctx sdk.Context, addr sdk.AccAddress, amt sdk.Coins) error {
 	if !amt.IsValid() {
 		return sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, amt.String())
 	}
@@ -83,5 +84,9 @@ func (k Keeper) isAuthority(ctx sdk.Context, address sdk.AccAddress) bool {
 }
 
 func (k Keeper) isSHRPLoader(ctx sdk.Context, address sdk.AccAddress) bool {
+	panic("implement me")
+}
+
+func (k Keeper) isTreasurer(ctx sdk.Context, address sdk.AccAddress) bool {
 	panic("implement me")
 }
