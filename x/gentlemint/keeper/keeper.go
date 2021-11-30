@@ -47,7 +47,7 @@ func (k Keeper) Logger(ctx sdk.Context) log.Logger {
 }
 
 func (k Keeper) ShrMintPossible(ctx sdk.Context, amt sdk.Int) bool {
-	total := k.bankKeeper.GetSupply(ctx, types.DemonSHR)
+	total := k.bankKeeper.GetSupply(ctx, types.DenomSHR)
 	newAmt := total.Amount.Add(amt)
 	return newAmt.LT(MaxSHRSupply)
 }

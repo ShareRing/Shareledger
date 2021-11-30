@@ -20,7 +20,7 @@ const (
 )
 
 const (
-	DemonSHR     = "shr"
+	DenomSHR     = "shr"
 	DenomSHRP    = "shrp"
 	DenomCent    = "cent"
 	AuthorityKey = "A"
@@ -31,7 +31,7 @@ var (
 )
 
 var (
-	FeeLoadSHRP = sdk.NewCoins(sdk.NewCoin(DemonSHR, sdk.NewInt(1)))
+	FeeLoadSHRP = sdk.NewCoins(sdk.NewCoin(DenomSHR, sdk.NewInt(1)))
 )
 
 func KeyPrefix(p string) []byte {

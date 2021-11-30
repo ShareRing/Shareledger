@@ -33,7 +33,7 @@ func (k msgServer) LoadShrp(goCtx context.Context, msg *types.MsgLoadShrp) (*typ
 	}
 
 	oldCoins := k.bankKeeper.GetAllBalances(ctx, receiverAddr)
-	oldShr := oldCoins.AmountOf(types.DemonSHR)
+	oldShr := oldCoins.AmountOf(types.DenomSHR)
 
 	// if there is less than required shr amount, buy more.
 	if oldShr.LT(types.RequiredSHRAmt) {

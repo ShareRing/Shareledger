@@ -20309,6 +20309,8 @@ definitions:
         type: string
       status:
         type: string
+  ShareRing.shareledger.gentlemint.MsgBuyCentResponse:
+    type: object
   ShareRing.shareledger.gentlemint.MsgBuyShrResponse:
     type: object
   ShareRing.shareledger.gentlemint.MsgLoadShrResponse:
@@ -20318,6 +20320,9 @@ definitions:
         type: string
   ShareRing.shareledger.gentlemint.MsgLoadShrpResponse:
     type: object
+    properties:
+      log:
+        type: string
   ShareRing.shareledger.gentlemint.MsgSendShrResponse:
     type: object
   ShareRing.shareledger.id.BaseID:

@@ -26,11 +26,11 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
 		case *types.MsgBuyShr:
 			res, err := msgServer.BuyShr(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgBuyShr:
-			res, err := msgServer.BuyShr(sdk.WrapSDKContext(ctx), msg)
-			return sdk.WrapServiceResult(ctx, res, err)
 		case *types.MsgSendShr:
 			res, err := msgServer.SendShr(sdk.WrapSDKContext(ctx), msg)
+			return sdk.WrapServiceResult(ctx, res, err)
+		case *types.MsgBuyCent:
+			res, err := msgServer.BuyCent(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
 			// this line is used by starport scaffolding # 1
 		default:
