@@ -16,15 +16,15 @@ func (k msgServer) LoadShr(goCtx context.Context, msg *types.MsgLoadShr) (*types
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrUnauthorized, "Approver's Address is not authority")
 	}
 
-	amt, ok := sdk.NewIntFromString(msg.Amount)
-	if !ok {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, msg.Amount)
+	coins, err := types.ParseShrCoinsStr(msg.Amount)
+	if err != nil {
+		return nil, err
 	}
 
-	if k.ShrMintPossible(ctx, amt) {
+	if k.ShrMintPossible(ctx, coins.AmountOf(types.DenomSHR)) {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "SHR possible mint exceeded")
 	}
-	coins := sdk.NewCoins(sdk.NewCoin(types.DenomSHR, amt))
+
 	addr, err := sdk.AccAddressFromBech32(msg.Address)
 	if err != nil {
 		return nil, sdkerrors.Wrapf(err, msg.Address)

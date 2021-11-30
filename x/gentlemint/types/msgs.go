@@ -33,3 +33,12 @@ func ParseShrpCoinsStr(s string) (coins sdk.Coins, err error) {
 		sdk.NewCoin(DenomCent, sdk.NewInt(cent)),
 	}, nil
 }
+
+func ParseShrCoinsStr(s string) (coins sdk.Coins, err error) {
+	v, ok := sdk.NewIntFromString(s)
+	if !ok {
+		err = sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, s)
+	}
+	coins = sdk.NewCoins(sdk.NewCoin(DenomSHR, v))
+	return
+}
