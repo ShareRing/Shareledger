@@ -41,5 +41,11 @@ func (msg *MsgSendShr) ValidateBasic() error {
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
 	}
+	if _, err := sdk.AccAddressFromBech32(msg.Address); err != nil {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid receiver address (%s)", err)
+	}
+	if _, ok := sdk.NewIntFromString(msg.Amount); !ok {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, msg.Amount)
+	}
 	return nil
 }

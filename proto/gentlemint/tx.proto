@@ -13,6 +13,7 @@ service Msg {
   rpc SendShr(MsgSendShr) returns (MsgSendShrResponse);
   rpc BuyCent(MsgBuyCent) returns (MsgBuyCentResponse);
   rpc BurnShrp(MsgBurnShrp) returns (MsgBurnShrpResponse);
+  rpc SendShrp(MsgSendShrp) returns (MsgSendShrpResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -51,6 +52,17 @@ message MsgSendShr {
 }
 
 message MsgSendShrResponse {
+  string log = 1;
+}
+
+message MsgSendShrp {
+  string creator = 1;
+  string address = 2;
+  string amount = 3;
+}
+
+message MsgSendShrpResponse {
+  string log = 1;
 }
 
 message MsgBuyCent {

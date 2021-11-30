@@ -22,10 +22,6 @@ type (
 	}
 )
 
-var (
-	MaxSHRSupply = sdk.NewInt(4396000000)
-)
-
 func NewKeeper(
 	cdc codec.BinaryCodec,
 	storeKey,
@@ -49,7 +45,7 @@ func (k Keeper) Logger(ctx sdk.Context) log.Logger {
 func (k Keeper) ShrMintPossible(ctx sdk.Context, amt sdk.Int) bool {
 	total := k.bankKeeper.GetSupply(ctx, types.DenomSHR)
 	newAmt := total.Amount.Add(amt)
-	return newAmt.LT(MaxSHRSupply)
+	return newAmt.LT(types.MaxSHRSupply)
 }
 
 // loadCoins mint amt coins to module address and then send coins to account toAddr
