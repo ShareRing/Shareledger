@@ -8,5 +8,5 @@ import (
 
 // x/gentlemint module sentinel errors
 var (
-	ErrSample = sdkerrors.Register(ModuleName, 1100, "sample error")
+	ErrSHRSupplyExceeded = sdkerrors.Register(ModuleName, 1, "SHR supply exceeded")
 )

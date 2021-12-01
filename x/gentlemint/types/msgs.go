@@ -38,6 +38,11 @@ func ParseShrCoinsStr(s string) (coins sdk.Coins, err error) {
 	v, ok := sdk.NewIntFromString(s)
 	if !ok {
 		err = sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, s)
+		return
+	}
+	if v.LT(sdk.NewInt(0)) {
+		err = sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, s)
+		return
 	}
 	coins = sdk.NewCoins(sdk.NewCoin(DenomSHR, v))
 	return

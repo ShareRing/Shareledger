@@ -5,24 +5,24 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
-var _ sdk.Msg = &MsgBuyShr{}
+var _ sdk.Msg = &MsgSetExchange{}
 
-func NewMsgBuyShr(creator string, amount string) *MsgBuyShr {
-	return &MsgBuyShr{
+func NewMsgSetExchange(creator string, rate string) *MsgSetExchange {
+	return &MsgSetExchange{
 		Creator: creator,
-		Amount:  amount,
+		Rate:    rate,
 	}
 }
 
-func (msg *MsgBuyShr) Route() string {
+func (msg *MsgSetExchange) Route() string {
 	return RouterKey
 }
 
-func (msg *MsgBuyShr) Type() string {
-	return "BuyShr"
+func (msg *MsgSetExchange) Type() string {
+	return "SetExchange"
 }
 
-func (msg *MsgBuyShr) GetSigners() []sdk.AccAddress {
+func (msg *MsgSetExchange) GetSigners() []sdk.AccAddress {
 	creator, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		panic(err)
@@ -30,18 +30,15 @@ func (msg *MsgBuyShr) GetSigners() []sdk.AccAddress {
 	return []sdk.AccAddress{creator}
 }
 
-func (msg *MsgBuyShr) GetSignBytes() []byte {
+func (msg *MsgSetExchange) GetSignBytes() []byte {
 	bz := ModuleCdc.MustMarshalJSON(msg)
 	return sdk.MustSortJSON(bz)
 }
 
-func (msg *MsgBuyShr) ValidateBasic() error {
+func (msg *MsgSetExchange) ValidateBasic() error {
 	_, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
-	}
-	if _, err := ParseShrCoinsStr(msg.Amount); err != nil {
-		return err
 	}
 	return nil
 }

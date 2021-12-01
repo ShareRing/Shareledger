@@ -27,8 +27,10 @@ const (
 )
 
 var (
-	RequiredSHRAmt = sdk.NewInt(10)
-	MaxSHRSupply   = sdk.NewInt(4396000000)
+	RequiredSHRAmt      = sdk.NewInt(10)
+	MaxSHRSupply        = sdk.NewInt(4396000000)
+	ExchangeRateKey     = "exchange_shrp_to_shr"
+	DefaultExchangeRate = "200"
 )
 
 var (

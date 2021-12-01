@@ -86,3 +86,14 @@ func (k Keeper) isSHRPLoader(ctx sdk.Context, address sdk.AccAddress) bool {
 func (k Keeper) isTreasurer(ctx sdk.Context, address sdk.AccAddress) bool {
 	panic("implement me")
 }
+
+func (k Keeper) GetExchangeRate(ctx sdk.Context) string {
+	store := ctx.KVStore((k.storeKey))
+	bz := store.Get([]byte(types.ExchangeRateKey))
+	if len(bz) == 0 {
+		return types.DefaultExchangeRate
+	}
+	var rate string
+	k.cdc.MustUnmarshalBinaryBare(bz, &rate)
+	return rate
+}

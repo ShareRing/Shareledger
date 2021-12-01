@@ -20311,6 +20311,9 @@ definitions:
         type: string
   ShareRing.shareledger.gentlemint.MsgBurnShrResponse:
     type: object
+    properties:
+      log:
+        type: string
   ShareRing.shareledger.gentlemint.MsgBurnShrpResponse:
     type: object
     properties:
@@ -20323,6 +20326,9 @@ definitions:
         type: string
   ShareRing.shareledger.gentlemint.MsgBuyShrResponse:
     type: object
+    properties:
+      log:
+        type: string
   ShareRing.shareledger.gentlemint.MsgLoadShrResponse:
     type: object
     properties:
@@ -20343,6 +20349,8 @@ definitions:
     properties:
       log:
         type: string
+  ShareRing.shareledger.gentlemint.MsgSetExchangeResponse:
+    type: object
   ShareRing.shareledger.id.BaseID:
     type: object
     properties:
