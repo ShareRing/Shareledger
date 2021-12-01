@@ -17,15 +17,15 @@ func (k msgServer) SendShr(goCtx context.Context, msg *types.MsgSendShr) (*types
 	}
 	amt, _ := sdk.NewIntFromString(msg.Amount)
 
-	oldCoin := k.bankKeeper.GetBalance(ctx, msg.GetSigners()[0], types.DemonSHR)
+	oldCoin := k.bankKeeper.GetBalance(ctx, msg.GetSigners()[0], types.DenomSHR)
 
 	if oldCoin.Amount.LT(amt) {
-		shrToBuy := sdk.NewCoin(types.DemonSHR, amt.Sub(oldCoin.Amount))
+		shrToBuy := sdk.NewCoin(types.DenomSHR, amt.Sub(oldCoin.Amount))
 		if err := k.buyShr(ctx, shrToBuy.Amount, msg.GetSigners()[0]); err != nil {
 			return nil, sdkerrors.Wrapf(err, "buy %v shr for address %v", shrToBuy, msg.Creator)
 		}
 	}
-	sendCoins := sdk.NewCoins(sdk.NewCoin(types.DemonSHR, amt))
+	sendCoins := sdk.NewCoins(sdk.NewCoin(types.DenomSHR, amt))
 	receiverAddr, err := sdk.AccAddressFromBech32(msg.Address)
 	if err != nil {
 		return nil, err
