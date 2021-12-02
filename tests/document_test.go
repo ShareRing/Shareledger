@@ -523,7 +523,7 @@ func TestDocQuery_ByHolder_OK(t *testing.T) {
 	f.Cleanup()
 }
 
-func TestDocCreate_UnaAuthority(t *testing.T) {
+func TestDocCreate_UnAuthority(t *testing.T) {
 	t.Parallel()
 	f := InitFixtures(t)
 

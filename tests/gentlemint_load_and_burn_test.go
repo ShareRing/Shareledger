@@ -12,9 +12,13 @@ import (
 )
 
 const (
+	ShareLedgerSuccessCode = uint32(0)
 	ShareLedgerErrorCodeUnauthorized = uint32(4)
 	ShareLedgerErrorCodeInvalidCoin    = uint32(10)
 	ShareLedgerErrorCodeInvalidRequest = uint32(18)
+
+	ShareLedgerBookingAssetAlreadyBooked = uint32(3)
+	ShareLedgerBookingBookerIsNotOwner = uint32(6)
 
 	ShareLedgerErrorMessageInvalidCoinCoinIsMaximum = "SHR possible mint exceeded"
 	ShareLedgerErrorMessageInvalidCoin              = "Amount must be positive"
@@ -368,7 +372,7 @@ func TestGentlemint_SetExchangeRate_Success(t *testing.T) {
 	f.Cleanup()
 }
 
-//TODO
+
 func TestGentlemint_SetExchangeRate_AndBuySHR(t *testing.T) {
 	t.Parallel()
 	f := InitFixtures(t)

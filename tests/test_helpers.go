@@ -6,6 +6,8 @@ package tests
 import (
 	"encoding/json"
 	"fmt"
+
+	"github.com/sharering/shareledger/x/myutils"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -54,6 +56,7 @@ const (
 
 	fooDenom  = "footoken"
 	feeDenom  = "shr"
+	SHRPDenom  = "shrp"
 	fee2Denom = "fee2token"
 
 	keyBaz       = "baz"
@@ -77,11 +80,18 @@ var (
 		// sdk.NewCoin(fee2Denom, sdk.TokensFromConsensusPower(1000000)),
 		// sdk.NewCoin(feeDenom, sdk.TokensFromConsensusPower(1000000)),
 		// sdk.NewCoin(fooDenom, sdk.TokensFromConsensusPower(1000)),
-		sdk.NewCoin(denom, sdk.TokensFromConsensusPower(15)),
+		sdk.NewCoin(denom, sdk.TokensFromConsensusPower(5)),
+	)
+
+	startCoinsSHRP = sdk.NewCoins(
+		// sdk.NewCoin(fee2Denom, sdk.TokensFromConsensusPower(1000000)),
+		// sdk.NewCoin(feeDenom, sdk.TokensFromConsensusPower(1000000)),
+		sdk.NewCoin(SHRPDenom, sdk.NewInt(20)),
+		sdk.NewCoin(denom, sdk.TokensFromConsensusPower(5)),
 	)
 
 	vestingCoins = sdk.NewCoins(
-		sdk.NewCoin(feeDenom, sdk.TokensFromConsensusPower(500000)),
+		sdk.NewCoin(feeDenom, sdk.TokensFromConsensusPower(5000)),
 	)
 )
 
@@ -155,6 +165,10 @@ func (f Fixtures) GenesisState() simapp.GenesisState {
 	return appState
 }
 
+func (f Fixtures) CreateKeySeedFile(keyName string, keySeed string) {
+
+}
+
 // InitFixtures is called at the beginning of a test  and initializes a chain
 // with 1 validator.
 func InitFixtures(t *testing.T) (f *Fixtures) {
@@ -175,7 +189,6 @@ func InitFixtures(t *testing.T) (f *Fixtures) {
 	f.KeysDelete(keyUser1)
 	f.KeysDelete(keyUser2)
 	f.KeysDelete(keyUser3)
-	f.KeysDelete(keyUser4)
 	f.KeysDelete(keyEmtyUser)
 
 	f.KeysAdd(keyAuthority)
@@ -222,6 +235,222 @@ func InitFixtures(t *testing.T) (f *Fixtures) {
 	f.AddGenesisValidatorAccount(f.KeyAddress(keyValidator))
 	f.AddGenesisOperatorAccount(f.KeyAddress(keyAccOp))
 
+	f.GenTx(keyValidator, "--keyring-backend test --amount=1000000shr")
+	f.CollectGenTxs()
+	return
+}
+
+// InitFixturesKeySeedForElectoralModule is called at the beginning of a test  and initializes a chain
+// with 1 validator.
+func InitFixturesKeySeedForElectoralModule(t *testing.T) (f *Fixtures) {
+	f = NewFixtures(t)
+
+	// reset test state
+	f.UnsafeResetAll()
+	f.CLIConfig("keyring-backend", "test")
+	// ensure keystore has foo and bar keys
+	f.KeysDelete(keyAuthority)
+	f.KeysDelete(keyTreasurer)
+	f.KeysDelete(keyValidator)
+	f.KeysDelete(keyIdSigner)
+	f.KeysDelete(keyAccOp)
+	f.KeysDelete(keyDocIssuer)
+
+	f.KeysDelete(keyUser1)
+	f.KeysDelete(keyUser2)
+	f.KeysDelete(keyUser3)
+	f.KeysDelete(keyUser4)
+	f.KeysDelete(keyEmtyUser)
+
+	f.KeysAdd(keyAuthority)
+	f.KeysAdd(keyTreasurer)
+	f.KeysAdd(keyValidator)
+	f.KeysAdd(keyIdSigner)
+
+	f.KeysAdd(keyUser1)
+	f.KeysAdd(keyUser2)
+	f.KeysAdd(keyUser3)
+	f.KeysAdd(keyUser4)
+	f.KeysAdd(keyEmtyUser)
+	f.KeysAdd(keyAccOp)
+	f.KeysAdd(keyDocIssuer)
+
+	// ensure that CLI output is in JSON format
+	f.CLIConfig("output", "json")
+
+	// NOTE: GDInit sets the ChainID
+	f.GDInit(keyValidator)
+	f.CLIConfig("chain-id", f.ChainID)
+	f.CLIConfig("broadcast-mode", "block")
+	f.CLIConfig("trust-node", "true")
+
+	f.KeysList()
+
+	// start an account with tokens
+	f.AddGenesisAccount(f.KeyAddressSeed(keyAuthority), startCoins)
+	f.AddGenesisAccount(f.KeyAddress(keyTreasurer), startCoins)
+	f.AddGenesisAccount(f.KeyAddress(keyValidator), startCoins)
+	f.AddGenesisAccount(f.KeyAddress(keyIdSigner), startCoins)
+	f.AddGenesisAccount(f.KeyAddress(keyDocIssuer), startCoins)
+
+	f.AddGenesisAccount(f.KeyAddress(keyUser1), startCoins)
+	f.AddGenesisAccount(f.KeyAddressSeed(keyUser2), startCoins)
+	f.AddGenesisAccount(f.KeyAddress(keyUser3), startCoins)
+	f.AddGenesisAccount(f.KeyAddress(keyUser4), startCoins)
+
+	f.AddGenesisAccount(f.KeyAddress(keyAccOp), startCoins)
+
+	f.AddGenesisAuthorityAccount(f.KeyAddressSeed(keyAuthority))
+	f.AddGenesisTreasurerAccount(f.KeyAddress(keyTreasurer))
+	f.AddGenesisValidatorAccount(f.KeyAddress(keyValidator))
+	f.AddGenesisOperatorAccount(f.KeyAddress(keyAccOp))
+
+	f.KeysList()
+	f.GenTx(keyValidator, "--keyring-backend test --amount=1000000shr")
+	f.CollectGenTxs()
+
+	return
+}
+
+
+//InitFixturesKeySeedModule this module actually same with above function InitFixturesKeySeedForElectoralModule.
+//But when you create the test case that use key-seed should use and modifier the code in this
+func InitFixturesKeySeedModule(t *testing.T) (f *Fixtures) {
+	f = NewFixtures(t)
+
+	// reset test state
+	f.UnsafeResetAll()
+	f.CLIConfig("keyring-backend", "test")
+	// ensure keystore has foo and bar keys
+	f.KeysDelete(keyAuthority)
+	f.KeysDelete(keyTreasurer)
+	f.KeysDelete(keyValidator)
+	f.KeysDelete(keyIdSigner)
+	f.KeysDelete(keyAccOp)
+	f.KeysDelete(keyDocIssuer)
+
+	f.KeysDelete(keyUser1)
+	f.KeysDelete(keyUser2)
+	f.KeysDelete(keyUser3)
+	f.KeysDelete(keyUser4)
+	f.KeysDelete(keyEmtyUser)
+
+	f.KeysAdd(keyAuthority)
+	f.KeysAdd(keyTreasurer)
+	f.KeysAdd(keyValidator)
+	f.KeysAdd(keyIdSigner)
+
+	f.KeysAdd(keyUser1)
+	f.KeysAdd(keyUser2)
+	f.KeysAdd(keyUser3)
+	f.KeysAdd(keyUser4)
+	f.KeysAdd(keyEmtyUser)
+	f.KeysAdd(keyAccOp)
+	f.KeysAdd(keyDocIssuer)
+
+	// ensure that CLI output is in JSON format
+	f.CLIConfig("output", "json")
+
+	// NOTE: GDInit sets the ChainID
+	f.GDInit(keyValidator)
+	f.CLIConfig("chain-id", f.ChainID)
+	f.CLIConfig("broadcast-mode", "block")
+	f.CLIConfig("trust-node", "true")
+
+	f.KeysList()
+
+	// start an account with tokens
+	f.AddGenesisAccount(f.KeyAddress(keyAuthority), startCoins)
+	f.AddGenesisAccount(f.KeyAddress(keyTreasurer), startCoins)
+	f.AddGenesisAccount(f.KeyAddress(keyValidator), startCoins)
+	f.AddGenesisAccount(f.KeyAddress(keyIdSigner), startCoins)
+	f.AddGenesisAccount(f.KeyAddress(keyDocIssuer), startCoins)
+
+	f.AddGenesisAccount(f.KeyAddressSeed(keyUser1), startCoins)
+	f.AddGenesisAccount(f.KeyAddressSeed(keyUser2), startCoins)
+	f.AddGenesisAccount(f.KeyAddress(keyUser3), startCoins)
+	f.AddGenesisAccount(f.KeyAddress(keyUser4), startCoins)
+
+	f.AddGenesisAccount(f.KeyAddress(keyAccOp), startCoins)
+
+	f.AddGenesisAuthorityAccount(f.KeyAddress(keyAuthority))
+	f.AddGenesisTreasurerAccount(f.KeyAddress(keyTreasurer))
+	f.AddGenesisValidatorAccount(f.KeyAddress(keyValidator))
+	f.AddGenesisOperatorAccount(f.KeyAddress(keyAccOp))
+
+	f.KeysList()
+	f.GenTx(keyValidator, "--keyring-backend test --amount=1000000shr")
+	f.CollectGenTxs()
+
+	return
+}
+
+
+//InitFixturesKeySeedModuleInitCoinSHRP this function init the SHR coin for user before do something
+func InitFixturesKeySeedModuleInitCoinSHRP(t *testing.T) (f *Fixtures) {
+	f = NewFixtures(t)
+
+	// reset test state
+	f.UnsafeResetAll()
+	f.CLIConfig("keyring-backend", "test")
+	// ensure keystore has foo and bar keys
+	f.KeysDelete(keyAuthority)
+	f.KeysDelete(keyTreasurer)
+	f.KeysDelete(keyValidator)
+	f.KeysDelete(keyIdSigner)
+	f.KeysDelete(keyAccOp)
+	f.KeysDelete(keyDocIssuer)
+
+	f.KeysDelete(keyUser1)
+	f.KeysDelete(keyUser2)
+	f.KeysDelete(keyUser3)
+	f.KeysDelete(keyUser4)
+	f.KeysDelete(keyEmtyUser)
+
+	f.KeysAdd(keyAuthority)
+	f.KeysAdd(keyTreasurer)
+	f.KeysAdd(keyValidator)
+	f.KeysAdd(keyIdSigner)
+
+	f.KeysAdd(keyUser1)
+	f.KeysAdd(keyUser2)
+	f.KeysAdd(keyUser3)
+	f.KeysAdd(keyUser4)
+	f.KeysAdd(keyEmtyUser)
+	f.KeysAdd(keyAccOp)
+	f.KeysAdd(keyDocIssuer)
+
+	// ensure that CLI output is in JSON format
+	f.CLIConfig("output", "json")
+
+	// NOTE: GDInit sets the ChainID
+	f.GDInit(keyValidator)
+	f.CLIConfig("chain-id", f.ChainID)
+	f.CLIConfig("broadcast-mode", "block")
+	f.CLIConfig("trust-node", "true")
+
+	f.KeysList()
+
+	// start an account with tokens
+	f.AddGenesisAccount(f.KeyAddress(keyAuthority), startCoins)
+	f.AddGenesisAccount(f.KeyAddress(keyTreasurer), startCoins)
+	f.AddGenesisAccount(f.KeyAddress(keyValidator), startCoins)
+	f.AddGenesisAccount(f.KeyAddress(keyIdSigner), startCoins)
+	f.AddGenesisAccount(f.KeyAddress(keyDocIssuer), startCoins)
+
+	f.AddGenesisAccount(f.KeyAddressSeed(keyUser1), startCoins)
+	f.AddGenesisAccount(f.KeyAddressSeed(keyUser2), startCoinsSHRP)
+	f.AddGenesisAccount(f.KeyAddress(keyUser3), startCoins)
+	f.AddGenesisAccount(f.KeyAddress(keyUser4), startCoins)
+
+	f.AddGenesisAccount(f.KeyAddress(keyAccOp), startCoins)
+
+	f.AddGenesisAuthorityAccount(f.KeyAddress(keyAuthority))
+	f.AddGenesisTreasurerAccount(f.KeyAddress(keyTreasurer))
+	f.AddGenesisValidatorAccount(f.KeyAddress(keyValidator))
+	f.AddGenesisOperatorAccount(f.KeyAddress(keyAccOp))
+
+	f.KeysList()
 	f.GenTx(keyValidator, "--keyring-backend test --amount=1000000shr")
 	f.CollectGenTxs()
 
@@ -399,10 +628,50 @@ func (f *Fixtures) KeysDelete(name string, flags ...string) {
 	cmd := fmt.Sprintf("%s keys delete --home=%s %s", f.GaiacliBinary, f.GaiacliHome, name)
 	executeWrite(f.T, addFlags(cmd, append(append(flags, "-y"), "-f")))
 }
+func (f *Fixtures) WriteSeed(key, seed string) (path string) {
+	fileName := fmt.Sprintf("%v/%v_key_seed.json", f.GaiacliHome, key)
+	file, err := os.OpenFile(fileName, os.O_RDONLY|os.O_CREATE, 0666)
+	if err != nil {
+		f.T.Logf("%v can't open file to write seed", err)
+		f.T.Fail()
+	}
+	defer file.Close()
+
+	var keySeed = make(map[string]string)
+	keySeed["secret"] = seed
+
+	b, err := json.Marshal(keySeed)
+	if err != nil {
+		f.T.Logf("%v can't marshal the code seed file to write seed", err)
+		f.T.Fail()
+	}
+	_, err = file.WriteString(string(b))
+	if err != nil {
+		f.T.Logf("%v can't write file to write seed", err)
+		f.T.Fail()
+	}
+
+	return fileName
+
+}
 
 // KeysAdd is gaiacli keys add
 func (f *Fixtures) KeysAdd(name string, flags ...string) {
 	cmd := fmt.Sprintf("%s keys add --home=%s %s", f.GaiacliBinary, f.GaiacliHome, name)
+	executeWriteCheckErr(f.T, addFlags(cmd, flags), DefaultKeyPass)
+}
+
+// KeysAdd is gaiacli keys add
+func (f *Fixtures) KeysAddSeed(name string, seedString string, index int, flags ...string) {
+	cmd := fmt.Sprintf("echo %v | ./%s keys add --recover --index %d --home=%s %s", seedString, f.GaiacliBinary, index, f.GaiacliHome, name)
+	tests.GoExecuteT(f.T, cmd)
+
+	//executeWriteCheckErr(f.T, addFlags(cmd, flags), DefaultKeyPass)
+}
+
+// KeysAdd is gaiacli keys add
+func (f *Fixtures) KeysAddWithSeed(name string, flags ...string) {
+	cmd := fmt.Sprintf("%s create-key-in-memory --home=%s --key-name=%s", f.GaiacliBinary, f.GaiacliHome, name)
 	executeWriteCheckErr(f.T, addFlags(cmd, flags), DefaultKeyPass)
 }
 
@@ -434,6 +703,59 @@ func (f *Fixtures) KeyAddress(name string) sdk.AccAddress {
 	accAddr, err := sdk.AccAddressFromBech32(ko.Address)
 	require.NoError(f.T, err)
 	return accAddr
+}
+
+// KeyAddress returns the SDK account address from the key
+func (f *Fixtures) KeyAddressSeed(name string) sdk.AccAddress {
+
+	ko := f.LoadAddressFormSeed(fmt.Sprintf("./%s_key_seed.json",name))
+
+	return ko
+}
+
+// KeysShow is gaiacli keys show
+func (f *Fixtures) KeysList(flags ...string) []keys.KeyOutput {
+	cmd := fmt.Sprintf("%s keys list --home=%s", f.GaiacliBinary, f.GaiacliHome)
+	out, _ := tests.ExecuteT(f.T, addFlags(cmd, flags), "")
+	var ko []keys.KeyOutput
+	err := clientkeys.UnmarshalJSON([]byte(out), &ko)
+	require.NoError(f.T, err)
+	return ko
+}
+
+
+// KeyAddress returns the SDK account address from the key
+func (f *Fixtures) LoadAddressFormSeed(seedFile string) sdk.AccAddress {
+
+	seed, err := myutils.GetKeeySeedFromFile(seedFile)
+	hdPath := keys.CreateHDPath(0, 0).String()
+	kb := clientkeys.NewInMemoryKeyBase()
+	keyName := "elon_musk_deer"
+	info, err := kb.CreateAccount(keyName, seed, "", "12345678", hdPath, keys.Secp256k1)
+	if err != nil {
+		f.T.Logf("fail to init test cause %v", err)
+		f.T.Fail()
+	}
+	return info.GetAddress()
+}
+
+//// KeyAddressSeed returns the SDK account address from the key
+//func (f *Fixtures) KeyAddressSeed(name string) sdk.AccAddress {
+//	ko := f.KeysShowSeed(name)
+//	accAddr, err := sdk.AccAddressFromBech32(ko.Address)
+//	require.NoError(f.T, err)
+//	return accAddr
+//}
+
+// KeysShowSeed is gaiacli keys show
+func (f *Fixtures) KeysShowSeed(name string, flags ...string) keys.KeyOutput {
+	cmd := fmt.Sprintf("%s show-address-from-seed  --key-seed=%s --home=%s", f.GaiacliBinary, fmt.Sprintf("%s/%s_key_seed.json", f.GaiacliHome, name), f.GaiacliHome)
+	out, _ := tests.ExecuteT(f.T, addFlags(cmd, flags), "")
+	var add string
+	require.NotEmptyf(f.T, out, "can't empty")
+	var ko keys.KeyOutput
+	ko.Address = add
+	return ko
 }
 
 //___________________________________________________________________________________
@@ -555,7 +877,7 @@ func (f *Fixtures) TxGovSubmitCommunityPoolSpendProposal(
 
 // QueryAccount is gaiacli query account
 func (f *Fixtures) QueryAccount(address sdk.AccAddress, flags ...string) auth.BaseAccount {
-	cmd := fmt.Sprintf("%s query account %s %v", f.GaiacliBinary, address, f.Flags())
+	cmd := fmt.Sprintf("%s query account %s %v", f.GaiacliBinary,address, f.Flags())
 	out, _ := tests.ExecuteT(f.T, addFlags(cmd, flags), "")
 	var initRes map[string]json.RawMessage
 	err := json.Unmarshal([]byte(out), &initRes)
@@ -921,4 +1243,13 @@ func createRandomAddr(amount int) (prvs []secp256k1.PrivKeySecp256k1, addrs []sd
 		prvs = append(prvs, prv)
 	}
 	return
+}
+
+func ParseRawLogGetEvent(t *testing.T,logString string)CosmosLogs{
+	var logs CosmosLogs
+	err := json.Unmarshal([]byte(logString),&logs)
+	require.NoError(t, err,"fail to get the log information form stdout")
+	l := len(logs)
+	require.Greater(t, l,0,"empty logs")
+	return logs
 }
