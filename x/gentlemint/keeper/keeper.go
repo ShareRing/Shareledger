@@ -87,6 +87,6 @@ func (k Keeper) isTreasurer(ctx sdk.Context, address sdk.AccAddress) bool {
 	panic("implement me")
 }
 
-func (k Keeper) GetExchangeRate(ctx sdk.Context) string {
+func (k Keeper) GetExchangeRate(ctx sdk.Context) float64 {
 	panic("implement me")
 }
