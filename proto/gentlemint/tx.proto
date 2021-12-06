@@ -19,6 +19,7 @@ service Msg {
   rpc EnrollLoaders(MsgEnrollLoaders) returns (MsgEnrollLoadersResponse);
   rpc RevokeLoaders(MsgRevokeLoaders) returns (MsgRevokeLoadersResponse);
   rpc EnrollIdSigner(MsgEnrollIdSigner) returns (MsgEnrollIdSignerResponse);
+  rpc RevokeIdSigner(MsgRevokeIdSigner) returns (MsgRevokeIdSignerResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -131,6 +132,14 @@ message MsgEnrollIdSigner {
 
 message MsgEnrollIdSignerResponse {
   string log = 1;
+}
+
+message MsgRevokeIdSigner {
+  string creator = 1;
+  repeated string addresses = 2;
+}
+
+message MsgRevokeIdSignerResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message

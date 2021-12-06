@@ -20331,6 +20331,9 @@ definitions:
         type: string
   ShareRing.shareledger.gentlemint.MsgEnrollIdSignerResponse:
     type: object
+    properties:
+      log:
+        type: string
   ShareRing.shareledger.gentlemint.MsgEnrollLoadersResponse:
     type: object
     properties:
@@ -20346,6 +20349,8 @@ definitions:
     properties:
       log:
         type: string
+  ShareRing.shareledger.gentlemint.MsgRevokeIdSignerResponse:
+    type: object
   ShareRing.shareledger.gentlemint.MsgRevokeLoadersResponse:
     type: object
     properties:
