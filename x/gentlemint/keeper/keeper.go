@@ -92,17 +92,10 @@ func (k Keeper) GetExchangeRate(ctx sdk.Context) float64 {
 }
 
 func (k Keeper) setSHRPLoaderStatus(ctx sdk.Context, addr sdk.AccAddress, status types.ShrpStatus) {
-	loaderKey := fmt.Sprintf("%s%s", types.ShrpLoaderPrefix, addr.String())
-
+	// loaderKey := fmt.Sprintf("%s%s", types.ShrpLoaderPrefix, addr.String())
+	panic("implement me")
 }
 
-func (k Keeper) getSHRPLoader(ctx sdk.Context, address string) types.SHRPLoader {
-	if !k.IsSHRPLoaderPresent(ctx, address) {
-		return types.NewSHRPLoader()
-	}
-	store := ctx.KVStore(k.storeKey)
-	bz := store.Get([]byte(address))
-	var loader types.SHRPLoader
-	k.cdc.MustUnmarshalBinaryBare(bz, &loader)
-	return loader
-}
+// func (k Keeper) getSHRPLoader(ctx sdk.Context, address string) types.SHRPLoader {
+// 	panic("implement me")
+// }
