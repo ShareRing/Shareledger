@@ -49,6 +49,14 @@ var (
 	AllowanceLoader = sdk.NewCoins(sdk.NewCoin(DenomSHR, sdk.NewInt(20)))
 )
 
+var (
+	// Event Type
+	EventTypeEnrollIdSigner = "enroll_id_signer"
+	EventTypeRevokeIdSigner = "revoke_id_signer"
+	// Attr
+	EventAttrAddress = "address"
+)
+
 func KeyPrefix(p string) []byte {
 	return []byte(p)
 }

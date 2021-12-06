@@ -41,6 +41,7 @@ func GetTxCmd() *cobra.Command {
 	cmd.AddCommand(CmdSetExchange())
 	cmd.AddCommand(CmdEnrollLoaders())
 	cmd.AddCommand(CmdRevokeLoaders())
+	cmd.AddCommand(CmdEnrollIdSigner())
 	// this line is used by starport scaffolding # 1
 
 	return cmd

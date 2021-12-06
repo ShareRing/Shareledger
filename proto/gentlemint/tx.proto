@@ -18,6 +18,7 @@ service Msg {
   rpc SetExchange(MsgSetExchange) returns (MsgSetExchangeResponse);
   rpc EnrollLoaders(MsgEnrollLoaders) returns (MsgEnrollLoadersResponse);
   rpc RevokeLoaders(MsgRevokeLoaders) returns (MsgRevokeLoadersResponse);
+  rpc EnrollIdSigner(MsgEnrollIdSigner) returns (MsgEnrollIdSignerResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -121,6 +122,16 @@ message MsgRevokeLoaders {
 
 message MsgRevokeLoadersResponse {
   string log = 1;
+}
+
+message MsgEnrollIdSigner {
+  string creator = 1;
+  repeated string addresses = 2;
+}
+
+message MsgEnrollIdSignerResponse {
+  string log = 1;
+  repeated Events Event = 1;
 }
 
 // this line is used by starport scaffolding # proto/tx/message

@@ -86,6 +86,9 @@ func (k Keeper) isSHRPLoader(ctx sdk.Context, address sdk.AccAddress) bool {
 func (k Keeper) isTreasurer(ctx sdk.Context, address sdk.AccAddress) bool {
 	panic("implement me")
 }
+func (k Keeper) isAccountOperator(ctx sdk.Context, address sdk.AccAddress) bool {
+	panic("implement me")
+}
 
 func (k Keeper) GetExchangeRate(ctx sdk.Context) float64 {
 	panic("implement me")
@@ -93,6 +96,10 @@ func (k Keeper) GetExchangeRate(ctx sdk.Context) float64 {
 
 func (k Keeper) setSHRPLoaderStatus(ctx sdk.Context, addr sdk.AccAddress, status types.ShrpStatus) {
 	// loaderKey := fmt.Sprintf("%s%s", types.ShrpLoaderPrefix, addr.String())
+	panic("implement me")
+}
+
+func (k Keeper) activeIdSigner(ctx sdk.Context, addr sdk.AccAddress) {
 	panic("implement me")
 }
 
