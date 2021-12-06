@@ -20353,6 +20353,8 @@ definitions:
     properties:
       log:
         type: string
+  ShareRing.shareledger.gentlemint.MsgRevokeAccountOperatorResponse:
+    type: object
   ShareRing.shareledger.gentlemint.MsgRevokeDocIssuerResponse:
     type: object
   ShareRing.shareledger.gentlemint.MsgRevokeIdSignerResponse:

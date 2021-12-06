@@ -26,6 +26,7 @@ func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgEnrollDocIssuer{}, "gentlemint/EnrollDocIssuer", nil)
 	cdc.RegisterConcrete(&MsgRevokeDocIssuer{}, "gentlemint/RevokeDocIssuer", nil)
 	cdc.RegisterConcrete(&MsgEnrollAccountOperator{}, "gentlemint/EnrollAccountOperator", nil)
+	cdc.RegisterConcrete(&MsgRevokeAccountOperator{}, "gentlemint/RevokeAccountOperator", nil)
 	// this line is used by starport scaffolding # 2
 }
 
@@ -83,6 +84,9 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgEnrollAccountOperator{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgRevokeAccountOperator{},
 	)
 	// this line is used by starport scaffolding # 3
 
