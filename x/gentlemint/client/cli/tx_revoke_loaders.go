@@ -13,10 +13,10 @@ import (
 
 var _ = strconv.Itoa(0)
 
-func CmdEnrollLoaders() *cobra.Command {
+func CmdRevokeLoaders() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "enroll-loaders [addresses]",
-		Short: "Broadcast message enroll-loaders",
+		Use:   "revoke-loaders [addresses]",
+		Short: "Broadcast message revoke-loaders",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argAddresses := args[:]
@@ -25,7 +25,7 @@ func CmdEnrollLoaders() *cobra.Command {
 				return err
 			}
 
-			msg := types.NewMsgEnrollLoaders(
+			msg := types.NewMsgRevokeLoaders(
 				clientCtx.GetFromAddress().String(),
 				argAddresses,
 			)

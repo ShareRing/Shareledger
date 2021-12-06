@@ -9,13 +9,14 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
-func (k msgServer) EnrollLoaders(goCtx context.Context, msg *types.MsgEnrollLoaders) (*types.MsgEnrollLoadersResponse, error) {
+func (k msgServer) RevokeLoaders(goCtx context.Context, msg *types.MsgRevokeLoaders) (*types.MsgRevokeLoadersResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
-	if err := msg.ValidateBasic(); err != nil {
-		return nil, err
-	}
+
 	if !k.isAuthority(ctx, msg.GetSigners()[0]) {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "Approver's Address is not authority")
+	}
+	if err := msg.ValidateBasic(); err != nil {
+		return nil, err
 	}
 
 	log := "SHRP loaders' addresses: "
@@ -25,13 +26,9 @@ func (k msgServer) EnrollLoaders(goCtx context.Context, msg *types.MsgEnrollLoad
 		if err != nil {
 			return nil, err
 		}
-		k.setSHRPLoaderStatus(ctx, addr, types.StatusSHRPLoaderActived)
-		if err := k.loadCoins(ctx, addr, types.AllowanceLoader); err != nil {
-			return nil, err
-		}
+		k.setSHRPLoaderStatus(ctx, addr, types.StatusSHRPLoaderInactived)
 	}
-
-	return &types.MsgEnrollLoadersResponse{
-		Log: fmt.Sprintf("Successfully enroll SHRP loader %s", log),
+	return &types.MsgRevokeLoadersResponse{
+		Log: fmt.Sprintf("Successfully revoke SHRP loader %s", log),
 	}, nil
 }
