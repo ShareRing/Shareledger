@@ -58,8 +58,10 @@ var (
 
 var (
 	// Event Type
-	EventTypeEnrollIdSigner  = "enroll_id_signer"
-	EventTypeRevokeIdSigner  = "revoke_id_signer"
+	EventTypeEnrollIdSigner = "enroll_id_signer"
+	EventTypeRevokeIdSigner = "revoke_id_signer"
+
+	EventTypeRevokeDocIssuer = "revoke_doc_issuer"
 	EventTypeEnrollDocIssuer = "enroll_doc_issuer"
 	// Attr
 	EventAttrAddress = "address"

@@ -40,6 +40,9 @@ func (msg *MsgRevokeIdSigner) ValidateBasic() error {
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
 	}
+	if len(msg.Addresses) == 0 {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "addresses should not be empty")
+	}
 	for _, a := range msg.Addresses {
 		if _, err := sdk.AccAddressFromBech32(a); err != nil {
 			return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid address (%s)", err)

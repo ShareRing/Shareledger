@@ -41,5 +41,8 @@ func (msg *MsgLoadShrp) ValidateBasic() error {
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
 	}
+	if _, err := sdk.AccAddressFromBech32(msg.Address) {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid address (%s)", err)
+	}
 	return nil
 }

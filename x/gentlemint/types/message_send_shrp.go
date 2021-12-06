@@ -41,5 +41,11 @@ func (msg *MsgSendShrp) ValidateBasic() error {
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
 	}
+	if _, err := sdk.AccAddressFromBech32(msg.Address); err != nil {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid address (%s)", err)
+	}
+	if v, err := sdk.NewDecFromStr(msg.Amount); err != nil && v.LTE(sdk.NewDec(0)) {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, msg.Amount)
+	}
 	return nil
 }

@@ -21,6 +21,7 @@ service Msg {
   rpc EnrollIdSigner(MsgEnrollIdSigner) returns (MsgEnrollIdSignerResponse);
   rpc RevokeIdSigner(MsgRevokeIdSigner) returns (MsgRevokeIdSignerResponse);
   rpc EnrollDocIssuer(MsgEnrollDocIssuer) returns (MsgEnrollDocIssuerResponse);
+  rpc RevokeDocIssuer(MsgRevokeDocIssuer) returns (MsgRevokeDocIssuerResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -149,6 +150,14 @@ message MsgEnrollDocIssuer {
 }
 
 message MsgEnrollDocIssuerResponse {
+}
+
+message MsgRevokeDocIssuer {
+  string creator = 1;
+  repeated string addresses = 2;
+}
+
+message MsgRevokeDocIssuerResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message

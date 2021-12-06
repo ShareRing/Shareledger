@@ -5,24 +5,24 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
-var _ sdk.Msg = &MsgEnrollIdSigner{}
+var _ sdk.Msg = &MsgRevokeDocIssuer{}
 
-func NewMsgEnrollIdSigner(creator string, addresses []string) *MsgEnrollIdSigner {
-	return &MsgEnrollIdSigner{
+func NewMsgRevokeDocIssuer(creator string, addresses []string) *MsgRevokeDocIssuer {
+	return &MsgRevokeDocIssuer{
 		Creator:   creator,
 		Addresses: addresses,
 	}
 }
 
-func (msg *MsgEnrollIdSigner) Route() string {
+func (msg *MsgRevokeDocIssuer) Route() string {
 	return RouterKey
 }
 
-func (msg *MsgEnrollIdSigner) Type() string {
-	return "EnrollIdSigner"
+func (msg *MsgRevokeDocIssuer) Type() string {
+	return "RevokeDocIssuer"
 }
 
-func (msg *MsgEnrollIdSigner) GetSigners() []sdk.AccAddress {
+func (msg *MsgRevokeDocIssuer) GetSigners() []sdk.AccAddress {
 	creator, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		panic(err)
@@ -30,12 +30,12 @@ func (msg *MsgEnrollIdSigner) GetSigners() []sdk.AccAddress {
 	return []sdk.AccAddress{creator}
 }
 
-func (msg *MsgEnrollIdSigner) GetSignBytes() []byte {
+func (msg *MsgRevokeDocIssuer) GetSignBytes() []byte {
 	bz := ModuleCdc.MustMarshalJSON(msg)
 	return sdk.MustSortJSON(bz)
 }
 
-func (msg *MsgEnrollIdSigner) ValidateBasic() error {
+func (msg *MsgRevokeDocIssuer) ValidateBasic() error {
 	_, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
@@ -44,9 +44,9 @@ func (msg *MsgEnrollIdSigner) ValidateBasic() error {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "addresses should not be empty")
 	}
 	for _, a := range msg.Addresses {
-		_, err := sdk.AccAddressFromBech32(a)
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid id signer address (%s)", err)
+		if _, err := sdk.AccAddressFromBech32(a); err != nil {
+			return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid address (%s)", err)
+		}
 	}
-
 	return nil
 }

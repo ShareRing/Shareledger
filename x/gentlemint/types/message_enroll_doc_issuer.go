@@ -40,6 +40,9 @@ func (msg *MsgEnrollDocIssuer) ValidateBasic() error {
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
 	}
+	if len(msg.Addresses) == 0 {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "addresses should not be empty")
+	}
 	for _, a := range msg.Addresses {
 		_, err := sdk.AccAddressFromBech32(a)
 		if err != nil {
