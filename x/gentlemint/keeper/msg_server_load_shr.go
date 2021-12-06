@@ -11,9 +11,11 @@ import (
 
 func (k msgServer) LoadShr(goCtx context.Context, msg *types.MsgLoadShr) (*types.MsgLoadShrResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
-
+	if err := msg.ValidateBasic(); err != nil {
+		return nil, err
+	}
 	if !k.isAuthority(ctx, msg.GetSigners()[0]) {
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrUnauthorized, "Approver's Address is not authority")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, types.ErrSenderIsNotAuthority)
 	}
 
 	coins, err := types.ParseShrCoinsStr(msg.Amount)

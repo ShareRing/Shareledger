@@ -119,6 +119,14 @@ func (k Keeper) revokeDocIssuer(ctx sdk.Context, addr sdk.AccAddress) (err error
 	panic("implement me")
 }
 
+func (k Keeper) activeAccOperator(ctx sdk.Context, addr sdk.AccAddress) {
+	panic("implement me")
+}
+
+func (k Keeper) revokeAccOperator(ctx sdk.Context, addr sdk.AccAddress) (err error) {
+	panic("implement me")
+}
+
 // func (k Keeper) getSHRPLoader(ctx sdk.Context, address string) types.SHRPLoader {
 // 	panic("implement me")
 // }

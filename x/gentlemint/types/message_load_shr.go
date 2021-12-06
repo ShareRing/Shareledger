@@ -44,5 +44,10 @@ func (msg *MsgLoadShr) ValidateBasic() error {
 	if _, err := sdk.AccAddressFromBech32(msg.Address); err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid address (%s)", err)
 	}
+
+	if _, err := ParseShrCoinsStr(msg.Amount); err != nil {
+		return err
+	}
+
 	return nil
 }

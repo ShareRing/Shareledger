@@ -15,7 +15,7 @@ func (k msgServer) EnrollLoaders(goCtx context.Context, msg *types.MsgEnrollLoad
 		return nil, err
 	}
 	if !k.isAuthority(ctx, msg.GetSigners()[0]) {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "Approver's Address is not authority")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, types.ErrSenderIsNotAuthority)
 	}
 
 	log := "SHRP loaders' addresses: "

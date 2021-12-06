@@ -12,11 +12,11 @@ import (
 func (k msgServer) RevokeLoaders(goCtx context.Context, msg *types.MsgRevokeLoaders) (*types.MsgRevokeLoadersResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	if !k.isAuthority(ctx, msg.GetSigners()[0]) {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "Approver's Address is not authority")
-	}
 	if err := msg.ValidateBasic(); err != nil {
 		return nil, err
+	}
+	if !k.isAuthority(ctx, msg.GetSigners()[0]) {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, types.ErrSenderIsNotAuthority)
 	}
 
 	log := "SHRP loaders' addresses: "

@@ -57,6 +57,9 @@ var (
 )
 
 var (
+	// Event enroll acc op
+	EventTypeEnrollAccOp = "enroll_account_operator"
+	EventTypeRevokeAccOp = "revoke_account_operator"
 	// Event Type
 	EventTypeEnrollIdSigner = "enroll_id_signer"
 	EventTypeRevokeIdSigner = "revoke_id_signer"

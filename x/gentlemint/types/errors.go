@@ -12,4 +12,5 @@ var (
 )
 var (
 	ErrSenderIsNotAccountOperator = "Sender is not account operator"
+	ErrSenderIsNotAuthority       = "Sender is not authority"
 )
