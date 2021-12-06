@@ -131,7 +131,6 @@ message MsgEnrollIdSigner {
 
 message MsgEnrollIdSignerResponse {
   string log = 1;
-  repeated Events Event = 1;
 }
 
 // this line is used by starport scaffolding # proto/tx/message
