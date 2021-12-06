@@ -20329,6 +20329,8 @@ definitions:
     properties:
       log:
         type: string
+  ShareRing.shareledger.gentlemint.MsgEnrollLoadersResponse:
+    type: object
   ShareRing.shareledger.gentlemint.MsgLoadShrResponse:
     type: object
     properties:

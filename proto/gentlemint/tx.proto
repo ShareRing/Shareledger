@@ -16,6 +16,7 @@ service Msg {
   rpc SendShrp(MsgSendShrp) returns (MsgSendShrpResponse);
   rpc BurnShr(MsgBurnShr) returns (MsgBurnShrResponse);
   rpc SetExchange(MsgSetExchange) returns (MsgSetExchangeResponse);
+  rpc EnrollLoaders(MsgEnrollLoaders) returns (MsgEnrollLoadersResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -101,6 +102,15 @@ message MsgSetExchange {
 }
 
 message MsgSetExchangeResponse {
+}
+
+message MsgEnrollLoaders {
+  string creator = 1;
+  repeated string addresses = 2;
+}
+
+message MsgEnrollLoadersResponse {
+  string log = 1;
 }
 
 // this line is used by starport scaffolding # proto/tx/message

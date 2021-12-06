@@ -90,3 +90,19 @@ func (k Keeper) isTreasurer(ctx sdk.Context, address sdk.AccAddress) bool {
 func (k Keeper) GetExchangeRate(ctx sdk.Context) float64 {
 	panic("implement me")
 }
+
+func (k Keeper) setSHRPLoaderStatus(ctx sdk.Context, addr sdk.AccAddress, status types.ShrpStatus) {
+	loaderKey := fmt.Sprintf("%s%s", types.ShrpLoaderPrefix, addr.String())
+
+}
+
+func (k Keeper) getSHRPLoader(ctx sdk.Context, address string) types.SHRPLoader {
+	if !k.IsSHRPLoaderPresent(ctx, address) {
+		return types.NewSHRPLoader()
+	}
+	store := ctx.KVStore(k.storeKey)
+	bz := store.Get([]byte(address))
+	var loader types.SHRPLoader
+	k.cdc.MustUnmarshalBinaryBare(bz, &loader)
+	return loader
+}
