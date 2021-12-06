@@ -32,8 +32,6 @@ func (k msgServer) buyShr(ctx sdk.Context, amount sdk.Int, buyer sdk.AccAddress)
 		return sdkerrors.Wrap(types.ErrSHRSupplyExceeded, amount.String())
 	}
 
-	// boughShr := sdk.NewCoins(sdk.NewCoin(types.DenomSHR, amount))
-
 	rate := k.GetExchangeRate(ctx)
 
 	currentBalance := k.bankKeeper.GetAllBalances(ctx, buyer)
