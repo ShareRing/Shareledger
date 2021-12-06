@@ -106,7 +106,11 @@ func (k Keeper) activeIdSigner(ctx sdk.Context, addr sdk.AccAddress) {
 // revokeIdSigner set addr signer to inactive
 // return err if there is passed addr not found
 func (k Keeper) revokeIdSigner(ctx sdk.Context, addr sdk.AccAddress) (err error) {
+	panic("implement me")
+}
 
+func (k Keeper) activeDocIssuer(ctx sdk.Context, addr sdk.AccAddress) {
+	panic("implement me")
 }
 
 // func (k Keeper) getSHRPLoader(ctx sdk.Context, address string) types.SHRPLoader {

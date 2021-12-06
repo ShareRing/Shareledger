@@ -41,6 +41,13 @@ var (
 	StatusSHRPLoaderInactived ShrpStatus = "inactived"
 )
 
+type Status string
+
+var (
+	StatusActive   Status = "active"
+	StatusInActive Status = "inactive"
+)
+
 var (
 	OneShr          = sdk.NewCoins(sdk.NewCoin(DenomSHR, sdk.NewInt(1)))
 	OneShrP         = sdk.NewCoins(sdk.NewCoin(DenomSHRP, sdk.NewInt(1)))
@@ -51,8 +58,9 @@ var (
 
 var (
 	// Event Type
-	EventTypeEnrollIdSigner = "enroll_id_signer"
-	EventTypeRevokeIdSigner = "revoke_id_signer"
+	EventTypeEnrollIdSigner  = "enroll_id_signer"
+	EventTypeRevokeIdSigner  = "revoke_id_signer"
+	EventTypeEnrollDocIssuer = "enroll_doc_issuer"
 	// Attr
 	EventAttrAddress = "address"
 )
