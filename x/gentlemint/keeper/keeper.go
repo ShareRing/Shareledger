@@ -79,10 +79,6 @@ func (k Keeper) isAuthority(ctx sdk.Context, address sdk.AccAddress) bool {
 	panic("implement me")
 }
 
-func (k Keeper) isSHRPLoader(ctx sdk.Context, address sdk.AccAddress) bool {
-	panic("implement me")
-}
-
 func (k Keeper) isTreasurer(ctx sdk.Context, address sdk.AccAddress) bool {
 	panic("implement me")
 }
@@ -90,7 +86,3 @@ func (k Keeper) isTreasurer(ctx sdk.Context, address sdk.AccAddress) bool {
 func (k Keeper) GetExchangeRate(ctx sdk.Context) float64 {
 	panic("implement me")
 }
-
-// func (k Keeper) getSHRPLoader(ctx sdk.Context, address string) types.SHRPLoader {
-// 	panic("implement me")
-// }
