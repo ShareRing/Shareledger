@@ -74,7 +74,3 @@ func (k Keeper) burnCoins(ctx sdk.Context, addr sdk.AccAddress, amt sdk.Coins) e
 
 	return k.bankKeeper.BurnCoins(ctx, types.ModuleName, amt)
 }
-
-func (k Keeper) GetExchangeRate(ctx sdk.Context) float64 {
-
-}
