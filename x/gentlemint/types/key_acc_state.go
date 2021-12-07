@@ -12,9 +12,10 @@ var _ binary.ByteOrder
 type AccStateKeyType string
 
 const (
-	AccStateKeyIdSigner  AccStateKeyType = "IDS"
-	AccStateKeyDocIssuer AccStateKeyType = "DOCIS"
-	AccStateKeyAccOp     AccStateKeyType = "ACCOP"
+	AccStateKeyIdSigner    AccStateKeyType = "IDS"
+	AccStateKeyDocIssuer   AccStateKeyType = "DOCIS"
+	AccStateKeyAccOp       AccStateKeyType = "ACCOP"
+	AccStateKeyShrpLoaders AccStateKeyType = "shrploader"
 )
 
 const (

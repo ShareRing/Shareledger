@@ -15,7 +15,7 @@ var _ = strconv.Itoa(0)
 
 func CmdRevokeAccountOperator() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "revoke-account-operator [addresses]",
+		Use:   "revoke-account-operator [address1] [address2] [address3]",
 		Short: "Broadcast message revoke-account-operator",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {

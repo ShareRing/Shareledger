@@ -25,7 +25,7 @@ func (k msgServer) EnrollLoaders(goCtx context.Context, msg *types.MsgEnrollLoad
 		if err != nil {
 			return nil, err
 		}
-		k.setSHRPLoaderStatus(ctx, addr, types.StatusSHRPLoaderActived)
+		k.activeShrpLoader(ctx, addr)
 		if err := k.loadCoins(ctx, addr, types.AllowanceLoader); err != nil {
 			return nil, err
 		}

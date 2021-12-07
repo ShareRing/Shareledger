@@ -7,6 +7,21 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
+func (k Keeper) isAccountOperator(ctx sdk.Context, address sdk.AccAddress) bool {
+	key := types.GenAccStateIndexKey(address, types.AccStateKeyAccOp)
+	r, found := k.GetAccState(ctx, key)
+	return found && r.Status == string(types.StatusActive)
+}
+
+func (k Keeper) activeShrpLoader(ctx sdk.Context, addr sdk.AccAddress) {
+	key := types.GenAccStateIndexKey(addr, types.AccStateKeyShrpLoaders)
+	k.SetAccState(ctx, types.AccState{
+		Key:     key,
+		Address: addr.String(),
+		Status:  string(types.StatusActive),
+	})
+}
+
 func (k Keeper) activeIdSigner(ctx sdk.Context, addr sdk.AccAddress) {
 	key := types.GenAccStateIndexKey(addr, types.AccStateKeyIdSigner)
 	k.SetAccState(ctx, types.AccState{
@@ -16,19 +31,6 @@ func (k Keeper) activeIdSigner(ctx sdk.Context, addr sdk.AccAddress) {
 	})
 }
 
-// revokeIdSigner set addr signer to inactive
-// return err if there is passed addr not found
-func (k Keeper) revokeIdSigner(ctx sdk.Context, addr sdk.AccAddress) (err error) {
-	key := types.GenAccStateIndexKey(addr, types.AccStateKeyIdSigner)
-	r, found := k.GetAccState(ctx, key)
-	if !found {
-		return sdkerrors.ErrNotFound
-	}
-	r.Status = string(types.StatusInActive)
-	k.SetAccState(ctx, r)
-	return nil
-}
-
 func (k Keeper) activeDocIssuer(ctx sdk.Context, addr sdk.AccAddress) {
 	key := types.GenAccStateIndexKey(addr, types.AccStateKeyDocIssuer)
 	k.SetAccState(ctx, types.AccState{
@@ -36,19 +38,6 @@ func (k Keeper) activeDocIssuer(ctx sdk.Context, addr sdk.AccAddress) {
 		Address: addr.String(),
 		Status:  string(types.StatusActive),
 	})
-}
-
-// revokeDocIssuer set addr doc issuer to inactive
-// return err if there is passed addr not found
-func (k Keeper) revokeDocIssuer(ctx sdk.Context, addr sdk.AccAddress) (err error) {
-	key := types.GenAccStateIndexKey(addr, types.AccStateKeyDocIssuer)
-	r, found := k.GetAccState(ctx, key)
-	if !found {
-		return sdkerrors.ErrNotFound
-	}
-	r.Status = string(types.StatusInActive)
-	k.SetAccState(ctx, r)
-	return nil
 }
 
 func (k Keeper) activeAccOperator(ctx sdk.Context, addr sdk.AccAddress) {
@@ -61,12 +50,31 @@ func (k Keeper) activeAccOperator(ctx sdk.Context, addr sdk.AccAddress) {
 }
 
 func (k Keeper) revokeAccOperator(ctx sdk.Context, addr sdk.AccAddress) (err error) {
-	key := types.GenAccStateIndexKey(addr, types.AccStateKeyAccOp)
+	return k.revokeAccAccount(ctx, addr, types.AccStateKeyAccOp)
+}
+func (k Keeper) revokeShrpLoader(ctx sdk.Context, addr sdk.AccAddress) (err error) {
+	return k.revokeAccAccount(ctx, addr, types.AccStateKeyShrpLoaders)
+}
+
+// revokeDocIssuer set addr doc issuer to inactive
+// return err if there is passed addr not found
+func (k Keeper) revokeDocIssuer(ctx sdk.Context, addr sdk.AccAddress) (err error) {
+	return k.revokeAccAccount(ctx, addr, types.AccStateKeyDocIssuer)
+}
+
+// revokeIdSigner set addr signer to inactive
+// return err if there is passed addr not found
+func (k Keeper) revokeIdSigner(ctx sdk.Context, addr sdk.AccAddress) (err error) {
+	return k.revokeAccAccount(ctx, addr, types.AccStateKeyIdSigner)
+}
+
+func (k Keeper) revokeAccAccount(ctx sdk.Context, addr sdk.AccAddress, keyType types.AccStateKeyType) error {
+	key := types.GenAccStateIndexKey(addr, keyType)
 	r, found := k.GetAccState(ctx, key)
 	if !found {
 		return sdkerrors.ErrNotFound
 	}
-	r.Status = string(types.StatusInActive)
+	r.Status = string(types.StatusInactive)
 	k.SetAccState(ctx, r)
 	return nil
 }
@@ -115,6 +123,7 @@ func (k Keeper) RemoveAccState(
 func (k Keeper) GetAllAccState(ctx sdk.Context) (list []types.AccState) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.AccStateKeyPrefix))
 	iterator := sdk.KVStorePrefixIterator(store, []byte{})
+	// iterator := sdk.KVStorePrefixIterator(store, []byte(types.AccStateKeyAccOp))
 
 	defer iterator.Close()
 

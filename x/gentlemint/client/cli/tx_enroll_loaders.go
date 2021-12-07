@@ -15,7 +15,7 @@ var _ = strconv.Itoa(0)
 
 func CmdEnrollLoaders() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "enroll-loaders [addresses]",
+		Use:   "enroll-loaders [address1] [address2] [address3]",
 		Short: "Broadcast message enroll-loaders",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {

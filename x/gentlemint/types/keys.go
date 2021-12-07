@@ -45,7 +45,7 @@ type Status string
 
 var (
 	StatusActive   Status = "active"
-	StatusInActive Status = "inactive"
+	StatusInactive Status = "inactive"
 )
 
 var (

@@ -15,7 +15,7 @@ var _ = strconv.Itoa(0)
 
 func CmdRevokeLoaders() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "revoke-loaders [addresses]",
+		Use:   "revoke-loaders [address1] [address2] [address3]",
 		Short: "Broadcast message revoke-loaders",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {

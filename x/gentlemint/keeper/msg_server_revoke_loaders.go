@@ -26,7 +26,9 @@ func (k msgServer) RevokeLoaders(goCtx context.Context, msg *types.MsgRevokeLoad
 		if err != nil {
 			return nil, err
 		}
-		k.setSHRPLoaderStatus(ctx, addr, types.StatusSHRPLoaderInactived)
+		if err := k.revokeShrpLoader(ctx, addr); err != nil {
+			return nil, err
+		}
 	}
 	return &types.MsgRevokeLoadersResponse{
 		Log: fmt.Sprintf("Successfully revoke SHRP loader %s", log),
