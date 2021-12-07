@@ -99,34 +99,6 @@ func (k Keeper) setSHRPLoaderStatus(ctx sdk.Context, addr sdk.AccAddress, status
 	panic("implement me")
 }
 
-func (k Keeper) activeIdSigner(ctx sdk.Context, addr sdk.AccAddress) {
-	panic("implement me")
-}
-
-// revokeIdSigner set addr signer to inactive
-// return err if there is passed addr not found
-func (k Keeper) revokeIdSigner(ctx sdk.Context, addr sdk.AccAddress) (err error) {
-	panic("implement me")
-}
-
-func (k Keeper) activeDocIssuer(ctx sdk.Context, addr sdk.AccAddress) {
-	panic("implement me")
-}
-
-// revokeIdSigner set addr doc issuer to inactive
-// return err if there is passed addr not found
-func (k Keeper) revokeDocIssuer(ctx sdk.Context, addr sdk.AccAddress) (err error) {
-	panic("implement me")
-}
-
-func (k Keeper) activeAccOperator(ctx sdk.Context, addr sdk.AccAddress) {
-	panic("implement me")
-}
-
-func (k Keeper) revokeAccOperator(ctx sdk.Context, addr sdk.AccAddress) (err error) {
-	panic("implement me")
-}
-
 // func (k Keeper) getSHRPLoader(ctx sdk.Context, address string) types.SHRPLoader {
 // 	panic("implement me")
 // }

@@ -3,13 +3,43 @@ package ShareRing.shareledger.gentlemint;
 
 import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
+import "gentlemint/acc_state.proto";
 // this line is used by starport scaffolding # 1
+import "gogoproto/gogo.proto";
 
 option go_package = "github.com/ShareRing/Shareledger/x/gentlemint/types";
 
 // Query defines the gRPC querier service.
 service Query {
-    // this line is used by starport scaffolding # 2
+    // Queries a accState by index.
+	rpc AccState(QueryGetAccStateRequest) returns (QueryGetAccStateResponse) {
+		option (google.api.http).get = "/ShareRing/shareledger/gentlemint/accState/{key}";
+	}
+
+	// Queries a list of accState items.
+	rpc AccStateAll(QueryAllAccStateRequest) returns (QueryAllAccStateResponse) {
+		option (google.api.http).get = "/ShareRing/shareledger/gentlemint/accState";
+	}
+
+// this line is used by starport scaffolding # 2
+}
+
+message QueryGetAccStateRequest {
+	  string key = 1;
+
+}
+
+message QueryGetAccStateResponse {
+	AccState accState = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllAccStateRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllAccStateResponse {
+	repeated AccState accState = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 
 // this line is used by starport scaffolding # 3
