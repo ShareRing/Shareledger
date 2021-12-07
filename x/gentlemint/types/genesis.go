@@ -13,6 +13,7 @@ func DefaultGenesis() *GenesisState {
 		AccStateList: []AccState{},
 		Authority:    nil,
 		Treasurer:    nil,
+		ExchangeRate: nil,
 		// this line is used by starport scaffolding # genesis/types/default
 	}
 }

@@ -76,5 +76,5 @@ func (k Keeper) burnCoins(ctx sdk.Context, addr sdk.AccAddress, amt sdk.Coins) e
 }
 
 func (k Keeper) GetExchangeRate(ctx sdk.Context) float64 {
-	panic("implement me")
+
 }

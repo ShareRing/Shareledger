@@ -25,6 +25,9 @@ func TestGenesis(t *testing.T) {
 		Treasurer: &types.Treasurer{
 			Address: "address",
 		},
+		ExchangeRate: &types.ExchangeRate{
+			Rate: "rate",
+		},
 		// this line is used by starport scaffolding # genesis/test/state
 	}
 
@@ -37,5 +40,6 @@ func TestGenesis(t *testing.T) {
 	require.Subset(t, genesisState.AccStateList, got.AccStateList)
 	require.Equal(t, genesisState.Authority, got.Authority)
 	require.Equal(t, genesisState.Treasurer, got.Treasurer)
+	require.Equal(t, genesisState.ExchangeRate, got.ExchangeRate)
 	// this line is used by starport scaffolding # genesis/test/assert
 }

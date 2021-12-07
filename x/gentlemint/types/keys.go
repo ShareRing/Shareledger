@@ -77,3 +77,7 @@ const (
 	AuthorityKey = "A"
 	TreasurerKey = "T"
 )
+
+const (
+	ExchangeRateKey = "ExchangeRate-value-"
+)

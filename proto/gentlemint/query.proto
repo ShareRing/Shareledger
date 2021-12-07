@@ -6,6 +6,7 @@ import "cosmos/base/query/v1beta1/pagination.proto";
 import "gentlemint/acc_state.proto";
 import "gentlemint/authority.proto";
 import "gentlemint/treasurer.proto";
+import "gentlemint/exchange_rate.proto";
 // this line is used by starport scaffolding # 1
 import "gogoproto/gogo.proto";
 
@@ -30,6 +31,10 @@ service Query {
 // Queries a treasurer by index.
 	rpc Treasurer(QueryGetTreasurerRequest) returns (QueryGetTreasurerResponse) {
 		option (google.api.http).get = "/ShareRing/shareledger/gentlemint/treasurer";
+	}
+// Queries a exchangeRate by index.
+	rpc ExchangeRate(QueryGetExchangeRateRequest) returns (QueryGetExchangeRateResponse) {
+		option (google.api.http).get = "/ShareRing/shareledger/gentlemint/exchangeRate";
 	}
 // this line is used by starport scaffolding # 2
 }
@@ -61,5 +66,10 @@ message QueryGetTreasurerRequest {}
 
 message QueryGetTreasurerResponse {
 	Treasurer Treasurer = 1 [(gogoproto.nullable) = false];
+}
+message QueryGetExchangeRateRequest {}
+
+message QueryGetExchangeRateResponse {
+	ExchangeRate ExchangeRate = 1 [(gogoproto.nullable) = false];
 }
 // this line is used by starport scaffolding # 3

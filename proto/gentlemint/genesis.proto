@@ -4,6 +4,7 @@ package ShareRing.shareledger.gentlemint;
 import "gentlemint/acc_state.proto";
 import "gentlemint/authority.proto";
 import "gentlemint/treasurer.proto";
+import "gentlemint/exchange_rate.proto";
 // this line is used by starport scaffolding # genesis/proto/import
 import "gogoproto/gogo.proto";
 
@@ -14,5 +15,6 @@ message GenesisState {
     repeated AccState accStateList = 1 [(gogoproto.nullable) = false];
   Authority authority = 2;
   Treasurer treasurer = 3;
+  ExchangeRate exchangeRate = 4;
   // this line is used by starport scaffolding # genesis/proto/state
 }
