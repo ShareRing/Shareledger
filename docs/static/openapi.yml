@@ -12757,8 +12757,6 @@ paths:
                       type: string
                     address:
                       type: string
-                    accKey:
-                      type: string
                     status:
                       type: string
               pagination:
@@ -12879,8 +12877,6 @@ paths:
                     type: string
                   address:
                     type: string
-                  accKey:
-                    type: string
                   status:
                     type: string
         default:
@@ -12906,6 +12902,76 @@ paths:
           in: path
           required: true
           type: string
+      tags:
+        - Query
+  /ShareRing/shareledger/gentlemint/authority:
+    get:
+      summary: Queries a authority by index.
+      operationId: ShareRingShareledgerGentlemintAuthority
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              Authority:
+                type: object
+                properties:
+                  address:
+                    type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
+  /ShareRing/shareledger/gentlemint/treasurer:
+    get:
+      summary: Queries a treasurer by index.
+      operationId: ShareRingShareledgerGentlemintTreasurer
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              Treasurer:
+                type: object
+                properties:
+                  address:
+                    type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
       tags:
         - Query
   '/shareledger/id/address/{address}':
@@ -20486,9 +20552,12 @@ definitions:
         type: string
       address:
         type: string
-      accKey:
-        type: string
       status:
+        type: string
+  ShareRing.shareledger.gentlemint.Authority:
+    type: object
+    properties:
+      address:
         type: string
   ShareRing.shareledger.gentlemint.MsgBurnShrResponse:
     type: object
@@ -20569,8 +20638,6 @@ definitions:
               type: string
             address:
               type: string
-            accKey:
-              type: string
             status:
               type: string
       pagination:
@@ -20608,10 +20675,29 @@ definitions:
             type: string
           address:
             type: string
-          accKey:
-            type: string
           status:
             type: string
+  ShareRing.shareledger.gentlemint.QueryGetAuthorityResponse:
+    type: object
+    properties:
+      Authority:
+        type: object
+        properties:
+          address:
+            type: string
+  ShareRing.shareledger.gentlemint.QueryGetTreasurerResponse:
+    type: object
+    properties:
+      Treasurer:
+        type: object
+        properties:
+          address:
+            type: string
+  ShareRing.shareledger.gentlemint.Treasurer:
+    type: object
+    properties:
+      address:
+        type: string
   ShareRing.shareledger.id.BaseID:
     type: object
     properties:

@@ -4,6 +4,8 @@ package ShareRing.shareledger.gentlemint;
 import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "gentlemint/acc_state.proto";
+import "gentlemint/authority.proto";
+import "gentlemint/treasurer.proto";
 // this line is used by starport scaffolding # 1
 import "gogoproto/gogo.proto";
 
@@ -21,6 +23,14 @@ service Query {
 		option (google.api.http).get = "/ShareRing/shareledger/gentlemint/accState";
 	}
 
+// Queries a authority by index.
+	rpc Authority(QueryGetAuthorityRequest) returns (QueryGetAuthorityResponse) {
+		option (google.api.http).get = "/ShareRing/shareledger/gentlemint/authority";
+	}
+// Queries a treasurer by index.
+	rpc Treasurer(QueryGetTreasurerRequest) returns (QueryGetTreasurerResponse) {
+		option (google.api.http).get = "/ShareRing/shareledger/gentlemint/treasurer";
+	}
 // this line is used by starport scaffolding # 2
 }
 
@@ -42,4 +52,14 @@ message QueryAllAccStateResponse {
 	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 
+message QueryGetAuthorityRequest {}
+
+message QueryGetAuthorityResponse {
+	Authority Authority = 1 [(gogoproto.nullable) = false];
+}
+message QueryGetTreasurerRequest {}
+
+message QueryGetTreasurerResponse {
+	Treasurer Treasurer = 1 [(gogoproto.nullable) = false];
+}
 // this line is used by starport scaffolding # 3

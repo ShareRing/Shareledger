@@ -75,14 +75,6 @@ func (k Keeper) burnCoins(ctx sdk.Context, addr sdk.AccAddress, amt sdk.Coins) e
 	return k.bankKeeper.BurnCoins(ctx, types.ModuleName, amt)
 }
 
-func (k Keeper) isAuthority(ctx sdk.Context, address sdk.AccAddress) bool {
-	panic("implement me")
-}
-
-func (k Keeper) isTreasurer(ctx sdk.Context, address sdk.AccAddress) bool {
-	panic("implement me")
-}
-
 func (k Keeper) GetExchangeRate(ctx sdk.Context) float64 {
 	panic("implement me")
 }

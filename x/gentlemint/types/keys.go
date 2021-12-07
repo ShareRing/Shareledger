@@ -20,10 +20,9 @@ const (
 )
 
 const (
-	DenomSHR     = "shr"
-	DenomSHRP    = "shrp"
-	DenomCent    = "cent"
-	AuthorityKey = "A"
+	DenomSHR  = "shr"
+	DenomSHRP = "shrp"
+	DenomCent = "cent"
 )
 
 var (
@@ -73,3 +72,8 @@ var (
 func KeyPrefix(p string) []byte {
 	return []byte(p)
 }
+
+const (
+	AuthorityKey = "A"
+	TreasurerKey = "T"
+)

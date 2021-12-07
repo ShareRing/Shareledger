@@ -29,6 +29,12 @@ func TestGenesisState_Validate(t *testing.T) {
 						Key: "1",
 					},
 				},
+				Authority: &types.Authority{
+					Address: "address",
+				},
+				Treasurer: &types.Treasurer{
+					Address: "address",
+				},
 				// this line is used by starport scaffolding # types/genesis/validField
 			},
 			valid: true,
