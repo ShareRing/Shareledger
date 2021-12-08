@@ -530,7 +530,7 @@ var (
 
 	pattern_Query_Treasurer_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"ShareRing", "shareledger", "gentlemint", "treasurer"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_ExchangeRate_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"ShareRing", "shareledger", "gentlemint", "exchangeRate"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_ExchangeRate_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"ShareRing", "shareledger", "gentlemint", "getExchangeRate"}, "", runtime.AssumeColonVerbOpt(true)))
 
 	pattern_Query_GetLoader_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"ShareRing", "shareledger", "gentlemint", "getLoader"}, "", runtime.AssumeColonVerbOpt(true)))
 )

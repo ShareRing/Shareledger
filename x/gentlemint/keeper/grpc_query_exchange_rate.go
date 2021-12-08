@@ -20,5 +20,5 @@ func (k Keeper) ExchangeRate(c context.Context, req *types.QueryGetExchangeRateR
 		return nil, status.Error(codes.InvalidArgument, "not found")
 	}
 
-	return &types.QueryGetExchangeRateResponse{ExchangeRate: val}, nil
+	return &types.QueryGetExchangeRateResponse{Rate: val.Rate}, nil
 }

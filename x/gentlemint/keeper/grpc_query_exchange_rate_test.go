@@ -25,7 +25,7 @@ func TestExchangeRateQuery(t *testing.T) {
 		{
 			desc:     "First",
 			request:  &types.QueryGetExchangeRateRequest{},
-			response: &types.QueryGetExchangeRateResponse{ExchangeRate: item},
+			response: &types.QueryGetExchangeRateResponse{Rate: item.Rate},
 		},
 		{
 			desc: "InvalidRequest",

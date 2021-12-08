@@ -34,7 +34,7 @@ service Query {
 	}
 // Queries a exchangeRate by index.
 	rpc ExchangeRate(QueryGetExchangeRateRequest) returns (QueryGetExchangeRateResponse) {
-		option (google.api.http).get = "/ShareRing/shareledger/gentlemint/exchangeRate";
+		option (google.api.http).get = "/ShareRing/shareledger/gentlemint/getExchangeRate";
 	}
 // Queries a list of getLoader items.
 	rpc GetLoader(QueryGetLoaderRequest) returns (QueryGetLoaderResponse) {
@@ -75,7 +75,7 @@ message QueryGetTreasurerResponse {
 message QueryGetExchangeRateRequest {}
 
 message QueryGetExchangeRateResponse {
-	ExchangeRate ExchangeRate = 1 [(gogoproto.nullable) = false];
+	double rate = 1;
 }
 message QueryGetLoaderRequest {
   string address = 1;
