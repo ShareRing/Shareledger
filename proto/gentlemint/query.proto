@@ -46,6 +46,11 @@ service Query {
 		option (google.api.http).get = "/ShareRing/shareledger/gentlemint/idSigner";
 	}
 
+// Queries a list of idSigners items.
+	rpc IdSigners(QueryIdSignersRequest) returns (QueryIdSignersResponse) {
+		option (google.api.http).get = "/ShareRing/shareledger/gentlemint/idSigners";
+	}
+
 // this line is used by starport scaffolding # 2
 }
 
@@ -96,6 +101,13 @@ message QueryIdSignerRequest {
 
 message QueryIdSignerResponse {
 	AccState accState = 1;
+}
+
+message QueryIdSignersRequest {
+}
+
+message QueryIdSignersResponse {
+	repeated AccState accState = 1;
 }
 
 // this line is used by starport scaffolding # 3

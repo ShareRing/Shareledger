@@ -13019,8 +13019,15 @@ paths:
           schema:
             type: object
             properties:
-              a:
-                type: string
+              accState:
+                type: object
+                properties:
+                  key:
+                    type: string
+                  address:
+                    type: string
+                  status:
+                    type: string
         default:
           description: An unexpected error response.
           schema:
@@ -13044,6 +13051,38 @@ paths:
           in: query
           required: false
           type: string
+      tags:
+        - Query
+  /ShareRing/shareledger/gentlemint/idSigners:
+    get:
+      summary: Queries a list of idSigners items.
+      operationId: ShareRingShareledgerGentlemintIdSigners
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              a:
+                type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
       tags:
         - Query
   /ShareRing/shareledger/gentlemint/treasurer:
@@ -20812,6 +20851,18 @@ definitions:
           address:
             type: string
   ShareRing.shareledger.gentlemint.QueryIdSignerResponse:
+    type: object
+    properties:
+      accState:
+        type: object
+        properties:
+          key:
+            type: string
+          address:
+            type: string
+          status:
+            type: string
+  ShareRing.shareledger.gentlemint.QueryIdSignersResponse:
     type: object
     properties:
       a:

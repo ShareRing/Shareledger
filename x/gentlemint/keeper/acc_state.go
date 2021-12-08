@@ -143,3 +143,18 @@ func (k Keeper) GetAllAccState(ctx sdk.Context) (list []types.AccState) {
 
 	return
 }
+
+func (k Keeper) IterateAccState(ctx sdk.Context, accTypeIndex types.AccStateKeyType) (list []types.AccState) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.AccStateKeyPrefix))
+	iterator := sdk.KVStorePrefixIterator(store, []byte(accTypeIndex))
+
+	defer iterator.Close()
+
+	for ; iterator.Valid(); iterator.Next() {
+		var val types.AccState
+		k.cdc.MustUnmarshal(iterator.Value(), &val)
+		list = append(list, val)
+	}
+
+	return
+}
