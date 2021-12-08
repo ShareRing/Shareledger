@@ -61,6 +61,16 @@ service Query {
 		option (google.api.http).get = "/ShareRing/shareledger/gentlemint/accountOperators";
 	}
 
+// Queries a list of documentIssuer items.
+	rpc DocumentIssuer(QueryDocumentIssuerRequest) returns (QueryDocumentIssuerResponse) {
+		option (google.api.http).get = "/ShareRing/shareledger/gentlemint/documentIssuer";
+	}
+
+// Queries a list of documentIssuers items.
+	rpc DocumentIssuers(QueryDocumentIssuersRequest) returns (QueryDocumentIssuersResponse) {
+		option (google.api.http).get = "/ShareRing/shareledger/gentlemint/documentIssuers";
+	}
+
 // this line is used by starport scaffolding # 2
 }
 
@@ -132,6 +142,21 @@ message QueryAccountOperatorsRequest {
 }
 
 message QueryAccountOperatorsResponse {
+	repeated AccState accStates = 1;
+}
+
+message QueryDocumentIssuerRequest {
+  string address = 1;
+}
+
+message QueryDocumentIssuerResponse {
+	AccState accState = 1;
+}
+
+message QueryDocumentIssuersRequest {
+}
+
+message QueryDocumentIssuersResponse {
 	repeated AccState accStates = 1;
 }
 
