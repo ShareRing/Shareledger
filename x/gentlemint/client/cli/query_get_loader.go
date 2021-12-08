@@ -77,6 +77,7 @@ func CmdGetLoadersFromFile() *cobra.Command {
 					return err
 				}
 			}
+			return nil
 		},
 	}
 

@@ -3,10 +3,9 @@ package keeper
 import (
 	"fmt"
 
+	"github.com/ShareRing/Shareledger/x/id/types"
 	"github.com/tendermint/tendermint/libs/log"
 
-	i "github.com/ShareRing/Shareledger/x/id/interfaces"
-	"github.com/ShareRing/Shareledger/x/id/types"
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
@@ -16,7 +15,7 @@ type (
 		cdc      codec.BinaryCodec
 		storeKey sdk.StoreKey
 		memKey   sdk.StoreKey
-		gmKeeper i.IGentlemintKeeper
+		gmKeeper types.GentlemintKeeper
 	}
 )
 
@@ -24,7 +23,7 @@ func NewKeeper(
 	cdc codec.BinaryCodec,
 	storeKey,
 	memKey sdk.StoreKey,
-	gmKeeper i.IGentlemintKeeper,
+	gmKeeper types.GentlemintKeeper,
 
 ) *Keeper {
 	return &Keeper{

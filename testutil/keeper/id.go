@@ -3,7 +3,6 @@ package keeper
 import (
 	"testing"
 
-	i "github.com/ShareRing/Shareledger/x/id/interfaces"
 	"github.com/ShareRing/Shareledger/x/id/keeper"
 	"github.com/ShareRing/Shareledger/x/id/types"
 	"github.com/cosmos/cosmos-sdk/codec"
@@ -28,7 +27,7 @@ func IdKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
 	require.NoError(t, stateStore.LoadLatestVersion())
 
 	registry := codectypes.NewInterfaceRegistry()
-	var gmKeeper i.IGentlemintKeeper
+	var gmKeeper types.GentlemintKeeper
 	k := keeper.NewKeeper(
 		codec.NewProtoCodec(registry),
 		storeKey,

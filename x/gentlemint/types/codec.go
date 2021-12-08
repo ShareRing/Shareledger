@@ -11,8 +11,6 @@ func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgLoadShr{}, "gentlemint/LoadShr", nil)
 	cdc.RegisterConcrete(&MsgLoadShrp{}, "gentlemint/LoadShrp", nil)
 	cdc.RegisterConcrete(&MsgBuyShr{}, "gentlemint/BuyShr", nil)
-	cdc.RegisterConcrete(&MsgBuyShr{}, "gentlemint/BuyShr", nil)
-	cdc.RegisterConcrete(&MsgBuyShr{}, "gentlemint/BuyShr", nil)
 	cdc.RegisterConcrete(&MsgSendShr{}, "gentlemint/SendShr", nil)
 	cdc.RegisterConcrete(&MsgBuyCent{}, "gentlemint/BuyCent", nil)
 	cdc.RegisterConcrete(&MsgBurnShrp{}, "gentlemint/BurnShrp", nil)
