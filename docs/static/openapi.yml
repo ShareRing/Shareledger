@@ -13034,8 +13034,15 @@ paths:
           schema:
             type: object
             properties:
-              a:
-                type: string
+              accState:
+                type: object
+                properties:
+                  key:
+                    type: string
+                  address:
+                    type: string
+                  status:
+                    type: string
         default:
           description: An unexpected error response.
           schema:
@@ -13071,8 +13078,17 @@ paths:
           schema:
             type: object
             properties:
-              a:
-                type: string
+              accStates:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    key:
+                      type: string
+                    address:
+                      type: string
+                    status:
+                      type: string
         default:
           description: An unexpected error response.
           schema:
@@ -21003,13 +21019,29 @@ definitions:
   ShareRing.shareledger.gentlemint.QueryDocumentIssuerResponse:
     type: object
     properties:
-      a:
-        type: string
+      accState:
+        type: object
+        properties:
+          key:
+            type: string
+          address:
+            type: string
+          status:
+            type: string
   ShareRing.shareledger.gentlemint.QueryDocumentIssuersResponse:
     type: object
     properties:
-      a:
-        type: string
+      accStates:
+        type: array
+        items:
+          type: object
+          properties:
+            key:
+              type: string
+            address:
+              type: string
+            status:
+              type: string
   ShareRing.shareledger.gentlemint.QueryGetAccStateResponse:
     type: object
     properties:
