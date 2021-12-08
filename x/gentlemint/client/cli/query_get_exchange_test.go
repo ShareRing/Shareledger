@@ -59,8 +59,8 @@ func TestShowExchangeRate(t *testing.T) {
 				require.NoError(t, err)
 				var resp types.QueryGetExchangeRateResponse
 				require.NoError(t, net.Config.Codec.UnmarshalJSON(out.Bytes(), &resp))
-				require.NotNil(t, resp.ExchangeRate)
-				require.Equal(t, tc.obj, resp.ExchangeRate)
+				require.NotNil(t, resp.Rate)
+				require.Equal(t, tc.obj.Rate, resp.Rate)
 			}
 		})
 	}

@@ -36,7 +36,7 @@ func TestGenesisState_Validate(t *testing.T) {
 					Address: "address",
 				},
 				ExchangeRate: &types.ExchangeRate{
-					Rate: "rate",
+					Rate: 200,
 				},
 				// this line is used by starport scaffolding # types/genesis/validField
 			},

@@ -9,13 +9,14 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (k Keeper) IdSigners(goCtx context.Context, req *types.QueryIdSignersRequest) (*types.QueryIdSignersResponse, error) {
+func (k Keeper) AccountOperators(goCtx context.Context, req *types.QueryAccountOperatorsRequest) (*types.QueryAccountOperatorsResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
-	list := k.IterateAccState(ctx, types.AccStateKeyIdSigner)
+
+	list := k.IterateAccState(ctx, types.AccStateKeyAccOp)
 	res := make([]*types.AccState, 0, len(list))
 	for _, i := range list {
 		res = append(res, &types.AccState{
@@ -25,7 +26,7 @@ func (k Keeper) IdSigners(goCtx context.Context, req *types.QueryIdSignersReques
 		})
 	}
 
-	return &types.QueryIdSignersResponse{
+	return &types.QueryAccountOperatorsResponse{
 		AccStates: res,
 	}, nil
 }

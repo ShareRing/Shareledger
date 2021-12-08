@@ -12904,6 +12904,82 @@ paths:
           type: string
       tags:
         - Query
+  /ShareRing/shareledger/gentlemint/accountOperator:
+    get:
+      summary: Queries a list of accountOperator items.
+      operationId: ShareRingShareledgerGentlemintAccountOperator
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              accState:
+                type: object
+                properties:
+                  key:
+                    type: string
+                  address:
+                    type: string
+                  status:
+                    type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: address
+          in: query
+          required: false
+          type: string
+      tags:
+        - Query
+  /ShareRing/shareledger/gentlemint/accountOperators:
+    get:
+      summary: Queries a list of accountOperators items.
+      operationId: ShareRingShareledgerGentlemintAccountOperators
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              a:
+                type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
   /ShareRing/shareledger/gentlemint/authority:
     get:
       summary: Queries a authority by index.
@@ -13063,8 +13139,17 @@ paths:
           schema:
             type: object
             properties:
-              a:
-                type: string
+              accState:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    key:
+                      type: string
+                    address:
+                      type: string
+                    status:
+                      type: string
         default:
           description: An unexpected error response.
           schema:
@@ -20772,6 +20857,23 @@ definitions:
         type: string
   ShareRing.shareledger.gentlemint.MsgSetExchangeResponse:
     type: object
+  ShareRing.shareledger.gentlemint.QueryAccountOperatorResponse:
+    type: object
+    properties:
+      accState:
+        type: object
+        properties:
+          key:
+            type: string
+          address:
+            type: string
+          status:
+            type: string
+  ShareRing.shareledger.gentlemint.QueryAccountOperatorsResponse:
+    type: object
+    properties:
+      a:
+        type: string
   ShareRing.shareledger.gentlemint.QueryAllAccStateResponse:
     type: object
     properties:
@@ -20865,8 +20967,17 @@ definitions:
   ShareRing.shareledger.gentlemint.QueryIdSignersResponse:
     type: object
     properties:
-      a:
-        type: string
+      accState:
+        type: array
+        items:
+          type: object
+          properties:
+            key:
+              type: string
+            address:
+              type: string
+            status:
+              type: string
   ShareRing.shareledger.gentlemint.Treasurer:
     type: object
     properties:

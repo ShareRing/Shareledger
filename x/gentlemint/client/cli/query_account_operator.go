@@ -12,12 +12,13 @@ import (
 
 var _ = strconv.Itoa(0)
 
-func CmdIdSigners() *cobra.Command {
+func CmdAccountOperator() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "id-signers",
-		Short: "get all id signers",
-		Args:  cobra.ExactArgs(0),
+		Use:   "account-operator [address]",
+		Short: "get account operator by address",
+		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
+			reqAddress := args[0]
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -26,9 +27,12 @@ func CmdIdSigners() *cobra.Command {
 
 			queryClient := types.NewQueryClient(clientCtx)
 
-			params := &types.QueryIdSignersRequest{}
+			params := &types.QueryAccountOperatorRequest{
 
-			res, err := queryClient.IdSigners(cmd.Context(), params)
+				Address: reqAddress,
+			}
+
+			res, err := queryClient.AccountOperator(cmd.Context(), params)
 			if err != nil {
 				return err
 			}

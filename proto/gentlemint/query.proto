@@ -51,6 +51,16 @@ service Query {
 		option (google.api.http).get = "/ShareRing/shareledger/gentlemint/idSigners";
 	}
 
+// Queries a list of accountOperator items.
+	rpc AccountOperator(QueryAccountOperatorRequest) returns (QueryAccountOperatorResponse) {
+		option (google.api.http).get = "/ShareRing/shareledger/gentlemint/accountOperator";
+	}
+
+// Queries a list of accountOperators items.
+	rpc AccountOperators(QueryAccountOperatorsRequest) returns (QueryAccountOperatorsResponse) {
+		option (google.api.http).get = "/ShareRing/shareledger/gentlemint/accountOperators";
+	}
+
 // this line is used by starport scaffolding # 2
 }
 
@@ -107,7 +117,22 @@ message QueryIdSignersRequest {
 }
 
 message QueryIdSignersResponse {
-	repeated AccState accState = 1;
+	repeated AccState accStates = 1;
+}
+
+message QueryAccountOperatorRequest {
+  string address = 1;
+}
+
+message QueryAccountOperatorResponse {
+	AccState accState = 1;
+}
+
+message QueryAccountOperatorsRequest {
+}
+
+message QueryAccountOperatorsResponse {
+	repeated AccState accStates = 1;
 }
 
 // this line is used by starport scaffolding # 3

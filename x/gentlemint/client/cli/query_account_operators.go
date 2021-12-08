@@ -12,10 +12,10 @@ import (
 
 var _ = strconv.Itoa(0)
 
-func CmdIdSigners() *cobra.Command {
+func CmdAccountOperators() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "id-signers",
-		Short: "get all id signers",
+		Use:   "account-operators",
+		Short: "get all account operators",
 		Args:  cobra.ExactArgs(0),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 
@@ -26,9 +26,9 @@ func CmdIdSigners() *cobra.Command {
 
 			queryClient := types.NewQueryClient(clientCtx)
 
-			params := &types.QueryIdSignersRequest{}
+			params := &types.QueryAccountOperatorsRequest{}
 
-			res, err := queryClient.IdSigners(cmd.Context(), params)
+			res, err := queryClient.AccountOperators(cmd.Context(), params)
 			if err != nil {
 				return err
 			}
