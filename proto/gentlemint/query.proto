@@ -36,6 +36,11 @@ service Query {
 	rpc ExchangeRate(QueryGetExchangeRateRequest) returns (QueryGetExchangeRateResponse) {
 		option (google.api.http).get = "/ShareRing/shareledger/gentlemint/exchangeRate";
 	}
+// Queries a list of getLoader items.
+	rpc GetLoader(QueryGetLoaderRequest) returns (QueryGetLoaderResponse) {
+		option (google.api.http).get = "/ShareRing/shareledger/gentlemint/getLoader";
+	}
+
 // this line is used by starport scaffolding # 2
 }
 
@@ -72,4 +77,12 @@ message QueryGetExchangeRateRequest {}
 message QueryGetExchangeRateResponse {
 	ExchangeRate ExchangeRate = 1 [(gogoproto.nullable) = false];
 }
+message QueryGetLoaderRequest {
+  string address = 1;
+}
+
+message QueryGetLoaderResponse {
+  string status = 1;
+}
+
 // this line is used by starport scaffolding # 3
