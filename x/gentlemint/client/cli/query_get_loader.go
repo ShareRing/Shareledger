@@ -6,6 +6,7 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/ShareRing/Shareledger/x/gentlemint/types"
+	utils "github.com/ShareRing/Shareledger/x/utils"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 )
@@ -38,6 +39,44 @@ func CmdGetLoader() *cobra.Command {
 			}
 
 			return clientCtx.PrintProto(res)
+		},
+	}
+
+	flags.AddQueryFlagsToCmd(cmd)
+
+	return cmd
+}
+
+func CmdGetLoadersFromFile() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "get-loaders-from-file [filepath]",
+		Short: "get shrp loaders from json file of addresses",
+		Args:  cobra.ExactArgs(1),
+		RunE: func(cmd *cobra.Command, args []string) (err error) {
+
+			clientCtx, err := client.GetClientTxContext(cmd)
+			if err != nil {
+				return err
+			}
+
+			addrList, err := utils.GetAddressFromFile(args[0])
+
+			queryClient := types.NewQueryClient(clientCtx)
+
+			for _, addr := range addrList {
+				params := &types.QueryGetLoaderRequest{
+					Address: addr,
+				}
+
+				res, err := queryClient.GetLoader(cmd.Context(), params)
+				if err != nil {
+					return err
+				}
+
+				if err := clientCtx.PrintProto(res); err != nil {
+					return err
+				}
+			}
 		},
 	}
 
