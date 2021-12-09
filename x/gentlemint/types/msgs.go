@@ -3,6 +3,7 @@ package types
 import (
 	"math"
 	"strconv"
+	"strings"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
@@ -89,6 +90,8 @@ func SubShrpCoins(x sdk.Coins, y sdk.Coins) (z sdk.Coins, err error) {
 // 	), nil
 // }
 
+// ParseShrpCoinsStr return shrp and cent coins.
+// only get 2 decimals to cent without rouding.
 func ParseShrpCoinsStr(s string) (coins sdk.Coins, err error) {
 	f, err := strconv.ParseFloat(s, 64)
 	if err != nil {
@@ -98,7 +101,29 @@ func ParseShrpCoinsStr(s string) (coins sdk.Coins, err error) {
 		err = sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "Negative Coins are not accepted")
 		return
 	}
-	return ParseShrpCoinsFloat(f)
+
+	strNumbers := strings.Split(s, ".")
+	var shrp, cent int64
+	shrp, err = strconv.ParseInt(strNumbers[0], 10, 64)
+	if err != nil {
+		err = sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "parsing got %+v", err)
+		return
+	}
+	if len(strNumbers) > 1 {
+		cent, err = strconv.ParseInt(strNumbers[1], 10, 64)
+		if err != nil {
+			err = sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "parsing got %+v", err)
+			return
+		}
+		if cent > 99 {
+			err = sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "cent value, %v, should be less than 100", cent)
+			return
+		}
+	}
+	return sdk.NewCoins(
+		sdk.NewCoin(DenomSHRP, sdk.NewInt(shrp)),
+		sdk.NewCoin(DenomCent, sdk.NewInt(cent)),
+	), nil
 }
 
 // ParseShrpCoinsFloat parse float to shrp coins: shrp and cent.

@@ -16,7 +16,7 @@ var _ = strconv.Itoa(0)
 func CmdBurnShrp() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "burn-shrp [amount]",
-		Short: "Broadcast message burn-shrp",
+		Short: "burn shrp from treasurer account",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argAmount := args[0]

@@ -16,7 +16,7 @@ var _ = strconv.Itoa(0)
 func CmdRevokeDocIssuer() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "revoke-doc-issuer [address1] [address2] [address3]",
-		Short: "Broadcast message revoke-doc-issuer",
+		Short: "revoke doc issuer. There will be a error if one of addresses is not doc issuer",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			clientCtx, err := client.GetClientTxContext(cmd)

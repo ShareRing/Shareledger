@@ -16,7 +16,7 @@ var _ = strconv.Itoa(0)
 func CmdBuyShr() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "buy-shr [amount]",
-		Short: "Broadcast message buy-shr",
+		Short: "Buy shr by shrp and cent",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argAmount := args[0]

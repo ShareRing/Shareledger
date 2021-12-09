@@ -16,7 +16,7 @@ var _ = strconv.Itoa(0)
 func CmdLoadShrp() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "load-shrp [address] [amount]",
-		Short: "Broadcast message load-shrp",
+		Short: "mint [amount] shrp and sent to address. [amount] can have 2 decimal numbers which is cent",
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argAddress := args[0]

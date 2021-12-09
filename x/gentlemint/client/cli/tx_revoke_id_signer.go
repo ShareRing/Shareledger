@@ -16,7 +16,7 @@ var _ = strconv.Itoa(0)
 func CmdRevokeIdSigner() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "revoke-id-signer [address1] [address2] [address3]",
-		Short: "Broadcast message revoke-id-signer",
+		Short: "revoke id signer. There will be a error if one of addresses is not id signer",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			clientCtx, err := client.GetClientTxContext(cmd)

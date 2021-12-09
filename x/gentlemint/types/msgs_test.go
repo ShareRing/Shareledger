@@ -190,9 +190,16 @@ func TestParseShrpCoinsStr(t *testing.T) {
 			i: "1.1",
 			o: sdk.NewCoins(
 				sdk.NewCoin(DenomSHRP, sdk.NewInt(1)),
-				sdk.NewCoin(DenomCent, sdk.NewInt(11)), // we are using float, so it will be round up to 1 cent when parsing
+				sdk.NewCoin(DenomCent, sdk.NewInt(1)),
 			),
-			d: "1.1 shrp -> 1shrp 11 cent",
+			d: "1.1 shrp -> 1shrp 1 cent",
+		},
+		{
+			i: "0.01",
+			o: sdk.NewCoins(
+				sdk.NewCoin(DenomCent, sdk.NewInt(1)),
+			),
+			d: "0.01 shrp -> 1 cent",
 		},
 		{
 			i: "1",
@@ -205,6 +212,11 @@ func TestParseShrpCoinsStr(t *testing.T) {
 			i:  "-1",
 			oe: sdkerrors.ErrInvalidCoins,
 			d:  "negative -> err",
+		},
+		{
+			i:  "1.100",
+			oe: sdkerrors.ErrInvalidCoins,
+			d:  "100 cent -> err",
 		},
 	}
 	for i, tc := range testCases {

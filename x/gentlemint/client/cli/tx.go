@@ -32,7 +32,6 @@ func GetTxCmd() *cobra.Command {
 	cmd.AddCommand(CmdLoadShr())
 	cmd.AddCommand(CmdLoadShrp())
 	cmd.AddCommand(CmdBuyShr())
-	cmd.AddCommand(CmdBuyShr())
 	cmd.AddCommand(CmdSendShr())
 	cmd.AddCommand(CmdBuyCent())
 	cmd.AddCommand(CmdBurnShrp())
