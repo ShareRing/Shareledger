@@ -3,6 +3,7 @@ package main
 import (
 	"errors"
 	"fmt"
+	"time"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
@@ -171,4 +172,12 @@ func newSplitAndApply(
 	}
 
 	return nil
+}
+
+func getPeriodReset(duration int64) time.Time {
+	return time.Now().Add(getPeriod(duration))
+}
+
+func getPeriod(duration int64) time.Duration {
+	return time.Duration(duration) * time.Second
 }

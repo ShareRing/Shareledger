@@ -18,10 +18,11 @@ func main() {
 		app.ModuleBasics,
 		app.New,
 		cosmoscmd.AddSubCmd(
+			NewImportKeyCmd(),
 			getStakingCmd(),
 			getSlashingCmd(),
 			getDistributionCmd(),
-			NewImportKeyCmd(),
+			getFeegrantCmd(),
 		),
 	)
 	if err := svrcmd.Execute(rootCmd, app.DefaultNodeHome); err != nil {
@@ -68,6 +69,20 @@ func getDistributionCmd() *cobra.Command {
 	cmd.AddCommand(
 		NewWithdrawRewardsCmd(),
 		NewWithdrawAllRewardsCmd(),
+	)
+
+	return cmd
+}
+
+func getFeegrantCmd() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "feegrant",
+		Short: "Feegrant transaction subcommands",
+	}
+
+	cmd.AddCommand(
+		NewCmdFeeGrant(),
+		NewCmdRevokeFeegrant(),
 	)
 
 	return cmd
