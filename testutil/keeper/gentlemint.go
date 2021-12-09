@@ -3,8 +3,8 @@ package keeper
 import (
 	"testing"
 
-	"github.com/ShareRing/Shareledger/x/id/keeper"
-	"github.com/ShareRing/Shareledger/x/id/types"
+	"github.com/ShareRing/Shareledger/x/gentlemint/keeper"
+	"github.com/ShareRing/Shareledger/x/gentlemint/types"
 	"github.com/cosmos/cosmos-sdk/codec"
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	"github.com/cosmos/cosmos-sdk/store"
@@ -16,7 +16,7 @@ import (
 	tmdb "github.com/tendermint/tm-db"
 )
 
-func IdKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
+func GentlemintKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
 	storeKey := sdk.NewKVStoreKey(types.StoreKey)
 	memStoreKey := storetypes.NewMemoryStoreKey(types.MemStoreKey)
 
@@ -27,12 +27,12 @@ func IdKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
 	require.NoError(t, stateStore.LoadLatestVersion())
 
 	registry := codectypes.NewInterfaceRegistry()
-	var gmKeeper types.GentlemintKeeper
 	k := keeper.NewKeeper(
 		codec.NewProtoCodec(registry),
 		storeKey,
 		memStoreKey,
-		gmKeeper,
+		nil,
+		nil,
 	)
 
 	ctx := sdk.NewContext(stateStore, tmproto.Header{}, false, log.NewNopLogger())

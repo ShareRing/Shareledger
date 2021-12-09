@@ -1,0 +1,181 @@
+syntax = "proto3";
+package ShareRing.shareledger.gentlemint;
+
+// this line is used by starport scaffolding # proto/tx/import
+
+option go_package = "github.com/ShareRing/Shareledger/x/gentlemint/types";
+
+// Msg defines the Msg service.
+service Msg {
+      rpc LoadShr(MsgLoadShr) returns (MsgLoadShrResponse);
+  rpc LoadShrp(MsgLoadShrp) returns (MsgLoadShrpResponse);
+  rpc BuyShr(MsgBuyShr) returns (MsgBuyShrResponse);
+  rpc SendShr(MsgSendShr) returns (MsgSendShrResponse);
+  rpc BuyCent(MsgBuyCent) returns (MsgBuyCentResponse);
+  rpc BurnShrp(MsgBurnShrp) returns (MsgBurnShrpResponse);
+  rpc SendShrp(MsgSendShrp) returns (MsgSendShrpResponse);
+  rpc BurnShr(MsgBurnShr) returns (MsgBurnShrResponse);
+  rpc SetExchange(MsgSetExchange) returns (MsgSetExchangeResponse);
+  rpc EnrollLoaders(MsgEnrollLoaders) returns (MsgEnrollLoadersResponse);
+  rpc RevokeLoaders(MsgRevokeLoaders) returns (MsgRevokeLoadersResponse);
+  rpc EnrollIdSigner(MsgEnrollIdSigner) returns (MsgEnrollIdSignerResponse);
+  rpc RevokeIdSigner(MsgRevokeIdSigner) returns (MsgRevokeIdSignerResponse);
+  rpc EnrollDocIssuer(MsgEnrollDocIssuer) returns (MsgEnrollDocIssuerResponse);
+  rpc RevokeDocIssuer(MsgRevokeDocIssuer) returns (MsgRevokeDocIssuerResponse);
+  rpc EnrollAccountOperator(MsgEnrollAccountOperator) returns (MsgEnrollAccountOperatorResponse);
+  rpc RevokeAccountOperator(MsgRevokeAccountOperator) returns (MsgRevokeAccountOperatorResponse);
+// this line is used by starport scaffolding # proto/tx/rpc
+}
+
+message MsgLoadShr {
+  string creator = 1;
+  string address = 2;
+  string amount = 3;
+}
+
+message MsgLoadShrResponse {
+  string log = 1;
+}
+
+message MsgLoadShrp {
+  string creator = 1;
+  string address = 2;
+  string amount = 3;
+}
+
+message MsgLoadShrpResponse {
+  string log = 1;
+}
+
+message MsgBuyShr {
+  string creator = 1;
+  string amount = 2;
+}
+
+message MsgBuyShrResponse {
+  string log = 1;
+}
+
+message MsgSendShr {
+  string creator = 1;
+  string address = 2;
+  string amount = 3;
+}
+
+message MsgSendShrResponse {
+  string log = 1;
+}
+
+message MsgSendShrp {
+  string creator = 1;
+  string address = 2;
+  string amount = 3;
+}
+
+message MsgSendShrpResponse {
+  string log = 1;
+}
+
+message MsgBuyCent {
+  string creator = 1;
+  string amount = 2;
+}
+
+message MsgBuyCentResponse {
+  string log = 1;
+}
+
+message MsgBurnShrp {
+  string creator = 1;
+  string amount = 2;
+}
+
+message MsgBurnShrpResponse {
+  string log = 1;
+}
+
+message MsgBurnShr {
+  string creator = 1;
+  string amount = 2;
+}
+
+message MsgBurnShrResponse {
+  string log = 1;
+}
+
+message MsgSetExchange {
+  string creator = 1;
+  string rate = 2;
+}
+
+message MsgSetExchangeResponse {
+}
+
+message MsgEnrollLoaders {
+  string creator = 1;
+  repeated string addresses = 2;
+}
+
+message MsgEnrollLoadersResponse {
+  string log = 1;
+}
+
+message MsgRevokeLoaders {
+  string creator = 1;
+  repeated string addresses = 2;
+}
+
+message MsgRevokeLoadersResponse {
+  string log = 1;
+}
+
+message MsgEnrollIdSigner {
+  string creator = 1;
+  repeated string addresses = 2;
+}
+
+message MsgEnrollIdSignerResponse {
+  string log = 1;
+}
+
+message MsgRevokeIdSigner {
+  string creator = 1;
+  repeated string addresses = 2;
+}
+
+message MsgRevokeIdSignerResponse {
+}
+
+message MsgEnrollDocIssuer {
+  string creator = 1;
+  repeated string addresses = 2;
+}
+
+message MsgEnrollDocIssuerResponse {
+}
+
+message MsgRevokeDocIssuer {
+  string creator = 1;
+  repeated string addresses = 2;
+}
+
+message MsgRevokeDocIssuerResponse {
+}
+
+message MsgEnrollAccountOperator {
+  string creator = 1;
+  repeated string addresses = 2;
+}
+
+message MsgEnrollAccountOperatorResponse {
+}
+
+message MsgRevokeAccountOperator {
+  string creator = 1;
+  repeated string addresses = 2;
+}
+
+message MsgRevokeAccountOperatorResponse {
+}
+
+// this line is used by starport scaffolding # proto/tx/message
