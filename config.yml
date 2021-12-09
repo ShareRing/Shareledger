@@ -9,10 +9,6 @@ accounts:
     coins: ["100000000shr", "1000000000shrp"]
   - name: idsigner
     coins: ["100000000shr", "1000000000shrp"]
-  - name: alice
-    coins: ["100000000shr", "1000000000shrp"]
-  - name: bob
-    coins: ["100000000shr", "1000000000shrp"]
 validator:
   name: validator
   staked: "10000000shr"
