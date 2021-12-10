@@ -9,6 +9,7 @@ option go_package = "github.com/ShareRing/Shareledger/x/asset/types";
 service Msg {
   rpc Create(MsgCreate) returns (MsgCreateResponse);
   rpc Update(MsgUpdate) returns (MsgUpdateResponse);
+  rpc Delete(MsgDelete) returns (MsgDeleteResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -32,6 +33,14 @@ message MsgUpdate {
 }
 
 message MsgUpdateResponse {
+}
+
+message MsgDelete {
+  string owner = 1;
+  string UUID = 2;
+}
+
+message MsgDeleteResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message

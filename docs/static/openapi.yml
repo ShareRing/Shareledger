@@ -20735,6 +20735,8 @@ definitions:
         format: int64
   ShareRing.shareledger.asset.MsgCreateResponse:
     type: object
+  ShareRing.shareledger.asset.MsgDeleteResponse:
+    type: object
   ShareRing.shareledger.asset.MsgUpdateResponse:
     type: object
   ShareRing.shareledger.asset.QueryAssetByUUIDResponse:
