@@ -13,10 +13,10 @@ service Msg {
 
 message MsgCreate {
   string creator = 1;
-  string hash = 2;
+  bytes hash = 2;
   string UUID = 3;
-  string status = 4;
-  string rate = 5;
+  bool status = 4;
+  int64 rate = 5;
 }
 
 message MsgCreateResponse {
