@@ -9,37 +9,14 @@ import (
 // InitGenesis initializes the capability module's state from a provided genesis
 // state.
 func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) {
-	for _, a := range genState.Assets {
-		k.SetAsset(ctx, a.UUID, *a)
-	}
+	// this line is used by starport scaffolding # genesis/module/init
 }
 
 // ExportGenesis returns the capability module's exported genesis.
 func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
-	var assets []*types.Asset
-	cb := func(a types.Asset) bool {
-		assets = append(assets, &a)
-		return false
-	}
-	k.IterateAssets(ctx, cb)
-	return &types.GenesisState{
-		Assets: assets,
-	}
-}
+	genesis := types.DefaultGenesis()
 
-// type GenesisState struct {
-// 	Assets []types.Asset
-// }
+	// this line is used by starport scaffolding # genesis/module/export
 
-func NewGenesisState() types.GenesisState {
-	return types.GenesisState{}
-}
-
-// TODO
-func ValidateGenesis(data types.GenesisState) error {
-	return nil
-}
-
-func DefaultGenesisState() types.GenesisState {
-	return types.GenesisState{}
+	return genesis
 }

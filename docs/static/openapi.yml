@@ -12501,55 +12501,6 @@ paths:
                         }
       tags:
         - Query
-  '/shareledger/asset/{uuid}':
-    get:
-      operationId: ShareRingShareledgerAssetAssetByUUID
-      responses:
-        '200':
-          description: A successful response.
-          schema:
-            type: object
-            properties:
-              asset:
-                type: object
-                properties:
-                  creator:
-                    type: string
-                  hash:
-                    type: string
-                    format: byte
-                  UUID:
-                    type: string
-                  status:
-                    type: boolean
-                  rate:
-                    type: string
-                    format: int64
-        default:
-          description: An unexpected error response.
-          schema:
-            type: object
-            properties:
-              code:
-                type: integer
-                format: int32
-              message:
-                type: string
-              details:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    '@type':
-                      type: string
-                  additionalProperties: {}
-      parameters:
-        - name: uuid
-          in: path
-          required: true
-          type: string
-      tags:
-        - Query
   '/shareledger/booking/{bookID}':
     get:
       operationId: ShareRingShareledgerBookingbooking
@@ -20717,45 +20668,6 @@ definitions:
       and
 
       freezing clients
-  ShareRing.shareledger.asset.Asset:
-    type: object
-    properties:
-      creator:
-        type: string
-      hash:
-        type: string
-        format: byte
-      UUID:
-        type: string
-      status:
-        type: boolean
-      rate:
-        type: string
-        format: int64
-  ShareRing.shareledger.asset.MsgCreateResponse:
-    type: object
-  ShareRing.shareledger.asset.MsgDeleteResponse:
-    type: object
-  ShareRing.shareledger.asset.MsgUpdateResponse:
-    type: object
-  ShareRing.shareledger.asset.QueryAssetByUUIDResponse:
-    type: object
-    properties:
-      asset:
-        type: object
-        properties:
-          creator:
-            type: string
-          hash:
-            type: string
-            format: byte
-          UUID:
-            type: string
-          status:
-            type: boolean
-          rate:
-            type: string
-            format: int64
   ShareRing.shareledger.booking.Booking:
     type: object
     properties:

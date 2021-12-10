@@ -1,12 +1,11 @@
 syntax = "proto3";
 package ShareRing.shareledger.asset;
 
-import "gogoproto/gogo.proto";
-import "asset/tx.proto";
+// this line is used by starport scaffolding # genesis/proto/import
 
 option go_package = "github.com/ShareRing/Shareledger/x/asset/types";
 
 // GenesisState defines the asset module's genesis state.
 message GenesisState {
-    repeated Asset assets = 1 [(gogoproto.nullable) = true];
+    // this line is used by starport scaffolding # genesis/proto/state
 }
