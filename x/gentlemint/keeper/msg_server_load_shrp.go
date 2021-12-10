@@ -24,15 +24,29 @@ func (k msgServer) LoadShrp(goCtx context.Context, msg *types.MsgLoadShrp) (*typ
 		return nil, sdkerrors.Wrap(err, msg.Address)
 	}
 
+	oldCoins := k.bankKeeper.GetAllBalances(ctx, receiverAddr)
 	amt, err := types.ParseShrpCoinsStr(msg.Amount)
 	if err != nil {
 		return nil, sdkerrors.Wrap(err, msg.Amount)
 	}
-	if err := k.loadCoins(ctx, receiverAddr, amt); err != nil {
-		return nil, sdkerrors.Wrapf(err, "load coins, %v, to address %v", amt, msg.Address)
+
+	adjustCoins, err := types.AddShrpCoins(oldCoins, amt)
+	if err != nil {
+		return nil, err
 	}
 
-	oldCoins := k.bankKeeper.GetAllBalances(ctx, receiverAddr)
+	if adjustCoins.Add.Len() > 0 {
+		if err := k.loadCoins(ctx, receiverAddr, adjustCoins.Add); err != nil {
+			return nil, sdkerrors.Wrapf(err, "load coins, %v, to address %v", amt, msg.Address)
+		}
+	}
+	if adjustCoins.Sub.Len() > 0 {
+		if err := k.burnCoins(ctx, receiverAddr, adjustCoins.Sub); err != nil {
+			return nil, sdkerrors.Wrapf(err, "burn coins, %v, from address %v", adjustCoins.Sub, msg.Address)
+		}
+	}
+
+	oldCoins = k.bankKeeper.GetAllBalances(ctx, receiverAddr)
 	oldShr := oldCoins.AmountOf(types.DenomSHR)
 
 	// if there is less than required shr amount, buy more.

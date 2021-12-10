@@ -456,6 +456,7 @@ func New(
 		bookingModule,
 		gentlemintModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
+
 	)
 
 	// During begin block slashing happens after distr.BeginBlocker so that
@@ -495,6 +496,7 @@ func New(
 		assetmoduletypes.ModuleName,
 		bookingmoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/initGenesis
+
 	)
 
 	app.mm.RegisterInvariants(&app.CrisisKeeper)
