@@ -96,8 +96,10 @@ import (
 	documentmodule "github.com/ShareRing/Shareledger/x/document"
 	documentmodulekeeper "github.com/ShareRing/Shareledger/x/document/keeper"
 	documentmoduletypes "github.com/ShareRing/Shareledger/x/document/types"
+	gentlemintmodule "github.com/ShareRing/Shareledger/x/gentlemint"
+	gentlemintmodulekeeper "github.com/ShareRing/Shareledger/x/gentlemint/keeper"
+	gentlemintmoduletypes "github.com/ShareRing/Shareledger/x/gentlemint/types"
 	idmodule "github.com/ShareRing/Shareledger/x/id"
-	i "github.com/ShareRing/Shareledger/x/id/interfaces"
 	idmodulekeeper "github.com/ShareRing/Shareledger/x/id/keeper"
 	idmoduletypes "github.com/ShareRing/Shareledger/x/id/types"
 )
@@ -153,19 +155,21 @@ var (
 		idmodule.AppModuleBasic{},
 		assetmodule.AppModuleBasic{},
 		bookingmodule.AppModuleBasic{},
+		gentlemintmodule.AppModuleBasic{},
 		// this line is used by starport scaffolding # stargate/app/moduleBasic
 	)
 
 	// module account permissions
 	maccPerms = map[string][]string{
-		authtypes.FeeCollectorName:     nil,
-		distrtypes.ModuleName:          nil,
-		minttypes.ModuleName:           {authtypes.Minter},
-		stakingtypes.BondedPoolName:    {authtypes.Burner, authtypes.Staking},
-		stakingtypes.NotBondedPoolName: {authtypes.Burner, authtypes.Staking},
-		govtypes.ModuleName:            {authtypes.Burner},
-		ibctransfertypes.ModuleName:    {authtypes.Minter, authtypes.Burner},
-		bookingmoduletypes.ModuleName:  nil,
+		authtypes.FeeCollectorName:       nil,
+		distrtypes.ModuleName:            nil,
+		minttypes.ModuleName:             {authtypes.Minter},
+		stakingtypes.BondedPoolName:      {authtypes.Burner, authtypes.Staking},
+		stakingtypes.NotBondedPoolName:   {authtypes.Burner, authtypes.Staking},
+		govtypes.ModuleName:              {authtypes.Burner},
+		ibctransfertypes.ModuleName:      {authtypes.Minter, authtypes.Burner},
+		bookingmoduletypes.ModuleName:    nil,
+		gentlemintmoduletypes.ModuleName: {authtypes.Minter, authtypes.Burner},
 		// this line is used by starport scaffolding # stargate/app/maccPerms
 	}
 )
@@ -229,6 +233,8 @@ type App struct {
 	AssetKeeper assetmodulekeeper.Keeper
 
 	BookingKeeper bookingmodulekeeper.Keeper
+
+	GentleMintKeeper gentlemintmodulekeeper.Keeper
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
 	// the module manager
@@ -266,6 +272,7 @@ func New(
 		idmoduletypes.StoreKey,
 		assetmoduletypes.StoreKey,
 		bookingmoduletypes.StoreKey,
+		gentlemintmoduletypes.StoreKey,
 		// this line is used by starport scaffolding # stargate/app/storeKey
 	)
 	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey)
@@ -371,12 +378,21 @@ func New(
 	)
 	documentModule := documentmodule.NewAppModule(appCodec, app.DocumentKeeper)
 
-	var gmKeeper i.IGentlemintKeeper
+	app.GentleMintKeeper = *gentlemintmodulekeeper.NewKeeper(
+		appCodec,
+		keys[gentlemintmoduletypes.StoreKey],
+		keys[gentlemintmoduletypes.MemStoreKey],
+
+		app.BankKeeper,
+		app.AccountKeeper,
+	)
+	gentlemintModule := gentlemintmodule.NewAppModule(appCodec, app.GentleMintKeeper)
+
 	app.IdKeeper = *idmodulekeeper.NewKeeper(
 		appCodec,
 		keys[idmoduletypes.StoreKey],
 		keys[idmoduletypes.MemStoreKey],
-		gmKeeper,
+		app.GentleMintKeeper,
 	)
 	idModule := idmodule.NewAppModule(appCodec, app.IdKeeper)
 
@@ -438,6 +454,7 @@ func New(
 		idModule,
 		assetModule,
 		bookingModule,
+		gentlemintModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
 	)
 
@@ -465,6 +482,7 @@ func New(
 		distrtypes.ModuleName,
 		stakingtypes.ModuleName,
 		slashingtypes.ModuleName,
+		gentlemintmoduletypes.ModuleName,
 		govtypes.ModuleName,
 		minttypes.ModuleName,
 		crisistypes.ModuleName,
@@ -667,6 +685,7 @@ func initParamsKeeper(appCodec codec.BinaryCodec, legacyAmino *codec.LegacyAmino
 	paramsKeeper.Subspace(idmoduletypes.ModuleName)
 	paramsKeeper.Subspace(assetmoduletypes.ModuleName)
 	paramsKeeper.Subspace(bookingmoduletypes.ModuleName)
+	paramsKeeper.Subspace(gentlemintmoduletypes.ModuleName)
 	// this line is used by starport scaffolding # stargate/app/paramSubspace
 
 	return paramsKeeper

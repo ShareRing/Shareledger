@@ -27,6 +27,16 @@ func GetKeySeedFromFile(seedPath string) (string, error) {
 	return a["secret"], nil
 }
 
+func GetAddressFromFile(filepath string) ([]string, error) {
+	data, err := ioutil.ReadFile(filepath)
+	if err != nil {
+		return nil, err
+	}
+	var addrList []string
+	json.Unmarshal(data, &addrList)
+	return addrList, nil
+}
+
 func CreateContextWithKeyBase(seed string, clientCtx client.Context) (client.Context, error) {
 	kb := keyring.NewInMemory()
 	keyName := "elon_musk_deer"
