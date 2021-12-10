@@ -20668,6 +20668,8 @@ definitions:
       and
 
       freezing clients
+  ShareRing.shareledger.asset.MsgCreateResponse:
+    type: object
   ShareRing.shareledger.booking.Booking:
     type: object
     properties:

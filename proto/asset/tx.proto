@@ -7,7 +7,19 @@ option go_package = "github.com/ShareRing/Shareledger/x/asset/types";
 
 // Msg defines the Msg service.
 service Msg {
-    // this line is used by starport scaffolding # proto/tx/rpc
+      rpc Create(MsgCreate) returns (MsgCreateResponse);
+// this line is used by starport scaffolding # proto/tx/rpc
+}
+
+message MsgCreate {
+  string creator = 1;
+  string hash = 2;
+  string UUID = 3;
+  string status = 4;
+  string rate = 5;
+}
+
+message MsgCreateResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message
