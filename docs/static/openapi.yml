@@ -12551,54 +12551,6 @@ paths:
           type: string
       tags:
         - Query
-  '/shareledger/booking/{bookID}':
-    get:
-      operationId: ShareRingShareledgerBookingbooking
-      responses:
-        '200':
-          description: A successful response.
-          schema:
-            type: object
-            properties:
-              booking:
-                type: object
-                properties:
-                  bookID:
-                    type: string
-                  booker:
-                    type: string
-                  UUID:
-                    type: string
-                  duration:
-                    type: string
-                    format: int64
-                  isCompleted:
-                    type: boolean
-        default:
-          description: An unexpected error response.
-          schema:
-            type: object
-            properties:
-              code:
-                type: integer
-                format: int32
-              message:
-                type: string
-              details:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    '@type':
-                      type: string
-                  additionalProperties: {}
-      parameters:
-        - name: bookID
-          in: path
-          required: true
-          type: string
-      tags:
-        - Query
   '/shareledger/document/holder/{id}':
     get:
       operationId: ShareRingShareledgerDocumentDocumentByHolderId
@@ -20757,41 +20709,6 @@ definitions:
           rate:
             type: string
             format: int64
-  ShareRing.shareledger.booking.Booking:
-    type: object
-    properties:
-      bookID:
-        type: string
-      booker:
-        type: string
-      UUID:
-        type: string
-      duration:
-        type: string
-        format: int64
-      isCompleted:
-        type: boolean
-  ShareRing.shareledger.booking.MsgBookResponse:
-    type: object
-  ShareRing.shareledger.booking.MsgCompleteResponse:
-    type: object
-  ShareRing.shareledger.booking.QueryBookingRequestResponse:
-    type: object
-    properties:
-      booking:
-        type: object
-        properties:
-          bookID:
-            type: string
-          booker:
-            type: string
-          UUID:
-            type: string
-          duration:
-            type: string
-            format: int64
-          isCompleted:
-            type: boolean
   ShareRing.shareledger.document.Document:
     type: object
     properties:
