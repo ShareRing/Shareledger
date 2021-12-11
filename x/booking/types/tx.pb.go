@@ -123,15 +123,105 @@ func (m *MsgBookResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_MsgBookResponse proto.InternalMessageInfo
 
+type MsgComplete struct {
+	Booker string `protobuf:"bytes,1,opt,name=booker,proto3" json:"booker,omitempty"`
+	BookID string `protobuf:"bytes,2,opt,name=bookID,proto3" json:"bookID,omitempty"`
+}
+
+func (m *MsgComplete) Reset()         { *m = MsgComplete{} }
+func (m *MsgComplete) String() string { return proto.CompactTextString(m) }
+func (*MsgComplete) ProtoMessage()    {}
+func (*MsgComplete) Descriptor() ([]byte, []int) {
+	return fileDescriptor_e243c29ad9ae20da, []int{2}
+}
+func (m *MsgComplete) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgComplete) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgComplete.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgComplete) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgComplete.Merge(m, src)
+}
+func (m *MsgComplete) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgComplete) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgComplete.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgComplete proto.InternalMessageInfo
+
+func (m *MsgComplete) GetBooker() string {
+	if m != nil {
+		return m.Booker
+	}
+	return ""
+}
+
+func (m *MsgComplete) GetBookID() string {
+	if m != nil {
+		return m.BookID
+	}
+	return ""
+}
+
+type MsgCompleteResponse struct {
+}
+
+func (m *MsgCompleteResponse) Reset()         { *m = MsgCompleteResponse{} }
+func (m *MsgCompleteResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgCompleteResponse) ProtoMessage()    {}
+func (*MsgCompleteResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_e243c29ad9ae20da, []int{3}
+}
+func (m *MsgCompleteResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgCompleteResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgCompleteResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgCompleteResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgCompleteResponse.Merge(m, src)
+}
+func (m *MsgCompleteResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgCompleteResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgCompleteResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgCompleteResponse proto.InternalMessageInfo
+
 func init() {
 	proto.RegisterType((*MsgBook)(nil), "ShareRing.shareledger.booking.MsgBook")
 	proto.RegisterType((*MsgBookResponse)(nil), "ShareRing.shareledger.booking.MsgBookResponse")
+	proto.RegisterType((*MsgComplete)(nil), "ShareRing.shareledger.booking.MsgComplete")
+	proto.RegisterType((*MsgCompleteResponse)(nil), "ShareRing.shareledger.booking.MsgCompleteResponse")
 }
 
 func init() { proto.RegisterFile("booking/tx.proto", fileDescriptor_e243c29ad9ae20da) }
 
 var fileDescriptor_e243c29ad9ae20da = []byte{
-	// 230 bytes of a gzipped FileDescriptorProto
+	// 281 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x12, 0x48, 0xca, 0xcf, 0xcf,
 	0xce, 0xcc, 0x4b, 0xd7, 0x2f, 0xa9, 0xd0, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0x92, 0x0d, 0xce,
 	0x48, 0x2c, 0x4a, 0x0d, 0xca, 0xcc, 0x4b, 0xd7, 0x2b, 0x06, 0xb1, 0x72, 0x52, 0x53, 0xd2, 0x53,
@@ -140,13 +230,16 @@ var fileDescriptor_e243c29ad9ae20da = []byte{
 	0x90, 0x10, 0x17, 0x4b, 0x69, 0xa8, 0xa7, 0x8b, 0x04, 0x13, 0x58, 0x14, 0xcc, 0x16, 0x92, 0xe2,
 	0xe2, 0x48, 0x29, 0x2d, 0x4a, 0x2c, 0xc9, 0xcc, 0xcf, 0x93, 0x60, 0x56, 0x60, 0xd4, 0x60, 0x0e,
 	0x82, 0xf3, 0x95, 0x04, 0xb9, 0xf8, 0xa1, 0x46, 0x06, 0xa5, 0x16, 0x17, 0xe4, 0xe7, 0x15, 0xa7,
-	0x1a, 0xa5, 0x72, 0x31, 0xfb, 0x16, 0xa7, 0x0b, 0xc5, 0x71, 0xb1, 0x80, 0x6d, 0x52, 0xd3, 0xc3,
-	0xeb, 0x28, 0x3d, 0xa8, 0x76, 0x29, 0x3d, 0xe2, 0xd4, 0xc1, 0xac, 0x71, 0xf2, 0x3a, 0xf1, 0x48,
-	0x8e, 0xf1, 0xc2, 0x23, 0x39, 0xc6, 0x07, 0x8f, 0xe4, 0x18, 0x27, 0x3c, 0x96, 0x63, 0xb8, 0xf0,
-	0x58, 0x8e, 0xe1, 0xc6, 0x63, 0x39, 0x86, 0x28, 0x83, 0xf4, 0xcc, 0x92, 0x8c, 0xd2, 0x24, 0xbd,
-	0xe4, 0xfc, 0x5c, 0x7d, 0xb8, 0x99, 0x10, 0x16, 0xc4, 0x4c, 0xfd, 0x0a, 0x7d, 0x78, 0xd0, 0x55,
-	0x16, 0xa4, 0x16, 0x27, 0xb1, 0x81, 0x83, 0xcf, 0x18, 0x10, 0x00, 0x00, 0xff, 0xff, 0xfb, 0x62,
-	0xfe, 0x5e, 0x52, 0x01, 0x00, 0x00,
+	0x2a, 0xd9, 0x72, 0x71, 0xfb, 0x16, 0xa7, 0x3b, 0xe7, 0xe7, 0x16, 0xe4, 0xa4, 0x96, 0xa4, 0xe2,
+	0xb4, 0x09, 0x2a, 0x0e, 0xb7, 0x0b, 0xca, 0x53, 0x12, 0xe5, 0x12, 0x46, 0xd2, 0x0e, 0x33, 0xd5,
+	0xe8, 0x22, 0x23, 0x17, 0xb3, 0x6f, 0x71, 0xba, 0x50, 0x1c, 0x17, 0x0b, 0xd8, 0x03, 0x6a, 0x7a,
+	0x78, 0xfd, 0xaa, 0x07, 0x75, 0x95, 0x94, 0x1e, 0x71, 0xea, 0x60, 0xf6, 0x08, 0x65, 0x71, 0x71,
+	0xc0, 0x9d, 0xae, 0x45, 0x58, 0x2f, 0x4c, 0xad, 0x94, 0x11, 0xf1, 0x6a, 0x61, 0x76, 0x39, 0x79,
+	0x9d, 0x78, 0x24, 0xc7, 0x78, 0xe1, 0x91, 0x1c, 0xe3, 0x83, 0x47, 0x72, 0x8c, 0x13, 0x1e, 0xcb,
+	0x31, 0x5c, 0x78, 0x2c, 0xc7, 0x70, 0xe3, 0xb1, 0x1c, 0x43, 0x94, 0x41, 0x7a, 0x66, 0x49, 0x46,
+	0x69, 0x92, 0x5e, 0x72, 0x7e, 0xae, 0x3e, 0xdc, 0x5c, 0x08, 0x0b, 0x62, 0xae, 0x7e, 0x85, 0x3e,
+	0x3c, 0xf6, 0x2b, 0x0b, 0x52, 0x8b, 0x93, 0xd8, 0xc0, 0x29, 0xc0, 0x18, 0x10, 0x00, 0x00, 0xff,
+	0xff, 0x01, 0x43, 0xa9, 0xdd, 0x15, 0x02, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -162,6 +255,7 @@ const _ = grpc.SupportPackageIsVersion4
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type MsgClient interface {
 	Book(ctx context.Context, in *MsgBook, opts ...grpc.CallOption) (*MsgBookResponse, error)
+	Complete(ctx context.Context, in *MsgComplete, opts ...grpc.CallOption) (*MsgCompleteResponse, error)
 }
 
 type msgClient struct {
@@ -181,9 +275,19 @@ func (c *msgClient) Book(ctx context.Context, in *MsgBook, opts ...grpc.CallOpti
 	return out, nil
 }
 
+func (c *msgClient) Complete(ctx context.Context, in *MsgComplete, opts ...grpc.CallOption) (*MsgCompleteResponse, error) {
+	out := new(MsgCompleteResponse)
+	err := c.cc.Invoke(ctx, "/ShareRing.shareledger.booking.Msg/Complete", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MsgServer is the server API for Msg service.
 type MsgServer interface {
 	Book(context.Context, *MsgBook) (*MsgBookResponse, error)
+	Complete(context.Context, *MsgComplete) (*MsgCompleteResponse, error)
 }
 
 // UnimplementedMsgServer can be embedded to have forward compatible implementations.
@@ -192,6 +296,9 @@ type UnimplementedMsgServer struct {
 
 func (*UnimplementedMsgServer) Book(ctx context.Context, req *MsgBook) (*MsgBookResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Book not implemented")
+}
+func (*UnimplementedMsgServer) Complete(ctx context.Context, req *MsgComplete) (*MsgCompleteResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Complete not implemented")
 }
 
 func RegisterMsgServer(s grpc1.Server, srv MsgServer) {
@@ -216,6 +323,24 @@ func _Msg_Book_Handler(srv interface{}, ctx context.Context, dec func(interface{
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Msg_Complete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgComplete)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).Complete(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/ShareRing.shareledger.booking.Msg/Complete",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).Complete(ctx, req.(*MsgComplete))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var _Msg_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "ShareRing.shareledger.booking.Msg",
 	HandlerType: (*MsgServer)(nil),
@@ -223,6 +348,10 @@ var _Msg_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Book",
 			Handler:    _Msg_Book_Handler,
+		},
+		{
+			MethodName: "Complete",
+			Handler:    _Msg_Complete_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -294,6 +423,66 @@ func (m *MsgBookResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
+func (m *MsgComplete) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgComplete) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgComplete) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.BookID) > 0 {
+		i -= len(m.BookID)
+		copy(dAtA[i:], m.BookID)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.BookID)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.Booker) > 0 {
+		i -= len(m.Booker)
+		copy(dAtA[i:], m.Booker)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Booker)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgCompleteResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgCompleteResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgCompleteResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
 func encodeVarintTx(dAtA []byte, offset int, v uint64) int {
 	offset -= sovTx(v)
 	base := offset
@@ -326,6 +515,32 @@ func (m *MsgBook) Size() (n int) {
 }
 
 func (m *MsgBookResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
+func (m *MsgComplete) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Booker)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	l = len(m.BookID)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	return n
+}
+
+func (m *MsgCompleteResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -500,6 +715,170 @@ func (m *MsgBookResponse) Unmarshal(dAtA []byte) error {
 		}
 		if fieldNum <= 0 {
 			return fmt.Errorf("proto: MsgBookResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgComplete) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgComplete: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgComplete: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Booker", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Booker = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field BookID", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.BookID = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgCompleteResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgCompleteResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgCompleteResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:

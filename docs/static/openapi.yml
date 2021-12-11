@@ -20711,6 +20711,8 @@ definitions:
             format: int64
   ShareRing.shareledger.booking.MsgBookResponse:
     type: object
+  ShareRing.shareledger.booking.MsgCompleteResponse:
+    type: object
   ShareRing.shareledger.document.Document:
     type: object
     properties:
