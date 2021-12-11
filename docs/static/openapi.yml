@@ -20709,6 +20709,8 @@ definitions:
           rate:
             type: string
             format: int64
+  ShareRing.shareledger.booking.MsgBookResponse:
+    type: object
   ShareRing.shareledger.document.Document:
     type: object
     properties:

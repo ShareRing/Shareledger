@@ -7,7 +7,17 @@ option go_package = "github.com/ShareRing/Shareledger/x/booking/types";
 
 // Msg defines the Msg service.
 service Msg {
-    // this line is used by starport scaffolding # proto/tx/rpc
+      rpc Book(MsgBook) returns (MsgBookResponse);
+// this line is used by starport scaffolding # proto/tx/rpc
+}
+
+message MsgBook {
+  string booker = 1;
+  string uUID = 2;
+  int64 duration = 3;
+}
+
+message MsgBookResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message
