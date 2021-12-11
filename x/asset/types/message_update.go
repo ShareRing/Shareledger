@@ -7,11 +7,11 @@ import (
 
 var _ sdk.Msg = &MsgUpdate{}
 
-func NewMsgUpdate(creator string, hash string, uUID string, status string, rate string) *MsgUpdate {
+func NewMsgUpdate(creator string, hash []byte, UUID string, status bool, rate int64) *MsgUpdate {
 	return &MsgUpdate{
 		Creator: creator,
 		Hash:    hash,
-		UUID:    uUID,
+		UUID:    UUID,
 		Status:  status,
 		Rate:    rate,
 	}
@@ -22,7 +22,7 @@ func (msg *MsgUpdate) Route() string {
 }
 
 func (msg *MsgUpdate) Type() string {
-	return "Update"
+	return TypeAssetUpdateMsg
 }
 
 func (msg *MsgUpdate) GetSigners() []sdk.AccAddress {
@@ -40,8 +40,13 @@ func (msg *MsgUpdate) GetSignBytes() []byte {
 
 func (msg *MsgUpdate) ValidateBasic() error {
 	_, err := sdk.AccAddressFromBech32(msg.Creator)
-	if err != nil {
+	if len(msg.Creator) == 0 || err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
 	}
+
+	if len(msg.UUID) == 0 {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "UUID must not be empty")
+	}
+
 	return nil
 }

@@ -7,10 +7,10 @@ import (
 
 var _ sdk.Msg = &MsgDelete{}
 
-func NewMsgDelete(owner string, uUID string) *MsgDelete {
+func NewMsgDelete(owner, UUID string) *MsgDelete {
 	return &MsgDelete{
 		Owner: owner,
-		UUID:  uUID,
+		UUID:  UUID,
 	}
 }
 
@@ -19,7 +19,7 @@ func (msg *MsgDelete) Route() string {
 }
 
 func (msg *MsgDelete) Type() string {
-	return "Delete"
+	return TypeAssetDeleteMsg
 }
 
 func (msg *MsgDelete) GetSigners() []sdk.AccAddress {
@@ -37,8 +37,13 @@ func (msg *MsgDelete) GetSignBytes() []byte {
 
 func (msg *MsgDelete) ValidateBasic() error {
 	_, err := sdk.AccAddressFromBech32(msg.Owner)
-	if err != nil {
+	if len(msg.Owner) == 0 || err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid owner address (%s)", err)
 	}
+
+	if len(msg.UUID) == 0 {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "UUID must not be empty")
+	}
+
 	return nil
 }

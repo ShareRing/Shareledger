@@ -108,7 +108,8 @@ func (k Keeper) SetAssetStatus(ctx sdk.Context, uuid string, status bool) {
 }
 
 func (k Keeper) GetAsset(ctx sdk.Context, uuid string) assetTypes.Asset {
-	return k.assetKeeper.GetAsset(ctx, uuid)
+	asset, _ := k.assetKeeper.GetAsset(ctx, uuid)
+	return asset
 }
 
 func (k Keeper) SendCoinsFromModuleToAccount(

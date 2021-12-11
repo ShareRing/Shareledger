@@ -17,7 +17,10 @@ func (k Keeper) AssetByUUID(goCtx context.Context, req *types.QueryAssetByUUIDRe
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	// TODO: Process the query
-	_ = ctx
+	asset, found := k.GetAsset(ctx, req.Uuid)
+	if !found {
+		return nil, status.Error(codes.NotFound, "Asset not found")
+	}
 
-	return &types.QueryAssetByUUIDResponse{}, nil
+	return &types.QueryAssetByUUIDResponse{Asset: &asset}, nil
 }

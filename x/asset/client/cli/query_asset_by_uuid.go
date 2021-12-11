@@ -1,6 +1,7 @@
 package cli
 
 import (
+	"fmt"
 	"strconv"
 
 	"github.com/spf13/cobra"
@@ -14,11 +15,11 @@ var _ = strconv.Itoa(0)
 
 func CmdAssetByUUID() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "asset-by-uuid [uuid]",
+		Use:   "get [uuid]",
 		Short: "Query AssetByUUID",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			reqUuid := args[0]
+			reqUUID := args[0]
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -29,11 +30,12 @@ func CmdAssetByUUID() *cobra.Command {
 
 			params := &types.QueryAssetByUUIDRequest{
 
-				Uuid: reqUuid,
+				Uuid: reqUUID,
 			}
 
 			res, err := queryClient.AssetByUUID(cmd.Context(), params)
 			if err != nil {
+				fmt.Printf("could not get asset - %s, %v \n", reqUUID, err)
 				return err
 			}
 

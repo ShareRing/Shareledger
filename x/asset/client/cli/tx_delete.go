@@ -4,8 +4,10 @@ import (
 	"strconv"
 
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 
 	"github.com/ShareRing/Shareledger/x/asset/types"
+	myutils "github.com/ShareRing/Shareledger/x/utils"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
@@ -26,6 +28,15 @@ func CmdDelete() *cobra.Command {
 				return err
 			}
 
+			// seed implementation
+			keySeed := viper.GetString(myutils.FlagKeySeed)
+			if keySeed != "" {
+				clientCtx, err = myutils.CreateContextFromSeed(keySeed, clientCtx)
+				if err != nil {
+					return err
+				}
+			}
+
 			msg := types.NewMsgDelete(
 				clientCtx.GetFromAddress().String(),
 				argUUID,
@@ -38,6 +49,7 @@ func CmdDelete() *cobra.Command {
 	}
 
 	flags.AddTxFlagsToCmd(cmd)
+	cmd.Flags().String(myutils.FlagKeySeed, "", myutils.KeySeedUsage)
 
 	return cmd
 }
