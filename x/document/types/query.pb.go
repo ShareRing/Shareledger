@@ -7,6 +7,7 @@ import (
 	context "context"
 	fmt "fmt"
 	_ "github.com/cosmos/cosmos-sdk/types/query"
+	_ "github.com/gogo/protobuf/gogoproto"
 	grpc1 "github.com/gogo/protobuf/grpc"
 	proto "github.com/gogo/protobuf/proto"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
@@ -66,15 +67,8 @@ func (m *QueryDocumentByProofRequest) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_QueryDocumentByProofRequest proto.InternalMessageInfo
 
-func (m *QueryDocumentByProofRequest) GetProof() string {
-	if m != nil {
-		return m.Proof
-	}
-	return ""
-}
-
 type QueryDocumentByProofResponse struct {
-	Document string `protobuf:"bytes,1,opt,name=document,proto3" json:"document,omitempty"`
+	Document *Document `protobuf:"bytes,1,opt,name=document,proto3" json:"document,omitempty"`
 }
 
 func (m *QueryDocumentByProofResponse) Reset()         { *m = QueryDocumentByProofResponse{} }
@@ -110,7 +104,95 @@ func (m *QueryDocumentByProofResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_QueryDocumentByProofResponse proto.InternalMessageInfo
 
-func (m *QueryDocumentByProofResponse) GetDocument() string {
+func (m *QueryDocumentByProofResponse) GetDocument() *Document {
+	if m != nil {
+		return m.Document
+	}
+	return nil
+}
+
+type QueryDocumentByHolderIdRequest struct {
+	Id string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+}
+
+func (m *QueryDocumentByHolderIdRequest) Reset()         { *m = QueryDocumentByHolderIdRequest{} }
+func (m *QueryDocumentByHolderIdRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryDocumentByHolderIdRequest) ProtoMessage()    {}
+func (*QueryDocumentByHolderIdRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_d6f5760b19c0d3bb, []int{2}
+}
+func (m *QueryDocumentByHolderIdRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryDocumentByHolderIdRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryDocumentByHolderIdRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryDocumentByHolderIdRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryDocumentByHolderIdRequest.Merge(m, src)
+}
+func (m *QueryDocumentByHolderIdRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryDocumentByHolderIdRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryDocumentByHolderIdRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryDocumentByHolderIdRequest proto.InternalMessageInfo
+
+func (m *QueryDocumentByHolderIdRequest) GetId() string {
+	if m != nil {
+		return m.Id
+	}
+	return ""
+}
+
+type QueryDocumentByHolderIdResponse struct {
+	Document string `protobuf:"bytes,1,opt,name=document,proto3" json:"document,omitempty"`
+}
+
+func (m *QueryDocumentByHolderIdResponse) Reset()         { *m = QueryDocumentByHolderIdResponse{} }
+func (m *QueryDocumentByHolderIdResponse) String() string { return proto.CompactTextString(m) }
+func (*QueryDocumentByHolderIdResponse) ProtoMessage()    {}
+func (*QueryDocumentByHolderIdResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_d6f5760b19c0d3bb, []int{3}
+}
+func (m *QueryDocumentByHolderIdResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryDocumentByHolderIdResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryDocumentByHolderIdResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryDocumentByHolderIdResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryDocumentByHolderIdResponse.Merge(m, src)
+}
+func (m *QueryDocumentByHolderIdResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryDocumentByHolderIdResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryDocumentByHolderIdResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryDocumentByHolderIdResponse proto.InternalMessageInfo
+
+func (m *QueryDocumentByHolderIdResponse) GetDocument() string {
 	if m != nil {
 		return m.Document
 	}
@@ -120,12 +202,14 @@ func (m *QueryDocumentByProofResponse) GetDocument() string {
 func init() {
 	proto.RegisterType((*QueryDocumentByProofRequest)(nil), "ShareRing.shareledger.document.QueryDocumentByProofRequest")
 	proto.RegisterType((*QueryDocumentByProofResponse)(nil), "ShareRing.shareledger.document.QueryDocumentByProofResponse")
+	proto.RegisterType((*QueryDocumentByHolderIdRequest)(nil), "ShareRing.shareledger.document.QueryDocumentByHolderIdRequest")
+	proto.RegisterType((*QueryDocumentByHolderIdResponse)(nil), "ShareRing.shareledger.document.QueryDocumentByHolderIdResponse")
 }
 
 func init() { proto.RegisterFile("document/query.proto", fileDescriptor_d6f5760b19c0d3bb) }
 
 var fileDescriptor_d6f5760b19c0d3bb = []byte{
-	// 303 bytes of a gzipped FileDescriptorProto
+	// 419 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x12, 0x49, 0xc9, 0x4f, 0x2e,
 	0xcd, 0x4d, 0xcd, 0x2b, 0xd1, 0x2f, 0x2c, 0x4d, 0x2d, 0xaa, 0xd4, 0x2b, 0x28, 0xca, 0x2f, 0xc9,
 	0x17, 0x92, 0x0b, 0xce, 0x48, 0x2c, 0x4a, 0x0d, 0xca, 0xcc, 0x4b, 0xd7, 0x2b, 0x06, 0xb1, 0x72,
@@ -133,18 +217,26 @@ var fileDescriptor_d6f5760b19c0d3bb = []byte{
 	0xf5, 0x13, 0x0b, 0x32, 0xf5, 0x13, 0xf3, 0xf2, 0xf2, 0x4b, 0x12, 0x4b, 0x32, 0xf3, 0xf3, 0x8a,
 	0x21, 0xba, 0xa5, 0xb4, 0x92, 0xf3, 0x8b, 0x73, 0xf3, 0x8b, 0xf5, 0x93, 0x12, 0x8b, 0x53, 0x21,
 	0xc6, 0xea, 0x97, 0x19, 0x26, 0xa5, 0x96, 0x24, 0x1a, 0xea, 0x17, 0x24, 0xa6, 0x67, 0xe6, 0x81,
-	0x15, 0x43, 0xd4, 0x2a, 0x19, 0x73, 0x49, 0x07, 0x82, 0x54, 0xb8, 0x40, 0x8d, 0x76, 0xaa, 0x0c,
-	0x28, 0xca, 0xcf, 0x4f, 0x0b, 0x4a, 0x2d, 0x2c, 0x4d, 0x2d, 0x2e, 0x11, 0x12, 0xe1, 0x62, 0x2d,
-	0x00, 0xf1, 0x25, 0x18, 0x15, 0x18, 0x35, 0x38, 0x83, 0x20, 0x1c, 0x25, 0x2b, 0x2e, 0x19, 0xec,
-	0x9a, 0x8a, 0x0b, 0xf2, 0xf3, 0x8a, 0x53, 0x85, 0xa4, 0xb8, 0x38, 0x60, 0x4e, 0x85, 0x6a, 0x84,
-	0xf3, 0x8d, 0xce, 0x33, 0x72, 0xb1, 0x82, 0x35, 0x0b, 0x1d, 0x65, 0xe4, 0xe2, 0x47, 0x33, 0x41,
-	0xc8, 0x5a, 0x0f, 0xbf, 0xcf, 0xf5, 0xf0, 0x38, 0x56, 0xca, 0x86, 0x3c, 0xcd, 0x10, 0x47, 0x2b,
-	0x99, 0x37, 0x5d, 0x7e, 0x32, 0x99, 0xc9, 0x50, 0x48, 0x5f, 0x1f, 0x6e, 0x8a, 0x3e, 0x92, 0x29,
-	0xfa, 0xf0, 0x88, 0x4a, 0x41, 0x35, 0xc0, 0xc9, 0xfb, 0xc4, 0x23, 0x39, 0xc6, 0x0b, 0x8f, 0xe4,
-	0x18, 0x1f, 0x3c, 0x92, 0x63, 0x9c, 0xf0, 0x58, 0x8e, 0xe1, 0xc2, 0x63, 0x39, 0x86, 0x1b, 0x8f,
-	0xe5, 0x18, 0xa2, 0x0c, 0xd3, 0x33, 0x4b, 0x32, 0x4a, 0x93, 0xf4, 0x92, 0xf3, 0x73, 0x91, 0x0c,
-	0x0d, 0x46, 0x32, 0xb4, 0x02, 0x61, 0x6c, 0x49, 0x65, 0x41, 0x6a, 0x71, 0x12, 0x1b, 0x38, 0x5a,
-	0x8c, 0x01, 0x01, 0x00, 0x00, 0xff, 0xff, 0x39, 0xd0, 0x12, 0xc7, 0x18, 0x02, 0x00, 0x00,
+	0x15, 0x43, 0xd5, 0x8a, 0xa4, 0xe7, 0xa7, 0xe7, 0x83, 0x99, 0xfa, 0x20, 0x16, 0x54, 0x54, 0x1c,
+	0xee, 0x2a, 0x18, 0x03, 0x22, 0xa1, 0x64, 0xcb, 0x25, 0x1d, 0x08, 0x32, 0xd0, 0x05, 0x2a, 0xec,
+	0x54, 0x19, 0x50, 0x94, 0x9f, 0x9f, 0x16, 0x94, 0x5a, 0x58, 0x9a, 0x5a, 0x5c, 0x22, 0x24, 0xc2,
+	0xc5, 0x5a, 0x00, 0xe2, 0x4b, 0x30, 0x2a, 0x30, 0x6a, 0x70, 0x06, 0x41, 0x38, 0x56, 0x1c, 0x1d,
+	0x0b, 0xe4, 0x19, 0x5e, 0x2c, 0x90, 0x67, 0x50, 0x4a, 0xe1, 0x92, 0xc1, 0xae, 0xbd, 0xb8, 0x20,
+	0x3f, 0xaf, 0x38, 0x55, 0xc8, 0x85, 0x8b, 0x03, 0x66, 0x21, 0xd8, 0x08, 0x6e, 0x23, 0x0d, 0x3d,
+	0xfc, 0x41, 0xa1, 0x07, 0x33, 0x2a, 0x08, 0xae, 0x53, 0xc9, 0x80, 0x4b, 0x0e, 0xcd, 0x16, 0x8f,
+	0xfc, 0x9c, 0x94, 0xd4, 0x22, 0xcf, 0x14, 0x98, 0x3b, 0xf9, 0xb8, 0x98, 0x32, 0x53, 0xa0, 0x8e,
+	0x64, 0xca, 0x4c, 0x51, 0xb2, 0xe5, 0x92, 0xc7, 0xa9, 0x03, 0xea, 0x34, 0x29, 0x34, 0xa7, 0x71,
+	0x22, 0x2c, 0x34, 0x9a, 0xce, 0xcc, 0xc5, 0x0a, 0xd6, 0x2f, 0xb4, 0x93, 0x91, 0x8b, 0x1f, 0xcd,
+	0x73, 0x42, 0xd6, 0x84, 0xbc, 0x80, 0x27, 0x44, 0xa5, 0x6c, 0xc8, 0xd3, 0x0c, 0x71, 0xb4, 0x92,
+	0x76, 0xd3, 0xe5, 0x27, 0x93, 0x99, 0x54, 0x85, 0x94, 0xf5, 0x91, 0xf4, 0xc2, 0xe3, 0x54, 0x1f,
+	0x1c, 0x3d, 0xfa, 0xd5, 0x60, 0xaa, 0x56, 0xe8, 0x22, 0x23, 0x97, 0x10, 0x66, 0x00, 0x08, 0xd9,
+	0x91, 0xe8, 0x02, 0xb4, 0xb0, 0x96, 0xb2, 0x27, 0x5b, 0x3f, 0xd4, 0x13, 0x56, 0x60, 0x4f, 0x98,
+	0x08, 0x19, 0xe9, 0xc3, 0x0d, 0xc2, 0xee, 0x9d, 0x14, 0x0c, 0x33, 0x9c, 0xbc, 0x4f, 0x3c, 0x92,
+	0x63, 0xbc, 0xf0, 0x48, 0x8e, 0xf1, 0xc1, 0x23, 0x39, 0xc6, 0x09, 0x8f, 0xe5, 0x18, 0x2e, 0x3c,
+	0x96, 0x63, 0xb8, 0xf1, 0x58, 0x8e, 0x21, 0xca, 0x30, 0x3d, 0xb3, 0x24, 0xa3, 0x34, 0x49, 0x2f,
+	0x39, 0x3f, 0x17, 0xc9, 0xdc, 0x60, 0x24, 0x73, 0x2b, 0x10, 0x26, 0x97, 0x54, 0x16, 0xa4, 0x16,
+	0x27, 0xb1, 0x81, 0xf3, 0x80, 0x31, 0x20, 0x00, 0x00, 0xff, 0xff, 0xd7, 0x72, 0x15, 0x9e, 0xb4,
+	0x03, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -161,6 +253,8 @@ const _ = grpc.SupportPackageIsVersion4
 type QueryClient interface {
 	// Queries a list of documentByProof items.
 	DocumentByProof(ctx context.Context, in *QueryDocumentByProofRequest, opts ...grpc.CallOption) (*QueryDocumentByProofResponse, error)
+	// Queries a list of documentByHolderId items.
+	DocumentByHolderId(ctx context.Context, in *QueryDocumentByHolderIdRequest, opts ...grpc.CallOption) (*QueryDocumentByHolderIdResponse, error)
 }
 
 type queryClient struct {
@@ -180,10 +274,21 @@ func (c *queryClient) DocumentByProof(ctx context.Context, in *QueryDocumentByPr
 	return out, nil
 }
 
+func (c *queryClient) DocumentByHolderId(ctx context.Context, in *QueryDocumentByHolderIdRequest, opts ...grpc.CallOption) (*QueryDocumentByHolderIdResponse, error) {
+	out := new(QueryDocumentByHolderIdResponse)
+	err := c.cc.Invoke(ctx, "/ShareRing.shareledger.document.Query/DocumentByHolderId", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // QueryServer is the server API for Query service.
 type QueryServer interface {
 	// Queries a list of documentByProof items.
 	DocumentByProof(context.Context, *QueryDocumentByProofRequest) (*QueryDocumentByProofResponse, error)
+	// Queries a list of documentByHolderId items.
+	DocumentByHolderId(context.Context, *QueryDocumentByHolderIdRequest) (*QueryDocumentByHolderIdResponse, error)
 }
 
 // UnimplementedQueryServer can be embedded to have forward compatible implementations.
@@ -192,6 +297,9 @@ type UnimplementedQueryServer struct {
 
 func (*UnimplementedQueryServer) DocumentByProof(ctx context.Context, req *QueryDocumentByProofRequest) (*QueryDocumentByProofResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DocumentByProof not implemented")
+}
+func (*UnimplementedQueryServer) DocumentByHolderId(ctx context.Context, req *QueryDocumentByHolderIdRequest) (*QueryDocumentByHolderIdResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DocumentByHolderId not implemented")
 }
 
 func RegisterQueryServer(s grpc1.Server, srv QueryServer) {
@@ -216,6 +324,24 @@ func _Query_DocumentByProof_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Query_DocumentByHolderId_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryDocumentByHolderIdRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).DocumentByHolderId(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/ShareRing.shareledger.document.Query/DocumentByHolderId",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).DocumentByHolderId(ctx, req.(*QueryDocumentByHolderIdRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var _Query_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "ShareRing.shareledger.document.Query",
 	HandlerType: (*QueryServer)(nil),
@@ -223,6 +349,10 @@ var _Query_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DocumentByProof",
 			Handler:    _Query_DocumentByProof_Handler,
+		},
+		{
+			MethodName: "DocumentByHolderId",
+			Handler:    _Query_DocumentByHolderId_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -279,6 +409,71 @@ func (m *QueryDocumentByProofResponse) MarshalToSizedBuffer(dAtA []byte) (int, e
 	_ = i
 	var l int
 	_ = l
+	if m.Document != nil {
+		{
+			size, err := m.Document.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintQuery(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *QueryDocumentByHolderIdRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryDocumentByHolderIdRequest) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryDocumentByHolderIdRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Id) > 0 {
+		i -= len(m.Id)
+		copy(dAtA[i:], m.Id)
+		i = encodeVarintQuery(dAtA, i, uint64(len(m.Id)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *QueryDocumentByHolderIdResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryDocumentByHolderIdResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryDocumentByHolderIdResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
 	if len(m.Document) > 0 {
 		i -= len(m.Document)
 		copy(dAtA[i:], m.Document)
@@ -314,6 +509,32 @@ func (m *QueryDocumentByProofRequest) Size() (n int) {
 }
 
 func (m *QueryDocumentByProofResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Document != nil {
+		l = m.Document.Size()
+		n += 1 + l + sovQuery(uint64(l))
+	}
+	return n
+}
+
+func (m *QueryDocumentByHolderIdRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Id)
+	if l > 0 {
+		n += 1 + l + sovQuery(uint64(l))
+	}
+	return n
+}
+
+func (m *QueryDocumentByHolderIdResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -441,6 +662,174 @@ func (m *QueryDocumentByProofResponse) Unmarshal(dAtA []byte) error {
 		}
 		if fieldNum <= 0 {
 			return fmt.Errorf("proto: QueryDocumentByProofResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Document", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Document == nil {
+				m.Document = &Document{}
+			}
+			if err := m.Document.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryDocumentByHolderIdRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryDocumentByHolderIdRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryDocumentByHolderIdRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Id", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Id = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryDocumentByHolderIdResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryDocumentByHolderIdResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryDocumentByHolderIdResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
