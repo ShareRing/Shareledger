@@ -10,6 +10,7 @@ service Msg {
   rpc CreateDocument(MsgCreateDocument) returns (MsgCreateDocumentResponse);
   rpc CreateDocumentInBatch(MsgCreateDocumentInBatch) returns (MsgCreateDocumentInBatchResponse);
   rpc RevokeDocument(MsgRevokeDocument) returns (MsgRevokeDocumentResponse);
+  rpc UpdateDocument(MsgUpdateDocument) returns (MsgUpdateDocumentResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -40,6 +41,16 @@ message MsgRevokeDocument {
 }
 
 message MsgRevokeDocumentResponse {
+}
+
+message MsgUpdateDocument {
+  string data = 1;
+  string holder = 2;
+  string issuer = 3;
+  string proof = 4;
+}
+
+message MsgUpdateDocumentResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message
