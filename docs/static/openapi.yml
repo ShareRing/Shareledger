@@ -12600,6 +12600,106 @@ paths:
           type: string
       tags:
         - Query
+  '/shareledger/document/proof/{proof}':
+    get:
+      summary: Queries a list of documentByProof items.
+      operationId: ShareRingShareledgerDocumentDocumentByProof
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              document:
+                type: object
+                properties:
+                  holder:
+                    type: string
+                  issuer:
+                    type: string
+                  proof:
+                    type: string
+                  data:
+                    type: string
+                  version:
+                    type: integer
+                    format: int32
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: proof
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  '/shareledger/document/{id}':
+    get:
+      summary: Queries a list of documentByHolderId items.
+      operationId: ShareRingShareledgerDocumentDocumentByHolderId
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              document:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    holder:
+                      type: string
+                    issuer:
+                      type: string
+                    proof:
+                      type: string
+                    data:
+                      type: string
+                    version:
+                      type: integer
+                      format: int32
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
   '/shareledger/voter/{address}':
     get:
       summary: Balance queries the balance of a single coin for a single account.
@@ -20695,6 +20795,58 @@ definitions:
             format: int64
           isCompleted:
             type: boolean
+  ShareRing.shareledger.document.Document:
+    type: object
+    properties:
+      holder:
+        type: string
+      issuer:
+        type: string
+      proof:
+        type: string
+      data:
+        type: string
+      version:
+        type: integer
+        format: int32
+  ShareRing.shareledger.document.MsgCreateDocumentResponse:
+    type: object
+  ShareRing.shareledger.document.QueryDocumentByHolderIdResponse:
+    type: object
+    properties:
+      document:
+        type: array
+        items:
+          type: object
+          properties:
+            holder:
+              type: string
+            issuer:
+              type: string
+            proof:
+              type: string
+            data:
+              type: string
+            version:
+              type: integer
+              format: int32
+  ShareRing.shareledger.document.QueryDocumentByProofResponse:
+    type: object
+    properties:
+      document:
+        type: object
+        properties:
+          holder:
+            type: string
+          issuer:
+            type: string
+          proof:
+            type: string
+          data:
+            type: string
+          version:
+            type: integer
+            format: int32
   ShareRing.shareledger.electoral.MsgEnrollVoterResponse:
     type: object
   ShareRing.shareledger.electoral.MsgRevokeVoterResponse:
