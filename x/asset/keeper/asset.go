@@ -9,7 +9,7 @@ import (
 func (k Keeper) GetAsset(ctx sdk.Context, uuid string) (types.Asset, bool) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.UUIDKeyPrefix))
 
-	if !k.IsAssetPresent(ctx, uuid) {
+	if !k.IsAssetExist(ctx, uuid) {
 		return types.Asset{}, false
 	}
 
@@ -33,7 +33,11 @@ func (k Keeper) SetAsset(ctx sdk.Context, uuid string, asset types.Asset) {
 }
 
 func (k Keeper) SetAssetStatus(ctx sdk.Context, uuid string, status bool) {
-	asset, _ := k.GetAsset(ctx, uuid)
+	asset, found := k.GetAsset(ctx, uuid)
+	if !found {
+		return
+	}
+
 	asset.Status = status
 	k.SetAsset(ctx, uuid, asset)
 }
@@ -59,7 +63,7 @@ func (k Keeper) IterateAssets(ctx sdk.Context, cb func(a types.Asset) bool) {
 	}
 }
 
-func (k Keeper) IsAssetPresent(ctx sdk.Context, uuid string) bool {
+func (k Keeper) IsAssetExist(ctx sdk.Context, uuid string) bool {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.UUIDKeyPrefix))
 	return store.Has([]byte(uuid))
 }

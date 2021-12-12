@@ -17,7 +17,10 @@ func (k Keeper) Booking(goCtx context.Context, req *types.QueryBookingRequest) (
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	// TODO: Process the query
-	_ = ctx
+	booking, found := k.GetBooking(ctx, req.BookID)
+	if !found {
+		return nil, status.Error(codes.NotFound, "Booking not found")
+	}
 
-	return &types.QueryBookingResponse{}, nil
+	return &types.QueryBookingResponse{Booking: &booking}, nil
 }

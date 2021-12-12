@@ -14,7 +14,7 @@ service Msg {
 
 message MsgBook {
   string booker = 1;
-  string uUID = 2;
+  string UUID = 2;
   int64 duration = 3;
 }
 

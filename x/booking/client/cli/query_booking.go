@@ -14,7 +14,7 @@ var _ = strconv.Itoa(0)
 
 func CmdBooking() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "booking [book-id]",
+		Use:   "get [bookID]",
 		Short: "Query booking",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {

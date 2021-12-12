@@ -19,7 +19,7 @@ func (msg *MsgComplete) Route() string {
 }
 
 func (msg *MsgComplete) Type() string {
-	return "Complete"
+	return TypeBookCompleteMsg
 }
 
 func (msg *MsgComplete) GetSigners() []sdk.AccAddress {
@@ -40,5 +40,10 @@ func (msg *MsgComplete) ValidateBasic() error {
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid booker address (%s)", err)
 	}
+
+	if len(msg.GetBookID()) == 0 {
+		return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "BookID must not be empty")
+	}
+
 	return nil
 }

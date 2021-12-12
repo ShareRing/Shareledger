@@ -4,8 +4,10 @@ import (
 	"strconv"
 
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 
 	"github.com/ShareRing/Shareledger/x/booking/types"
+	myutils "github.com/ShareRing/Shareledger/x/utils"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
@@ -15,7 +17,7 @@ var _ = strconv.Itoa(0)
 
 func CmdComplete() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "complete [book-id]",
+		Use:   "complete [bookID]",
 		Short: "Broadcast message Complete",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
@@ -24,6 +26,15 @@ func CmdComplete() *cobra.Command {
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
+			}
+
+			// seed implementation
+			keySeed := viper.GetString(myutils.FlagKeySeed)
+			if keySeed != "" {
+				clientCtx, err = myutils.CreateContextFromSeed(keySeed, clientCtx)
+				if err != nil {
+					return err
+				}
 			}
 
 			msg := types.NewMsgComplete(
@@ -38,6 +49,7 @@ func CmdComplete() *cobra.Command {
 	}
 
 	flags.AddTxFlagsToCmd(cmd)
+	cmd.Flags().String(myutils.FlagKeySeed, "", myutils.KeySeedUsage)
 
 	return cmd
 }

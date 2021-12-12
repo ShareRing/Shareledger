@@ -17,7 +17,7 @@ func (k msgServer) Update(goCtx context.Context, msg *types.MsgUpdate) (*types.M
 	oldAsset, found := k.GetAsset(ctx, msg.GetUUID())
 
 	if !found {
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrNotFound, "Asset not found")
+		return nil, sdkerrors.Wrap(types.ErrNameDoesNotExist, msg.GetUUID())
 	}
 
 	if oldAsset.GetCreator() != msg.GetCreator() {
