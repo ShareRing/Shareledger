@@ -20809,6 +20809,8 @@ definitions:
       version:
         type: integer
         format: int32
+  ShareRing.shareledger.document.MsgCreateDocumentInBatchResponse:
+    type: object
   ShareRing.shareledger.document.MsgCreateDocumentResponse:
     type: object
   ShareRing.shareledger.document.QueryDocumentByHolderIdResponse:

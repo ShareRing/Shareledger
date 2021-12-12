@@ -28,11 +28,10 @@ var _ = math.Inf
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
 type MsgCreateDocument struct {
-	Creator string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
-	Data    string `protobuf:"bytes,2,opt,name=data,proto3" json:"data,omitempty"`
-	Holder  string `protobuf:"bytes,3,opt,name=holder,proto3" json:"holder,omitempty"`
-	Issuer  string `protobuf:"bytes,4,opt,name=issuer,proto3" json:"issuer,omitempty"`
-	Proof   string `protobuf:"bytes,5,opt,name=proof,proto3" json:"proof,omitempty"`
+	Data   string `protobuf:"bytes,1,opt,name=data,proto3" json:"data,omitempty"`
+	Holder string `protobuf:"bytes,2,opt,name=holder,proto3" json:"holder,omitempty"`
+	Issuer string `protobuf:"bytes,3,opt,name=issuer,proto3" json:"issuer,omitempty"`
+	Proof  string `protobuf:"bytes,4,opt,name=proof,proto3" json:"proof,omitempty"`
 }
 
 func (m *MsgCreateDocument) Reset()         { *m = MsgCreateDocument{} }
@@ -67,13 +66,6 @@ func (m *MsgCreateDocument) XXX_DiscardUnknown() {
 }
 
 var xxx_messageInfo_MsgCreateDocument proto.InternalMessageInfo
-
-func (m *MsgCreateDocument) GetCreator() string {
-	if m != nil {
-		return m.Creator
-	}
-	return ""
-}
 
 func (m *MsgCreateDocument) GetData() string {
 	if m != nil {
@@ -139,32 +131,149 @@ func (m *MsgCreateDocumentResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_MsgCreateDocumentResponse proto.InternalMessageInfo
 
+type MsgCreateDocumentInBatch struct {
+	Creator string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+	Data    string `protobuf:"bytes,2,opt,name=data,proto3" json:"data,omitempty"`
+	Holder  string `protobuf:"bytes,3,opt,name=holder,proto3" json:"holder,omitempty"`
+	Issuer  string `protobuf:"bytes,4,opt,name=issuer,proto3" json:"issuer,omitempty"`
+	Proof   string `protobuf:"bytes,5,opt,name=proof,proto3" json:"proof,omitempty"`
+}
+
+func (m *MsgCreateDocumentInBatch) Reset()         { *m = MsgCreateDocumentInBatch{} }
+func (m *MsgCreateDocumentInBatch) String() string { return proto.CompactTextString(m) }
+func (*MsgCreateDocumentInBatch) ProtoMessage()    {}
+func (*MsgCreateDocumentInBatch) Descriptor() ([]byte, []int) {
+	return fileDescriptor_9b59fe9729b670ce, []int{2}
+}
+func (m *MsgCreateDocumentInBatch) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgCreateDocumentInBatch) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgCreateDocumentInBatch.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgCreateDocumentInBatch) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgCreateDocumentInBatch.Merge(m, src)
+}
+func (m *MsgCreateDocumentInBatch) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgCreateDocumentInBatch) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgCreateDocumentInBatch.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgCreateDocumentInBatch proto.InternalMessageInfo
+
+func (m *MsgCreateDocumentInBatch) GetCreator() string {
+	if m != nil {
+		return m.Creator
+	}
+	return ""
+}
+
+func (m *MsgCreateDocumentInBatch) GetData() string {
+	if m != nil {
+		return m.Data
+	}
+	return ""
+}
+
+func (m *MsgCreateDocumentInBatch) GetHolder() string {
+	if m != nil {
+		return m.Holder
+	}
+	return ""
+}
+
+func (m *MsgCreateDocumentInBatch) GetIssuer() string {
+	if m != nil {
+		return m.Issuer
+	}
+	return ""
+}
+
+func (m *MsgCreateDocumentInBatch) GetProof() string {
+	if m != nil {
+		return m.Proof
+	}
+	return ""
+}
+
+type MsgCreateDocumentInBatchResponse struct {
+}
+
+func (m *MsgCreateDocumentInBatchResponse) Reset()         { *m = MsgCreateDocumentInBatchResponse{} }
+func (m *MsgCreateDocumentInBatchResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgCreateDocumentInBatchResponse) ProtoMessage()    {}
+func (*MsgCreateDocumentInBatchResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_9b59fe9729b670ce, []int{3}
+}
+func (m *MsgCreateDocumentInBatchResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgCreateDocumentInBatchResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgCreateDocumentInBatchResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgCreateDocumentInBatchResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgCreateDocumentInBatchResponse.Merge(m, src)
+}
+func (m *MsgCreateDocumentInBatchResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgCreateDocumentInBatchResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgCreateDocumentInBatchResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgCreateDocumentInBatchResponse proto.InternalMessageInfo
+
 func init() {
 	proto.RegisterType((*MsgCreateDocument)(nil), "ShareRing.shareledger.document.MsgCreateDocument")
 	proto.RegisterType((*MsgCreateDocumentResponse)(nil), "ShareRing.shareledger.document.MsgCreateDocumentResponse")
+	proto.RegisterType((*MsgCreateDocumentInBatch)(nil), "ShareRing.shareledger.document.MsgCreateDocumentInBatch")
+	proto.RegisterType((*MsgCreateDocumentInBatchResponse)(nil), "ShareRing.shareledger.document.MsgCreateDocumentInBatchResponse")
 }
 
 func init() { proto.RegisterFile("document/tx.proto", fileDescriptor_9b59fe9729b670ce) }
 
 var fileDescriptor_9b59fe9729b670ce = []byte{
-	// 263 bytes of a gzipped FileDescriptorProto
+	// 319 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x12, 0x4c, 0xc9, 0x4f, 0x2e,
 	0xcd, 0x4d, 0xcd, 0x2b, 0xd1, 0x2f, 0xa9, 0xd0, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0x92, 0x0b,
 	0xce, 0x48, 0x2c, 0x4a, 0x0d, 0xca, 0xcc, 0x4b, 0xd7, 0x2b, 0x06, 0xb1, 0x72, 0x52, 0x53, 0xd2,
-	0x53, 0x8b, 0xf4, 0x60, 0x0a, 0x95, 0xda, 0x19, 0xb9, 0x04, 0x7d, 0x8b, 0xd3, 0x9d, 0x8b, 0x52,
-	0x13, 0x4b, 0x52, 0x5d, 0xa0, 0xa2, 0x42, 0x12, 0x5c, 0xec, 0xc9, 0x20, 0x91, 0xfc, 0x22, 0x09,
-	0x46, 0x05, 0x46, 0x0d, 0xce, 0x20, 0x18, 0x57, 0x48, 0x88, 0x8b, 0x25, 0x25, 0xb1, 0x24, 0x51,
-	0x82, 0x09, 0x2c, 0x0c, 0x66, 0x0b, 0x89, 0x71, 0xb1, 0x65, 0xe4, 0xe7, 0xa4, 0xa4, 0x16, 0x49,
-	0x30, 0x83, 0x45, 0xa1, 0x3c, 0x90, 0x78, 0x66, 0x71, 0x71, 0x69, 0x6a, 0x91, 0x04, 0x0b, 0x44,
-	0x1c, 0xc2, 0x13, 0x12, 0xe1, 0x62, 0x2d, 0x28, 0xca, 0xcf, 0x4f, 0x93, 0x60, 0x05, 0x0b, 0x43,
-	0x38, 0x4a, 0xd2, 0x5c, 0x92, 0x18, 0x0e, 0x09, 0x4a, 0x2d, 0x2e, 0xc8, 0xcf, 0x2b, 0x4e, 0x35,
-	0x6a, 0x65, 0xe4, 0x62, 0xf6, 0x2d, 0x4e, 0x17, 0xaa, 0xe3, 0xe2, 0x43, 0x73, 0xaa, 0xa1, 0x1e,
-	0x7e, 0x1f, 0xea, 0x61, 0x18, 0x2a, 0x65, 0x49, 0xb2, 0x16, 0x98, 0x3b, 0x9c, 0xbc, 0x4f, 0x3c,
-	0x92, 0x63, 0xbc, 0xf0, 0x48, 0x8e, 0xf1, 0xc1, 0x23, 0x39, 0xc6, 0x09, 0x8f, 0xe5, 0x18, 0x2e,
-	0x3c, 0x96, 0x63, 0xb8, 0xf1, 0x58, 0x8e, 0x21, 0xca, 0x30, 0x3d, 0xb3, 0x24, 0xa3, 0x34, 0x49,
-	0x2f, 0x39, 0x3f, 0x57, 0x1f, 0x6e, 0x3c, 0x84, 0x05, 0x31, 0x5e, 0xbf, 0x42, 0x1f, 0x11, 0x3d,
-	0x95, 0x05, 0xa9, 0xc5, 0x49, 0x6c, 0xe0, 0x28, 0x32, 0x06, 0x04, 0x00, 0x00, 0xff, 0xff, 0x5f,
-	0xa1, 0x8a, 0x1c, 0xb7, 0x01, 0x00, 0x00,
+	0x53, 0x8b, 0xf4, 0x60, 0x0a, 0x95, 0x72, 0xb9, 0x04, 0x7d, 0x8b, 0xd3, 0x9d, 0x8b, 0x52, 0x13,
+	0x4b, 0x52, 0x5d, 0xa0, 0x82, 0x42, 0x42, 0x5c, 0x2c, 0x29, 0x89, 0x25, 0x89, 0x12, 0x8c, 0x0a,
+	0x8c, 0x1a, 0x9c, 0x41, 0x60, 0xb6, 0x90, 0x18, 0x17, 0x5b, 0x46, 0x7e, 0x4e, 0x4a, 0x6a, 0x91,
+	0x04, 0x13, 0x58, 0x14, 0xca, 0x03, 0x89, 0x67, 0x16, 0x17, 0x97, 0xa6, 0x16, 0x49, 0x30, 0x43,
+	0xc4, 0x21, 0x3c, 0x21, 0x11, 0x2e, 0xd6, 0x82, 0xa2, 0xfc, 0xfc, 0x34, 0x09, 0x16, 0xb0, 0x30,
+	0x84, 0xa3, 0x24, 0xcd, 0x25, 0x89, 0x61, 0x5d, 0x50, 0x6a, 0x71, 0x41, 0x7e, 0x5e, 0x71, 0xaa,
+	0x52, 0x1f, 0x23, 0x97, 0x04, 0x86, 0xac, 0x67, 0x9e, 0x53, 0x62, 0x49, 0x72, 0x86, 0x90, 0x04,
+	0x17, 0x7b, 0x32, 0x48, 0x22, 0xbf, 0x08, 0xea, 0x2c, 0x18, 0x17, 0xee, 0x5a, 0x26, 0xac, 0xae,
+	0x65, 0xc6, 0xe1, 0x5a, 0x16, 0xec, 0xae, 0x65, 0x45, 0x76, 0xad, 0x12, 0x97, 0x02, 0x2e, 0xf7,
+	0xc0, 0x1c, 0x6d, 0x34, 0x9b, 0x89, 0x8b, 0xd9, 0xb7, 0x38, 0x5d, 0xa8, 0x8e, 0x8b, 0x0f, 0x2d,
+	0x14, 0x0d, 0xf5, 0xf0, 0x87, 0xbd, 0x1e, 0x86, 0xd9, 0x52, 0x96, 0x24, 0x6b, 0x81, 0xb9, 0x43,
+	0x68, 0x32, 0x23, 0x97, 0x28, 0xf6, 0x90, 0xb3, 0x20, 0xd9, 0x50, 0xa8, 0x4e, 0x29, 0x07, 0x72,
+	0x75, 0xc2, 0x5c, 0xe5, 0xe4, 0x7d, 0xe2, 0x91, 0x1c, 0xe3, 0x85, 0x47, 0x72, 0x8c, 0x0f, 0x1e,
+	0xc9, 0x31, 0x4e, 0x78, 0x2c, 0xc7, 0x70, 0xe1, 0xb1, 0x1c, 0xc3, 0x8d, 0xc7, 0x72, 0x0c, 0x51,
+	0x86, 0xe9, 0x99, 0x25, 0x19, 0xa5, 0x49, 0x7a, 0xc9, 0xf9, 0xb9, 0xfa, 0x70, 0x5b, 0x20, 0x2c,
+	0x88, 0x2d, 0xfa, 0x15, 0xfa, 0x88, 0xe4, 0x5c, 0x59, 0x90, 0x5a, 0x9c, 0xc4, 0x06, 0x4e, 0xd2,
+	0xc6, 0x80, 0x00, 0x00, 0x00, 0xff, 0xff, 0x9c, 0xd5, 0x85, 0xd9, 0xe7, 0x02, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -180,6 +289,7 @@ const _ = grpc.SupportPackageIsVersion4
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type MsgClient interface {
 	CreateDocument(ctx context.Context, in *MsgCreateDocument, opts ...grpc.CallOption) (*MsgCreateDocumentResponse, error)
+	CreateDocumentInBatch(ctx context.Context, in *MsgCreateDocumentInBatch, opts ...grpc.CallOption) (*MsgCreateDocumentInBatchResponse, error)
 }
 
 type msgClient struct {
@@ -199,9 +309,19 @@ func (c *msgClient) CreateDocument(ctx context.Context, in *MsgCreateDocument, o
 	return out, nil
 }
 
+func (c *msgClient) CreateDocumentInBatch(ctx context.Context, in *MsgCreateDocumentInBatch, opts ...grpc.CallOption) (*MsgCreateDocumentInBatchResponse, error) {
+	out := new(MsgCreateDocumentInBatchResponse)
+	err := c.cc.Invoke(ctx, "/ShareRing.shareledger.document.Msg/CreateDocumentInBatch", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MsgServer is the server API for Msg service.
 type MsgServer interface {
 	CreateDocument(context.Context, *MsgCreateDocument) (*MsgCreateDocumentResponse, error)
+	CreateDocumentInBatch(context.Context, *MsgCreateDocumentInBatch) (*MsgCreateDocumentInBatchResponse, error)
 }
 
 // UnimplementedMsgServer can be embedded to have forward compatible implementations.
@@ -210,6 +330,9 @@ type UnimplementedMsgServer struct {
 
 func (*UnimplementedMsgServer) CreateDocument(ctx context.Context, req *MsgCreateDocument) (*MsgCreateDocumentResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateDocument not implemented")
+}
+func (*UnimplementedMsgServer) CreateDocumentInBatch(ctx context.Context, req *MsgCreateDocumentInBatch) (*MsgCreateDocumentInBatchResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateDocumentInBatch not implemented")
 }
 
 func RegisterMsgServer(s grpc1.Server, srv MsgServer) {
@@ -234,6 +357,24 @@ func _Msg_CreateDocument_Handler(srv interface{}, ctx context.Context, dec func(
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Msg_CreateDocumentInBatch_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgCreateDocumentInBatch)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).CreateDocumentInBatch(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/ShareRing.shareledger.document.Msg/CreateDocumentInBatch",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).CreateDocumentInBatch(ctx, req.(*MsgCreateDocumentInBatch))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var _Msg_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "ShareRing.shareledger.document.Msg",
 	HandlerType: (*MsgServer)(nil),
@@ -241,6 +382,10 @@ var _Msg_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CreateDocument",
 			Handler:    _Msg_CreateDocument_Handler,
+		},
+		{
+			MethodName: "CreateDocumentInBatch",
+			Handler:    _Msg_CreateDocumentInBatch_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -263,6 +408,80 @@ func (m *MsgCreateDocument) MarshalTo(dAtA []byte) (int, error) {
 }
 
 func (m *MsgCreateDocument) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Proof) > 0 {
+		i -= len(m.Proof)
+		copy(dAtA[i:], m.Proof)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Proof)))
+		i--
+		dAtA[i] = 0x22
+	}
+	if len(m.Issuer) > 0 {
+		i -= len(m.Issuer)
+		copy(dAtA[i:], m.Issuer)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Issuer)))
+		i--
+		dAtA[i] = 0x1a
+	}
+	if len(m.Holder) > 0 {
+		i -= len(m.Holder)
+		copy(dAtA[i:], m.Holder)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Holder)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.Data) > 0 {
+		i -= len(m.Data)
+		copy(dAtA[i:], m.Data)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Data)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgCreateDocumentResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgCreateDocumentResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgCreateDocumentResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgCreateDocumentInBatch) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgCreateDocumentInBatch) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgCreateDocumentInBatch) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -305,7 +524,7 @@ func (m *MsgCreateDocument) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgCreateDocumentResponse) Marshal() (dAtA []byte, err error) {
+func (m *MsgCreateDocumentInBatchResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -315,12 +534,12 @@ func (m *MsgCreateDocumentResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgCreateDocumentResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgCreateDocumentInBatchResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgCreateDocumentResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgCreateDocumentInBatchResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -340,6 +559,40 @@ func encodeVarintTx(dAtA []byte, offset int, v uint64) int {
 	return base
 }
 func (m *MsgCreateDocument) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Data)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	l = len(m.Holder)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	l = len(m.Issuer)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	l = len(m.Proof)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	return n
+}
+
+func (m *MsgCreateDocumentResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
+func (m *MsgCreateDocumentInBatch) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -368,7 +621,7 @@ func (m *MsgCreateDocument) Size() (n int) {
 	return n
 }
 
-func (m *MsgCreateDocumentResponse) Size() (n int) {
+func (m *MsgCreateDocumentInBatchResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -410,6 +663,234 @@ func (m *MsgCreateDocument) Unmarshal(dAtA []byte) error {
 		}
 		if fieldNum <= 0 {
 			return fmt.Errorf("proto: MsgCreateDocument: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Data", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Data = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Holder", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Holder = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Issuer", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Issuer = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 4:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Proof", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Proof = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgCreateDocumentResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgCreateDocumentResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgCreateDocumentResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgCreateDocumentInBatch) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgCreateDocumentInBatch: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgCreateDocumentInBatch: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -593,7 +1074,7 @@ func (m *MsgCreateDocument) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgCreateDocumentResponse) Unmarshal(dAtA []byte) error {
+func (m *MsgCreateDocumentInBatchResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -616,10 +1097,10 @@ func (m *MsgCreateDocumentResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgCreateDocumentResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgCreateDocumentInBatchResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgCreateDocumentResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgCreateDocumentInBatchResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:
