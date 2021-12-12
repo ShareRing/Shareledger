@@ -3,13 +3,31 @@ package ShareRing.shareledger.document;
 
 import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
+import "gogoproto/gogo.proto";
+import "document/document.proto";
 // this line is used by starport scaffolding # 1
 
 option go_package = "github.com/ShareRing/Shareledger/x/document/types";
 
 // Query defines the gRPC querier service.
 service Query {
-    // this line is used by starport scaffolding # 2
+    // Queries a list of documentByProof items.
+	rpc DocumentByProof(QueryDocumentByProofRequest) returns (QueryDocumentByProofResponse) {
+		option (google.api.http).get = "/shareledger/document/proof/{proof}";
+	}
+
+// this line is used by starport scaffolding # 2
+}
+
+message QueryDocumentByProofRequest {
+  option (gogoproto.equal)           = false;
+  option (gogoproto.goproto_getters) = false;
+
+  string proof = 1;
+}
+
+message QueryDocumentByProofResponse {
+  Document document = 1;
 }
 
 // this line is used by starport scaffolding # 3
