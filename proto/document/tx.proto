@@ -9,6 +9,7 @@ option go_package = "github.com/ShareRing/Shareledger/x/document/types";
 service Msg {
   rpc CreateDocument(MsgCreateDocument) returns (MsgCreateDocumentResponse);
   rpc CreateDocumentInBatch(MsgCreateDocumentInBatch) returns (MsgCreateDocumentInBatchResponse);
+  rpc RevokeDocument(MsgRevokeDocument) returns (MsgRevokeDocumentResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -30,6 +31,15 @@ message MsgCreateDocumentInBatch {
 }
 
 message MsgCreateDocumentInBatchResponse {
+}
+
+message MsgRevokeDocument {
+  string holder = 1;
+  string issuer = 2;
+  string proof = 3;
+}
+
+message MsgRevokeDocumentResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message

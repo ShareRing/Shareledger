@@ -20813,6 +20813,8 @@ definitions:
     type: object
   ShareRing.shareledger.document.MsgCreateDocumentResponse:
     type: object
+  ShareRing.shareledger.document.MsgRevokeDocumentResponse:
+    type: object
   ShareRing.shareledger.document.QueryDocumentByHolderIdResponse:
     type: object
     properties:

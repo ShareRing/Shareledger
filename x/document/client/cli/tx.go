@@ -31,6 +31,7 @@ func GetTxCmd() *cobra.Command {
 
 	cmd.AddCommand(CmdCreateDocument())
 	cmd.AddCommand(CmdCreateDocumentInBatch())
+	cmd.AddCommand(CmdRevokeDocument())
 	// this line is used by starport scaffolding # 1
 
 	return cmd
