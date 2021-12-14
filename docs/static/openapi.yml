@@ -21030,11 +21030,19 @@ definitions:
         type: string
       creator:
         type: string
+  ShareRing.shareledger.electoral.MsgEnrollAccountOperatorResponse:
+    type: object
+  ShareRing.shareledger.electoral.MsgEnrollDocIssuerResponse:
+    type: object
   ShareRing.shareledger.electoral.MsgEnrollIdSignerResponse:
     type: object
   ShareRing.shareledger.electoral.MsgEnrollLoadersResponse:
     type: object
   ShareRing.shareledger.electoral.MsgEnrollVoterResponse:
+    type: object
+  ShareRing.shareledger.electoral.MsgRevokeAccountOperatorResponse:
+    type: object
+  ShareRing.shareledger.electoral.MsgRevokeDocIssuerResponse:
     type: object
   ShareRing.shareledger.electoral.MsgRevokeIdSignerResponse:
     type: object
