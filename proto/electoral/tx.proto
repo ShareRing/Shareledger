@@ -1,6 +1,7 @@
 syntax = "proto3";
 package ShareRing.shareledger.electoral;
 
+import "electoral/acc_state.proto";
 // this line is used by starport scaffolding # proto/tx/import
 
 option go_package = "github.com/ShareRing/Shareledger/x/electoral/types";
@@ -9,6 +10,9 @@ option go_package = "github.com/ShareRing/Shareledger/x/electoral/types";
 service Msg {
       rpc EnrollVoter(MsgEnrollVoter) returns (MsgEnrollVoterResponse);
   rpc RevokeVoter(MsgRevokeVoter) returns (MsgRevokeVoterResponse);
+  rpc CreateAccState(MsgCreateAccState) returns (MsgCreateAccStateResponse);
+  rpc UpdateAccState(MsgUpdateAccState) returns (MsgUpdateAccStateResponse);
+  rpc DeleteAccState(MsgDeleteAccState) returns (MsgDeleteAccStateResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -27,5 +31,29 @@ message MsgRevokeVoter {
 
 message MsgRevokeVoterResponse {
 }
+
+message MsgCreateAccState {
+  string creator = 1;
+  string key = 2;
+
+  string address = 3;
+  string status = 4;
+}
+message MsgCreateAccStateResponse {}
+
+message MsgUpdateAccState {
+  string creator = 1;
+  string key = 2;
+
+  string address = 3;
+  string status = 4;
+}
+message MsgUpdateAccStateResponse {}
+
+message MsgDeleteAccState {
+  string creator = 1;
+  string key = 2;
+}
+message MsgDeleteAccStateResponse {}
 
 // this line is used by starport scaffolding # proto/tx/message
