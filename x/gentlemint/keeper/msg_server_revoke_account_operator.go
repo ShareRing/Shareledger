@@ -14,7 +14,7 @@ func (k msgServer) RevokeAccountOperator(goCtx context.Context, msg *types.MsgRe
 	if err := msg.ValidateBasic(); err != nil {
 		return nil, err
 	}
-	if !k.isAuthority(ctx, msg.GetSigners()[0]) {
+	if !k.IsAuthority(ctx, msg.GetSigners()[0]) {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, types.ErrSenderIsNotAuthority)
 	}
 

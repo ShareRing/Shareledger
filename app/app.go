@@ -520,6 +520,8 @@ func New(
 		encodingConfig.TxConfig.SignModeHandler(),
 		app.FeeGrantKeeper,
 		authante.DefaultSigVerificationGasConsumer,
+		app.GentleMintKeeper,
+		app.IdKeeper,
 	)
 
 	app.SetAnteHandler(anteHandler)

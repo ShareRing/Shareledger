@@ -15,7 +15,7 @@ import (
 func (k msgServer) LoadShrp(goCtx context.Context, msg *types.MsgLoadShrp) (*types.MsgLoadShrpResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	if !k.isSHRPLoader(ctx, msg.GetSigners()[0]) {
+	if !k.IsSHRPLoader(ctx, msg.GetSigners()[0]) {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "Approver's Address is not an Enrolled SHRP Loader")
 	}
 

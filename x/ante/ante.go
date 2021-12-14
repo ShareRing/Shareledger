@@ -15,16 +15,19 @@ func NewHandler(
 	signModeHandler authsigning.SignModeHandler,
 	feegrantKeeper ante.FeegrantKeeper,
 	sigGasConsumer func(meter sdk.GasMeter, sig signing.SignatureV2, params authtypes.Params) error,
+	roleKeeper RoleKeeper,
+	idKeeper IDKeeper,
 ) sdk.AnteHandler {
 	return sdk.ChainAnteDecorators(
 		NewCheckFeeDecorator(gentlemintKeeper),
-		NewAuthAnteDecorator(
+		NewCosmosAuthAnteDecorator(
 			accountKeeper,
 			bankKeeper,
 			signModeHandler,
 			feegrantKeeper,
 			sigGasConsumer,
 		),
+		NewAuthDecorator(roleKeeper, idKeeper),
 		sdk.Terminator{},
 	)
 }

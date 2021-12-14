@@ -13,7 +13,7 @@ func (k msgServer) RevokeIdSigner(goCtx context.Context, msg *types.MsgRevokeIdS
 	if err := msg.ValidateBasic(); err != nil {
 		return nil, err
 	}
-	if !k.isAccountOperator(ctx, msg.GetSigners()[0]) {
+	if !k.IsAccountOperator(ctx, msg.GetSigners()[0]) {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, types.ErrSenderIsNotAccountOperator)
 	}
 

@@ -18,7 +18,7 @@ type AuthAnteDecorator struct {
 	sigGasConsumer  func(meter sdk.GasMeter, sig signing.SignatureV2, params types.Params) error
 }
 
-func NewAuthAnteDecorator(
+func NewCosmosAuthAnteDecorator(
 	accountKeeper ante.AccountKeeper,
 	bankKeeper types.BankKeeper,
 	signModeHandler authsigning.SignModeHandler,

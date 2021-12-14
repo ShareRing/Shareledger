@@ -14,7 +14,7 @@ func (k msgServer) BurnShr(goCtx context.Context, msg *types.MsgBurnShr) (*types
 	if err := msg.ValidateBasic(); err != nil {
 		return nil, err
 	}
-	if !k.isTreasurer(ctx, msg.GetSigners()[0]) {
+	if !k.IsTreasurer(ctx, msg.GetSigners()[0]) {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "Approver's Address is not Treasurer")
 	}
 

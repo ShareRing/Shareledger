@@ -15,7 +15,7 @@ func (k msgServer) BurnShrp(goCtx context.Context, msg *types.MsgBurnShrp) (*typ
 		return nil, err
 	}
 
-	if !k.isTreasurer(ctx, msg.GetSigners()[0]) {
+	if !k.IsTreasurer(ctx, msg.GetSigners()[0]) {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "Approver's Address is not Treasurer")
 	}
 
