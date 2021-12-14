@@ -20,6 +20,7 @@ type RoleKeeper interface {
 	IsTreasurer(ctx sdk.Context, address sdk.AccAddress) bool
 	IsIDSigner(ctx sdk.Context, address sdk.AccAddress) bool
 	IsDocIssuer(ctx sdk.Context, address sdk.AccAddress) bool
+	IsAccountOperator(ctx sdk.Context, address sdk.AccAddress) bool
 }
 type IDKeeper interface {
 	GetIDByIdString(ctx sdk.Context, id string) *idtypes.ID

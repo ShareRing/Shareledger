@@ -9,15 +9,11 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
-// Load SHRP function is used to load the given amount of SHRP to the given recepient
-// - Automatically buy 10SHR for the recepient if there is less than 10 shr
-// - Send 1SHR from recepient to loader as the loading fee
+// LoadShrp function is used to load the given amount of SHRP to the given recipient
+// - Automatically buy 10SHR for the recipient if there is less than 10 shr
+// - Send 1SHR from recipient to loader as the loading fee
 func (k msgServer) LoadShrp(goCtx context.Context, msg *types.MsgLoadShrp) (*types.MsgLoadShrpResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
-
-	if !k.IsSHRPLoader(ctx, msg.GetSigners()[0]) {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "Approver's Address is not an Enrolled SHRP Loader")
-	}
 
 	receiverAddr, err := sdk.AccAddressFromBech32(msg.Address)
 	if err != nil {

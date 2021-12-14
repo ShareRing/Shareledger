@@ -21,6 +21,7 @@ const (
 	ErrMsgNotAuthority       = "Transaction's Signer is not authority"
 	ErrMsgNotBackupAccount   = "Transaction's Signer is not the backup account"
 	ErrMsgNotTreasureAccount = "Transaction's Signer is not treasure account"
+	ErrMsgNotOperatorAccount = "Transaction's Signer is not operator account"
 )
 
 func NewAuthDecorator(rk RoleKeeper, ik IDKeeper) Auth {
@@ -51,7 +52,8 @@ func (a Auth) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate bool, next sdk.Ant
 				return ctx, sdkerrors.Wrapf(sdkerrors.ErrUnauthorized, ErrMsgNotSHRPLoader)
 			}
 		case // Treasure account permission
-			*gentleminttypes.MsgBurnShrp, *gentleminttypes.MsgBurnShr:
+			*gentleminttypes.MsgBurnShrp,
+			*gentleminttypes.MsgBurnShr:
 			if !a.rk.IsTreasurer(ctx, signer) {
 				return ctx, sdkerrors.Wrapf(sdkerrors.ErrUnauthorized, ErrMsgNotTreasureAccount)
 			}
@@ -75,6 +77,14 @@ func (a Auth) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate bool, next sdk.Ant
 			*documenttypes.MsgRevokeDoc:
 			if !a.rk.IsDocIssuer(ctx, signer) {
 				return ctx, sdkerrors.Wrapf(sdkerrors.ErrUnauthorized, ErrMsgNotDocIssuer)
+			}
+		case // Account Operator
+			*gentleminttypes.MsgEnrollDocIssuer,
+			*gentleminttypes.MsgEnrollIdSigner,
+			*gentleminttypes.MsgRevokeDocIssuer,
+			*gentleminttypes.MsgRevokeIdSigner:
+			if !a.rk.IsAccountOperator(ctx, signer) {
+				return ctx, sdkerrors.Wrapf(sdkerrors.ErrUnauthorized, ErrMsgNotOperatorAccount)
 			}
 		}
 	}
