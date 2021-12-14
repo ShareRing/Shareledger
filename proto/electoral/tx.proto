@@ -8,15 +8,24 @@ option go_package = "github.com/ShareRing/Shareledger/x/electoral/types";
 // Msg defines the Msg service.
 service Msg {
       rpc EnrollVoter(MsgEnrollVoter) returns (MsgEnrollVoterResponse);
+  rpc RevokeVoter(MsgRevokeVoter) returns (MsgRevokeVoterResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
 message MsgEnrollVoter {
   string creator = 1;
-  string voter = 2;
+  string address = 2;
 }
 
 message MsgEnrollVoterResponse {
+}
+
+message MsgRevokeVoter {
+  string creator = 1;
+  string address = 2;
+}
+
+message MsgRevokeVoterResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message

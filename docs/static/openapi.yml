@@ -20851,6 +20851,8 @@ definitions:
             format: int32
   ShareRing.shareledger.electoral.MsgEnrollVoterResponse:
     type: object
+  ShareRing.shareledger.electoral.MsgRevokeVoterResponse:
+    type: object
   ShareRing.shareledger.electoralbk.MsgEnrollVoterResponse:
     type: object
   ShareRing.shareledger.electoralbk.MsgRevokeVoterResponse:
