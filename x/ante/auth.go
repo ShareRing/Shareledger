@@ -38,6 +38,8 @@ func (a Auth) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate bool, next sdk.Ant
 			*gentleminttypes.MsgLoadShr,
 			*gentleminttypes.MsgEnrollLoaders,
 			*gentleminttypes.MsgRevokeLoaders,
+			*gentleminttypes.MsgEnrollAccountOperator,
+			*gentleminttypes.MsgRevokeAccountOperator,
 			*electoraltypes.MsgEnrollVoter,
 			*electoraltypes.MsgRevokeVoter:
 			if !a.rk.IsAuthority(ctx, signer) {

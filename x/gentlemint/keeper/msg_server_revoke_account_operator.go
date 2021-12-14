@@ -5,7 +5,6 @@ import (
 
 	"github.com/ShareRing/Shareledger/x/gentlemint/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
 func (k msgServer) RevokeAccountOperator(goCtx context.Context, msg *types.MsgRevokeAccountOperator) (*types.MsgRevokeAccountOperatorResponse, error) {
@@ -13,9 +12,6 @@ func (k msgServer) RevokeAccountOperator(goCtx context.Context, msg *types.MsgRe
 
 	if err := msg.ValidateBasic(); err != nil {
 		return nil, err
-	}
-	if !k.IsAuthority(ctx, msg.GetSigners()[0]) {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, types.ErrSenderIsNotAuthority)
 	}
 
 	event := sdk.NewEvent(types.EventTypeRevokeAccOp)

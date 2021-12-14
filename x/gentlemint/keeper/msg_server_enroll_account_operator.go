@@ -5,7 +5,6 @@ import (
 
 	"github.com/ShareRing/Shareledger/x/gentlemint/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
 func (k msgServer) EnrollAccountOperator(goCtx context.Context, msg *types.MsgEnrollAccountOperator) (*types.MsgEnrollAccountOperatorResponse, error) {
@@ -13,10 +12,6 @@ func (k msgServer) EnrollAccountOperator(goCtx context.Context, msg *types.MsgEn
 
 	if err := msg.ValidateBasic(); err != nil {
 		return nil, err
-	}
-
-	if !k.IsAuthority(ctx, msg.GetSigners()[0]) {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, types.ErrSenderIsNotAuthority)
 	}
 
 	event := sdk.NewEvent(

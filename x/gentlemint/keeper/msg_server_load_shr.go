@@ -14,9 +14,6 @@ func (k msgServer) LoadShr(goCtx context.Context, msg *types.MsgLoadShr) (*types
 	if err := msg.ValidateBasic(); err != nil {
 		return nil, err
 	}
-	if !k.IsAuthority(ctx, msg.GetSigners()[0]) {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, types.ErrSenderIsNotAuthority)
-	}
 
 	coins, err := types.ParseShrCoinsStr(msg.Amount)
 	if err != nil {
