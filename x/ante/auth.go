@@ -2,7 +2,7 @@ package ante
 
 import (
 	documenttypes "github.com/ShareRing/Shareledger/x/document/types"
-	electoraltypes "github.com/ShareRing/Shareledger/x/electoral/types"
+	electoralbktypes "github.com/ShareRing/Shareledger/x/electoralbk/types"
 	gentleminttypes "github.com/ShareRing/Shareledger/x/gentlemint/types"
 	idtypes "github.com/ShareRing/Shareledger/x/id/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -41,8 +41,8 @@ func (a Auth) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate bool, next sdk.Ant
 			*gentleminttypes.MsgRevokeLoaders,
 			*gentleminttypes.MsgEnrollAccountOperator,
 			*gentleminttypes.MsgRevokeAccountOperator,
-			*electoraltypes.MsgEnrollVoter,
-			*electoraltypes.MsgRevokeVoter:
+			*electoralbktypes.MsgEnrollVoter,
+			*electoralbktypes.MsgRevokeVoter:
 			if !a.rk.IsAuthority(ctx, signer) {
 				return ctx, sdkerrors.Wrapf(sdkerrors.ErrUnauthorized, ErrMsgNotAuthority)
 			}

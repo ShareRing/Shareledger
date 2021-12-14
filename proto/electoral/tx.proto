@@ -1,27 +1,22 @@
 syntax = "proto3";
 package ShareRing.shareledger.electoral;
 
+// this line is used by starport scaffolding # proto/tx/import
+
 option go_package = "github.com/ShareRing/Shareledger/x/electoral/types";
 
 // Msg defines the Msg service.
 service Msg {
-    rpc EnrollVoter(MsgEnrollVoter) returns(MsgEnrollVoterResponse);
-	rpc RevokeVoter(MsgRevokeVoter) returns(MsgRevokeVoterResponse);
+      rpc EnrollVoter(MsgEnrollVoter) returns (MsgEnrollVoterResponse);
+// this line is used by starport scaffolding # proto/tx/rpc
 }
 
 message MsgEnrollVoter {
-	string approver = 1;
-	string voter = 2;
+  string creator = 1;
+  string voter = 2;
 }
-message MsgEnrollVoterResponse{}
 
-message MsgRevokeVoter {
-	string approver = 1;
-	string voter = 2;
+message MsgEnrollVoterResponse {
 }
-message MsgRevokeVoterResponse{}
 
-message Voter {
-	string address = 1;
-	string status = 2;
-} 
+// this line is used by starport scaffolding # proto/tx/message

@@ -12699,7 +12699,7 @@ paths:
   '/shareledger/voter/{address}':
     get:
       summary: Balance queries the balance of a single coin for a single account.
-      operationId: ShareRingShareledgerElectoralVoter
+      operationId: ShareRingShareledgerElectoralbkVoter
       responses:
         '200':
           description: A successful response.
@@ -20851,9 +20851,11 @@ definitions:
             format: int32
   ShareRing.shareledger.electoral.MsgEnrollVoterResponse:
     type: object
-  ShareRing.shareledger.electoral.MsgRevokeVoterResponse:
+  ShareRing.shareledger.electoralbk.MsgEnrollVoterResponse:
     type: object
-  ShareRing.shareledger.electoral.QueryVoterResponse:
+  ShareRing.shareledger.electoralbk.MsgRevokeVoterResponse:
+    type: object
+  ShareRing.shareledger.electoralbk.QueryVoterResponse:
     type: object
     properties:
       voter:
@@ -20863,7 +20865,7 @@ definitions:
             type: string
           status:
             type: string
-  ShareRing.shareledger.electoral.Voter:
+  ShareRing.shareledger.electoralbk.Voter:
     type: object
     properties:
       address:

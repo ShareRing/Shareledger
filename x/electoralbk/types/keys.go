@@ -2,7 +2,7 @@ package types
 
 const (
 	// ModuleName defines the module name
-	ModuleName = "electoral"
+	ModuleName = "electoralbk"
 
 	// StoreKey defines the primary module store key
 	StoreKey = ModuleName
@@ -14,7 +14,9 @@ const (
 	QuerierRoute = ModuleName
 
 	// MemStoreKey defines the in-memory store key
-	MemStoreKey = "mem_electoral"
+	MemStoreKey = "mem_electoralbk"
+
+	VoterPrefix = "voter"
 )
 
 func KeyPrefix(p string) []byte {
