@@ -22,7 +22,7 @@ func (gs GenesisState) Validate() error {
 	accStateIndexMap := make(map[string]struct{})
 
 	for _, elem := range gs.AccStateList {
-		index := string(AccStateKey(elem.Key))
+		index := string(AccStateKey(IndexKeyAccState(elem.Key)))
 		if _, ok := accStateIndexMap[index]; ok {
 			return fmt.Errorf("duplicated index for accState")
 		}

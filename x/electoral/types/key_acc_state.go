@@ -1,6 +1,10 @@
 package types
 
-import "encoding/binary"
+import (
+	"encoding/binary"
+	"fmt"
+	sdk "github.com/cosmos/cosmos-sdk/types"
+)
 
 var _ binary.ByteOrder
 
@@ -9,15 +13,30 @@ const (
 	AccStateKeyPrefix = "AccState/value/"
 )
 
+type AccStateKeyType string
+
+const (
+	AccStateKeyIdSigner    AccStateKeyType = "idsigner"
+	AccStateKeyDocIssuer   AccStateKeyType = "docIssuer"
+	AccStateKeyAccOp       AccStateKeyType = "accop"
+	AccStateKeyShrpLoaders AccStateKeyType = "shrploader"
+)
+
+type IndexKeyAccState string
+
 // AccStateKey returns the store key to retrieve a AccState from the index fields
 func AccStateKey(
-	key string,
+	k IndexKeyAccState,
 ) []byte {
 	var key []byte
 
-	keyBytes := []byte(key)
+	keyBytes := []byte(string(k))
 	key = append(key, keyBytes...)
 	key = append(key, []byte("/")...)
 
 	return key
+}
+
+func GenAccStateIndexKey(addr sdk.AccAddress, key AccStateKeyType) IndexKeyAccState {
+	return IndexKeyAccState(fmt.Sprintf("%s%s", key, addr))
 }

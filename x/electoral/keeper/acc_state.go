@@ -11,14 +11,14 @@ func (k Keeper) SetAccState(ctx sdk.Context, accState types.AccState) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.AccStateKeyPrefix))
 	b := k.cdc.MustMarshal(&accState)
 	store.Set(types.AccStateKey(
-		accState.Key,
+		types.IndexKeyAccState(accState.Key),
 	), b)
 }
 
 // GetAccState returns a accState from its index
 func (k Keeper) GetAccState(
 	ctx sdk.Context,
-	key string,
+	key types.IndexKeyAccState,
 
 ) (val types.AccState, found bool) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.AccStateKeyPrefix))
@@ -37,7 +37,7 @@ func (k Keeper) GetAccState(
 // RemoveAccState removes a accState from the store
 func (k Keeper) RemoveAccState(
 	ctx sdk.Context,
-	key string,
+	key types.IndexKeyAccState,
 
 ) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.AccStateKeyPrefix))
@@ -51,7 +51,11 @@ func (k Keeper) GetAllAccState(ctx sdk.Context) (list []types.AccState) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.AccStateKeyPrefix))
 	iterator := sdk.KVStorePrefixIterator(store, []byte{})
 
-	defer iterator.Close()
+	defer func() {
+		if err := iterator.Close(); err != nil {
+			ctx.Logger().Error(err.Error())
+		}
+	}()
 
 	for ; iterator.Valid(); iterator.Next() {
 		var val types.AccState

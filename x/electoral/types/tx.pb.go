@@ -203,25 +203,23 @@ func (m *MsgRevokeVoterResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_MsgRevokeVoterResponse proto.InternalMessageInfo
 
-type MsgCreateAccState struct {
-	Creator string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
-	Key     string `protobuf:"bytes,2,opt,name=key,proto3" json:"key,omitempty"`
-	Address string `protobuf:"bytes,3,opt,name=address,proto3" json:"address,omitempty"`
-	Status  string `protobuf:"bytes,4,opt,name=status,proto3" json:"status,omitempty"`
+type MsgEnrollLoaders struct {
+	Creator   string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+	Addresses string `protobuf:"bytes,2,opt,name=addresses,proto3" json:"addresses,omitempty"`
 }
 
-func (m *MsgCreateAccState) Reset()         { *m = MsgCreateAccState{} }
-func (m *MsgCreateAccState) String() string { return proto.CompactTextString(m) }
-func (*MsgCreateAccState) ProtoMessage()    {}
-func (*MsgCreateAccState) Descriptor() ([]byte, []int) {
+func (m *MsgEnrollLoaders) Reset()         { *m = MsgEnrollLoaders{} }
+func (m *MsgEnrollLoaders) String() string { return proto.CompactTextString(m) }
+func (*MsgEnrollLoaders) ProtoMessage()    {}
+func (*MsgEnrollLoaders) Descriptor() ([]byte, []int) {
 	return fileDescriptor_10832aea077e441f, []int{4}
 }
-func (m *MsgCreateAccState) XXX_Unmarshal(b []byte) error {
+func (m *MsgEnrollLoaders) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgCreateAccState) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgEnrollLoaders) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgCreateAccState.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgEnrollLoaders.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -231,61 +229,47 @@ func (m *MsgCreateAccState) XXX_Marshal(b []byte, deterministic bool) ([]byte, e
 		return b[:n], nil
 	}
 }
-func (m *MsgCreateAccState) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgCreateAccState.Merge(m, src)
+func (m *MsgEnrollLoaders) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgEnrollLoaders.Merge(m, src)
 }
-func (m *MsgCreateAccState) XXX_Size() int {
+func (m *MsgEnrollLoaders) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgCreateAccState) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgCreateAccState.DiscardUnknown(m)
+func (m *MsgEnrollLoaders) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgEnrollLoaders.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgCreateAccState proto.InternalMessageInfo
+var xxx_messageInfo_MsgEnrollLoaders proto.InternalMessageInfo
 
-func (m *MsgCreateAccState) GetCreator() string {
+func (m *MsgEnrollLoaders) GetCreator() string {
 	if m != nil {
 		return m.Creator
 	}
 	return ""
 }
 
-func (m *MsgCreateAccState) GetKey() string {
+func (m *MsgEnrollLoaders) GetAddresses() string {
 	if m != nil {
-		return m.Key
+		return m.Addresses
 	}
 	return ""
 }
 
-func (m *MsgCreateAccState) GetAddress() string {
-	if m != nil {
-		return m.Address
-	}
-	return ""
+type MsgEnrollLoadersResponse struct {
 }
 
-func (m *MsgCreateAccState) GetStatus() string {
-	if m != nil {
-		return m.Status
-	}
-	return ""
-}
-
-type MsgCreateAccStateResponse struct {
-}
-
-func (m *MsgCreateAccStateResponse) Reset()         { *m = MsgCreateAccStateResponse{} }
-func (m *MsgCreateAccStateResponse) String() string { return proto.CompactTextString(m) }
-func (*MsgCreateAccStateResponse) ProtoMessage()    {}
-func (*MsgCreateAccStateResponse) Descriptor() ([]byte, []int) {
+func (m *MsgEnrollLoadersResponse) Reset()         { *m = MsgEnrollLoadersResponse{} }
+func (m *MsgEnrollLoadersResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgEnrollLoadersResponse) ProtoMessage()    {}
+func (*MsgEnrollLoadersResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_10832aea077e441f, []int{5}
 }
-func (m *MsgCreateAccStateResponse) XXX_Unmarshal(b []byte) error {
+func (m *MsgEnrollLoadersResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgCreateAccStateResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgEnrollLoadersResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgCreateAccStateResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgEnrollLoadersResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -295,37 +279,35 @@ func (m *MsgCreateAccStateResponse) XXX_Marshal(b []byte, deterministic bool) ([
 		return b[:n], nil
 	}
 }
-func (m *MsgCreateAccStateResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgCreateAccStateResponse.Merge(m, src)
+func (m *MsgEnrollLoadersResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgEnrollLoadersResponse.Merge(m, src)
 }
-func (m *MsgCreateAccStateResponse) XXX_Size() int {
+func (m *MsgEnrollLoadersResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgCreateAccStateResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgCreateAccStateResponse.DiscardUnknown(m)
+func (m *MsgEnrollLoadersResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgEnrollLoadersResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgCreateAccStateResponse proto.InternalMessageInfo
+var xxx_messageInfo_MsgEnrollLoadersResponse proto.InternalMessageInfo
 
-type MsgUpdateAccState struct {
-	Creator string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
-	Key     string `protobuf:"bytes,2,opt,name=key,proto3" json:"key,omitempty"`
-	Address string `protobuf:"bytes,3,opt,name=address,proto3" json:"address,omitempty"`
-	Status  string `protobuf:"bytes,4,opt,name=status,proto3" json:"status,omitempty"`
+type MsgRevokeLoaders struct {
+	Creator   string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+	Addresses string `protobuf:"bytes,2,opt,name=addresses,proto3" json:"addresses,omitempty"`
 }
 
-func (m *MsgUpdateAccState) Reset()         { *m = MsgUpdateAccState{} }
-func (m *MsgUpdateAccState) String() string { return proto.CompactTextString(m) }
-func (*MsgUpdateAccState) ProtoMessage()    {}
-func (*MsgUpdateAccState) Descriptor() ([]byte, []int) {
+func (m *MsgRevokeLoaders) Reset()         { *m = MsgRevokeLoaders{} }
+func (m *MsgRevokeLoaders) String() string { return proto.CompactTextString(m) }
+func (*MsgRevokeLoaders) ProtoMessage()    {}
+func (*MsgRevokeLoaders) Descriptor() ([]byte, []int) {
 	return fileDescriptor_10832aea077e441f, []int{6}
 }
-func (m *MsgUpdateAccState) XXX_Unmarshal(b []byte) error {
+func (m *MsgRevokeLoaders) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgUpdateAccState) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgRevokeLoaders) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgUpdateAccState.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgRevokeLoaders.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -335,61 +317,47 @@ func (m *MsgUpdateAccState) XXX_Marshal(b []byte, deterministic bool) ([]byte, e
 		return b[:n], nil
 	}
 }
-func (m *MsgUpdateAccState) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgUpdateAccState.Merge(m, src)
+func (m *MsgRevokeLoaders) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgRevokeLoaders.Merge(m, src)
 }
-func (m *MsgUpdateAccState) XXX_Size() int {
+func (m *MsgRevokeLoaders) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgUpdateAccState) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgUpdateAccState.DiscardUnknown(m)
+func (m *MsgRevokeLoaders) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgRevokeLoaders.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgUpdateAccState proto.InternalMessageInfo
+var xxx_messageInfo_MsgRevokeLoaders proto.InternalMessageInfo
 
-func (m *MsgUpdateAccState) GetCreator() string {
+func (m *MsgRevokeLoaders) GetCreator() string {
 	if m != nil {
 		return m.Creator
 	}
 	return ""
 }
 
-func (m *MsgUpdateAccState) GetKey() string {
+func (m *MsgRevokeLoaders) GetAddresses() string {
 	if m != nil {
-		return m.Key
+		return m.Addresses
 	}
 	return ""
 }
 
-func (m *MsgUpdateAccState) GetAddress() string {
-	if m != nil {
-		return m.Address
-	}
-	return ""
+type MsgRevokeLoadersResponse struct {
 }
 
-func (m *MsgUpdateAccState) GetStatus() string {
-	if m != nil {
-		return m.Status
-	}
-	return ""
-}
-
-type MsgUpdateAccStateResponse struct {
-}
-
-func (m *MsgUpdateAccStateResponse) Reset()         { *m = MsgUpdateAccStateResponse{} }
-func (m *MsgUpdateAccStateResponse) String() string { return proto.CompactTextString(m) }
-func (*MsgUpdateAccStateResponse) ProtoMessage()    {}
-func (*MsgUpdateAccStateResponse) Descriptor() ([]byte, []int) {
+func (m *MsgRevokeLoadersResponse) Reset()         { *m = MsgRevokeLoadersResponse{} }
+func (m *MsgRevokeLoadersResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgRevokeLoadersResponse) ProtoMessage()    {}
+func (*MsgRevokeLoadersResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_10832aea077e441f, []int{7}
 }
-func (m *MsgUpdateAccStateResponse) XXX_Unmarshal(b []byte) error {
+func (m *MsgRevokeLoadersResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgUpdateAccStateResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgRevokeLoadersResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgUpdateAccStateResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgRevokeLoadersResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -399,35 +367,35 @@ func (m *MsgUpdateAccStateResponse) XXX_Marshal(b []byte, deterministic bool) ([
 		return b[:n], nil
 	}
 }
-func (m *MsgUpdateAccStateResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgUpdateAccStateResponse.Merge(m, src)
+func (m *MsgRevokeLoadersResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgRevokeLoadersResponse.Merge(m, src)
 }
-func (m *MsgUpdateAccStateResponse) XXX_Size() int {
+func (m *MsgRevokeLoadersResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgUpdateAccStateResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgUpdateAccStateResponse.DiscardUnknown(m)
+func (m *MsgRevokeLoadersResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgRevokeLoadersResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgUpdateAccStateResponse proto.InternalMessageInfo
+var xxx_messageInfo_MsgRevokeLoadersResponse proto.InternalMessageInfo
 
-type MsgDeleteAccState struct {
-	Creator string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
-	Key     string `protobuf:"bytes,2,opt,name=key,proto3" json:"key,omitempty"`
+type MsgEnrollIdSigner struct {
+	Creator   string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+	Addresses string `protobuf:"bytes,2,opt,name=addresses,proto3" json:"addresses,omitempty"`
 }
 
-func (m *MsgDeleteAccState) Reset()         { *m = MsgDeleteAccState{} }
-func (m *MsgDeleteAccState) String() string { return proto.CompactTextString(m) }
-func (*MsgDeleteAccState) ProtoMessage()    {}
-func (*MsgDeleteAccState) Descriptor() ([]byte, []int) {
+func (m *MsgEnrollIdSigner) Reset()         { *m = MsgEnrollIdSigner{} }
+func (m *MsgEnrollIdSigner) String() string { return proto.CompactTextString(m) }
+func (*MsgEnrollIdSigner) ProtoMessage()    {}
+func (*MsgEnrollIdSigner) Descriptor() ([]byte, []int) {
 	return fileDescriptor_10832aea077e441f, []int{8}
 }
-func (m *MsgDeleteAccState) XXX_Unmarshal(b []byte) error {
+func (m *MsgEnrollIdSigner) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgDeleteAccState) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgEnrollIdSigner) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgDeleteAccState.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgEnrollIdSigner.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -437,47 +405,47 @@ func (m *MsgDeleteAccState) XXX_Marshal(b []byte, deterministic bool) ([]byte, e
 		return b[:n], nil
 	}
 }
-func (m *MsgDeleteAccState) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgDeleteAccState.Merge(m, src)
+func (m *MsgEnrollIdSigner) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgEnrollIdSigner.Merge(m, src)
 }
-func (m *MsgDeleteAccState) XXX_Size() int {
+func (m *MsgEnrollIdSigner) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgDeleteAccState) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgDeleteAccState.DiscardUnknown(m)
+func (m *MsgEnrollIdSigner) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgEnrollIdSigner.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgDeleteAccState proto.InternalMessageInfo
+var xxx_messageInfo_MsgEnrollIdSigner proto.InternalMessageInfo
 
-func (m *MsgDeleteAccState) GetCreator() string {
+func (m *MsgEnrollIdSigner) GetCreator() string {
 	if m != nil {
 		return m.Creator
 	}
 	return ""
 }
 
-func (m *MsgDeleteAccState) GetKey() string {
+func (m *MsgEnrollIdSigner) GetAddresses() string {
 	if m != nil {
-		return m.Key
+		return m.Addresses
 	}
 	return ""
 }
 
-type MsgDeleteAccStateResponse struct {
+type MsgEnrollIdSignerResponse struct {
 }
 
-func (m *MsgDeleteAccStateResponse) Reset()         { *m = MsgDeleteAccStateResponse{} }
-func (m *MsgDeleteAccStateResponse) String() string { return proto.CompactTextString(m) }
-func (*MsgDeleteAccStateResponse) ProtoMessage()    {}
-func (*MsgDeleteAccStateResponse) Descriptor() ([]byte, []int) {
+func (m *MsgEnrollIdSignerResponse) Reset()         { *m = MsgEnrollIdSignerResponse{} }
+func (m *MsgEnrollIdSignerResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgEnrollIdSignerResponse) ProtoMessage()    {}
+func (*MsgEnrollIdSignerResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_10832aea077e441f, []int{9}
 }
-func (m *MsgDeleteAccStateResponse) XXX_Unmarshal(b []byte) error {
+func (m *MsgEnrollIdSignerResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgDeleteAccStateResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgEnrollIdSignerResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgDeleteAccStateResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgEnrollIdSignerResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -487,60 +455,151 @@ func (m *MsgDeleteAccStateResponse) XXX_Marshal(b []byte, deterministic bool) ([
 		return b[:n], nil
 	}
 }
-func (m *MsgDeleteAccStateResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgDeleteAccStateResponse.Merge(m, src)
+func (m *MsgEnrollIdSignerResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgEnrollIdSignerResponse.Merge(m, src)
 }
-func (m *MsgDeleteAccStateResponse) XXX_Size() int {
+func (m *MsgEnrollIdSignerResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgDeleteAccStateResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgDeleteAccStateResponse.DiscardUnknown(m)
+func (m *MsgEnrollIdSignerResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgEnrollIdSignerResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgDeleteAccStateResponse proto.InternalMessageInfo
+var xxx_messageInfo_MsgEnrollIdSignerResponse proto.InternalMessageInfo
+
+type MsgRevokeIdSigner struct {
+	Creator   string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+	Addresses string `protobuf:"bytes,2,opt,name=addresses,proto3" json:"addresses,omitempty"`
+}
+
+func (m *MsgRevokeIdSigner) Reset()         { *m = MsgRevokeIdSigner{} }
+func (m *MsgRevokeIdSigner) String() string { return proto.CompactTextString(m) }
+func (*MsgRevokeIdSigner) ProtoMessage()    {}
+func (*MsgRevokeIdSigner) Descriptor() ([]byte, []int) {
+	return fileDescriptor_10832aea077e441f, []int{10}
+}
+func (m *MsgRevokeIdSigner) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgRevokeIdSigner) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgRevokeIdSigner.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgRevokeIdSigner) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgRevokeIdSigner.Merge(m, src)
+}
+func (m *MsgRevokeIdSigner) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgRevokeIdSigner) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgRevokeIdSigner.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgRevokeIdSigner proto.InternalMessageInfo
+
+func (m *MsgRevokeIdSigner) GetCreator() string {
+	if m != nil {
+		return m.Creator
+	}
+	return ""
+}
+
+func (m *MsgRevokeIdSigner) GetAddresses() string {
+	if m != nil {
+		return m.Addresses
+	}
+	return ""
+}
+
+type MsgRevokeIdSignerResponse struct {
+}
+
+func (m *MsgRevokeIdSignerResponse) Reset()         { *m = MsgRevokeIdSignerResponse{} }
+func (m *MsgRevokeIdSignerResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgRevokeIdSignerResponse) ProtoMessage()    {}
+func (*MsgRevokeIdSignerResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_10832aea077e441f, []int{11}
+}
+func (m *MsgRevokeIdSignerResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgRevokeIdSignerResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgRevokeIdSignerResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgRevokeIdSignerResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgRevokeIdSignerResponse.Merge(m, src)
+}
+func (m *MsgRevokeIdSignerResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgRevokeIdSignerResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgRevokeIdSignerResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgRevokeIdSignerResponse proto.InternalMessageInfo
 
 func init() {
 	proto.RegisterType((*MsgEnrollVoter)(nil), "ShareRing.shareledger.electoral.MsgEnrollVoter")
 	proto.RegisterType((*MsgEnrollVoterResponse)(nil), "ShareRing.shareledger.electoral.MsgEnrollVoterResponse")
 	proto.RegisterType((*MsgRevokeVoter)(nil), "ShareRing.shareledger.electoral.MsgRevokeVoter")
 	proto.RegisterType((*MsgRevokeVoterResponse)(nil), "ShareRing.shareledger.electoral.MsgRevokeVoterResponse")
-	proto.RegisterType((*MsgCreateAccState)(nil), "ShareRing.shareledger.electoral.MsgCreateAccState")
-	proto.RegisterType((*MsgCreateAccStateResponse)(nil), "ShareRing.shareledger.electoral.MsgCreateAccStateResponse")
-	proto.RegisterType((*MsgUpdateAccState)(nil), "ShareRing.shareledger.electoral.MsgUpdateAccState")
-	proto.RegisterType((*MsgUpdateAccStateResponse)(nil), "ShareRing.shareledger.electoral.MsgUpdateAccStateResponse")
-	proto.RegisterType((*MsgDeleteAccState)(nil), "ShareRing.shareledger.electoral.MsgDeleteAccState")
-	proto.RegisterType((*MsgDeleteAccStateResponse)(nil), "ShareRing.shareledger.electoral.MsgDeleteAccStateResponse")
+	proto.RegisterType((*MsgEnrollLoaders)(nil), "ShareRing.shareledger.electoral.MsgEnrollLoaders")
+	proto.RegisterType((*MsgEnrollLoadersResponse)(nil), "ShareRing.shareledger.electoral.MsgEnrollLoadersResponse")
+	proto.RegisterType((*MsgRevokeLoaders)(nil), "ShareRing.shareledger.electoral.MsgRevokeLoaders")
+	proto.RegisterType((*MsgRevokeLoadersResponse)(nil), "ShareRing.shareledger.electoral.MsgRevokeLoadersResponse")
+	proto.RegisterType((*MsgEnrollIdSigner)(nil), "ShareRing.shareledger.electoral.MsgEnrollIdSigner")
+	proto.RegisterType((*MsgEnrollIdSignerResponse)(nil), "ShareRing.shareledger.electoral.MsgEnrollIdSignerResponse")
+	proto.RegisterType((*MsgRevokeIdSigner)(nil), "ShareRing.shareledger.electoral.MsgRevokeIdSigner")
+	proto.RegisterType((*MsgRevokeIdSignerResponse)(nil), "ShareRing.shareledger.electoral.MsgRevokeIdSignerResponse")
 }
 
 func init() { proto.RegisterFile("electoral/tx.proto", fileDescriptor_10832aea077e441f) }
 
 var fileDescriptor_10832aea077e441f = []byte{
-	// 395 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xbc, 0x94, 0x31, 0x4f, 0xfa, 0x40,
-	0x18, 0xc6, 0xe9, 0x9f, 0xbf, 0x18, 0xcf, 0x84, 0x68, 0x07, 0x52, 0x30, 0xa9, 0x86, 0xc9, 0xa9,
-	0x4d, 0x70, 0x30, 0x71, 0x31, 0x2a, 0x6e, 0xb2, 0x94, 0xe8, 0xe0, 0x62, 0xca, 0xf5, 0x4d, 0x21,
-	0x54, 0xae, 0xde, 0x1d, 0x0a, 0x1b, 0x1f, 0xc1, 0x8f, 0xe5, 0xc8, 0xe8, 0x68, 0xe0, 0x8b, 0x98,
-	0x6b, 0x4b, 0xed, 0xd5, 0x46, 0x0f, 0x4d, 0xdc, 0xde, 0x37, 0x2f, 0xcf, 0xef, 0x79, 0x68, 0x9e,
-	0x1c, 0xd2, 0x21, 0x00, 0xcc, 0x09, 0x75, 0x03, 0x9b, 0x4f, 0xac, 0x90, 0x12, 0x4e, 0xf4, 0xfd,
-	0x6e, 0xdf, 0xa5, 0xe0, 0x0c, 0x46, 0xbe, 0xc5, 0xc4, 0x14, 0x80, 0xe7, 0x03, 0xb5, 0xd2, 0x5f,
-	0x36, 0xea, 0x1f, 0x22, 0x17, 0xe3, 0x3b, 0xc6, 0x5d, 0x0e, 0xb1, 0xb6, 0xd9, 0x46, 0xd5, 0x0e,
-	0xf3, 0x2f, 0x47, 0x94, 0x04, 0xc1, 0x0d, 0xe1, 0x40, 0x75, 0x03, 0x6d, 0x62, 0x0a, 0x2e, 0x27,
-	0xd4, 0xd0, 0x0e, 0xb4, 0xc3, 0x2d, 0x67, 0xb5, 0x8a, 0x8b, 0xeb, 0x79, 0x14, 0x18, 0x33, 0xfe,
-	0xc5, 0x97, 0x64, 0x6d, 0x1a, 0xa8, 0x26, 0x53, 0x1c, 0x60, 0x21, 0x19, 0x31, 0x48, 0xf8, 0x0e,
-	0x3c, 0x92, 0x21, 0xfc, 0x96, 0x9f, 0xa1, 0xa4, 0xfc, 0x07, 0xb4, 0xdb, 0x61, 0xfe, 0x85, 0x20,
-	0xc0, 0x19, 0xc6, 0x5d, 0xf1, 0xd7, 0xbe, 0xb0, 0xd8, 0x41, 0xe5, 0x21, 0x4c, 0x13, 0xbc, 0x18,
-	0xb3, 0xa6, 0x65, 0xc9, 0x54, 0xaf, 0xa1, 0x8a, 0xf8, 0x52, 0x63, 0x66, 0xfc, 0x8f, 0x0e, 0xc9,
-	0xd6, 0xdc, 0x43, 0xf5, 0x4f, 0x96, 0xb9, 0x3c, 0xd7, 0xa1, 0xf7, 0xd7, 0x79, 0x64, 0xcb, 0x34,
-	0xcf, 0x69, 0x94, 0xa7, 0x0d, 0x01, 0xfc, 0x2c, 0x4f, 0x42, 0x97, 0x01, 0x2b, 0x7a, 0x6b, 0xb6,
-	0x81, 0xca, 0x1d, 0xe6, 0xeb, 0x4f, 0x68, 0x3b, 0x5b, 0x21, 0xdb, 0xfa, 0xa6, 0x91, 0x96, 0xdc,
-	0x96, 0xc6, 0xf1, 0x9a, 0x82, 0x55, 0x00, 0x61, 0x9c, 0xed, 0x96, 0x92, 0x71, 0x46, 0xa0, 0x66,
-	0x5c, 0xd0, 0x3b, 0x7d, 0xa6, 0xa1, 0x6a, 0xae, 0x75, 0x2d, 0x15, 0x96, 0xac, 0x69, 0x9c, 0xac,
-	0xaf, 0x91, 0x22, 0xe4, 0x8a, 0xa6, 0x14, 0x41, 0xd6, 0xa8, 0x45, 0x28, 0x6e, 0x57, 0x14, 0x21,
-	0xd7, 0x2d, 0xa5, 0x08, 0xb2, 0x46, 0x2d, 0x42, 0x71, 0x05, 0xcf, 0xaf, 0x5e, 0x16, 0xa6, 0x36,
-	0x5f, 0x98, 0xda, 0xdb, 0xc2, 0xd4, 0x9e, 0x97, 0x66, 0x69, 0xbe, 0x34, 0x4b, 0xaf, 0x4b, 0xb3,
-	0x74, 0xdb, 0xf2, 0x07, 0xbc, 0x3f, 0xee, 0x59, 0x98, 0xdc, 0xdb, 0x29, 0x3f, 0x9e, 0x62, 0xbe,
-	0x3d, 0xb1, 0x33, 0xaf, 0xe9, 0x34, 0x04, 0xd6, 0xab, 0x44, 0xaf, 0xe2, 0xd1, 0x7b, 0x00, 0x00,
-	0x00, 0xff, 0xff, 0x92, 0x04, 0x32, 0xc9, 0x67, 0x05, 0x00, 0x00,
+	// 403 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xac, 0x94, 0xbf, 0x4e, 0xeb, 0x30,
+	0x18, 0xc5, 0x9b, 0x7b, 0x75, 0x2f, 0xea, 0x87, 0xa8, 0x20, 0x03, 0x4a, 0x03, 0x0a, 0xa8, 0x13,
+	0x53, 0xa2, 0x86, 0x01, 0xc1, 0x88, 0x60, 0x00, 0xda, 0x25, 0x95, 0x18, 0x58, 0x90, 0x9b, 0x7c,
+	0x4a, 0x2b, 0x42, 0x5c, 0xd9, 0x06, 0xca, 0x80, 0xc4, 0x23, 0xf0, 0x58, 0x8c, 0x1d, 0x19, 0x51,
+	0xfb, 0x18, 0x2c, 0xa8, 0xe4, 0x4f, 0xe3, 0x50, 0x95, 0x44, 0x74, 0xb3, 0xe3, 0x9c, 0xf3, 0x3b,
+	0x9f, 0x75, 0x64, 0x50, 0x31, 0x40, 0x57, 0x50, 0x46, 0x02, 0x4b, 0x0c, 0xcd, 0x01, 0xa3, 0x82,
+	0xaa, 0x3b, 0x9d, 0x1e, 0x61, 0xe8, 0xf4, 0x43, 0xdf, 0xe4, 0xd3, 0x55, 0x80, 0x9e, 0x8f, 0xcc,
+	0x4c, 0xff, 0xd4, 0xeb, 0x33, 0x11, 0x71, 0xdd, 0x6b, 0x2e, 0x88, 0xc0, 0x48, 0xdb, 0x38, 0x81,
+	0x5a, 0x9b, 0xfb, 0xa7, 0x21, 0xa3, 0x41, 0x70, 0x49, 0x05, 0x32, 0x55, 0x83, 0x15, 0x97, 0x21,
+	0x11, 0x94, 0x69, 0xca, 0xae, 0xb2, 0x57, 0x75, 0x92, 0xed, 0xf4, 0x84, 0x78, 0x1e, 0x43, 0xce,
+	0xb5, 0x3f, 0xd1, 0x49, 0xbc, 0x6d, 0x68, 0xb0, 0x29, 0xbb, 0x38, 0xc8, 0x07, 0x34, 0xe4, 0x18,
+	0xfb, 0x3b, 0x78, 0x4f, 0x6f, 0xf0, 0xb7, 0xfe, 0x19, 0x97, 0xd4, 0xff, 0x1c, 0xd6, 0x53, 0x72,
+	0x8b, 0x12, 0x0f, 0x19, 0x5f, 0x40, 0xd8, 0x86, 0x6a, 0x6c, 0x89, 0x09, 0x63, 0xf6, 0xa1, 0xa1,
+	0x83, 0x96, 0xf7, 0xca, 0x71, 0xa2, 0x04, 0xcb, 0xe1, 0x48, 0x5e, 0x29, 0xe7, 0x02, 0x36, 0xd2,
+	0x0c, 0x67, 0x5e, 0xa7, 0xef, 0x87, 0x0b, 0xaf, 0x6c, 0x31, 0x68, 0x0b, 0xea, 0xdf, 0xcc, 0x72,
+	0xa4, 0x28, 0xc5, 0x92, 0x48, 0xb2, 0x59, 0x42, 0xb2, 0x3f, 0xfe, 0xc1, 0xdf, 0x36, 0xf7, 0xd5,
+	0x07, 0x58, 0xcd, 0x16, 0xcd, 0x32, 0x7f, 0xe8, 0xad, 0x29, 0x77, 0x4a, 0x3f, 0x28, 0x29, 0x48,
+	0x02, 0x4c, 0xc1, 0xd9, 0x06, 0x16, 0x02, 0x67, 0x04, 0xc5, 0xc0, 0x73, 0xda, 0xa9, 0x3e, 0xc1,
+	0x9a, 0x5c, 0xcd, 0x66, 0xf1, 0x11, 0x62, 0x89, 0x7e, 0x58, 0x5a, 0x92, 0xc5, 0xcb, 0x8d, 0x6d,
+	0x16, 0x1f, 0xa4, 0x14, 0x7e, 0x6e, 0x97, 0xd5, 0x67, 0x05, 0x6a, 0xb9, 0x26, 0xdb, 0xc5, 0x87,
+	0x49, 0x34, 0xfa, 0x51, 0x79, 0x8d, 0x14, 0x21, 0x57, 0x71, 0xbb, 0xf8, 0x40, 0xe5, 0x22, 0xcc,
+	0x6f, 0xff, 0x71, 0xeb, 0x75, 0x6c, 0x28, 0xa3, 0xb1, 0xa1, 0xbc, 0x8f, 0x0d, 0xe5, 0x65, 0x62,
+	0x54, 0x46, 0x13, 0xa3, 0xf2, 0x36, 0x31, 0x2a, 0x57, 0xb6, 0xdf, 0x17, 0xbd, 0xbb, 0xae, 0xe9,
+	0xd2, 0x5b, 0x2b, 0xf5, 0x8f, 0x56, 0x91, 0xbf, 0x35, 0xb4, 0x32, 0xcf, 0xfd, 0xe3, 0x00, 0x79,
+	0xf7, 0xff, 0xd7, 0xb3, 0xbd, 0xff, 0x19, 0x00, 0x00, 0xff, 0xff, 0x23, 0xe2, 0x32, 0x56, 0x08,
+	0x06, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -557,9 +616,10 @@ const _ = grpc.SupportPackageIsVersion4
 type MsgClient interface {
 	EnrollVoter(ctx context.Context, in *MsgEnrollVoter, opts ...grpc.CallOption) (*MsgEnrollVoterResponse, error)
 	RevokeVoter(ctx context.Context, in *MsgRevokeVoter, opts ...grpc.CallOption) (*MsgRevokeVoterResponse, error)
-	CreateAccState(ctx context.Context, in *MsgCreateAccState, opts ...grpc.CallOption) (*MsgCreateAccStateResponse, error)
-	UpdateAccState(ctx context.Context, in *MsgUpdateAccState, opts ...grpc.CallOption) (*MsgUpdateAccStateResponse, error)
-	DeleteAccState(ctx context.Context, in *MsgDeleteAccState, opts ...grpc.CallOption) (*MsgDeleteAccStateResponse, error)
+	EnrollLoaders(ctx context.Context, in *MsgEnrollLoaders, opts ...grpc.CallOption) (*MsgEnrollLoadersResponse, error)
+	RevokeLoaders(ctx context.Context, in *MsgRevokeLoaders, opts ...grpc.CallOption) (*MsgRevokeLoadersResponse, error)
+	EnrollIdSigner(ctx context.Context, in *MsgEnrollIdSigner, opts ...grpc.CallOption) (*MsgEnrollIdSignerResponse, error)
+	RevokeIdSigner(ctx context.Context, in *MsgRevokeIdSigner, opts ...grpc.CallOption) (*MsgRevokeIdSignerResponse, error)
 }
 
 type msgClient struct {
@@ -588,27 +648,36 @@ func (c *msgClient) RevokeVoter(ctx context.Context, in *MsgRevokeVoter, opts ..
 	return out, nil
 }
 
-func (c *msgClient) CreateAccState(ctx context.Context, in *MsgCreateAccState, opts ...grpc.CallOption) (*MsgCreateAccStateResponse, error) {
-	out := new(MsgCreateAccStateResponse)
-	err := c.cc.Invoke(ctx, "/ShareRing.shareledger.electoral.Msg/CreateAccState", in, out, opts...)
+func (c *msgClient) EnrollLoaders(ctx context.Context, in *MsgEnrollLoaders, opts ...grpc.CallOption) (*MsgEnrollLoadersResponse, error) {
+	out := new(MsgEnrollLoadersResponse)
+	err := c.cc.Invoke(ctx, "/ShareRing.shareledger.electoral.Msg/EnrollLoaders", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *msgClient) UpdateAccState(ctx context.Context, in *MsgUpdateAccState, opts ...grpc.CallOption) (*MsgUpdateAccStateResponse, error) {
-	out := new(MsgUpdateAccStateResponse)
-	err := c.cc.Invoke(ctx, "/ShareRing.shareledger.electoral.Msg/UpdateAccState", in, out, opts...)
+func (c *msgClient) RevokeLoaders(ctx context.Context, in *MsgRevokeLoaders, opts ...grpc.CallOption) (*MsgRevokeLoadersResponse, error) {
+	out := new(MsgRevokeLoadersResponse)
+	err := c.cc.Invoke(ctx, "/ShareRing.shareledger.electoral.Msg/RevokeLoaders", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *msgClient) DeleteAccState(ctx context.Context, in *MsgDeleteAccState, opts ...grpc.CallOption) (*MsgDeleteAccStateResponse, error) {
-	out := new(MsgDeleteAccStateResponse)
-	err := c.cc.Invoke(ctx, "/ShareRing.shareledger.electoral.Msg/DeleteAccState", in, out, opts...)
+func (c *msgClient) EnrollIdSigner(ctx context.Context, in *MsgEnrollIdSigner, opts ...grpc.CallOption) (*MsgEnrollIdSignerResponse, error) {
+	out := new(MsgEnrollIdSignerResponse)
+	err := c.cc.Invoke(ctx, "/ShareRing.shareledger.electoral.Msg/EnrollIdSigner", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *msgClient) RevokeIdSigner(ctx context.Context, in *MsgRevokeIdSigner, opts ...grpc.CallOption) (*MsgRevokeIdSignerResponse, error) {
+	out := new(MsgRevokeIdSignerResponse)
+	err := c.cc.Invoke(ctx, "/ShareRing.shareledger.electoral.Msg/RevokeIdSigner", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -619,9 +688,10 @@ func (c *msgClient) DeleteAccState(ctx context.Context, in *MsgDeleteAccState, o
 type MsgServer interface {
 	EnrollVoter(context.Context, *MsgEnrollVoter) (*MsgEnrollVoterResponse, error)
 	RevokeVoter(context.Context, *MsgRevokeVoter) (*MsgRevokeVoterResponse, error)
-	CreateAccState(context.Context, *MsgCreateAccState) (*MsgCreateAccStateResponse, error)
-	UpdateAccState(context.Context, *MsgUpdateAccState) (*MsgUpdateAccStateResponse, error)
-	DeleteAccState(context.Context, *MsgDeleteAccState) (*MsgDeleteAccStateResponse, error)
+	EnrollLoaders(context.Context, *MsgEnrollLoaders) (*MsgEnrollLoadersResponse, error)
+	RevokeLoaders(context.Context, *MsgRevokeLoaders) (*MsgRevokeLoadersResponse, error)
+	EnrollIdSigner(context.Context, *MsgEnrollIdSigner) (*MsgEnrollIdSignerResponse, error)
+	RevokeIdSigner(context.Context, *MsgRevokeIdSigner) (*MsgRevokeIdSignerResponse, error)
 }
 
 // UnimplementedMsgServer can be embedded to have forward compatible implementations.
@@ -634,14 +704,17 @@ func (*UnimplementedMsgServer) EnrollVoter(ctx context.Context, req *MsgEnrollVo
 func (*UnimplementedMsgServer) RevokeVoter(ctx context.Context, req *MsgRevokeVoter) (*MsgRevokeVoterResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RevokeVoter not implemented")
 }
-func (*UnimplementedMsgServer) CreateAccState(ctx context.Context, req *MsgCreateAccState) (*MsgCreateAccStateResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CreateAccState not implemented")
+func (*UnimplementedMsgServer) EnrollLoaders(ctx context.Context, req *MsgEnrollLoaders) (*MsgEnrollLoadersResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method EnrollLoaders not implemented")
 }
-func (*UnimplementedMsgServer) UpdateAccState(ctx context.Context, req *MsgUpdateAccState) (*MsgUpdateAccStateResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method UpdateAccState not implemented")
+func (*UnimplementedMsgServer) RevokeLoaders(ctx context.Context, req *MsgRevokeLoaders) (*MsgRevokeLoadersResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RevokeLoaders not implemented")
 }
-func (*UnimplementedMsgServer) DeleteAccState(ctx context.Context, req *MsgDeleteAccState) (*MsgDeleteAccStateResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method DeleteAccState not implemented")
+func (*UnimplementedMsgServer) EnrollIdSigner(ctx context.Context, req *MsgEnrollIdSigner) (*MsgEnrollIdSignerResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method EnrollIdSigner not implemented")
+}
+func (*UnimplementedMsgServer) RevokeIdSigner(ctx context.Context, req *MsgRevokeIdSigner) (*MsgRevokeIdSignerResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RevokeIdSigner not implemented")
 }
 
 func RegisterMsgServer(s grpc1.Server, srv MsgServer) {
@@ -684,56 +757,74 @@ func _Msg_RevokeVoter_Handler(srv interface{}, ctx context.Context, dec func(int
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Msg_CreateAccState_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgCreateAccState)
+func _Msg_EnrollLoaders_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgEnrollLoaders)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MsgServer).CreateAccState(ctx, in)
+		return srv.(MsgServer).EnrollLoaders(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/ShareRing.shareledger.electoral.Msg/CreateAccState",
+		FullMethod: "/ShareRing.shareledger.electoral.Msg/EnrollLoaders",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).CreateAccState(ctx, req.(*MsgCreateAccState))
+		return srv.(MsgServer).EnrollLoaders(ctx, req.(*MsgEnrollLoaders))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Msg_UpdateAccState_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgUpdateAccState)
+func _Msg_RevokeLoaders_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgRevokeLoaders)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MsgServer).UpdateAccState(ctx, in)
+		return srv.(MsgServer).RevokeLoaders(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/ShareRing.shareledger.electoral.Msg/UpdateAccState",
+		FullMethod: "/ShareRing.shareledger.electoral.Msg/RevokeLoaders",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).UpdateAccState(ctx, req.(*MsgUpdateAccState))
+		return srv.(MsgServer).RevokeLoaders(ctx, req.(*MsgRevokeLoaders))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Msg_DeleteAccState_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgDeleteAccState)
+func _Msg_EnrollIdSigner_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgEnrollIdSigner)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MsgServer).DeleteAccState(ctx, in)
+		return srv.(MsgServer).EnrollIdSigner(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/ShareRing.shareledger.electoral.Msg/DeleteAccState",
+		FullMethod: "/ShareRing.shareledger.electoral.Msg/EnrollIdSigner",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).DeleteAccState(ctx, req.(*MsgDeleteAccState))
+		return srv.(MsgServer).EnrollIdSigner(ctx, req.(*MsgEnrollIdSigner))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Msg_RevokeIdSigner_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgRevokeIdSigner)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).RevokeIdSigner(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/ShareRing.shareledger.electoral.Msg/RevokeIdSigner",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).RevokeIdSigner(ctx, req.(*MsgRevokeIdSigner))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -751,16 +842,20 @@ var _Msg_serviceDesc = grpc.ServiceDesc{
 			Handler:    _Msg_RevokeVoter_Handler,
 		},
 		{
-			MethodName: "CreateAccState",
-			Handler:    _Msg_CreateAccState_Handler,
+			MethodName: "EnrollLoaders",
+			Handler:    _Msg_EnrollLoaders_Handler,
 		},
 		{
-			MethodName: "UpdateAccState",
-			Handler:    _Msg_UpdateAccState_Handler,
+			MethodName: "RevokeLoaders",
+			Handler:    _Msg_RevokeLoaders_Handler,
 		},
 		{
-			MethodName: "DeleteAccState",
-			Handler:    _Msg_DeleteAccState_Handler,
+			MethodName: "EnrollIdSigner",
+			Handler:    _Msg_EnrollIdSigner_Handler,
+		},
+		{
+			MethodName: "RevokeIdSigner",
+			Handler:    _Msg_RevokeIdSigner_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -887,7 +982,7 @@ func (m *MsgRevokeVoterResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) 
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgCreateAccState) Marshal() (dAtA []byte, err error) {
+func (m *MsgEnrollLoaders) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -897,34 +992,20 @@ func (m *MsgCreateAccState) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgCreateAccState) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgEnrollLoaders) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgCreateAccState) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgEnrollLoaders) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	if len(m.Status) > 0 {
-		i -= len(m.Status)
-		copy(dAtA[i:], m.Status)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.Status)))
-		i--
-		dAtA[i] = 0x22
-	}
-	if len(m.Address) > 0 {
-		i -= len(m.Address)
-		copy(dAtA[i:], m.Address)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.Address)))
-		i--
-		dAtA[i] = 0x1a
-	}
-	if len(m.Key) > 0 {
-		i -= len(m.Key)
-		copy(dAtA[i:], m.Key)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.Key)))
+	if len(m.Addresses) > 0 {
+		i -= len(m.Addresses)
+		copy(dAtA[i:], m.Addresses)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Addresses)))
 		i--
 		dAtA[i] = 0x12
 	}
@@ -938,7 +1019,7 @@ func (m *MsgCreateAccState) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgCreateAccStateResponse) Marshal() (dAtA []byte, err error) {
+func (m *MsgEnrollLoadersResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -948,12 +1029,12 @@ func (m *MsgCreateAccStateResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgCreateAccStateResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgEnrollLoadersResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgCreateAccStateResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgEnrollLoadersResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -961,7 +1042,7 @@ func (m *MsgCreateAccStateResponse) MarshalToSizedBuffer(dAtA []byte) (int, erro
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgUpdateAccState) Marshal() (dAtA []byte, err error) {
+func (m *MsgRevokeLoaders) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -971,34 +1052,20 @@ func (m *MsgUpdateAccState) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgUpdateAccState) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgRevokeLoaders) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgUpdateAccState) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgRevokeLoaders) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	if len(m.Status) > 0 {
-		i -= len(m.Status)
-		copy(dAtA[i:], m.Status)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.Status)))
-		i--
-		dAtA[i] = 0x22
-	}
-	if len(m.Address) > 0 {
-		i -= len(m.Address)
-		copy(dAtA[i:], m.Address)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.Address)))
-		i--
-		dAtA[i] = 0x1a
-	}
-	if len(m.Key) > 0 {
-		i -= len(m.Key)
-		copy(dAtA[i:], m.Key)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.Key)))
+	if len(m.Addresses) > 0 {
+		i -= len(m.Addresses)
+		copy(dAtA[i:], m.Addresses)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Addresses)))
 		i--
 		dAtA[i] = 0x12
 	}
@@ -1012,7 +1079,7 @@ func (m *MsgUpdateAccState) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgUpdateAccStateResponse) Marshal() (dAtA []byte, err error) {
+func (m *MsgRevokeLoadersResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -1022,12 +1089,12 @@ func (m *MsgUpdateAccStateResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgUpdateAccStateResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgRevokeLoadersResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgUpdateAccStateResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgRevokeLoadersResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -1035,7 +1102,7 @@ func (m *MsgUpdateAccStateResponse) MarshalToSizedBuffer(dAtA []byte) (int, erro
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgDeleteAccState) Marshal() (dAtA []byte, err error) {
+func (m *MsgEnrollIdSigner) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -1045,20 +1112,20 @@ func (m *MsgDeleteAccState) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgDeleteAccState) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgEnrollIdSigner) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgDeleteAccState) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgEnrollIdSigner) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	if len(m.Key) > 0 {
-		i -= len(m.Key)
-		copy(dAtA[i:], m.Key)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.Key)))
+	if len(m.Addresses) > 0 {
+		i -= len(m.Addresses)
+		copy(dAtA[i:], m.Addresses)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Addresses)))
 		i--
 		dAtA[i] = 0x12
 	}
@@ -1072,7 +1139,7 @@ func (m *MsgDeleteAccState) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgDeleteAccStateResponse) Marshal() (dAtA []byte, err error) {
+func (m *MsgEnrollIdSignerResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -1082,12 +1149,72 @@ func (m *MsgDeleteAccStateResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgDeleteAccStateResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgEnrollIdSignerResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgDeleteAccStateResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgEnrollIdSignerResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgRevokeIdSigner) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgRevokeIdSigner) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgRevokeIdSigner) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Addresses) > 0 {
+		i -= len(m.Addresses)
+		copy(dAtA[i:], m.Addresses)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Addresses)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.Creator) > 0 {
+		i -= len(m.Creator)
+		copy(dAtA[i:], m.Creator)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Creator)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgRevokeIdSignerResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgRevokeIdSignerResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgRevokeIdSignerResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -1158,7 +1285,7 @@ func (m *MsgRevokeVoterResponse) Size() (n int) {
 	return n
 }
 
-func (m *MsgCreateAccState) Size() (n int) {
+func (m *MsgEnrollLoaders) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -1168,22 +1295,14 @@ func (m *MsgCreateAccState) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
 	}
-	l = len(m.Key)
-	if l > 0 {
-		n += 1 + l + sovTx(uint64(l))
-	}
-	l = len(m.Address)
-	if l > 0 {
-		n += 1 + l + sovTx(uint64(l))
-	}
-	l = len(m.Status)
+	l = len(m.Addresses)
 	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
 	}
 	return n
 }
 
-func (m *MsgCreateAccStateResponse) Size() (n int) {
+func (m *MsgEnrollLoadersResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -1192,7 +1311,7 @@ func (m *MsgCreateAccStateResponse) Size() (n int) {
 	return n
 }
 
-func (m *MsgUpdateAccState) Size() (n int) {
+func (m *MsgRevokeLoaders) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -1202,22 +1321,14 @@ func (m *MsgUpdateAccState) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
 	}
-	l = len(m.Key)
-	if l > 0 {
-		n += 1 + l + sovTx(uint64(l))
-	}
-	l = len(m.Address)
-	if l > 0 {
-		n += 1 + l + sovTx(uint64(l))
-	}
-	l = len(m.Status)
+	l = len(m.Addresses)
 	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
 	}
 	return n
 }
 
-func (m *MsgUpdateAccStateResponse) Size() (n int) {
+func (m *MsgRevokeLoadersResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -1226,7 +1337,7 @@ func (m *MsgUpdateAccStateResponse) Size() (n int) {
 	return n
 }
 
-func (m *MsgDeleteAccState) Size() (n int) {
+func (m *MsgEnrollIdSigner) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -1236,14 +1347,40 @@ func (m *MsgDeleteAccState) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
 	}
-	l = len(m.Key)
+	l = len(m.Addresses)
 	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
 	}
 	return n
 }
 
-func (m *MsgDeleteAccStateResponse) Size() (n int) {
+func (m *MsgEnrollIdSignerResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
+func (m *MsgRevokeIdSigner) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Creator)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	l = len(m.Addresses)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	return n
+}
+
+func (m *MsgRevokeIdSignerResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -1586,7 +1723,7 @@ func (m *MsgRevokeVoterResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgCreateAccState) Unmarshal(dAtA []byte) error {
+func (m *MsgEnrollLoaders) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -1609,10 +1746,10 @@ func (m *MsgCreateAccState) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgCreateAccState: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgEnrollLoaders: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgCreateAccState: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgEnrollLoaders: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -1649,7 +1786,7 @@ func (m *MsgCreateAccState) Unmarshal(dAtA []byte) error {
 			iNdEx = postIndex
 		case 2:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Key", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field Addresses", wireType)
 			}
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
@@ -1677,71 +1814,7 @@ func (m *MsgCreateAccState) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Key = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 3:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Address", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthTx
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthTx
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Address = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 4:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Status", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthTx
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthTx
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Status = string(dAtA[iNdEx:postIndex])
+			m.Addresses = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
@@ -1764,7 +1837,7 @@ func (m *MsgCreateAccState) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgCreateAccStateResponse) Unmarshal(dAtA []byte) error {
+func (m *MsgEnrollLoadersResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -1787,10 +1860,10 @@ func (m *MsgCreateAccStateResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgCreateAccStateResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgEnrollLoadersResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgCreateAccStateResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgEnrollLoadersResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:
@@ -1814,7 +1887,7 @@ func (m *MsgCreateAccStateResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgUpdateAccState) Unmarshal(dAtA []byte) error {
+func (m *MsgRevokeLoaders) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -1837,10 +1910,10 @@ func (m *MsgUpdateAccState) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgUpdateAccState: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgRevokeLoaders: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgUpdateAccState: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgRevokeLoaders: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -1877,7 +1950,7 @@ func (m *MsgUpdateAccState) Unmarshal(dAtA []byte) error {
 			iNdEx = postIndex
 		case 2:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Key", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field Addresses", wireType)
 			}
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
@@ -1905,71 +1978,7 @@ func (m *MsgUpdateAccState) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Key = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 3:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Address", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthTx
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthTx
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Address = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 4:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Status", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthTx
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthTx
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Status = string(dAtA[iNdEx:postIndex])
+			m.Addresses = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
@@ -1992,7 +2001,7 @@ func (m *MsgUpdateAccState) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgUpdateAccStateResponse) Unmarshal(dAtA []byte) error {
+func (m *MsgRevokeLoadersResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -2015,10 +2024,10 @@ func (m *MsgUpdateAccStateResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgUpdateAccStateResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgRevokeLoadersResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgUpdateAccStateResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgRevokeLoadersResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:
@@ -2042,7 +2051,7 @@ func (m *MsgUpdateAccStateResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgDeleteAccState) Unmarshal(dAtA []byte) error {
+func (m *MsgEnrollIdSigner) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -2065,10 +2074,10 @@ func (m *MsgDeleteAccState) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgDeleteAccState: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgEnrollIdSigner: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgDeleteAccState: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgEnrollIdSigner: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -2105,7 +2114,7 @@ func (m *MsgDeleteAccState) Unmarshal(dAtA []byte) error {
 			iNdEx = postIndex
 		case 2:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Key", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field Addresses", wireType)
 			}
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
@@ -2133,7 +2142,7 @@ func (m *MsgDeleteAccState) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Key = string(dAtA[iNdEx:postIndex])
+			m.Addresses = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
@@ -2156,7 +2165,7 @@ func (m *MsgDeleteAccState) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgDeleteAccStateResponse) Unmarshal(dAtA []byte) error {
+func (m *MsgEnrollIdSignerResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -2179,10 +2188,174 @@ func (m *MsgDeleteAccStateResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgDeleteAccStateResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgEnrollIdSignerResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgDeleteAccStateResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgEnrollIdSignerResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgRevokeIdSigner) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgRevokeIdSigner: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgRevokeIdSigner: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Creator", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Creator = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Addresses", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Addresses = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgRevokeIdSignerResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgRevokeIdSignerResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgRevokeIdSignerResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:

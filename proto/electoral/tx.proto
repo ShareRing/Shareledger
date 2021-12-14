@@ -10,9 +10,10 @@ option go_package = "github.com/ShareRing/Shareledger/x/electoral/types";
 service Msg {
       rpc EnrollVoter(MsgEnrollVoter) returns (MsgEnrollVoterResponse);
   rpc RevokeVoter(MsgRevokeVoter) returns (MsgRevokeVoterResponse);
-  rpc CreateAccState(MsgCreateAccState) returns (MsgCreateAccStateResponse);
-  rpc UpdateAccState(MsgUpdateAccState) returns (MsgUpdateAccStateResponse);
-  rpc DeleteAccState(MsgDeleteAccState) returns (MsgDeleteAccStateResponse);
+  rpc EnrollLoaders(MsgEnrollLoaders) returns (MsgEnrollLoadersResponse);
+  rpc RevokeLoaders(MsgRevokeLoaders) returns (MsgRevokeLoadersResponse);
+  rpc EnrollIdSigner(MsgEnrollIdSigner) returns (MsgEnrollIdSignerResponse);
+  rpc RevokeIdSigner(MsgRevokeIdSigner) returns (MsgRevokeIdSignerResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -32,28 +33,36 @@ message MsgRevokeVoter {
 message MsgRevokeVoterResponse {
 }
 
-message MsgCreateAccState {
+message MsgEnrollLoaders {
   string creator = 1;
-  string key = 2;
-
-  string address = 3;
-  string status = 4;
+  string addresses = 2;
 }
-message MsgCreateAccStateResponse {}
 
-message MsgUpdateAccState {
+message MsgEnrollLoadersResponse {
+}
+
+message MsgRevokeLoaders {
   string creator = 1;
-  string key = 2;
-
-  string address = 3;
-  string status = 4;
+  string addresses = 2;
 }
-message MsgUpdateAccStateResponse {}
 
-message MsgDeleteAccState {
+message MsgRevokeLoadersResponse {
+}
+
+message MsgEnrollIdSigner {
   string creator = 1;
-  string key = 2;
+  string addresses = 2;
 }
-message MsgDeleteAccStateResponse {}
+
+message MsgEnrollIdSignerResponse {
+}
+
+message MsgRevokeIdSigner {
+  string creator = 1;
+  string addresses = 2;
+}
+
+message MsgRevokeIdSignerResponse {
+}
 
 // this line is used by starport scaffolding # proto/tx/message

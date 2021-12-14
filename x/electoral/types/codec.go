@@ -10,9 +10,10 @@ import (
 func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgEnrollVoter{}, "electoral/EnrollVoter", nil)
 	cdc.RegisterConcrete(&MsgRevokeVoter{}, "electoral/RevokeVoter", nil)
-	cdc.RegisterConcrete(&MsgCreateAccState{}, "electoral/CreateAccState", nil)
-	cdc.RegisterConcrete(&MsgUpdateAccState{}, "electoral/UpdateAccState", nil)
-	cdc.RegisterConcrete(&MsgDeleteAccState{}, "electoral/DeleteAccState", nil)
+	cdc.RegisterConcrete(&MsgEnrollLoaders{}, "electoral/EnrollLoaders", nil)
+	cdc.RegisterConcrete(&MsgRevokeLoaders{}, "electoral/RevokeLoaders", nil)
+	cdc.RegisterConcrete(&MsgEnrollIdSigner{}, "electoral/EnrollIdSigner", nil)
+	cdc.RegisterConcrete(&MsgRevokeIdSigner{}, "electoral/RevokeIdSigner", nil)
 	// this line is used by starport scaffolding # 2
 }
 
@@ -27,6 +28,18 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 		&MsgCreateAccState{},
 		&MsgUpdateAccState{},
 		&MsgDeleteAccState{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgEnrollLoaders{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgRevokeLoaders{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgEnrollIdSigner{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgRevokeIdSigner{},
 	)
 	// this line is used by starport scaffolding # 3
 

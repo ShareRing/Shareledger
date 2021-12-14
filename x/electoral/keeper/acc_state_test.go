@@ -1,6 +1,7 @@
 package keeper_test
 
 import (
+	"github.com/ShareRing/Shareledger/testutil/sample"
 	"strconv"
 	"testing"
 
@@ -17,7 +18,8 @@ var _ = strconv.IntSize
 func createNAccState(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.AccState {
 	items := make([]types.AccState, n)
 	for i := range items {
-		items[i].Key = strconv.Itoa(i)
+		addr, _ := sdk.AccAddressFromBech32(sample.AccAddress())
+		items[i].Key = string(types.GenAccStateIndexKey(addr, types.AccStateKeyIdSigner))
 
 		keeper.SetAccState(ctx, items[i])
 	}
@@ -25,32 +27,32 @@ func createNAccState(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.AccS
 }
 
 func TestAccStateGet(t *testing.T) {
-	keeper, ctx := keepertest.ElectoralKeeper(t)
-	items := createNAccState(keeper, ctx, 10)
+	k, ctx := keepertest.ElectoralKeeper(t)
+	items := createNAccState(k, ctx, 10)
 	for _, item := range items {
-		rst, found := keeper.GetAccState(ctx,
-			item.Key,
+		rst, found := k.GetAccState(ctx,
+			types.IndexKeyAccState(item.Key),
 		)
 		require.True(t, found)
 		require.Equal(t, item, rst)
 	}
 }
 func TestAccStateRemove(t *testing.T) {
-	keeper, ctx := keepertest.ElectoralKeeper(t)
-	items := createNAccState(keeper, ctx, 10)
+	k, ctx := keepertest.ElectoralKeeper(t)
+	items := createNAccState(k, ctx, 10)
 	for _, item := range items {
-		keeper.RemoveAccState(ctx,
-			item.Key,
+		k.RemoveAccState(ctx,
+			types.IndexKeyAccState(item.Key),
 		)
-		_, found := keeper.GetAccState(ctx,
-			item.Key,
+		_, found := k.GetAccState(ctx,
+			types.IndexKeyAccState(item.Key),
 		)
 		require.False(t, found)
 	}
 }
 
 func TestAccStateGetAll(t *testing.T) {
-	keeper, ctx := keepertest.ElectoralKeeper(t)
-	items := createNAccState(keeper, ctx, 10)
-	require.ElementsMatch(t, items, keeper.GetAllAccState(ctx))
+	k, ctx := keepertest.ElectoralKeeper(t)
+	items := createNAccState(k, ctx, 10)
+	require.ElementsMatch(t, items, k.GetAllAccState(ctx))
 }
