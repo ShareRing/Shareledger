@@ -6,11 +6,6 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
-func (k Keeper) isTreasurer(ctx sdk.Context, address sdk.AccAddress) bool {
-	value, found := k.GetTreasurer(ctx)
-	return found && value.Address == address.String()
-}
-
 // SetTreasurer set treasurer in the store
 func (k Keeper) SetTreasurer(ctx sdk.Context, treasurer types.Treasurer) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.TreasurerKey))

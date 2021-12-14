@@ -7,16 +7,8 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
-func (k Keeper) isAccountOperator(ctx sdk.Context, address sdk.AccAddress) bool {
-	return k.isActive(ctx, address, types.AccStateKeyAccOp)
-}
-
-func (k Keeper) isSHRPLoader(ctx sdk.Context, address sdk.AccAddress) bool {
-	return k.isActive(ctx, address, types.AccStateKeyShrpLoaders)
-}
-
 func (k Keeper) isActive(ctx sdk.Context, address sdk.AccAddress, keyType types.AccStateKeyType) bool {
-	key := types.GenAccStateIndexKey(address, types.AccStateKeyAccOp)
+	key := types.GenAccStateIndexKey(address, keyType)
 	r, found := k.GetAccState(ctx, key)
 	return found && r.Status == string(types.StatusActive)
 }

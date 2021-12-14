@@ -6,11 +6,6 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
-func (k Keeper) isAuthority(ctx sdk.Context, address sdk.AccAddress) bool {
-	value, found := k.GetAuthority(ctx)
-	return found && value.Address == address.String()
-}
-
 // SetAuthority set authority in the store
 func (k Keeper) SetAuthority(ctx sdk.Context, authority types.Authority) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.AuthorityKey))
