@@ -10,8 +10,31 @@ import (
 func (k msgServer) EnrollAccountOperator(goCtx context.Context, msg *types.MsgEnrollAccountOperator) (*types.MsgEnrollAccountOperatorResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	// TODO: Handling the message
-	_ = ctx
+	if err := msg.ValidateBasic(); err != nil {
+		return nil, err
+	}
+
+	event := sdk.NewEvent(
+		types.EventTypeEnrollAccOp,
+	)
+	for _, a := range msg.Addresses {
+		addr, err := sdk.AccAddressFromBech32(a)
+		if err != nil {
+			return nil, err
+		}
+		k.activeAccOperator(ctx, addr)
+		event = event.AppendAttributes(sdk.NewAttribute(types.EventAttrAddress, a))
+	}
+	ctx.EventManager().EmitEvents([]sdk.Event{
+		event,
+		sdk.NewEvent(
+			sdk.EventTypeMessage,
+			sdk.NewAttribute(sdk.AttributeKeyModule, types.ModuleName),
+			sdk.NewAttribute(sdk.AttributeKeySender, msg.Creator),
+			sdk.NewAttribute(sdk.AttributeKeyAction, types.EventTypeEnrollAccOp),
+		),
+	},
+	)
 
 	return &types.MsgEnrollAccountOperatorResponse{}, nil
 }

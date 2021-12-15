@@ -10,8 +10,11 @@ import (
 func (k msgServer) EnrollVoter(goCtx context.Context, msg *types.MsgEnrollVoter) (*types.MsgEnrollVoterResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	// TODO: Handling the message
-	_ = ctx
+	if err := msg.ValidateBasic(); err != nil {
+		return nil, err
+	}
 
+	addr, _ := sdk.AccAddressFromBech32(msg.Address)
+	k.activeVoter(ctx, addr)
 	return &types.MsgEnrollVoterResponse{}, nil
 }

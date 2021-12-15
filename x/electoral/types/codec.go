@@ -29,11 +29,6 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 		&MsgRevokeVoter{},
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
-		&MsgCreateAccState{},
-		&MsgUpdateAccState{},
-		&MsgDeleteAccState{},
-	)
-	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgEnrollLoaders{},
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
