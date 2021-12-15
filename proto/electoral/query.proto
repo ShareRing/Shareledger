@@ -36,6 +36,41 @@ service Query {
 		option (google.api.http).get = "/ShareRing/shareledger/electoral/getVoter";
 	}
 
+// Queries a list of getLoader items.
+	rpc GetLoader(QueryGetLoaderRequest) returns (QueryGetLoaderResponse) {
+		option (google.api.http).get = "/ShareRing/shareledger/electoral/getLoader";
+	}
+
+	// Queries a list of idSigner items.
+	rpc IdSigner(QueryIdSignerRequest) returns (QueryIdSignerResponse) {
+		option (google.api.http).get = "/ShareRing/shareledger/electoral/idSigner";
+	}
+
+	// Queries a list of idSigners items.
+	rpc IdSigners(QueryIdSignersRequest) returns (QueryIdSignersResponse) {
+		option (google.api.http).get = "/ShareRing/shareledger/electoral/idSigners";
+	}
+
+	// Queries a list of accountOperator items.
+	rpc AccountOperator(QueryAccountOperatorRequest) returns (QueryAccountOperatorResponse) {
+		option (google.api.http).get = "/ShareRing/shareledger/electoral/accountOperator";
+	}
+
+	// Queries a list of accountOperators items.
+	rpc AccountOperators(QueryAccountOperatorsRequest) returns (QueryAccountOperatorsResponse) {
+		option (google.api.http).get = "/ShareRing/shareledger/electoral/accountOperators";
+	}
+
+	// Queries a list of documentIssuer items.
+	rpc DocumentIssuer(QueryDocumentIssuerRequest) returns (QueryDocumentIssuerResponse) {
+		option (google.api.http).get = "/ShareRing/shareledger/electoral/documentIssuer";
+	}
+
+	// Queries a list of documentIssuers items.
+	rpc DocumentIssuers(QueryDocumentIssuersRequest) returns (QueryDocumentIssuersResponse) {
+		option (google.api.http).get = "/ShareRing/shareledger/electoral/documentIssuers";
+	}
+
 // this line is used by starport scaffolding # 2
 }
 
@@ -73,6 +108,59 @@ message QueryGetVoterRequest {
 
 message QueryGetVoterResponse {
 		AccState voter = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryGetLoaderRequest {
+	string address = 1;
+}
+
+message QueryGetLoaderResponse {
+	AccState accState = 1;
+}
+
+message QueryIdSignerRequest {
+	string address = 1;
+}
+
+message QueryIdSignerResponse {
+	AccState accState = 1;
+}
+
+message QueryIdSignersRequest {
+}
+
+message QueryIdSignersResponse {
+	repeated AccState accStates = 1;
+}
+
+message QueryAccountOperatorRequest {
+	string address = 1;
+}
+
+message QueryAccountOperatorResponse {
+	AccState accState = 1;
+}
+
+message QueryAccountOperatorsRequest {
+}
+
+message QueryAccountOperatorsResponse {
+	repeated AccState accStates = 1;
+}
+
+message QueryDocumentIssuerRequest {
+	string address = 1;
+}
+
+message QueryDocumentIssuerResponse {
+	AccState accState = 1;
+}
+
+message QueryDocumentIssuersRequest {
+}
+
+message QueryDocumentIssuersResponse {
+	repeated AccState accStates = 1;
 }
 
 // this line is used by starport scaffolding # 3

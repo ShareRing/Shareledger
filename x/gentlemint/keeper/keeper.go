@@ -74,3 +74,8 @@ func (k Keeper) burnCoins(ctx sdk.Context, addr sdk.AccAddress, amt sdk.Coins) e
 
 	return k.bankKeeper.BurnCoins(ctx, types.ModuleName, amt)
 }
+
+// LoadAllowanceLoader loads allowance coins to loader
+func (k Keeper) LoadAllowanceLoader(ctx sdk.Context, addr sdk.AccAddress) error {
+	return k.loadCoins(ctx, addr, types.AllowanceLoader)
+}

@@ -97,6 +97,9 @@ import (
 	documentmodule "github.com/ShareRing/Shareledger/x/document"
 	documentmodulekeeper "github.com/ShareRing/Shareledger/x/document/keeper"
 	documentmoduletypes "github.com/ShareRing/Shareledger/x/document/types"
+	electoralmodule "github.com/ShareRing/Shareledger/x/electoral"
+	electoralmodulekeeper "github.com/ShareRing/Shareledger/x/electoral/keeper"
+	electoralmoduletypes "github.com/ShareRing/Shareledger/x/electoral/types"
 	gentlemintmodule "github.com/ShareRing/Shareledger/x/gentlemint"
 	gentlemintmodulekeeper "github.com/ShareRing/Shareledger/x/gentlemint/keeper"
 	gentlemintmoduletypes "github.com/ShareRing/Shareledger/x/gentlemint/types"
@@ -157,6 +160,7 @@ var (
 		assetmodule.AppModuleBasic{},
 		bookingmodule.AppModuleBasic{},
 		gentlemintmodule.AppModuleBasic{},
+		electoralmodule.AppModuleBasic{},
 		// this line is used by starport scaffolding # stargate/app/moduleBasic
 	)
 
@@ -171,6 +175,7 @@ var (
 		ibctransfertypes.ModuleName:      {authtypes.Minter, authtypes.Burner},
 		bookingmoduletypes.ModuleName:    nil,
 		gentlemintmoduletypes.ModuleName: {authtypes.Minter, authtypes.Burner},
+		electoralmoduletypes.ModuleName:  nil,
 		// this line is used by starport scaffolding # stargate/app/maccPerms
 	}
 )
@@ -236,6 +241,8 @@ type App struct {
 	BookingKeeper bookingmodulekeeper.Keeper
 
 	GentleMintKeeper gentlemintmodulekeeper.Keeper
+
+	ElectoralKeeper electoralmodulekeeper.Keeper
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
 	// the module manager
@@ -274,6 +281,7 @@ func New(
 		assetmoduletypes.StoreKey,
 		bookingmoduletypes.StoreKey,
 		gentlemintmoduletypes.StoreKey,
+		electoralmoduletypes.StoreKey,
 		// this line is used by starport scaffolding # stargate/app/storeKey
 	)
 	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey)
@@ -389,6 +397,15 @@ func New(
 	)
 	gentlemintModule := gentlemintmodule.NewAppModule(appCodec, app.GentleMintKeeper)
 
+	app.ElectoralKeeper = *electoralmodulekeeper.NewKeeper(
+		appCodec,
+		keys[electoralmoduletypes.StoreKey],
+		keys[electoralmoduletypes.MemStoreKey],
+
+		app.GentleMintKeeper,
+	)
+	electoralModule := electoralmodule.NewAppModule(appCodec, app.ElectoralKeeper)
+
 	app.IdKeeper = *idmodulekeeper.NewKeeper(
 		appCodec,
 		keys[idmoduletypes.StoreKey],
@@ -456,6 +473,7 @@ func New(
 		assetModule,
 		bookingModule,
 		gentlemintModule,
+		electoralModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
 
 	)
@@ -480,6 +498,7 @@ func New(
 	app.mm.SetOrderInitGenesis(
 		capabilitytypes.ModuleName,
 		authtypes.ModuleName,
+		electoralmoduletypes.ModuleName,
 		banktypes.ModuleName,
 		distrtypes.ModuleName,
 		stakingtypes.ModuleName,
@@ -520,7 +539,7 @@ func New(
 		encodingConfig.TxConfig.SignModeHandler(),
 		app.FeeGrantKeeper,
 		authante.DefaultSigVerificationGasConsumer,
-		app.GentleMintKeeper,
+		app.ElectoralKeeper,
 		app.IdKeeper,
 	)
 
