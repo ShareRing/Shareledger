@@ -1,0 +1,11 @@
+syntax = "proto3";
+package ShareRing.shareledger.id;
+
+// this line is used by starport scaffolding # genesis/proto/import
+
+option go_package = "github.com/ShareRing/Shareledger/x/id/types";
+
+// GenesisState defines the id module's genesis state.
+message GenesisState {
+    // this line is used by starport scaffolding # genesis/proto/state
+}
