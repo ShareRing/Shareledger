@@ -13358,6 +13358,108 @@ paths:
                   additionalProperties: {}
       tags:
         - Query
+  '/shareledger/id/address/{address}':
+    get:
+      summary: Queries a list of idByAddress items.
+      operationId: ShareRingShareledgerIdIdByAddress
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              id:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      issuerAddress:
+                        type: string
+                      backupAddress:
+                        type: string
+                      ownerAddress:
+                        type: string
+                      extraData:
+                        type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: address
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  '/shareledger/id/id/{id}':
+    get:
+      summary: Queries a list of idById items.
+      operationId: ShareRingShareledgerIdIdById
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              id:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      issuerAddress:
+                        type: string
+                      backupAddress:
+                        type: string
+                      ownerAddress:
+                        type: string
+                      extraData:
+                        type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
 definitions:
   cosmos.authz.v1beta1.Grant:
     type: object
@@ -21086,3 +21188,76 @@ definitions:
     properties:
       address:
         type: string
+  ShareRing.shareledger.id.BaseID:
+    type: object
+    properties:
+      issuerAddress:
+        type: string
+      backupAddress:
+        type: string
+      ownerAddress:
+        type: string
+      extraData:
+        type: string
+  ShareRing.shareledger.id.Id:
+    type: object
+    properties:
+      id:
+        type: string
+      data:
+        type: object
+        properties:
+          issuerAddress:
+            type: string
+          backupAddress:
+            type: string
+          ownerAddress:
+            type: string
+          extraData:
+            type: string
+  ShareRing.shareledger.id.MsgCreateIdBatchResponse:
+    type: object
+  ShareRing.shareledger.id.MsgCreateIdResponse:
+    type: object
+  ShareRing.shareledger.id.MsgReplaceIdOwnerResponse:
+    type: object
+  ShareRing.shareledger.id.MsgUpdateIdResponse:
+    type: object
+  ShareRing.shareledger.id.QueryIdByAddressResponse:
+    type: object
+    properties:
+      id:
+        type: object
+        properties:
+          id:
+            type: string
+          data:
+            type: object
+            properties:
+              issuerAddress:
+                type: string
+              backupAddress:
+                type: string
+              ownerAddress:
+                type: string
+              extraData:
+                type: string
+  ShareRing.shareledger.id.QueryIdByIdResponse:
+    type: object
+    properties:
+      id:
+        type: object
+        properties:
+          id:
+            type: string
+          data:
+            type: object
+            properties:
+              issuerAddress:
+                type: string
+              backupAddress:
+                type: string
+              ownerAddress:
+                type: string
+              extraData:
+                type: string
