@@ -27,7 +27,5 @@ func (k msgServer) EnrollLoaders(goCtx context.Context, msg *types.MsgEnrollLoad
 		}
 	}
 
-	return &types.MsgEnrollLoadersResponse{
-		Log: fmt.Sprintf("Successfully enroll SHRP loader %s", log),
-	}, nil
+	return &types.MsgEnrollLoadersResponse{}, nil
 }

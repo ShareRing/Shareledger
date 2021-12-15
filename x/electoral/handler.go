@@ -23,15 +23,6 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
 		case *types.MsgRevokeVoter:
 			res, err := msgServer.RevokeVoter(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgCreateAccState:
-			res, err := msgServer.CreateAccState(sdk.WrapSDKContext(ctx), msg)
-			return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgUpdateAccState:
-			res, err := msgServer.UpdateAccState(sdk.WrapSDKContext(ctx), msg)
-			return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgDeleteAccState:
-			res, err := msgServer.DeleteAccState(sdk.WrapSDKContext(ctx), msg)
-			return sdk.WrapServiceResult(ctx, res, err)
 		case *types.MsgEnrollLoaders:
 			res, err := msgServer.EnrollLoaders(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
