@@ -31,9 +31,6 @@ func GetTxCmd() *cobra.Command {
 
 	cmd.AddCommand(CmdEnrollVoter())
 	cmd.AddCommand(CmdRevokeVoter())
-	cmd.AddCommand(CmdCreateAccState())
-	cmd.AddCommand(CmdUpdateAccState())
-	cmd.AddCommand(CmdDeleteAccState())
 	cmd.AddCommand(CmdEnrollLoaders())
 	cmd.AddCommand(CmdRevokeLoaders())
 	cmd.AddCommand(CmdEnrollIdSigner())

@@ -19,7 +19,6 @@ func CmdRevokeDocIssuer() *cobra.Command {
 		Short: "Broadcast message revoke-doc-issuer",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			argAddresses := args[0]
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -28,7 +27,7 @@ func CmdRevokeDocIssuer() *cobra.Command {
 
 			msg := types.NewMsgRevokeDocIssuer(
 				clientCtx.GetFromAddress().String(),
-				argAddresses,
+				args[:],
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err

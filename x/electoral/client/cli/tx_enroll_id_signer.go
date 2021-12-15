@@ -19,8 +19,6 @@ func CmdEnrollIdSigner() *cobra.Command {
 		Short: "Broadcast message enroll-id-signer",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			argAddresses := args[0]
-
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
@@ -28,7 +26,7 @@ func CmdEnrollIdSigner() *cobra.Command {
 
 			msg := types.NewMsgEnrollIdSigner(
 				clientCtx.GetFromAddress().String(),
-				argAddresses,
+				args[:],
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err

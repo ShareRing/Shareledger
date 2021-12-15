@@ -19,7 +19,6 @@ func CmdRevokeLoaders() *cobra.Command {
 		Short: "Broadcast message revoke-loaders",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			argAddresses := args[0]
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -28,7 +27,7 @@ func CmdRevokeLoaders() *cobra.Command {
 
 			msg := types.NewMsgRevokeLoaders(
 				clientCtx.GetFromAddress().String(),
-				argAddresses,
+				args[:],
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err
