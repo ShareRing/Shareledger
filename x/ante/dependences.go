@@ -8,8 +8,7 @@ import (
 type GentlemintKeeper interface {
 	GetExchangeRateF(ctx sdk.Context) float64
 }
-type electoralbkKeeper interface {
-}
+
 type BankKeeper interface {
 	SendCoinsFromAccountToModule(ctx sdk.Context, senderAddr sdk.AccAddress, recipientModule string, amt sdk.Coins) error
 }
