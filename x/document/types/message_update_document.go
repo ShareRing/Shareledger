@@ -7,13 +7,12 @@ import (
 
 var _ sdk.Msg = &MsgUpdateDocument{}
 
-func NewMsgUpdateDocument(creator string, data string, holder string, issuer string, proof string) *MsgUpdateDocument {
+func NewMsgUpdateDocument(data string, holder string, issuer string, proof string) *MsgUpdateDocument {
 	return &MsgUpdateDocument{
-		Creator: creator,
-		Data:    data,
-		Holder:  holder,
-		Issuer:  issuer,
-		Proof:   proof,
+		Data:   data,
+		Holder: holder,
+		Issuer: issuer,
+		Proof:  proof,
 	}
 }
 
@@ -22,11 +21,11 @@ func (msg *MsgUpdateDocument) Route() string {
 }
 
 func (msg *MsgUpdateDocument) Type() string {
-	return "UpdateDocument"
+	return TypeMsgUpdateDoc
 }
 
 func (msg *MsgUpdateDocument) GetSigners() []sdk.AccAddress {
-	creator, err := sdk.AccAddressFromBech32(msg.Creator)
+	creator, err := sdk.AccAddressFromBech32(msg.Issuer)
 	if err != nil {
 		panic(err)
 	}
@@ -39,9 +38,22 @@ func (msg *MsgUpdateDocument) GetSignBytes() []byte {
 }
 
 func (msg *MsgUpdateDocument) ValidateBasic() error {
-	_, err := sdk.AccAddressFromBech32(msg.Creator)
+	_, err := sdk.AccAddressFromBech32(msg.Issuer)
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
 	}
+
+	if len(msg.Holder) > MAX_LEN || len(msg.Holder) == 0 {
+		return ErrDocInvalidData
+	}
+
+	if len(msg.Proof) > MAX_LEN || len(msg.Proof) == 0 {
+		return ErrDocInvalidData
+	}
+
+	if len(msg.Data) > MAX_LEN || len(msg.Data) == 0 {
+		return ErrDocInvalidData
+	}
+
 	return nil
 }

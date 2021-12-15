@@ -12649,6 +12649,61 @@ paths:
           type: string
       tags:
         - Query
+  '/shareledger/document/{holder}/{issuer}':
+    get:
+      summary: Queries a list of documentOfHolderByIssuer items.
+      operationId: ShareRingShareledgerDocumentDocumentOfHolderByIssuer
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              documents:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    holder:
+                      type: string
+                    issuer:
+                      type: string
+                    proof:
+                      type: string
+                    data:
+                      type: string
+                    version:
+                      type: integer
+                      format: int32
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: holder
+          in: path
+          required: true
+          type: string
+        - name: issuer
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
   '/shareledger/document/{id}':
     get:
       summary: Queries a list of documentByHolderId items.
@@ -12659,7 +12714,7 @@ paths:
           schema:
             type: object
             properties:
-              document:
+              documents:
                 type: array
                 items:
                   type: object
@@ -20820,7 +20875,7 @@ definitions:
   ShareRing.shareledger.document.QueryDocumentByHolderIdResponse:
     type: object
     properties:
-      document:
+      documents:
         type: array
         items:
           type: object
@@ -20853,6 +20908,25 @@ definitions:
           version:
             type: integer
             format: int32
+  ShareRing.shareledger.document.QueryDocumentOfHolderByIssuerResponse:
+    type: object
+    properties:
+      documents:
+        type: array
+        items:
+          type: object
+          properties:
+            holder:
+              type: string
+            issuer:
+              type: string
+            proof:
+              type: string
+            data:
+              type: string
+            version:
+              type: integer
+              format: int32
   ShareRing.shareledger.electoral.MsgEnrollVoterResponse:
     type: object
   ShareRing.shareledger.electoral.MsgRevokeVoterResponse:

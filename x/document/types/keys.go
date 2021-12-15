@@ -15,6 +15,20 @@ const (
 
 	// MemStoreKey defines the in-memory store key
 	MemStoreKey = "mem_document"
+
+	TypeMsgCreateDoc        = "create_doc"
+	TypeMsgCreateDocInBatch = "create_doc_batch"
+	TypeMsgUpdateDoc        = "update_doc"
+	TypeMsgRevokeDoc        = "revoke_doc"
+
+	DocDetailKeyPrefix = "DocumentDetail/"
+	DocBasicKeyPrefix  = "DocumentBasic/"
+
+	DocRevokeFlag = 0xffff
+	Separator     = "/"
+
+	MAX_LEN       = 64
+	MAX_LEN_BATCH = 20
 )
 
 func KeyPrefix(p string) []byte {

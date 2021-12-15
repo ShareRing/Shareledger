@@ -4,8 +4,10 @@ import (
 	"strconv"
 
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 
 	"github.com/ShareRing/Shareledger/x/document/types"
+	myutils "github.com/ShareRing/Shareledger/x/utils"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
@@ -15,25 +17,32 @@ var _ = strconv.Itoa(0)
 
 func CmdUpdateDocument() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "update-document [data] [holder] [issuer] [proof]",
-		Short: "Broadcast message UpdateDocument",
-		Args:  cobra.ExactArgs(4),
+		Use:   "update [holder id] [proof] [extra data]",
+		Short: "Update a document",
+		Args:  cobra.ExactArgs(3),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			argData := args[0]
-			argHolder := args[1]
-			argIssuer := args[2]
-			argProof := args[3]
+			argHolder := args[0]
+			argProof := args[1]
+			argData := args[2]
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
 			}
 
+			// seed implementation
+			keySeed := viper.GetString(myutils.FlagKeySeed)
+			if keySeed != "" {
+				clientCtx, err = myutils.CreateContextFromSeed(keySeed, clientCtx)
+				if err != nil {
+					return err
+				}
+			}
+
 			msg := types.NewMsgUpdateDocument(
-				clientCtx.GetFromAddress().String(),
 				argData,
 				argHolder,
-				argIssuer,
+				clientCtx.GetFromAddress().String(),
 				argProof,
 			)
 			if err := msg.ValidateBasic(); err != nil {
@@ -44,6 +53,7 @@ func CmdUpdateDocument() *cobra.Command {
 	}
 
 	flags.AddTxFlagsToCmd(cmd)
+	cmd.Flags().String(myutils.FlagKeySeed, "", myutils.KeySeedUsage)
 
 	return cmd
 }

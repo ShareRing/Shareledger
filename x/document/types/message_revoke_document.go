@@ -7,12 +7,11 @@ import (
 
 var _ sdk.Msg = &MsgRevokeDocument{}
 
-func NewMsgRevokeDocument(creator string, holder string, issuer string, proof string) *MsgRevokeDocument {
+func NewMsgRevokeDocument(holder string, issuer string, proof string) *MsgRevokeDocument {
 	return &MsgRevokeDocument{
-		Creator: creator,
-		Holder:  holder,
-		Issuer:  issuer,
-		Proof:   proof,
+		Holder: holder,
+		Issuer: issuer,
+		Proof:  proof,
 	}
 }
 
@@ -21,11 +20,11 @@ func (msg *MsgRevokeDocument) Route() string {
 }
 
 func (msg *MsgRevokeDocument) Type() string {
-	return "RevokeDocument"
+	return TypeMsgRevokeDoc
 }
 
 func (msg *MsgRevokeDocument) GetSigners() []sdk.AccAddress {
-	creator, err := sdk.AccAddressFromBech32(msg.Creator)
+	creator, err := sdk.AccAddressFromBech32(msg.Issuer)
 	if err != nil {
 		panic(err)
 	}
@@ -38,9 +37,18 @@ func (msg *MsgRevokeDocument) GetSignBytes() []byte {
 }
 
 func (msg *MsgRevokeDocument) ValidateBasic() error {
-	_, err := sdk.AccAddressFromBech32(msg.Creator)
+	_, err := sdk.AccAddressFromBech32(msg.Issuer)
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
 	}
+
+	if len(msg.Holder) > MAX_LEN || len(msg.Holder) == 0 {
+		return ErrDocInvalidData
+	}
+
+	if len(msg.Proof) > MAX_LEN || len(msg.Proof) == 0 {
+		return ErrDocInvalidData
+	}
+
 	return nil
 }

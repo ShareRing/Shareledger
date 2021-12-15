@@ -10,14 +10,18 @@ import (
 )
 
 func (k Keeper) DocumentByProof(goCtx context.Context, req *types.QueryDocumentByProofRequest) (*types.QueryDocumentByProofResponse, error) {
-	if req == nil {
+	if req == nil || len(req.Proof) == 0 {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	// TODO: Process the query
-	_ = ctx
+	queryDoc := types.Document{Proof: req.Proof}
+	doc, found := k.GetDocByProof(ctx, queryDoc)
+	if !found {
+		status.Error(codes.NotFound, "document not found")
+	}
 
-	return &types.QueryDocumentByProofResponse{}, nil
+	return &types.QueryDocumentByProofResponse{Document: &doc}, nil
 }

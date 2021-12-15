@@ -1,22 +1,29 @@
 package cli
 
 import (
+	"fmt"
 	"strconv"
+	"strings"
 
 	"github.com/spf13/cobra"
 
 	"github.com/ShareRing/Shareledger/x/document/types"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
+	"github.com/cosmos/cosmos-sdk/version"
 )
 
 var _ = strconv.Itoa(0)
 
 func CmdDocumentByProof() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "document-by-proof [proof]",
-		Short: "Query DocumentByProof",
-		Args:  cobra.ExactArgs(1),
+		Use:   "proof [proof]",
+		Short: "Query for document information",
+		Long: strings.TrimSpace(fmt.Sprintf(`
+Query document information by the proof.
+Example:
+$ %s query %s proof 5wpluxhf4qru2ewy58kc3w4tkzm3v`, version.Name, types.ModuleName)),
+		Args: cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			reqProof := args[0]
 
