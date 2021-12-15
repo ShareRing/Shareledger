@@ -101,6 +101,15 @@ func (k Keeper) SetAccState(ctx sdk.Context, accState types.AccState) {
 	), b)
 }
 
+func (k Keeper) GetAccStateByAddress(
+	ctx sdk.Context,
+	addr sdk.AccAddress,
+	typeAccState types.AccStateKeyType,
+) (val types.AccState, found bool) {
+	key := types.GenAccStateIndexKey(addr, typeAccState)
+	return k.GetAccState(ctx, key)
+}
+
 // GetAccState returns a accState from its index
 func (k Keeper) GetAccState(
 	ctx sdk.Context,

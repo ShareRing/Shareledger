@@ -31,6 +31,11 @@ service Query {
 	rpc Treasurer(QueryGetTreasurerRequest) returns (QueryGetTreasurerResponse) {
 		option (google.api.http).get = "/ShareRing/shareledger/electoral/treasurer";
 	}
+// Queries a list of getVoter items.
+	rpc GetVoter(QueryGetVoterRequest) returns (QueryGetVoterResponse) {
+		option (google.api.http).get = "/ShareRing/shareledger/electoral/getVoter";
+	}
+
 // this line is used by starport scaffolding # 2
 }
 
@@ -62,4 +67,12 @@ message QueryGetTreasurerRequest {}
 message QueryGetTreasurerResponse {
 	Treasurer Treasurer = 1 [(gogoproto.nullable) = false];
 }
+message QueryGetVoterRequest {
+  string address = 1;
+}
+
+message QueryGetVoterResponse {
+		AccState voter = 1 [(gogoproto.nullable) = false];
+}
+
 // this line is used by starport scaffolding # 3

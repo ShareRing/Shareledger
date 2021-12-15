@@ -47,7 +47,7 @@ func (k Keeper) AccState(c context.Context, req *types.QueryGetAccStateRequest) 
 
 	val, found := k.GetAccState(
 		ctx,
-		req.Key,
+		types.IndexKeyAccState(req.Key),
 	)
 	if !found {
 		return nil, status.Error(codes.InvalidArgument, "not found")

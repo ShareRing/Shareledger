@@ -12901,6 +12901,40 @@ paths:
                   additionalProperties: {}
       tags:
         - Query
+  /ShareRing/shareledger/electoral/getVoter:
+    get:
+      summary: Queries a list of getVoter items.
+      operationId: ShareRingShareledgerElectoralGetVoter
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: address
+          in: query
+          required: false
+          type: string
+      tags:
+        - Query
   /ShareRing/shareledger/electoral/treasurer:
     get:
       summary: Queries a treasurer by index.
@@ -21154,6 +21188,8 @@ definitions:
         properties:
           address:
             type: string
+  ShareRing.shareledger.electoral.QueryGetVoterResponse:
+    type: object
   ShareRing.shareledger.electoral.Treasurer:
     type: object
     properties:
