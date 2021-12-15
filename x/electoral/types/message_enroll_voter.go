@@ -40,5 +40,8 @@ func (msg *MsgEnrollVoter) ValidateBasic() error {
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
 	}
+	if _, err := sdk.AccAddressFromBech32(msg.Address); err != nil {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid address (%s)", err)
+	}
 	return nil
 }

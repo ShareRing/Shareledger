@@ -20,6 +20,7 @@ const (
 	AccStateKeyDocIssuer   AccStateKeyType = "docIssuer"
 	AccStateKeyAccOp       AccStateKeyType = "accop"
 	AccStateKeyShrpLoaders AccStateKeyType = "shrploader"
+	AccStateKeyVoter       AccStateKeyType = "voter"
 )
 
 type IndexKeyAccState string
