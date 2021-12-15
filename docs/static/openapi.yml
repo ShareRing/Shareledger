@@ -12866,6 +12866,76 @@ paths:
           type: string
       tags:
         - Query
+  /ShareRing/shareledger/electoral/authority:
+    get:
+      summary: Queries a authority by index.
+      operationId: ShareRingShareledgerElectoralAuthority
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              Authority:
+                type: object
+                properties:
+                  address:
+                    type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
+  /ShareRing/shareledger/electoral/treasurer:
+    get:
+      summary: Queries a treasurer by index.
+      operationId: ShareRingShareledgerElectoralTreasurer
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              Treasurer:
+                type: object
+                properties:
+                  address:
+                    type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
   '/shareledger/voter/{address}':
     get:
       summary: Balance queries the balance of a single coin for a single account.
@@ -21030,6 +21100,11 @@ definitions:
         type: string
       creator:
         type: string
+  ShareRing.shareledger.electoral.Authority:
+    type: object
+    properties:
+      address:
+        type: string
   ShareRing.shareledger.electoral.MsgEnrollAccountOperatorResponse:
     type: object
   ShareRing.shareledger.electoral.MsgEnrollDocIssuerResponse:
@@ -21105,6 +21180,27 @@ definitions:
             type: string
           creator:
             type: string
+  ShareRing.shareledger.electoral.QueryGetAuthorityResponse:
+    type: object
+    properties:
+      Authority:
+        type: object
+        properties:
+          address:
+            type: string
+  ShareRing.shareledger.electoral.QueryGetTreasurerResponse:
+    type: object
+    properties:
+      Treasurer:
+        type: object
+        properties:
+          address:
+            type: string
+  ShareRing.shareledger.electoral.Treasurer:
+    type: object
+    properties:
+      address:
+        type: string
   ShareRing.shareledger.electoralbk.MsgEnrollVoterResponse:
     type: object
   ShareRing.shareledger.electoralbk.MsgRevokeVoterResponse:

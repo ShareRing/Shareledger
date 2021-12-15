@@ -41,3 +41,11 @@ var (
 func KeyPrefix(p string) []byte {
 	return []byte(p)
 }
+
+const (
+	AuthorityKey = "Authority-value-"
+)
+
+const (
+	TreasurerKey = "Treasurer-value-"
+)

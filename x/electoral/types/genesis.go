@@ -11,6 +11,8 @@ const DefaultIndex uint64 = 1
 func DefaultGenesis() *GenesisState {
 	return &GenesisState{
 		AccStateList: []AccState{},
+		Authority:    nil,
+		Treasurer:    nil,
 		// this line is used by starport scaffolding # genesis/types/default
 	}
 }
