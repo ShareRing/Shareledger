@@ -25,13 +25,13 @@ func (k Keeper) SetExchangeRate(ctx sdk.Context, exchangeRate types.ExchangeRate
 // GetExchangeRate returns exchangeRate
 func (k Keeper) GetExchangeRate(ctx sdk.Context) (val types.ExchangeRate, found bool) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ExchangeRateKey))
-
 	b := store.Get([]byte{0})
-	if b == nil {
-		return val, false
-	}
 
-	k.cdc.MustUnmarshal(b, &val)
+	val = types.ExchangeRate{Rate: types.DefaultExchangeRate}
+
+	if b != nil {
+		k.cdc.MustUnmarshal(b, &val)
+	}
 	return val, true
 }
 
