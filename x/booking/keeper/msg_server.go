@@ -5,6 +5,7 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json"
+	"github.com/cosmos/cosmos-sdk/types/errors"
 
 	assetTypes "github.com/ShareRing/Shareledger/x/asset/types"
 	"github.com/ShareRing/Shareledger/x/booking/types"
@@ -74,7 +75,7 @@ func (k msgServer) Complete(goCtx context.Context, msg *types.MsgComplete) (*typ
 	oldAsset := k.GetAsset(ctx, oldBooking.UUID)
 
 	if len(oldAsset.Creator) == 0 {
-		return nil, types.ErrAssetDoesNotExist
+		return nil, errors.Wrapf(types.ErrAssetDoesNotExist,"the asset %+v",oldAsset)
 	}
 	if oldAsset.Status {
 		return nil, types.ErrAssetNotBooked

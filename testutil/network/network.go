@@ -404,6 +404,7 @@ func New(t *testing.T, cfg Config) *Network {
 	}
 
 	//initAccount
+	t.Log("preparing test account...")
 
 	info, _, err := network.Validators[0].ClientCtx.Keyring.NewMnemonic(KeyAuthority, keyring.English, sdk.FullFundraiserPath, keyring.DefaultBIP39Passphrase, hd.Secp256k1)
 	require.NoError(t, err, "init fail")

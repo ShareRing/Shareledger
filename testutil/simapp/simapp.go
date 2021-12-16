@@ -272,7 +272,7 @@ func init() {
 	DefaultNodeHome = filepath.Join(userHomeDir, "."+appName)
 }
 
-// New returns a reference to an initialized Gaia.
+//NewSimApp returns a reference to an initialized Gaia.
 func NewSimApp(
 	logger log.Logger,
 	db dbm.DB,

@@ -1,4 +1,4 @@
-package testcli
+package tests
 
 import (
 	"github.com/ShareRing/Shareledger/app"

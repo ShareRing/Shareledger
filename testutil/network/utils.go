@@ -62,6 +62,49 @@ var (
 	poorMen       = sdk.Coins{sdk.NewCoin("shr", sdk.NewInt(0)), sdk.NewCoin("shrp", sdk.NewInt(0))}
 )
 
+type (
+	CosmosLogs []CosmosLog
+
+	CosmosLog struct {
+		MgsIndex int `json:"mgs_index"`
+		Events Events `json:"events"`
+	}
+	Event struct {
+		Type string `json:"type"`
+		Attributes []Attribute `json:"attributes"`
+	}
+
+	Attribute struct {
+		Key string `json:"key"`
+		Value string `json:"value"`
+	}
+	Events []Event
+	Attributes []Attribute
+)
+
+func (e Events)GetEventByType(t *testing.T,eType string)Attributes  {
+	for _,ev := range e{
+		if ev.Type == eType{
+			return ev.Attributes
+		}
+	}
+	t.Log("event type not found")
+	t.Fail()
+	return nil
+}
+
+
+func (as Attributes)Get(t *testing.T,key string)Attribute  {
+	for _,a := range as{
+		if a.Key == key{
+			return a
+		}
+	}
+	t.Log("attribute key not found")
+	t.Fail()
+	return Attribute{}
+}
+
 func startInProcess(cfg Config, val *Validator) error {
 	logger := val.Ctx.Logger
 	tmCfg := val.Ctx.Config
@@ -257,4 +300,22 @@ func ParseStdOut(t *testing.T, stdOut []byte) sdk.TxResponse {
 	err := encCfg.Marshaler.UnmarshalJSON(stdOut, &txResponse)
 	require.NoError(t, err)
 	return txResponse
+}
+
+func BalanceJsonUnmarshal(t *testing.T, data []byte)  banktypes.QueryAllBalancesResponse{
+	var b banktypes.QueryAllBalancesResponse
+	encCfg := cosmoscmd.MakeEncodingConfig(app.ModuleBasics)
+	err := encCfg.Marshaler.UnmarshalJSON(data, &b)
+	require.NoError(t, err)
+	return b
+
+}
+
+func ParseRawLogGetEvent(t *testing.T,logString string)CosmosLogs{
+	var logs CosmosLogs
+	err := json.Unmarshal([]byte(logString),&logs)
+	require.NoError(t, err,"fail to get the log information form stdout")
+	l := len(logs)
+	require.Greater(t, l,0,"empty logs")
+	return logs
 }
