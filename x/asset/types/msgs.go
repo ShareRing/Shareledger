@@ -34,7 +34,7 @@ func (msg MsgCreate) Type() string {
 func (msg MsgCreate) ValidateBasic() error {
 	_, err := sdk.AccAddressFromBech32(msg.Creator)
 	if len(msg.Creator) == 0 || err != nil {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "Address of creator must not be empty")
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "Address of creator must not be empty %s", msg.Creator)
 	}
 	if len(msg.UUID) == 0 {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "UUID must not be empty")
