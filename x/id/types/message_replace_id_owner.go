@@ -20,7 +20,7 @@ func (msg *MsgReplaceIdOwner) Route() string {
 }
 
 func (msg *MsgReplaceIdOwner) Type() string {
-	return "ReplaceIdOwner"
+	return TypeMsgReplaceIdOwner
 }
 
 func (msg *MsgReplaceIdOwner) GetSigners() []sdk.AccAddress {
@@ -40,6 +40,15 @@ func (msg *MsgReplaceIdOwner) ValidateBasic() error {
 	_, err := sdk.AccAddressFromBech32(msg.BackupAddress)
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid backupAddress address (%s)", err)
+	}
+
+	if len(msg.Id) > MAX_ID_LEN || len(msg.Id) == 0 {
+		return sdkerrors.Wrap(InvalidData, msg.Id)
+	}
+
+	_, err = sdk.AccAddressFromBech32(msg.OwnerAddress)
+	if err != nil {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "Invalid OwnerAddress address (%s)", err)
 	}
 	return nil
 }

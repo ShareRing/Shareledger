@@ -20,7 +20,7 @@ func (msg *MsgUpdateId) Route() string {
 }
 
 func (msg *MsgUpdateId) Type() string {
-	return "UpdateId"
+	return TypeMsgUpdateID
 }
 
 func (msg *MsgUpdateId) GetSigners() []sdk.AccAddress {
@@ -41,5 +41,10 @@ func (msg *MsgUpdateId) ValidateBasic() error {
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid issuerAddress address (%s)", err)
 	}
+
+	if len(msg.Id) > MAX_ID_LEN || len(msg.Id) == 0 || len(msg.ExtraData) > MAX_ID_LEN {
+		return sdkerrors.Wrap(InvalidData, msg.String())
+	}
+
 	return nil
 }

@@ -20,6 +20,12 @@ func (k msgServer) CreateDocument(goCtx context.Context, msg *types.MsgCreateDoc
 		Version: 0,
 	}
 
+	// check holder ID exist
+	holderIDExist := k.IsIDExist(ctx, msg.Holder)
+	if !holderIDExist {
+		return nil, sdkerrors.Wrap(types.ErrHolderIDNotExisted, msg.Holder)
+	}
+
 	// check existing doc
 	_, found := k.GetDoc(ctx, doc)
 	if found {

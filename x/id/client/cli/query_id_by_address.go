@@ -1,22 +1,29 @@
 package cli
 
 import (
+	"fmt"
 	"strconv"
+	"strings"
 
 	"github.com/spf13/cobra"
 
 	"github.com/ShareRing/Shareledger/x/id/types"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
+	"github.com/cosmos/cosmos-sdk/version"
 )
 
 var _ = strconv.Itoa(0)
 
 func CmdIdByAddress() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "id-by-address [address]",
-		Short: "Query IdByAddress",
-		Args:  cobra.ExactArgs(1),
+		Use:   "info-by-adress [address]",
+		Short: "Query for id information",
+		Long: strings.TrimSpace(fmt.Sprintf(`
+Query id information of an account by owner address
+Example:
+$ %s query %s info-by-address shareledger1s432u6zv95wpluxhf4qru2ewy58kc3w4tkzm3v`, version.Name, types.ModuleName)),
+		Args: cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			reqAddress := args[0]
 

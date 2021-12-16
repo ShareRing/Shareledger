@@ -10,14 +10,17 @@ import (
 )
 
 func (k Keeper) IdById(goCtx context.Context, req *types.QueryIdByIdRequest) (*types.QueryIdByIdResponse, error) {
-	if req == nil {
+	if req == nil || len(req.Id) == 0 || len(req.Id) > types.MAX_ID_LEN {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	// TODO: Process the query
-	_ = ctx
+	id, found := k.GetFullIDByIDString(ctx, req.Id)
+	if !found {
+		return nil, status.Error(codes.NotFound, "id not found")
+	}
 
-	return &types.QueryIdByIdResponse{}, nil
+	return &types.QueryIdByIdResponse{Id: id}, nil
 }

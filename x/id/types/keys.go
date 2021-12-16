@@ -15,6 +15,18 @@ const (
 
 	// MemStoreKey defines the in-memory store key
 	MemStoreKey = "mem_id"
+
+	// ID message types
+	TypeMsgCreateID       = "create_id"
+	TypeMsgCreateIDBatch  = "create_id_batch"
+	TypeMsgUpdateID       = "update_id"
+	TypeMsgReplaceIdOwner = "replace_id_owner"
+
+	MAX_ID_LEN      = 64
+	MAX_ID_IN_BATCH = 20
+
+	AddressKeyPrefix = "Address/"
+	IDKeyPrefix      = "ID/"
 )
 
 func KeyPrefix(p string) []byte {

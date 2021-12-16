@@ -10,14 +10,18 @@ import (
 )
 
 func (k Keeper) IdByAddress(goCtx context.Context, req *types.QueryIdByAddressRequest) (*types.QueryIdByAddressResponse, error) {
-	if req == nil {
+	if req == nil || len(req.Address) == 0 {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	// TODO: Process the query
-	_ = ctx
+	address := sdk.AccAddress(req.Address)
+	id, found := k.GetFullIDByAddress(ctx, address)
+	if !found {
+		return nil, status.Error(codes.NotFound, "id not found")
+	}
 
-	return &types.QueryIdByAddressResponse{}, nil
+	return &types.QueryIdByAddressResponse{Id: id}, nil
 }

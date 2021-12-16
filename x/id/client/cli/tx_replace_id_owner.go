@@ -15,8 +15,8 @@ var _ = strconv.Itoa(0)
 
 func CmdReplaceIdOwner() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "replace-id-owner [id] [owner-address]",
-		Short: "Broadcast message ReplaceIdOwner",
+		Use:   "replace [id] [new-owner-address]",
+		Short: "Replace owner of an ID",
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argId := args[0]

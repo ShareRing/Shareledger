@@ -22,7 +22,7 @@ func (msg *MsgCreateId) Route() string {
 }
 
 func (msg *MsgCreateId) Type() string {
-	return "CreateId"
+	return TypeMsgCreateID
 }
 
 func (msg *MsgCreateId) GetSigners() []sdk.AccAddress {
@@ -43,5 +43,41 @@ func (msg *MsgCreateId) ValidateBasic() error {
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid issuerAddress address (%s)", err)
 	}
+
+	if len(msg.Id) > MAX_ID_LEN || len(msg.Id) == 0 || len(msg.ExtraData) > MAX_ID_LEN {
+		return sdkerrors.Wrap(InvalidData, msg.String())
+	}
+
+	_, err = sdk.AccAddressFromBech32(msg.BackupAddress)
+	if err != nil {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "Invalid Backup address (%s)", err)
+	}
+
+	_, err = sdk.AccAddressFromBech32(msg.OwnerAddress)
+	if err != nil {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "Invalid OwnerAddress address (%s)", err)
+	}
+
 	return nil
+}
+
+func (msg *MsgCreateId) ToBaseID() BaseID {
+	baseID := BaseID{
+		IssuerAddress: msg.IssuerAddress,
+		BackupAddress: msg.BackupAddress,
+		OwnerAddress:  msg.OwnerAddress,
+		ExtraData:     msg.ExtraData,
+	}
+
+	return baseID
+}
+
+func (msg *MsgCreateId) ToID() Id {
+	baseID := msg.ToBaseID()
+	id := Id{
+		Id:   msg.Id,
+		Data: &baseID,
+	}
+
+	return id
 }

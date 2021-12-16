@@ -94,3 +94,8 @@ func (k Keeper) IterateAllDocOfHolderByIssuer(ctx sdk.Context, holder string, is
 		}
 	}
 }
+
+func (k Keeper) IsIDExist(ctx sdk.Context, id string) bool {
+	_, found := k.idKeeper.GetFullIDByIDString(ctx, id)
+	return found
+}

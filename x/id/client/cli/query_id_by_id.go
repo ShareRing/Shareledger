@@ -1,22 +1,29 @@
 package cli
 
 import (
+	"fmt"
 	"strconv"
+	"strings"
 
 	"github.com/spf13/cobra"
 
 	"github.com/ShareRing/Shareledger/x/id/types"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
+	"github.com/cosmos/cosmos-sdk/version"
 )
 
 var _ = strconv.Itoa(0)
 
 func CmdIdById() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "id-by-id [id]",
-		Short: "Query IdById",
-		Args:  cobra.ExactArgs(1),
+		Use:   "info-by-id [id]",
+		Short: "Query for id information",
+		Long: strings.TrimSpace(fmt.Sprintf(`
+Query id information of an account by owner id
+Example:
+$ %s query %s info-by-id 123e4567-e89b-12d3-a456-426655440000`, version.Name, types.ModuleName)),
+		Args: cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			reqId := args[0]
 
