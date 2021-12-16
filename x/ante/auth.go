@@ -37,10 +37,10 @@ func (a Auth) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate bool, next sdk.Ant
 		switch msg := msgI.(type) {
 		case // Authority
 			*gentleminttypes.MsgLoadShr,
-			*gentleminttypes.MsgEnrollLoaders,
-			*gentleminttypes.MsgRevokeLoaders,
-			*gentleminttypes.MsgEnrollAccountOperator,
-			*gentleminttypes.MsgRevokeAccountOperator,
+			*electoraltypes.MsgEnrollLoaders,
+			*electoraltypes.MsgRevokeLoaders,
+			*electoraltypes.MsgEnrollAccountOperator,
+			*electoraltypes.MsgRevokeAccountOperator,
 			*electoraltypes.MsgEnrollVoter,
 			*electoraltypes.MsgRevokeVoter:
 			if !a.rk.IsAuthority(ctx, signer) {
@@ -79,10 +79,10 @@ func (a Auth) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate bool, next sdk.Ant
 				return ctx, sdkerrors.Wrapf(sdkerrors.ErrUnauthorized, ErrMsgNotDocIssuer)
 			}
 		case // Account Operator
-			*gentleminttypes.MsgEnrollDocIssuer,
-			*gentleminttypes.MsgEnrollIdSigner,
-			*gentleminttypes.MsgRevokeDocIssuer,
-			*gentleminttypes.MsgRevokeIdSigner:
+			*electoraltypes.MsgEnrollDocIssuer,
+			*electoraltypes.MsgEnrollIdSigner,
+			*electoraltypes.MsgRevokeDocIssuer,
+			*electoraltypes.MsgRevokeIdSigner:
 			if !a.rk.IsAccountOperator(ctx, signer) {
 				return ctx, sdkerrors.Wrapf(sdkerrors.ErrUnauthorized, ErrMsgNotOperatorAccount)
 			}

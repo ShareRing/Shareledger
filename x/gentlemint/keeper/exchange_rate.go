@@ -6,14 +6,11 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
-const (
-	DefaultExchangeRate = float64(200)
-)
 
 func (k Keeper) GetExchangeRateF(ctx sdk.Context) float64 {
 	v, found := k.GetExchangeRate(ctx)
 	if !found {
-		return DefaultExchangeRate
+		return types.DefaultExchangeRate
 	}
 	return v.Rate
 }

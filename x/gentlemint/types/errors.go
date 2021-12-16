@@ -10,7 +10,3 @@ import (
 var (
 	ErrSHRSupplyExceeded = sdkerrors.Register(ModuleName, 41, "SHR supply exceeded")
 )
-var (
-	ErrSenderIsNotAccountOperator = "Sender is not account operator"
-	ErrSenderIsNotAuthority       = "Sender is not authority"
-)
