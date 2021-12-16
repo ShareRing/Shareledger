@@ -3,9 +3,6 @@ package ShareRing.shareledger.gentlemint;
 
 import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
-import "gentlemint/acc_state.proto";
-import "gentlemint/authority.proto";
-import "gentlemint/treasurer.proto";
 import "gentlemint/exchange_rate.proto";
 // this line is used by starport scaffolding # 1
 import "gogoproto/gogo.proto";
@@ -14,150 +11,18 @@ option go_package = "github.com/ShareRing/Shareledger/x/gentlemint/types";
 
 // Query defines the gRPC querier service.
 service Query {
-    // Queries a accState by index.
-	rpc AccState(QueryGetAccStateRequest) returns (QueryGetAccStateResponse) {
-		option (google.api.http).get = "/ShareRing/shareledger/gentlemint/accState/{key}";
-	}
-
-	// Queries a list of accState items.
-	rpc AccStateAll(QueryAllAccStateRequest) returns (QueryAllAccStateResponse) {
-		option (google.api.http).get = "/ShareRing/shareledger/gentlemint/accState";
-	}
-
-// Queries a authority by index.
-	rpc Authority(QueryGetAuthorityRequest) returns (QueryGetAuthorityResponse) {
-		option (google.api.http).get = "/ShareRing/shareledger/gentlemint/authority";
-	}
-// Queries a treasurer by index.
-	rpc Treasurer(QueryGetTreasurerRequest) returns (QueryGetTreasurerResponse) {
-		option (google.api.http).get = "/ShareRing/shareledger/gentlemint/treasurer";
-	}
 // Queries a exchangeRate by index.
 	rpc ExchangeRate(QueryGetExchangeRateRequest) returns (QueryGetExchangeRateResponse) {
 		option (google.api.http).get = "/ShareRing/shareledger/gentlemint/getExchangeRate";
-	}
-// Queries a list of getLoader items.
-	rpc GetLoader(QueryGetLoaderRequest) returns (QueryGetLoaderResponse) {
-		option (google.api.http).get = "/ShareRing/shareledger/gentlemint/getLoader";
-	}
-
-// Queries a list of idSigner items.
-	rpc IdSigner(QueryIdSignerRequest) returns (QueryIdSignerResponse) {
-		option (google.api.http).get = "/ShareRing/shareledger/gentlemint/idSigner";
-	}
-
-// Queries a list of idSigners items.
-	rpc IdSigners(QueryIdSignersRequest) returns (QueryIdSignersResponse) {
-		option (google.api.http).get = "/ShareRing/shareledger/gentlemint/idSigners";
-	}
-
-// Queries a list of accountOperator items.
-	rpc AccountOperator(QueryAccountOperatorRequest) returns (QueryAccountOperatorResponse) {
-		option (google.api.http).get = "/ShareRing/shareledger/gentlemint/accountOperator";
-	}
-
-// Queries a list of accountOperators items.
-	rpc AccountOperators(QueryAccountOperatorsRequest) returns (QueryAccountOperatorsResponse) {
-		option (google.api.http).get = "/ShareRing/shareledger/gentlemint/accountOperators";
-	}
-
-// Queries a list of documentIssuer items.
-	rpc DocumentIssuer(QueryDocumentIssuerRequest) returns (QueryDocumentIssuerResponse) {
-		option (google.api.http).get = "/ShareRing/shareledger/gentlemint/documentIssuer";
-	}
-
-// Queries a list of documentIssuers items.
-	rpc DocumentIssuers(QueryDocumentIssuersRequest) returns (QueryDocumentIssuersResponse) {
-		option (google.api.http).get = "/ShareRing/shareledger/gentlemint/documentIssuers";
 	}
 
 // this line is used by starport scaffolding # 2
 }
 
-message QueryGetAccStateRequest {
-	  string key = 1;
-
-}
-
-message QueryGetAccStateResponse {
-	AccState accState = 1 [(gogoproto.nullable) = false];
-}
-
-message QueryAllAccStateRequest {
-	cosmos.base.query.v1beta1.PageRequest pagination = 1;
-}
-
-message QueryAllAccStateResponse {
-	repeated AccState accState = 1 [(gogoproto.nullable) = false];
-	cosmos.base.query.v1beta1.PageResponse pagination = 2;
-}
-
-message QueryGetAuthorityRequest {}
-
-message QueryGetAuthorityResponse {
-	Authority Authority = 1 [(gogoproto.nullable) = false];
-}
-message QueryGetTreasurerRequest {}
-
-message QueryGetTreasurerResponse {
-	Treasurer Treasurer = 1 [(gogoproto.nullable) = false];
-}
 message QueryGetExchangeRateRequest {}
 
 message QueryGetExchangeRateResponse {
 	double rate = 1;
-}
-message QueryGetLoaderRequest {
-  string address = 1;
-}
-
-message QueryGetLoaderResponse {
-  string status = 1;
-}
-
-message QueryIdSignerRequest {
-  string address = 1;
-}
-
-message QueryIdSignerResponse {
-	AccState accState = 1;
-}
-
-message QueryIdSignersRequest {
-}
-
-message QueryIdSignersResponse {
-	repeated AccState accStates = 1;
-}
-
-message QueryAccountOperatorRequest {
-  string address = 1;
-}
-
-message QueryAccountOperatorResponse {
-	AccState accState = 1;
-}
-
-message QueryAccountOperatorsRequest {
-}
-
-message QueryAccountOperatorsResponse {
-	repeated AccState accStates = 1;
-}
-
-message QueryDocumentIssuerRequest {
-  string address = 1;
-}
-
-message QueryDocumentIssuerResponse {
-	AccState accState = 1;
-}
-
-message QueryDocumentIssuersRequest {
-}
-
-message QueryDocumentIssuersResponse {
-	repeated AccState accStates = 1;
 }
 
 // this line is used by starport scaffolding # 3

@@ -2,28 +2,165 @@ syntax = "proto3";
 package ShareRing.shareledger.electoral;
 
 import "google/api/annotations.proto";
+import "cosmos/base/query/v1beta1/pagination.proto";
+import "electoral/acc_state.proto";
+import "electoral/authority.proto";
+import "electoral/treasurer.proto";
+// this line is used by starport scaffolding # 1
 import "gogoproto/gogo.proto";
-import "electoral/tx.proto";
-// import "cosmos/base/query/v1beta1/pagination.proto";
 
 option go_package = "github.com/ShareRing/Shareledger/x/electoral/types";
 
 // Query defines the gRPC querier service.
 service Query {
-    // Balance queries the balance of a single coin for a single account.
-    rpc Voter(QueryVoterRequest) returns (QueryVoterResponse) {
-        option (google.api.http).get = "/shareledger/voter/{address}";
-    }
+    // Queries a accState by index.
+	rpc AccState(QueryGetAccStateRequest) returns (QueryGetAccStateResponse) {
+		option (google.api.http).get = "/ShareRing/shareledger/electoral/accState/{key}";
+	}
+
+	// Queries a list of accState items.
+	rpc AccStateAll(QueryAllAccStateRequest) returns (QueryAllAccStateResponse) {
+		option (google.api.http).get = "/ShareRing/shareledger/electoral/accState";
+	}
+
+// Queries a authority by index.
+	rpc Authority(QueryGetAuthorityRequest) returns (QueryGetAuthorityResponse) {
+		option (google.api.http).get = "/ShareRing/shareledger/electoral/authority";
+	}
+// Queries a treasurer by index.
+	rpc Treasurer(QueryGetTreasurerRequest) returns (QueryGetTreasurerResponse) {
+		option (google.api.http).get = "/ShareRing/shareledger/electoral/treasurer";
+	}
+// Queries a list of getVoter items.
+	rpc GetVoter(QueryGetVoterRequest) returns (QueryGetVoterResponse) {
+		option (google.api.http).get = "/ShareRing/shareledger/electoral/getVoter";
+	}
+
+// Queries a list of getLoader items.
+	rpc GetLoader(QueryGetLoaderRequest) returns (QueryGetLoaderResponse) {
+		option (google.api.http).get = "/ShareRing/shareledger/electoral/getLoader";
+	}
+
+	// Queries a list of idSigner items.
+	rpc IdSigner(QueryIdSignerRequest) returns (QueryIdSignerResponse) {
+		option (google.api.http).get = "/ShareRing/shareledger/electoral/idSigner";
+	}
+
+	// Queries a list of idSigners items.
+	rpc IdSigners(QueryIdSignersRequest) returns (QueryIdSignersResponse) {
+		option (google.api.http).get = "/ShareRing/shareledger/electoral/idSigners";
+	}
+
+	// Queries a list of accountOperator items.
+	rpc AccountOperator(QueryAccountOperatorRequest) returns (QueryAccountOperatorResponse) {
+		option (google.api.http).get = "/ShareRing/shareledger/electoral/accountOperator";
+	}
+
+	// Queries a list of accountOperators items.
+	rpc AccountOperators(QueryAccountOperatorsRequest) returns (QueryAccountOperatorsResponse) {
+		option (google.api.http).get = "/ShareRing/shareledger/electoral/accountOperators";
+	}
+
+	// Queries a list of documentIssuer items.
+	rpc DocumentIssuer(QueryDocumentIssuerRequest) returns (QueryDocumentIssuerResponse) {
+		option (google.api.http).get = "/ShareRing/shareledger/electoral/documentIssuer";
+	}
+
+	// Queries a list of documentIssuers items.
+	rpc DocumentIssuers(QueryDocumentIssuersRequest) returns (QueryDocumentIssuersResponse) {
+		option (google.api.http).get = "/ShareRing/shareledger/electoral/documentIssuers";
+	}
+
+// this line is used by starport scaffolding # 2
 }
 
-message QueryVoterRequest {
-    option (gogoproto.equal)           = false;
-    option (gogoproto.goproto_getters) = false;
+message QueryGetAccStateRequest {
+	  string key = 1;
 
-    string address = 1;
 }
 
-
-message QueryVoterResponse {
-    Voter voter = 1;
+message QueryGetAccStateResponse {
+	AccState accState = 1 [(gogoproto.nullable) = false];
 }
+
+message QueryAllAccStateRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllAccStateResponse {
+	repeated AccState accState = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryGetAuthorityRequest {}
+
+message QueryGetAuthorityResponse {
+	Authority Authority = 1 [(gogoproto.nullable) = false];
+}
+message QueryGetTreasurerRequest {}
+
+message QueryGetTreasurerResponse {
+	Treasurer Treasurer = 1 [(gogoproto.nullable) = false];
+}
+message QueryGetVoterRequest {
+  string address = 1;
+}
+
+message QueryGetVoterResponse {
+		AccState voter = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryGetLoaderRequest {
+	string address = 1;
+}
+
+message QueryGetLoaderResponse {
+	AccState accState = 1;
+}
+
+message QueryIdSignerRequest {
+	string address = 1;
+}
+
+message QueryIdSignerResponse {
+	AccState accState = 1;
+}
+
+message QueryIdSignersRequest {
+}
+
+message QueryIdSignersResponse {
+	repeated AccState accStates = 1;
+}
+
+message QueryAccountOperatorRequest {
+	string address = 1;
+}
+
+message QueryAccountOperatorResponse {
+	AccState accState = 1;
+}
+
+message QueryAccountOperatorsRequest {
+}
+
+message QueryAccountOperatorsResponse {
+	repeated AccState accStates = 1;
+}
+
+message QueryDocumentIssuerRequest {
+	string address = 1;
+}
+
+message QueryDocumentIssuerResponse {
+	AccState accState = 1;
+}
+
+message QueryDocumentIssuersRequest {
+}
+
+message QueryDocumentIssuersResponse {
+	repeated AccState accStates = 1;
+}
+
+// this line is used by starport scaffolding # 3
