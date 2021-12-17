@@ -1,65 +1,56 @@
 syntax = "proto3";
 package ShareRing.shareledger.document;
 
+// this line is used by starport scaffolding # proto/tx/import
+
 option go_package = "github.com/ShareRing/Shareledger/x/document/types";
 
 // Msg defines the Msg service.
 service Msg {
-    rpc CreateDocument(MsgCreateDoc) returns (MsgCreateDocResponse);
-    rpc CreateDocumentInBatch(MsgCreateDocBatch) returns (MsgCreateDocBatchResponse);
-    rpc RevokeDocument(MsgRevokeDoc) returns (MsgRevokeDocResponse);
-    rpc UpdateDocument(MsgUpdateDoc) returns (MsgUpdateDocResponse);
+  rpc CreateDocument(MsgCreateDocument) returns (MsgCreateDocumentResponse);
+  rpc CreateDocumentInBatch(MsgCreateDocumentInBatch) returns (MsgCreateDocumentInBatchResponse);
+  rpc RevokeDocument(MsgRevokeDocument) returns (MsgRevokeDocumentResponse);
+  rpc UpdateDocument(MsgUpdateDocument) returns (MsgUpdateDocumentResponse);
+// this line is used by starport scaffolding # proto/tx/rpc
 }
 
-message MsgCreateDoc {
-    string data = 1;
-    string holder = 2;
-    string issuer = 3;
-    string proof = 4;
+message MsgCreateDocument {
+  string data = 1;
+  string holder = 2;
+  string issuer = 3;
+  string proof = 4;
 }
 
-message MsgCreateDocResponse {}
-
-message MsgCreateDocBatch {
-    repeated string data = 1;
-    repeated string holder = 2;
-    string issuer = 3;
-    repeated string proof = 4;
+message MsgCreateDocumentResponse {
 }
 
-message MsgCreateDocBatchResponse {}
-
-message MsgRevokeDoc {
-    string holder = 1;
-    string issuer = 2;
-    string proof = 3;
+message MsgCreateDocumentInBatch {
+  repeated string data = 1;
+  repeated string holder = 2;
+  string issuer = 3;
+  repeated string proof = 4;
 }
 
-message MsgRevokeDocResponse {}
-
-message MsgUpdateDoc {
-    string data = 1;
-    string holder = 2;
-    string issuer = 3;
-    string proof = 4;
+message MsgCreateDocumentInBatchResponse {
 }
 
-message MsgUpdateDocResponse {}
-
-message Document {
-    string holder = 1;
-    string issuer = 2;
-    string proof = 3;
-    string data = 4;
-    int32 version = 5;
+message MsgRevokeDocument {
+  string holder = 1;
+  string issuer = 2;
+  string proof = 3;
 }
 
-message DocDetailState {
-    string data = 1;
-    int32 version = 2;
+message MsgRevokeDocumentResponse {
 }
 
-message DocBasicState {
-    string holder = 1;
-    string issuer = 2;
+message MsgUpdateDocument {
+  string data = 1;
+  string holder = 2;
+  string issuer = 3;
+  string proof = 4;
 }
+
+message MsgUpdateDocumentResponse {
+}
+
+// this line is used by starport scaffolding # proto/tx/message

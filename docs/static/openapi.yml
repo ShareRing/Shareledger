@@ -12503,6 +12503,7 @@ paths:
         - Query
   '/shareledger/asset/{uuid}':
     get:
+      summary: Queries a list of assetByUUID items.
       operationId: ShareRingShareledgerAssetAssetByUUID
       responses:
         '200':
@@ -12552,7 +12553,8 @@ paths:
         - Query
   '/shareledger/booking/{bookID}':
     get:
-      operationId: ShareRingShareledgerBookingbooking
+      summary: Queries a list of booking items.
+      operationId: ShareRingShareledgerBookingBooking
       responses:
         '200':
           description: A successful response.
@@ -12598,58 +12600,9 @@ paths:
           type: string
       tags:
         - Query
-  '/shareledger/document/holder/{id}':
-    get:
-      operationId: ShareRingShareledgerDocumentDocumentByHolderId
-      responses:
-        '200':
-          description: A successful response.
-          schema:
-            type: object
-            properties:
-              document:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    holder:
-                      type: string
-                    issuer:
-                      type: string
-                    proof:
-                      type: string
-                    data:
-                      type: string
-                    version:
-                      type: integer
-                      format: int32
-        default:
-          description: An unexpected error response.
-          schema:
-            type: object
-            properties:
-              code:
-                type: integer
-                format: int32
-              message:
-                type: string
-              details:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    '@type':
-                      type: string
-                  additionalProperties: {}
-      parameters:
-        - name: id
-          in: path
-          required: true
-          type: string
-      tags:
-        - Query
   '/shareledger/document/proof/{proof}':
     get:
+      summary: Queries a list of documentByProof items.
       operationId: ShareRingShareledgerDocumentDocumentByProof
       responses:
         '200':
@@ -12691,6 +12644,112 @@ paths:
                   additionalProperties: {}
       parameters:
         - name: proof
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  '/shareledger/document/{holder}/{issuer}':
+    get:
+      summary: Queries a list of documentOfHolderByIssuer items.
+      operationId: ShareRingShareledgerDocumentDocumentOfHolderByIssuer
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              documents:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    holder:
+                      type: string
+                    issuer:
+                      type: string
+                    proof:
+                      type: string
+                    data:
+                      type: string
+                    version:
+                      type: integer
+                      format: int32
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: holder
+          in: path
+          required: true
+          type: string
+        - name: issuer
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  '/shareledger/document/{id}':
+    get:
+      summary: Queries a list of documentByHolderId items.
+      operationId: ShareRingShareledgerDocumentDocumentByHolderId
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              documents:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    holder:
+                      type: string
+                    issuer:
+                      type: string
+                    proof:
+                      type: string
+                    data:
+                      type: string
+                    version:
+                      type: integer
+                      format: int32
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: id
           in: path
           required: true
           type: string
@@ -13330,7 +13389,7 @@ paths:
         - Query
   '/shareledger/id/address/{address}':
     get:
-      summary: Balance queries the balance of a single coin for a single account.
+      summary: Queries a list of idByAddress items.
       operationId: ShareRingShareledgerIdIdByAddress
       responses:
         '200':
@@ -13339,7 +13398,6 @@ paths:
             type: object
             properties:
               id:
-                description: balance is the balance of the coin.
                 type: object
                 properties:
                   id:
@@ -13375,7 +13433,6 @@ paths:
                   additionalProperties: {}
       parameters:
         - name: address
-          description: address is the address to query id info for.
           in: path
           required: true
           type: string
@@ -13383,6 +13440,7 @@ paths:
         - Query
   '/shareledger/id/id/{id}':
     get:
+      summary: Queries a list of idById items.
       operationId: ShareRingShareledgerIdIdById
       responses:
         '200':
@@ -13391,7 +13449,6 @@ paths:
             type: object
             properties:
               id:
-                description: balance is the balance of the coin.
                 type: object
                 properties:
                   id:
@@ -20803,7 +20860,7 @@ definitions:
     type: object
   ShareRing.shareledger.booking.MsgCompleteResponse:
     type: object
-  ShareRing.shareledger.booking.QueryBookingRequestResponse:
+  ShareRing.shareledger.booking.QueryBookingResponse:
     type: object
     properties:
       booking:
@@ -20834,18 +20891,18 @@ definitions:
       version:
         type: integer
         format: int32
-  ShareRing.shareledger.document.MsgCreateDocBatchResponse:
+  ShareRing.shareledger.document.MsgCreateDocumentInBatchResponse:
     type: object
-  ShareRing.shareledger.document.MsgCreateDocResponse:
+  ShareRing.shareledger.document.MsgCreateDocumentResponse:
     type: object
-  ShareRing.shareledger.document.MsgRevokeDocResponse:
+  ShareRing.shareledger.document.MsgRevokeDocumentResponse:
     type: object
-  ShareRing.shareledger.document.MsgUpdateDocResponse:
+  ShareRing.shareledger.document.MsgUpdateDocumentResponse:
     type: object
   ShareRing.shareledger.document.QueryDocumentByHolderIdResponse:
     type: object
     properties:
-      document:
+      documents:
         type: array
         items:
           type: object
@@ -20878,6 +20935,46 @@ definitions:
           version:
             type: integer
             format: int32
+  ShareRing.shareledger.document.QueryDocumentOfHolderByIssuerResponse:
+    type: object
+    properties:
+      documents:
+        type: array
+        items:
+          type: object
+          properties:
+            holder:
+              type: string
+            issuer:
+              type: string
+            proof:
+              type: string
+            data:
+              type: string
+            version:
+              type: integer
+              format: int32
+  ShareRing.shareledger.electoral.MsgEnrollVoterResponse:
+    type: object
+  ShareRing.shareledger.electoral.MsgRevokeVoterResponse:
+    type: object
+  ShareRing.shareledger.electoral.QueryVoterResponse:
+    type: object
+    properties:
+      voter:
+        type: object
+        properties:
+          address:
+            type: string
+          status:
+            type: string
+  ShareRing.shareledger.electoral.Voter:
+    type: object
+    properties:
+      address:
+        type: string
+      status:
+        type: string
   ShareRing.shareledger.electoral.AccState:
     type: object
     properties:
@@ -21167,7 +21264,7 @@ definitions:
         type: string
       extraData:
         type: string
-  ShareRing.shareledger.id.ID:
+  ShareRing.shareledger.id.Id:
     type: object
     properties:
       id:
@@ -21183,7 +21280,7 @@ definitions:
             type: string
           extraData:
             type: string
-  ShareRing.shareledger.id.MsgCreateIdInBatchResponse:
+  ShareRing.shareledger.id.MsgCreateIdBatchResponse:
     type: object
   ShareRing.shareledger.id.MsgCreateIdResponse:
     type: object
@@ -21195,7 +21292,25 @@ definitions:
     type: object
     properties:
       id:
-        description: balance is the balance of the coin.
+        type: object
+        properties:
+          id:
+            type: string
+          data:
+            type: object
+            properties:
+              issuerAddress:
+                type: string
+              backupAddress:
+                type: string
+              ownerAddress:
+                type: string
+              extraData:
+                type: string
+  ShareRing.shareledger.id.QueryIdByIdResponse:
+    type: object
+    properties:
+      id:
         type: object
         properties:
           id:

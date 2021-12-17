@@ -1,76 +1,32 @@
 package types
 
-import (
-	"github.com/cosmos/cosmos-sdk/codec"
-)
-
-// type BaseID struct {
-// 	IssuerAddr sdk.AccAddress `json:"issuer_address"`
-// 	BackupAddr sdk.AccAddress `json:"backup_address"`
-// 	OwnerAddr  sdk.AccAddress `json:"owner_address"`
-// 	ExtraData  string         `json:"extra_data"`
-// }
-
-// type ID struct {
-// 	Id     string `json:"id"`
-// 	BaseID `json:"data"`
-// }
-
-// NewBaseID creates new BaseId instance
-func NewBaseID(issuerAddr, backupAddr, ownerAddr, extraData string) BaseID {
-	return BaseID{
-		IssuerAddress: issuerAddr,
-		BackupAddress: backupAddr,
-		OwnerAddress:  ownerAddr,
-		ExtraData:     extraData,
-	}
-}
+import "github.com/cosmos/cosmos-sdk/codec"
 
 // MustMarshalBaseID encodes data for storage
 func MustMarshalBaseID(cdc codec.BinaryCodec, id *BaseID) []byte {
-	return cdc.MustMarshalLengthPrefixed(id)
+	return cdc.MustMarshal(id)
 }
 
 // MustUnmarshalBaseID decodes data from storage value. Throw exception when there is error
 func MustUnmarshalBaseID(cdc codec.BinaryCodec, value []byte) BaseID {
-	id, err := UnmarshalBaseID(cdc, value)
-	if err != nil {
-		panic(err)
-	}
+	var id BaseID
+	cdc.MustUnmarshal(value, &id)
+
 	return id
 }
 
-// UnmarshalBaseID decodes data from store value
-func UnmarshalBaseID(cdc codec.BinaryCodec, value []byte) (id BaseID, err error) {
-	err = cdc.UnmarshalLengthPrefixed(value, &id)
-
-	return id, err
+func (id *Id) ToBaseID() BaseID {
+	return BaseID{
+		IssuerAddress: id.Data.IssuerAddress,
+		BackupAddress: id.Data.BackupAddress,
+		OwnerAddress:  id.Data.OwnerAddress,
+		ExtraData:     id.Data.ExtraData,
+	}
 }
 
-func (id ID) ToBaseID() BaseID {
-	return NewBaseID(id.Data.IssuerAddress, id.Data.BackupAddress, id.Data.OwnerAddress, id.Data.ExtraData)
-}
-
-func NewIDFromBaseID(id string, ids *BaseID) ID {
-	return ID{
+func NewIDFromBaseID(id string, bid *BaseID) Id {
+	return Id{
 		Id:   id,
-		Data: ids,
+		Data: bid,
 	}
-}
-
-func NewID(id string, issuerAddr, backupAddr, ownerAddr, extraData string) ID {
-	data := NewBaseID(issuerAddr, backupAddr, ownerAddr, extraData)
-	return ID{Id: id, Data: &data}
-}
-
-func (id *ID) IsEmpty() bool {
-	if id == nil {
-		return true
-	}
-
-	if len(id.Data.IssuerAddress) == 0 {
-		return true
-	}
-
-	return false
 }

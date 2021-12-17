@@ -8,13 +8,14 @@ import (
 
 // x/booking module sentinel errors
 var (
-	ErrAssetDoesNotExist      = sdkerrors.New(ModuleName, 1, "asset does not exist")
-	ErrIllegalAssetRate       = sdkerrors.New(ModuleName, 2, "asset is negative")
-	ErrAssetAlreadyBooked     = sdkerrors.New(ModuleName, 3, "asset is already booked")
-	ErrUnableToGenerateBookID = sdkerrors.New(ModuleName, 4, "unable to generate bookID")
-	ErrInvalidBooking         = sdkerrors.New(ModuleName, 5, "booking field values are invalid")
-	ErrNotBookerOfAsset       = sdkerrors.New(ModuleName, 6, "Signer didn't booking this booking")
-	ErrAssetNotBooked         = sdkerrors.New(ModuleName, 7, "Asset is not booked")
-	ErrBookingIsCompleted     = sdkerrors.New(ModuleName, 8, "Booking is completed")
-	ErrUUIDMismatch           = sdkerrors.New(ModuleName, 9, "uuid of booking and asset not matched")
+	ErrAssetDoesNotExist      = sdkerrors.Register(ModuleName, 41, "asset does not exist")
+	ErrIllegalAssetRate       = sdkerrors.Register(ModuleName, 42, "asset is negative")
+	ErrAssetAlreadyBooked     = sdkerrors.Register(ModuleName, 43, "asset is already booked")
+	ErrUnableToGenerateBookID = sdkerrors.Register(ModuleName, 44, "unable to generate bookID")
+	ErrInvalidBooking         = sdkerrors.Register(ModuleName, 45, "booking field values are invalid")
+	ErrNotBookerOfAsset       = sdkerrors.Register(ModuleName, 46, "Signer didn't booking this booking")
+	ErrAssetNotBooked         = sdkerrors.Register(ModuleName, 47, "Asset is not booked")
+	ErrBookingIsCompleted     = sdkerrors.Register(ModuleName, 48, "Booking is completed")
+	ErrUUIDMismatch           = sdkerrors.Register(ModuleName, 49, "uuid of booking and asset not matched")
+	ErrBookingDoesNotExist    = sdkerrors.Register(ModuleName, 50, "Booking does not exist")
 )

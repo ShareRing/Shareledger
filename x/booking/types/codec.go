@@ -3,33 +3,29 @@ package types
 import (
 	"github.com/cosmos/cosmos-sdk/codec"
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
-
-	cryptocodec "github.com/cosmos/cosmos-sdk/crypto/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/msgservice"
 )
 
 func RegisterCodec(cdc *codec.LegacyAmino) {
-	cdc.RegisterConcrete(MsgBook{}, "book/Book", nil)
-	cdc.RegisterConcrete(MsgComplete{}, "book/Complete", nil)
+	cdc.RegisterConcrete(&MsgBook{}, "booking/Book", nil)
+	cdc.RegisterConcrete(&MsgComplete{}, "booking/Complete", nil)
+	// this line is used by starport scaffolding # 2
 }
 
 func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgBook{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgComplete{},
 	)
+	// this line is used by starport scaffolding # 3
 
 	msgservice.RegisterMsgServiceDesc(registry, &_Msg_serviceDesc)
 }
 
 var (
 	amino     = codec.NewLegacyAmino()
-	ModuleCdc = codec.NewAminoCodec(amino)
+	ModuleCdc = codec.NewProtoCodec(cdctypes.NewInterfaceRegistry())
 )
-
-func init() {
-	RegisterCodec(amino)
-	cryptocodec.RegisterCrypto(amino)
-	amino.Seal()
-}

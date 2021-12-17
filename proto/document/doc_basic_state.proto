@@ -1,0 +1,11 @@
+syntax = "proto3";
+package ShareRing.shareledger.document;
+
+option go_package = "github.com/ShareRing/Shareledger/x/document/types";
+
+
+message DocBasicState {
+  
+  string holder = 1; 
+  string issuer = 2; 
+}

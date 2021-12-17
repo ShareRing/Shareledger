@@ -6,26 +6,10 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
-// type GenesisState struct {
-// 	IDs []types.ID `json:"IDs" yaml:"IDs"`
-// }
-
-func NewGenesisState() types.GenesisState {
-	return types.GenesisState{}
-}
-
-// TODO: Validate genesis data
-func ValidateGenesis(data types.GenesisState) error {
-	return nil
-}
-
-func DefaultGenesisState() types.GenesisState {
-	return types.GenesisState{}
-}
-
 // InitGenesis initializes the capability module's state from a provided genesis
 // state.
 func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) {
+	// this line is used by starport scaffolding # genesis/module/init
 	for _, id := range genState.IDs {
 		k.SetID(ctx, id)
 	}
@@ -33,16 +17,15 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 
 // ExportGenesis returns the capability module's exported genesis.
 func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
-	ids := []*types.ID{}
+	genesis := types.DefaultGenesis()
 
-	cb := func(id types.ID) (stop bool) {
-		ids = append(ids, &id)
+	// this line is used by starport scaffolding # genesis/module/export
+	cb := func(id types.Id) bool {
+		genesis.IDs = append(genesis.IDs, &id)
 		return false
 	}
 
 	k.IterateID(ctx, cb)
 
-	return &types.GenesisState{
-		IDs: ids,
-	}
+	return genesis
 }

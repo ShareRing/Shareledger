@@ -2,12 +2,8 @@ package types
 
 import "encoding/json"
 
-func NewAsset() Asset {
-	return Asset{}
-}
-
 func NewAssetFromMsgCreate(msg MsgCreate) Asset {
-	asset := NewAsset()
+	asset := Asset{}
 	asset.Creator = msg.Creator
 	asset.Rate = msg.Rate
 	asset.Hash = msg.Hash
@@ -17,7 +13,7 @@ func NewAssetFromMsgCreate(msg MsgCreate) Asset {
 }
 
 func NewAssetFromMsgUpdate(msg MsgUpdate) Asset {
-	asset := NewAsset()
+	asset := Asset{}
 	asset.Creator = msg.Creator
 	asset.Rate = msg.Rate
 	asset.Hash = msg.Hash

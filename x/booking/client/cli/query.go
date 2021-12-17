@@ -7,8 +7,7 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/cosmos/cosmos-sdk/client"
-	"github.com/cosmos/cosmos-sdk/client/flags"
-
+	// "github.com/cosmos/cosmos-sdk/client/flags"
 	// sdk "github.com/cosmos/cosmos-sdk/types"
 
 	"github.com/ShareRing/Shareledger/x/booking/types"
@@ -25,42 +24,9 @@ func GetQueryCmd(queryRoute string) *cobra.Command {
 		RunE:                       client.ValidateCmd,
 	}
 
-	cmd.AddCommand(
-		CmdGetBooking(types.QuerierRoute),
-	)
+	cmd.AddCommand(CmdBooking())
 
-	return cmd
-}
+	// this line is used by starport scaffolding # 1
 
-func CmdGetBooking(queryRoute string) *cobra.Command {
-	cmd := &cobra.Command{
-		Use:   "get [bookID]",
-		Short: "get booking info by bookID",
-		Args:  cobra.ExactArgs(1),
-		RunE: func(cmd *cobra.Command, args []string) error {
-			cliCtx, err := client.GetClientQueryContext(cmd)
-			if err != nil {
-				return err
-			}
-
-			bookID := args[0]
-
-			// res, _, err := cliCtx.QueryWithData(fmt.Sprintf("custom/%s/booking/%s", queryRoute, bookID), nil)
-			// if err != nil {
-			// 	fmt.Printf("could not get asset - %s \n", bookID)
-			// 	return nil
-			// }
-
-			queryClient := types.NewQueryClient(cliCtx)
-			params := types.QueryBookingRequest{bookID}
-			res, err := queryClient.Booking(cmd.Context(), &params)
-			if err != nil {
-				return err
-			}
-			return cliCtx.PrintProto(res)
-		},
-	}
-
-	flags.AddQueryFlagsToCmd(cmd)
 	return cmd
 }

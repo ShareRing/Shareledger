@@ -6,22 +6,10 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
-func NewGenesisState() types.GenesisState {
-	return types.GenesisState{}
-}
-
-// TODO: Validate genesis data
-func ValidateGenesis(data types.GenesisState) error {
-	return nil
-}
-
-func DefaultGenesisState() *types.GenesisState {
-	return &types.GenesisState{}
-}
-
 // InitGenesis initializes the capability module's state from a provided genesis
 // state.
 func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) {
+	// this line is used by starport scaffolding # genesis/module/init
 	for _, doc := range genState.Documents {
 		k.SetDoc(ctx, doc)
 	}
@@ -29,16 +17,15 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 
 // ExportGenesis returns the capability module's exported genesis.
 func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
-	docs := []*types.Document{}
+	genesis := types.DefaultGenesis()
 
-	cb := func(doc types.Document) (stop bool) {
-		docs = append(docs, &doc)
+	// this line is used by starport scaffolding # genesis/module/export
+	cb := func(doc types.Document) bool {
+		genesis.Documents = append(genesis.Documents, &doc)
 		return false
 	}
 
 	k.IterateDocs(ctx, cb)
 
-	return &types.GenesisState{
-		Documents: docs,
-	}
+	return genesis
 }

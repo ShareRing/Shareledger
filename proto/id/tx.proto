@@ -1,63 +1,57 @@
 syntax = "proto3";
 package ShareRing.shareledger.id;
 
+// this line is used by starport scaffolding # proto/tx/import
+
 option go_package = "github.com/ShareRing/Shareledger/x/id/types";
 
 // Msg defines the Msg service.
 service Msg {
-    rpc CreateId(MsgCreateId) returns(MsgCreateIdResponse);
-	rpc CreateIdInBatch(MsgCreateIdBatch) returns(MsgCreateIdInBatchResponse);
-	rpc UpdateId(MsgUpdateId) returns(MsgUpdateIdResponse);
-	rpc ReplaceIdOwner(MsgReplaceIdOwner) returns(MsgReplaceIdOwnerResponse);
-}
-
-message BaseID {
-	string issuer_address = 1;
-	string backup_address = 2;
-	string owner_address = 3;
-	string extra_data = 4;
-}
-
-message ID {
-	string id = 1;
-	BaseID data = 2;
-}
-
-message MsgCreateIdBatch {
-	repeated string backup_address = 1;
-	repeated string extra_data = 2;
-	repeated string id = 3;
-	string issuer_address = 4;
-	repeated string owner_address = 5;
-}
-
-message MsgCreateIdInBatchResponse {
-
+  rpc CreateId(MsgCreateId) returns (MsgCreateIdResponse);
+  rpc CreateIdBatch(MsgCreateIdBatch) returns (MsgCreateIdBatchResponse);
+  rpc UpdateId(MsgUpdateId) returns (MsgUpdateIdResponse);
+  rpc ReplaceIdOwner(MsgReplaceIdOwner) returns (MsgReplaceIdOwnerResponse);
+// this line is used by starport scaffolding # proto/tx/rpc
 }
 
 message MsgCreateId {
-	string backup_address = 1;
-	string extra_data = 2;
-	string id = 3;
-	string issuer_address = 4;
-	string owner_address = 5;
+  string issuerAddress = 1;
+  string backupAddress = 2;
+  string extraData = 3;
+  string id = 4;
+  string ownerAddress = 5;
 }
-message MsgCreateIdResponse {}
 
-message MsgReplaceIdOwner {
-	string backup_address = 1;
-	string id = 2;
-	string owner_address = 3;
+message MsgCreateIdResponse {
 }
-message MsgReplaceIdOwnerResponse {
 
+message MsgCreateIdBatch {
+  string issuerAddress = 1;
+  repeated string backupAddress = 2;
+  repeated string extraData = 3;
+  repeated string id = 4;
+  repeated string ownerAddress = 5;
+}
+
+message MsgCreateIdBatchResponse {
 }
 
 message MsgUpdateId {
-	string issuer_address = 1;
-	string id = 2;
-	string extra_data = 3;
+  string issuerAddress = 1;
+  string id = 2;
+  string extraData = 3;
 }
+
 message MsgUpdateIdResponse {
-    
 }
+
+message MsgReplaceIdOwner {
+  string backupAddress = 1;
+  string id = 2;
+  string ownerAddress = 3;
+}
+
+message MsgReplaceIdOwnerResponse {
+}
+
+// this line is used by starport scaffolding # proto/tx/message

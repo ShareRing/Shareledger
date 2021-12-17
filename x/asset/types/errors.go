@@ -8,5 +8,6 @@ import (
 
 // x/asset module sentinel errors
 var (
-	ErrNameDoesNotExist = sdkerrors.Register(ModuleName, 1, "Asset does not exist")
+	ErrNameDoesNotExist = sdkerrors.Register(ModuleName, 41, "Asset does not exist")
+	ErrAssetExist       = sdkerrors.Register(ModuleName, 42, "Asset already exist")
 )

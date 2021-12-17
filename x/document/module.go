@@ -14,7 +14,6 @@ import (
 	abci "github.com/tendermint/tendermint/abci/types"
 
 	"github.com/ShareRing/Shareledger/x/document/client/cli"
-	"github.com/ShareRing/Shareledger/x/document/client/rest"
 	"github.com/ShareRing/Shareledger/x/document/keeper"
 	"github.com/ShareRing/Shareledger/x/document/types"
 	"github.com/cosmos/cosmos-sdk/client"
@@ -76,11 +75,11 @@ func (AppModuleBasic) ValidateGenesis(cdc codec.JSONCodec, config client.TxEncod
 
 // RegisterRESTRoutes registers the capability module's REST service handlers.
 func (AppModuleBasic) RegisterRESTRoutes(clientCtx client.Context, rtr *mux.Router) {
-	rest.RegisterRoutes(clientCtx, rtr, types.StoreKey)
 }
 
 // RegisterGRPCGatewayRoutes registers the gRPC Gateway routes for the module.
 func (AppModuleBasic) RegisterGRPCGatewayRoutes(clientCtx client.Context, mux *runtime.ServeMux) {
+	// this line is used by starport scaffolding # 2
 	types.RegisterQueryHandlerClient(context.Background(), mux, types.NewQueryClient(clientCtx))
 }
 
@@ -133,9 +132,7 @@ func (am AppModule) LegacyQuerierHandler(legacyQuerierCdc *codec.LegacyAmino) sd
 // RegisterServices registers a GRPC query service to respond to the
 // module-specific GRPC queries.
 func (am AppModule) RegisterServices(cfg module.Configurator) {
-	types.RegisterMsgServer(cfg.MsgServer(), keeper.NewMsgServerImpl(am.keeper))
-	querier := keeper.Querier{Keeper: am.keeper}
-	types.RegisterQueryServer(cfg.QueryServer(), querier)
+	types.RegisterQueryServer(cfg.QueryServer(), am.keeper)
 }
 
 // RegisterInvariants registers the capability module's invariants.

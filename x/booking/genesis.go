@@ -9,39 +9,23 @@ import (
 // InitGenesis initializes the capability module's state from a provided genesis
 // state.
 func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) {
+	// this line is used by starport scaffolding # genesis/module/init
 	for _, b := range genState.Bookings {
-		k.SetBooking(ctx, b.BookID, *b)
+		k.SetBooking(ctx, b.GetBookID(), *b)
 	}
 }
 
 // ExportGenesis returns the capability module's exported genesis.
 func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
-	var bookings []*types.Booking
+	genesis := types.DefaultGenesis()
 
+	// this line is used by starport scaffolding # genesis/module/export
 	cb := func(b types.Booking) bool {
-		bookings = append(bookings, &b)
+		genesis.Bookings = append(genesis.Bookings, &b)
 		return false
 	}
 
 	k.IterateBookings(ctx, cb)
 
-	return &types.GenesisState{
-		Bookings: bookings,
-	}
-}
-
-// type types.GenesisState struct {
-// 	Bookings []types.Booking
-// }
-
-func NewGenesisState() types.GenesisState {
-	return types.GenesisState{}
-}
-
-func ValidateGenesis(data types.GenesisState) error {
-	return nil
-}
-
-func DefaultGenesisState() types.GenesisState {
-	return types.GenesisState{}
+	return genesis
 }

@@ -29,14 +29,17 @@ func BookingKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
 	require.NoError(t, stateStore.LoadLatestVersion())
 
 	registry := codectypes.NewInterfaceRegistry()
-	var assetKeeper assetkeeper.Keeper
-	var bankKeeper bankkeeper.Keeper
+
+	var (
+		ask assetkeeper.Keeper
+		bk  bankkeeper.Keeper
+	)
 	k := keeper.NewKeeper(
 		codec.NewProtoCodec(registry),
 		storeKey,
 		memStoreKey,
-		assetKeeper,
-		bankKeeper,
+		ask,
+		bk,
 	)
 
 	ctx := sdk.NewContext(stateStore, tmproto.Header{}, false, log.NewNopLogger())

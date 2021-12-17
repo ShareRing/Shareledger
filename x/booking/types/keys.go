@@ -15,6 +15,11 @@ const (
 
 	// MemStoreKey defines the in-memory store key
 	MemStoreKey = "mem_booking"
+
+	BookIDPrefix = "BookID/"
+
+	TypeBookMsg         = "booking"
+	TypeBookCompleteMsg = "book_complete"
 )
 
 func KeyPrefix(p string) []byte {

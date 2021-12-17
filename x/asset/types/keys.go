@@ -15,6 +15,12 @@ const (
 
 	// MemStoreKey defines the in-memory store key
 	MemStoreKey = "mem_asset"
+
+	TypeAssetCreateMsg = "asset_create"
+	TypeAssetUpdateMsg = "asset_update"
+	TypeAssetDeleteMsg = "asset_delete"
+
+	UUIDKeyPrefix = "UUID/"
 )
 
 func KeyPrefix(p string) []byte {

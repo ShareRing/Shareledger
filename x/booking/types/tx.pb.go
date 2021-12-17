@@ -211,94 +211,17 @@ func (m *MsgCompleteResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_MsgCompleteResponse proto.InternalMessageInfo
 
-type Booking struct {
-	BookID      string `protobuf:"bytes,1,opt,name=bookID,proto3" json:"bookID,omitempty"`
-	Booker      string `protobuf:"bytes,2,opt,name=booker,proto3" json:"booker,omitempty"`
-	UUID        string `protobuf:"bytes,3,opt,name=UUID,proto3" json:"UUID,omitempty"`
-	Duration    int64  `protobuf:"varint,4,opt,name=duration,proto3" json:"duration,omitempty"`
-	IsCompleted bool   `protobuf:"varint,5,opt,name=isCompleted,proto3" json:"isCompleted,omitempty"`
-}
-
-func (m *Booking) Reset()         { *m = Booking{} }
-func (m *Booking) String() string { return proto.CompactTextString(m) }
-func (*Booking) ProtoMessage()    {}
-func (*Booking) Descriptor() ([]byte, []int) {
-	return fileDescriptor_e243c29ad9ae20da, []int{4}
-}
-func (m *Booking) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *Booking) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_Booking.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (m *Booking) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_Booking.Merge(m, src)
-}
-func (m *Booking) XXX_Size() int {
-	return m.Size()
-}
-func (m *Booking) XXX_DiscardUnknown() {
-	xxx_messageInfo_Booking.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_Booking proto.InternalMessageInfo
-
-func (m *Booking) GetBookID() string {
-	if m != nil {
-		return m.BookID
-	}
-	return ""
-}
-
-func (m *Booking) GetBooker() string {
-	if m != nil {
-		return m.Booker
-	}
-	return ""
-}
-
-func (m *Booking) GetUUID() string {
-	if m != nil {
-		return m.UUID
-	}
-	return ""
-}
-
-func (m *Booking) GetDuration() int64 {
-	if m != nil {
-		return m.Duration
-	}
-	return 0
-}
-
-func (m *Booking) GetIsCompleted() bool {
-	if m != nil {
-		return m.IsCompleted
-	}
-	return false
-}
-
 func init() {
 	proto.RegisterType((*MsgBook)(nil), "ShareRing.shareledger.booking.MsgBook")
 	proto.RegisterType((*MsgBookResponse)(nil), "ShareRing.shareledger.booking.MsgBookResponse")
 	proto.RegisterType((*MsgComplete)(nil), "ShareRing.shareledger.booking.MsgComplete")
 	proto.RegisterType((*MsgCompleteResponse)(nil), "ShareRing.shareledger.booking.MsgCompleteResponse")
-	proto.RegisterType((*Booking)(nil), "ShareRing.shareledger.booking.Booking")
 }
 
 func init() { proto.RegisterFile("booking/tx.proto", fileDescriptor_e243c29ad9ae20da) }
 
 var fileDescriptor_e243c29ad9ae20da = []byte{
-	// 325 bytes of a gzipped FileDescriptorProto
+	// 281 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x12, 0x48, 0xca, 0xcf, 0xcf,
 	0xce, 0xcc, 0x4b, 0xd7, 0x2f, 0xa9, 0xd0, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0x92, 0x0d, 0xce,
 	0x48, 0x2c, 0x4a, 0x0d, 0xca, 0xcc, 0x4b, 0xd7, 0x2b, 0x06, 0xb1, 0x72, 0x52, 0x53, 0xd2, 0x53,
@@ -308,18 +231,15 @@ var fileDescriptor_e243c29ad9ae20da = []byte{
 	0xe2, 0x48, 0x29, 0x2d, 0x4a, 0x2c, 0xc9, 0xcc, 0xcf, 0x93, 0x60, 0x56, 0x60, 0xd4, 0x60, 0x0e,
 	0x82, 0xf3, 0x95, 0x04, 0xb9, 0xf8, 0xa1, 0x46, 0x06, 0xa5, 0x16, 0x17, 0xe4, 0xe7, 0x15, 0xa7,
 	0x2a, 0xd9, 0x72, 0x71, 0xfb, 0x16, 0xa7, 0x3b, 0xe7, 0xe7, 0x16, 0xe4, 0xa4, 0x96, 0xa4, 0xe2,
-	0xb4, 0x09, 0x2a, 0x0e, 0xb7, 0x0b, 0xca, 0x53, 0x12, 0xe5, 0x12, 0x46, 0xd2, 0x0e, 0x37, 0xb5,
-	0x9b, 0x91, 0x8b, 0xdd, 0x09, 0xe2, 0x0f, 0x24, 0xad, 0x8c, 0xc8, 0x5a, 0x91, 0xac, 0x62, 0xc2,
-	0xea, 0x29, 0x66, 0x1c, 0x9e, 0x62, 0x41, 0xf5, 0x94, 0x90, 0x02, 0x17, 0x77, 0x66, 0x31, 0xcc,
-	0x05, 0x29, 0x12, 0xac, 0x0a, 0x8c, 0x1a, 0x1c, 0x41, 0xc8, 0x42, 0x46, 0x17, 0x19, 0xb9, 0x98,
-	0x7d, 0x8b, 0xd3, 0x85, 0xe2, 0xb8, 0x58, 0xc0, 0xc1, 0xa9, 0xa6, 0x87, 0x37, 0xe4, 0xf5, 0xa0,
-	0x61, 0x24, 0xa5, 0x47, 0x9c, 0x3a, 0x98, 0xaf, 0x85, 0xb2, 0xb8, 0x38, 0xe0, 0x01, 0xa9, 0x45,
-	0x58, 0x2f, 0x4c, 0xad, 0x94, 0x11, 0xf1, 0x6a, 0x61, 0x76, 0x39, 0x79, 0x9d, 0x78, 0x24, 0xc7,
-	0x78, 0xe1, 0x91, 0x1c, 0xe3, 0x83, 0x47, 0x72, 0x8c, 0x13, 0x1e, 0xcb, 0x31, 0x5c, 0x78, 0x2c,
-	0xc7, 0x70, 0xe3, 0xb1, 0x1c, 0x43, 0x94, 0x41, 0x7a, 0x66, 0x49, 0x46, 0x69, 0x92, 0x5e, 0x72,
-	0x7e, 0xae, 0x3e, 0xdc, 0x5c, 0x08, 0x0b, 0x62, 0xae, 0x7e, 0x85, 0x3e, 0x3c, 0x2d, 0x56, 0x16,
-	0xa4, 0x16, 0x27, 0xb1, 0x81, 0xd3, 0xa3, 0x31, 0x20, 0x00, 0x00, 0xff, 0xff, 0xcf, 0x44, 0xa6,
-	0xfa, 0xa3, 0x02, 0x00, 0x00,
+	0xb4, 0x09, 0x2a, 0x0e, 0xb7, 0x0b, 0xca, 0x53, 0x12, 0xe5, 0x12, 0x46, 0xd2, 0x0e, 0x33, 0xd5,
+	0xe8, 0x22, 0x23, 0x17, 0xb3, 0x6f, 0x71, 0xba, 0x50, 0x1c, 0x17, 0x0b, 0xd8, 0x03, 0x6a, 0x7a,
+	0x78, 0xfd, 0xaa, 0x07, 0x75, 0x95, 0x94, 0x1e, 0x71, 0xea, 0x60, 0xf6, 0x08, 0x65, 0x71, 0x71,
+	0xc0, 0x9d, 0xae, 0x45, 0x58, 0x2f, 0x4c, 0xad, 0x94, 0x11, 0xf1, 0x6a, 0x61, 0x76, 0x39, 0x79,
+	0x9d, 0x78, 0x24, 0xc7, 0x78, 0xe1, 0x91, 0x1c, 0xe3, 0x83, 0x47, 0x72, 0x8c, 0x13, 0x1e, 0xcb,
+	0x31, 0x5c, 0x78, 0x2c, 0xc7, 0x70, 0xe3, 0xb1, 0x1c, 0x43, 0x94, 0x41, 0x7a, 0x66, 0x49, 0x46,
+	0x69, 0x92, 0x5e, 0x72, 0x7e, 0xae, 0x3e, 0xdc, 0x5c, 0x08, 0x0b, 0x62, 0xae, 0x7e, 0x85, 0x3e,
+	0x3c, 0xf6, 0x2b, 0x0b, 0x52, 0x8b, 0x93, 0xd8, 0xc0, 0x29, 0xc0, 0x18, 0x10, 0x00, 0x00, 0xff,
+	0xff, 0x44, 0xfd, 0x37, 0xa1, 0x15, 0x02, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -563,65 +483,6 @@ func (m *MsgCompleteResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *Booking) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *Booking) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *Booking) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	_ = i
-	var l int
-	_ = l
-	if m.IsCompleted {
-		i--
-		if m.IsCompleted {
-			dAtA[i] = 1
-		} else {
-			dAtA[i] = 0
-		}
-		i--
-		dAtA[i] = 0x28
-	}
-	if m.Duration != 0 {
-		i = encodeVarintTx(dAtA, i, uint64(m.Duration))
-		i--
-		dAtA[i] = 0x20
-	}
-	if len(m.UUID) > 0 {
-		i -= len(m.UUID)
-		copy(dAtA[i:], m.UUID)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.UUID)))
-		i--
-		dAtA[i] = 0x1a
-	}
-	if len(m.Booker) > 0 {
-		i -= len(m.Booker)
-		copy(dAtA[i:], m.Booker)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.Booker)))
-		i--
-		dAtA[i] = 0x12
-	}
-	if len(m.BookID) > 0 {
-		i -= len(m.BookID)
-		copy(dAtA[i:], m.BookID)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.BookID)))
-		i--
-		dAtA[i] = 0xa
-	}
-	return len(dAtA) - i, nil
-}
-
 func encodeVarintTx(dAtA []byte, offset int, v uint64) int {
 	offset -= sovTx(v)
 	base := offset
@@ -685,33 +546,6 @@ func (m *MsgCompleteResponse) Size() (n int) {
 	}
 	var l int
 	_ = l
-	return n
-}
-
-func (m *Booking) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	l = len(m.BookID)
-	if l > 0 {
-		n += 1 + l + sovTx(uint64(l))
-	}
-	l = len(m.Booker)
-	if l > 0 {
-		n += 1 + l + sovTx(uint64(l))
-	}
-	l = len(m.UUID)
-	if l > 0 {
-		n += 1 + l + sovTx(uint64(l))
-	}
-	if m.Duration != 0 {
-		n += 1 + sovTx(uint64(m.Duration))
-	}
-	if m.IsCompleted {
-		n += 2
-	}
 	return n
 }
 
@@ -1047,191 +881,6 @@ func (m *MsgCompleteResponse) Unmarshal(dAtA []byte) error {
 			return fmt.Errorf("proto: MsgCompleteResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
-		default:
-			iNdEx = preIndex
-			skippy, err := skipTx(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthTx
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
-func (m *Booking) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowTx
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= uint64(b&0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: Booking: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: Booking: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		case 1:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field BookID", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthTx
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthTx
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.BookID = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 2:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Booker", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthTx
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthTx
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Booker = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 3:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field UUID", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthTx
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthTx
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.UUID = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 4:
-			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Duration", wireType)
-			}
-			m.Duration = 0
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				m.Duration |= int64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-		case 5:
-			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field IsCompleted", wireType)
-			}
-			var v int
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				v |= int(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			m.IsCompleted = bool(v != 0)
 		default:
 			iNdEx = preIndex
 			skippy, err := skipTx(dAtA[iNdEx:])

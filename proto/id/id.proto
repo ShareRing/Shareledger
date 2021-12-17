@@ -1,0 +1,13 @@
+syntax = "proto3";
+package ShareRing.shareledger.id;
+
+import "id/base_id.proto";
+
+option go_package = "github.com/ShareRing/Shareledger/x/id/types";
+
+
+message Id {
+  
+  string id = 1;
+  BaseID data = 2; 
+}

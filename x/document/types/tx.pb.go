@@ -27,25 +27,25 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
-type MsgCreateDoc struct {
+type MsgCreateDocument struct {
 	Data   string `protobuf:"bytes,1,opt,name=data,proto3" json:"data,omitempty"`
 	Holder string `protobuf:"bytes,2,opt,name=holder,proto3" json:"holder,omitempty"`
 	Issuer string `protobuf:"bytes,3,opt,name=issuer,proto3" json:"issuer,omitempty"`
 	Proof  string `protobuf:"bytes,4,opt,name=proof,proto3" json:"proof,omitempty"`
 }
 
-func (m *MsgCreateDoc) Reset()         { *m = MsgCreateDoc{} }
-func (m *MsgCreateDoc) String() string { return proto.CompactTextString(m) }
-func (*MsgCreateDoc) ProtoMessage()    {}
-func (*MsgCreateDoc) Descriptor() ([]byte, []int) {
+func (m *MsgCreateDocument) Reset()         { *m = MsgCreateDocument{} }
+func (m *MsgCreateDocument) String() string { return proto.CompactTextString(m) }
+func (*MsgCreateDocument) ProtoMessage()    {}
+func (*MsgCreateDocument) Descriptor() ([]byte, []int) {
 	return fileDescriptor_9b59fe9729b670ce, []int{0}
 }
-func (m *MsgCreateDoc) XXX_Unmarshal(b []byte) error {
+func (m *MsgCreateDocument) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgCreateDoc) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgCreateDocument) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgCreateDoc.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgCreateDocument.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -55,61 +55,61 @@ func (m *MsgCreateDoc) XXX_Marshal(b []byte, deterministic bool) ([]byte, error)
 		return b[:n], nil
 	}
 }
-func (m *MsgCreateDoc) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgCreateDoc.Merge(m, src)
+func (m *MsgCreateDocument) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgCreateDocument.Merge(m, src)
 }
-func (m *MsgCreateDoc) XXX_Size() int {
+func (m *MsgCreateDocument) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgCreateDoc) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgCreateDoc.DiscardUnknown(m)
+func (m *MsgCreateDocument) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgCreateDocument.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgCreateDoc proto.InternalMessageInfo
+var xxx_messageInfo_MsgCreateDocument proto.InternalMessageInfo
 
-func (m *MsgCreateDoc) GetData() string {
+func (m *MsgCreateDocument) GetData() string {
 	if m != nil {
 		return m.Data
 	}
 	return ""
 }
 
-func (m *MsgCreateDoc) GetHolder() string {
+func (m *MsgCreateDocument) GetHolder() string {
 	if m != nil {
 		return m.Holder
 	}
 	return ""
 }
 
-func (m *MsgCreateDoc) GetIssuer() string {
+func (m *MsgCreateDocument) GetIssuer() string {
 	if m != nil {
 		return m.Issuer
 	}
 	return ""
 }
 
-func (m *MsgCreateDoc) GetProof() string {
+func (m *MsgCreateDocument) GetProof() string {
 	if m != nil {
 		return m.Proof
 	}
 	return ""
 }
 
-type MsgCreateDocResponse struct {
+type MsgCreateDocumentResponse struct {
 }
 
-func (m *MsgCreateDocResponse) Reset()         { *m = MsgCreateDocResponse{} }
-func (m *MsgCreateDocResponse) String() string { return proto.CompactTextString(m) }
-func (*MsgCreateDocResponse) ProtoMessage()    {}
-func (*MsgCreateDocResponse) Descriptor() ([]byte, []int) {
+func (m *MsgCreateDocumentResponse) Reset()         { *m = MsgCreateDocumentResponse{} }
+func (m *MsgCreateDocumentResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgCreateDocumentResponse) ProtoMessage()    {}
+func (*MsgCreateDocumentResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_9b59fe9729b670ce, []int{1}
 }
-func (m *MsgCreateDocResponse) XXX_Unmarshal(b []byte) error {
+func (m *MsgCreateDocumentResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgCreateDocResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgCreateDocumentResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgCreateDocResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgCreateDocumentResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -119,37 +119,37 @@ func (m *MsgCreateDocResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte
 		return b[:n], nil
 	}
 }
-func (m *MsgCreateDocResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgCreateDocResponse.Merge(m, src)
+func (m *MsgCreateDocumentResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgCreateDocumentResponse.Merge(m, src)
 }
-func (m *MsgCreateDocResponse) XXX_Size() int {
+func (m *MsgCreateDocumentResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgCreateDocResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgCreateDocResponse.DiscardUnknown(m)
+func (m *MsgCreateDocumentResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgCreateDocumentResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgCreateDocResponse proto.InternalMessageInfo
+var xxx_messageInfo_MsgCreateDocumentResponse proto.InternalMessageInfo
 
-type MsgCreateDocBatch struct {
+type MsgCreateDocumentInBatch struct {
 	Data   []string `protobuf:"bytes,1,rep,name=data,proto3" json:"data,omitempty"`
 	Holder []string `protobuf:"bytes,2,rep,name=holder,proto3" json:"holder,omitempty"`
 	Issuer string   `protobuf:"bytes,3,opt,name=issuer,proto3" json:"issuer,omitempty"`
 	Proof  []string `protobuf:"bytes,4,rep,name=proof,proto3" json:"proof,omitempty"`
 }
 
-func (m *MsgCreateDocBatch) Reset()         { *m = MsgCreateDocBatch{} }
-func (m *MsgCreateDocBatch) String() string { return proto.CompactTextString(m) }
-func (*MsgCreateDocBatch) ProtoMessage()    {}
-func (*MsgCreateDocBatch) Descriptor() ([]byte, []int) {
+func (m *MsgCreateDocumentInBatch) Reset()         { *m = MsgCreateDocumentInBatch{} }
+func (m *MsgCreateDocumentInBatch) String() string { return proto.CompactTextString(m) }
+func (*MsgCreateDocumentInBatch) ProtoMessage()    {}
+func (*MsgCreateDocumentInBatch) Descriptor() ([]byte, []int) {
 	return fileDescriptor_9b59fe9729b670ce, []int{2}
 }
-func (m *MsgCreateDocBatch) XXX_Unmarshal(b []byte) error {
+func (m *MsgCreateDocumentInBatch) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgCreateDocBatch) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgCreateDocumentInBatch) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgCreateDocBatch.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgCreateDocumentInBatch.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -159,61 +159,61 @@ func (m *MsgCreateDocBatch) XXX_Marshal(b []byte, deterministic bool) ([]byte, e
 		return b[:n], nil
 	}
 }
-func (m *MsgCreateDocBatch) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgCreateDocBatch.Merge(m, src)
+func (m *MsgCreateDocumentInBatch) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgCreateDocumentInBatch.Merge(m, src)
 }
-func (m *MsgCreateDocBatch) XXX_Size() int {
+func (m *MsgCreateDocumentInBatch) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgCreateDocBatch) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgCreateDocBatch.DiscardUnknown(m)
+func (m *MsgCreateDocumentInBatch) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgCreateDocumentInBatch.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgCreateDocBatch proto.InternalMessageInfo
+var xxx_messageInfo_MsgCreateDocumentInBatch proto.InternalMessageInfo
 
-func (m *MsgCreateDocBatch) GetData() []string {
+func (m *MsgCreateDocumentInBatch) GetData() []string {
 	if m != nil {
 		return m.Data
 	}
 	return nil
 }
 
-func (m *MsgCreateDocBatch) GetHolder() []string {
+func (m *MsgCreateDocumentInBatch) GetHolder() []string {
 	if m != nil {
 		return m.Holder
 	}
 	return nil
 }
 
-func (m *MsgCreateDocBatch) GetIssuer() string {
+func (m *MsgCreateDocumentInBatch) GetIssuer() string {
 	if m != nil {
 		return m.Issuer
 	}
 	return ""
 }
 
-func (m *MsgCreateDocBatch) GetProof() []string {
+func (m *MsgCreateDocumentInBatch) GetProof() []string {
 	if m != nil {
 		return m.Proof
 	}
 	return nil
 }
 
-type MsgCreateDocBatchResponse struct {
+type MsgCreateDocumentInBatchResponse struct {
 }
 
-func (m *MsgCreateDocBatchResponse) Reset()         { *m = MsgCreateDocBatchResponse{} }
-func (m *MsgCreateDocBatchResponse) String() string { return proto.CompactTextString(m) }
-func (*MsgCreateDocBatchResponse) ProtoMessage()    {}
-func (*MsgCreateDocBatchResponse) Descriptor() ([]byte, []int) {
+func (m *MsgCreateDocumentInBatchResponse) Reset()         { *m = MsgCreateDocumentInBatchResponse{} }
+func (m *MsgCreateDocumentInBatchResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgCreateDocumentInBatchResponse) ProtoMessage()    {}
+func (*MsgCreateDocumentInBatchResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_9b59fe9729b670ce, []int{3}
 }
-func (m *MsgCreateDocBatchResponse) XXX_Unmarshal(b []byte) error {
+func (m *MsgCreateDocumentInBatchResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgCreateDocBatchResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgCreateDocumentInBatchResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgCreateDocBatchResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgCreateDocumentInBatchResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -223,36 +223,36 @@ func (m *MsgCreateDocBatchResponse) XXX_Marshal(b []byte, deterministic bool) ([
 		return b[:n], nil
 	}
 }
-func (m *MsgCreateDocBatchResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgCreateDocBatchResponse.Merge(m, src)
+func (m *MsgCreateDocumentInBatchResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgCreateDocumentInBatchResponse.Merge(m, src)
 }
-func (m *MsgCreateDocBatchResponse) XXX_Size() int {
+func (m *MsgCreateDocumentInBatchResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgCreateDocBatchResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgCreateDocBatchResponse.DiscardUnknown(m)
+func (m *MsgCreateDocumentInBatchResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgCreateDocumentInBatchResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgCreateDocBatchResponse proto.InternalMessageInfo
+var xxx_messageInfo_MsgCreateDocumentInBatchResponse proto.InternalMessageInfo
 
-type MsgRevokeDoc struct {
+type MsgRevokeDocument struct {
 	Holder string `protobuf:"bytes,1,opt,name=holder,proto3" json:"holder,omitempty"`
 	Issuer string `protobuf:"bytes,2,opt,name=issuer,proto3" json:"issuer,omitempty"`
 	Proof  string `protobuf:"bytes,3,opt,name=proof,proto3" json:"proof,omitempty"`
 }
 
-func (m *MsgRevokeDoc) Reset()         { *m = MsgRevokeDoc{} }
-func (m *MsgRevokeDoc) String() string { return proto.CompactTextString(m) }
-func (*MsgRevokeDoc) ProtoMessage()    {}
-func (*MsgRevokeDoc) Descriptor() ([]byte, []int) {
+func (m *MsgRevokeDocument) Reset()         { *m = MsgRevokeDocument{} }
+func (m *MsgRevokeDocument) String() string { return proto.CompactTextString(m) }
+func (*MsgRevokeDocument) ProtoMessage()    {}
+func (*MsgRevokeDocument) Descriptor() ([]byte, []int) {
 	return fileDescriptor_9b59fe9729b670ce, []int{4}
 }
-func (m *MsgRevokeDoc) XXX_Unmarshal(b []byte) error {
+func (m *MsgRevokeDocument) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgRevokeDoc) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgRevokeDocument) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgRevokeDoc.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgRevokeDocument.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -262,54 +262,54 @@ func (m *MsgRevokeDoc) XXX_Marshal(b []byte, deterministic bool) ([]byte, error)
 		return b[:n], nil
 	}
 }
-func (m *MsgRevokeDoc) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgRevokeDoc.Merge(m, src)
+func (m *MsgRevokeDocument) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgRevokeDocument.Merge(m, src)
 }
-func (m *MsgRevokeDoc) XXX_Size() int {
+func (m *MsgRevokeDocument) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgRevokeDoc) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgRevokeDoc.DiscardUnknown(m)
+func (m *MsgRevokeDocument) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgRevokeDocument.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgRevokeDoc proto.InternalMessageInfo
+var xxx_messageInfo_MsgRevokeDocument proto.InternalMessageInfo
 
-func (m *MsgRevokeDoc) GetHolder() string {
+func (m *MsgRevokeDocument) GetHolder() string {
 	if m != nil {
 		return m.Holder
 	}
 	return ""
 }
 
-func (m *MsgRevokeDoc) GetIssuer() string {
+func (m *MsgRevokeDocument) GetIssuer() string {
 	if m != nil {
 		return m.Issuer
 	}
 	return ""
 }
 
-func (m *MsgRevokeDoc) GetProof() string {
+func (m *MsgRevokeDocument) GetProof() string {
 	if m != nil {
 		return m.Proof
 	}
 	return ""
 }
 
-type MsgRevokeDocResponse struct {
+type MsgRevokeDocumentResponse struct {
 }
 
-func (m *MsgRevokeDocResponse) Reset()         { *m = MsgRevokeDocResponse{} }
-func (m *MsgRevokeDocResponse) String() string { return proto.CompactTextString(m) }
-func (*MsgRevokeDocResponse) ProtoMessage()    {}
-func (*MsgRevokeDocResponse) Descriptor() ([]byte, []int) {
+func (m *MsgRevokeDocumentResponse) Reset()         { *m = MsgRevokeDocumentResponse{} }
+func (m *MsgRevokeDocumentResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgRevokeDocumentResponse) ProtoMessage()    {}
+func (*MsgRevokeDocumentResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_9b59fe9729b670ce, []int{5}
 }
-func (m *MsgRevokeDocResponse) XXX_Unmarshal(b []byte) error {
+func (m *MsgRevokeDocumentResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgRevokeDocResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgRevokeDocumentResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgRevokeDocResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgRevokeDocumentResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -319,37 +319,37 @@ func (m *MsgRevokeDocResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte
 		return b[:n], nil
 	}
 }
-func (m *MsgRevokeDocResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgRevokeDocResponse.Merge(m, src)
+func (m *MsgRevokeDocumentResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgRevokeDocumentResponse.Merge(m, src)
 }
-func (m *MsgRevokeDocResponse) XXX_Size() int {
+func (m *MsgRevokeDocumentResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgRevokeDocResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgRevokeDocResponse.DiscardUnknown(m)
+func (m *MsgRevokeDocumentResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgRevokeDocumentResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgRevokeDocResponse proto.InternalMessageInfo
+var xxx_messageInfo_MsgRevokeDocumentResponse proto.InternalMessageInfo
 
-type MsgUpdateDoc struct {
+type MsgUpdateDocument struct {
 	Data   string `protobuf:"bytes,1,opt,name=data,proto3" json:"data,omitempty"`
 	Holder string `protobuf:"bytes,2,opt,name=holder,proto3" json:"holder,omitempty"`
 	Issuer string `protobuf:"bytes,3,opt,name=issuer,proto3" json:"issuer,omitempty"`
 	Proof  string `protobuf:"bytes,4,opt,name=proof,proto3" json:"proof,omitempty"`
 }
 
-func (m *MsgUpdateDoc) Reset()         { *m = MsgUpdateDoc{} }
-func (m *MsgUpdateDoc) String() string { return proto.CompactTextString(m) }
-func (*MsgUpdateDoc) ProtoMessage()    {}
-func (*MsgUpdateDoc) Descriptor() ([]byte, []int) {
+func (m *MsgUpdateDocument) Reset()         { *m = MsgUpdateDocument{} }
+func (m *MsgUpdateDocument) String() string { return proto.CompactTextString(m) }
+func (*MsgUpdateDocument) ProtoMessage()    {}
+func (*MsgUpdateDocument) Descriptor() ([]byte, []int) {
 	return fileDescriptor_9b59fe9729b670ce, []int{6}
 }
-func (m *MsgUpdateDoc) XXX_Unmarshal(b []byte) error {
+func (m *MsgUpdateDocument) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgUpdateDoc) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgUpdateDocument) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgUpdateDoc.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgUpdateDocument.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -359,61 +359,61 @@ func (m *MsgUpdateDoc) XXX_Marshal(b []byte, deterministic bool) ([]byte, error)
 		return b[:n], nil
 	}
 }
-func (m *MsgUpdateDoc) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgUpdateDoc.Merge(m, src)
+func (m *MsgUpdateDocument) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgUpdateDocument.Merge(m, src)
 }
-func (m *MsgUpdateDoc) XXX_Size() int {
+func (m *MsgUpdateDocument) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgUpdateDoc) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgUpdateDoc.DiscardUnknown(m)
+func (m *MsgUpdateDocument) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgUpdateDocument.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgUpdateDoc proto.InternalMessageInfo
+var xxx_messageInfo_MsgUpdateDocument proto.InternalMessageInfo
 
-func (m *MsgUpdateDoc) GetData() string {
+func (m *MsgUpdateDocument) GetData() string {
 	if m != nil {
 		return m.Data
 	}
 	return ""
 }
 
-func (m *MsgUpdateDoc) GetHolder() string {
+func (m *MsgUpdateDocument) GetHolder() string {
 	if m != nil {
 		return m.Holder
 	}
 	return ""
 }
 
-func (m *MsgUpdateDoc) GetIssuer() string {
+func (m *MsgUpdateDocument) GetIssuer() string {
 	if m != nil {
 		return m.Issuer
 	}
 	return ""
 }
 
-func (m *MsgUpdateDoc) GetProof() string {
+func (m *MsgUpdateDocument) GetProof() string {
 	if m != nil {
 		return m.Proof
 	}
 	return ""
 }
 
-type MsgUpdateDocResponse struct {
+type MsgUpdateDocumentResponse struct {
 }
 
-func (m *MsgUpdateDocResponse) Reset()         { *m = MsgUpdateDocResponse{} }
-func (m *MsgUpdateDocResponse) String() string { return proto.CompactTextString(m) }
-func (*MsgUpdateDocResponse) ProtoMessage()    {}
-func (*MsgUpdateDocResponse) Descriptor() ([]byte, []int) {
+func (m *MsgUpdateDocumentResponse) Reset()         { *m = MsgUpdateDocumentResponse{} }
+func (m *MsgUpdateDocumentResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgUpdateDocumentResponse) ProtoMessage()    {}
+func (*MsgUpdateDocumentResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_9b59fe9729b670ce, []int{7}
 }
-func (m *MsgUpdateDocResponse) XXX_Unmarshal(b []byte) error {
+func (m *MsgUpdateDocumentResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgUpdateDocResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgUpdateDocumentResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgUpdateDocResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgUpdateDocumentResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -423,244 +423,57 @@ func (m *MsgUpdateDocResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte
 		return b[:n], nil
 	}
 }
-func (m *MsgUpdateDocResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgUpdateDocResponse.Merge(m, src)
+func (m *MsgUpdateDocumentResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgUpdateDocumentResponse.Merge(m, src)
 }
-func (m *MsgUpdateDocResponse) XXX_Size() int {
+func (m *MsgUpdateDocumentResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgUpdateDocResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgUpdateDocResponse.DiscardUnknown(m)
+func (m *MsgUpdateDocumentResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgUpdateDocumentResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgUpdateDocResponse proto.InternalMessageInfo
-
-type Document struct {
-	Holder  string `protobuf:"bytes,1,opt,name=holder,proto3" json:"holder,omitempty"`
-	Issuer  string `protobuf:"bytes,2,opt,name=issuer,proto3" json:"issuer,omitempty"`
-	Proof   string `protobuf:"bytes,3,opt,name=proof,proto3" json:"proof,omitempty"`
-	Data    string `protobuf:"bytes,4,opt,name=data,proto3" json:"data,omitempty"`
-	Version int32  `protobuf:"varint,5,opt,name=version,proto3" json:"version,omitempty"`
-}
-
-func (m *Document) Reset()         { *m = Document{} }
-func (m *Document) String() string { return proto.CompactTextString(m) }
-func (*Document) ProtoMessage()    {}
-func (*Document) Descriptor() ([]byte, []int) {
-	return fileDescriptor_9b59fe9729b670ce, []int{8}
-}
-func (m *Document) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *Document) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_Document.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (m *Document) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_Document.Merge(m, src)
-}
-func (m *Document) XXX_Size() int {
-	return m.Size()
-}
-func (m *Document) XXX_DiscardUnknown() {
-	xxx_messageInfo_Document.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_Document proto.InternalMessageInfo
-
-func (m *Document) GetHolder() string {
-	if m != nil {
-		return m.Holder
-	}
-	return ""
-}
-
-func (m *Document) GetIssuer() string {
-	if m != nil {
-		return m.Issuer
-	}
-	return ""
-}
-
-func (m *Document) GetProof() string {
-	if m != nil {
-		return m.Proof
-	}
-	return ""
-}
-
-func (m *Document) GetData() string {
-	if m != nil {
-		return m.Data
-	}
-	return ""
-}
-
-func (m *Document) GetVersion() int32 {
-	if m != nil {
-		return m.Version
-	}
-	return 0
-}
-
-type DocDetailState struct {
-	Data    string `protobuf:"bytes,1,opt,name=data,proto3" json:"data,omitempty"`
-	Version int32  `protobuf:"varint,2,opt,name=version,proto3" json:"version,omitempty"`
-}
-
-func (m *DocDetailState) Reset()         { *m = DocDetailState{} }
-func (m *DocDetailState) String() string { return proto.CompactTextString(m) }
-func (*DocDetailState) ProtoMessage()    {}
-func (*DocDetailState) Descriptor() ([]byte, []int) {
-	return fileDescriptor_9b59fe9729b670ce, []int{9}
-}
-func (m *DocDetailState) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *DocDetailState) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_DocDetailState.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (m *DocDetailState) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_DocDetailState.Merge(m, src)
-}
-func (m *DocDetailState) XXX_Size() int {
-	return m.Size()
-}
-func (m *DocDetailState) XXX_DiscardUnknown() {
-	xxx_messageInfo_DocDetailState.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_DocDetailState proto.InternalMessageInfo
-
-func (m *DocDetailState) GetData() string {
-	if m != nil {
-		return m.Data
-	}
-	return ""
-}
-
-func (m *DocDetailState) GetVersion() int32 {
-	if m != nil {
-		return m.Version
-	}
-	return 0
-}
-
-type DocBasicState struct {
-	Holder string `protobuf:"bytes,1,opt,name=holder,proto3" json:"holder,omitempty"`
-	Issuer string `protobuf:"bytes,2,opt,name=issuer,proto3" json:"issuer,omitempty"`
-}
-
-func (m *DocBasicState) Reset()         { *m = DocBasicState{} }
-func (m *DocBasicState) String() string { return proto.CompactTextString(m) }
-func (*DocBasicState) ProtoMessage()    {}
-func (*DocBasicState) Descriptor() ([]byte, []int) {
-	return fileDescriptor_9b59fe9729b670ce, []int{10}
-}
-func (m *DocBasicState) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *DocBasicState) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_DocBasicState.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (m *DocBasicState) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_DocBasicState.Merge(m, src)
-}
-func (m *DocBasicState) XXX_Size() int {
-	return m.Size()
-}
-func (m *DocBasicState) XXX_DiscardUnknown() {
-	xxx_messageInfo_DocBasicState.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_DocBasicState proto.InternalMessageInfo
-
-func (m *DocBasicState) GetHolder() string {
-	if m != nil {
-		return m.Holder
-	}
-	return ""
-}
-
-func (m *DocBasicState) GetIssuer() string {
-	if m != nil {
-		return m.Issuer
-	}
-	return ""
-}
+var xxx_messageInfo_MsgUpdateDocumentResponse proto.InternalMessageInfo
 
 func init() {
-	proto.RegisterType((*MsgCreateDoc)(nil), "ShareRing.shareledger.document.MsgCreateDoc")
-	proto.RegisterType((*MsgCreateDocResponse)(nil), "ShareRing.shareledger.document.MsgCreateDocResponse")
-	proto.RegisterType((*MsgCreateDocBatch)(nil), "ShareRing.shareledger.document.MsgCreateDocBatch")
-	proto.RegisterType((*MsgCreateDocBatchResponse)(nil), "ShareRing.shareledger.document.MsgCreateDocBatchResponse")
-	proto.RegisterType((*MsgRevokeDoc)(nil), "ShareRing.shareledger.document.MsgRevokeDoc")
-	proto.RegisterType((*MsgRevokeDocResponse)(nil), "ShareRing.shareledger.document.MsgRevokeDocResponse")
-	proto.RegisterType((*MsgUpdateDoc)(nil), "ShareRing.shareledger.document.MsgUpdateDoc")
-	proto.RegisterType((*MsgUpdateDocResponse)(nil), "ShareRing.shareledger.document.MsgUpdateDocResponse")
-	proto.RegisterType((*Document)(nil), "ShareRing.shareledger.document.Document")
-	proto.RegisterType((*DocDetailState)(nil), "ShareRing.shareledger.document.DocDetailState")
-	proto.RegisterType((*DocBasicState)(nil), "ShareRing.shareledger.document.DocBasicState")
+	proto.RegisterType((*MsgCreateDocument)(nil), "ShareRing.shareledger.document.MsgCreateDocument")
+	proto.RegisterType((*MsgCreateDocumentResponse)(nil), "ShareRing.shareledger.document.MsgCreateDocumentResponse")
+	proto.RegisterType((*MsgCreateDocumentInBatch)(nil), "ShareRing.shareledger.document.MsgCreateDocumentInBatch")
+	proto.RegisterType((*MsgCreateDocumentInBatchResponse)(nil), "ShareRing.shareledger.document.MsgCreateDocumentInBatchResponse")
+	proto.RegisterType((*MsgRevokeDocument)(nil), "ShareRing.shareledger.document.MsgRevokeDocument")
+	proto.RegisterType((*MsgRevokeDocumentResponse)(nil), "ShareRing.shareledger.document.MsgRevokeDocumentResponse")
+	proto.RegisterType((*MsgUpdateDocument)(nil), "ShareRing.shareledger.document.MsgUpdateDocument")
+	proto.RegisterType((*MsgUpdateDocumentResponse)(nil), "ShareRing.shareledger.document.MsgUpdateDocumentResponse")
 }
 
 func init() { proto.RegisterFile("document/tx.proto", fileDescriptor_9b59fe9729b670ce) }
 
 var fileDescriptor_9b59fe9729b670ce = []byte{
-	// 440 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xbc, 0x54, 0x4f, 0x8f, 0xd2, 0x40,
-	0x14, 0x67, 0x28, 0xa0, 0xbe, 0x28, 0x09, 0x0d, 0x92, 0x8a, 0x49, 0x43, 0x7a, 0xe2, 0x60, 0xda,
-	0xa0, 0x5e, 0xbc, 0x68, 0x82, 0xbd, 0x18, 0xc3, 0xa5, 0xe8, 0xc5, 0x5b, 0x69, 0xc7, 0xb6, 0x11,
-	0x3a, 0xcd, 0xcc, 0x40, 0xf0, 0xe2, 0xcd, 0xbb, 0x1f, 0xcb, 0x23, 0xc7, 0x3d, 0x6e, 0xe0, 0x03,
-	0xec, 0x57, 0xd8, 0x30, 0x03, 0x43, 0x49, 0xd9, 0x4d, 0x9b, 0x6c, 0xf6, 0x36, 0xef, 0x65, 0xde,
-	0xfb, 0xfd, 0xe9, 0xaf, 0x03, 0x9d, 0x90, 0x04, 0xcb, 0x05, 0x4e, 0xb9, 0xc3, 0xd7, 0x76, 0x46,
-	0x09, 0x27, 0xba, 0x39, 0x8d, 0x7d, 0x8a, 0xbd, 0x24, 0x8d, 0x6c, 0xb6, 0x3f, 0xcd, 0x71, 0x18,
-	0x61, 0x6a, 0x1f, 0x2f, 0x5a, 0x31, 0x3c, 0x9f, 0xb0, 0xe8, 0x33, 0xc5, 0x3e, 0xc7, 0x2e, 0x09,
-	0x74, 0x1d, 0x1a, 0xa1, 0xcf, 0x7d, 0x03, 0x0d, 0xd0, 0xf0, 0x99, 0x27, 0xce, 0x7a, 0x0f, 0x5a,
-	0x31, 0x99, 0x87, 0x98, 0x1a, 0x75, 0xd1, 0x3d, 0x54, 0xfb, 0x7e, 0xc2, 0xd8, 0x12, 0x53, 0x43,
-	0x93, 0x7d, 0x59, 0xe9, 0x5d, 0x68, 0x66, 0x94, 0x90, 0x9f, 0x46, 0x43, 0xb4, 0x65, 0x61, 0xf5,
-	0xa0, 0x9b, 0x47, 0xf2, 0x30, 0xcb, 0x48, 0xca, 0xb0, 0xb5, 0x80, 0x4e, 0xbe, 0x3f, 0xf6, 0x79,
-	0x10, 0xe7, 0x68, 0x68, 0x17, 0x69, 0x68, 0xd5, 0x68, 0x68, 0x27, 0x1a, 0xaf, 0xe1, 0x55, 0x01,
-	0x4e, 0x71, 0xf9, 0x26, 0xdc, 0xf0, 0xf0, 0x8a, 0xfc, 0x12, 0x6e, 0x9c, 0x20, 0xd1, 0x1d, 0xca,
-	0xeb, 0x97, 0x21, 0xb5, 0xa2, 0x72, 0xb5, 0x55, 0xa1, 0x49, 0xef, 0xbf, 0x67, 0xe1, 0x23, 0x79,
-	0xaf, 0x90, 0x14, 0x83, 0x3f, 0xf0, 0xd4, 0x3d, 0x24, 0xe1, 0x61, 0xb4, 0x2a, 0x0d, 0x8d, 0x9c,
-	0x06, 0x03, 0x9e, 0xac, 0x30, 0x65, 0x09, 0x49, 0x8d, 0xe6, 0x00, 0x0d, 0x9b, 0xde, 0xb1, 0xb4,
-	0x3e, 0x42, 0xdb, 0x25, 0x81, 0x8b, 0xb9, 0x9f, 0xcc, 0xa7, 0xdc, 0xe7, 0xf8, 0xa2, 0x07, 0xb9,
-	0xf9, 0xfa, 0xf9, 0xfc, 0x27, 0x78, 0x21, 0xbe, 0x21, 0x4b, 0x02, 0x39, 0x5e, 0x51, 0xc4, 0xdb,
-	0x1b, 0x0d, 0xb4, 0x09, 0x8b, 0x74, 0x0e, 0x6d, 0x15, 0x09, 0x69, 0xc7, 0x1b, 0xfb, 0xfe, 0x3f,
-	0xc7, 0xce, 0xa7, 0xa8, 0xff, 0xbe, 0xca, 0xed, 0xa3, 0xfd, 0xfa, 0x5f, 0x04, 0x2f, 0xcf, 0x61,
-	0xbf, 0xa4, 0x32, 0xff, 0xa3, 0x2a, 0xfb, 0xc4, 0x48, 0xff, 0x43, 0xe5, 0x11, 0xc5, 0x83, 0x43,
-	0x5b, 0xa5, 0xb3, 0xbc, 0x7a, 0x35, 0x52, 0x4a, 0x7d, 0x21, 0xfe, 0x7b, 0x54, 0x95, 0xc8, 0xf2,
-	0xa8, 0x6a, 0xa4, 0x14, 0x6a, 0x21, 0xf2, 0xe3, 0xaf, 0xff, 0xb7, 0x26, 0xda, 0x6c, 0x4d, 0x74,
-	0xbd, 0x35, 0xd1, 0xbf, 0x9d, 0x59, 0xdb, 0xec, 0xcc, 0xda, 0xd5, 0xce, 0xac, 0xfd, 0x18, 0x45,
-	0x09, 0x8f, 0x97, 0x33, 0x3b, 0x20, 0x0b, 0x47, 0x6d, 0x96, 0x27, 0xb9, 0xd9, 0x59, 0x3b, 0xa7,
-	0x07, 0xf6, 0x77, 0x86, 0xd9, 0xac, 0x25, 0x1e, 0xd9, 0x77, 0xb7, 0x01, 0x00, 0x00, 0xff, 0xff,
-	0xe4, 0x76, 0x4b, 0x86, 0x79, 0x05, 0x00, 0x00,
+	// 373 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x12, 0x4c, 0xc9, 0x4f, 0x2e,
+	0xcd, 0x4d, 0xcd, 0x2b, 0xd1, 0x2f, 0xa9, 0xd0, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0x92, 0x0b,
+	0xce, 0x48, 0x2c, 0x4a, 0x0d, 0xca, 0xcc, 0x4b, 0xd7, 0x2b, 0x06, 0xb1, 0x72, 0x52, 0x53, 0xd2,
+	0x53, 0x8b, 0xf4, 0x60, 0x0a, 0x95, 0x72, 0xb9, 0x04, 0x7d, 0x8b, 0xd3, 0x9d, 0x8b, 0x52, 0x13,
+	0x4b, 0x52, 0x5d, 0xa0, 0x82, 0x42, 0x42, 0x5c, 0x2c, 0x29, 0x89, 0x25, 0x89, 0x12, 0x8c, 0x0a,
+	0x8c, 0x1a, 0x9c, 0x41, 0x60, 0xb6, 0x90, 0x18, 0x17, 0x5b, 0x46, 0x7e, 0x4e, 0x4a, 0x6a, 0x91,
+	0x04, 0x13, 0x58, 0x14, 0xca, 0x03, 0x89, 0x67, 0x16, 0x17, 0x97, 0xa6, 0x16, 0x49, 0x30, 0x43,
+	0xc4, 0x21, 0x3c, 0x21, 0x11, 0x2e, 0xd6, 0x82, 0xa2, 0xfc, 0xfc, 0x34, 0x09, 0x16, 0xb0, 0x30,
+	0x84, 0xa3, 0x24, 0xcd, 0x25, 0x89, 0x61, 0x5d, 0x50, 0x6a, 0x71, 0x41, 0x7e, 0x5e, 0x71, 0xaa,
+	0x52, 0x09, 0x97, 0x04, 0x86, 0xa4, 0x67, 0x9e, 0x53, 0x62, 0x49, 0x72, 0x06, 0x92, 0x93, 0x98,
+	0xb1, 0x3a, 0x89, 0x99, 0x34, 0x27, 0x31, 0x23, 0x9c, 0xa4, 0xc4, 0xa5, 0x80, 0xcb, 0x56, 0xb8,
+	0xcb, 0x22, 0xc1, 0xa1, 0x14, 0x94, 0x5a, 0x96, 0x9f, 0x8d, 0x08, 0x25, 0x84, 0xf5, 0x8c, 0x38,
+	0x42, 0x84, 0x09, 0xbb, 0xf5, 0xcc, 0x98, 0x21, 0x82, 0x6a, 0x34, 0xdc, 0x5e, 0x48, 0xec, 0x84,
+	0x16, 0xa4, 0xd0, 0x33, 0x76, 0x50, 0xad, 0x83, 0xb9, 0xc5, 0x68, 0x36, 0x0b, 0x17, 0xb3, 0x6f,
+	0x71, 0xba, 0x50, 0x1d, 0x17, 0x1f, 0x5a, 0x72, 0x31, 0xd4, 0xc3, 0x9f, 0xc8, 0xf4, 0x30, 0xc2,
+	0x57, 0xca, 0x92, 0x64, 0x2d, 0x30, 0x77, 0x08, 0x4d, 0x66, 0xe4, 0x12, 0xc5, 0x9e, 0x46, 0x2c,
+	0x48, 0x36, 0x14, 0xaa, 0x53, 0xca, 0x81, 0x5c, 0x9d, 0x70, 0x57, 0xd5, 0x71, 0xf1, 0xa1, 0x25,
+	0x0f, 0x62, 0x42, 0x05, 0x55, 0x0b, 0x51, 0xa1, 0x82, 0x3d, 0xa5, 0x80, 0xec, 0x47, 0x4b, 0x26,
+	0xc4, 0xd8, 0x8f, 0xaa, 0x85, 0x28, 0xfb, 0xb1, 0xa7, 0x0e, 0x27, 0xef, 0x13, 0x8f, 0xe4, 0x18,
+	0x2f, 0x3c, 0x92, 0x63, 0x7c, 0xf0, 0x48, 0x8e, 0x71, 0xc2, 0x63, 0x39, 0x86, 0x0b, 0x8f, 0xe5,
+	0x18, 0x6e, 0x3c, 0x96, 0x63, 0x88, 0x32, 0x4c, 0xcf, 0x2c, 0xc9, 0x28, 0x4d, 0xd2, 0x4b, 0xce,
+	0xcf, 0xd5, 0x87, 0x1b, 0x0f, 0x61, 0x41, 0x8c, 0xd7, 0xaf, 0xd0, 0x47, 0x94, 0x5b, 0x95, 0x05,
+	0xa9, 0xc5, 0x49, 0x6c, 0xe0, 0xb2, 0xcb, 0x18, 0x10, 0x00, 0x00, 0xff, 0xff, 0x92, 0x9c, 0xb6,
+	0x9b, 0xd0, 0x04, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -675,10 +488,10 @@ const _ = grpc.SupportPackageIsVersion4
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type MsgClient interface {
-	CreateDocument(ctx context.Context, in *MsgCreateDoc, opts ...grpc.CallOption) (*MsgCreateDocResponse, error)
-	CreateDocumentInBatch(ctx context.Context, in *MsgCreateDocBatch, opts ...grpc.CallOption) (*MsgCreateDocBatchResponse, error)
-	RevokeDocument(ctx context.Context, in *MsgRevokeDoc, opts ...grpc.CallOption) (*MsgRevokeDocResponse, error)
-	UpdateDocument(ctx context.Context, in *MsgUpdateDoc, opts ...grpc.CallOption) (*MsgUpdateDocResponse, error)
+	CreateDocument(ctx context.Context, in *MsgCreateDocument, opts ...grpc.CallOption) (*MsgCreateDocumentResponse, error)
+	CreateDocumentInBatch(ctx context.Context, in *MsgCreateDocumentInBatch, opts ...grpc.CallOption) (*MsgCreateDocumentInBatchResponse, error)
+	RevokeDocument(ctx context.Context, in *MsgRevokeDocument, opts ...grpc.CallOption) (*MsgRevokeDocumentResponse, error)
+	UpdateDocument(ctx context.Context, in *MsgUpdateDocument, opts ...grpc.CallOption) (*MsgUpdateDocumentResponse, error)
 }
 
 type msgClient struct {
@@ -689,8 +502,8 @@ func NewMsgClient(cc grpc1.ClientConn) MsgClient {
 	return &msgClient{cc}
 }
 
-func (c *msgClient) CreateDocument(ctx context.Context, in *MsgCreateDoc, opts ...grpc.CallOption) (*MsgCreateDocResponse, error) {
-	out := new(MsgCreateDocResponse)
+func (c *msgClient) CreateDocument(ctx context.Context, in *MsgCreateDocument, opts ...grpc.CallOption) (*MsgCreateDocumentResponse, error) {
+	out := new(MsgCreateDocumentResponse)
 	err := c.cc.Invoke(ctx, "/ShareRing.shareledger.document.Msg/CreateDocument", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -698,8 +511,8 @@ func (c *msgClient) CreateDocument(ctx context.Context, in *MsgCreateDoc, opts .
 	return out, nil
 }
 
-func (c *msgClient) CreateDocumentInBatch(ctx context.Context, in *MsgCreateDocBatch, opts ...grpc.CallOption) (*MsgCreateDocBatchResponse, error) {
-	out := new(MsgCreateDocBatchResponse)
+func (c *msgClient) CreateDocumentInBatch(ctx context.Context, in *MsgCreateDocumentInBatch, opts ...grpc.CallOption) (*MsgCreateDocumentInBatchResponse, error) {
+	out := new(MsgCreateDocumentInBatchResponse)
 	err := c.cc.Invoke(ctx, "/ShareRing.shareledger.document.Msg/CreateDocumentInBatch", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -707,8 +520,8 @@ func (c *msgClient) CreateDocumentInBatch(ctx context.Context, in *MsgCreateDocB
 	return out, nil
 }
 
-func (c *msgClient) RevokeDocument(ctx context.Context, in *MsgRevokeDoc, opts ...grpc.CallOption) (*MsgRevokeDocResponse, error) {
-	out := new(MsgRevokeDocResponse)
+func (c *msgClient) RevokeDocument(ctx context.Context, in *MsgRevokeDocument, opts ...grpc.CallOption) (*MsgRevokeDocumentResponse, error) {
+	out := new(MsgRevokeDocumentResponse)
 	err := c.cc.Invoke(ctx, "/ShareRing.shareledger.document.Msg/RevokeDocument", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -716,8 +529,8 @@ func (c *msgClient) RevokeDocument(ctx context.Context, in *MsgRevokeDoc, opts .
 	return out, nil
 }
 
-func (c *msgClient) UpdateDocument(ctx context.Context, in *MsgUpdateDoc, opts ...grpc.CallOption) (*MsgUpdateDocResponse, error) {
-	out := new(MsgUpdateDocResponse)
+func (c *msgClient) UpdateDocument(ctx context.Context, in *MsgUpdateDocument, opts ...grpc.CallOption) (*MsgUpdateDocumentResponse, error) {
+	out := new(MsgUpdateDocumentResponse)
 	err := c.cc.Invoke(ctx, "/ShareRing.shareledger.document.Msg/UpdateDocument", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -727,26 +540,26 @@ func (c *msgClient) UpdateDocument(ctx context.Context, in *MsgUpdateDoc, opts .
 
 // MsgServer is the server API for Msg service.
 type MsgServer interface {
-	CreateDocument(context.Context, *MsgCreateDoc) (*MsgCreateDocResponse, error)
-	CreateDocumentInBatch(context.Context, *MsgCreateDocBatch) (*MsgCreateDocBatchResponse, error)
-	RevokeDocument(context.Context, *MsgRevokeDoc) (*MsgRevokeDocResponse, error)
-	UpdateDocument(context.Context, *MsgUpdateDoc) (*MsgUpdateDocResponse, error)
+	CreateDocument(context.Context, *MsgCreateDocument) (*MsgCreateDocumentResponse, error)
+	CreateDocumentInBatch(context.Context, *MsgCreateDocumentInBatch) (*MsgCreateDocumentInBatchResponse, error)
+	RevokeDocument(context.Context, *MsgRevokeDocument) (*MsgRevokeDocumentResponse, error)
+	UpdateDocument(context.Context, *MsgUpdateDocument) (*MsgUpdateDocumentResponse, error)
 }
 
 // UnimplementedMsgServer can be embedded to have forward compatible implementations.
 type UnimplementedMsgServer struct {
 }
 
-func (*UnimplementedMsgServer) CreateDocument(ctx context.Context, req *MsgCreateDoc) (*MsgCreateDocResponse, error) {
+func (*UnimplementedMsgServer) CreateDocument(ctx context.Context, req *MsgCreateDocument) (*MsgCreateDocumentResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateDocument not implemented")
 }
-func (*UnimplementedMsgServer) CreateDocumentInBatch(ctx context.Context, req *MsgCreateDocBatch) (*MsgCreateDocBatchResponse, error) {
+func (*UnimplementedMsgServer) CreateDocumentInBatch(ctx context.Context, req *MsgCreateDocumentInBatch) (*MsgCreateDocumentInBatchResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateDocumentInBatch not implemented")
 }
-func (*UnimplementedMsgServer) RevokeDocument(ctx context.Context, req *MsgRevokeDoc) (*MsgRevokeDocResponse, error) {
+func (*UnimplementedMsgServer) RevokeDocument(ctx context.Context, req *MsgRevokeDocument) (*MsgRevokeDocumentResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RevokeDocument not implemented")
 }
-func (*UnimplementedMsgServer) UpdateDocument(ctx context.Context, req *MsgUpdateDoc) (*MsgUpdateDocResponse, error) {
+func (*UnimplementedMsgServer) UpdateDocument(ctx context.Context, req *MsgUpdateDocument) (*MsgUpdateDocumentResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateDocument not implemented")
 }
 
@@ -755,7 +568,7 @@ func RegisterMsgServer(s grpc1.Server, srv MsgServer) {
 }
 
 func _Msg_CreateDocument_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgCreateDoc)
+	in := new(MsgCreateDocument)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -767,13 +580,13 @@ func _Msg_CreateDocument_Handler(srv interface{}, ctx context.Context, dec func(
 		FullMethod: "/ShareRing.shareledger.document.Msg/CreateDocument",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).CreateDocument(ctx, req.(*MsgCreateDoc))
+		return srv.(MsgServer).CreateDocument(ctx, req.(*MsgCreateDocument))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Msg_CreateDocumentInBatch_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgCreateDocBatch)
+	in := new(MsgCreateDocumentInBatch)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -785,13 +598,13 @@ func _Msg_CreateDocumentInBatch_Handler(srv interface{}, ctx context.Context, de
 		FullMethod: "/ShareRing.shareledger.document.Msg/CreateDocumentInBatch",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).CreateDocumentInBatch(ctx, req.(*MsgCreateDocBatch))
+		return srv.(MsgServer).CreateDocumentInBatch(ctx, req.(*MsgCreateDocumentInBatch))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Msg_RevokeDocument_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgRevokeDoc)
+	in := new(MsgRevokeDocument)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -803,13 +616,13 @@ func _Msg_RevokeDocument_Handler(srv interface{}, ctx context.Context, dec func(
 		FullMethod: "/ShareRing.shareledger.document.Msg/RevokeDocument",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).RevokeDocument(ctx, req.(*MsgRevokeDoc))
+		return srv.(MsgServer).RevokeDocument(ctx, req.(*MsgRevokeDocument))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Msg_UpdateDocument_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgUpdateDoc)
+	in := new(MsgUpdateDocument)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -821,7 +634,7 @@ func _Msg_UpdateDocument_Handler(srv interface{}, ctx context.Context, dec func(
 		FullMethod: "/ShareRing.shareledger.document.Msg/UpdateDocument",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).UpdateDocument(ctx, req.(*MsgUpdateDoc))
+		return srv.(MsgServer).UpdateDocument(ctx, req.(*MsgUpdateDocument))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -851,7 +664,7 @@ var _Msg_serviceDesc = grpc.ServiceDesc{
 	Metadata: "document/tx.proto",
 }
 
-func (m *MsgCreateDoc) Marshal() (dAtA []byte, err error) {
+func (m *MsgCreateDocument) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -861,12 +674,12 @@ func (m *MsgCreateDoc) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgCreateDoc) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgCreateDocument) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgCreateDoc) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgCreateDocument) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -902,7 +715,7 @@ func (m *MsgCreateDoc) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgCreateDocResponse) Marshal() (dAtA []byte, err error) {
+func (m *MsgCreateDocumentResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -912,12 +725,12 @@ func (m *MsgCreateDocResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgCreateDocResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgCreateDocumentResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgCreateDocResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgCreateDocumentResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -925,7 +738,7 @@ func (m *MsgCreateDocResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgCreateDocBatch) Marshal() (dAtA []byte, err error) {
+func (m *MsgCreateDocumentInBatch) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -935,12 +748,12 @@ func (m *MsgCreateDocBatch) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgCreateDocBatch) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgCreateDocumentInBatch) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgCreateDocBatch) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgCreateDocumentInBatch) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -982,7 +795,7 @@ func (m *MsgCreateDocBatch) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgCreateDocBatchResponse) Marshal() (dAtA []byte, err error) {
+func (m *MsgCreateDocumentInBatchResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -992,12 +805,12 @@ func (m *MsgCreateDocBatchResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgCreateDocBatchResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgCreateDocumentInBatchResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgCreateDocBatchResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgCreateDocumentInBatchResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -1005,7 +818,7 @@ func (m *MsgCreateDocBatchResponse) MarshalToSizedBuffer(dAtA []byte) (int, erro
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgRevokeDoc) Marshal() (dAtA []byte, err error) {
+func (m *MsgRevokeDocument) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -1015,12 +828,12 @@ func (m *MsgRevokeDoc) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgRevokeDoc) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgRevokeDocument) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgRevokeDoc) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgRevokeDocument) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -1049,7 +862,7 @@ func (m *MsgRevokeDoc) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgRevokeDocResponse) Marshal() (dAtA []byte, err error) {
+func (m *MsgRevokeDocumentResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -1059,12 +872,12 @@ func (m *MsgRevokeDocResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgRevokeDocResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgRevokeDocumentResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgRevokeDocResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgRevokeDocumentResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -1072,7 +885,7 @@ func (m *MsgRevokeDocResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgUpdateDoc) Marshal() (dAtA []byte, err error) {
+func (m *MsgUpdateDocument) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -1082,12 +895,12 @@ func (m *MsgUpdateDoc) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgUpdateDoc) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgUpdateDocument) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgUpdateDoc) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgUpdateDocument) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -1123,7 +936,7 @@ func (m *MsgUpdateDoc) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgUpdateDocResponse) Marshal() (dAtA []byte, err error) {
+func (m *MsgUpdateDocumentResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -1133,144 +946,16 @@ func (m *MsgUpdateDocResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgUpdateDocResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgUpdateDocumentResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgUpdateDocResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgUpdateDocumentResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	return len(dAtA) - i, nil
-}
-
-func (m *Document) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *Document) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *Document) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	_ = i
-	var l int
-	_ = l
-	if m.Version != 0 {
-		i = encodeVarintTx(dAtA, i, uint64(m.Version))
-		i--
-		dAtA[i] = 0x28
-	}
-	if len(m.Data) > 0 {
-		i -= len(m.Data)
-		copy(dAtA[i:], m.Data)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.Data)))
-		i--
-		dAtA[i] = 0x22
-	}
-	if len(m.Proof) > 0 {
-		i -= len(m.Proof)
-		copy(dAtA[i:], m.Proof)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.Proof)))
-		i--
-		dAtA[i] = 0x1a
-	}
-	if len(m.Issuer) > 0 {
-		i -= len(m.Issuer)
-		copy(dAtA[i:], m.Issuer)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.Issuer)))
-		i--
-		dAtA[i] = 0x12
-	}
-	if len(m.Holder) > 0 {
-		i -= len(m.Holder)
-		copy(dAtA[i:], m.Holder)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.Holder)))
-		i--
-		dAtA[i] = 0xa
-	}
-	return len(dAtA) - i, nil
-}
-
-func (m *DocDetailState) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *DocDetailState) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *DocDetailState) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	_ = i
-	var l int
-	_ = l
-	if m.Version != 0 {
-		i = encodeVarintTx(dAtA, i, uint64(m.Version))
-		i--
-		dAtA[i] = 0x10
-	}
-	if len(m.Data) > 0 {
-		i -= len(m.Data)
-		copy(dAtA[i:], m.Data)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.Data)))
-		i--
-		dAtA[i] = 0xa
-	}
-	return len(dAtA) - i, nil
-}
-
-func (m *DocBasicState) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *DocBasicState) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *DocBasicState) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	_ = i
-	var l int
-	_ = l
-	if len(m.Issuer) > 0 {
-		i -= len(m.Issuer)
-		copy(dAtA[i:], m.Issuer)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.Issuer)))
-		i--
-		dAtA[i] = 0x12
-	}
-	if len(m.Holder) > 0 {
-		i -= len(m.Holder)
-		copy(dAtA[i:], m.Holder)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.Holder)))
-		i--
-		dAtA[i] = 0xa
-	}
 	return len(dAtA) - i, nil
 }
 
@@ -1285,7 +970,7 @@ func encodeVarintTx(dAtA []byte, offset int, v uint64) int {
 	dAtA[offset] = uint8(v)
 	return base
 }
-func (m *MsgCreateDoc) Size() (n int) {
+func (m *MsgCreateDocument) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -1310,7 +995,7 @@ func (m *MsgCreateDoc) Size() (n int) {
 	return n
 }
 
-func (m *MsgCreateDocResponse) Size() (n int) {
+func (m *MsgCreateDocumentResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -1319,7 +1004,7 @@ func (m *MsgCreateDocResponse) Size() (n int) {
 	return n
 }
 
-func (m *MsgCreateDocBatch) Size() (n int) {
+func (m *MsgCreateDocumentInBatch) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -1350,7 +1035,7 @@ func (m *MsgCreateDocBatch) Size() (n int) {
 	return n
 }
 
-func (m *MsgCreateDocBatchResponse) Size() (n int) {
+func (m *MsgCreateDocumentInBatchResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -1359,7 +1044,7 @@ func (m *MsgCreateDocBatchResponse) Size() (n int) {
 	return n
 }
 
-func (m *MsgRevokeDoc) Size() (n int) {
+func (m *MsgRevokeDocument) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -1380,7 +1065,7 @@ func (m *MsgRevokeDoc) Size() (n int) {
 	return n
 }
 
-func (m *MsgRevokeDocResponse) Size() (n int) {
+func (m *MsgRevokeDocumentResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -1389,7 +1074,7 @@ func (m *MsgRevokeDocResponse) Size() (n int) {
 	return n
 }
 
-func (m *MsgUpdateDoc) Size() (n int) {
+func (m *MsgUpdateDocument) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -1414,73 +1099,12 @@ func (m *MsgUpdateDoc) Size() (n int) {
 	return n
 }
 
-func (m *MsgUpdateDocResponse) Size() (n int) {
+func (m *MsgUpdateDocumentResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	return n
-}
-
-func (m *Document) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	l = len(m.Holder)
-	if l > 0 {
-		n += 1 + l + sovTx(uint64(l))
-	}
-	l = len(m.Issuer)
-	if l > 0 {
-		n += 1 + l + sovTx(uint64(l))
-	}
-	l = len(m.Proof)
-	if l > 0 {
-		n += 1 + l + sovTx(uint64(l))
-	}
-	l = len(m.Data)
-	if l > 0 {
-		n += 1 + l + sovTx(uint64(l))
-	}
-	if m.Version != 0 {
-		n += 1 + sovTx(uint64(m.Version))
-	}
-	return n
-}
-
-func (m *DocDetailState) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	l = len(m.Data)
-	if l > 0 {
-		n += 1 + l + sovTx(uint64(l))
-	}
-	if m.Version != 0 {
-		n += 1 + sovTx(uint64(m.Version))
-	}
-	return n
-}
-
-func (m *DocBasicState) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	l = len(m.Holder)
-	if l > 0 {
-		n += 1 + l + sovTx(uint64(l))
-	}
-	l = len(m.Issuer)
-	if l > 0 {
-		n += 1 + l + sovTx(uint64(l))
-	}
 	return n
 }
 
@@ -1490,7 +1114,7 @@ func sovTx(x uint64) (n int) {
 func sozTx(x uint64) (n int) {
 	return sovTx(uint64((x << 1) ^ uint64((int64(x) >> 63))))
 }
-func (m *MsgCreateDoc) Unmarshal(dAtA []byte) error {
+func (m *MsgCreateDocument) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -1513,10 +1137,10 @@ func (m *MsgCreateDoc) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgCreateDoc: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgCreateDocument: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgCreateDoc: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgCreateDocument: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -1668,7 +1292,7 @@ func (m *MsgCreateDoc) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgCreateDocResponse) Unmarshal(dAtA []byte) error {
+func (m *MsgCreateDocumentResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -1691,10 +1315,10 @@ func (m *MsgCreateDocResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgCreateDocResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgCreateDocumentResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgCreateDocResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgCreateDocumentResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:
@@ -1718,7 +1342,7 @@ func (m *MsgCreateDocResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgCreateDocBatch) Unmarshal(dAtA []byte) error {
+func (m *MsgCreateDocumentInBatch) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -1741,10 +1365,10 @@ func (m *MsgCreateDocBatch) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgCreateDocBatch: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgCreateDocumentInBatch: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgCreateDocBatch: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgCreateDocumentInBatch: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -1896,7 +1520,7 @@ func (m *MsgCreateDocBatch) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgCreateDocBatchResponse) Unmarshal(dAtA []byte) error {
+func (m *MsgCreateDocumentInBatchResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -1919,10 +1543,10 @@ func (m *MsgCreateDocBatchResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgCreateDocBatchResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgCreateDocumentInBatchResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgCreateDocBatchResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgCreateDocumentInBatchResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:
@@ -1946,7 +1570,7 @@ func (m *MsgCreateDocBatchResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgRevokeDoc) Unmarshal(dAtA []byte) error {
+func (m *MsgRevokeDocument) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -1969,10 +1593,10 @@ func (m *MsgRevokeDoc) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgRevokeDoc: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgRevokeDocument: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgRevokeDoc: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgRevokeDocument: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -2092,7 +1716,7 @@ func (m *MsgRevokeDoc) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgRevokeDocResponse) Unmarshal(dAtA []byte) error {
+func (m *MsgRevokeDocumentResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -2115,10 +1739,10 @@ func (m *MsgRevokeDocResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgRevokeDocResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgRevokeDocumentResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgRevokeDocResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgRevokeDocumentResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:
@@ -2142,7 +1766,7 @@ func (m *MsgRevokeDocResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgUpdateDoc) Unmarshal(dAtA []byte) error {
+func (m *MsgUpdateDocument) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -2165,10 +1789,10 @@ func (m *MsgUpdateDoc) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgUpdateDoc: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgUpdateDocument: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgUpdateDoc: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgUpdateDocument: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -2320,7 +1944,7 @@ func (m *MsgUpdateDoc) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgUpdateDocResponse) Unmarshal(dAtA []byte) error {
+func (m *MsgUpdateDocumentResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -2343,424 +1967,12 @@ func (m *MsgUpdateDocResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgUpdateDocResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgUpdateDocumentResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgUpdateDocResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgUpdateDocumentResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
-		default:
-			iNdEx = preIndex
-			skippy, err := skipTx(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthTx
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
-func (m *Document) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowTx
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= uint64(b&0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: Document: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: Document: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		case 1:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Holder", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthTx
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthTx
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Holder = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 2:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Issuer", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthTx
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthTx
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Issuer = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 3:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Proof", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthTx
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthTx
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Proof = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 4:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Data", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthTx
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthTx
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Data = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 5:
-			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Version", wireType)
-			}
-			m.Version = 0
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				m.Version |= int32(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-		default:
-			iNdEx = preIndex
-			skippy, err := skipTx(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthTx
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
-func (m *DocDetailState) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowTx
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= uint64(b&0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: DocDetailState: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: DocDetailState: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		case 1:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Data", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthTx
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthTx
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Data = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 2:
-			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Version", wireType)
-			}
-			m.Version = 0
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				m.Version |= int32(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-		default:
-			iNdEx = preIndex
-			skippy, err := skipTx(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthTx
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
-func (m *DocBasicState) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowTx
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= uint64(b&0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: DocBasicState: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: DocBasicState: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		case 1:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Holder", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthTx
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthTx
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Holder = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 2:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Issuer", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthTx
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthTx
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Issuer = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
 			skippy, err := skipTx(dAtA[iNdEx:])
