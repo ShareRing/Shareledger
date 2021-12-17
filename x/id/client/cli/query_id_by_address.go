@@ -17,7 +17,7 @@ var _ = strconv.Itoa(0)
 
 func CmdIdByAddress() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "info-by-adress [address]",
+		Use:   "info-by-address [address]",
 		Short: "Query for id information",
 		Long: strings.TrimSpace(fmt.Sprintf(`
 Query id information of an account by owner address

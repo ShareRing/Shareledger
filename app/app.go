@@ -375,6 +375,7 @@ func New(
 		appCodec,
 		keys[documentmoduletypes.StoreKey],
 		keys[documentmoduletypes.MemStoreKey],
+		app.IdKeeper,
 	)
 	documentModule := documentmodule.NewAppModule(appCodec, app.DocumentKeeper)
 
@@ -392,7 +393,6 @@ func New(
 		appCodec,
 		keys[idmoduletypes.StoreKey],
 		keys[idmoduletypes.MemStoreKey],
-		app.GentleMintKeeper,
 	)
 	idModule := idmodule.NewAppModule(appCodec, app.IdKeeper)
 
