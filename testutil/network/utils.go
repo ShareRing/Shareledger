@@ -3,6 +3,7 @@ package network
 import (
 	"encoding/json"
 	"github.com/ShareRing/Shareledger/app"
+	electoraltypes "github.com/ShareRing/Shareledger/x/electoral/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stretchr/testify/require"
 	"github.com/tendermint/spm/cosmoscmd"
@@ -54,6 +55,10 @@ const (
 
 	ShareLedgerBookingAssetAlreadyBooked = uint32(3)
 	ShareLedgerBookingBookerIsNotOwner   = uint32(6)
+
+	ShareLedgerDocumentDuplicated = uint32(3)
+	ShareLedgerDocumentNotFound = uint32(2)
+
 )
 
 var (
@@ -233,7 +238,7 @@ func collectGenFiles(cfg Config, vals []*Validator, outputDir string) error {
 	return nil
 }
 
-func initGenFiles(cfg Config, genAccounts []authtypes.GenesisAccount, genBalances []banktypes.Balance, genFiles []string) error {
+func initGenFiles(cfg Config, genAccounts []authtypes.GenesisAccount, genBalances []banktypes.Balance,electoralGen electoraltypes.GenesisState, genFiles []string) error {
 
 	// set the Accounts in the genesis state
 	var authGenState authtypes.GenesisState
@@ -254,6 +259,9 @@ func initGenFiles(cfg Config, genAccounts []authtypes.GenesisAccount, genBalance
 	bankGenState.DenomMetadata = GetShareLedgerTestMetadata()
 	bankGenState.Balances = append(bankGenState.Balances, genBalances...)
 	cfg.GenesisState[banktypes.ModuleName] = cfg.Codec.MustMarshalJSON(&bankGenState)
+
+	cfg.Codec.MustUnmarshalJSON(cfg.GenesisState[electoraltypes.ModuleName], &electoralGen)
+	cfg.GenesisState[electoraltypes.ModuleName] = cfg.Codec.MustMarshalJSON(&electoralGen)
 
 	appGenStateJSON, err := json.MarshalIndent(cfg.GenesisState, "", "  ")
 	if err != nil {

@@ -7,7 +7,6 @@ import (
 	"errors"
 	"fmt"
 	"github.com/ShareRing/Shareledger/app"
-	"github.com/ShareRing/Shareledger/testutil/simapp"
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	simapp2 "github.com/cosmos/cosmos-sdk/simapp"
 	"github.com/tendermint/spm/cosmoscmd"
@@ -31,6 +30,7 @@ import (
 
 	"google.golang.org/grpc"
 
+	electoraltypes "github.com/ShareRing/Shareledger/x/electoral/types"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/tx"
 	"github.com/cosmos/cosmos-sdk/codec"
@@ -131,7 +131,7 @@ type (
 // NewAppConstructor returns a new simapp AppConstructor
 func NewAppConstructor(encodingCfg cosmoscmd.EncodingConfig) AppConstructor {
 	return func(val Validator) servertypes.Application {
-		return simapp.NewSimApp(
+		return app.New(
 			val.Ctx.Logger, dbm.NewMemDB(), nil, true, make(map[int64]bool), val.Ctx.Config.RootDir, 0,
 			encodingCfg,
 			simapp2.EmptyAppOptions{},
@@ -228,6 +228,7 @@ func New(t *testing.T, cfg Config) *Network {
 		genAccounts []authtypes.GenesisAccount
 		genBalances []banktypes.Balance
 		genFiles    []string
+		genElectoral electoraltypes.GenesisState
 	)
 
 	buf := bufio.NewReader(os.Stdin)
@@ -491,7 +492,17 @@ func New(t *testing.T, cfg Config) *Network {
 		require.NoError(t, err, "init fail")
 	}
 
-	require.NoError(t, initGenFiles(cfg, genAccounts, genBalances, genFiles))
+	genElectoral = electoraltypes.GenesisState{
+		Authority:    &electoraltypes.Authority{
+			Address: accMap[KeyAuthority].String(),
+		},
+		Treasurer:    &electoraltypes.Treasurer{
+			Address: accMap[KeyTreasurer].String(),
+		},
+	}
+
+
+	require.NoError(t, initGenFiles(cfg, genAccounts, genBalances, genElectoral,genFiles))
 	require.NoError(t, collectGenFiles(cfg, network.Validators, network.BaseDir))
 	network.Accounts = accMap
 	t.Log("starting test network...")

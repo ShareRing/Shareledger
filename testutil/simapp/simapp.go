@@ -12,6 +12,7 @@ import (
 	documentmodule "github.com/ShareRing/Shareledger/x/document"
 	documentmodulekeeper "github.com/ShareRing/Shareledger/x/document/keeper"
 	documentmoduletypes "github.com/ShareRing/Shareledger/x/document/types"
+	"github.com/ShareRing/Shareledger/x/electoral"
 	gentlemintmodule "github.com/ShareRing/Shareledger/x/gentlemint"
 	gentlemintmodulekeeper "github.com/ShareRing/Shareledger/x/gentlemint/keeper"
 	gentlemintmoduletypes "github.com/ShareRing/Shareledger/x/gentlemint/types"
@@ -156,6 +157,8 @@ type SimApp struct {
 	BookingKeeper bookingmodulekeeper.Keeper
 
 	GentleMintKeeper gentlemintmodulekeeper.Keeper
+
+
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
 	// the module manager
@@ -207,6 +210,7 @@ var (
 		assetmodule.AppModuleBasic{},
 		bookingmodule.AppModuleBasic{},
 		gentlemintmodule.AppModuleBasic{},
+		electoral.AppModuleBasic{},
 		// this line is used by starport scaffolding # stargate/app/moduleBasic
 	)
 
