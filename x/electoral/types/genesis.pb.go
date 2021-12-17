@@ -25,7 +25,9 @@ const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
 // GenesisState defines the electoral module's genesis state.
 type GenesisState struct {
-	Addresses []string `protobuf:"bytes,1,rep,name=addresses,proto3" json:"addresses,omitempty"`
+	AccStateList []AccState `protobuf:"bytes,1,rep,name=accStateList,proto3" json:"accStateList"`
+	Authority    *Authority `protobuf:"bytes,2,opt,name=authority,proto3" json:"authority,omitempty"`
+	Treasurer    *Treasurer `protobuf:"bytes,3,opt,name=treasurer,proto3" json:"treasurer,omitempty"`
 }
 
 func (m *GenesisState) Reset()         { *m = GenesisState{} }
@@ -61,9 +63,23 @@ func (m *GenesisState) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_GenesisState proto.InternalMessageInfo
 
-func (m *GenesisState) GetAddresses() []string {
+func (m *GenesisState) GetAccStateList() []AccState {
 	if m != nil {
-		return m.Addresses
+		return m.AccStateList
+	}
+	return nil
+}
+
+func (m *GenesisState) GetAuthority() *Authority {
+	if m != nil {
+		return m.Authority
+	}
+	return nil
+}
+
+func (m *GenesisState) GetTreasurer() *Treasurer {
+	if m != nil {
+		return m.Treasurer
 	}
 	return nil
 }
@@ -75,19 +91,24 @@ func init() {
 func init() { proto.RegisterFile("electoral/genesis.proto", fileDescriptor_9741b9e3c3b3a5be) }
 
 var fileDescriptor_9741b9e3c3b3a5be = []byte{
-	// 188 bytes of a gzipped FileDescriptorProto
+	// 269 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x12, 0x4f, 0xcd, 0x49, 0x4d,
 	0x2e, 0xc9, 0x2f, 0x4a, 0xcc, 0xd1, 0x4f, 0x4f, 0xcd, 0x4b, 0x2d, 0xce, 0x2c, 0xd6, 0x2b, 0x28,
 	0xca, 0x2f, 0xc9, 0x17, 0x92, 0x0f, 0xce, 0x48, 0x2c, 0x4a, 0x0d, 0xca, 0xcc, 0x4b, 0xd7, 0x2b,
-	0x06, 0xb1, 0x72, 0x52, 0x53, 0xd2, 0x53, 0x8b, 0xf4, 0xe0, 0xca, 0xa5, 0x44, 0xd2, 0xf3, 0xd3,
-	0xf3, 0xc1, 0x6a, 0xf5, 0x41, 0x2c, 0x88, 0x36, 0x25, 0x23, 0x2e, 0x1e, 0x77, 0x88, 0x39, 0xc1,
-	0x25, 0x89, 0x25, 0xa9, 0x42, 0x4a, 0x5c, 0x9c, 0x89, 0x29, 0x29, 0x45, 0xa9, 0xc5, 0xc5, 0xa9,
-	0xc5, 0x12, 0x8c, 0x0a, 0xcc, 0x1a, 0x9c, 0x4e, 0x2c, 0x27, 0xee, 0xc9, 0x33, 0x06, 0x21, 0x84,
-	0x9d, 0x7c, 0x4e, 0x3c, 0x92, 0x63, 0xbc, 0xf0, 0x48, 0x8e, 0xf1, 0xc1, 0x23, 0x39, 0xc6, 0x09,
-	0x8f, 0xe5, 0x18, 0x2e, 0x3c, 0x96, 0x63, 0xb8, 0xf1, 0x58, 0x8e, 0x21, 0xca, 0x28, 0x3d, 0xb3,
-	0x24, 0xa3, 0x34, 0x49, 0x2f, 0x39, 0x3f, 0x57, 0x1f, 0xee, 0x1e, 0x08, 0x0b, 0xe2, 0x1e, 0xfd,
-	0x0a, 0x7d, 0x84, 0x07, 0x4a, 0x2a, 0x0b, 0x52, 0x8b, 0x93, 0xd8, 0xc0, 0x0e, 0x31, 0x06, 0x04,
-	0x00, 0x00, 0xff, 0xff, 0xe1, 0x92, 0xac, 0x03, 0xda, 0x00, 0x00, 0x00,
+	0x06, 0xb1, 0x72, 0x52, 0x53, 0xd2, 0x53, 0x8b, 0xf4, 0xe0, 0xca, 0xa5, 0x24, 0x11, 0x3a, 0x13,
+	0x93, 0x93, 0xe3, 0x8b, 0x4b, 0x12, 0x4b, 0x52, 0x21, 0x7a, 0x51, 0xa4, 0x4a, 0x4b, 0x32, 0xf2,
+	0x8b, 0x32, 0x4b, 0x2a, 0x31, 0xa5, 0x4a, 0x8a, 0x52, 0x13, 0x8b, 0x4b, 0x8b, 0x52, 0x8b, 0xa0,
+	0x52, 0x22, 0xe9, 0xf9, 0xe9, 0xf9, 0x60, 0xa6, 0x3e, 0x88, 0x05, 0x11, 0x55, 0xfa, 0xce, 0xc8,
+	0xc5, 0xe3, 0x0e, 0x71, 0x59, 0x30, 0xc8, 0x0a, 0xa1, 0x60, 0x2e, 0x9e, 0xc4, 0xe4, 0x64, 0x30,
+	0xdb, 0x27, 0xb3, 0xb8, 0x44, 0x82, 0x51, 0x81, 0x59, 0x83, 0xdb, 0x48, 0x53, 0x8f, 0x80, 0x7b,
+	0xf5, 0x1c, 0xa1, 0x9a, 0x9c, 0x58, 0x4e, 0xdc, 0x93, 0x67, 0x08, 0x42, 0x31, 0x44, 0xc8, 0x83,
+	0x8b, 0x13, 0xee, 0x52, 0x09, 0x26, 0x05, 0x46, 0x0d, 0x6e, 0x23, 0x2d, 0xc2, 0x26, 0xc2, 0x74,
+	0x04, 0x21, 0x34, 0x83, 0x4c, 0x82, 0x7b, 0x4c, 0x82, 0x99, 0x48, 0x93, 0x42, 0x60, 0x3a, 0x82,
+	0x10, 0x9a, 0x9d, 0x7c, 0x4e, 0x3c, 0x92, 0x63, 0xbc, 0xf0, 0x48, 0x8e, 0xf1, 0xc1, 0x23, 0x39,
+	0xc6, 0x09, 0x8f, 0xe5, 0x18, 0x2e, 0x3c, 0x96, 0x63, 0xb8, 0xf1, 0x58, 0x8e, 0x21, 0xca, 0x28,
+	0x3d, 0xb3, 0x24, 0xa3, 0x34, 0x49, 0x2f, 0x39, 0x3f, 0x57, 0x1f, 0x6e, 0x34, 0x84, 0x05, 0x31,
+	0x5a, 0xbf, 0x42, 0x1f, 0x29, 0x9c, 0x2b, 0x0b, 0x52, 0x8b, 0x93, 0xd8, 0xc0, 0xc1, 0x69, 0x0c,
+	0x08, 0x00, 0x00, 0xff, 0xff, 0x0e, 0x58, 0xc2, 0xf4, 0xf1, 0x01, 0x00, 0x00,
 }
 
 func (m *GenesisState) Marshal() (dAtA []byte, err error) {
@@ -110,11 +131,40 @@ func (m *GenesisState) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if len(m.Addresses) > 0 {
-		for iNdEx := len(m.Addresses) - 1; iNdEx >= 0; iNdEx-- {
-			i -= len(m.Addresses[iNdEx])
-			copy(dAtA[i:], m.Addresses[iNdEx])
-			i = encodeVarintGenesis(dAtA, i, uint64(len(m.Addresses[iNdEx])))
+	if m.Treasurer != nil {
+		{
+			size, err := m.Treasurer.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintGenesis(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x1a
+	}
+	if m.Authority != nil {
+		{
+			size, err := m.Authority.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintGenesis(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.AccStateList) > 0 {
+		for iNdEx := len(m.AccStateList) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.AccStateList[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintGenesis(dAtA, i, uint64(size))
+			}
 			i--
 			dAtA[i] = 0xa
 		}
@@ -139,11 +189,19 @@ func (m *GenesisState) Size() (n int) {
 	}
 	var l int
 	_ = l
-	if len(m.Addresses) > 0 {
-		for _, s := range m.Addresses {
-			l = len(s)
+	if len(m.AccStateList) > 0 {
+		for _, e := range m.AccStateList {
+			l = e.Size()
 			n += 1 + l + sovGenesis(uint64(l))
 		}
+	}
+	if m.Authority != nil {
+		l = m.Authority.Size()
+		n += 1 + l + sovGenesis(uint64(l))
+	}
+	if m.Treasurer != nil {
+		l = m.Treasurer.Size()
+		n += 1 + l + sovGenesis(uint64(l))
 	}
 	return n
 }
@@ -185,9 +243,9 @@ func (m *GenesisState) Unmarshal(dAtA []byte) error {
 		switch fieldNum {
 		case 1:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Addresses", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field AccStateList", wireType)
 			}
-			var stringLen uint64
+			var msglen int
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowGenesis
@@ -197,23 +255,97 @@ func (m *GenesisState) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
+				msglen |= int(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
+			if msglen < 0 {
 				return ErrInvalidLengthGenesis
 			}
-			postIndex := iNdEx + intStringLen
+			postIndex := iNdEx + msglen
 			if postIndex < 0 {
 				return ErrInvalidLengthGenesis
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Addresses = append(m.Addresses, string(dAtA[iNdEx:postIndex]))
+			m.AccStateList = append(m.AccStateList, AccState{})
+			if err := m.AccStateList[len(m.AccStateList)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Authority", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGenesis
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Authority == nil {
+				m.Authority = &Authority{}
+			}
+			if err := m.Authority.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Treasurer", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGenesis
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Treasurer == nil {
+				m.Treasurer = &Treasurer{}
+			}
+			if err := m.Treasurer.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex

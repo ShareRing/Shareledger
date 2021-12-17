@@ -16,14 +16,6 @@ service Msg {
   rpc SendShrp(MsgSendShrp) returns (MsgSendShrpResponse);
   rpc BurnShr(MsgBurnShr) returns (MsgBurnShrResponse);
   rpc SetExchange(MsgSetExchange) returns (MsgSetExchangeResponse);
-  rpc EnrollLoaders(MsgEnrollLoaders) returns (MsgEnrollLoadersResponse);
-  rpc RevokeLoaders(MsgRevokeLoaders) returns (MsgRevokeLoadersResponse);
-  rpc EnrollIdSigner(MsgEnrollIdSigner) returns (MsgEnrollIdSignerResponse);
-  rpc RevokeIdSigner(MsgRevokeIdSigner) returns (MsgRevokeIdSignerResponse);
-  rpc EnrollDocIssuer(MsgEnrollDocIssuer) returns (MsgEnrollDocIssuerResponse);
-  rpc RevokeDocIssuer(MsgRevokeDocIssuer) returns (MsgRevokeDocIssuerResponse);
-  rpc EnrollAccountOperator(MsgEnrollAccountOperator) returns (MsgEnrollAccountOperatorResponse);
-  rpc RevokeAccountOperator(MsgRevokeAccountOperator) returns (MsgRevokeAccountOperatorResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -109,73 +101,6 @@ message MsgSetExchange {
 }
 
 message MsgSetExchangeResponse {
-}
-
-message MsgEnrollLoaders {
-  string creator = 1;
-  repeated string addresses = 2;
-}
-
-message MsgEnrollLoadersResponse {
-  string log = 1;
-}
-
-message MsgRevokeLoaders {
-  string creator = 1;
-  repeated string addresses = 2;
-}
-
-message MsgRevokeLoadersResponse {
-  string log = 1;
-}
-
-message MsgEnrollIdSigner {
-  string creator = 1;
-  repeated string addresses = 2;
-}
-
-message MsgEnrollIdSignerResponse {
-  string log = 1;
-}
-
-message MsgRevokeIdSigner {
-  string creator = 1;
-  repeated string addresses = 2;
-}
-
-message MsgRevokeIdSignerResponse {
-}
-
-message MsgEnrollDocIssuer {
-  string creator = 1;
-  repeated string addresses = 2;
-}
-
-message MsgEnrollDocIssuerResponse {
-}
-
-message MsgRevokeDocIssuer {
-  string creator = 1;
-  repeated string addresses = 2;
-}
-
-message MsgRevokeDocIssuerResponse {
-}
-
-message MsgEnrollAccountOperator {
-  string creator = 1;
-  repeated string addresses = 2;
-}
-
-message MsgEnrollAccountOperatorResponse {
-}
-
-message MsgRevokeAccountOperator {
-  string creator = 1;
-  repeated string addresses = 2;
-}
-
-message MsgRevokeAccountOperatorResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message

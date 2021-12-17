@@ -1,11 +1,18 @@
 syntax = "proto3";
 package ShareRing.shareledger.electoral;
 
+import "electoral/acc_state.proto";
+import "electoral/authority.proto";
+import "electoral/treasurer.proto";
+// this line is used by starport scaffolding # genesis/proto/import
 import "gogoproto/gogo.proto";
 
 option go_package = "github.com/ShareRing/Shareledger/x/electoral/types";
 
 // GenesisState defines the electoral module's genesis state.
 message GenesisState {
-    repeated string addresses = 1 [(gogoproto.nullable) = true];
+    repeated AccState accStateList = 1 [(gogoproto.nullable) = false];
+  Authority authority = 2;
+  Treasurer treasurer = 3;
+  // this line is used by starport scaffolding # genesis/proto/state
 }

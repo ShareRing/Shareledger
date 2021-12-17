@@ -17,14 +17,6 @@ func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgSendShrp{}, "gentlemint/SendShrp", nil)
 	cdc.RegisterConcrete(&MsgBurnShr{}, "gentlemint/BurnShr", nil)
 	cdc.RegisterConcrete(&MsgSetExchange{}, "gentlemint/SetExchange", nil)
-	cdc.RegisterConcrete(&MsgEnrollLoaders{}, "gentlemint/EnrollLoaders", nil)
-	cdc.RegisterConcrete(&MsgRevokeLoaders{}, "gentlemint/RevokeLoaders", nil)
-	cdc.RegisterConcrete(&MsgEnrollIdSigner{}, "gentlemint/EnrollIdSigner", nil)
-	cdc.RegisterConcrete(&MsgRevokeIdSigner{}, "gentlemint/RevokeIdSigner", nil)
-	cdc.RegisterConcrete(&MsgEnrollDocIssuer{}, "gentlemint/EnrollDocIssuer", nil)
-	cdc.RegisterConcrete(&MsgRevokeDocIssuer{}, "gentlemint/RevokeDocIssuer", nil)
-	cdc.RegisterConcrete(&MsgEnrollAccountOperator{}, "gentlemint/EnrollAccountOperator", nil)
-	cdc.RegisterConcrete(&MsgRevokeAccountOperator{}, "gentlemint/RevokeAccountOperator", nil)
 	// this line is used by starport scaffolding # 2
 }
 
@@ -61,30 +53,6 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgSetExchange{},
-	)
-	registry.RegisterImplementations((*sdk.Msg)(nil),
-		&MsgEnrollLoaders{},
-	)
-	registry.RegisterImplementations((*sdk.Msg)(nil),
-		&MsgRevokeLoaders{},
-	)
-	registry.RegisterImplementations((*sdk.Msg)(nil),
-		&MsgEnrollIdSigner{},
-	)
-	registry.RegisterImplementations((*sdk.Msg)(nil),
-		&MsgRevokeIdSigner{},
-	)
-	registry.RegisterImplementations((*sdk.Msg)(nil),
-		&MsgEnrollDocIssuer{},
-	)
-	registry.RegisterImplementations((*sdk.Msg)(nil),
-		&MsgRevokeDocIssuer{},
-	)
-	registry.RegisterImplementations((*sdk.Msg)(nil),
-		&MsgEnrollAccountOperator{},
-	)
-	registry.RegisterImplementations((*sdk.Msg)(nil),
-		&MsgRevokeAccountOperator{},
 	)
 	// this line is used by starport scaffolding # 3
 

@@ -9,13 +9,12 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
-type Cost struct {
+type AdjustmentCoins struct {
 	Sub sdk.Coins
 	Add sdk.Coins
 }
 
-func GetCostShrpForShr(currentShrp sdk.Coins, needShr sdk.Int, rate float64) (cost Cost, err error) {
-
+func GetCostShrpForShr(currentShrp sdk.Coins, needShr sdk.Int, rate float64) (cost AdjustmentCoins, err error) {
 	neededShrpF := float64(needShr.Int64()) / rate
 	neededShrp, err := ParseShrpCoinsFloat(neededShrpF)
 	if err != nil {
@@ -25,7 +24,7 @@ func GetCostShrpForShr(currentShrp sdk.Coins, needShr sdk.Int, rate float64) (co
 	if err != nil {
 		return
 	}
-	cost = Cost{
+	cost = AdjustmentCoins{
 		Sub: sdk.NewCoins(),
 		Add: sdk.NewCoins(),
 	}
@@ -40,6 +39,33 @@ func GetCostShrpForShr(currentShrp sdk.Coins, needShr sdk.Int, rate float64) (co
 			cost.Sub = cost.Sub.Add(sdk.NewCoin(DenomCent, v))
 		}
 	}
+	return
+}
+
+func AddShrpCoins(currentCoins sdk.Coins, addedCoins sdk.Coins) (ac AdjustmentCoins, err error) {
+	if err = currentCoins.Validate(); err != nil {
+		return
+	}
+	if err = addedCoins.Validate(); err != nil {
+		return
+	}
+
+	oldCents := currentCoins.AmountOf(DenomCent)
+	addedCents := addedCoins.AmountOf(DenomCent)
+	totalCents := oldCents.Add(addedCents)
+
+	ac.Add = sdk.NewCoins()
+	ac.Sub = sdk.NewCoins()
+	// convert cent to shrp
+	ac.Add = ac.Add.Add(sdk.NewCoin(DenomSHRP, sdk.NewInt(totalCents.Int64()/100)))
+
+	newCent := sdk.NewInt(totalCents.Int64() % 100)
+	if oldCents.GT(newCent) {
+		ac.Sub = ac.Sub.Add(sdk.NewCoin(DenomCent, oldCents.Sub(newCent)))
+	} else {
+		ac.Add = ac.Add.Add(sdk.NewCoin(DenomCent, newCent.Sub(oldCents)))
+	}
+
 	return
 }
 
@@ -72,23 +98,6 @@ func SubShrpCoins(x sdk.Coins, y sdk.Coins) (z sdk.Coins, err error) {
 	return
 
 }
-
-// func shrpFromFloat(v float64) (sdk.Coins, error) {
-// 	// since sometime v can have format with: 0.00999 which is a result of calculating of float numbers, 5.04 - 4.03 for example. -> convert up to 0.01
-// 	// 0.00999
-// 	// 0.990000001
-// 	if v < 0 {
-// 		err := sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "Negative Coins are not accepted")
-// 		return nil, err
-// 	}
-// 	v = roundUp2Decimal(v)
-// 	shrp := int64(v)
-// 	cent := int64(v*100 - float64(shrp*100))
-// 	return sdk.NewCoins(
-// 		sdk.NewCoin(DenomSHRP, sdk.NewInt(shrp)),
-// 		sdk.NewCoin(DenomCent, sdk.NewInt(cent)),
-// 	), nil
-// }
 
 // ParseShrpCoinsStr return shrp and cent coins.
 // only get 2 decimals to cent without rouding.

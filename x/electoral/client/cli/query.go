@@ -24,47 +24,20 @@ func GetQueryCmd(queryRoute string) *cobra.Command {
 		RunE:                       client.ValidateCmd,
 	}
 
-	cmd.AddCommand(
-		CmdGetVoter(types.QuerierRoute),
-	)
+	cmd.AddCommand(CmdGetVoter())
+
+	cmd.AddCommand(CmdShowAuthority())
+	cmd.AddCommand(CmdShowTreasurer())
+	cmd.AddCommand(CmdGetLoader())
+	cmd.AddCommand(CmdGetLoadersFromFile())
+	cmd.AddCommand(CmdIdSigner())
+	cmd.AddCommand(CmdIdSigners())
+	cmd.AddCommand(CmdAccountOperator())
+	cmd.AddCommand(CmdAccountOperators())
+	cmd.AddCommand(CmdDocumentIssuer())
+	cmd.AddCommand(CmdDocumentIssuers())
+
+	// this line is used by starport scaffolding # 1
 
 	return cmd
-}
-
-func CmdGetVoter(queryRoute string) *cobra.Command {
-	return &cobra.Command{
-		Use:   "get [address]",
-		Short: "return status of voter",
-		Args:  cobra.ExactArgs(1),
-		RunE: func(cmd *cobra.Command, args []string) error {
-			// cliCtx := context.NewCLIContext().WithCodec(cdc)
-			// voter := args[0]
-			// voterID := "voter" + voter
-			// res, _, err := cliCtx.QueryWithData(fmt.Sprintf("custom/%s/voter/%s", queryRoute, voterID), nil)
-			// if err != nil {
-			// 	fmt.Printf("could not get voter - %s \n", voterID)
-			// 	return nil
-			// }
-
-			// var out types.Voter
-			// cdc.MustUnmarshalJSON(res, &out)
-			// return cliCtx.PrintOutput(out)
-
-			cliCtx, err := client.GetClientQueryContext(cmd)
-			if err != nil {
-				return err
-			}
-
-			voter := args[0]
-			voterID := types.VoterPrefix + voter
-
-			queryClient := types.NewQueryClient(cliCtx)
-			params := types.NewQueryVoterRequest(voterID)
-			res, err := queryClient.Voter(cmd.Context(), params)
-			if err != nil {
-				return err
-			}
-			return cliCtx.PrintProto(res)
-		},
-	}
 }

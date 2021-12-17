@@ -1,6 +1,7 @@
 package app
 
 import (
+	"github.com/ShareRing/Shareledger/x/ante"
 	"io"
 	"net/http"
 	"os"
@@ -19,7 +20,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/types/module"
 	"github.com/cosmos/cosmos-sdk/version"
 	"github.com/cosmos/cosmos-sdk/x/auth"
-	"github.com/cosmos/cosmos-sdk/x/auth/ante"
+	authante "github.com/cosmos/cosmos-sdk/x/auth/ante"
 	authrest "github.com/cosmos/cosmos-sdk/x/auth/client/rest"
 	authkeeper "github.com/cosmos/cosmos-sdk/x/auth/keeper"
 	authtx "github.com/cosmos/cosmos-sdk/x/auth/tx"
@@ -96,6 +97,9 @@ import (
 	documentmodule "github.com/ShareRing/Shareledger/x/document"
 	documentmodulekeeper "github.com/ShareRing/Shareledger/x/document/keeper"
 	documentmoduletypes "github.com/ShareRing/Shareledger/x/document/types"
+	electoralmodule "github.com/ShareRing/Shareledger/x/electoral"
+	electoralmodulekeeper "github.com/ShareRing/Shareledger/x/electoral/keeper"
+	electoralmoduletypes "github.com/ShareRing/Shareledger/x/electoral/types"
 	gentlemintmodule "github.com/ShareRing/Shareledger/x/gentlemint"
 	gentlemintmodulekeeper "github.com/ShareRing/Shareledger/x/gentlemint/keeper"
 	gentlemintmoduletypes "github.com/ShareRing/Shareledger/x/gentlemint/types"
@@ -156,6 +160,7 @@ var (
 		assetmodule.AppModuleBasic{},
 		bookingmodule.AppModuleBasic{},
 		gentlemintmodule.AppModuleBasic{},
+		electoralmodule.AppModuleBasic{},
 		// this line is used by starport scaffolding # stargate/app/moduleBasic
 	)
 
@@ -170,6 +175,7 @@ var (
 		ibctransfertypes.ModuleName:      {authtypes.Minter, authtypes.Burner},
 		bookingmoduletypes.ModuleName:    nil,
 		gentlemintmoduletypes.ModuleName: {authtypes.Minter, authtypes.Burner},
+		electoralmoduletypes.ModuleName:  nil,
 		// this line is used by starport scaffolding # stargate/app/maccPerms
 	}
 )
@@ -235,6 +241,8 @@ type App struct {
 	BookingKeeper bookingmodulekeeper.Keeper
 
 	GentleMintKeeper gentlemintmodulekeeper.Keeper
+
+	ElectoralKeeper electoralmodulekeeper.Keeper
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
 	// the module manager
@@ -273,6 +281,7 @@ func New(
 		assetmoduletypes.StoreKey,
 		bookingmoduletypes.StoreKey,
 		gentlemintmoduletypes.StoreKey,
+		electoralmoduletypes.StoreKey,
 		// this line is used by starport scaffolding # stargate/app/storeKey
 	)
 	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey)
@@ -389,6 +398,15 @@ func New(
 	)
 	gentlemintModule := gentlemintmodule.NewAppModule(appCodec, app.GentleMintKeeper)
 
+	app.ElectoralKeeper = *electoralmodulekeeper.NewKeeper(
+		appCodec,
+		keys[electoralmoduletypes.StoreKey],
+		keys[electoralmoduletypes.MemStoreKey],
+
+		app.GentleMintKeeper,
+	)
+	electoralModule := electoralmodule.NewAppModule(appCodec, app.ElectoralKeeper)
+
 	app.IdKeeper = *idmodulekeeper.NewKeeper(
 		appCodec,
 		keys[idmoduletypes.StoreKey],
@@ -455,7 +473,9 @@ func New(
 		assetModule,
 		bookingModule,
 		gentlemintModule,
+		electoralModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
+
 	)
 
 	// During begin block slashing happens after distr.BeginBlocker so that
@@ -478,6 +498,7 @@ func New(
 	app.mm.SetOrderInitGenesis(
 		capabilitytypes.ModuleName,
 		authtypes.ModuleName,
+		electoralmoduletypes.ModuleName,
 		banktypes.ModuleName,
 		distrtypes.ModuleName,
 		stakingtypes.ModuleName,
@@ -495,6 +516,7 @@ func New(
 		assetmoduletypes.ModuleName,
 		bookingmoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/initGenesis
+
 	)
 
 	app.mm.RegisterInvariants(&app.CrisisKeeper)
@@ -510,18 +532,16 @@ func New(
 	app.SetInitChainer(app.InitChainer)
 	app.SetBeginBlocker(app.BeginBlocker)
 
-	anteHandler, err := ante.NewAnteHandler(
-		ante.HandlerOptions{
-			AccountKeeper:   app.AccountKeeper,
-			BankKeeper:      app.BankKeeper,
-			SignModeHandler: encodingConfig.TxConfig.SignModeHandler(),
-			FeegrantKeeper:  app.FeeGrantKeeper,
-			SigGasConsumer:  ante.DefaultSigVerificationGasConsumer,
-		},
+	anteHandler := ante.NewHandler(
+		app.GentleMintKeeper,
+		app.AccountKeeper,
+		app.BankKeeper,
+		encodingConfig.TxConfig.SignModeHandler(),
+		app.FeeGrantKeeper,
+		authante.DefaultSigVerificationGasConsumer,
+		app.ElectoralKeeper,
+		app.IdKeeper,
 	)
-	if err != nil {
-		panic(err)
-	}
 
 	app.SetAnteHandler(anteHandler)
 	app.SetEndBlocker(app.EndBlocker)

@@ -9,13 +9,62 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+func TestAddShrpCoins(t *testing.T) {
+	type testCase struct {
+		ic sdk.Coins
+		ia sdk.Coins
+		oa AdjustmentCoins
+		oe error
+		d  string
+	}
+	testCases := []testCase{
+		{
+			ic: sdk.NewCoins(sdk.NewCoin(DenomSHRP, sdk.NewInt(1)), sdk.NewCoin(DenomCent, sdk.NewInt(50))),
+			ia: sdk.NewCoins(sdk.NewCoin(DenomCent, sdk.NewInt(50))),
+			oa: AdjustmentCoins{
+				Add: sdk.NewCoins(sdk.NewCoin(DenomSHRP, sdk.NewInt(1))),
+				Sub: sdk.NewCoins(sdk.NewCoin(DenomCent, sdk.NewInt(50))),
+			},
+			d: "1.5 shrp + 0.5 shrp = 2 shrp -> add: 1 shrp, sub 5 cent",
+		},
+		{
+			ic: sdk.NewCoins(sdk.NewCoin(DenomSHRP, sdk.NewInt(1)), sdk.NewCoin(DenomCent, sdk.NewInt(50))),
+			ia: sdk.NewCoins(sdk.NewCoin(DenomCent, sdk.NewInt(70))),
+			oa: AdjustmentCoins{
+				Add: sdk.NewCoins(sdk.NewCoin(DenomSHRP, sdk.NewInt(1))),
+				Sub: sdk.NewCoins(sdk.NewCoin(DenomCent, sdk.NewInt(30))),
+			},
+			d: "1.5 shrp + 0.7 shrp = 2.2 -> add: 1 shrp, sub: 3 cent",
+		},
+		{
+			ic: sdk.NewCoins(sdk.NewCoin(DenomSHRP, sdk.NewInt(1)), sdk.NewCoin(DenomCent, sdk.NewInt(550))),
+			ia: sdk.NewCoins(sdk.NewCoin(DenomCent, sdk.NewInt(70))),
+			oa: AdjustmentCoins{
+				Add: sdk.NewCoins(sdk.NewCoin(DenomSHRP, sdk.NewInt(6))),
+				Sub: sdk.NewCoins(sdk.NewCoin(DenomCent, sdk.NewInt(530))),
+			},
+			d: "1.550 shrp + 0.7 shrp = 7.2 -> add: 6 shrp, sub: 530 cent",
+		},
+	}
+
+	for _, tc := range testCases {
+		r, e := AddShrpCoins(tc.ic, tc.ia)
+		if tc.oe != nil {
+			require.NotNil(t, e, tc.d)
+			require.True(t, sdkerrors.IsOf(e, tc.oe), tc.d)
+		} else {
+			require.Equal(t, tc.oa, r, tc.d)
+		}
+	}
+}
+
 func TestGetCostShrpForShr(t *testing.T) {
 	rate := float64(200)
 	type testCase struct {
 		iCurrent sdk.Coins
 		iNeed    sdk.Int
 		iRate    float64
-		oCost    Cost
+		oCost    AdjustmentCoins
 		oError   error
 		d        string
 	}
@@ -26,7 +75,7 @@ func TestGetCostShrpForShr(t *testing.T) {
 			),
 			iRate: rate,
 			iNeed: sdk.NewInt(200),
-			oCost: Cost{
+			oCost: AdjustmentCoins{
 				Sub: sdk.NewCoins(
 					sdk.NewCoin(DenomSHRP, sdk.NewInt(1)),
 				),
@@ -41,7 +90,7 @@ func TestGetCostShrpForShr(t *testing.T) {
 			),
 			iRate: rate,
 			iNeed: sdk.NewInt(200),
-			oCost: Cost{
+			oCost: AdjustmentCoins{
 				Sub: sdk.NewCoins(
 					sdk.NewCoin(DenomSHRP, sdk.NewInt(1)),
 				),
@@ -57,7 +106,7 @@ func TestGetCostShrpForShr(t *testing.T) {
 			),
 			iRate: rate,
 			iNeed: sdk.NewInt(300),
-			oCost: Cost{
+			oCost: AdjustmentCoins{
 				Sub: sdk.NewCoins(
 					sdk.NewCoin(DenomSHRP, sdk.NewInt(2)),
 				),

@@ -8,9 +8,5 @@ import (
 
 // x/gentlemint module sentinel errors
 var (
-	ErrSHRSupplyExceeded = sdkerrors.Register(ModuleName, 1, "SHR supply exceeded")
-)
-var (
-	ErrSenderIsNotAccountOperator = "Sender is not account operator"
-	ErrSenderIsNotAuthority       = "Sender is not authority"
+	ErrSHRSupplyExceeded = sdkerrors.Register(ModuleName, 41, "SHR supply exceeded")
 )
