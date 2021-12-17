@@ -20954,27 +20954,6 @@ definitions:
             version:
               type: integer
               format: int32
-  ShareRing.shareledger.electoral.MsgEnrollVoterResponse:
-    type: object
-  ShareRing.shareledger.electoral.MsgRevokeVoterResponse:
-    type: object
-  ShareRing.shareledger.electoral.QueryVoterResponse:
-    type: object
-    properties:
-      voter:
-        type: object
-        properties:
-          address:
-            type: string
-          status:
-            type: string
-  ShareRing.shareledger.electoral.Voter:
-    type: object
-    properties:
-      address:
-        type: string
-      status:
-        type: string
   ShareRing.shareledger.electoral.AccState:
     type: object
     properties:

@@ -5,6 +5,7 @@ import (
 
 	"github.com/ShareRing/Shareledger/x/electoral/keeper"
 	"github.com/ShareRing/Shareledger/x/electoral/types"
+	gk "github.com/ShareRing/Shareledger/x/gentlemint/keeper"
 	"github.com/cosmos/cosmos-sdk/codec"
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	"github.com/cosmos/cosmos-sdk/store"
@@ -27,10 +28,12 @@ func ElectoralKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
 	require.NoError(t, stateStore.LoadLatestVersion())
 
 	registry := codectypes.NewInterfaceRegistry()
+	var gentlemintKeeper gk.Keeper
 	k := keeper.NewKeeper(
 		codec.NewProtoCodec(registry),
 		storeKey,
 		memStoreKey,
+		gentlemintKeeper,
 	)
 
 	ctx := sdk.NewContext(stateStore, tmproto.Header{}, false, log.NewNopLogger())
