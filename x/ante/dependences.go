@@ -22,5 +22,5 @@ type RoleKeeper interface {
 	IsAccountOperator(ctx sdk.Context, address sdk.AccAddress) bool
 }
 type IDKeeper interface {
-	GetIDByIdString(ctx sdk.Context, id string) *idtypes.ID
+	GetFullIDByIDString(ctx sdk.Context, id string) (*idtypes.Id, bool)
 }

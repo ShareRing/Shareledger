@@ -5,6 +5,7 @@ import (
 
 	"github.com/ShareRing/Shareledger/x/document/keeper"
 	"github.com/ShareRing/Shareledger/x/document/types"
+	idk "github.com/ShareRing/Shareledger/x/id/keeper"
 	"github.com/cosmos/cosmos-sdk/codec"
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	"github.com/cosmos/cosmos-sdk/store"
@@ -27,10 +28,12 @@ func DocumentKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
 	require.NoError(t, stateStore.LoadLatestVersion())
 
 	registry := codectypes.NewInterfaceRegistry()
+	var idKeeper idk.Keeper
 	k := keeper.NewKeeper(
 		codec.NewProtoCodec(registry),
 		storeKey,
 		memStoreKey,
+		idKeeper,
 	)
 
 	ctx := sdk.NewContext(stateStore, tmproto.Header{}, false, log.NewNopLogger())

@@ -66,15 +66,15 @@ func (a Auth) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate bool, next sdk.Ant
 			}
 		case // Backup account permission
 			*idtypes.MsgReplaceIdOwner:
-			id := a.ik.GetIDByIdString(ctx, msg.Id)
+			id, _ := a.ik.GetFullIDByIDString(ctx, msg.Id)
 			if id == nil || id.Data == nil || id.Data.BackupAddress != msg.BackupAddress {
 				return ctx, sdkerrors.Wrapf(sdkerrors.ErrUnauthorized, ErrMsgNotBackupAccount)
 			}
 		case //Doc Issuer
-			*documenttypes.MsgCreateDoc,
-			*documenttypes.MsgCreateDocBatch,
-			*documenttypes.MsgUpdateDoc,
-			*documenttypes.MsgRevokeDoc:
+			*documenttypes.MsgCreateDocument,
+			*documenttypes.MsgCreateDocumentInBatch,
+			*documenttypes.MsgUpdateDocument,
+			*documenttypes.MsgRevokeDocument:
 			if !a.rk.IsDocIssuer(ctx, signer) {
 				return ctx, sdkerrors.Wrapf(sdkerrors.ErrUnauthorized, ErrMsgNotDocIssuer)
 			}
