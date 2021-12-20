@@ -381,14 +381,6 @@ func New(
 		&stakingKeeper, govRouter,
 	)
 
-	app.DocumentKeeper = *documentmodulekeeper.NewKeeper(
-		appCodec,
-		keys[documentmoduletypes.StoreKey],
-		keys[documentmoduletypes.MemStoreKey],
-		app.IdKeeper,
-	)
-	documentModule := documentmodule.NewAppModule(appCodec, app.DocumentKeeper)
-
 	app.GentleMintKeeper = *gentlemintmodulekeeper.NewKeeper(
 		appCodec,
 		keys[gentlemintmoduletypes.StoreKey],
@@ -430,6 +422,14 @@ func New(
 		app.BankKeeper,
 	)
 	bookingModule := bookingmodule.NewAppModule(appCodec, app.BookingKeeper)
+
+	app.DocumentKeeper = *documentmodulekeeper.NewKeeper(
+		appCodec,
+		keys[documentmoduletypes.StoreKey],
+		keys[documentmoduletypes.MemStoreKey],
+		app.IdKeeper,
+	)
+	documentModule := documentmodule.NewAppModule(appCodec, app.DocumentKeeper)
 
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
 
