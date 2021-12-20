@@ -5,7 +5,9 @@ import (
 	bookingtypes "github.com/ShareRing/Shareledger/x/booking/types"
 	gentleminttypes "github.com/ShareRing/Shareledger/x/gentlemint/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
+	"math"
 )
 
 const (
@@ -36,7 +38,15 @@ func (cfd CheckFeeDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate boo
 	if feeLevel != SKIP_CHECK_LEVEL {
 		exRate := cfd.gk.GetExchangeRateF(ctx)
 		requiredFees := getRequiredFees(feeLevel, exRate)
-		ctx = ctx.WithMinGasPrices(sdk.NewDecCoinsFromCoins(requiredFees...))
+		feeTx, ok := tx.(sdk.FeeTx)
+		if !ok {
+			return ctx, sdkerrors.Wrap(sdkerrors.ErrTxDecode, "Tx must be a FeeTx")
+		}
+		shrTXFee := feeTx.GetFee().AmountOf(gentleminttypes.DenomSHR)
+		shrRequiredFee := requiredFees.AmountOf(gentleminttypes.DenomSHR)
+		if shrRequiredFee.GT(shrTXFee) {
+			return ctx, sdkerrors.Wrapf(sdkerrors.ErrInsufficientFee, "insufficient fees; got: %s shr required: %s shr", shrTXFee, shrRequiredFee)
+		}
 	}
 	return next(ctx, tx, simulate)
 }
@@ -67,6 +77,6 @@ func getRequiredFees(feeLevel string, exRate float64) sdk.Coins {
 	default:
 		fiatFee = MINFEE
 	}
-	shrAmt = int64(fiatFee*exRate) + 1
-	return sdk.NewCoins(sdk.NewCoin("shr", sdk.NewInt(shrAmt)))
+	shrAmt = int64(math.Ceil(fiatFee * exRate))
+	return sdk.NewCoins(sdk.NewCoin(gentleminttypes.DenomSHR, sdk.NewInt(shrAmt)))
 }

@@ -21,20 +21,6 @@ func TestGenesisState_Validate(t *testing.T) {
 		{
 			desc: "valid genesis state",
 			genState: &types.GenesisState{
-				AccStateList: []types.AccState{
-					{
-						Key: "0",
-					},
-					{
-						Key: "1",
-					},
-				},
-				Authority: &types.Authority{
-					Address: "address",
-				},
-				Treasurer: &types.Treasurer{
-					Address: "address",
-				},
 				ExchangeRate: &types.ExchangeRate{
 					Rate: 200,
 				},
@@ -45,14 +31,6 @@ func TestGenesisState_Validate(t *testing.T) {
 		{
 			desc: "duplicated accState",
 			genState: &types.GenesisState{
-				AccStateList: []types.AccState{
-					{
-						Key: "0",
-					},
-					{
-						Key: "0",
-					},
-				},
 			},
 			valid: false,
 		},
