@@ -960,29 +960,29 @@ func RegisterQueryHandlerClient(ctx context.Context, mux *runtime.ServeMux, clie
 }
 
 var (
-	pattern_Query_AccState_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"ShareRing", "shareledger", "electoral", "accState", "key"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_AccState_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"shareledger", "electoral", "accState", "key"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_AccStateAll_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"ShareRing", "shareledger", "electoral", "accState"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_AccStateAll_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"shareledger", "electoral", "accState"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_Authority_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"ShareRing", "shareledger", "electoral", "authority"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_Authority_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"shareledger", "electoral", "authority"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_Treasurer_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"ShareRing", "shareledger", "electoral", "treasurer"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_Treasurer_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"shareledger", "electoral", "treasurer"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_GetVoter_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"ShareRing", "shareledger", "electoral", "getVoter"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_GetVoter_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"shareledger", "electoral", "getVoter"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_GetLoader_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"ShareRing", "shareledger", "electoral", "getLoader"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_GetLoader_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"shareledger", "electoral", "getLoader"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_IdSigner_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"ShareRing", "shareledger", "electoral", "idSigner"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_IdSigner_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"shareledger", "electoral", "idSigner"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_IdSigners_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"ShareRing", "shareledger", "electoral", "idSigners"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_IdSigners_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"shareledger", "electoral", "idSigners"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_AccountOperator_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"ShareRing", "shareledger", "electoral", "accountOperator"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_AccountOperator_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"shareledger", "electoral", "accountOperator"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_AccountOperators_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"ShareRing", "shareledger", "electoral", "accountOperators"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_AccountOperators_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"shareledger", "electoral", "accountOperators"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_DocumentIssuer_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"ShareRing", "shareledger", "electoral", "documentIssuer"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_DocumentIssuer_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"shareledger", "electoral", "documentIssuer"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_DocumentIssuers_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"ShareRing", "shareledger", "electoral", "documentIssuers"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_DocumentIssuers_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"shareledger", "electoral", "documentIssuers"}, "", runtime.AssumeColonVerbOpt(true)))
 )
 
 var (

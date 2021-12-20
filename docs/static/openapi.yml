@@ -12755,7 +12755,7 @@ paths:
           type: string
       tags:
         - Query
-  /ShareRing/shareledger/electoral/accState:
+  /shareledger/electoral/accState:
     get:
       summary: Queries a list of accState items.
       operationId: ShareRingShareledgerElectoralAccStateAll
@@ -12879,7 +12879,7 @@ paths:
           type: boolean
       tags:
         - Query
-  '/ShareRing/shareledger/electoral/accState/{key}':
+  '/shareledger/electoral/accState/{key}':
     get:
       summary: Queries a accState by index.
       operationId: ShareRingShareledgerElectoralAccState
@@ -12925,7 +12925,7 @@ paths:
           type: string
       tags:
         - Query
-  /ShareRing/shareledger/electoral/accountOperator:
+  /shareledger/electoral/accountOperator:
     get:
       summary: Queries a list of accountOperator items.
       operationId: ShareRingShareledgerElectoralAccountOperator
@@ -12971,7 +12971,7 @@ paths:
           type: string
       tags:
         - Query
-  /ShareRing/shareledger/electoral/accountOperators:
+  /shareledger/electoral/accountOperators:
     get:
       summary: Queries a list of accountOperators items.
       operationId: ShareRingShareledgerElectoralAccountOperators
@@ -13014,7 +13014,7 @@ paths:
                   additionalProperties: {}
       tags:
         - Query
-  /ShareRing/shareledger/electoral/authority:
+  /shareledger/electoral/authority:
     get:
       summary: Queries a authority by index.
       operationId: ShareRingShareledgerElectoralAuthority
@@ -13049,7 +13049,7 @@ paths:
                   additionalProperties: {}
       tags:
         - Query
-  /ShareRing/shareledger/electoral/documentIssuer:
+  /shareledger/electoral/documentIssuer:
     get:
       summary: Queries a list of documentIssuer items.
       operationId: ShareRingShareledgerElectoralDocumentIssuer
@@ -13095,7 +13095,7 @@ paths:
           type: string
       tags:
         - Query
-  /ShareRing/shareledger/electoral/documentIssuers:
+  /shareledger/electoral/documentIssuers:
     get:
       summary: Queries a list of documentIssuers items.
       operationId: ShareRingShareledgerElectoralDocumentIssuers
@@ -13138,7 +13138,7 @@ paths:
                   additionalProperties: {}
       tags:
         - Query
-  /ShareRing/shareledger/electoral/getLoader:
+  /shareledger/electoral/getLoader:
     get:
       summary: Queries a list of getLoader items.
       operationId: ShareRingShareledgerElectoralGetLoader
@@ -13184,7 +13184,7 @@ paths:
           type: string
       tags:
         - Query
-  /ShareRing/shareledger/electoral/getVoter:
+  /shareledger/electoral/getVoter:
     get:
       summary: Queries a list of getVoter items.
       operationId: ShareRingShareledgerElectoralGetVoter
@@ -13230,7 +13230,7 @@ paths:
           type: string
       tags:
         - Query
-  /ShareRing/shareledger/electoral/idSigner:
+  /shareledger/electoral/idSigner:
     get:
       summary: Queries a list of idSigner items.
       operationId: ShareRingShareledgerElectoralIdSigner
@@ -13276,7 +13276,7 @@ paths:
           type: string
       tags:
         - Query
-  /ShareRing/shareledger/electoral/idSigners:
+  /shareledger/electoral/idSigners:
     get:
       summary: Queries a list of idSigners items.
       operationId: ShareRingShareledgerElectoralIdSigners
@@ -13319,7 +13319,7 @@ paths:
                   additionalProperties: {}
       tags:
         - Query
-  /ShareRing/shareledger/electoral/treasurer:
+  /shareledger/electoral/treasurer:
     get:
       summary: Queries a treasurer by index.
       operationId: ShareRingShareledgerElectoralTreasurer
@@ -13354,7 +13354,7 @@ paths:
                   additionalProperties: {}
       tags:
         - Query
-  /ShareRing/shareledger/gentlemint/getExchangeRate:
+  /shareledger/gentlemint/getExchangeRate:
     get:
       summary: Queries a exchangeRate by index.
       operationId: ShareRingShareledgerGentlemintExchangeRate
