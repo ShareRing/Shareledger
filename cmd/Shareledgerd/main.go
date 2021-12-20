@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/ShareRing/Shareledger/cmd/Shareledgerd/tools"
 	"os"
 
 	"github.com/ShareRing/Shareledger/app"
@@ -23,6 +24,7 @@ func main() {
 			getSlashingCmd(),
 			getDistributionCmd(),
 			getFeegrantCmd(),
+			getGenesisCmd(app.DefaultNodeHome),
 		),
 	)
 	if err := svrcmd.Execute(rootCmd, app.DefaultNodeHome); err != nil {
@@ -44,6 +46,17 @@ func getStakingCmd() *cobra.Command {
 		NewUnbondCmd(),
 	)
 
+	return cmd
+}
+
+func getGenesisCmd(defaultNodeHome string) *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "genesis",
+		Short: "genesis file subcommands",
+	}
+	cmd.AddCommand(
+		tools.NewGenesisAddAuthorityAccountCmd(defaultNodeHome),
+	)
 	return cmd
 }
 
