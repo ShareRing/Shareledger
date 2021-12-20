@@ -30,15 +30,22 @@ import (
 )
 
 const (
+	ErrorCodeNotFound = uint32(41)
+	ErrorCodeExisted  = uint32(42)
+
 	KeyAuthority   string = "authority"
 	KeyTreasurer   string = "treasurer"
 	KeyOperator    string = "operator"
 	KeyMillionaire string = "millionaire"
-	KeyEmpty       string = "empty"
-	KeyAccount1    string = "acc1"
-	KeyAccount2    string = "acc2"
-	KeyAccount3    string = "acc3"
-	KeyAccount4    string = "acc4"
+
+	KeyDocIssuer string = "doc_issuer"
+	KeyIDSigner  string = "id_signer"
+
+	KeyEmpty    string = "empty"
+	KeyAccount1 string = "acc1"
+	KeyAccount2 string = "acc2"
+	KeyAccount3 string = "acc3"
+	KeyAccount4 string = "acc4"
 
 	KeyAccount5 string = "acc5" //Use this account if you want more
 	KeyAccount6 string = "acc6" //Use this account if you want more
@@ -53,14 +60,16 @@ const (
 	ShareLedgerErrorCodeInvalidCoin    = uint32(10)
 	ShareLedgerErrorCodeInvalidRequest = uint32(18)
 
-	ShareLedgerErrorCodeAssetNotExisted     = uint32(41)
-	ShareLedgerErrorCodeAssetAlreadyExisted = uint32(42)
+	ShareLedgerErrorCodeAssetNotExisted     = ErrorCodeNotFound
+	ShareLedgerErrorCodeAssetAlreadyExisted = ErrorCodeExisted
+
+	ShareLedgerErrorCodeDocumentAlreadyExisted = ErrorCodeExisted
 
 	ShareLedgerBookingAssetAlreadyBooked = uint32(43)
 	ShareLedgerBookingBookerIsNotOwner   = uint32(46)
 
 	ShareLedgerDocumentDuplicated = uint32(3)
-	ShareLedgerDocumentNotFound   = uint32(2)
+	ShareLedgerDocumentNotFound   = ErrorCodeNotFound
 )
 
 var (

@@ -158,7 +158,6 @@ type SimApp struct {
 
 	GentleMintKeeper gentlemintmodulekeeper.Keeper
 
-
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
 	// the module manager
@@ -406,10 +405,16 @@ func NewSimApp(
 		&stakingKeeper, govRouter,
 	)
 
+	sApp.IdKeeper = *idmodulekeeper.NewKeeper(
+		appCodec,
+		keys[idmoduletypes.StoreKey],
+		keys[idmoduletypes.MemStoreKey],
+	)
 	sApp.DocumentKeeper = *documentmodulekeeper.NewKeeper(
 		appCodec,
 		keys[documentmoduletypes.StoreKey],
 		keys[documentmoduletypes.MemStoreKey],
+		sApp.IdKeeper,
 	)
 	documentModule := documentmodule.NewAppModule(appCodec, sApp.DocumentKeeper)
 
@@ -423,12 +428,6 @@ func NewSimApp(
 	)
 	gentlemintModule := gentlemintmodule.NewAppModule(appCodec, sApp.GentleMintKeeper)
 
-	sApp.IdKeeper = *idmodulekeeper.NewKeeper(
-		appCodec,
-		keys[idmoduletypes.StoreKey],
-		keys[idmoduletypes.MemStoreKey],
-		sApp.GentleMintKeeper,
-	)
 	idModule := idmodule.NewAppModule(appCodec, sApp.IdKeeper)
 
 	sApp.AssetKeeper = *assetmodulekeeper.NewKeeper(
