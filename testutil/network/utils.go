@@ -53,12 +53,14 @@ const (
 	ShareLedgerErrorCodeInvalidCoin    = uint32(10)
 	ShareLedgerErrorCodeInvalidRequest = uint32(18)
 
-	ShareLedgerBookingAssetAlreadyBooked = uint32(3)
-	ShareLedgerBookingBookerIsNotOwner   = uint32(6)
+	ShareLedgerErrorCodeAssetNotExisted     = uint32(41)
+	ShareLedgerErrorCodeAssetAlreadyExisted = uint32(42)
+
+	ShareLedgerBookingAssetAlreadyBooked = uint32(43)
+	ShareLedgerBookingBookerIsNotOwner   = uint32(46)
 
 	ShareLedgerDocumentDuplicated = uint32(3)
-	ShareLedgerDocumentNotFound = uint32(2)
-
+	ShareLedgerDocumentNotFound   = uint32(2)
 )
 
 var (
@@ -71,25 +73,25 @@ type (
 	CosmosLogs []CosmosLog
 
 	CosmosLog struct {
-		MgsIndex int `json:"mgs_index"`
-		Events Events `json:"events"`
+		MgsIndex int    `json:"mgs_index"`
+		Events   Events `json:"events"`
 	}
 	Event struct {
-		Type string `json:"type"`
+		Type       string      `json:"type"`
 		Attributes []Attribute `json:"attributes"`
 	}
 
 	Attribute struct {
-		Key string `json:"key"`
+		Key   string `json:"key"`
 		Value string `json:"value"`
 	}
-	Events []Event
+	Events     []Event
 	Attributes []Attribute
 )
 
-func (e Events)GetEventByType(t *testing.T,eType string)Attributes  {
-	for _,ev := range e{
-		if ev.Type == eType{
+func (e Events) GetEventByType(t *testing.T, eType string) Attributes {
+	for _, ev := range e {
+		if ev.Type == eType {
 			return ev.Attributes
 		}
 	}
@@ -98,10 +100,9 @@ func (e Events)GetEventByType(t *testing.T,eType string)Attributes  {
 	return nil
 }
 
-
-func (as Attributes)Get(t *testing.T,key string)Attribute  {
-	for _,a := range as{
-		if a.Key == key{
+func (as Attributes) Get(t *testing.T, key string) Attribute {
+	for _, a := range as {
+		if a.Key == key {
 			return a
 		}
 	}
@@ -238,7 +239,7 @@ func collectGenFiles(cfg Config, vals []*Validator, outputDir string) error {
 	return nil
 }
 
-func initGenFiles(cfg Config, genAccounts []authtypes.GenesisAccount, genBalances []banktypes.Balance,electoralGen electoraltypes.GenesisState, genFiles []string) error {
+func initGenFiles(cfg Config, genAccounts []authtypes.GenesisAccount, genBalances []banktypes.Balance, electoralGen electoraltypes.GenesisState, genFiles []string) error {
 
 	// set the Accounts in the genesis state
 	var authGenState authtypes.GenesisState
@@ -310,7 +311,7 @@ func ParseStdOut(t *testing.T, stdOut []byte) sdk.TxResponse {
 	return txResponse
 }
 
-func BalanceJsonUnmarshal(t *testing.T, data []byte)  banktypes.QueryAllBalancesResponse{
+func BalanceJsonUnmarshal(t *testing.T, data []byte) banktypes.QueryAllBalancesResponse {
 	var b banktypes.QueryAllBalancesResponse
 	encCfg := cosmoscmd.MakeEncodingConfig(app.ModuleBasics)
 	err := encCfg.Marshaler.UnmarshalJSON(data, &b)
@@ -319,11 +320,11 @@ func BalanceJsonUnmarshal(t *testing.T, data []byte)  banktypes.QueryAllBalances
 
 }
 
-func ParseRawLogGetEvent(t *testing.T,logString string)CosmosLogs{
+func ParseRawLogGetEvent(t *testing.T, logString string) CosmosLogs {
 	var logs CosmosLogs
-	err := json.Unmarshal([]byte(logString),&logs)
-	require.NoError(t, err,"fail to get the log information form stdout")
+	err := json.Unmarshal([]byte(logString), &logs)
+	require.NoError(t, err, "fail to get the log information form stdout")
 	l := len(logs)
-	require.Greater(t, l,0,"empty logs")
+	require.Greater(t, l, 0, "empty logs")
 	return logs
 }

@@ -11,36 +11,52 @@ var (
 	CommonResponseTypeFlags = "--output=json"
 )
 
-func JSONFlag()string{
+func JSONFlag() string {
 	return fmt.Sprintf("--%s=%s", cli.OutputFlag, "json")
 }
 
-
-func SkipConfirmation()string{
+func SkipConfirmation() string {
 	return fmt.Sprintf("--%s", flags.FlagSkipConfirmation)
 }
 
-func SHRFee1()string{
+func SHRFee1() string {
 	return fmt.Sprintf("--%s=%s", flags.FlagFees, "1shr")
 }
 
-func SHRFee2()string{
+//SHRFee2 is used in default case
+func SHRFee2() string {
 	return fmt.Sprintf("--%s=%s", flags.FlagFees, "2shr")
 }
-func SHRFee3()string{
+func SHRFee3() string {
 	return fmt.Sprintf("--%s=%s", flags.FlagFees, "3shr")
 }
 
-func BlockBroadcast()string{
+func SHRFee(number int) string {
+	return fmt.Sprintf("--%s=%dshr", flags.FlagFees, number)
+}
+
+//SHRFee10 use in case the transaction require high fee
+func SHRFee10() string {
+	return fmt.Sprintf("--%s=%s", flags.FlagFees, "10shr")
+}
+
+//SHRFee6 use in case the transaction require medium fee
+func SHRFee6() string {
+	return fmt.Sprintf("--%s=%s", flags.FlagFees, "6shr")
+}
+
+//SHRFee4 use in case the transaction require low fee
+func SHRFee4() string {
+	return fmt.Sprintf("--%s=%s", flags.FlagFees, "4shr")
+}
+
+func BlockBroadcast() string {
 	return fmt.Sprintf("--%s=%s", flags.FlagBroadcastMode, flags.BroadcastBlock)
 }
 
-
-func MakeByAccount(k string)string{
+func MakeByAccount(k string) string {
 	return fmt.Sprintf("--%s=%s", flags.FlagFrom, k)
 }
-
-
 
 func GetDefaultFlags(txCreator string) []string {
 	return []string{

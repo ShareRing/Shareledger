@@ -40,12 +40,18 @@ func (s *AssetIntegrationTestSuite) TestCreateAsset() {
 
 	s.Run("create_the_valid_asset_it_should_be_success", func() {
 
-		stdOut, err := ExCmdCreateAsset(s.network.Validators[0].ClientCtx, assetID, assetHash, assetStatus, SHRPFee, network.KeyAccount1)
+		stdOut, err := ExCmdCreateAsset(s.network.Validators[0].ClientCtx, assetID, assetHash, assetStatus, SHRPFee,
+			network.SHRFee10(),
+			network.JSONFlag(),
+			network.MakeByAccount(network.KeyAccount1),
+		)
 		s.Require().NoError(err, "create asset must success")
 		txResponse := network.ParseStdOut(s.T(), stdOut.Bytes())
-		s.Equal(network.ShareLedgerSuccessCode, txResponse.Code)
+		s.Equalf(network.ShareLedgerSuccessCode, txResponse.Code, "some thing wrong %v", stdOut.String())
 		_ = s.network.WaitForNextBlock()
-		cmdQueryResponse, err := ExCmdGetAsset(s.network.Validators[0].ClientCtx, assetID)
+		cmdQueryResponse, err := ExCmdGetAsset(s.network.Validators[0].ClientCtx, assetID,
+			network.JSONFlag(),
+		)
 		asset := AssetJsonUnmarshal(s.T(), cmdQueryResponse.Bytes())
 		s.T().Logf("the asset %v", asset)
 		s.Assert().Equal(assetID, asset.UUID, "asset UUID is not equal")
@@ -55,13 +61,17 @@ func (s *AssetIntegrationTestSuite) TestCreateAsset() {
 	})
 	s.Run("create_duplicate_the_asset", func() {
 		_ = s.network.WaitForNextBlock()
-		out, err := ExCmdCreateAsset(s.network.Validators[0].ClientCtx, assetID, assetHash2, assetStatus, SHRPFee, network.KeyAccount1)
+		out, err := ExCmdCreateAsset(s.network.Validators[0].ClientCtx, assetID, assetHash2, assetStatus, SHRPFee,
+			network.SHRFee10(),
+			network.JSONFlag(),
+			network.MakeByAccount(network.KeyAccount1),
+		)
 		s.Assert().NoError(err)
 
 		_ = s.network.WaitForNextBlock()
 
 		txnResponse := network.ParseStdOut(s.T(), out.Bytes())
-		s.Assert().Equal(network.ShareLedgerErrorCodeInvalidRequest, txnResponse.Code)
+		s.Assert().Equalf(network.ShareLedgerErrorCodeAssetAlreadyExisted, txnResponse.Code, "response after create asset %s", out)
 
 		cmdQueryResponse, err := ExCmdGetAsset(s.network.Validators[0].ClientCtx, assetID)
 
@@ -81,11 +91,19 @@ func (s *AssetIntegrationTestSuite) TestUpdateAsset() {
 	assetStatus := "false"
 	SHRPFee := "3"
 
-	_, err := ExCmdCreateAsset(s.network.Validators[0].ClientCtx, assetID, asset2, assetStatus, SHRPFee, network.KeyAccount1)
+	_, err := ExCmdCreateAsset(s.network.Validators[0].ClientCtx, assetID, asset2, assetStatus, SHRPFee,
+		network.SHRFee10(),
+		network.JSONFlag(),
+		network.MakeByAccount(network.KeyAccount1),
+	)
 	s.NoError(err)
 
 	s.Run("update_the_asset_success", func() {
-		out, err := ExCmdUpdateAsset(s.network.Validators[0].ClientCtx, assetID, assetHash, assetStatus, SHRPFee, network.KeyAccount1)
+		out, err := ExCmdUpdateAsset(s.network.Validators[0].ClientCtx, assetID, assetHash, assetStatus, SHRPFee,
+			network.SHRFee6(),
+			network.JSONFlag(),
+			network.MakeByAccount(network.KeyAccount1),
+		)
 		s.NoError(err)
 		txnResponse := network.ParseStdOut(s.T(), out.Bytes())
 		s.Equal(network.ShareLedgerSuccessCode, txnResponse.Code)
@@ -98,17 +116,24 @@ func (s *AssetIntegrationTestSuite) TestUpdateAsset() {
 		s.Equal(assetStatus, fmt.Sprintf("%t", asset.Status))
 		s.Equal(SHRPFee, fmt.Sprintf("%d", asset.Rate))
 	})
-	s.Run("update_the_asset_not_found_asset_should_be_fail(must_fixed)", func() {
+	s.Run("update_the_asset_not_found_asset_should_be_fail", func() {
 
-		out, err := ExCmdUpdateAsset(s.network.Validators[0].ClientCtx, "assetID", assetHash, assetStatus, SHRPFee, network.KeyAccount1)
+		out, err := ExCmdUpdateAsset(s.network.Validators[0].ClientCtx, "assetID", assetHash, assetStatus, SHRPFee,
+			network.SHRFee6(),
+			network.JSONFlag(),
+			network.MakeByAccount(network.KeyAccount1),
+		)
 		s.NoError(err)
 		txnResponse := network.ParseStdOut(s.T(), out.Bytes())
-		s.Equal(network.ShareLedgerErrorCodeInvalidRequest, txnResponse.Code)
+		s.Equal(network.ShareLedgerErrorCodeAssetNotExisted, txnResponse.Code)
 
 	})
 
 	s.Run("update_the_asset_but_updater_is_not_owner_of_asset", func() {
-		out, err := ExCmdUpdateAsset(s.network.Validators[0].ClientCtx, assetID, "newhash", assetStatus, SHRPFee, network.KeyAccount2)
+		out, err := ExCmdUpdateAsset(s.network.Validators[0].ClientCtx, assetID, "newhash", assetStatus, SHRPFee,
+			network.SHRFee6(),
+			network.JSONFlag(),
+			network.MakeByAccount(network.KeyAccount2))
 		s.NoError(err)
 		txnResponse := network.ParseStdOut(s.T(), out.Bytes())
 		s.Equal(network.ShareLedgerErrorCodeUnauthorized, txnResponse.Code)
@@ -129,7 +154,11 @@ func (s *AssetIntegrationTestSuite) TestDeleteAsset() {
 
 	s.Run("delete_asset_success", func() {
 
-		out, err := ExCmdDeleteAsset(s.network.Validators[0].ClientCtx, assetID, network.KeyAccount1)
+		out, err := ExCmdDeleteAsset(s.network.Validators[0].ClientCtx, assetID,
+			network.SHRFee4(),
+			network.JSONFlag(),
+			network.MakeByAccount(network.KeyAccount1),
+		)
 		s.NoError(err)
 		txnResponse := network.ParseStdOut(s.T(), out.Bytes())
 		s.Equal(network.ShareLedgerSuccessCode, txnResponse.Code)

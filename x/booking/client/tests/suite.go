@@ -38,12 +38,16 @@ func (s *BookingIntegrationTestSuite) SetupSuite() {
 	assetStatus := "true"
 	SHRPFee := "3"
 
-	_, err = tests.ExCmdCreateAsset(s.network.Validators[0].ClientCtx, assetID, assetHash, assetStatus, SHRPFee, network.KeyTreasurer)
+	_, err = tests.ExCmdCreateAsset(s.network.Validators[0].ClientCtx, assetID, assetHash, assetStatus, SHRPFee,
+		network.SHRFee10(),
+		network.JSONFlag(),
+		network.MakeByAccount(network.KeyTreasurer),
+	)
 	s.NoError(err)
-	_ =s.network.WaitForNextBlock()
+	_ = s.network.WaitForNextBlock()
 
 	s.T().Log("setting up integration test suite successfully")
-	_ =s.network.WaitForNextBlock()
+	_ = s.network.WaitForNextBlock()
 
 }
 func (s *BookingIntegrationTestSuite) TearDownSuite() {
@@ -53,7 +57,11 @@ func (s *BookingIntegrationTestSuite) TearDownSuite() {
 func (s *BookingIntegrationTestSuite) TestCreateBooking() {
 	validatorCtx := s.network.Validators[0].ClientCtx
 	s.Run("create_booking_with_total_free_asset_should_be_success", func() {
-		stdOut, err := ExCmdCreateBooking(validatorCtx, "1eb07acc-6c2d-4148-889f-61752c49a4b3", "2", network.KeyAccount1)
+		stdOut, err := ExCmdCreateBooking(validatorCtx, "1eb07acc-6c2d-4148-889f-61752c49a4b3", "2",
+			network.SHRFee10(),
+			network.JSONFlag(),
+			network.MakeByAccount(network.KeyAccount1))
+
 		s.NoErrorf(err, "fail to create the booking err %+v", err)
 		txnResponse := network.ParseStdOut(s.T(), stdOut.Bytes())
 		s.Equalf(network.ShareLedgerSuccessCode, txnResponse.Code, "the txn response %s ", stdOut.String())
@@ -87,7 +95,11 @@ func (s *BookingIntegrationTestSuite) TestCreateBooking() {
 
 	s.Run("create_booking_with_same_asset_it_should_be_got_error", func() {
 
-		stdOut, err := ExCmdCreateBooking(validatorCtx, "1eb07acc-6c2d-4148-889f-61752c49a4b3", "2", network.KeyAccount2)
+		stdOut, err := ExCmdCreateBooking(validatorCtx, "1eb07acc-6c2d-4148-889f-61752c49a4b3", "2",
+			network.SHRFee10(),
+			network.JSONFlag(),
+			network.MakeByAccount(network.KeyAccount2),
+		)
 		s.NoError(err, "fail to make txn err %+v", err)
 		txnResponse := network.ParseStdOut(s.T(), stdOut.Bytes())
 		s.Equalf(network.ShareLedgerBookingAssetAlreadyBooked, txnResponse.Code, "the txn response %s ", txnResponse.String())
@@ -112,10 +124,18 @@ func (s *BookingIntegrationTestSuite) TestCompleteBooking() {
 
 	validatorCtx := s.network.Validators[0].ClientCtx
 
-	_, err := tests.ExCmdCreateAsset(validatorCtx, "assetID-1", "assetHash", "true", "2", network.KeyTreasurer)
+	_, err := tests.ExCmdCreateAsset(validatorCtx, "assetID-1", "assetHash", "true", "2",
+		network.SHRFee10(),
+		network.JSONFlag(),
+		network.MakeByAccount(network.KeyTreasurer),
+	)
 	s.NoError(err)
-	_ =s.network.WaitForNextBlock()
-	stdOut2, err := ExCmdCreateBooking(s.network.Validators[0].ClientCtx, "assetID-1", "2", network.KeyAccount3)
+	_ = s.network.WaitForNextBlock()
+	stdOut2, err := ExCmdCreateBooking(s.network.Validators[0].ClientCtx, "assetID-1", "2",
+		network.SHRFee10(),
+		network.JSONFlag(),
+		network.MakeByAccount(network.KeyAccount3),
+	)
 	s.NoErrorf(err, "init fail to create the booking err %+v", err)
 	txnResponse := network.ParseStdOut(s.T(), stdOut2.Bytes())
 	s.Equalf(network.ShareLedgerSuccessCode, txnResponse.Code, "the txn create booking response %s ", stdOut2.String())
@@ -129,12 +149,16 @@ func (s *BookingIntegrationTestSuite) TestCompleteBooking() {
 
 	s.Run("complete_booking_but_txn_creator_isn't_owner_booking", func() {
 
-		stdOut, err := ExCmdCCompleteBooking(validatorCtx, bookingID2, network.KeyAccount1)
+		stdOut, err := ExCmdCCompleteBooking(validatorCtx, bookingID2,
+			network.SHRFee6(),
+			network.JSONFlag(),
+			network.MakeByAccount(network.KeyAccount1))
+
 		s.NoError(err, "fail to make txn err %+v", err)
 		txnResponse := network.ParseStdOut(s.T(), stdOut.Bytes())
 		s.Equalf(network.ShareLedgerBookingBookerIsNotOwner, txnResponse.Code, "the txn response %s ", txnResponse.String())
 
-		stdOut, err = ExCmdCGetBooking(validatorCtx,bookingID2)
+		stdOut, err = ExCmdCGetBooking(validatorCtx, bookingID2)
 		s.NoErrorf(err, "fail to get the booking err %+v", err)
 		booking := BookingJsonUnmarshal(s.T(), stdOut.Bytes())
 
@@ -148,12 +172,15 @@ func (s *BookingIntegrationTestSuite) TestCompleteBooking() {
 
 	s.Run("complete_booking_success", func() {
 
-		stdOut, err := ExCmdCCompleteBooking(validatorCtx, bookingID2, network.KeyAccount3)
+		stdOut, err := ExCmdCCompleteBooking(validatorCtx, bookingID2, network.SHRFee6(),
+			network.JSONFlag(),
+			network.MakeByAccount(network.KeyAccount3),
+		)
 		s.NoError(err, "fail to make txn err %+v", err)
 		txnResponse := network.ParseStdOut(s.T(), stdOut.Bytes())
 		s.Equalf(network.ShareLedgerSuccessCode, txnResponse.Code, "the txn response %s ", txnResponse.String())
 
-		stdOut, err = ExCmdCGetBooking(validatorCtx,bookingID2)
+		stdOut, err = ExCmdCGetBooking(validatorCtx, bookingID2)
 		s.NoErrorf(err, "fail to get the booking err %+v", err)
 		booking := BookingJsonUnmarshal(s.T(), stdOut.Bytes())
 

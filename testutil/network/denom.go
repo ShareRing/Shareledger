@@ -7,7 +7,7 @@ func GetShareLedgerTestMetadata() []types.Metadata {
 		{
 			Name:        "Sharering token",
 			Symbol:      "SHR",
-			Description: "The native token in shareledger",
+			Description: "The native token in shareLedger",
 			DenomUnits: []*types.DenomUnit{
 				{"shr", uint32(6), nil},
 			},
@@ -15,9 +15,9 @@ func GetShareLedgerTestMetadata() []types.Metadata {
 			Display: "shr",
 		},
 		{
-			Name:        "Sharering token stable token",
+			Name:        "Sharering token stable coin",
 			Symbol:      "SHRP",
-			Description: "The stable token in shareledger",
+			Description: "The stable token in shareLedger",
 			DenomUnits: []*types.DenomUnit{
 				{"shrp", uint32(6), nil},
 			},

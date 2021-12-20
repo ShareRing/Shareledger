@@ -15,9 +15,9 @@ import (
 	"github.com/ShareRing/Shareledger/x/booking/types"
 )
 
-func ExCmdCreateBooking(clientCtx client.Context, assetUUID, duration string, txCreator string, additionalFlags ...string) (testutil.BufferWriter, error) {
+func ExCmdCreateBooking(clientCtx client.Context, assetUUID, duration string, additionalFlags ...string) (testutil.BufferWriter, error) {
 	args := []string{assetUUID, duration}
-	args = append(args, network.GetDefaultFlags2SHR(txCreator)...)
+	args = append(args, network.SkipConfirmation(), network.BlockBroadcast())
 	args = append(args, additionalFlags...)
 	return clitestutil.ExecTestCLICmd(clientCtx, cli.CmdBook(), args)
 }
@@ -29,9 +29,9 @@ func ExCmdCGetBooking(clientCtx client.Context, bookingID string, additionalFlag
 	return clitestutil.ExecTestCLICmd(clientCtx, cli.CmdBooking(), args)
 }
 
-func ExCmdCCompleteBooking(clientCtx client.Context, bookingID, txCreator string, additionalFlags ...string) (testutil.BufferWriter, error) {
+func ExCmdCCompleteBooking(clientCtx client.Context, bookingID string, additionalFlags ...string) (testutil.BufferWriter, error) {
 	args := []string{bookingID}
-	args = append(args, network.GetDefaultFlags2SHR(txCreator)...)
+	args = append(args, network.SkipConfirmation(), network.BlockBroadcast())
 	args = append(args, additionalFlags...)
 	return clitestutil.ExecTestCLICmd(clientCtx, cli.CmdComplete(), args)
 }
