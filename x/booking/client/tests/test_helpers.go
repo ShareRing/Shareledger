@@ -19,25 +19,25 @@ func ExCmdCreateBooking(clientCtx client.Context, assetUUID, duration string, tx
 	args := []string{assetUUID, duration}
 	args = append(args, network.GetDefaultFlags2SHR(txCreator)...)
 	args = append(args, additionalFlags...)
-	return clitestutil.ExecTestCLICmd(clientCtx, cli.GetCmdBook(), args)
+	return clitestutil.ExecTestCLICmd(clientCtx, cli.CmdBook(), args)
 }
 
 func ExCmdCGetBooking(clientCtx client.Context, bookingID string, additionalFlags ...string) (testutil.BufferWriter, error) {
 	args := []string{bookingID}
 	args = append(args, network.GetFlagsQuery()...)
 	args = append(args, additionalFlags...)
-	return clitestutil.ExecTestCLICmd(clientCtx, cli.CmdGetBooking(""), args)
+	return clitestutil.ExecTestCLICmd(clientCtx, cli.CmdBooking(), args)
 }
 
 func ExCmdCCompleteBooking(clientCtx client.Context, bookingID, txCreator string, additionalFlags ...string) (testutil.BufferWriter, error) {
 	args := []string{bookingID}
 	args = append(args, network.GetDefaultFlags2SHR(txCreator)...)
 	args = append(args, additionalFlags...)
-	return clitestutil.ExecTestCLICmd(clientCtx, cli.GetCmdComplete(), args)
+	return clitestutil.ExecTestCLICmd(clientCtx, cli.CmdComplete(), args)
 }
 
 func BookingJsonUnmarshal(t *testing.T, data []byte) types.Booking {
-	var a types.QueryBookingRequestResponse
+	var a types.QueryBookingResponse
 	encCfg := cosmoscmd.MakeEncodingConfig(app.ModuleBasics)
 	err := encCfg.Marshaler.UnmarshalJSON(data, &a)
 	require.NoError(t, err)

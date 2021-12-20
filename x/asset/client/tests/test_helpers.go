@@ -16,25 +16,25 @@ import (
 func ExCmdCreateAsset(clientCtx client.Context, assetUUID, assetHash, assetStatus, assetFee string, txCreator string) (testutil.BufferWriter, error) {
 	args := []string{assetHash, assetUUID, assetStatus, assetFee}
 	args = append(args, network.GetDefaultFlags2SHR(txCreator)...)
-	return clitestutil.ExecTestCLICmd(clientCtx, cli.CmdCreateAsset(), args)
+	return clitestutil.ExecTestCLICmd(clientCtx, cli.CmdCreate(), args)
 }
 
 func ExCmdUpdateAsset(clientCtx client.Context, assetUUID, assetHash, assetStatus, assetFee string, txCreator string) (testutil.BufferWriter, error) {
 	args := []string{assetHash, assetUUID, assetStatus, assetFee}
 	args = append(args, network.GetDefaultFlags2SHR(txCreator)...)
-	return clitestutil.ExecTestCLICmd(clientCtx, cli.CmdUpdateAsset(), args)
+	return clitestutil.ExecTestCLICmd(clientCtx, cli.CmdUpdate(), args)
 }
 
 func ExCmdDeleteAsset(clientCtx client.Context, assetUUID string, txCreator string) (testutil.BufferWriter, error) {
 	args := []string{assetUUID}
 	args = append(args, network.GetDefaultFlags2SHR(txCreator)...)
-	return clitestutil.ExecTestCLICmd(clientCtx, cli.CmdDeleteAsset(), args)
+	return clitestutil.ExecTestCLICmd(clientCtx, cli.CmdDelete(), args)
 }
 
 func ExCmdGetAsset(clientCtx client.Context, assetUUID string) (testutil.BufferWriter, error) {
 	args := []string{assetUUID}
 	args = append(args, network.GetFlagsQuery()...)
-	return clitestutil.ExecTestCLICmd(clientCtx, cli.CmdGetAsset(""), args)
+	return clitestutil.ExecTestCLICmd(clientCtx, cli.CmdAssetByUUID(), args)
 }
 
 func AssetJsonUnmarshal(t *testing.T, data []byte) types.Asset {
