@@ -15,60 +15,60 @@ option go_package = "github.com/ShareRing/Shareledger/x/electoral/types";
 service Query {
     // Queries a accState by index.
 	rpc AccState(QueryGetAccStateRequest) returns (QueryGetAccStateResponse) {
-		option (google.api.http).get = "/ShareRing/shareledger/electoral/accState/{key}";
+		option (google.api.http).get = "/shareledger/electoral/accState/{key}";
 	}
 
 	// Queries a list of accState items.
 	rpc AccStateAll(QueryAllAccStateRequest) returns (QueryAllAccStateResponse) {
-		option (google.api.http).get = "/ShareRing/shareledger/electoral/accState";
+		option (google.api.http).get = "/shareledger/electoral/accState";
 	}
 
 // Queries a authority by index.
 	rpc Authority(QueryGetAuthorityRequest) returns (QueryGetAuthorityResponse) {
-		option (google.api.http).get = "/ShareRing/shareledger/electoral/authority";
+		option (google.api.http).get = "/shareledger/electoral/authority";
 	}
 // Queries a treasurer by index.
 	rpc Treasurer(QueryGetTreasurerRequest) returns (QueryGetTreasurerResponse) {
-		option (google.api.http).get = "/ShareRing/shareledger/electoral/treasurer";
+		option (google.api.http).get = "/shareledger/electoral/treasurer";
 	}
 // Queries a list of getVoter items.
 	rpc GetVoter(QueryGetVoterRequest) returns (QueryGetVoterResponse) {
-		option (google.api.http).get = "/ShareRing/shareledger/electoral/getVoter";
+		option (google.api.http).get = "/shareledger/electoral/getVoter";
 	}
 
 // Queries a list of getLoader items.
 	rpc GetLoader(QueryGetLoaderRequest) returns (QueryGetLoaderResponse) {
-		option (google.api.http).get = "/ShareRing/shareledger/electoral/getLoader";
+		option (google.api.http).get = "/shareledger/electoral/getLoader";
 	}
 
 	// Queries a list of idSigner items.
 	rpc IdSigner(QueryIdSignerRequest) returns (QueryIdSignerResponse) {
-		option (google.api.http).get = "/ShareRing/shareledger/electoral/idSigner";
+		option (google.api.http).get = "/shareledger/electoral/idSigner";
 	}
 
 	// Queries a list of idSigners items.
 	rpc IdSigners(QueryIdSignersRequest) returns (QueryIdSignersResponse) {
-		option (google.api.http).get = "/ShareRing/shareledger/electoral/idSigners";
+		option (google.api.http).get = "/shareledger/electoral/idSigners";
 	}
 
 	// Queries a list of accountOperator items.
 	rpc AccountOperator(QueryAccountOperatorRequest) returns (QueryAccountOperatorResponse) {
-		option (google.api.http).get = "/ShareRing/shareledger/electoral/accountOperator";
+		option (google.api.http).get = "/shareledger/electoral/accountOperator";
 	}
 
 	// Queries a list of accountOperators items.
 	rpc AccountOperators(QueryAccountOperatorsRequest) returns (QueryAccountOperatorsResponse) {
-		option (google.api.http).get = "/ShareRing/shareledger/electoral/accountOperators";
+		option (google.api.http).get = "/shareledger/electoral/accountOperators";
 	}
 
 	// Queries a list of documentIssuer items.
 	rpc DocumentIssuer(QueryDocumentIssuerRequest) returns (QueryDocumentIssuerResponse) {
-		option (google.api.http).get = "/ShareRing/shareledger/electoral/documentIssuer";
+		option (google.api.http).get = "/shareledger/electoral/documentIssuer";
 	}
 
 	// Queries a list of documentIssuers items.
 	rpc DocumentIssuers(QueryDocumentIssuersRequest) returns (QueryDocumentIssuersResponse) {
-		option (google.api.http).get = "/ShareRing/shareledger/electoral/documentIssuers";
+		option (google.api.http).get = "/shareledger/electoral/documentIssuers";
 	}
 
 // this line is used by starport scaffolding # 2

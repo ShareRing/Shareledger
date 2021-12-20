@@ -51,6 +51,25 @@ func (k msgServer) Book(goCtx context.Context, msg *types.MsgBook) (*types.MsgBo
 	// if err != nil {
 	// 	return nil, err
 	// }
+
+	//
+	/*
+		Booking Hotel: 100USD + 20 USD = 120USD
+		120USD => blockchain?
+
+
+		asset: rate: shr * date - status: available for booking.
+		booking: book asset - duration date * rate = price. =>
+		Complete booking => shr.
+	*/
+
+	/*
+		Application: Code.
+		Denom: SHRP.
+
+		USD: client sdk -
+	*/
+
 	event := sdk.NewEvent(
 		types.EventTypeBookingStart,
 		sdk.NewAttribute(types.AttributeUUID, string(msg.UUID)),

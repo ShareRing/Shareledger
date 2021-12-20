@@ -13,7 +13,7 @@ option go_package = "github.com/ShareRing/Shareledger/x/gentlemint/types";
 service Query {
 // Queries a exchangeRate by index.
 	rpc ExchangeRate(QueryGetExchangeRateRequest) returns (QueryGetExchangeRateResponse) {
-		option (google.api.http).get = "/ShareRing/shareledger/gentlemint/getExchangeRate";
+		option (google.api.http).get = "/shareledger/gentlemint/getExchangeRate";
 	}
 
 // this line is used by starport scaffolding # 2
