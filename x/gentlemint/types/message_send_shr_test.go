@@ -24,6 +24,8 @@ func TestMsgSendShr_ValidateBasic(t *testing.T) {
 			name: "valid address",
 			msg: MsgSendShr{
 				Creator: sample.AccAddress(),
+				Address: sample.AccAddress(),
+				Amount: "101",
 			},
 		},
 	}

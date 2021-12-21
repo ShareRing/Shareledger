@@ -239,9 +239,9 @@ func TestParseShrpCoinsStr(t *testing.T) {
 			i: "1.1",
 			o: sdk.NewCoins(
 				sdk.NewCoin(DenomSHRP, sdk.NewInt(1)),
-				sdk.NewCoin(DenomCent, sdk.NewInt(1)),
+				sdk.NewCoin(DenomCent, sdk.NewInt(10)),
 			),
-			d: "1.1 shrp -> 1shrp 1 cent",
+			d: "1.1 shrp -> 1shrp 10 cent",
 		},
 		{
 			i: "0.01",

@@ -18,12 +18,15 @@ func TestMsgSendShrp_ValidateBasic(t *testing.T) {
 			name: "invalid address",
 			msg: MsgSendShrp{
 				Creator: "invalid_address",
+				Address: "invalid_address",
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
 			msg: MsgSendShrp{
 				Creator: sample.AccAddress(),
+				Address: sample.AccAddress(),
+				Amount: "101",
 			},
 		},
 	}

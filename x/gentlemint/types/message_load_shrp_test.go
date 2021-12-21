@@ -24,6 +24,8 @@ func TestMsgLoadShrp_ValidateBasic(t *testing.T) {
 			name: "valid address",
 			msg: MsgLoadShrp{
 				Creator: sample.AccAddress(),
+				Address: sample.AccAddress(),
+				Amount: "11",
 			},
 		},
 	}
