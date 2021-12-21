@@ -58,6 +58,7 @@ func getGenesisCmd(defaultNodeHome string) *cobra.Command {
 		tools.NewGenesisAddAuthorityAccountCmd(defaultNodeHome),
 		tools.NewGenesisAddTreasureAccountCmd(defaultNodeHome),
 		tools.NewGenesisAddValidatorAccountCmd(defaultNodeHome),
+		tools.NewGenesisAddAccountOperatorCmd(defaultNodeHome),
 	)
 	return cmd
 }

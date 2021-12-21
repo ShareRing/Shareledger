@@ -11,11 +11,11 @@ import (
 	"github.com/tendermint/tendermint/libs/cli"
 )
 
-func NewGenesisAddValidatorAccountCmd(defaultNodeHome string) *cobra.Command {
+func NewGenesisAddAccountOperatorCmd(defaultNodeHome string) *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "add-validator [address_or_key_name]",
-		Short: "Add a validator account to genesis.json",
-		Long:  "Add a validator account to genesis.json",
+		Use:   "add-account-operator [address_or_key_name]",
+		Short: "Add a account operator to genesis.json",
+		Long:  "Add a account operator to genesis.json",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			serverCtx := server.NewDefaultContext()
 
@@ -33,7 +33,7 @@ func NewGenesisAddValidatorAccountCmd(defaultNodeHome string) *cobra.Command {
 				return errors.Wrap(err, "unmarshal genesis state electoral module types")
 			}
 			electoralGenesis.AccStateList = append(electoralGenesis.AccStateList, electoralmoduletypes.AccState{
-				Key:     string(electoralmoduletypes.GenAccStateIndexKey(addr, electoralmoduletypes.AccStateKeyVoter)),
+				Key:     string(electoralmoduletypes.GenAccStateIndexKey(addr, electoralmoduletypes.AccStateKeyAccOp)),
 				Address: addr.String(),
 				Status:  string(types.StatusActive),
 			})
@@ -48,3 +48,4 @@ func NewGenesisAddValidatorAccountCmd(defaultNodeHome string) *cobra.Command {
 	cmd.Flags().String(cli.HomeFlag, defaultNodeHome, "node's home directory")
 	return cmd
 }
+
