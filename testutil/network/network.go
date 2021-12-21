@@ -225,9 +225,9 @@ func New(t *testing.T, cfg Config) *Network {
 	valPubKeys := make([]cryptotypes.PubKey, cfg.NumValidators)
 	accMap := make(map[string]sdk.Address)
 	var (
-		genAccounts []authtypes.GenesisAccount
-		genBalances []banktypes.Balance
-		genFiles    []string
+		genAccounts  []authtypes.GenesisAccount
+		genBalances  []banktypes.Balance
+		genFiles     []string
 		genElectoral electoraltypes.GenesisState
 	)
 
@@ -434,6 +434,15 @@ func New(t *testing.T, cfg Config) *Network {
 		Coins:   defaultCoins,
 	})
 
+	info, _, err = network.Validators[0].ClientCtx.Keyring.NewMnemonic(KeyIDSigner, keyring.English, sdk.FullFundraiserPath, keyring.DefaultBIP39Passphrase, hd.Secp256k1)
+	require.NoError(t, err, "init fail")
+	accMap[KeyIDSigner] = info.GetAddress()
+	genAccounts = append(genAccounts, authtypes.NewBaseAccount(info.GetAddress(), info.GetPubKey(), 0, 0))
+	genBalances = append(genBalances, banktypes.Balance{
+		Address: info.GetAddress().String(),
+		Coins:   defaultCoins,
+	})
+
 	info, _, err = network.Validators[0].ClientCtx.Keyring.NewMnemonic(KeyMillionaire, keyring.English, sdk.FullFundraiserPath, keyring.DefaultBIP39Passphrase, hd.Secp256k1)
 	require.NoError(t, err, "init fail")
 	accMap[KeyMillionaire] = info.GetAddress()
@@ -493,16 +502,15 @@ func New(t *testing.T, cfg Config) *Network {
 	}
 
 	genElectoral = electoraltypes.GenesisState{
-		Authority:    &electoraltypes.Authority{
+		Authority: &electoraltypes.Authority{
 			Address: accMap[KeyAuthority].String(),
 		},
-		Treasurer:    &electoraltypes.Treasurer{
+		Treasurer: &electoraltypes.Treasurer{
 			Address: accMap[KeyTreasurer].String(),
 		},
 	}
 
-
-	require.NoError(t, initGenFiles(cfg, genAccounts, genBalances, genElectoral,genFiles))
+	require.NoError(t, initGenFiles(cfg, genAccounts, genBalances, genElectoral, genFiles))
 	require.NoError(t, collectGenFiles(cfg, network.Validators, network.BaseDir))
 	network.Accounts = accMap
 	t.Log("starting test network...")

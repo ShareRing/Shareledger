@@ -39,7 +39,7 @@ func CmdExGetID(clientCtx client.Context, t *testing.T, userID string, extraFlag
 	args = append(args, extraFlags...)
 	out, err := clitestutil.ExecTestCLICmd(clientCtx, cli.CmdIdById(), args)
 	if err != nil {
-		t.Errorf("fail create id: %v", err)
+		t.Errorf("fail get id: %v", err)
 	}
 
 	return out

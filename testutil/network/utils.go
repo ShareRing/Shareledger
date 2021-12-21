@@ -32,6 +32,7 @@ import (
 const (
 	ErrorCodeNotFound = uint32(41)
 	ErrorCodeExisted  = uint32(42)
+	ErrorNotAvailable = uint32(45)
 
 	KeyAuthority   string = "authority"
 	KeyTreasurer   string = "treasurer"
@@ -70,6 +71,8 @@ const (
 
 	ShareLedgerDocumentDuplicated = uint32(3)
 	ShareLedgerDocumentNotFound   = ErrorCodeNotFound
+
+	ShareLedgerErrorCodeIDAddressOwnerID = ErrorNotAvailable
 )
 
 var (
