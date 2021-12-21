@@ -119,7 +119,11 @@ func ParseShrpCoinsStr(s string) (coins sdk.Coins, err error) {
 		return
 	}
 	if len(strNumbers) > 1 {
-		cent, err = strconv.ParseInt(strNumbers[1], 10, 64)
+		centStr := strNumbers[1]
+		if len(centStr) == 1 {
+			centStr = strNumbers[1] + "0" // cover case x.1 => x.10
+		}
+		cent, err = strconv.ParseInt(centStr, 10, 64)
 		if err != nil {
 			err = sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "parsing got %+v", err)
 			return
