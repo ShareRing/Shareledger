@@ -12776,8 +12776,6 @@ paths:
                       type: string
                     status:
                       type: string
-                    creator:
-                      type: string
               pagination:
                 type: object
                 properties:
@@ -12898,8 +12896,6 @@ paths:
                     type: string
                   status:
                     type: string
-                  creator:
-                    type: string
         default:
           description: An unexpected error response.
           schema:
@@ -12943,8 +12939,6 @@ paths:
                   address:
                     type: string
                   status:
-                    type: string
-                  creator:
                     type: string
         default:
           description: An unexpected error response.
@@ -12991,8 +12985,6 @@ paths:
                     address:
                       type: string
                     status:
-                      type: string
-                    creator:
                       type: string
         default:
           description: An unexpected error response.
@@ -13068,8 +13060,6 @@ paths:
                     type: string
                   status:
                     type: string
-                  creator:
-                    type: string
         default:
           description: An unexpected error response.
           schema:
@@ -13116,8 +13106,6 @@ paths:
                       type: string
                     status:
                       type: string
-                    creator:
-                      type: string
         default:
           description: An unexpected error response.
           schema:
@@ -13156,8 +13144,6 @@ paths:
                   address:
                     type: string
                   status:
-                    type: string
-                  creator:
                     type: string
         default:
           description: An unexpected error response.
@@ -13203,8 +13189,6 @@ paths:
                     type: string
                   status:
                     type: string
-                  creator:
-                    type: string
         default:
           description: An unexpected error response.
           schema:
@@ -13248,8 +13232,6 @@ paths:
                   address:
                     type: string
                   status:
-                    type: string
-                  creator:
                     type: string
         default:
           description: An unexpected error response.
@@ -13296,8 +13278,6 @@ paths:
                     address:
                       type: string
                     status:
-                      type: string
-                    creator:
                       type: string
         default:
           description: An unexpected error response.
@@ -20963,8 +20943,6 @@ definitions:
         type: string
       status:
         type: string
-      creator:
-        type: string
   ShareRing.shareledger.electoral.Authority:
     type: object
     properties:
@@ -21002,8 +20980,6 @@ definitions:
             type: string
           status:
             type: string
-          creator:
-            type: string
   ShareRing.shareledger.electoral.QueryAccountOperatorsResponse:
     type: object
     properties:
@@ -21018,8 +20994,6 @@ definitions:
               type: string
             status:
               type: string
-            creator:
-              type: string
   ShareRing.shareledger.electoral.QueryAllAccStateResponse:
     type: object
     properties:
@@ -21033,8 +21007,6 @@ definitions:
             address:
               type: string
             status:
-              type: string
-            creator:
               type: string
       pagination:
         type: object
@@ -21073,8 +21045,6 @@ definitions:
             type: string
           status:
             type: string
-          creator:
-            type: string
   ShareRing.shareledger.electoral.QueryDocumentIssuersResponse:
     type: object
     properties:
@@ -21089,8 +21059,6 @@ definitions:
               type: string
             status:
               type: string
-            creator:
-              type: string
   ShareRing.shareledger.electoral.QueryGetAccStateResponse:
     type: object
     properties:
@@ -21102,8 +21070,6 @@ definitions:
           address:
             type: string
           status:
-            type: string
-          creator:
             type: string
   ShareRing.shareledger.electoral.QueryGetAuthorityResponse:
     type: object
@@ -21125,8 +21091,6 @@ definitions:
             type: string
           status:
             type: string
-          creator:
-            type: string
   ShareRing.shareledger.electoral.QueryGetTreasurerResponse:
     type: object
     properties:
@@ -21147,8 +21111,6 @@ definitions:
             type: string
           status:
             type: string
-          creator:
-            type: string
   ShareRing.shareledger.electoral.QueryIdSignerResponse:
     type: object
     properties:
@@ -21160,8 +21122,6 @@ definitions:
           address:
             type: string
           status:
-            type: string
-          creator:
             type: string
   ShareRing.shareledger.electoral.QueryIdSignersResponse:
     type: object
@@ -21176,8 +21136,6 @@ definitions:
             address:
               type: string
             status:
-              type: string
-            creator:
               type: string
   ShareRing.shareledger.electoral.Treasurer:
     type: object

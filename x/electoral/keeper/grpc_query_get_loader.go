@@ -30,7 +30,6 @@ func (k Keeper) GetLoader(goCtx context.Context, req *types.QueryGetLoaderReques
 			Key:     m.Key,
 			Address: m.Address,
 			Status:  m.Status,
-			Creator: m.Creator,
 		},
 	}, nil
 }
