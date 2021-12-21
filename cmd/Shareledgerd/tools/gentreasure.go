@@ -10,7 +10,7 @@ import (
 	"github.com/tendermint/tendermint/libs/cli"
 )
 
-func NewGenesisAddValidatorAccountCmd(defaultNodeHome string) *cobra.Command {
+func NewGenesisAddTreasureAccountCmd(defaultNodeHome string) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "add-treasure [address_or_key_name]",
 		Short: "Add a treasure account to genesis.json",
