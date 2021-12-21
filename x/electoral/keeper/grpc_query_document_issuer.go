@@ -20,7 +20,7 @@ func (k Keeper) DocumentIssuer(goCtx context.Context, req *types.QueryDocumentIs
 	if err != nil {
 		return nil, err
 	}
-	key := types.GenAccStateIndexKey(addr, types.AccStateKeyIdSigner)
+	key := types.GenAccStateIndexKey(addr, types.AccStateKeyDocIssuer)
 	v, f := k.GetAccState(ctx, key)
 	if !f {
 		return nil, status.Error(codes.InvalidArgument, "not found")
