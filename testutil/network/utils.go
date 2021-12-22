@@ -37,12 +37,18 @@ const (
 	KeyAuthority   string = "authority"
 	KeyTreasurer   string = "treasurer"
 	KeyOperator    string = "operator"
+	KeyLoader      string = "loader"
 	KeyMillionaire string = "millionaire"
 
 	KeyDocIssuer string = "doc_issuer"
 	KeyIDSigner  string = "id_signer"
 
-	KeyEmpty    string = "empty"
+	KeyEmpty1 string = "empty1"
+	KeyEmpty2 string = "empty2"
+	KeyEmpty3 string = "empty3"
+	KeyEmpty4 string = "empty4"
+	KeyEmpty5 string = "empty5"
+
 	KeyAccount1 string = "acc1"
 	KeyAccount2 string = "acc2"
 	KeyAccount3 string = "acc3"
@@ -271,6 +277,7 @@ func initGenFiles(cfg Config, genAccounts []authtypes.GenesisAccount, genBalance
 
 	bankGenState.DenomMetadata = GetShareLedgerTestMetadata()
 	bankGenState.Balances = append(bankGenState.Balances, genBalances...)
+	//bankGenState.Supply = sdk.NewCoins(sdk.NewCoin("shr", sdk.NewInt(100000000)), sdk.NewCoin("shrp", sdk.NewInt(100000000)), sdk.NewCoin("node0token,", sdk.NewInt(1000000000)),sdk.NewCoin("node0token,", sdk.NewInt(1000000000)))
 	cfg.GenesisState[banktypes.ModuleName] = cfg.Codec.MustMarshalJSON(&bankGenState)
 
 	cfg.Codec.MustUnmarshalJSON(cfg.GenesisState[electoraltypes.ModuleName], &electoralGen)

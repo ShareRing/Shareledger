@@ -461,9 +461,52 @@ func New(t *testing.T, cfg Config) *Network {
 		Coins:   becauseImRich,
 	})
 
-	info, _, err = network.Validators[0].ClientCtx.Keyring.NewMnemonic(KeyEmpty, keyring.English, sdk.FullFundraiserPath, keyring.DefaultBIP39Passphrase, hd.Secp256k1)
+	info, _, err = network.Validators[0].ClientCtx.Keyring.NewMnemonic(KeyLoader, keyring.English, sdk.FullFundraiserPath, keyring.DefaultBIP39Passphrase, hd.Secp256k1)
 	require.NoError(t, err, "init fail")
-	accMap[KeyEmpty] = info.GetAddress()
+	accMap[KeyLoader] = info.GetAddress()
+	genAccounts = append(genAccounts, authtypes.NewBaseAccount(info.GetAddress(), info.GetPubKey(), 0, 0))
+	genBalances = append(genBalances, banktypes.Balance{
+		Address: info.GetAddress().String(),
+		Coins:   becauseImRich,
+	})
+
+	info, _, err = network.Validators[0].ClientCtx.Keyring.NewMnemonic(KeyEmpty1, keyring.English, sdk.FullFundraiserPath, keyring.DefaultBIP39Passphrase, hd.Secp256k1)
+	require.NoError(t, err, "init fail")
+	accMap[KeyEmpty1] = info.GetAddress()
+	genAccounts = append(genAccounts, authtypes.NewBaseAccount(info.GetAddress(), info.GetPubKey(), 0, 0))
+	genBalances = append(genBalances, banktypes.Balance{
+		Address: info.GetAddress().String(),
+		Coins:   poorMen,
+	})
+
+	info, _, err = network.Validators[0].ClientCtx.Keyring.NewMnemonic(KeyEmpty2, keyring.English, sdk.FullFundraiserPath, keyring.DefaultBIP39Passphrase, hd.Secp256k1)
+	require.NoError(t, err, "init fail")
+	accMap[KeyEmpty2] = info.GetAddress()
+	genAccounts = append(genAccounts, authtypes.NewBaseAccount(info.GetAddress(), info.GetPubKey(), 0, 0))
+	genBalances = append(genBalances, banktypes.Balance{
+		Address: info.GetAddress().String(),
+		Coins:   poorMen,
+	})
+	info, _, err = network.Validators[0].ClientCtx.Keyring.NewMnemonic(KeyEmpty3, keyring.English, sdk.FullFundraiserPath, keyring.DefaultBIP39Passphrase, hd.Secp256k1)
+	require.NoError(t, err, "init fail")
+	accMap[KeyEmpty3] = info.GetAddress()
+	genAccounts = append(genAccounts, authtypes.NewBaseAccount(info.GetAddress(), info.GetPubKey(), 0, 0))
+	genBalances = append(genBalances, banktypes.Balance{
+		Address: info.GetAddress().String(),
+		Coins:   poorMen,
+	})
+	info, _, err = network.Validators[0].ClientCtx.Keyring.NewMnemonic(KeyEmpty4, keyring.English, sdk.FullFundraiserPath, keyring.DefaultBIP39Passphrase, hd.Secp256k1)
+	require.NoError(t, err, "init fail")
+	accMap[KeyEmpty4] = info.GetAddress()
+	genAccounts = append(genAccounts, authtypes.NewBaseAccount(info.GetAddress(), info.GetPubKey(), 0, 0))
+	genBalances = append(genBalances, banktypes.Balance{
+		Address: info.GetAddress().String(),
+		Coins:   poorMen,
+	})
+
+	info, _, err = network.Validators[0].ClientCtx.Keyring.NewMnemonic(KeyEmpty5, keyring.English, sdk.FullFundraiserPath, keyring.DefaultBIP39Passphrase, hd.Secp256k1)
+	require.NoError(t, err, "init fail")
+	accMap[KeyEmpty5] = info.GetAddress()
 	genAccounts = append(genAccounts, authtypes.NewBaseAccount(info.GetAddress(), info.GetPubKey(), 0, 0))
 	genBalances = append(genBalances, banktypes.Balance{
 		Address: info.GetAddress().String(),

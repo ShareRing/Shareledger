@@ -64,7 +64,7 @@ func (s *ElectoralIntegrationTestSuite) TestAccountOperator() {
 		s.Equal("active", acc.GetAccState().Status, "account operator status no equal")
 	})
 	s.Run("enroll_account_operator_but_not_authority", func() {
-		out, err := ExCmdEnrollAccountOperator(validatorCtx, s.T(), s.network.Accounts[network.KeyEmpty].String(),
+		out, err := ExCmdEnrollAccountOperator(validatorCtx, s.T(), s.network.Accounts[network.KeyEmpty1].String(),
 			network.SHRFee2(),
 			network.MakeByAccount(network.KeyAccount3),
 			network.SkipConfirmation(),
@@ -136,7 +136,7 @@ func (s *ElectoralIntegrationTestSuite) TestDocIssuer() {
 		s.Equal("active", acc.GetAccState().Status, "doc issuer status no equal")
 	})
 	s.Run("enroll_doc_issuer_but_not_authority", func() {
-		out, err := ExCmdEnrollDocIssuer(validatorCtx, s.T(), s.network.Accounts[network.KeyEmpty].String(),
+		out, err := ExCmdEnrollDocIssuer(validatorCtx, s.T(), s.network.Accounts[network.KeyEmpty1].String(),
 			network.SHRFee2(),
 			network.MakeByAccount(network.KeyAccount3),
 			network.SkipConfirmation(),
@@ -207,7 +207,7 @@ func (s *ElectoralIntegrationTestSuite) TestIdSigner() {
 		s.Equal("active", acc.GetAccState().Status, "id signer status no equal")
 	})
 	s.Run("enroll_id_singer_but_not_authority", func() {
-		out, err := ExCmdEnrollIdSigner(validatorCtx, s.T(), s.network.Accounts[network.KeyEmpty].String(),
+		out, err := ExCmdEnrollIdSigner(validatorCtx, s.T(), s.network.Accounts[network.KeyEmpty1].String(),
 			network.SHRFee2(),
 			network.MakeByAccount(network.KeyAccount3),
 			network.SkipConfirmation(),
