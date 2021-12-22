@@ -20,7 +20,7 @@ func (k msgServer) LoadShr(goCtx context.Context, msg *types.MsgLoadShr) (*types
 		return nil, err
 	}
 
-	if k.ShrMintPossible(ctx, coins.AmountOf(types.DenomSHR)) {
+	if !k.ShrMintPossible(ctx, coins.AmountOf(types.DenomSHR)) {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "SHR possible mint exceeded")
 	}
 
