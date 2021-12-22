@@ -42,7 +42,7 @@ func (s *DocumentIntegrationTestSuite) SetupSuite() {
 	s.T().Log("setting up document data....")
 
 	//Enroll ACCOUNT_OPERATOR
-	out := tests.ExCmdEnrollAccountOperator(
+	out, _ := tests.ExCmdEnrollAccountOperator(
 		s.network.Validators[0].ClientCtx,
 		s.T(),
 		s.network.Accounts[network.KeyOperator].String(),
@@ -56,7 +56,7 @@ func (s *DocumentIntegrationTestSuite) SetupSuite() {
 	s.Equalf(network.ShareLedgerSuccessCode, res.Code, "init operator fail %v", res.String())
 
 	//Enroll DOC_ISSUER
-	out = tests.ExCmdEnrollDocIssuer(
+	out, _ = tests.ExCmdEnrollDocIssuer(
 		s.network.Validators[0].ClientCtx,
 		s.T(),
 		s.network.Accounts[network.KeyAccount1].String(),
@@ -69,7 +69,7 @@ func (s *DocumentIntegrationTestSuite) SetupSuite() {
 	s.Equalf(network.ShareLedgerSuccessCode, res.Code, "init doc issuer fail %v", res.String())
 
 	//Enroll ID_SIGNER
-	out = tests.ExCmdEnrollIdSigner(
+	out, _ = tests.ExCmdEnrollIdSigner(
 		s.network.Validators[0].ClientCtx,
 		s.T(),
 		s.network.Accounts[network.KeyAccount1].String(),

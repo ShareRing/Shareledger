@@ -16,7 +16,7 @@ import (
 
 func networkWithExchangeRateObjects(t *testing.T) (*network.Network, types.ExchangeRate) {
 	t.Helper()
-	cfg := network.DefaultConfig()
+	cfg := network.ShareLedgerTestingConfig()
 	state := types.GenesisState{}
 	require.NoError(t, cfg.Codec.UnmarshalJSON(cfg.GenesisState[types.ModuleName], &state))
 
