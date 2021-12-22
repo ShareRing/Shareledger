@@ -12776,8 +12776,6 @@ paths:
                       type: string
                     status:
                       type: string
-                    creator:
-                      type: string
               pagination:
                 type: object
                 properties:
@@ -12898,8 +12896,6 @@ paths:
                     type: string
                   status:
                     type: string
-                  creator:
-                    type: string
         default:
           description: An unexpected error response.
           schema:
@@ -12943,8 +12939,6 @@ paths:
                   address:
                     type: string
                   status:
-                    type: string
-                  creator:
                     type: string
         default:
           description: An unexpected error response.
@@ -12992,43 +12986,6 @@ paths:
                       type: string
                     status:
                       type: string
-                    creator:
-                      type: string
-        default:
-          description: An unexpected error response.
-          schema:
-            type: object
-            properties:
-              code:
-                type: integer
-                format: int32
-              message:
-                type: string
-              details:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    '@type':
-                      type: string
-                  additionalProperties: {}
-      tags:
-        - Query
-  /shareledger/electoral/authority:
-    get:
-      summary: Queries a authority by index.
-      operationId: ShareRingShareledgerElectoralAuthority
-      responses:
-        '200':
-          description: A successful response.
-          schema:
-            type: object
-            properties:
-              Authority:
-                type: object
-                properties:
-                  address:
-                    type: string
         default:
           description: An unexpected error response.
           schema:
@@ -13067,8 +13024,6 @@ paths:
                   address:
                     type: string
                   status:
-                    type: string
-                  creator:
                     type: string
         default:
           description: An unexpected error response.
@@ -13116,8 +13071,6 @@ paths:
                       type: string
                     status:
                       type: string
-                    creator:
-                      type: string
         default:
           description: An unexpected error response.
           schema:
@@ -13156,8 +13109,6 @@ paths:
                   address:
                     type: string
                   status:
-                    type: string
-                  creator:
                     type: string
         default:
           description: An unexpected error response.
@@ -13203,8 +13154,6 @@ paths:
                     type: string
                   status:
                     type: string
-                  creator:
-                    type: string
         default:
           description: An unexpected error response.
           schema:
@@ -13248,8 +13197,6 @@ paths:
                   address:
                     type: string
                   status:
-                    type: string
-                  creator:
                     type: string
         default:
           description: An unexpected error response.
@@ -13297,43 +13244,6 @@ paths:
                       type: string
                     status:
                       type: string
-                    creator:
-                      type: string
-        default:
-          description: An unexpected error response.
-          schema:
-            type: object
-            properties:
-              code:
-                type: integer
-                format: int32
-              message:
-                type: string
-              details:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    '@type':
-                      type: string
-                  additionalProperties: {}
-      tags:
-        - Query
-  /shareledger/electoral/treasurer:
-    get:
-      summary: Queries a treasurer by index.
-      operationId: ShareRingShareledgerElectoralTreasurer
-      responses:
-        '200':
-          description: A successful response.
-          schema:
-            type: object
-            properties:
-              Treasurer:
-                type: object
-                properties:
-                  address:
-                    type: string
         default:
           description: An unexpected error response.
           schema:
@@ -20963,13 +20873,6 @@ definitions:
         type: string
       status:
         type: string
-      creator:
-        type: string
-  ShareRing.shareledger.electoral.Authority:
-    type: object
-    properties:
-      address:
-        type: string
   ShareRing.shareledger.electoral.MsgEnrollAccountOperatorResponse:
     type: object
   ShareRing.shareledger.electoral.MsgEnrollDocIssuerResponse:
@@ -21002,8 +20905,6 @@ definitions:
             type: string
           status:
             type: string
-          creator:
-            type: string
   ShareRing.shareledger.electoral.QueryAccountOperatorsResponse:
     type: object
     properties:
@@ -21018,8 +20919,6 @@ definitions:
               type: string
             status:
               type: string
-            creator:
-              type: string
   ShareRing.shareledger.electoral.QueryAllAccStateResponse:
     type: object
     properties:
@@ -21033,8 +20932,6 @@ definitions:
             address:
               type: string
             status:
-              type: string
-            creator:
               type: string
       pagination:
         type: object
@@ -21073,8 +20970,6 @@ definitions:
             type: string
           status:
             type: string
-          creator:
-            type: string
   ShareRing.shareledger.electoral.QueryDocumentIssuersResponse:
     type: object
     properties:
@@ -21089,8 +20984,6 @@ definitions:
               type: string
             status:
               type: string
-            creator:
-              type: string
   ShareRing.shareledger.electoral.QueryGetAccStateResponse:
     type: object
     properties:
@@ -21102,16 +20995,6 @@ definitions:
           address:
             type: string
           status:
-            type: string
-          creator:
-            type: string
-  ShareRing.shareledger.electoral.QueryGetAuthorityResponse:
-    type: object
-    properties:
-      Authority:
-        type: object
-        properties:
-          address:
             type: string
   ShareRing.shareledger.electoral.QueryGetLoaderResponse:
     type: object
@@ -21125,16 +21008,6 @@ definitions:
             type: string
           status:
             type: string
-          creator:
-            type: string
-  ShareRing.shareledger.electoral.QueryGetTreasurerResponse:
-    type: object
-    properties:
-      Treasurer:
-        type: object
-        properties:
-          address:
-            type: string
   ShareRing.shareledger.electoral.QueryGetVoterResponse:
     type: object
     properties:
@@ -21147,8 +21020,6 @@ definitions:
             type: string
           status:
             type: string
-          creator:
-            type: string
   ShareRing.shareledger.electoral.QueryIdSignerResponse:
     type: object
     properties:
@@ -21160,8 +21031,6 @@ definitions:
           address:
             type: string
           status:
-            type: string
-          creator:
             type: string
   ShareRing.shareledger.electoral.QueryIdSignersResponse:
     type: object
@@ -21177,13 +21046,6 @@ definitions:
               type: string
             status:
               type: string
-            creator:
-              type: string
-  ShareRing.shareledger.electoral.Treasurer:
-    type: object
-    properties:
-      address:
-        type: string
   ShareRing.shareledger.gentlemint.MsgBurnShrResponse:
     type: object
     properties:

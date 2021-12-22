@@ -24,6 +24,7 @@ func TestMsgBurnShrp_ValidateBasic(t *testing.T) {
 			name: "valid address",
 			msg: MsgBurnShrp{
 				Creator: sample.AccAddress(),
+				Amount: "1",
 			},
 		},
 	}

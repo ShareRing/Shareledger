@@ -8,7 +8,6 @@ option go_package = "github.com/ShareRing/Shareledger/x/electoral/types";
 message AccState {
   string key = 1; 
   string address = 2; 
-  string status = 3; 
-  string creator = 4;
+  string status = 3;
 }
 

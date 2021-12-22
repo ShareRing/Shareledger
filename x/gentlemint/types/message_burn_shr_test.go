@@ -24,6 +24,7 @@ func TestMsgBurnShr_ValidateBasic(t *testing.T) {
 			name: "valid address",
 			msg: MsgBurnShr{
 				Creator: sample.AccAddress(),
+				Amount: "1",
 			},
 		},
 	}
