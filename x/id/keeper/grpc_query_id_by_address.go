@@ -10,14 +10,15 @@ import (
 )
 
 func (k Keeper) IdByAddress(goCtx context.Context, req *types.QueryIdByAddressRequest) (*types.QueryIdByAddressResponse, error) {
-	if req == nil || len(req.Address) == 0 {
+	address, err := sdk.AccAddressFromBech32(req.Address)
+
+	if req == nil || len(req.Address) == 0 || err != nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	// TODO: Process the query
-	address := sdk.AccAddress(req.Address)
 	id, found := k.GetFullIDByAddress(ctx, address)
 	if !found {
 		return nil, status.Error(codes.NotFound, "id not found")

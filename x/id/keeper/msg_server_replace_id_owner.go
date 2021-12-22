@@ -18,7 +18,11 @@ func (k msgServer) ReplaceIdOwner(goCtx context.Context, msg *types.MsgReplaceId
 	}
 
 	// check if the new owner has id or not
-	idOfNewOwner := k.GetIdByAddress(ctx, sdk.AccAddress(msg.OwnerAddress))
+	a, err := sdk.AccAddressFromBech32(msg.OwnerAddress)
+	if err != nil {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, msg.OwnerAddress)
+	}
+	idOfNewOwner := k.GetIdByAddress(ctx, a)
 	if len(idOfNewOwner) > 0 {
 		return nil, sdkerrors.Wrap(types.ErrOwnerHasID, msg.OwnerAddress)
 	}
