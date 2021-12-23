@@ -331,7 +331,7 @@ func TestGetCostShrpForShr1(t *testing.T) {
 			args: args{
 				currentShrp: sdk.NewCoins(sdk.NewCoin("shr", sdk.NewInt(10000)), sdk.NewCoin("shrp", sdk.NewInt(100)), sdk.NewCoin("cent", sdk.NewInt(0))),
 				needShr:     sdk.NewInt(211),
-				rate:        200,
+				rate:        19,
 			},
 			wantErr: false,
 		},

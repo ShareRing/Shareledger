@@ -26,7 +26,6 @@ func CmdLoadShr() *cobra.Command {
 			if err != nil {
 				return err
 			}
-
 			msg := types.NewMsgLoadShr(
 				clientCtx.GetFromAddress().String(),
 				argAddress,

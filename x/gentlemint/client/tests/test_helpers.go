@@ -5,7 +5,11 @@ import (
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/testutil"
 	clitestutil "github.com/cosmos/cosmos-sdk/testutil/cli"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	cli2 "github.com/cosmos/cosmos-sdk/x/bank/client/cli"
+	testutil2 "github.com/cosmos/cosmos-sdk/x/bank/client/testutil"
+	"github.com/cosmos/cosmos-sdk/x/bank/types"
+	"testing"
 )
 
 func CmdGetExchangeRate(ctx client.Context, flags ...string) (testutil.BufferWriter, error) {
@@ -78,4 +82,17 @@ func CmdSendSHRP(ctx client.Context, receiver, amount string, flags ...string) (
 func CmdTotalSupply(ctx client.Context, flags ...string) (testutil.BufferWriter, error) {
 
 	return clitestutil.ExecTestCLICmd(ctx, cli2.GetCmdQueryTotalSupply(), flags)
+}
+
+func CmdQueryBalance(t *testing.T, ctx client.Context, address sdk.Address) types.QueryAllBalancesResponse {
+	balRes := types.QueryAllBalancesResponse{}
+	out, err := testutil2.QueryBalancesExec(ctx, address)
+	if err != nil {
+		t.Errorf("query balance fail %v", err)
+	}
+	err = ctx.Codec.UnmarshalJSON(out.Bytes(), &balRes)
+	if err != nil {
+		t.Errorf("unmarshal balance fail %v", err)
+	}
+	return balRes
 }
