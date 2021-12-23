@@ -5,6 +5,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/testutil"
 	clitestutil "github.com/cosmos/cosmos-sdk/testutil/cli"
+	cli2 "github.com/cosmos/cosmos-sdk/x/bank/client/cli"
 )
 
 func CmdGetExchangeRate(ctx client.Context, flags ...string) (testutil.BufferWriter, error) {
@@ -71,4 +72,10 @@ func CmdSendSHRP(ctx client.Context, receiver, amount string, flags ...string) (
 	var args = []string{receiver, amount}
 	args = append(args, flags...)
 	return clitestutil.ExecTestCLICmd(ctx, cli.CmdSendShrp(), args)
+}
+
+//CmdTotalSupply
+func CmdTotalSupply(ctx client.Context, flags ...string) (testutil.BufferWriter, error) {
+
+	return clitestutil.ExecTestCLICmd(ctx, cli2.GetCmdQueryTotalSupply(), flags)
 }

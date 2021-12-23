@@ -30,6 +30,9 @@ func (k msgServer) LoadShrp(goCtx context.Context, msg *types.MsgLoadShrp) (*typ
 	if err != nil {
 		return nil, err
 	}
+	fmt.Printf("oldcoind %+v\n", oldCoins)
+	fmt.Printf("amt %+v\n", amt)
+	fmt.Printf("adjustCoins %+v\n", adjustCoins)
 
 	if adjustCoins.Add.Len() > 0 {
 		if err := k.loadCoins(ctx, receiverAddr, adjustCoins.Add); err != nil {

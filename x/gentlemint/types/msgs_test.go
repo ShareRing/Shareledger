@@ -19,6 +19,15 @@ func TestAddShrpCoins(t *testing.T) {
 	}
 	testCases := []testCase{
 		{
+			ic: sdk.NewCoins(sdk.NewCoin(DenomSHRP, sdk.NewInt(100))),
+			ia: sdk.NewCoins(sdk.NewCoin(DenomSHRP, sdk.NewInt(121))),
+			oa: AdjustmentCoins{
+				Add: sdk.NewCoins(sdk.NewCoin(DenomSHRP, sdk.NewInt(121))),
+			},
+			d: "100 shrp + 121 shrp = 221 shrp -> add: 121 shrp",
+		},
+
+		{
 			ic: sdk.NewCoins(sdk.NewCoin(DenomSHRP, sdk.NewInt(1)), sdk.NewCoin(DenomCent, sdk.NewInt(50))),
 			ia: sdk.NewCoins(sdk.NewCoin(DenomCent, sdk.NewInt(50))),
 			oa: AdjustmentCoins{
@@ -275,5 +284,39 @@ func TestParseShrpCoinsStr(t *testing.T) {
 			require.NotNil(t, err, tc.d)
 			require.True(t, sdkerrors.IsOf(err, tc.oe), tc.d)
 		}
+	}
+}
+
+func TestGetCostShrpForShr1(t *testing.T) {
+	type args struct {
+		currentShrp sdk.Coins
+		needShr     sdk.Int
+		rate        float64
+	}
+	tests := []struct {
+		name     string
+		args     args
+		wantCost AdjustmentCoins
+		wantErr  bool
+	}{
+		{
+			name: "running case",
+			args: args{
+				currentShrp: sdk.NewCoins(sdk.NewCoin("shr", sdk.NewInt(10000)), sdk.NewCoin("shrp", sdk.NewInt(100)), sdk.NewCoin("cent", sdk.NewInt(0))),
+				needShr:     sdk.NewInt(211),
+				rate:        200,
+			},
+			wantErr: false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			gotCost, err := GetCostShrpForShr(tt.args.currentShrp, tt.args.needShr, tt.args.rate)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("GetCostShrpForShr() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			t.Logf("result %+v", gotCost)
+		})
 	}
 }

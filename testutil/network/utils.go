@@ -79,6 +79,7 @@ const (
 	ShareLedgerDocumentNotFound   = ErrorCodeNotFound
 
 	ShareLedgerErrorCodeIDAddressOwnerID = ErrorNotAvailable
+	ShareLedgerCoinInsufficient          = uint32(5)
 )
 
 var (
