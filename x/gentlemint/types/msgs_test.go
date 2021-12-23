@@ -28,6 +28,33 @@ func TestAddShrpCoins(t *testing.T) {
 		},
 
 		{
+			ic: sdk.NewCoins(sdk.NewCoin(DenomSHRP, sdk.NewInt(1)), sdk.NewCoin(DenomCent, sdk.NewInt(0))),
+			ia: sdk.NewCoins(sdk.NewCoin(DenomSHRP, sdk.NewInt(1)), sdk.NewCoin(DenomCent, sdk.NewInt(0))),
+			oa: AdjustmentCoins{
+				Add: sdk.NewCoins(sdk.NewCoin(DenomSHRP, sdk.NewInt(1))),
+				Sub: sdk.NewCoins(sdk.NewCoin(DenomCent, sdk.NewInt(0))),
+			},
+			d: "1 shrp + 1 shrp = 2 shrp -> add: 1 shrp, sub 0 cent",
+		},
+		{
+			ic: sdk.NewCoins(sdk.NewCoin(DenomSHRP, sdk.NewInt(1)), sdk.NewCoin(DenomCent, sdk.NewInt(50))),
+			ia: sdk.NewCoins(sdk.NewCoin(DenomSHRP, sdk.NewInt(1)), sdk.NewCoin(DenomCent, sdk.NewInt(50))),
+			oa: AdjustmentCoins{
+				Add: sdk.NewCoins(sdk.NewCoin(DenomSHRP, sdk.NewInt(2))),
+				Sub: sdk.NewCoins(sdk.NewCoin(DenomCent, sdk.NewInt(50))),
+			},
+			d: "1.5 shrp + 1.5 shrp = 3 shrp -> add: 2 shrp, sub 50 cent",
+		},
+		{
+			ic: sdk.NewCoins(sdk.NewCoin(DenomSHRP, sdk.NewInt(1)), sdk.NewCoin(DenomCent, sdk.NewInt(50))),
+			ia: sdk.NewCoins(sdk.NewCoin(DenomSHRP, sdk.NewInt(1)), sdk.NewCoin(DenomCent, sdk.NewInt(70))),
+			oa: AdjustmentCoins{
+				Add: sdk.NewCoins(sdk.NewCoin(DenomSHRP, sdk.NewInt(2))),
+				Sub: sdk.NewCoins(sdk.NewCoin(DenomCent, sdk.NewInt(30))),
+			},
+			d: "1.5 shrp + 1.7 shrp = 3.2 shrp -> add: 1 shrp, sub 30 cent",
+		},
+		{
 			ic: sdk.NewCoins(sdk.NewCoin(DenomSHRP, sdk.NewInt(1)), sdk.NewCoin(DenomCent, sdk.NewInt(50))),
 			ia: sdk.NewCoins(sdk.NewCoin(DenomCent, sdk.NewInt(50))),
 			oa: AdjustmentCoins{
