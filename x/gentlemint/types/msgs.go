@@ -57,6 +57,7 @@ func AddShrpCoins(currentCoins sdk.Coins, addedCoins sdk.Coins) (ac AdjustmentCo
 	ac.Add = sdk.NewCoins()
 	ac.Sub = sdk.NewCoins()
 	// convert cent to shrp
+	ac.Add = ac.Add.Add(sdk.NewCoin(DenomSHRP, addedCoins.AmountOf(DenomSHRP)))
 	ac.Add = ac.Add.Add(sdk.NewCoin(DenomSHRP, sdk.NewInt(totalCents.Int64()/100)))
 
 	newCent := sdk.NewInt(totalCents.Int64() % 100)
