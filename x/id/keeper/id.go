@@ -11,7 +11,8 @@ func (k Keeper) SetID(ctx sdk.Context, id *types.Id) {
 
 	// address -> id
 	addressStore := prefix.NewStore(baseStore, types.KeyPrefix(types.AddressKeyPrefix))
-	addressStore.Set(sdk.AccAddress(id.Data.OwnerAddress).Bytes(), []byte(id.Id))
+	a, _ := sdk.AccAddressFromBech32(id.Data.OwnerAddress)
+	addressStore.Set(a, []byte(id.Id))
 
 	// id -> {ID}
 	basedId := id.ToBaseID()
@@ -34,7 +35,7 @@ func (k Keeper) GetBaseID(ctx sdk.Context, id []byte) (types.BaseID, bool) {
 func (k Keeper) GetFullIDByAddress(ctx sdk.Context, ownerAddr sdk.AccAddress) (*types.Id, bool) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.AddressKeyPrefix))
 
-	id := store.Get(ownerAddr.Bytes())
+	id := store.Get(ownerAddr)
 	if len(id) == 0 {
 		// TODO
 		return nil, false
@@ -52,7 +53,7 @@ func (k Keeper) GetFullIDByAddress(ctx sdk.Context, ownerAddr sdk.AccAddress) (*
 func (k Keeper) GetIdByAddress(ctx sdk.Context, ownerAddr sdk.AccAddress) []byte {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.AddressKeyPrefix))
 
-	id := store.Get(ownerAddr.Bytes())
+	id := store.Get(ownerAddr)
 
 	return id
 }
@@ -72,7 +73,8 @@ func (k Keeper) IsExist(ctx sdk.Context, id *types.Id) bool {
 
 	// Check owner id
 	addressStore := prefix.NewStore(baseStore, types.KeyPrefix(types.AddressKeyPrefix))
-	idBytes := addressStore.Get(sdk.AccAddress(id.Data.OwnerAddress).Bytes())
+	a, _ := sdk.AccAddressFromBech32(id.Data.OwnerAddress)
+	idBytes := addressStore.Get(a)
 
 	if len(idBytes) != 0 {
 		return true
