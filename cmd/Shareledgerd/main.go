@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/ShareRing/Shareledger/cmd/Shareledgerd/sub"
 	"github.com/ShareRing/Shareledger/cmd/Shareledgerd/tools"
 	"os"
 
@@ -19,7 +20,7 @@ func main() {
 		app.ModuleBasics,
 		app.New,
 		cosmoscmd.AddSubCmd(
-			NewImportKeyCmd(),
+			sub.NewImportKeyCmd(),
 			getStakingCmd(),
 			getSlashingCmd(),
 			getDistributionCmd(),
@@ -39,11 +40,11 @@ func getStakingCmd() *cobra.Command {
 	}
 
 	cmd.AddCommand(
-		NewCreateValidatorCmd(),
-		NewEditValidatorCmd(),
-		NewDelegateCmd(),
-		NewRedelegateCmd(),
-		NewUnbondCmd(),
+		sub.NewCreateValidatorCmd(),
+		sub.NewEditValidatorCmd(),
+		sub.NewDelegateCmd(),
+		sub.NewRedelegateCmd(),
+		sub.NewUnbondCmd(),
 	)
 
 	return cmd
@@ -70,7 +71,7 @@ func getSlashingCmd() *cobra.Command {
 	}
 
 	cmd.AddCommand(
-		NewUnjailTxCmd(),
+		sub.NewUnjailTxCmd(),
 	)
 
 	return cmd
@@ -83,8 +84,8 @@ func getDistributionCmd() *cobra.Command {
 	}
 
 	cmd.AddCommand(
-		NewWithdrawRewardsCmd(),
-		NewWithdrawAllRewardsCmd(),
+		sub.NewWithdrawRewardsCmd(),
+		sub.NewWithdrawAllRewardsCmd(),
 	)
 
 	return cmd
@@ -97,8 +98,8 @@ func getFeegrantCmd() *cobra.Command {
 	}
 
 	cmd.AddCommand(
-		NewCmdFeeGrant(),
-		NewCmdRevokeFeegrant(),
+		sub.NewCmdFeeGrant(),
+		sub.NewCmdRevokeFeegrant(),
 	)
 
 	return cmd

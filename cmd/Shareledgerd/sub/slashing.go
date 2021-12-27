@@ -1,4 +1,4 @@
-package main
+package sub
 
 import (
 	myutils "github.com/ShareRing/Shareledger/x/utils"
