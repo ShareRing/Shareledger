@@ -4,9 +4,9 @@ import (
 	"context"
 	"testing"
 
-	keepertest "github.com/ShareRing/Shareledger/testutil/keeper"
-	"github.com/ShareRing/Shareledger/x/document/keeper"
-	"github.com/ShareRing/Shareledger/x/document/types"
+	keepertest "github.com/sharering/shareledger/testutil/keeper"
+	"github.com/sharering/shareledger/x/document/keeper"
+	"github.com/sharering/shareledger/x/document/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 

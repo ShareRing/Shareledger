@@ -3,9 +3,9 @@ package keeper
 import (
 	"testing"
 
-	assetkeeper "github.com/ShareRing/Shareledger/x/asset/keeper"
-	"github.com/ShareRing/Shareledger/x/booking/keeper"
-	"github.com/ShareRing/Shareledger/x/booking/types"
+	assetkeeper "github.com/sharering/shareledger/x/asset/keeper"
+	"github.com/sharering/shareledger/x/booking/keeper"
+	"github.com/sharering/shareledger/x/booking/types"
 	"github.com/cosmos/cosmos-sdk/codec"
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	"github.com/cosmos/cosmos-sdk/store"

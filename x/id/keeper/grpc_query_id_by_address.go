@@ -3,7 +3,7 @@ package keeper
 import (
 	"context"
 
-	"github.com/ShareRing/Shareledger/x/id/types"
+	"github.com/sharering/shareledger/x/id/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"

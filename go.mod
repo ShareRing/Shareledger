@@ -1,4 +1,4 @@
-module github.com/ShareRing/Shareledger
+module github.com/sharering/shareledger
 
 go 1.16
 

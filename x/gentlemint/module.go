@@ -11,9 +11,9 @@ import (
 
 	abci "github.com/tendermint/tendermint/abci/types"
 
-	"github.com/ShareRing/Shareledger/x/gentlemint/client/cli"
-	"github.com/ShareRing/Shareledger/x/gentlemint/keeper"
-	"github.com/ShareRing/Shareledger/x/gentlemint/types"
+	"github.com/sharering/shareledger/x/gentlemint/client/cli"
+	"github.com/sharering/shareledger/x/gentlemint/keeper"
+	"github.com/sharering/shareledger/x/gentlemint/types"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/codec"
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"

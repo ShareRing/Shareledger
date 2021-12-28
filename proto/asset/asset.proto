@@ -1,7 +1,7 @@
 syntax = "proto3";
 package ShareRing.shareledger.asset;
 
-option go_package = "github.com/ShareRing/Shareledger/x/asset/types";
+option go_package = "github.com/sharering/shareledger/x/asset/types";
 
 message Asset {
 	string creator = 1;

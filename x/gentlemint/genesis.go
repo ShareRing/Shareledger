@@ -1,8 +1,8 @@
 package gentlemint
 
 import (
-	"github.com/ShareRing/Shareledger/x/gentlemint/keeper"
-	"github.com/ShareRing/Shareledger/x/gentlemint/types"
+	"github.com/sharering/shareledger/x/gentlemint/keeper"
+	"github.com/sharering/shareledger/x/gentlemint/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 

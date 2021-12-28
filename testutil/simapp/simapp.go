@@ -108,7 +108,7 @@ import (
 	tmtypes "github.com/tendermint/tendermint/types"
 	tmdb "github.com/tendermint/tm-db"
 
-	"github.com/ShareRing/Shareledger/app"
+	"github.com/sharering/shareledger/app"
 )
 
 const appName = "SimApp"

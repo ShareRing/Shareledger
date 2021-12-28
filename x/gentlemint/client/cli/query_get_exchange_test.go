@@ -9,9 +9,9 @@ import (
 	tmcli "github.com/tendermint/tendermint/libs/cli"
 	"google.golang.org/grpc/status"
 
-	"github.com/ShareRing/Shareledger/testutil/network"
-	"github.com/ShareRing/Shareledger/x/gentlemint/client/cli"
-	"github.com/ShareRing/Shareledger/x/gentlemint/types"
+	"github.com/sharering/shareledger/testutil/network"
+	"github.com/sharering/shareledger/x/gentlemint/client/cli"
+	"github.com/sharering/shareledger/x/gentlemint/types"
 )
 
 func networkWithExchangeRateObjects(t *testing.T) (*network.Network, types.ExchangeRate) {

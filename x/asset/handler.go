@@ -3,8 +3,8 @@ package asset
 import (
 	"fmt"
 
-	"github.com/ShareRing/Shareledger/x/asset/keeper"
-	"github.com/ShareRing/Shareledger/x/asset/types"
+	"github.com/sharering/shareledger/x/asset/keeper"
+	"github.com/sharering/shareledger/x/asset/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )

@@ -3,7 +3,7 @@ package types_test
 import (
 	"testing"
 
-	"github.com/ShareRing/Shareledger/x/asset/types"
+	"github.com/sharering/shareledger/x/asset/types"
 	"github.com/stretchr/testify/require"
 )
 

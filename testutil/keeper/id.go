@@ -3,8 +3,8 @@ package keeper
 import (
 	"testing"
 
-	"github.com/ShareRing/Shareledger/x/id/keeper"
-	"github.com/ShareRing/Shareledger/x/id/types"
+	"github.com/sharering/shareledger/x/id/keeper"
+	"github.com/sharering/shareledger/x/id/types"
 	"github.com/cosmos/cosmos-sdk/codec"
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	"github.com/cosmos/cosmos-sdk/store"

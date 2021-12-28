@@ -3,7 +3,7 @@ package types_test
 import (
 	"testing"
 
-	"github.com/ShareRing/Shareledger/x/gentlemint/types"
+	"github.com/sharering/shareledger/x/gentlemint/types"
 	"github.com/stretchr/testify/require"
 )
 

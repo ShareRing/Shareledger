@@ -1,13 +1,13 @@
 package keeper_test
 
 import (
-	"github.com/ShareRing/Shareledger/testutil/sample"
+	"github.com/sharering/shareledger/testutil/sample"
 	"strconv"
 	"testing"
 
-	keepertest "github.com/ShareRing/Shareledger/testutil/keeper"
-	"github.com/ShareRing/Shareledger/x/electoral/keeper"
-	"github.com/ShareRing/Shareledger/x/electoral/types"
+	keepertest "github.com/sharering/shareledger/testutil/keeper"
+	"github.com/sharering/shareledger/x/electoral/keeper"
+	"github.com/sharering/shareledger/x/electoral/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stretchr/testify/require"
 )

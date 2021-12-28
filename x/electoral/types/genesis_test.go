@@ -3,7 +3,7 @@ package types_test
 import (
 	"testing"
 
-	"github.com/ShareRing/Shareledger/x/electoral/types"
+	"github.com/sharering/shareledger/x/electoral/types"
 	"github.com/stretchr/testify/require"
 )
 

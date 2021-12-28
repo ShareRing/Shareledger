@@ -1,11 +1,11 @@
-package main
+package sub
 
 import (
 	"fmt"
 	"strings"
 	"time"
 
-	myutils "github.com/ShareRing/Shareledger/x/utils"
+	myutils "github.com/sharering/shareledger/x/utils"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"

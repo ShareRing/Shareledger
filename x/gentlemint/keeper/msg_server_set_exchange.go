@@ -4,7 +4,7 @@ import (
 	"context"
 	"strconv"
 
-	"github.com/ShareRing/Shareledger/x/gentlemint/types"
+	"github.com/sharering/shareledger/x/gentlemint/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 

@@ -1,8 +1,8 @@
 package tools
 
 import (
-	electoralmoduletypes "github.com/ShareRing/Shareledger/x/electoral/types"
-	"github.com/ShareRing/Shareledger/x/gentlemint/types"
+	electoralmoduletypes "github.com/sharering/shareledger/x/electoral/types"
+	"github.com/sharering/shareledger/x/gentlemint/types"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/server"

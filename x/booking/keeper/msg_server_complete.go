@@ -3,7 +3,7 @@ package keeper
 import (
 	"context"
 
-	"github.com/ShareRing/Shareledger/x/booking/types"
+	"github.com/sharering/shareledger/x/booking/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )

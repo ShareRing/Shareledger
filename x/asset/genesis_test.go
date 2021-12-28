@@ -3,9 +3,9 @@ package asset_test
 import (
 	"testing"
 
-	keepertest "github.com/ShareRing/Shareledger/testutil/keeper"
-	"github.com/ShareRing/Shareledger/x/asset"
-	"github.com/ShareRing/Shareledger/x/asset/types"
+	keepertest "github.com/sharering/shareledger/testutil/keeper"
+	"github.com/sharering/shareledger/x/asset"
+	"github.com/sharering/shareledger/x/asset/types"
 	"github.com/stretchr/testify/require"
 )
 

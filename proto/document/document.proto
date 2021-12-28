@@ -1,7 +1,7 @@
 syntax = "proto3";
 package ShareRing.shareledger.document;
 
-option go_package = "github.com/ShareRing/Shareledger/x/document/types";
+option go_package = "github.com/sharering/shareledger/x/document/types";
 
 
 message Document {

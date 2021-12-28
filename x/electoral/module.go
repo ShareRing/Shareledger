@@ -11,9 +11,9 @@ import (
 
 	abci "github.com/tendermint/tendermint/abci/types"
 
-	"github.com/ShareRing/Shareledger/x/electoral/client/cli"
-	"github.com/ShareRing/Shareledger/x/electoral/keeper"
-	"github.com/ShareRing/Shareledger/x/electoral/types"
+	"github.com/sharering/shareledger/x/electoral/client/cli"
+	"github.com/sharering/shareledger/x/electoral/keeper"
+	"github.com/sharering/shareledger/x/electoral/types"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/codec"
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
