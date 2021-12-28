@@ -1,15 +1,17 @@
 package tests
 
 import (
-	"github.com/ShareRing/Shareledger/app"
-	"github.com/ShareRing/Shareledger/x/id/client/cli"
-	"github.com/ShareRing/Shareledger/x/id/types"
+	"testing"
+
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/testutil"
 	clitestutil "github.com/cosmos/cosmos-sdk/testutil/cli"
 	"github.com/stretchr/testify/require"
 	"github.com/tendermint/spm/cosmoscmd"
-	"testing"
+
+	"github.com/sharering/shareledger/app"
+	"github.com/sharering/shareledger/x/id/client/cli"
+	"github.com/sharering/shareledger/x/id/types"
 )
 
 func CmdExNewID(clientCtx client.Context, t *testing.T, userID, backupAddress, addressOwner, exData string, extraFlags ...string) testutil.BufferWriter {

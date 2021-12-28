@@ -9,10 +9,10 @@ import (
 	"github.com/stretchr/testify/require"
 	"github.com/tendermint/spm/cosmoscmd"
 
-	"github.com/ShareRing/Shareledger/app"
-	"github.com/ShareRing/Shareledger/testutil/network"
-	"github.com/ShareRing/Shareledger/x/booking/client/cli"
-	"github.com/ShareRing/Shareledger/x/booking/types"
+	"github.com/sharering/shareledger/app"
+	"github.com/sharering/shareledger/testutil/network"
+	"github.com/sharering/shareledger/x/booking/client/cli"
+	"github.com/sharering/shareledger/x/booking/types"
 )
 
 func ExCmdCreateBooking(clientCtx client.Context, assetUUID, duration string, additionalFlags ...string) (testutil.BufferWriter, error) {

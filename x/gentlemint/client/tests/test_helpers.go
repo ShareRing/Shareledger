@@ -1,7 +1,8 @@
 package tests
 
 import (
-	"github.com/ShareRing/Shareledger/x/gentlemint/client/cli"
+	"testing"
+
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/testutil"
 	clitestutil "github.com/cosmos/cosmos-sdk/testutil/cli"
@@ -9,7 +10,8 @@ import (
 	cli2 "github.com/cosmos/cosmos-sdk/x/bank/client/cli"
 	testutil2 "github.com/cosmos/cosmos-sdk/x/bank/client/testutil"
 	"github.com/cosmos/cosmos-sdk/x/bank/types"
-	"testing"
+
+	"github.com/sharering/shareledger/x/gentlemint/client/cli"
 )
 
 func CmdGetExchangeRate(ctx client.Context, flags ...string) (testutil.BufferWriter, error) {

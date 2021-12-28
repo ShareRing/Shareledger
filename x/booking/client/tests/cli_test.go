@@ -5,7 +5,7 @@ import (
 
 	"github.com/stretchr/testify/suite"
 
-	"github.com/ShareRing/Shareledger/testutil/network"
+	"github.com/sharering/shareledger/testutil/network"
 )
 
 func TestIntegrationBookingTestSuite(t *testing.T) {

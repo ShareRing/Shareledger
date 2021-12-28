@@ -1,9 +1,9 @@
 package keeper
 
 import (
-	"github.com/sharering/shareledger/x/asset/types"
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/sharering/shareledger/x/asset/types"
 )
 
 func (k Keeper) GetAsset(ctx sdk.Context, uuid string) (types.Asset, bool) {

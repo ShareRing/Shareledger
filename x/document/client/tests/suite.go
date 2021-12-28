@@ -2,14 +2,15 @@ package tests
 
 import (
 	"fmt"
-	"github.com/ShareRing/Shareledger/testutil/network"
-	"github.com/ShareRing/Shareledger/testutil/sample"
-	documenttypes "github.com/ShareRing/Shareledger/x/document/types"
-	"github.com/ShareRing/Shareledger/x/electoral/client/tests"
 	"strings"
 
-	idtest "github.com/ShareRing/Shareledger/x/id/client/tests"
 	"github.com/stretchr/testify/suite"
+
+	"github.com/sharering/shareledger/testutil/network"
+	"github.com/sharering/shareledger/testutil/sample"
+	documenttypes "github.com/sharering/shareledger/x/document/types"
+	"github.com/sharering/shareledger/x/electoral/client/tests"
+	idtest "github.com/sharering/shareledger/x/id/client/tests"
 )
 
 type DocumentIntegrationTestSuite struct {

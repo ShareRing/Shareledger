@@ -3,10 +3,11 @@ package keeper
 import (
 	"context"
 
-	"github.com/sharering/shareledger/x/asset/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+
+	"github.com/sharering/shareledger/x/asset/types"
 )
 
 func (k Keeper) AssetByUUID(goCtx context.Context, req *types.QueryAssetByUUIDRequest) (*types.QueryAssetByUUIDResponse, error) {

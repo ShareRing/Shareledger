@@ -1,8 +1,9 @@
 package tests
 
 import (
-	"github.com/ShareRing/Shareledger/testutil/network"
 	"github.com/stretchr/testify/suite"
+
+	"github.com/sharering/shareledger/testutil/network"
 )
 
 type ElectoralIntegrationTestSuite struct {

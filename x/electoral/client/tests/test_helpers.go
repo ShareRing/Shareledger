@@ -1,16 +1,17 @@
 package tests
 
 import (
-	"github.com/ShareRing/Shareledger/app"
-	"github.com/ShareRing/Shareledger/x/electoral/client/cli"
-	"github.com/ShareRing/Shareledger/x/electoral/types"
-	"github.com/stretchr/testify/require"
-	"github.com/tendermint/spm/cosmoscmd"
 	"testing"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/testutil"
 	clitestutil "github.com/cosmos/cosmos-sdk/testutil/cli"
+	"github.com/stretchr/testify/require"
+	"github.com/tendermint/spm/cosmoscmd"
+
+	"github.com/sharering/shareledger/app"
+	"github.com/sharering/shareledger/x/electoral/client/cli"
+	"github.com/sharering/shareledger/x/electoral/types"
 )
 
 func ExCmdEnrollDocIssuer(clientCtx client.Context, t *testing.T, address string, additionalFlags ...string) (testutil.BufferWriter, error) {

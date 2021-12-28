@@ -6,9 +6,10 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/ShareRing/Shareledger/app"
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	simapp2 "github.com/cosmos/cosmos-sdk/simapp"
+	"github.com/sharering/shareledger/app"
+	electoraltypes "github.com/sharering/shareledger/x/electoral/types"
 	"github.com/tendermint/spm/cosmoscmd"
 	dbm "github.com/tendermint/tm-db"
 	"io/ioutil"
@@ -30,7 +31,6 @@ import (
 
 	"google.golang.org/grpc"
 
-	electoraltypes "github.com/ShareRing/Shareledger/x/electoral/types"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/tx"
 	"github.com/cosmos/cosmos-sdk/codec"

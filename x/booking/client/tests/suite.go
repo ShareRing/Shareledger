@@ -2,10 +2,12 @@ package tests
 
 import (
 	"fmt"
-	"github.com/ShareRing/Shareledger/testutil/network"
-	"github.com/ShareRing/Shareledger/x/asset/client/tests"
+
 	testutil2 "github.com/cosmos/cosmos-sdk/x/bank/client/testutil"
 	"github.com/stretchr/testify/suite"
+
+	"github.com/sharering/shareledger/testutil/network"
+	"github.com/sharering/shareledger/x/asset/client/tests"
 )
 
 type BookingIntegrationTestSuite struct {
@@ -71,7 +73,6 @@ func (s *BookingIntegrationTestSuite) TestCreateBooking() {
 		attr := l.Events.GetEventByType(s.T(), "BookingStart")
 		bookingID := attr.Get(s.T(), "BookingId")
 		s.bookingID2 = bookingID.Value
-		s.T().Logf("booking ID %v", bookingID)
 		//validate booking
 		stdOut, err = ExCmdCGetBooking(validatorCtx, bookingID.Value)
 		s.NoErrorf(err, "fail to get the booking err %+v", err)
@@ -145,7 +146,6 @@ func (s *BookingIntegrationTestSuite) TestCompleteBooking() {
 	attr := l.Events.GetEventByType(s.T(), "BookingStart")
 	bookingID := attr.Get(s.T(), "BookingId")
 	bookingID2 := bookingID.Value
-	s.T().Logf("booking ID %v", bookingID)
 
 	s.Run("complete_booking_but_txn_creator_isn't_owner_booking", func() {
 

@@ -1,12 +1,14 @@
 package tests
 
 import (
-	"github.com/ShareRing/Shareledger/testutil/network"
-	"github.com/ShareRing/Shareledger/testutil/sample"
-	"github.com/ShareRing/Shareledger/x/electoral/client/tests"
+	"strings"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stretchr/testify/suite"
-	"strings"
+
+	"github.com/sharering/shareledger/testutil/network"
+	"github.com/sharering/shareledger/testutil/sample"
+	"github.com/sharering/shareledger/x/electoral/client/tests"
 )
 
 type IDIntegrationTestSuite struct {
@@ -29,7 +31,7 @@ func (s *IDIntegrationTestSuite) SetupSuite() {
 
 	s.T().Log("setting up document data....")
 
-	out := tests.ExCmdEnrollAccountOperator(
+	out, _ := tests.ExCmdEnrollAccountOperator(
 		s.network.Validators[0].ClientCtx,
 		s.T(),
 		s.network.Accounts[network.KeyOperator].String(),
@@ -42,7 +44,7 @@ func (s *IDIntegrationTestSuite) SetupSuite() {
 	res := network.ParseStdOut(s.T(), out.Bytes())
 	s.Equalf(network.ShareLedgerSuccessCode, res.Code, "init operator fail %v", res.String())
 
-	out = tests.ExCmdEnrollIdSigner(
+	out, _ = tests.ExCmdEnrollIdSigner(
 		s.network.Validators[0].ClientCtx,
 		s.T(),
 		s.network.Accounts[network.KeyIDSigner].String(),

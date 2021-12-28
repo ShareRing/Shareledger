@@ -2,9 +2,10 @@ package tests
 
 import (
 	"fmt"
+
 	"github.com/stretchr/testify/suite"
 
-	"github.com/ShareRing/Shareledger/testutil/network"
+	"github.com/sharering/shareledger/testutil/network"
 )
 
 type AssetIntegrationTestSuite struct {

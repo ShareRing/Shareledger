@@ -1,14 +1,15 @@
 package tests
 
 import (
-	"github.com/ShareRing/Shareledger/testutil/network"
-	"github.com/ShareRing/Shareledger/x/electoral/client/tests"
-	types2 "github.com/ShareRing/Shareledger/x/gentlemint/types"
 	testutil2 "github.com/cosmos/cosmos-sdk/testutil"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/x/bank/client/testutil"
 	"github.com/cosmos/cosmos-sdk/x/bank/types"
 	"github.com/stretchr/testify/suite"
+
+	"github.com/sharering/shareledger/testutil/network"
+	"github.com/sharering/shareledger/x/electoral/client/tests"
+	types2 "github.com/sharering/shareledger/x/gentlemint/types"
 )
 
 const MaximumSHRSupply = 2090000

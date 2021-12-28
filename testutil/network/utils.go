@@ -2,11 +2,6 @@ package network
 
 import (
 	"encoding/json"
-	"github.com/ShareRing/Shareledger/app"
-	electoraltypes "github.com/ShareRing/Shareledger/x/electoral/types"
-	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/stretchr/testify/require"
-	"github.com/tendermint/spm/cosmoscmd"
 	"path/filepath"
 	"testing"
 	"time"
@@ -14,11 +9,14 @@ import (
 	"github.com/cosmos/cosmos-sdk/server/api"
 	servergrpc "github.com/cosmos/cosmos-sdk/server/grpc"
 	srvtypes "github.com/cosmos/cosmos-sdk/server/types"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 	"github.com/cosmos/cosmos-sdk/x/genutil"
 	genutiltypes "github.com/cosmos/cosmos-sdk/x/genutil/types"
-
+	"github.com/sharering/shareledger/app"
+	"github.com/stretchr/testify/require"
+	"github.com/tendermint/spm/cosmoscmd"
 	tmos "github.com/tendermint/tendermint/libs/os"
 	"github.com/tendermint/tendermint/node"
 	"github.com/tendermint/tendermint/p2p"
@@ -27,6 +25,8 @@ import (
 	"github.com/tendermint/tendermint/rpc/client/local"
 	"github.com/tendermint/tendermint/types"
 	tmtime "github.com/tendermint/tendermint/types/time"
+
+	electoraltypes "github.com/sharering/shareledger/x/electoral/types"
 )
 
 const (

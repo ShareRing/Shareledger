@@ -1,9 +1,11 @@
 package tests
 
 import (
-	"github.com/ShareRing/Shareledger/testutil/network"
-	"github.com/stretchr/testify/suite"
 	"testing"
+
+	"github.com/stretchr/testify/suite"
+
+	"github.com/sharering/shareledger/testutil/network"
 )
 
 func TestIntegrationTestSuite(t *testing.T) {
