@@ -3,7 +3,7 @@ package keeper
 import (
 	"context"
 
-	"github.com/ShareRing/Shareledger/x/electoral/types"
+	"github.com/sharering/shareledger/x/electoral/types"
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/query"

@@ -1,7 +1,7 @@
 syntax = "proto3";
 package ShareRing.shareledger.booking;
 
-option go_package = "github.com/ShareRing/Shareledger/x/booking/types";
+option go_package = "github.com/sharering/shareledger/x/booking/types";
 
 message Booking {
   string bookID = 1;

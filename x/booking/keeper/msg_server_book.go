@@ -6,8 +6,8 @@ import (
 	"encoding/hex"
 	"encoding/json"
 
-	assetTypes "github.com/ShareRing/Shareledger/x/asset/types"
-	"github.com/ShareRing/Shareledger/x/booking/types"
+	assetTypes "github.com/sharering/shareledger/x/asset/types"
+	"github.com/sharering/shareledger/x/booking/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )

@@ -3,8 +3,8 @@ package booking
 import (
 	"fmt"
 
-	"github.com/ShareRing/Shareledger/x/booking/keeper"
-	"github.com/ShareRing/Shareledger/x/booking/types"
+	"github.com/sharering/shareledger/x/booking/keeper"
+	"github.com/sharering/shareledger/x/booking/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )

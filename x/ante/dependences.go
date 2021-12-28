@@ -1,7 +1,7 @@
 package ante
 
 import (
-	idtypes "github.com/ShareRing/Shareledger/x/id/types"
+	idtypes "github.com/sharering/shareledger/x/id/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 

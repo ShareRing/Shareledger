@@ -7,7 +7,7 @@ import "gentlemint/exchange_rate.proto";
 // this line is used by starport scaffolding # 1
 import "gogoproto/gogo.proto";
 
-option go_package = "github.com/ShareRing/Shareledger/x/gentlemint/types";
+option go_package = "github.com/sharering/shareledger/x/gentlemint/types";
 
 // Query defines the gRPC querier service.
 service Query {

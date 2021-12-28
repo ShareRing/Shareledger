@@ -5,8 +5,8 @@ import (
 
 	"github.com/tendermint/tendermint/libs/log"
 
-	assetkeeper "github.com/ShareRing/Shareledger/x/asset/keeper"
-	"github.com/ShareRing/Shareledger/x/booking/types"
+	assetkeeper "github.com/sharering/shareledger/x/asset/keeper"
+	"github.com/sharering/shareledger/x/booking/types"
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	bankkeeper "github.com/cosmos/cosmos-sdk/x/bank/keeper"

@@ -1,7 +1,7 @@
 package keeper
 
 import (
-	"github.com/ShareRing/Shareledger/x/booking/types"
+	"github.com/sharering/shareledger/x/booking/types"
 )
 
 var _ types.QueryServer = Keeper{}

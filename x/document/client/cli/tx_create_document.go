@@ -8,8 +8,8 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 
-	"github.com/ShareRing/Shareledger/x/document/types"
-	myutils "github.com/ShareRing/Shareledger/x/utils"
+	"github.com/sharering/shareledger/x/document/types"
+	myutils "github.com/sharering/shareledger/x/utils"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"

@@ -1,8 +1,8 @@
 package document
 
 import (
-	"github.com/ShareRing/Shareledger/x/document/keeper"
-	"github.com/ShareRing/Shareledger/x/document/types"
+	"github.com/sharering/shareledger/x/document/keeper"
+	"github.com/sharering/shareledger/x/document/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 

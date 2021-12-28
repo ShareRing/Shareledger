@@ -5,7 +5,7 @@ import "gentlemint/exchange_rate.proto";
 // this line is used by starport scaffolding # genesis/proto/import
 import "gogoproto/gogo.proto";
 
-option go_package = "github.com/ShareRing/Shareledger/x/gentlemint/types";
+option go_package = "github.com/sharering/shareledger/x/gentlemint/types";
 
 // GenesisState defines the gentlemint module's genesis state.
 message GenesisState {

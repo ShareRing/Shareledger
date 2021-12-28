@@ -1,7 +1,7 @@
 package sub
 
 import (
-	myutils "github.com/ShareRing/Shareledger/x/utils"
+	myutils "github.com/sharering/shareledger/x/utils"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"

@@ -10,7 +10,7 @@ import (
 	// "github.com/cosmos/cosmos-sdk/client/flags"
 	// sdk "github.com/cosmos/cosmos-sdk/types"
 
-	"github.com/ShareRing/Shareledger/x/document/types"
+	"github.com/sharering/shareledger/x/document/types"
 )
 
 // GetQueryCmd returns the cli query commands for this module

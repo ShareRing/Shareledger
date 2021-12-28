@@ -3,9 +3,9 @@ package gentlemint_test
 import (
 	"testing"
 
-	keepertest "github.com/ShareRing/Shareledger/testutil/keeper"
-	"github.com/ShareRing/Shareledger/x/gentlemint"
-	"github.com/ShareRing/Shareledger/x/gentlemint/types"
+	keepertest "github.com/sharering/shareledger/testutil/keeper"
+	"github.com/sharering/shareledger/x/gentlemint"
+	"github.com/sharering/shareledger/x/gentlemint/types"
 	"github.com/stretchr/testify/require"
 )
 

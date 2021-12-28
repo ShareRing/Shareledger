@@ -1,12 +1,12 @@
 package cli
 
 import (
-	"github.com/ShareRing/Shareledger/x/utils"
+	"github.com/sharering/shareledger/x/utils"
 	"strconv"
 
 	"github.com/spf13/cobra"
 
-	"github.com/ShareRing/Shareledger/x/electoral/types"
+	"github.com/sharering/shareledger/x/electoral/types"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"

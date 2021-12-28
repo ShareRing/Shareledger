@@ -1,8 +1,8 @@
 package id
 
 import (
-	"github.com/ShareRing/Shareledger/x/id/keeper"
-	"github.com/ShareRing/Shareledger/x/id/types"
+	"github.com/sharering/shareledger/x/id/keeper"
+	"github.com/sharering/shareledger/x/id/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 

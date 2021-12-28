@@ -3,9 +3,9 @@ package keeper
 import (
 	"testing"
 
-	"github.com/ShareRing/Shareledger/x/electoral/keeper"
-	"github.com/ShareRing/Shareledger/x/electoral/types"
-	gk "github.com/ShareRing/Shareledger/x/gentlemint/keeper"
+	"github.com/sharering/shareledger/x/electoral/keeper"
+	"github.com/sharering/shareledger/x/electoral/types"
+	gk "github.com/sharering/shareledger/x/gentlemint/keeper"
 	"github.com/cosmos/cosmos-sdk/codec"
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	"github.com/cosmos/cosmos-sdk/store"

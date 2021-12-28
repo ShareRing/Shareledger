@@ -1,7 +1,7 @@
 package keeper
 
 import (
-	assetTypes "github.com/ShareRing/Shareledger/x/asset/types"
+	assetTypes "github.com/sharering/shareledger/x/asset/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
