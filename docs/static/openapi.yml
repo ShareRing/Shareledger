@@ -12504,7 +12504,7 @@ paths:
   '/shareledger/asset/{uuid}':
     get:
       summary: Queries a list of assetByUUID items.
-      operationId: ShareRingShareledgerAssetAssetByUUID
+      operationId: ShareledgerAssetAssetByUUID
       responses:
         '200':
           description: A successful response.
@@ -12554,7 +12554,7 @@ paths:
   '/shareledger/booking/{bookID}':
     get:
       summary: Queries a list of booking items.
-      operationId: ShareRingShareledgerBookingBooking
+      operationId: ShareledgerBookingBooking
       responses:
         '200':
           description: A successful response.
@@ -12603,7 +12603,7 @@ paths:
   '/shareledger/document/proof/{proof}':
     get:
       summary: Queries a list of documentByProof items.
-      operationId: ShareRingShareledgerDocumentDocumentByProof
+      operationId: ShareledgerDocumentDocumentByProof
       responses:
         '200':
           description: A successful response.
@@ -12652,7 +12652,7 @@ paths:
   '/shareledger/document/{holder}/{issuer}':
     get:
       summary: Queries a list of documentOfHolderByIssuer items.
-      operationId: ShareRingShareledgerDocumentDocumentOfHolderByIssuer
+      operationId: ShareledgerDocumentDocumentOfHolderByIssuer
       responses:
         '200':
           description: A successful response.
@@ -12707,7 +12707,7 @@ paths:
   '/shareledger/document/{id}':
     get:
       summary: Queries a list of documentByHolderId items.
-      operationId: ShareRingShareledgerDocumentDocumentByHolderId
+      operationId: ShareledgerDocumentDocumentByHolderId
       responses:
         '200':
           description: A successful response.
@@ -12758,7 +12758,7 @@ paths:
   /shareledger/electoral/accState:
     get:
       summary: Queries a list of accState items.
-      operationId: ShareRingShareledgerElectoralAccStateAll
+      operationId: ShareledgerElectoralAccStateAll
       responses:
         '200':
           description: A successful response.
@@ -12880,7 +12880,7 @@ paths:
   '/shareledger/electoral/accState/{key}':
     get:
       summary: Queries a accState by index.
-      operationId: ShareRingShareledgerElectoralAccState
+      operationId: ShareledgerElectoralAccState
       responses:
         '200':
           description: A successful response.
@@ -12924,7 +12924,7 @@ paths:
   /shareledger/electoral/accountOperator:
     get:
       summary: Queries a list of accountOperator items.
-      operationId: ShareRingShareledgerElectoralAccountOperator
+      operationId: ShareledgerElectoralAccountOperator
       responses:
         '200':
           description: A successful response.
@@ -12968,7 +12968,7 @@ paths:
   /shareledger/electoral/accountOperators:
     get:
       summary: Queries a list of accountOperators items.
-      operationId: ShareRingShareledgerElectoralAccountOperators
+      operationId: ShareledgerElectoralAccountOperators
       responses:
         '200':
           description: A successful response.
@@ -13009,7 +13009,7 @@ paths:
   /shareledger/electoral/documentIssuer:
     get:
       summary: Queries a list of documentIssuer items.
-      operationId: ShareRingShareledgerElectoralDocumentIssuer
+      operationId: ShareledgerElectoralDocumentIssuer
       responses:
         '200':
           description: A successful response.
@@ -13053,7 +13053,7 @@ paths:
   /shareledger/electoral/documentIssuers:
     get:
       summary: Queries a list of documentIssuers items.
-      operationId: ShareRingShareledgerElectoralDocumentIssuers
+      operationId: ShareledgerElectoralDocumentIssuers
       responses:
         '200':
           description: A successful response.
@@ -13094,7 +13094,7 @@ paths:
   /shareledger/electoral/getLoader:
     get:
       summary: Queries a list of getLoader items.
-      operationId: ShareRingShareledgerElectoralGetLoader
+      operationId: ShareledgerElectoralGetLoader
       responses:
         '200':
           description: A successful response.
@@ -13138,7 +13138,7 @@ paths:
   /shareledger/electoral/getVoter:
     get:
       summary: Queries a list of getVoter items.
-      operationId: ShareRingShareledgerElectoralGetVoter
+      operationId: ShareledgerElectoralGetVoter
       responses:
         '200':
           description: A successful response.
@@ -13182,7 +13182,7 @@ paths:
   /shareledger/electoral/idSigner:
     get:
       summary: Queries a list of idSigner items.
-      operationId: ShareRingShareledgerElectoralIdSigner
+      operationId: ShareledgerElectoralIdSigner
       responses:
         '200':
           description: A successful response.
@@ -13226,7 +13226,7 @@ paths:
   /shareledger/electoral/idSigners:
     get:
       summary: Queries a list of idSigners items.
-      operationId: ShareRingShareledgerElectoralIdSigners
+      operationId: ShareledgerElectoralIdSigners
       responses:
         '200':
           description: A successful response.
@@ -13267,7 +13267,7 @@ paths:
   /shareledger/gentlemint/getExchangeRate:
     get:
       summary: Queries a exchangeRate by index.
-      operationId: ShareRingShareledgerGentlemintExchangeRate
+      operationId: ShareledgerGentlemintExchangeRate
       responses:
         '200':
           description: A successful response.
@@ -13300,7 +13300,7 @@ paths:
   '/shareledger/id/address/{address}':
     get:
       summary: Queries a list of idByAddress items.
-      operationId: ShareRingShareledgerIdIdByAddress
+      operationId: ShareledgerIdIdByAddress
       responses:
         '200':
           description: A successful response.
@@ -13351,7 +13351,7 @@ paths:
   '/shareledger/id/id/{id}':
     get:
       summary: Queries a list of idById items.
-      operationId: ShareRingShareledgerIdIdById
+      operationId: ShareledgerIdIdById
       responses:
         '200':
           description: A successful response.
@@ -20713,7 +20713,7 @@ definitions:
       and
 
       freezing clients
-  ShareRing.shareledger.asset.Asset:
+  shareledger.asset.Asset:
     type: object
     properties:
       creator:
@@ -20728,13 +20728,13 @@ definitions:
       rate:
         type: string
         format: int64
-  ShareRing.shareledger.asset.MsgCreateResponse:
+  shareledger.asset.MsgCreateResponse:
     type: object
-  ShareRing.shareledger.asset.MsgDeleteResponse:
+  shareledger.asset.MsgDeleteResponse:
     type: object
-  ShareRing.shareledger.asset.MsgUpdateResponse:
+  shareledger.asset.MsgUpdateResponse:
     type: object
-  ShareRing.shareledger.asset.QueryAssetByUUIDResponse:
+  shareledger.asset.QueryAssetByUUIDResponse:
     type: object
     properties:
       asset:
@@ -20752,7 +20752,7 @@ definitions:
           rate:
             type: string
             format: int64
-  ShareRing.shareledger.booking.Booking:
+  shareledger.booking.Booking:
     type: object
     properties:
       bookID:
@@ -20766,11 +20766,11 @@ definitions:
         format: int64
       isCompleted:
         type: boolean
-  ShareRing.shareledger.booking.MsgBookResponse:
+  shareledger.booking.MsgBookResponse:
     type: object
-  ShareRing.shareledger.booking.MsgCompleteResponse:
+  shareledger.booking.MsgCompleteResponse:
     type: object
-  ShareRing.shareledger.booking.QueryBookingResponse:
+  shareledger.booking.QueryBookingResponse:
     type: object
     properties:
       booking:
@@ -20787,7 +20787,7 @@ definitions:
             format: int64
           isCompleted:
             type: boolean
-  ShareRing.shareledger.document.Document:
+  shareledger.document.Document:
     type: object
     properties:
       holder:
@@ -20801,15 +20801,15 @@ definitions:
       version:
         type: integer
         format: int32
-  ShareRing.shareledger.document.MsgCreateDocumentInBatchResponse:
+  shareledger.document.MsgCreateDocumentInBatchResponse:
     type: object
-  ShareRing.shareledger.document.MsgCreateDocumentResponse:
+  shareledger.document.MsgCreateDocumentResponse:
     type: object
-  ShareRing.shareledger.document.MsgRevokeDocumentResponse:
+  shareledger.document.MsgRevokeDocumentResponse:
     type: object
-  ShareRing.shareledger.document.MsgUpdateDocumentResponse:
+  shareledger.document.MsgUpdateDocumentResponse:
     type: object
-  ShareRing.shareledger.document.QueryDocumentByHolderIdResponse:
+  shareledger.document.QueryDocumentByHolderIdResponse:
     type: object
     properties:
       documents:
@@ -20828,7 +20828,7 @@ definitions:
             version:
               type: integer
               format: int32
-  ShareRing.shareledger.document.QueryDocumentByProofResponse:
+  shareledger.document.QueryDocumentByProofResponse:
     type: object
     properties:
       document:
@@ -20845,7 +20845,7 @@ definitions:
           version:
             type: integer
             format: int32
-  ShareRing.shareledger.document.QueryDocumentOfHolderByIssuerResponse:
+  shareledger.document.QueryDocumentOfHolderByIssuerResponse:
     type: object
     properties:
       documents:
@@ -20864,7 +20864,7 @@ definitions:
             version:
               type: integer
               format: int32
-  ShareRing.shareledger.electoral.AccState:
+  shareledger.electoral.AccState:
     type: object
     properties:
       key:
@@ -20873,27 +20873,27 @@ definitions:
         type: string
       status:
         type: string
-  ShareRing.shareledger.electoral.MsgEnrollAccountOperatorResponse:
+  shareledger.electoral.MsgEnrollAccountOperatorResponse:
     type: object
-  ShareRing.shareledger.electoral.MsgEnrollDocIssuerResponse:
+  shareledger.electoral.MsgEnrollDocIssuerResponse:
     type: object
-  ShareRing.shareledger.electoral.MsgEnrollIdSignerResponse:
+  shareledger.electoral.MsgEnrollIdSignerResponse:
     type: object
-  ShareRing.shareledger.electoral.MsgEnrollLoadersResponse:
+  shareledger.electoral.MsgEnrollLoadersResponse:
     type: object
-  ShareRing.shareledger.electoral.MsgEnrollVoterResponse:
+  shareledger.electoral.MsgEnrollVoterResponse:
     type: object
-  ShareRing.shareledger.electoral.MsgRevokeAccountOperatorResponse:
+  shareledger.electoral.MsgRevokeAccountOperatorResponse:
     type: object
-  ShareRing.shareledger.electoral.MsgRevokeDocIssuerResponse:
+  shareledger.electoral.MsgRevokeDocIssuerResponse:
     type: object
-  ShareRing.shareledger.electoral.MsgRevokeIdSignerResponse:
+  shareledger.electoral.MsgRevokeIdSignerResponse:
     type: object
-  ShareRing.shareledger.electoral.MsgRevokeLoadersResponse:
+  shareledger.electoral.MsgRevokeLoadersResponse:
     type: object
-  ShareRing.shareledger.electoral.MsgRevokeVoterResponse:
+  shareledger.electoral.MsgRevokeVoterResponse:
     type: object
-  ShareRing.shareledger.electoral.QueryAccountOperatorResponse:
+  shareledger.electoral.QueryAccountOperatorResponse:
     type: object
     properties:
       accState:
@@ -20905,7 +20905,7 @@ definitions:
             type: string
           status:
             type: string
-  ShareRing.shareledger.electoral.QueryAccountOperatorsResponse:
+  shareledger.electoral.QueryAccountOperatorsResponse:
     type: object
     properties:
       accStates:
@@ -20919,7 +20919,7 @@ definitions:
               type: string
             status:
               type: string
-  ShareRing.shareledger.electoral.QueryAllAccStateResponse:
+  shareledger.electoral.QueryAllAccStateResponse:
     type: object
     properties:
       accState:
@@ -20958,7 +20958,7 @@ definitions:
                    repeated Bar results = 1;
                    PageResponse page = 2;
            }
-  ShareRing.shareledger.electoral.QueryDocumentIssuerResponse:
+  shareledger.electoral.QueryDocumentIssuerResponse:
     type: object
     properties:
       accState:
@@ -20970,7 +20970,7 @@ definitions:
             type: string
           status:
             type: string
-  ShareRing.shareledger.electoral.QueryDocumentIssuersResponse:
+  shareledger.electoral.QueryDocumentIssuersResponse:
     type: object
     properties:
       accStates:
@@ -20984,7 +20984,7 @@ definitions:
               type: string
             status:
               type: string
-  ShareRing.shareledger.electoral.QueryGetAccStateResponse:
+  shareledger.electoral.QueryGetAccStateResponse:
     type: object
     properties:
       accState:
@@ -20996,7 +20996,7 @@ definitions:
             type: string
           status:
             type: string
-  ShareRing.shareledger.electoral.QueryGetLoaderResponse:
+  shareledger.electoral.QueryGetLoaderResponse:
     type: object
     properties:
       accState:
@@ -21008,7 +21008,7 @@ definitions:
             type: string
           status:
             type: string
-  ShareRing.shareledger.electoral.QueryGetVoterResponse:
+  shareledger.electoral.QueryGetVoterResponse:
     type: object
     properties:
       voter:
@@ -21020,7 +21020,7 @@ definitions:
             type: string
           status:
             type: string
-  ShareRing.shareledger.electoral.QueryIdSignerResponse:
+  shareledger.electoral.QueryIdSignerResponse:
     type: object
     properties:
       accState:
@@ -21032,7 +21032,7 @@ definitions:
             type: string
           status:
             type: string
-  ShareRing.shareledger.electoral.QueryIdSignersResponse:
+  shareledger.electoral.QueryIdSignersResponse:
     type: object
     properties:
       accStates:
@@ -21046,55 +21046,55 @@ definitions:
               type: string
             status:
               type: string
-  ShareRing.shareledger.gentlemint.MsgBurnShrResponse:
+  shareledger.gentlemint.MsgBurnShrResponse:
     type: object
     properties:
       log:
         type: string
-  ShareRing.shareledger.gentlemint.MsgBurnShrpResponse:
+  shareledger.gentlemint.MsgBurnShrpResponse:
     type: object
     properties:
       log:
         type: string
-  ShareRing.shareledger.gentlemint.MsgBuyCentResponse:
+  shareledger.gentlemint.MsgBuyCentResponse:
     type: object
     properties:
       log:
         type: string
-  ShareRing.shareledger.gentlemint.MsgBuyShrResponse:
+  shareledger.gentlemint.MsgBuyShrResponse:
     type: object
     properties:
       log:
         type: string
-  ShareRing.shareledger.gentlemint.MsgLoadShrResponse:
+  shareledger.gentlemint.MsgLoadShrResponse:
     type: object
     properties:
       log:
         type: string
-  ShareRing.shareledger.gentlemint.MsgLoadShrpResponse:
+  shareledger.gentlemint.MsgLoadShrpResponse:
     type: object
     properties:
       log:
         type: string
-  ShareRing.shareledger.gentlemint.MsgSendShrResponse:
+  shareledger.gentlemint.MsgSendShrResponse:
     type: object
     properties:
       log:
         type: string
-  ShareRing.shareledger.gentlemint.MsgSendShrpResponse:
+  shareledger.gentlemint.MsgSendShrpResponse:
     type: object
     properties:
       log:
         type: string
-  ShareRing.shareledger.gentlemint.MsgSetExchangeResponse:
+  shareledger.gentlemint.MsgSetExchangeResponse:
     type: object
-  ShareRing.shareledger.gentlemint.QueryGetExchangeRateResponse:
+  shareledger.gentlemint.QueryGetExchangeRateResponse:
     type: object
     properties:
       rate:
         type: number
         format: double
-  ShareRing.shareledger.id.BaseID:
+  shareledger.id.BaseID:
     type: object
     properties:
       issuerAddress:
@@ -21105,7 +21105,7 @@ definitions:
         type: string
       extraData:
         type: string
-  ShareRing.shareledger.id.Id:
+  shareledger.id.Id:
     type: object
     properties:
       id:
@@ -21121,15 +21121,15 @@ definitions:
             type: string
           extraData:
             type: string
-  ShareRing.shareledger.id.MsgCreateIdBatchResponse:
+  shareledger.id.MsgCreateIdBatchResponse:
     type: object
-  ShareRing.shareledger.id.MsgCreateIdResponse:
+  shareledger.id.MsgCreateIdResponse:
     type: object
-  ShareRing.shareledger.id.MsgReplaceIdOwnerResponse:
+  shareledger.id.MsgReplaceIdOwnerResponse:
     type: object
-  ShareRing.shareledger.id.MsgUpdateIdResponse:
+  shareledger.id.MsgUpdateIdResponse:
     type: object
-  ShareRing.shareledger.id.QueryIdByAddressResponse:
+  shareledger.id.QueryIdByAddressResponse:
     type: object
     properties:
       id:
@@ -21148,7 +21148,7 @@ definitions:
                 type: string
               extraData:
                 type: string
-  ShareRing.shareledger.id.QueryIdByIdResponse:
+  shareledger.id.QueryIdByIdResponse:
     type: object
     properties:
       id:

@@ -1,5 +1,5 @@
 syntax = "proto3";
-package ShareRing.shareledger.booking;
+package shareledger.booking;
 
 option go_package = "github.com/ShareRing/Shareledger/x/booking/types";
 

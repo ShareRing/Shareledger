@@ -1,5 +1,5 @@
 syntax = "proto3";
-package ShareRing.shareledger.electoral;
+package shareledger.electoral;
 
 import "electoral/acc_state.proto";
 import "electoral/authority.proto";

@@ -1,5 +1,5 @@
 syntax = "proto3";
-package ShareRing.shareledger.gentlemint;
+package shareledger.gentlemint;
 
 option go_package = "github.com/ShareRing/Shareledger/x/gentlemint/types";
 

@@ -1,5 +1,5 @@
 syntax = "proto3";
-package ShareRing.shareledger.booking;
+package shareledger.booking;
 
 import "booking/booking.proto";
 import "google/api/annotations.proto";

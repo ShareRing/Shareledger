@@ -1,5 +1,5 @@
 syntax = "proto3";
-package ShareRing.shareledger.asset;
+package shareledger.asset;
 
 option go_package = "github.com/ShareRing/Shareledger/x/asset/types";
 
