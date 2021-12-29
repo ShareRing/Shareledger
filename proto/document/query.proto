@@ -7,7 +7,7 @@ import "gogoproto/gogo.proto";
 import "document/document.proto";
 // this line is used by starport scaffolding # 1
 
-option go_package = "github.com/ShareRing/Shareledger/x/document/types";
+option go_package = "github.com/sharering/shareledger/x/document/types";
 
 // Query defines the gRPC querier service.
 service Query {

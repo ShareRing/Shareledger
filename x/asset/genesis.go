@@ -1,9 +1,9 @@
 package asset
 
 import (
-	"github.com/ShareRing/Shareledger/x/asset/keeper"
-	"github.com/ShareRing/Shareledger/x/asset/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/sharering/shareledger/x/asset/keeper"
+	"github.com/sharering/shareledger/x/asset/types"
 )
 
 // InitGenesis initializes the capability module's state from a provided genesis

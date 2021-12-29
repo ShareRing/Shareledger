@@ -4,10 +4,10 @@ import (
 	"context"
 	"testing"
 
-	keepertest "github.com/ShareRing/Shareledger/testutil/keeper"
-	"github.com/ShareRing/Shareledger/x/asset/keeper"
-	"github.com/ShareRing/Shareledger/x/asset/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	keepertest "github.com/sharering/shareledger/testutil/keeper"
+	"github.com/sharering/shareledger/x/asset/keeper"
+	"github.com/sharering/shareledger/x/asset/types"
 )
 
 func setupMsgServer(t testing.TB) (types.MsgServer, context.Context) {

@@ -3,8 +3,8 @@ package types
 import (
 	"testing"
 
-	"github.com/ShareRing/Shareledger/testutil/sample"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	"github.com/sharering/shareledger/testutil/sample"
 	"github.com/stretchr/testify/require"
 )
 
@@ -25,7 +25,7 @@ func TestMsgLoadShr_ValidateBasic(t *testing.T) {
 			msg: MsgLoadShr{
 				Creator: sample.AccAddress(),
 				Address: sample.AccAddress(),
-				Amount: "1",
+				Amount:  "1",
 			},
 		},
 	}

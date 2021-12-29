@@ -7,7 +7,7 @@ import "electoral/treasurer.proto";
 // this line is used by starport scaffolding # genesis/proto/import
 import "gogoproto/gogo.proto";
 
-option go_package = "github.com/ShareRing/Shareledger/x/electoral/types";
+option go_package = "github.com/sharering/shareledger/x/electoral/types";
 
 // GenesisState defines the electoral module's genesis state.
 message GenesisState {

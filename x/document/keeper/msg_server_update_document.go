@@ -3,9 +3,9 @@ package keeper
 import (
 	"context"
 
-	"github.com/ShareRing/Shareledger/x/document/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	"github.com/sharering/shareledger/x/document/types"
 )
 
 func (k msgServer) UpdateDocument(goCtx context.Context, msg *types.MsgUpdateDocument) (*types.MsgUpdateDocumentResponse, error) {

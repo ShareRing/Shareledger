@@ -1,12 +1,12 @@
 package ante
 
 import (
-	documenttypes "github.com/ShareRing/Shareledger/x/document/types"
-	electoraltypes "github.com/ShareRing/Shareledger/x/electoral/types"
-	gentleminttypes "github.com/ShareRing/Shareledger/x/gentlemint/types"
-	idtypes "github.com/ShareRing/Shareledger/x/id/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	documenttypes "github.com/sharering/shareledger/x/document/types"
+	electoraltypes "github.com/sharering/shareledger/x/electoral/types"
+	gentleminttypes "github.com/sharering/shareledger/x/gentlemint/types"
+	idtypes "github.com/sharering/shareledger/x/id/types"
 )
 
 type Auth struct {

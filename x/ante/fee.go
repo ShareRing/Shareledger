@@ -1,12 +1,12 @@
 package ante
 
 import (
-	assetmoduletypes "github.com/ShareRing/Shareledger/x/asset/types"
-	bookingtypes "github.com/ShareRing/Shareledger/x/booking/types"
-	gentleminttypes "github.com/ShareRing/Shareledger/x/gentlemint/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
+	assetmoduletypes "github.com/sharering/shareledger/x/asset/types"
+	bookingtypes "github.com/sharering/shareledger/x/booking/types"
+	gentleminttypes "github.com/sharering/shareledger/x/gentlemint/types"
 	"math"
 )
 

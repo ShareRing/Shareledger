@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/ShareRing/Shareledger/x/electoral/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/sharering/shareledger/x/electoral/types"
 )
 
 func (k msgServer) RevokeLoaders(goCtx context.Context, msg *types.MsgRevokeLoaders) (*types.MsgRevokeLoadersResponse, error) {

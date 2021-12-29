@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"strings"
 
-	myutils "github.com/ShareRing/Shareledger/x/utils"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
@@ -12,6 +11,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/version"
 	distributioncli "github.com/cosmos/cosmos-sdk/x/distribution/client/cli"
 	"github.com/cosmos/cosmos-sdk/x/distribution/types"
+	myutils "github.com/sharering/shareledger/x/utils"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )

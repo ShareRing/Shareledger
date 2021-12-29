@@ -1,7 +1,7 @@
 syntax = "proto3";
 package shareledger.id;
 
-option go_package = "github.com/ShareRing/Shareledger/x/id/types";
+option go_package = "github.com/sharering/shareledger/x/id/types";
 
 
 message BaseID {

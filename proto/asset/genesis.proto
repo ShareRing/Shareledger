@@ -5,7 +5,7 @@ package shareledger.asset;
 import "gogoproto/gogo.proto";
 import "asset/asset.proto";
 
-option go_package = "github.com/ShareRing/Shareledger/x/asset/types";
+option go_package = "github.com/sharering/shareledger/x/asset/types";
 
 // GenesisState defines the asset module's genesis state.
 message GenesisState {

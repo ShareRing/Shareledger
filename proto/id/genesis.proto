@@ -5,7 +5,7 @@ package shareledger.id;
 import "gogoproto/gogo.proto";
 import "id/id.proto";
 
-option go_package = "github.com/ShareRing/Shareledger/x/id/types";
+option go_package = "github.com/sharering/shareledger/x/id/types";
 
 // GenesisState defines the id module's genesis state.
 message GenesisState {

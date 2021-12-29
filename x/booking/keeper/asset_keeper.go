@@ -1,8 +1,8 @@
 package keeper
 
 import (
-	assetTypes "github.com/ShareRing/Shareledger/x/asset/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	assetTypes "github.com/sharering/shareledger/x/asset/types"
 )
 
 func (k Keeper) SetAssetStatus(ctx sdk.Context, uuid string, status bool) {

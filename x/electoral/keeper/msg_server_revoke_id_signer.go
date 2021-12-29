@@ -3,8 +3,8 @@ package keeper
 import (
 	"context"
 
-	"github.com/ShareRing/Shareledger/x/electoral/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/sharering/shareledger/x/electoral/types"
 )
 
 func (k msgServer) RevokeIdSigner(goCtx context.Context, msg *types.MsgRevokeIdSigner) (*types.MsgRevokeIdSignerResponse, error) {

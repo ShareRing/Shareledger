@@ -3,9 +3,9 @@ package booking_test
 import (
 	"testing"
 
-	keepertest "github.com/ShareRing/Shareledger/testutil/keeper"
-	"github.com/ShareRing/Shareledger/x/booking"
-	"github.com/ShareRing/Shareledger/x/booking/types"
+	keepertest "github.com/sharering/shareledger/testutil/keeper"
+	"github.com/sharering/shareledger/x/booking"
+	"github.com/sharering/shareledger/x/booking/types"
 	"github.com/stretchr/testify/require"
 )
 

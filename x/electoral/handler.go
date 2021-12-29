@@ -3,10 +3,10 @@ package electoral
 import (
 	"fmt"
 
-	"github.com/ShareRing/Shareledger/x/electoral/keeper"
-	"github.com/ShareRing/Shareledger/x/electoral/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	"github.com/sharering/shareledger/x/electoral/keeper"
+	"github.com/sharering/shareledger/x/electoral/types"
 )
 
 // NewHandler ...

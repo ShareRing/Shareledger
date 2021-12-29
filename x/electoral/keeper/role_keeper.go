@@ -1,8 +1,8 @@
 package keeper
 
 import (
-	"github.com/ShareRing/Shareledger/x/electoral/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/sharering/shareledger/x/electoral/types"
 )
 
 func (k Keeper) IsAuthority(ctx sdk.Context, address sdk.AccAddress) bool {

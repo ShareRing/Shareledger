@@ -3,9 +3,9 @@ package id_test
 import (
 	"testing"
 
-	keepertest "github.com/ShareRing/Shareledger/testutil/keeper"
-	"github.com/ShareRing/Shareledger/x/id"
-	"github.com/ShareRing/Shareledger/x/id/types"
+	keepertest "github.com/sharering/shareledger/testutil/keeper"
+	"github.com/sharering/shareledger/x/id"
+	"github.com/sharering/shareledger/x/id/types"
 	"github.com/stretchr/testify/require"
 )
 

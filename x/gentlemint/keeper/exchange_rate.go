@@ -1,11 +1,10 @@
 package keeper
 
 import (
-	"github.com/ShareRing/Shareledger/x/gentlemint/types"
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/sharering/shareledger/x/gentlemint/types"
 )
-
 
 func (k Keeper) GetExchangeRateF(ctx sdk.Context) float64 {
 	v, found := k.GetExchangeRate(ctx)

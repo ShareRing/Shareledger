@@ -4,9 +4,9 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/ShareRing/Shareledger/x/gentlemint/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	"github.com/sharering/shareledger/x/gentlemint/types"
 )
 
 func (k msgServer) BurnShrp(goCtx context.Context, msg *types.MsgBurnShrp) (*types.MsgBurnShrpResponse, error) {

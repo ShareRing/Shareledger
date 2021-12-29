@@ -3,7 +3,7 @@ package types_test
 import (
 	"testing"
 
-	"github.com/ShareRing/Shareledger/x/booking/types"
+	"github.com/sharering/shareledger/x/booking/types"
 	"github.com/stretchr/testify/require"
 )
 

@@ -3,14 +3,14 @@ package keeper
 import (
 	"testing"
 
-	"github.com/ShareRing/Shareledger/x/document/keeper"
-	"github.com/ShareRing/Shareledger/x/document/types"
-	idk "github.com/ShareRing/Shareledger/x/id/keeper"
 	"github.com/cosmos/cosmos-sdk/codec"
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	"github.com/cosmos/cosmos-sdk/store"
 	storetypes "github.com/cosmos/cosmos-sdk/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/sharering/shareledger/x/document/keeper"
+	"github.com/sharering/shareledger/x/document/types"
+	idk "github.com/sharering/shareledger/x/id/keeper"
 	"github.com/stretchr/testify/require"
 	"github.com/tendermint/tendermint/libs/log"
 	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"

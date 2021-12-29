@@ -1,14 +1,14 @@
 package cli
 
 import (
-	"github.com/ShareRing/Shareledger/x/utils"
+	"github.com/sharering/shareledger/x/utils"
 	"strconv"
 
 	"github.com/spf13/cobra"
 
-	"github.com/ShareRing/Shareledger/x/electoral/types"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
+	"github.com/sharering/shareledger/x/electoral/types"
 )
 
 var _ = strconv.Itoa(0)
@@ -46,7 +46,6 @@ func CmdGetLoader() *cobra.Command {
 
 	return cmd
 }
-
 
 func CmdGetLoadersFromFile() *cobra.Command {
 	cmd := &cobra.Command{

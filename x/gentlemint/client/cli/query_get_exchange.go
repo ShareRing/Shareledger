@@ -3,9 +3,9 @@ package cli
 import (
 	"context"
 
-	"github.com/ShareRing/Shareledger/x/gentlemint/types"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
+	"github.com/sharering/shareledger/x/gentlemint/types"
 	"github.com/spf13/cobra"
 )
 

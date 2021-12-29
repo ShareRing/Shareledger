@@ -3,8 +3,8 @@ package types
 import (
 	"testing"
 
-	"github.com/ShareRing/Shareledger/testutil/sample"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	"github.com/sharering/shareledger/testutil/sample"
 	"github.com/stretchr/testify/require"
 )
 

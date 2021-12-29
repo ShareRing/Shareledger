@@ -6,9 +6,9 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stretchr/testify/require"
 
-	keepertest "github.com/ShareRing/Shareledger/testutil/keeper"
-	"github.com/ShareRing/Shareledger/x/gentlemint/keeper"
-	"github.com/ShareRing/Shareledger/x/gentlemint/types"
+	keepertest "github.com/sharering/shareledger/testutil/keeper"
+	"github.com/sharering/shareledger/x/gentlemint/keeper"
+	"github.com/sharering/shareledger/x/gentlemint/types"
 )
 
 func createTestExchangeRate(keeper *keeper.Keeper, ctx sdk.Context) types.ExchangeRate {

@@ -3,7 +3,7 @@ package shareledger.document;
 
 // this line is used by starport scaffolding # proto/tx/import
 
-option go_package = "github.com/ShareRing/Shareledger/x/document/types";
+option go_package = "github.com/sharering/shareledger/x/document/types";
 
 // Msg defines the Msg service.
 service Msg {
