@@ -30,8 +30,9 @@ services:
       - 26660
     volumes:
       - ./testnet/node0:/root/.Shareledger
+      - ./testnet/script:/app/script:ro
     command:
-      - /app/shareledger
+      - shareledger
       - start
       - --p2p.persistent_peers
       - ${NODE1ID}@${NODE1IP}:26656,${NODE2ID}@${NODE2IP}:26656,${NODE3ID}@${NODE3IP}:26656
@@ -53,7 +54,7 @@ services:
     volumes:
       - ./testnet/node1:/root/.Shareledger
     command:
-      - /app/shareledger
+      - shareledger
       - start
       - --p2p.persistent_peers
       - ${NODE0ID}@${NODE0IP}:26656,${NODE2ID}@${NODE2IP}:26656,${NODE3ID}@${NODE3IP}:26656
@@ -75,7 +76,7 @@ services:
     volumes:
       - ./testnet/node2:/root/.Shareledger
     command:
-      - /app/shareledger
+      - shareledger
       - start
       - --p2p.persistent_peers
       - ${NODE1ID}@${NODE1IP}:26656,${NODE0ID}@${NODE0IP}:26656,${NODE3ID}@${NODE3IP}:26656
@@ -97,7 +98,7 @@ services:
     volumes:
       - ./testnet/node3:/root/.Shareledger
     command:
-      - /app/shareledger
+      - shareledger
       - start
       - --p2p.persistent_peers
       - ${NODE1ID}@${NODE1IP}:26656,${NODE2ID}@${NODE2IP}:26656,${NODE0ID}@${NODE0IP}:26656

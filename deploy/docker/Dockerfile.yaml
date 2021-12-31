@@ -15,7 +15,7 @@ FROM alpine:3.14
 WORKDIR /app
 COPY --from=build /app/build/* ./
 RUN chmod +x ./shareledger
-
+RUN mv ./shareledger /bin
 #
 EXPOSE 26656 26657
-CMD ["./shareledger", "start"]
+CMD ["shareledger", "start"]
