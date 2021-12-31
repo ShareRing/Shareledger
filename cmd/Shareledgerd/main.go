@@ -1,10 +1,12 @@
 package main
 
 import (
-	"github.com/sharering/shareledger/cmd/Shareledgerd/sub"
-	"github.com/sharering/shareledger/cmd/Shareledgerd/tools"
 	"os"
 
+	"github.com/sharering/shareledger/cmd/Shareledgerd/sub"
+	"github.com/sharering/shareledger/cmd/Shareledgerd/tools"
+
+	"github.com/cosmos/cosmos-sdk/client/flags"
 	svrcmd "github.com/cosmos/cosmos-sdk/server/cmd"
 	"github.com/sharering/shareledger/app"
 	"github.com/spf13/cobra"
@@ -46,6 +48,7 @@ func getStakingCmd() *cobra.Command {
 		sub.NewRedelegateCmd(),
 		sub.NewUnbondCmd(),
 	)
+	cmd.PersistentFlags().String(flags.FlagChainID, "", "The network chain ID")
 
 	return cmd
 }
@@ -73,6 +76,7 @@ func getSlashingCmd() *cobra.Command {
 	cmd.AddCommand(
 		sub.NewUnjailTxCmd(),
 	)
+	cmd.PersistentFlags().String(flags.FlagChainID, "", "The network chain ID")
 
 	return cmd
 }
@@ -87,6 +91,7 @@ func getDistributionCmd() *cobra.Command {
 		sub.NewWithdrawRewardsCmd(),
 		sub.NewWithdrawAllRewardsCmd(),
 	)
+	cmd.PersistentFlags().String(flags.FlagChainID, "", "The network chain ID")
 
 	return cmd
 }
@@ -101,6 +106,7 @@ func getFeegrantCmd() *cobra.Command {
 		sub.NewCmdFeeGrant(),
 		sub.NewCmdRevokeFeegrant(),
 	)
+	cmd.PersistentFlags().String(flags.FlagChainID, "", "The network chain ID")
 
 	return cmd
 }
