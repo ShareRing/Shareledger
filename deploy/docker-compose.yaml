@@ -1,0 +1,78 @@
+version: '3'
+
+services:
+  snode0:
+    container_name: snode0
+    image: "sharering/shareledger"
+    expose:
+      - 26656
+      - 26657
+    ports:
+      - "26656:26656"
+      - "26657:26657"
+    volumes:
+      - ./testnet/node0:/root/.Shareledger
+    command:
+      - /app/shareledger
+      - start
+      - --p2p.persistent_peers
+      - ${NODE1ID}@${NODE1IP}:26656,${NODE2ID}@${NODE2IP}:26656,${NODE3ID}@${NODE3IP}:26656
+    networks:
+      localtestnet:
+        ipv4_address: ${NODE0IP}
+  snode1:
+    container_name: snode1
+    image: "sharering/shareledger"
+    expose:
+      - 26656
+      - 26657
+    volumes:
+      - ./testnet/node1:/root/.Shareledger
+    command:
+      - /app/shareledger
+      - start
+      - --p2p.persistent_peers
+      - ${NODE0ID}@${NODE0IP}:26656,${NODE2ID}@${NODE2IP}:26656,${NODE3ID}@${NODE3IP}:26656
+    networks:
+      localtestnet:
+        ipv4_address: ${NODE1IP}
+  snode2:
+    container_name: snode2
+    image: "sharering/shareledger"
+    expose:
+      - 26656
+      - 26657
+    volumes:
+      - ./testnet/node2:/root/.Shareledger
+    command:
+      - /app/shareledger
+      - start
+      - --p2p.persistent_peers
+      - ${NODE1ID}@${NODE1IP}:26656,${NODE0ID}@${NODE0IP}:26656,${NODE3ID}@${NODE3IP}:26656
+    networks:
+      localtestnet:
+        ipv4_address: ${NODE2IP}
+  snode3:
+    container_name: snode3
+    image: "sharering/shareledger"
+    expose:
+      - 26656
+      - 26657
+    volumes:
+      - ./testnet/node3:/root/.Shareledger
+    command:
+      - /app/shareledger
+      - start
+      - --p2p.persistent_peers
+      - ${NODE1ID}@${NODE1IP}:26656,${NODE2ID}@${NODE2IP}:26656,${NODE0ID}@${NODE0IP}:26656
+    networks:
+      localtestnet:
+        ipv4_address: ${NODE3IP}
+networks:
+  localtestnet:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        -
+          subnet: 172.194.4.0/16
