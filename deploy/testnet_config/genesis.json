@@ -1,6 +1,6 @@
 {
   "genesis_time": "2021-02-24T09:04:26.679822768Z",
-  "chain_id": "ox-chain",
+  "chain_id": "ShareRing-Lifestyle",
   "initial_height": "1",
   "consensus_params": {
     "block": {
