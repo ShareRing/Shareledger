@@ -2,7 +2,7 @@ version: '3'
 
 services:
   nginx:
-    container_name: nginx
+    container_name: snginx
     image: nginx:alpine
     restart: always
     depends_on:
