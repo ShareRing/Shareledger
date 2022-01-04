@@ -43365,28 +43365,6 @@
       },
       "signing_infos": [
         {
-          "address": "shareledgervalcons1y8r4fznx6rjug0q593hr5zlrv5agd395z2n6m9",
-          "validator_signing_info": {
-            "address": "shareledgervalcons1y8r4fznx6rjug0q593hr5zlrv5agd395z2n6m9",
-            "start_height": "0",
-            "index_offset": "534682",
-            "jailed_until": "2021-07-26T15:13:42.295042741Z",
-            "tombstoned": false,
-            "missed_blocks_counter": "0"
-          }
-        },
-        {
-          "address": "shareledgervalcons1yh39aanelyufuczl8gty5v2a3y5537f5u3r8pl",
-          "validator_signing_info": {
-            "address": "shareledgervalcons1yh39aanelyufuczl8gty5v2a3y5537f5u3r8pl",
-            "start_height": "0",
-            "index_offset": "17310",
-            "jailed_until": "2021-12-24T23:12:56.859666672Z",
-            "tombstoned": false,
-            "missed_blocks_counter": "0"
-          }
-        },
-        {
           "address": "shareledgervalcons1hqaa8jxkse4mmc4h9es208ayyj43txkft36gsa",
           "validator_signing_info": {
             "address": "shareledgervalcons1hqaa8jxkse4mmc4h9es208ayyj43txkft36gsa",
@@ -43407,35 +43385,31 @@
             "tombstoned": false,
             "missed_blocks_counter": "28"
           }
-        }
-      ],
-      "missed_blocks": [
+        },
         {
           "address": "shareledgervalcons1y8r4fznx6rjug0q593hr5zlrv5agd395z2n6m9",
-          "missed_blocks": [
-            {
-              "index": "0",
-              "missed": false
-            },
-            {
-              "index": "1",
-              "missed": false
-            }
-          ]
+          "validator_signing_info": {
+            "address": "shareledgervalcons1y8r4fznx6rjug0q593hr5zlrv5agd395z2n6m9",
+            "start_height": "0",
+            "index_offset": "534682",
+            "jailed_until": "2021-07-26T15:13:42.295042741Z",
+            "tombstoned": false,
+            "missed_blocks_counter": "0"
+          }
         },
         {
           "address": "shareledgervalcons1yh39aanelyufuczl8gty5v2a3y5537f5u3r8pl",
-          "missed_blocks": [
-            {
-              "index": "0",
-              "missed": false
-            },
-            {
-              "index": "1",
-              "missed": false
-            }
-          ]
-        },
+          "validator_signing_info": {
+            "address": "shareledgervalcons1yh39aanelyufuczl8gty5v2a3y5537f5u3r8pl",
+            "start_height": "0",
+            "index_offset": "17310",
+            "jailed_until": "2021-12-24T23:12:56.859666672Z",
+            "tombstoned": false,
+            "missed_blocks_counter": "0"
+          }
+        }
+      ],
+      "missed_blocks": [
         {
           "address": "shareledgervalcons1hqaa8jxkse4mmc4h9es208ayyj43txkft36gsa",
           "missed_blocks": []
@@ -43569,6 +43543,32 @@
             },
             {
               "index": "99",
+              "missed": false
+            }
+          ]
+        },
+        {
+          "address": "shareledgervalcons1y8r4fznx6rjug0q593hr5zlrv5agd395z2n6m9",
+          "missed_blocks": [
+            {
+              "index": "0",
+              "missed": false
+            },
+            {
+              "index": "1",
+              "missed": false
+            }
+          ]
+        },
+        {
+          "address": "shareledgervalcons1yh39aanelyufuczl8gty5v2a3y5537f5u3r8pl",
+          "missed_blocks": [
+            {
+              "index": "0",
+              "missed": false
+            },
+            {
+              "index": "1",
               "missed": false
             }
           ]
