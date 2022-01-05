@@ -45,7 +45,7 @@ func (k msgServer) CreateIds(goCtx context.Context, msg *types.MsgCreateIds) (*t
 			sdk.EventTypeMessage,
 			sdk.NewAttribute(sdk.AttributeKeyModule, types.ModuleName),
 			sdk.NewAttribute(sdk.AttributeKeySender, msg.IssuerAddress),
-			sdk.NewAttribute(sdk.AttributeKeyAction, types.EventCreateIDBatch),
+			sdk.NewAttribute(sdk.AttributeKeyAction, types.EventCreateIDs),
 		),
 	})
 

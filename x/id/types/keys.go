@@ -17,9 +17,9 @@ const (
 	MemStoreKey = "mem_id"
 
 	// ID message types
-	TypeMsgCreateID       = "create_id"
-	TypeMsgCreateIDBatch  = "create_id_batch"
-	TypeMsgUpdateID       = "update_id"
+	TypeMsgCreateID  = "create_id"
+	TypeMsgCreateIDs = "create_ids"
+	TypeMsgUpdateID  = "update_id"
 	TypeMsgReplaceIdOwner = "replace_id_owner"
 
 	MAX_ID_LEN      = 64

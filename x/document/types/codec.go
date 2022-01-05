@@ -9,7 +9,7 @@ import (
 
 func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgCreateDocument{}, "document/CreateDocument", nil)
-	cdc.RegisterConcrete(&MsgCreateDocumentInBatch{}, "document/CreateDocumentInBatch", nil)
+	cdc.RegisterConcrete(&MsgCreateDocuments{}, "document/CreateDocuments", nil)
 	cdc.RegisterConcrete(&MsgRevokeDocument{}, "document/RevokeDocument", nil)
 	cdc.RegisterConcrete(&MsgUpdateDocument{}, "document/UpdateDocument", nil)
 	// this line is used by starport scaffolding # 2
@@ -20,7 +20,7 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 		&MsgCreateDocument{},
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
-		&MsgCreateDocumentInBatch{},
+		&MsgCreateDocuments{},
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgRevokeDocument{},

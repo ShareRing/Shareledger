@@ -73,7 +73,7 @@ func (a Auth) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate bool, next sdk.Ant
 			}
 		case //Doc Issuer
 			*documenttypes.MsgCreateDocument,
-			*documenttypes.MsgCreateDocumentInBatch,
+			*documenttypes.MsgCreateDocuments,
 			*documenttypes.MsgUpdateDocument,
 			*documenttypes.MsgRevokeDocument:
 			if !a.rk.IsDocIssuer(ctx, signer) {

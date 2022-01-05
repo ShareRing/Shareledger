@@ -7,7 +7,7 @@ import (
 
 var _ sdk.Msg = &MsgCreateIds{}
 
-func NewMsgCreateIdBatch(issuerAddress string, backupAddress []string, extraData []string, id []string, ownerAddress []string) *MsgCreateIds {
+func NewMsgCreateIds(issuerAddress string, backupAddress []string, extraData []string, id []string, ownerAddress []string) *MsgCreateIds {
 	return &MsgCreateIds{
 		IssuerAddress: issuerAddress,
 		BackupAddress: backupAddress,
@@ -22,7 +22,7 @@ func (msg *MsgCreateIds) Route() string {
 }
 
 func (msg *MsgCreateIds) Type() string {
-	return TypeMsgCreateIDBatch
+	return TypeMsgCreateIDs
 }
 
 func (msg *MsgCreateIds) GetSigners() []sdk.AccAddress {

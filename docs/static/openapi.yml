@@ -20801,9 +20801,9 @@ definitions:
       version:
         type: integer
         format: int32
-  shareledger.document.MsgCreateDocumentInBatchResponse:
-    type: object
   shareledger.document.MsgCreateDocumentResponse:
+    type: object
+  shareledger.document.MsgCreateDocumentsResponse:
     type: object
   shareledger.document.MsgRevokeDocumentResponse:
     type: object

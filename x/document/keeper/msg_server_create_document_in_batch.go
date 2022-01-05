@@ -8,7 +8,7 @@ import (
 	"github.com/sharering/shareledger/x/document/types"
 )
 
-func (k msgServer) CreateDocumentInBatch(goCtx context.Context, msg *types.MsgCreateDocumentInBatch) (*types.MsgCreateDocumentInBatchResponse, error) {
+func (k msgServer) CreateDocuments(goCtx context.Context, msg *types.MsgCreateDocuments) (*types.MsgCreateDocumentsResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	// TODO: Handling the message
@@ -55,5 +55,5 @@ func (k msgServer) CreateDocumentInBatch(goCtx context.Context, msg *types.MsgCr
 		),
 	)
 
-	return &types.MsgCreateDocumentInBatchResponse{}, nil
+	return &types.MsgCreateDocumentsResponse{}, nil
 }

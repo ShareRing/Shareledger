@@ -8,7 +8,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestMsgCreateIdBatch_ValidateBasic(t *testing.T) {
+func TestMsgCreateIds_ValidateBasic(t *testing.T) {
 	tests := []struct {
 		name string
 		msg  MsgCreateIds

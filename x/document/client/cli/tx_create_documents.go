@@ -18,13 +18,13 @@ import (
 
 var _ = strconv.Itoa(0)
 
-func CmdCreateDocumentInBatch() *cobra.Command {
+func CmdCreateDocuments() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "create-batch [holder id] [proof] [extra data]",
-		Short: "CreateAsset new document in batch",
+		Use:   "create-documents [holder id] [proof] [extra data]",
+		Short: "Create new documents",
 		Long: strings.TrimSpace(fmt.Sprintf(`
 Example:
-$ %s tx %s create-batch uuid-5122,uuid-0218 c89efdaa54c0f20c7adf6,c89efdaa54c0f20c7adf6 https://sharering.network/id/463,https://sharering.network/id/463`, version.Name, types.ModuleName)),
+$ %s tx %s create-documents uuid-5122,uuid-0218 c89efdaa54c0f20c7adf6,c89efdaa54c0f20c7adf6 https://sharering.network/id/463,https://sharering.network/id/463`, version.Name, types.ModuleName)),
 		Args: cobra.ExactArgs(3),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			sep := ","
@@ -46,7 +46,7 @@ $ %s tx %s create-batch uuid-5122,uuid-0218 c89efdaa54c0f20c7adf6,c89efdaa54c0f2
 				}
 			}
 
-			msg := types.NewMsgCreateDocumentInBatch(
+			msg := types.NewMsgCreateDocuments(
 				argData,
 				argHolder,
 				clientCtx.GetFromAddress().String(),

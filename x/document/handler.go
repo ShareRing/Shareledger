@@ -20,8 +20,8 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
 		case *types.MsgCreateDocument:
 			res, err := msgServer.CreateDocument(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgCreateDocumentInBatch:
-			res, err := msgServer.CreateDocumentInBatch(sdk.WrapSDKContext(ctx), msg)
+		case *types.MsgCreateDocuments:
+			res, err := msgServer.CreateDocuments(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
 		case *types.MsgRevokeDocument:
 			res, err := msgServer.RevokeDocument(sdk.WrapSDKContext(ctx), msg)

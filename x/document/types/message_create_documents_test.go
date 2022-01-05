@@ -8,21 +8,21 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestMsgCreateDocumentInBatch_ValidateBasic(t *testing.T) {
+func TestMsgCreateDocuments_ValidateBasic(t *testing.T) {
 	tests := []struct {
 		name string
-		msg  MsgCreateDocumentInBatch
+		msg  MsgCreateDocuments
 		err  error
 	}{
 		{
 			name: "invalid address",
-			msg: MsgCreateDocumentInBatch{
+			msg: MsgCreateDocuments{
 				Issuer: "invalid_address",
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
-			msg: MsgCreateDocumentInBatch{
+			msg: MsgCreateDocuments{
 				Issuer: sample.AccAddress(),
 			},
 		},

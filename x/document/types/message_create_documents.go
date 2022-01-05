@@ -5,10 +5,10 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
-var _ sdk.Msg = &MsgCreateDocumentInBatch{}
+var _ sdk.Msg = &MsgCreateDocuments{}
 
-func NewMsgCreateDocumentInBatch(data []string, holder []string, issuer string, proof []string) *MsgCreateDocumentInBatch {
-	return &MsgCreateDocumentInBatch{
+func NewMsgCreateDocuments(data []string, holder []string, issuer string, proof []string) *MsgCreateDocuments {
+	return &MsgCreateDocuments{
 		Data:   data,
 		Holder: holder,
 		Issuer: issuer,
@@ -16,15 +16,15 @@ func NewMsgCreateDocumentInBatch(data []string, holder []string, issuer string, 
 	}
 }
 
-func (msg *MsgCreateDocumentInBatch) Route() string {
+func (msg *MsgCreateDocuments) Route() string {
 	return RouterKey
 }
 
-func (msg *MsgCreateDocumentInBatch) Type() string {
-	return TypeMsgCreateDocInBatch
+func (msg *MsgCreateDocuments) Type() string {
+	return TypeMsgCreateDocs
 }
 
-func (msg *MsgCreateDocumentInBatch) GetSigners() []sdk.AccAddress {
+func (msg *MsgCreateDocuments) GetSigners() []sdk.AccAddress {
 	creator, err := sdk.AccAddressFromBech32(msg.Issuer)
 	if err != nil {
 		panic(err)
@@ -32,12 +32,12 @@ func (msg *MsgCreateDocumentInBatch) GetSigners() []sdk.AccAddress {
 	return []sdk.AccAddress{creator}
 }
 
-func (msg *MsgCreateDocumentInBatch) GetSignBytes() []byte {
+func (msg *MsgCreateDocuments) GetSignBytes() []byte {
 	bz := ModuleCdc.MustMarshalJSON(msg)
 	return sdk.MustSortJSON(bz)
 }
 
-func (msg *MsgCreateDocumentInBatch) ValidateBasic() error {
+func (msg *MsgCreateDocuments) ValidateBasic() error {
 	_, err := sdk.AccAddressFromBech32(msg.Issuer)
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)

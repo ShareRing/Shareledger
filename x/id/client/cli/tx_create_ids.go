@@ -16,10 +16,10 @@ import (
 
 var _ = strconv.Itoa(0)
 
-func CmdCreateIdBatch() *cobra.Command {
+func CmdCreateIds() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "create-batch [id] [backup-address] [owner-address] [extra-data]",
-		Short: "CreateAsset batch of IDs",
+		Use:   "create-ids [id] [backup-address] [owner-address] [extra-data]",
+		Short: "create ids",
 		Long: strings.TrimSpace(fmt.Sprintf(`
 CreateAsset new batch of IDs by given information
 Example:
@@ -37,7 +37,7 @@ $ %s tx %s create uid-159654,uid-159655 shareledger1s432..,shareledgerzv95wpluxh
 				return err
 			}
 
-			msg := types.NewMsgCreateIdBatch(
+			msg := types.NewMsgCreateIds(
 				clientCtx.GetFromAddress().String(),
 				argBackupAddress,
 				argExtraData,
