@@ -8,7 +8,7 @@ option go_package = "github.com/sharering/shareledger/x/id/types";
 // Msg defines the Msg service.
 service Msg {
   rpc CreateId(MsgCreateId) returns (MsgCreateIdResponse);
-  rpc CreateIdBatch(MsgCreateIdBatch) returns (MsgCreateIdBatchResponse);
+  rpc CreateIds(MsgCreateIds) returns (MsgCreateIdsResponse);
   rpc UpdateId(MsgUpdateId) returns (MsgUpdateIdResponse);
   rpc ReplaceIdOwner(MsgReplaceIdOwner) returns (MsgReplaceIdOwnerResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
@@ -25,7 +25,7 @@ message MsgCreateId {
 message MsgCreateIdResponse {
 }
 
-message MsgCreateIdBatch {
+message MsgCreateIds {
   string issuerAddress = 1;
   repeated string backupAddress = 2;
   repeated string extraData = 3;
@@ -33,7 +33,7 @@ message MsgCreateIdBatch {
   repeated string ownerAddress = 5;
 }
 
-message MsgCreateIdBatchResponse {
+message MsgCreateIdsResponse {
 }
 
 message MsgUpdateId {

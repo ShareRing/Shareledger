@@ -21121,9 +21121,9 @@ definitions:
             type: string
           extraData:
             type: string
-  shareledger.id.MsgCreateIdBatchResponse:
-    type: object
   shareledger.id.MsgCreateIdResponse:
+    type: object
+  shareledger.id.MsgCreateIdsResponse:
     type: object
   shareledger.id.MsgReplaceIdOwnerResponse:
     type: object

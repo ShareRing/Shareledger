@@ -60,7 +60,7 @@ func (a Auth) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate bool, next sdk.Ant
 			}
 		case // ID Signer permission
 			*idtypes.MsgCreateId,
-			*idtypes.MsgCreateIdBatch,
+			*idtypes.MsgCreateIds,
 			*idtypes.MsgUpdateId:
 			if !a.rk.IsIDSigner(ctx, signer) {
 				return ctx, sdkerrors.Wrapf(sdkerrors.ErrUnauthorized, ErrMsgNotIdSigner)

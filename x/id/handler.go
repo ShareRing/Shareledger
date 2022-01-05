@@ -20,8 +20,8 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
 		case *types.MsgCreateId:
 			res, err := msgServer.CreateId(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgCreateIdBatch:
-			res, err := msgServer.CreateIdBatch(sdk.WrapSDKContext(ctx), msg)
+		case *types.MsgCreateIds:
+			res, err := msgServer.CreateIds(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
 		case *types.MsgUpdateId:
 			res, err := msgServer.UpdateId(sdk.WrapSDKContext(ctx), msg)

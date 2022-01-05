@@ -11,18 +11,18 @@ import (
 func TestMsgCreateIdBatch_ValidateBasic(t *testing.T) {
 	tests := []struct {
 		name string
-		msg  MsgCreateIdBatch
+		msg  MsgCreateIds
 		err  error
 	}{
 		{
 			name: "invalid address",
-			msg: MsgCreateIdBatch{
+			msg: MsgCreateIds{
 				IssuerAddress: "invalid_address",
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
-			msg: MsgCreateIdBatch{
+			msg: MsgCreateIds{
 				IssuerAddress: sample.AccAddress(),
 			},
 		},
