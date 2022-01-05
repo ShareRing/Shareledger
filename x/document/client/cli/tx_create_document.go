@@ -21,7 +21,7 @@ var _ = strconv.Itoa(0)
 func CmdCreateDocument() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "create [holder id] [proof] [extra data]",
-		Short: "Create a new document",
+		Short: "CreateAsset a new document",
 		Long: strings.TrimSpace(fmt.Sprintf(`
 Example:
 $ %s tx %s create uuid-5132 c89efdaa54c0f20c7adf612882df0950f5a951637e0307cdcb4c672f298b8bc6 https://sharering.network/id/463`, version.Name, types.ModuleName)),

@@ -18,7 +18,7 @@ var _ = strconv.Itoa(0)
 func CmdUpdate() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "update [hash] [uuid] [status] [rate]",
-		Short: "Broadcast message Update",
+		Short: "Broadcast message UpdateAsset",
 		Args:  cobra.ExactArgs(4),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argHash := []byte(args[0])

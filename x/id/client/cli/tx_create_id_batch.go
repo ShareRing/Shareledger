@@ -19,9 +19,9 @@ var _ = strconv.Itoa(0)
 func CmdCreateIdBatch() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "create-batch [id] [backup-address] [owner-address] [extra-data]",
-		Short: "Create batch of IDs",
+		Short: "CreateAsset batch of IDs",
 		Long: strings.TrimSpace(fmt.Sprintf(`
-Create new batch of IDs by given information
+CreateAsset new batch of IDs by given information
 Example:
 $ %s tx %s create uid-159654,uid-159655 shareledger1s432..,shareledgerzv95wpluxhf.. shareledger1s432,shareledgerzv95wpluxhf.. http://sharering.network/id1,http://sharering.network/id2`, version.Name, types.ModuleName)),
 		Args: cobra.ExactArgs(4),

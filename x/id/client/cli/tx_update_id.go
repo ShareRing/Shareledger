@@ -16,7 +16,7 @@ var _ = strconv.Itoa(0)
 func CmdUpdateId() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "update [id] [extra-data]",
-		Short: "Update information of an ID",
+		Short: "UpdateAsset information of an ID",
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argId := args[0]

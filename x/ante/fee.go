@@ -53,11 +53,11 @@ func (cfd CheckFeeDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate boo
 
 func getFeeLevel(msg sdk.Msg) string {
 	switch msg.(type) {
-	case *bookingtypes.MsgBook, *assetmoduletypes.MsgCreate:
+	case *bookingtypes.MsgBook, *assetmoduletypes.MsgCreateAsset:
 		return FEE_LEVEL_HIGH
-	case *bookingtypes.MsgComplete, *assetmoduletypes.MsgUpdate:
+	case *bookingtypes.MsgComplete, *assetmoduletypes.MsgUpdateAsset:
 		return FEE_LEVEL_MEDIUM
-	case *assetmoduletypes.MsgDelete, *gentleminttypes.MsgSendShrp, *gentleminttypes.MsgSendShr, *banktypes.MsgSend:
+	case *assetmoduletypes.MsgDeleteAsset, *gentleminttypes.MsgSendShrp, *gentleminttypes.MsgSendShr, *banktypes.MsgSend:
 		return FEE_LEVEL_LOW
 	default:
 		return SKIP_CHECK_LEVEL

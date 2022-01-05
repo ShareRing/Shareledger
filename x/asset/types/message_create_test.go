@@ -11,18 +11,18 @@ import (
 func TestMsgCreate_ValidateBasic(t *testing.T) {
 	tests := []struct {
 		name string
-		msg  MsgCreate
+		msg  MsgCreateAsset
 		err  error
 	}{
 		{
 			name: "invalid address",
-			msg: MsgCreate{
+			msg: MsgCreateAsset{
 				Creator: "invalid_address",
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
-			msg: MsgCreate{
+			msg: MsgCreateAsset{
 				Creator: sample.AccAddress(),
 			},
 		},

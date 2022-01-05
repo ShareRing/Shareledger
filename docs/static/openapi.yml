@@ -20728,11 +20728,11 @@ definitions:
       rate:
         type: string
         format: int64
-  shareledger.asset.MsgCreateResponse:
+  shareledger.asset.MsgCreateAssetResponse:
     type: object
-  shareledger.asset.MsgDeleteResponse:
+  shareledger.asset.MsgDeleteAssetResponse:
     type: object
-  shareledger.asset.MsgUpdateResponse:
+  shareledger.asset.MsgUpdateAssetResponse:
     type: object
   shareledger.asset.QueryAssetByUUIDResponse:
     type: object

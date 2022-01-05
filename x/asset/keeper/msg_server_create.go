@@ -10,7 +10,7 @@ import (
 	"github.com/sharering/shareledger/x/asset/types"
 )
 
-func (k msgServer) Create(goCtx context.Context, msg *types.MsgCreate) (*types.MsgCreateResponse, error) {
+func (k msgServer) CreateAsset(goCtx context.Context, msg *types.MsgCreateAsset) (*types.MsgCreateAssetResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	// TODO: Handling the message
@@ -34,5 +34,5 @@ func (k msgServer) Create(goCtx context.Context, msg *types.MsgCreate) (*types.M
 	)
 	ctx.EventManager().EmitEvent(event)
 
-	return &types.MsgCreateResponse{}, nil
+	return &types.MsgCreateAssetResponse{}, nil
 }

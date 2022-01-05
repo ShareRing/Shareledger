@@ -11,18 +11,18 @@ import (
 func TestMsgDelete_ValidateBasic(t *testing.T) {
 	tests := []struct {
 		name string
-		msg  MsgDelete
+		msg  MsgDeleteAsset
 		err  error
 	}{
 		{
 			name: "invalid address",
-			msg: MsgDelete{
+			msg: MsgDeleteAsset{
 				Owner: "invalid_address",
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
-			msg: MsgDelete{
+			msg: MsgDeleteAsset{
 				Owner: sample.AccAddress(),
 			},
 		},

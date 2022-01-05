@@ -18,7 +18,7 @@ var _ = strconv.Itoa(0)
 func CmdCreate() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "create [hash] [uuid] [status] [rate]",
-		Short: "Broadcast message Create",
+		Short: "Broadcast message CreateAsset",
 		Args:  cobra.ExactArgs(4),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argHash := []byte(args[0])
@@ -46,7 +46,7 @@ func CmdCreate() *cobra.Command {
 				}
 			}
 
-			msg := types.NewMsgCreate(
+			msg := types.NewMsgCreateAsset(
 				clientCtx.GetFromAddress().String(),
 				argHash,
 				argUUID,

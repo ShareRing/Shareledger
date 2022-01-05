@@ -21,7 +21,7 @@ var _ = strconv.Itoa(0)
 func CmdCreateDocumentInBatch() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "create-batch [holder id] [proof] [extra data]",
-		Short: "Create new document in batch",
+		Short: "CreateAsset new document in batch",
 		Long: strings.TrimSpace(fmt.Sprintf(`
 Example:
 $ %s tx %s create-batch uuid-5122,uuid-0218 c89efdaa54c0f20c7adf6,c89efdaa54c0f20c7adf6 https://sharering.network/id/463,https://sharering.network/id/463`, version.Name, types.ModuleName)),

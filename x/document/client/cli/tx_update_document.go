@@ -18,7 +18,7 @@ var _ = strconv.Itoa(0)
 func CmdUpdateDocument() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "update [holder id] [proof] [extra data]",
-		Short: "Update a document",
+		Short: "UpdateAsset a document",
 		Args:  cobra.ExactArgs(3),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argHolder := args[0]

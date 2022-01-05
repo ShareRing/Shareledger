@@ -8,7 +8,7 @@ import (
 	"github.com/sharering/shareledger/x/asset/types"
 )
 
-func (k msgServer) Delete(goCtx context.Context, msg *types.MsgDelete) (*types.MsgDeleteResponse, error) {
+func (k msgServer) DeleteAsset(goCtx context.Context, msg *types.MsgDeleteAsset) (*types.MsgDeleteAssetResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	// TODO: Handling the message
@@ -22,7 +22,7 @@ func (k msgServer) Delete(goCtx context.Context, msg *types.MsgDelete) (*types.M
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrUnauthorized, "Only owner can update asset")
 	}
 
-	k.DeleteAsset(ctx, msg.GetUUID())
+	k.Keeper.DeleteAsset(ctx, msg.GetUUID())
 
 	event := sdk.NewEvent(
 		types.EventTypeDeleteAsset,
@@ -32,5 +32,5 @@ func (k msgServer) Delete(goCtx context.Context, msg *types.MsgDelete) (*types.M
 	)
 	ctx.EventManager().EmitEvent(event)
 
-	return &types.MsgDeleteResponse{}, nil
+	return &types.MsgDeleteAssetResponse{}, nil
 }
