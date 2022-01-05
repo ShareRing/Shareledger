@@ -20766,9 +20766,9 @@ definitions:
         format: int64
       isCompleted:
         type: boolean
-  shareledger.booking.MsgBookResponse:
+  shareledger.booking.MsgCompleteBookingResponse:
     type: object
-  shareledger.booking.MsgCompleteResponse:
+  shareledger.booking.MsgCreateBookingResponse:
     type: object
   shareledger.booking.QueryBookingResponse:
     type: object

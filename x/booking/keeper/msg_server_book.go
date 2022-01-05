@@ -12,7 +12,7 @@ import (
 	"github.com/sharering/shareledger/x/booking/types"
 )
 
-func (k msgServer) Book(goCtx context.Context, msg *types.MsgBook) (*types.MsgBookResponse, error) {
+func (k msgServer) CreateBooking(goCtx context.Context, msg *types.MsgCreateBooking) (*types.MsgCreateBookingResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	// TODO: Handling the message
@@ -50,7 +50,7 @@ func (k msgServer) Book(goCtx context.Context, msg *types.MsgBook) (*types.MsgBo
 	)
 	ctx.EventManager().EmitEvent((event))
 
-	return &types.MsgBookResponse{}, nil
+	return &types.MsgCreateBookingResponse{}, nil
 }
 
 func checkAsset(a assetTypes.Asset) error {

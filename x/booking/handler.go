@@ -17,11 +17,11 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
 		ctx = ctx.WithEventManager(sdk.NewEventManager())
 
 		switch msg := msg.(type) {
-		case *types.MsgBook:
-			res, err := msgServer.Book(sdk.WrapSDKContext(ctx), msg)
+		case *types.MsgCreateBooking:
+			res, err := msgServer.CreateBooking(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgComplete:
-			res, err := msgServer.Complete(sdk.WrapSDKContext(ctx), msg)
+		case *types.MsgCompleteBooking:
+			res, err := msgServer.CompleteBooking(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
 			// this line is used by starport scaffolding # 1
 		default:

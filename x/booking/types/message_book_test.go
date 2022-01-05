@@ -11,18 +11,18 @@ import (
 func TestMsgBook_ValidateBasic(t *testing.T) {
 	tests := []struct {
 		name string
-		msg  MsgBook
+		msg  MsgCreateBooking
 		err  error
 	}{
 		{
 			name: "invalid address",
-			msg: MsgBook{
+			msg: MsgCreateBooking{
 				Booker: "invalid_address",
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
-			msg: MsgBook{
+			msg: MsgCreateBooking{
 				Booker: sample.AccAddress(),
 			},
 		},

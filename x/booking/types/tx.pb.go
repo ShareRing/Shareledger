@@ -27,24 +27,24 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
-type MsgBook struct {
+type MsgCreateBooking struct {
 	Booker   string `protobuf:"bytes,1,opt,name=booker,proto3" json:"booker,omitempty"`
 	UUID     string `protobuf:"bytes,2,opt,name=UUID,proto3" json:"UUID,omitempty"`
 	Duration int64  `protobuf:"varint,3,opt,name=duration,proto3" json:"duration,omitempty"`
 }
 
-func (m *MsgBook) Reset()         { *m = MsgBook{} }
-func (m *MsgBook) String() string { return proto.CompactTextString(m) }
-func (*MsgBook) ProtoMessage()    {}
-func (*MsgBook) Descriptor() ([]byte, []int) {
+func (m *MsgCreateBooking) Reset()         { *m = MsgCreateBooking{} }
+func (m *MsgCreateBooking) String() string { return proto.CompactTextString(m) }
+func (*MsgCreateBooking) ProtoMessage()    {}
+func (*MsgCreateBooking) Descriptor() ([]byte, []int) {
 	return fileDescriptor_e243c29ad9ae20da, []int{0}
 }
-func (m *MsgBook) XXX_Unmarshal(b []byte) error {
+func (m *MsgCreateBooking) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgBook) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgCreateBooking) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgBook.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgCreateBooking.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -54,54 +54,54 @@ func (m *MsgBook) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return b[:n], nil
 	}
 }
-func (m *MsgBook) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgBook.Merge(m, src)
+func (m *MsgCreateBooking) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgCreateBooking.Merge(m, src)
 }
-func (m *MsgBook) XXX_Size() int {
+func (m *MsgCreateBooking) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgBook) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgBook.DiscardUnknown(m)
+func (m *MsgCreateBooking) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgCreateBooking.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgBook proto.InternalMessageInfo
+var xxx_messageInfo_MsgCreateBooking proto.InternalMessageInfo
 
-func (m *MsgBook) GetBooker() string {
+func (m *MsgCreateBooking) GetBooker() string {
 	if m != nil {
 		return m.Booker
 	}
 	return ""
 }
 
-func (m *MsgBook) GetUUID() string {
+func (m *MsgCreateBooking) GetUUID() string {
 	if m != nil {
 		return m.UUID
 	}
 	return ""
 }
 
-func (m *MsgBook) GetDuration() int64 {
+func (m *MsgCreateBooking) GetDuration() int64 {
 	if m != nil {
 		return m.Duration
 	}
 	return 0
 }
 
-type MsgBookResponse struct {
+type MsgCreateBookingResponse struct {
 }
 
-func (m *MsgBookResponse) Reset()         { *m = MsgBookResponse{} }
-func (m *MsgBookResponse) String() string { return proto.CompactTextString(m) }
-func (*MsgBookResponse) ProtoMessage()    {}
-func (*MsgBookResponse) Descriptor() ([]byte, []int) {
+func (m *MsgCreateBookingResponse) Reset()         { *m = MsgCreateBookingResponse{} }
+func (m *MsgCreateBookingResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgCreateBookingResponse) ProtoMessage()    {}
+func (*MsgCreateBookingResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_e243c29ad9ae20da, []int{1}
 }
-func (m *MsgBookResponse) XXX_Unmarshal(b []byte) error {
+func (m *MsgCreateBookingResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgBookResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgCreateBookingResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgBookResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgCreateBookingResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -111,35 +111,35 @@ func (m *MsgBookResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, err
 		return b[:n], nil
 	}
 }
-func (m *MsgBookResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgBookResponse.Merge(m, src)
+func (m *MsgCreateBookingResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgCreateBookingResponse.Merge(m, src)
 }
-func (m *MsgBookResponse) XXX_Size() int {
+func (m *MsgCreateBookingResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgBookResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgBookResponse.DiscardUnknown(m)
+func (m *MsgCreateBookingResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgCreateBookingResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgBookResponse proto.InternalMessageInfo
+var xxx_messageInfo_MsgCreateBookingResponse proto.InternalMessageInfo
 
-type MsgComplete struct {
+type MsgCompleteBooking struct {
 	Booker string `protobuf:"bytes,1,opt,name=booker,proto3" json:"booker,omitempty"`
 	BookID string `protobuf:"bytes,2,opt,name=bookID,proto3" json:"bookID,omitempty"`
 }
 
-func (m *MsgComplete) Reset()         { *m = MsgComplete{} }
-func (m *MsgComplete) String() string { return proto.CompactTextString(m) }
-func (*MsgComplete) ProtoMessage()    {}
-func (*MsgComplete) Descriptor() ([]byte, []int) {
+func (m *MsgCompleteBooking) Reset()         { *m = MsgCompleteBooking{} }
+func (m *MsgCompleteBooking) String() string { return proto.CompactTextString(m) }
+func (*MsgCompleteBooking) ProtoMessage()    {}
+func (*MsgCompleteBooking) Descriptor() ([]byte, []int) {
 	return fileDescriptor_e243c29ad9ae20da, []int{2}
 }
-func (m *MsgComplete) XXX_Unmarshal(b []byte) error {
+func (m *MsgCompleteBooking) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgComplete) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgCompleteBooking) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgComplete.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgCompleteBooking.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -149,47 +149,47 @@ func (m *MsgComplete) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) 
 		return b[:n], nil
 	}
 }
-func (m *MsgComplete) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgComplete.Merge(m, src)
+func (m *MsgCompleteBooking) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgCompleteBooking.Merge(m, src)
 }
-func (m *MsgComplete) XXX_Size() int {
+func (m *MsgCompleteBooking) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgComplete) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgComplete.DiscardUnknown(m)
+func (m *MsgCompleteBooking) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgCompleteBooking.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgComplete proto.InternalMessageInfo
+var xxx_messageInfo_MsgCompleteBooking proto.InternalMessageInfo
 
-func (m *MsgComplete) GetBooker() string {
+func (m *MsgCompleteBooking) GetBooker() string {
 	if m != nil {
 		return m.Booker
 	}
 	return ""
 }
 
-func (m *MsgComplete) GetBookID() string {
+func (m *MsgCompleteBooking) GetBookID() string {
 	if m != nil {
 		return m.BookID
 	}
 	return ""
 }
 
-type MsgCompleteResponse struct {
+type MsgCompleteBookingResponse struct {
 }
 
-func (m *MsgCompleteResponse) Reset()         { *m = MsgCompleteResponse{} }
-func (m *MsgCompleteResponse) String() string { return proto.CompactTextString(m) }
-func (*MsgCompleteResponse) ProtoMessage()    {}
-func (*MsgCompleteResponse) Descriptor() ([]byte, []int) {
+func (m *MsgCompleteBookingResponse) Reset()         { *m = MsgCompleteBookingResponse{} }
+func (m *MsgCompleteBookingResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgCompleteBookingResponse) ProtoMessage()    {}
+func (*MsgCompleteBookingResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_e243c29ad9ae20da, []int{3}
 }
-func (m *MsgCompleteResponse) XXX_Unmarshal(b []byte) error {
+func (m *MsgCompleteBookingResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgCompleteResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgCompleteBookingResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgCompleteResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgCompleteBookingResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -199,47 +199,47 @@ func (m *MsgCompleteResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte,
 		return b[:n], nil
 	}
 }
-func (m *MsgCompleteResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgCompleteResponse.Merge(m, src)
+func (m *MsgCompleteBookingResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgCompleteBookingResponse.Merge(m, src)
 }
-func (m *MsgCompleteResponse) XXX_Size() int {
+func (m *MsgCompleteBookingResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgCompleteResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgCompleteResponse.DiscardUnknown(m)
+func (m *MsgCompleteBookingResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgCompleteBookingResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgCompleteResponse proto.InternalMessageInfo
+var xxx_messageInfo_MsgCompleteBookingResponse proto.InternalMessageInfo
 
 func init() {
-	proto.RegisterType((*MsgBook)(nil), "shareledger.booking.MsgBook")
-	proto.RegisterType((*MsgBookResponse)(nil), "shareledger.booking.MsgBookResponse")
-	proto.RegisterType((*MsgComplete)(nil), "shareledger.booking.MsgComplete")
-	proto.RegisterType((*MsgCompleteResponse)(nil), "shareledger.booking.MsgCompleteResponse")
+	proto.RegisterType((*MsgCreateBooking)(nil), "shareledger.booking.MsgCreateBooking")
+	proto.RegisterType((*MsgCreateBookingResponse)(nil), "shareledger.booking.MsgCreateBookingResponse")
+	proto.RegisterType((*MsgCompleteBooking)(nil), "shareledger.booking.MsgCompleteBooking")
+	proto.RegisterType((*MsgCompleteBookingResponse)(nil), "shareledger.booking.MsgCompleteBookingResponse")
 }
 
 func init() { proto.RegisterFile("booking/tx.proto", fileDescriptor_e243c29ad9ae20da) }
 
 var fileDescriptor_e243c29ad9ae20da = []byte{
-	// 275 bytes of a gzipped FileDescriptorProto
+	// 277 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x12, 0x48, 0xca, 0xcf, 0xcf,
 	0xce, 0xcc, 0x4b, 0xd7, 0x2f, 0xa9, 0xd0, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0x12, 0x2e, 0xce,
-	0x48, 0x2c, 0x4a, 0xcd, 0x49, 0x4d, 0x49, 0x4f, 0x2d, 0xd2, 0x83, 0xca, 0x2a, 0x05, 0x72, 0xb1,
-	0xfb, 0x16, 0xa7, 0x3b, 0xe5, 0xe7, 0x67, 0x0b, 0x89, 0x71, 0xb1, 0x81, 0x44, 0x53, 0x8b, 0x24,
-	0x18, 0x15, 0x18, 0x35, 0x38, 0x83, 0xa0, 0x3c, 0x21, 0x21, 0x2e, 0x96, 0xd0, 0x50, 0x4f, 0x17,
-	0x09, 0x26, 0xb0, 0x28, 0x98, 0x2d, 0x24, 0xc5, 0xc5, 0x91, 0x52, 0x5a, 0x94, 0x58, 0x92, 0x99,
-	0x9f, 0x27, 0xc1, 0xac, 0xc0, 0xa8, 0xc1, 0x1c, 0x04, 0xe7, 0x2b, 0x09, 0x72, 0xf1, 0x43, 0x8d,
-	0x0c, 0x4a, 0x2d, 0x2e, 0xc8, 0xcf, 0x2b, 0x4e, 0x55, 0xb2, 0xe5, 0xe2, 0xf6, 0x2d, 0x4e, 0x77,
-	0xce, 0xcf, 0x2d, 0xc8, 0x49, 0x2d, 0x49, 0xc5, 0x69, 0x13, 0x54, 0x1c, 0x6e, 0x17, 0x94, 0xa7,
-	0x24, 0xca, 0x25, 0x8c, 0xa4, 0x1d, 0x66, 0xaa, 0xd1, 0x4a, 0x46, 0x2e, 0x66, 0xdf, 0xe2, 0x74,
-	0x21, 0x2f, 0x2e, 0x16, 0xb0, 0x07, 0x64, 0xf4, 0xb0, 0xf8, 0x50, 0x0f, 0xea, 0x16, 0x29, 0x15,
-	0x7c, 0xb2, 0x30, 0x33, 0x85, 0xc2, 0xb8, 0x38, 0xe0, 0xce, 0x54, 0xc0, 0xa5, 0x03, 0xa6, 0x42,
-	0x4a, 0x83, 0x90, 0x0a, 0x98, 0xb9, 0x4e, 0x5e, 0x27, 0x1e, 0xc9, 0x31, 0x5e, 0x78, 0x24, 0xc7,
-	0xf8, 0xe0, 0x91, 0x1c, 0xe3, 0x84, 0xc7, 0x72, 0x0c, 0x17, 0x1e, 0xcb, 0x31, 0xdc, 0x78, 0x2c,
-	0xc7, 0x10, 0x65, 0x90, 0x9e, 0x59, 0x92, 0x51, 0x9a, 0xa4, 0x97, 0x9c, 0x9f, 0xab, 0x0f, 0x36,
-	0xad, 0x08, 0x14, 0x6b, 0x48, 0xe6, 0xea, 0x57, 0xe8, 0xc3, 0xe3, 0xb2, 0xb2, 0x20, 0xb5, 0x38,
-	0x89, 0x0d, 0x1c, 0x9f, 0xc6, 0x80, 0x00, 0x00, 0x00, 0xff, 0xff, 0x64, 0x18, 0xbc, 0x59, 0xe3,
-	0x01, 0x00, 0x00,
+	0x48, 0x2c, 0x4a, 0xcd, 0x49, 0x4d, 0x49, 0x4f, 0x2d, 0xd2, 0x83, 0xca, 0x2a, 0x45, 0x71, 0x09,
+	0xf8, 0x16, 0xa7, 0x3b, 0x17, 0xa5, 0x26, 0x96, 0xa4, 0x3a, 0x41, 0xc4, 0x84, 0xc4, 0xb8, 0xd8,
+	0x40, 0xd2, 0xa9, 0x45, 0x12, 0x8c, 0x0a, 0x8c, 0x1a, 0x9c, 0x41, 0x50, 0x9e, 0x90, 0x10, 0x17,
+	0x4b, 0x68, 0xa8, 0xa7, 0x8b, 0x04, 0x13, 0x58, 0x14, 0xcc, 0x16, 0x92, 0xe2, 0xe2, 0x48, 0x29,
+	0x2d, 0x4a, 0x2c, 0xc9, 0xcc, 0xcf, 0x93, 0x60, 0x56, 0x60, 0xd4, 0x60, 0x0e, 0x82, 0xf3, 0x95,
+	0xa4, 0xb8, 0x24, 0xd0, 0xcd, 0x0e, 0x4a, 0x2d, 0x2e, 0xc8, 0xcf, 0x2b, 0x4e, 0x55, 0x72, 0xe1,
+	0x12, 0x02, 0xc9, 0xe5, 0xe7, 0x16, 0xe4, 0xa4, 0x12, 0xb6, 0x19, 0x2a, 0x0e, 0xb7, 0x1b, 0xca,
+	0x53, 0x92, 0xe1, 0x92, 0xc2, 0x34, 0x05, 0x66, 0x87, 0xd1, 0x4d, 0x46, 0x2e, 0x66, 0xdf, 0xe2,
+	0x74, 0xa1, 0x54, 0x2e, 0x5e, 0x54, 0x0f, 0xaa, 0xea, 0x61, 0x09, 0x0a, 0x3d, 0x74, 0xb7, 0x4a,
+	0xe9, 0x12, 0xa5, 0x0c, 0x66, 0x9d, 0x50, 0x36, 0x17, 0x3f, 0xba, 0x7f, 0xd4, 0x71, 0x9a, 0x80,
+	0xaa, 0x50, 0x4a, 0x9f, 0x48, 0x85, 0x30, 0xcb, 0x9c, 0xbc, 0x4e, 0x3c, 0x92, 0x63, 0xbc, 0xf0,
+	0x48, 0x8e, 0xf1, 0xc1, 0x23, 0x39, 0xc6, 0x09, 0x8f, 0xe5, 0x18, 0x2e, 0x3c, 0x96, 0x63, 0xb8,
+	0xf1, 0x58, 0x8e, 0x21, 0xca, 0x20, 0x3d, 0xb3, 0x24, 0xa3, 0x34, 0x49, 0x2f, 0x39, 0x3f, 0x57,
+	0x1f, 0x6c, 0x68, 0x11, 0x28, 0x15, 0x20, 0x19, 0xaf, 0x5f, 0xa1, 0x0f, 0x4f, 0x1b, 0x95, 0x05,
+	0xa9, 0xc5, 0x49, 0x6c, 0xe0, 0xf4, 0x61, 0x0c, 0x08, 0x00, 0x00, 0xff, 0xff, 0x80, 0x79, 0x0b,
+	0xdc, 0x33, 0x02, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -254,8 +254,8 @@ const _ = grpc.SupportPackageIsVersion4
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type MsgClient interface {
-	Book(ctx context.Context, in *MsgBook, opts ...grpc.CallOption) (*MsgBookResponse, error)
-	Complete(ctx context.Context, in *MsgComplete, opts ...grpc.CallOption) (*MsgCompleteResponse, error)
+	CreateBooking(ctx context.Context, in *MsgCreateBooking, opts ...grpc.CallOption) (*MsgCreateBookingResponse, error)
+	CompleteBooking(ctx context.Context, in *MsgCompleteBooking, opts ...grpc.CallOption) (*MsgCompleteBookingResponse, error)
 }
 
 type msgClient struct {
@@ -266,18 +266,18 @@ func NewMsgClient(cc grpc1.ClientConn) MsgClient {
 	return &msgClient{cc}
 }
 
-func (c *msgClient) Book(ctx context.Context, in *MsgBook, opts ...grpc.CallOption) (*MsgBookResponse, error) {
-	out := new(MsgBookResponse)
-	err := c.cc.Invoke(ctx, "/shareledger.booking.Msg/Book", in, out, opts...)
+func (c *msgClient) CreateBooking(ctx context.Context, in *MsgCreateBooking, opts ...grpc.CallOption) (*MsgCreateBookingResponse, error) {
+	out := new(MsgCreateBookingResponse)
+	err := c.cc.Invoke(ctx, "/shareledger.booking.Msg/CreateBooking", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *msgClient) Complete(ctx context.Context, in *MsgComplete, opts ...grpc.CallOption) (*MsgCompleteResponse, error) {
-	out := new(MsgCompleteResponse)
-	err := c.cc.Invoke(ctx, "/shareledger.booking.Msg/Complete", in, out, opts...)
+func (c *msgClient) CompleteBooking(ctx context.Context, in *MsgCompleteBooking, opts ...grpc.CallOption) (*MsgCompleteBookingResponse, error) {
+	out := new(MsgCompleteBookingResponse)
+	err := c.cc.Invoke(ctx, "/shareledger.booking.Msg/CompleteBooking", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -286,57 +286,57 @@ func (c *msgClient) Complete(ctx context.Context, in *MsgComplete, opts ...grpc.
 
 // MsgServer is the server API for Msg service.
 type MsgServer interface {
-	Book(context.Context, *MsgBook) (*MsgBookResponse, error)
-	Complete(context.Context, *MsgComplete) (*MsgCompleteResponse, error)
+	CreateBooking(context.Context, *MsgCreateBooking) (*MsgCreateBookingResponse, error)
+	CompleteBooking(context.Context, *MsgCompleteBooking) (*MsgCompleteBookingResponse, error)
 }
 
 // UnimplementedMsgServer can be embedded to have forward compatible implementations.
 type UnimplementedMsgServer struct {
 }
 
-func (*UnimplementedMsgServer) Book(ctx context.Context, req *MsgBook) (*MsgBookResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Book not implemented")
+func (*UnimplementedMsgServer) CreateBooking(ctx context.Context, req *MsgCreateBooking) (*MsgCreateBookingResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateBooking not implemented")
 }
-func (*UnimplementedMsgServer) Complete(ctx context.Context, req *MsgComplete) (*MsgCompleteResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Complete not implemented")
+func (*UnimplementedMsgServer) CompleteBooking(ctx context.Context, req *MsgCompleteBooking) (*MsgCompleteBookingResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CompleteBooking not implemented")
 }
 
 func RegisterMsgServer(s grpc1.Server, srv MsgServer) {
 	s.RegisterService(&_Msg_serviceDesc, srv)
 }
 
-func _Msg_Book_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgBook)
+func _Msg_CreateBooking_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgCreateBooking)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MsgServer).Book(ctx, in)
+		return srv.(MsgServer).CreateBooking(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/shareledger.booking.Msg/Book",
+		FullMethod: "/shareledger.booking.Msg/CreateBooking",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).Book(ctx, req.(*MsgBook))
+		return srv.(MsgServer).CreateBooking(ctx, req.(*MsgCreateBooking))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Msg_Complete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgComplete)
+func _Msg_CompleteBooking_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgCompleteBooking)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MsgServer).Complete(ctx, in)
+		return srv.(MsgServer).CompleteBooking(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/shareledger.booking.Msg/Complete",
+		FullMethod: "/shareledger.booking.Msg/CompleteBooking",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).Complete(ctx, req.(*MsgComplete))
+		return srv.(MsgServer).CompleteBooking(ctx, req.(*MsgCompleteBooking))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -346,19 +346,19 @@ var _Msg_serviceDesc = grpc.ServiceDesc{
 	HandlerType: (*MsgServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "Book",
-			Handler:    _Msg_Book_Handler,
+			MethodName: "CreateBooking",
+			Handler:    _Msg_CreateBooking_Handler,
 		},
 		{
-			MethodName: "Complete",
-			Handler:    _Msg_Complete_Handler,
+			MethodName: "CompleteBooking",
+			Handler:    _Msg_CompleteBooking_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
 	Metadata: "booking/tx.proto",
 }
 
-func (m *MsgBook) Marshal() (dAtA []byte, err error) {
+func (m *MsgCreateBooking) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -368,12 +368,12 @@ func (m *MsgBook) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgBook) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgCreateBooking) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgBook) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgCreateBooking) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -400,7 +400,7 @@ func (m *MsgBook) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgBookResponse) Marshal() (dAtA []byte, err error) {
+func (m *MsgCreateBookingResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -410,12 +410,12 @@ func (m *MsgBookResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgBookResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgCreateBookingResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgBookResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgCreateBookingResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -423,7 +423,7 @@ func (m *MsgBookResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgComplete) Marshal() (dAtA []byte, err error) {
+func (m *MsgCompleteBooking) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -433,12 +433,12 @@ func (m *MsgComplete) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgComplete) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgCompleteBooking) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgComplete) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgCompleteBooking) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -460,7 +460,7 @@ func (m *MsgComplete) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgCompleteResponse) Marshal() (dAtA []byte, err error) {
+func (m *MsgCompleteBookingResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -470,12 +470,12 @@ func (m *MsgCompleteResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgCompleteResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgCompleteBookingResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgCompleteResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgCompleteBookingResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -494,7 +494,7 @@ func encodeVarintTx(dAtA []byte, offset int, v uint64) int {
 	dAtA[offset] = uint8(v)
 	return base
 }
-func (m *MsgBook) Size() (n int) {
+func (m *MsgCreateBooking) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -514,7 +514,7 @@ func (m *MsgBook) Size() (n int) {
 	return n
 }
 
-func (m *MsgBookResponse) Size() (n int) {
+func (m *MsgCreateBookingResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -523,7 +523,7 @@ func (m *MsgBookResponse) Size() (n int) {
 	return n
 }
 
-func (m *MsgComplete) Size() (n int) {
+func (m *MsgCompleteBooking) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -540,7 +540,7 @@ func (m *MsgComplete) Size() (n int) {
 	return n
 }
 
-func (m *MsgCompleteResponse) Size() (n int) {
+func (m *MsgCompleteBookingResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -555,7 +555,7 @@ func sovTx(x uint64) (n int) {
 func sozTx(x uint64) (n int) {
 	return sovTx(uint64((x << 1) ^ uint64((int64(x) >> 63))))
 }
-func (m *MsgBook) Unmarshal(dAtA []byte) error {
+func (m *MsgCreateBooking) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -578,10 +578,10 @@ func (m *MsgBook) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgBook: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgCreateBooking: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgBook: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgCreateBooking: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -688,7 +688,7 @@ func (m *MsgBook) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgBookResponse) Unmarshal(dAtA []byte) error {
+func (m *MsgCreateBookingResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -711,10 +711,10 @@ func (m *MsgBookResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgBookResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgCreateBookingResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgBookResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgCreateBookingResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:
@@ -738,7 +738,7 @@ func (m *MsgBookResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgComplete) Unmarshal(dAtA []byte) error {
+func (m *MsgCompleteBooking) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -761,10 +761,10 @@ func (m *MsgComplete) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgComplete: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgCompleteBooking: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgComplete: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgCompleteBooking: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -852,7 +852,7 @@ func (m *MsgComplete) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgCompleteResponse) Unmarshal(dAtA []byte) error {
+func (m *MsgCompleteBookingResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -875,10 +875,10 @@ func (m *MsgCompleteResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgCompleteResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgCompleteBookingResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgCompleteResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgCompleteBookingResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:

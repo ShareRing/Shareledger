@@ -5,24 +5,24 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
-var _ sdk.Msg = &MsgComplete{}
+var _ sdk.Msg = &MsgCompleteBooking{}
 
-func NewMsgComplete(booker string, bookID string) *MsgComplete {
-	return &MsgComplete{
+func NewMsgComplete(booker string, bookID string) *MsgCompleteBooking {
+	return &MsgCompleteBooking{
 		Booker: booker,
 		BookID: bookID,
 	}
 }
 
-func (msg *MsgComplete) Route() string {
+func (msg *MsgCompleteBooking) Route() string {
 	return RouterKey
 }
 
-func (msg *MsgComplete) Type() string {
+func (msg *MsgCompleteBooking) Type() string {
 	return TypeBookCompleteMsg
 }
 
-func (msg *MsgComplete) GetSigners() []sdk.AccAddress {
+func (msg *MsgCompleteBooking) GetSigners() []sdk.AccAddress {
 	booker, err := sdk.AccAddressFromBech32(msg.Booker)
 	if err != nil {
 		panic(err)
@@ -30,12 +30,12 @@ func (msg *MsgComplete) GetSigners() []sdk.AccAddress {
 	return []sdk.AccAddress{booker}
 }
 
-func (msg *MsgComplete) GetSignBytes() []byte {
+func (msg *MsgCompleteBooking) GetSignBytes() []byte {
 	bz := ModuleCdc.MustMarshalJSON(msg)
 	return sdk.MustSortJSON(bz)
 }
 
-func (msg *MsgComplete) ValidateBasic() error {
+func (msg *MsgCompleteBooking) ValidateBasic() error {
 	_, err := sdk.AccAddressFromBech32(msg.Booker)
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid booker address (%s)", err)

@@ -18,7 +18,7 @@ var _ = strconv.Itoa(0)
 func CmdBook() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "book [uuid] [duration]",
-		Short: "Broadcast message Book",
+		Short: "Broadcast message CreateBooking",
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argUUID := args[0]
