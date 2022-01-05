@@ -42,7 +42,7 @@ func (k msgServer) buyShr(ctx sdk.Context, amount sdk.Int, buyer sdk.AccAddress)
 
 	cost, err := types.GetCostShrpForShr(currentShrpBalance, amount, rate)
 	if err != nil {
-		return nil
+		return sdkerrors.Wrapf(err, "current %v balance", currentShrpBalance)
 	}
 	if cost.Sub.Empty() {
 		return sdkerrors.ErrInsufficientFunds

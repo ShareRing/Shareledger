@@ -85,7 +85,7 @@ func SubShrpCoins(x sdk.Coins, y sdk.Coins) (z sdk.Coins, err error) {
 	yI := y.AmountOf(DenomSHRP).Mul(sdk.NewInt(100)).Add(y.AmountOf(DenomCent))
 
 	zI := xI.Sub(yI)
-	if zI.LT(sdk.NewInt(0)) {
+	if zI.IsNegative() {
 		err = sdkerrors.ErrInsufficientFunds
 		return
 	}

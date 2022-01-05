@@ -144,6 +144,20 @@ func TestGetCostShrpForShr(t *testing.T) {
 			oError: nil,
 			d:      "2.10 shrp buy 300 shr (1.5 shrp)-> new: 0.6 shrp -> cost: - 2 shrp +50 cent",
 		},
+		{
+			iCurrent: sdk.NewCoins(
+				sdk.NewCoin(DenomSHRP, sdk.NewInt(2)),
+				sdk.NewCoin(DenomCent, sdk.NewInt(10)),
+			),
+			iRate: rate,
+			iNeed: sdk.NewInt(30000000),
+			oCost: AdjustmentCoins{
+				Sub: nil,
+				Add: nil,
+			},
+			oError: sdkerrors.ErrInsufficientFunds,
+			d:      "insufficient funds",
+		},
 	}
 	for i, tc := range testCases {
 		if i == 2 {
@@ -181,6 +195,16 @@ func TestSubShrpCoins(t *testing.T) {
 			),
 			o: sdk.NewCoins(),
 			d: "0 - 0 = 0",
+		},
+		{
+			x: sdk.NewCoins(
+				sdk.NewCoin(DenomSHRP, sdk.NewInt(9)),
+			),
+			y: sdk.NewCoins(
+				sdk.NewCoin(DenomSHRP, sdk.NewInt(9)),
+			),
+			o: sdk.NewCoins(),
+			d: "9.99 - 9.99 = 0",
 		},
 		{
 			x: sdk.NewCoins(
