@@ -3,6 +3,7 @@ package ante
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 	documenttypes "github.com/sharering/shareledger/x/document/types"
 	electoraltypes "github.com/sharering/shareledger/x/electoral/types"
 	gentleminttypes "github.com/sharering/shareledger/x/gentlemint/types"
@@ -22,6 +23,7 @@ const (
 	ErrMsgNotBackupAccount   = "Transaction's Signer is not the backup account"
 	ErrMsgNotTreasureAccount = "Transaction's Signer is not treasure account"
 	ErrMsgNotOperatorAccount = "Transaction's Signer is not operator account"
+	ErrMsgNotVoterAccount    = "Transaction's Signer is not voter account"
 )
 
 func NewAuthDecorator(rk RoleKeeper, ik IDKeeper) Auth {
@@ -86,6 +88,12 @@ func (a Auth) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate bool, next sdk.Ant
 			*electoraltypes.MsgRevokeIdSigner:
 			if !a.rk.IsAccountOperator(ctx, signer) {
 				return ctx, sdkerrors.Wrapf(sdkerrors.ErrUnauthorized, ErrMsgNotOperatorAccount)
+			}
+		case
+			*stakingtypes.MsgCreateValidator,
+			*stakingtypes.MsgEditValidator:
+			if !a.rk.IsVoter(ctx, signer) {
+				return ctx, sdkerrors.Wrapf(sdkerrors.ErrUnauthorized, ErrMsgNotVoterAccount)
 			}
 		}
 	}

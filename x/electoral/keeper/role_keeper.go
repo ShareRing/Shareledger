@@ -18,7 +18,9 @@ func (k Keeper) IsTreasurer(ctx sdk.Context, address sdk.AccAddress) bool {
 func (k Keeper) IsAccountOperator(ctx sdk.Context, address sdk.AccAddress) bool {
 	return k.isActive(ctx, address, types.AccStateKeyAccOp)
 }
-
+func (k Keeper) IsVoter(ctx sdk.Context, address sdk.AccAddress) bool {
+	return k.isActive(ctx, address, types.AccStateKeyVoter)
+}
 func (k Keeper) IsSHRPLoader(ctx sdk.Context, address sdk.AccAddress) bool {
 	return k.isActive(ctx, address, types.AccStateKeyShrpLoaders)
 }

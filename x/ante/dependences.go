@@ -20,6 +20,7 @@ type RoleKeeper interface {
 	IsIDSigner(ctx sdk.Context, address sdk.AccAddress) bool
 	IsDocIssuer(ctx sdk.Context, address sdk.AccAddress) bool
 	IsAccountOperator(ctx sdk.Context, address sdk.AccAddress) bool
+	IsVoter(ctx sdk.Context, address sdk.AccAddress) bool
 }
 type IDKeeper interface {
 	GetFullIDByIDString(ctx sdk.Context, id string) (*idtypes.Id, bool)
