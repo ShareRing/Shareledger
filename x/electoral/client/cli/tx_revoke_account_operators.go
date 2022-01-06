@@ -13,7 +13,7 @@ import (
 
 var _ = strconv.Itoa(0)
 
-func CmdRevokeAccountOperator() *cobra.Command {
+func CmdRevokeAccountOperators() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "revoke-account-operators [addresses]",
 		Short: "Broadcast message revoke-account-operators",

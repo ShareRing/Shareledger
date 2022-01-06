@@ -13,9 +13,9 @@ import (
 
 var _ = strconv.Itoa(0)
 
-func CmdRevokeIdSigner() *cobra.Command {
+func CmdRevokeIdSigners() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "revoke-id-signer [addresses]",
+		Use:   "revoke-id-signers [addresses]",
 		Short: "Broadcast message revoke-id-signers",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {

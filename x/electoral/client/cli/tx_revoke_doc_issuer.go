@@ -13,10 +13,10 @@ import (
 
 var _ = strconv.Itoa(0)
 
-func CmdRevokeDocIssuer() *cobra.Command {
+func CmdRevokeDocIssuers() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "revoke-doc-issuer [addresses]",
-		Short: "Broadcast message revoke-doc-issuer",
+		Use:   "revoke-doc-issuers [addresses]",
+		Short: "Broadcast message revoke-doc-issuers",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 

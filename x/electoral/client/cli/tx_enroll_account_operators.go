@@ -13,7 +13,7 @@ import (
 
 var _ = strconv.Itoa(0)
 
-func CmdEnrollAccountOperator() *cobra.Command {
+func CmdEnrollAccountOperators() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "enroll-account-operators [addresses]",
 		Short: "Broadcast message enroll-account-operators",

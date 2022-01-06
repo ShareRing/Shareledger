@@ -14,7 +14,7 @@ import (
 
 var _ = strconv.Itoa(0)
 
-func CmdEnrollIdSigner() *cobra.Command {
+func CmdEnrollIdSigners() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "enroll-id-signers [addresses]",
 		Short: "Broadcast message enroll-id-signers",
