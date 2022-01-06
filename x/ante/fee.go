@@ -32,21 +32,23 @@ func NewCheckFeeDecorator(gk GentlemintKeeper) CheckFeeDecorator {
 }
 
 func (cfd CheckFeeDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate bool, next sdk.AnteHandler) (newCtx sdk.Context, err error) {
+	feeTx, ok := tx.(sdk.FeeTx)
+	if !ok {
+		return ctx, sdkerrors.Wrap(sdkerrors.ErrTxDecode, "Tx must be a FeeTx")
+	}
 	msgs := tx.GetMsgs()
-	msg := msgs[0]
-	feeLevel := getFeeLevel(msg)
-	if feeLevel != SKIP_CHECK_LEVEL {
-		exRate := cfd.gk.GetExchangeRateF(ctx)
-		requiredFees := getRequiredFees(feeLevel, exRate)
-		feeTx, ok := tx.(sdk.FeeTx)
-		if !ok {
-			return ctx, sdkerrors.Wrap(sdkerrors.ErrTxDecode, "Tx must be a FeeTx")
+	requiredFees := sdk.NewCoins()
+	for _, msg := range msgs {
+		feeLevel := getFeeLevel(msg)
+		if feeLevel != SKIP_CHECK_LEVEL {
+			exRate := cfd.gk.GetExchangeRateF(ctx)
+			requiredFees.Add(getRequiredFees(feeLevel, exRate)...)
 		}
-		shrTXFee := feeTx.GetFee().AmountOf(gentleminttypes.DenomSHR)
-		shrRequiredFee := requiredFees.AmountOf(gentleminttypes.DenomSHR)
-		if shrRequiredFee.GT(shrTXFee) {
-			return ctx, sdkerrors.Wrapf(sdkerrors.ErrInsufficientFee, "insufficient fees; got: %s shr required: %s shr", shrTXFee, shrRequiredFee)
-		}
+	}
+	shrTXFee := feeTx.GetFee().AmountOf(gentleminttypes.DenomSHR)
+	shrRequiredFee := requiredFees.AmountOf(gentleminttypes.DenomSHR)
+	if shrRequiredFee.GT(shrTXFee) {
+		return ctx, sdkerrors.Wrapf(sdkerrors.ErrInsufficientFee, "got: %s shr required: %s shr", shrTXFee, shrRequiredFee)
 	}
 	return next(ctx, tx, simulate)
 }
