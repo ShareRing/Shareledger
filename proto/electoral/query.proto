@@ -63,6 +63,16 @@ service Query {
 		option (google.api.http).get = "/shareledger/electoral/documentIssuers";
 	}
 
+// Queries a list of getVoters items.
+	rpc GetVoters(QueryGetVotersRequest) returns (QueryGetVotersResponse) {
+		option (google.api.http).get = "/sharering/shareledger/electoral/getVoters";
+	}
+
+// Queries a list of getLoaders items.
+	rpc GetLoaders(QueryGetLoadersRequest) returns (QueryGetLoadersResponse) {
+		option (google.api.http).get = "/sharering/shareledger/electoral/getLoaders";
+	}
+
 // this line is used by starport scaffolding # 2
 }
 
@@ -143,6 +153,20 @@ message QueryDocumentIssuersRequest {
 
 message QueryDocumentIssuersResponse {
 	repeated AccState accStates = 1;
+}
+
+message QueryGetVotersRequest {
+}
+
+message QueryGetVotersResponse {
+	repeated AccState voters = 1;
+}
+
+message QueryGetLoadersRequest {
+}
+
+message QueryGetLoadersResponse {
+	repeated AccState loaders = 1;
 }
 
 // this line is used by starport scaffolding # 3

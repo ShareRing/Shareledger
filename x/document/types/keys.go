@@ -19,7 +19,7 @@ const (
 	TypeMsgCreateDoc  = "create_doc"
 	TypeMsgCreateDocs = "create_docs"
 	TypeMsgUpdateDoc  = "update_doc"
-	TypeMsgRevokeDoc        = "revoke_doc"
+	TypeMsgRevokeDoc  = "revoke_doc"
 
 	DocDetailKeyPrefix = "DocumentDetail/"
 	DocBasicKeyPrefix  = "DocumentBasic/"

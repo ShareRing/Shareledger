@@ -13264,6 +13264,88 @@ paths:
                   additionalProperties: {}
       tags:
         - Query
+  /sharering/shareledger/electoral/getLoaders:
+    get:
+      summary: Queries a list of getLoaders items.
+      operationId: ShareledgerElectoralGetLoaders
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              loaders:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    key:
+                      type: string
+                    address:
+                      type: string
+                    status:
+                      type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
+  /sharering/shareledger/electoral/getVoters:
+    get:
+      summary: Queries a list of getVoters items.
+      operationId: ShareledgerElectoralGetVoters
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              voters:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    key:
+                      type: string
+                    address:
+                      type: string
+                    status:
+                      type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
   /shareledger/gentlemint/getExchangeRate:
     get:
       summary: Queries a exchangeRate by index.
@@ -21008,6 +21090,20 @@ definitions:
             type: string
           status:
             type: string
+  shareledger.electoral.QueryGetLoadersResponse:
+    type: object
+    properties:
+      loaders:
+        type: array
+        items:
+          type: object
+          properties:
+            key:
+              type: string
+            address:
+              type: string
+            status:
+              type: string
   shareledger.electoral.QueryGetVoterResponse:
     type: object
     properties:
@@ -21020,6 +21116,20 @@ definitions:
             type: string
           status:
             type: string
+  shareledger.electoral.QueryGetVotersResponse:
+    type: object
+    properties:
+      voters:
+        type: array
+        items:
+          type: object
+          properties:
+            key:
+              type: string
+            address:
+              type: string
+            status:
+              type: string
   shareledger.electoral.QueryIdSignerResponse:
     type: object
     properties:
