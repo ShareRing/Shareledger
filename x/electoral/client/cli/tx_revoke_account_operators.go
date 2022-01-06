@@ -13,10 +13,10 @@ import (
 
 var _ = strconv.Itoa(0)
 
-func CmdRevokeIdSigner() *cobra.Command {
+func CmdRevokeAccountOperator() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "revoke-id-signer [addresses]",
-		Short: "Broadcast message revoke-id-signer",
+		Use:   "revoke-account-operators [addresses]",
+		Short: "Broadcast message revoke-account-operators",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 
@@ -25,7 +25,7 @@ func CmdRevokeIdSigner() *cobra.Command {
 				return err
 			}
 
-			msg := types.NewMsgRevokeIdSigner(
+			msg := types.NewMsgRevokeAccountOperators(
 				clientCtx.GetFromAddress().String(),
 				args[:],
 			)

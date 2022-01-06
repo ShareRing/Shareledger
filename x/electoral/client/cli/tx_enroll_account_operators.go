@@ -13,19 +13,18 @@ import (
 
 var _ = strconv.Itoa(0)
 
-func CmdRevokeAccountOperator() *cobra.Command {
+func CmdEnrollAccountOperator() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "revoke-account-operator [addresses]",
-		Short: "Broadcast message revoke-account-operator",
+		Use:   "enroll-account-operators [addresses]",
+		Short: "Broadcast message enroll-account-operators",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
 			}
 
-			msg := types.NewMsgRevokeAccountOperator(
+			msg := types.NewMsgEnrollAccountOperators(
 				clientCtx.GetFromAddress().String(),
 				args[:],
 			)

@@ -16,8 +16,8 @@ var _ = strconv.Itoa(0)
 
 func CmdEnrollIdSigner() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "enroll-id-signer [addresses]",
-		Short: "Broadcast message enroll-id-signer",
+		Use:   "enroll-id-signers [addresses]",
+		Short: "Broadcast message enroll-id-signers",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			clientCtx, err := client.GetClientTxContext(cmd)
@@ -25,7 +25,7 @@ func CmdEnrollIdSigner() *cobra.Command {
 				return err
 			}
 
-			msg := types.NewMsgEnrollIdSigner(
+			msg := types.NewMsgEnrollIdSigners(
 				clientCtx.GetFromAddress().String(),
 				args[:],
 			)
@@ -62,7 +62,7 @@ func CmdEnrollIdSignerFromFile() *cobra.Command {
 				reqAddr = append(reqAddr, addrList[i])
 				// Send 5 addresses per time. Following the old logic of cli
 				if (i+1)%5 == 0 || i == lenAddr-1 {
-					msg := types.NewMsgEnrollIdSigner(
+					msg := types.NewMsgEnrollIdSigners(
 						clientCtx.GetFromAddress().String(),
 						reqAddr[:],
 					)

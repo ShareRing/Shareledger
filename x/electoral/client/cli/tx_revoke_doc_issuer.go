@@ -25,7 +25,7 @@ func CmdRevokeDocIssuer() *cobra.Command {
 				return err
 			}
 
-			msg := types.NewMsgRevokeDocIssuer(
+			msg := types.NewMsgRevokeDocIssuers(
 				clientCtx.GetFromAddress().String(),
 				args[:],
 			)

@@ -7,7 +7,7 @@ import (
 	"github.com/sharering/shareledger/x/electoral/types"
 )
 
-func (k msgServer) RevokeAccountOperator(goCtx context.Context, msg *types.MsgRevokeAccountOperator) (*types.MsgRevokeAccountOperatorResponse, error) {
+func (k msgServer) RevokeAccountOperators(goCtx context.Context, msg *types.MsgRevokeAccountOperators) (*types.MsgRevokeAccountOperatorsResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	if err := msg.ValidateBasic(); err != nil {
@@ -37,5 +37,5 @@ func (k msgServer) RevokeAccountOperator(goCtx context.Context, msg *types.MsgRe
 			),
 		},
 	)
-	return &types.MsgRevokeAccountOperatorResponse{}, nil
+	return &types.MsgRevokeAccountOperatorsResponse{}, nil
 }

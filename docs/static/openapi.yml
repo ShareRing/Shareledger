@@ -20873,21 +20873,21 @@ definitions:
         type: string
       status:
         type: string
-  shareledger.electoral.MsgEnrollAccountOperatorResponse:
+  shareledger.electoral.MsgEnrollAccountOperatorsResponse:
     type: object
-  shareledger.electoral.MsgEnrollDocIssuerResponse:
+  shareledger.electoral.MsgEnrollDocIssuersResponse:
     type: object
-  shareledger.electoral.MsgEnrollIdSignerResponse:
+  shareledger.electoral.MsgEnrollIdSignersResponse:
     type: object
   shareledger.electoral.MsgEnrollLoadersResponse:
     type: object
   shareledger.electoral.MsgEnrollVoterResponse:
     type: object
-  shareledger.electoral.MsgRevokeAccountOperatorResponse:
+  shareledger.electoral.MsgRevokeAccountOperatorsResponse:
     type: object
-  shareledger.electoral.MsgRevokeDocIssuerResponse:
+  shareledger.electoral.MsgRevokeDocIssuersResponse:
     type: object
-  shareledger.electoral.MsgRevokeIdSignerResponse:
+  shareledger.electoral.MsgRevokeIdSignersResponse:
     type: object
   shareledger.electoral.MsgRevokeLoadersResponse:
     type: object

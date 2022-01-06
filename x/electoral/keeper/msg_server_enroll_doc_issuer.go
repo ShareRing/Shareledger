@@ -7,7 +7,7 @@ import (
 	"github.com/sharering/shareledger/x/electoral/types"
 )
 
-func (k msgServer) EnrollDocIssuer(goCtx context.Context, msg *types.MsgEnrollDocIssuer) (*types.MsgEnrollDocIssuerResponse, error) {
+func (k msgServer) EnrollDocIssuers(goCtx context.Context, msg *types.MsgEnrollDocIssuers) (*types.MsgEnrollDocIssuersResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 	if err := msg.ValidateBasic(); err != nil {
 		return nil, err
@@ -32,5 +32,5 @@ func (k msgServer) EnrollDocIssuer(goCtx context.Context, msg *types.MsgEnrollDo
 			sdk.NewAttribute(sdk.AttributeKeyAction, types.EventTypeEnrollDocIssuer),
 		),
 	})
-	return &types.MsgEnrollDocIssuerResponse{}, nil
+	return &types.MsgEnrollDocIssuersResponse{}, nil
 }

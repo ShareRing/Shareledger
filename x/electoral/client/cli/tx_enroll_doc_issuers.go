@@ -15,8 +15,8 @@ var _ = strconv.Itoa(0)
 
 func CmdEnrollDocIssuer() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "enroll-doc-issuer [addresses]",
-		Short: "Broadcast message enroll-doc-issuer",
+		Use:   "enroll-doc-issuers [addresses]",
+		Short: "Broadcast message enroll-doc-issuers",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 
@@ -25,7 +25,7 @@ func CmdEnrollDocIssuer() *cobra.Command {
 				return err
 			}
 
-			msg := types.NewMsgEnrollDocIssuer(
+			msg := types.NewMsgEnrollDocIssuers(
 				clientCtx.GetFromAddress().String(),
 				args[:],
 			)

@@ -8,21 +8,21 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestMsgRevokeDocIssuer_ValidateBasic(t *testing.T) {
+func TestMsgEnrollIdSigner_ValidateBasic(t *testing.T) {
 	tests := []struct {
 		name string
-		msg  MsgRevokeDocIssuer
+		msg  MsgEnrollIdSigners
 		err  error
 	}{
 		{
 			name: "invalid address",
-			msg: MsgRevokeDocIssuer{
+			msg: MsgEnrollIdSigners{
 				Creator: "invalid_address",
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
-			msg: MsgRevokeDocIssuer{
+			msg: MsgEnrollIdSigners{
 				Creator: sample.AccAddress(),
 			},
 		},

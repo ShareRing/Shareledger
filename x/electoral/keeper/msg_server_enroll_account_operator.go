@@ -7,7 +7,7 @@ import (
 	"github.com/sharering/shareledger/x/electoral/types"
 )
 
-func (k msgServer) EnrollAccountOperator(goCtx context.Context, msg *types.MsgEnrollAccountOperator) (*types.MsgEnrollAccountOperatorResponse, error) {
+func (k msgServer) EnrollAccountOperators(goCtx context.Context, msg *types.MsgEnrollAccountOperators) (*types.MsgEnrollAccountOperatorsResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	if err := msg.ValidateBasic(); err != nil {
@@ -36,5 +36,5 @@ func (k msgServer) EnrollAccountOperator(goCtx context.Context, msg *types.MsgEn
 	},
 	)
 
-	return &types.MsgEnrollAccountOperatorResponse{}, nil
+	return &types.MsgEnrollAccountOperatorsResponse{}, nil
 }

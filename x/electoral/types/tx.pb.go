@@ -379,23 +379,23 @@ func (m *MsgRevokeLoadersResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_MsgRevokeLoadersResponse proto.InternalMessageInfo
 
-type MsgEnrollIdSigner struct {
+type MsgEnrollIdSigners struct {
 	Creator   string   `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
 	Addresses []string `protobuf:"bytes,2,rep,name=addresses,proto3" json:"addresses,omitempty"`
 }
 
-func (m *MsgEnrollIdSigner) Reset()         { *m = MsgEnrollIdSigner{} }
-func (m *MsgEnrollIdSigner) String() string { return proto.CompactTextString(m) }
-func (*MsgEnrollIdSigner) ProtoMessage()    {}
-func (*MsgEnrollIdSigner) Descriptor() ([]byte, []int) {
+func (m *MsgEnrollIdSigners) Reset()         { *m = MsgEnrollIdSigners{} }
+func (m *MsgEnrollIdSigners) String() string { return proto.CompactTextString(m) }
+func (*MsgEnrollIdSigners) ProtoMessage()    {}
+func (*MsgEnrollIdSigners) Descriptor() ([]byte, []int) {
 	return fileDescriptor_10832aea077e441f, []int{8}
 }
-func (m *MsgEnrollIdSigner) XXX_Unmarshal(b []byte) error {
+func (m *MsgEnrollIdSigners) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgEnrollIdSigner) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgEnrollIdSigners) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgEnrollIdSigner.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgEnrollIdSigners.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -405,47 +405,47 @@ func (m *MsgEnrollIdSigner) XXX_Marshal(b []byte, deterministic bool) ([]byte, e
 		return b[:n], nil
 	}
 }
-func (m *MsgEnrollIdSigner) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgEnrollIdSigner.Merge(m, src)
+func (m *MsgEnrollIdSigners) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgEnrollIdSigners.Merge(m, src)
 }
-func (m *MsgEnrollIdSigner) XXX_Size() int {
+func (m *MsgEnrollIdSigners) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgEnrollIdSigner) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgEnrollIdSigner.DiscardUnknown(m)
+func (m *MsgEnrollIdSigners) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgEnrollIdSigners.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgEnrollIdSigner proto.InternalMessageInfo
+var xxx_messageInfo_MsgEnrollIdSigners proto.InternalMessageInfo
 
-func (m *MsgEnrollIdSigner) GetCreator() string {
+func (m *MsgEnrollIdSigners) GetCreator() string {
 	if m != nil {
 		return m.Creator
 	}
 	return ""
 }
 
-func (m *MsgEnrollIdSigner) GetAddresses() []string {
+func (m *MsgEnrollIdSigners) GetAddresses() []string {
 	if m != nil {
 		return m.Addresses
 	}
 	return nil
 }
 
-type MsgEnrollIdSignerResponse struct {
+type MsgEnrollIdSignersResponse struct {
 }
 
-func (m *MsgEnrollIdSignerResponse) Reset()         { *m = MsgEnrollIdSignerResponse{} }
-func (m *MsgEnrollIdSignerResponse) String() string { return proto.CompactTextString(m) }
-func (*MsgEnrollIdSignerResponse) ProtoMessage()    {}
-func (*MsgEnrollIdSignerResponse) Descriptor() ([]byte, []int) {
+func (m *MsgEnrollIdSignersResponse) Reset()         { *m = MsgEnrollIdSignersResponse{} }
+func (m *MsgEnrollIdSignersResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgEnrollIdSignersResponse) ProtoMessage()    {}
+func (*MsgEnrollIdSignersResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_10832aea077e441f, []int{9}
 }
-func (m *MsgEnrollIdSignerResponse) XXX_Unmarshal(b []byte) error {
+func (m *MsgEnrollIdSignersResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgEnrollIdSignerResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgEnrollIdSignersResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgEnrollIdSignerResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgEnrollIdSignersResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -455,35 +455,35 @@ func (m *MsgEnrollIdSignerResponse) XXX_Marshal(b []byte, deterministic bool) ([
 		return b[:n], nil
 	}
 }
-func (m *MsgEnrollIdSignerResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgEnrollIdSignerResponse.Merge(m, src)
+func (m *MsgEnrollIdSignersResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgEnrollIdSignersResponse.Merge(m, src)
 }
-func (m *MsgEnrollIdSignerResponse) XXX_Size() int {
+func (m *MsgEnrollIdSignersResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgEnrollIdSignerResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgEnrollIdSignerResponse.DiscardUnknown(m)
+func (m *MsgEnrollIdSignersResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgEnrollIdSignersResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgEnrollIdSignerResponse proto.InternalMessageInfo
+var xxx_messageInfo_MsgEnrollIdSignersResponse proto.InternalMessageInfo
 
-type MsgRevokeIdSigner struct {
+type MsgRevokeIdSigners struct {
 	Creator   string   `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
 	Addresses []string `protobuf:"bytes,2,rep,name=addresses,proto3" json:"addresses,omitempty"`
 }
 
-func (m *MsgRevokeIdSigner) Reset()         { *m = MsgRevokeIdSigner{} }
-func (m *MsgRevokeIdSigner) String() string { return proto.CompactTextString(m) }
-func (*MsgRevokeIdSigner) ProtoMessage()    {}
-func (*MsgRevokeIdSigner) Descriptor() ([]byte, []int) {
+func (m *MsgRevokeIdSigners) Reset()         { *m = MsgRevokeIdSigners{} }
+func (m *MsgRevokeIdSigners) String() string { return proto.CompactTextString(m) }
+func (*MsgRevokeIdSigners) ProtoMessage()    {}
+func (*MsgRevokeIdSigners) Descriptor() ([]byte, []int) {
 	return fileDescriptor_10832aea077e441f, []int{10}
 }
-func (m *MsgRevokeIdSigner) XXX_Unmarshal(b []byte) error {
+func (m *MsgRevokeIdSigners) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgRevokeIdSigner) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgRevokeIdSigners) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgRevokeIdSigner.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgRevokeIdSigners.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -493,47 +493,47 @@ func (m *MsgRevokeIdSigner) XXX_Marshal(b []byte, deterministic bool) ([]byte, e
 		return b[:n], nil
 	}
 }
-func (m *MsgRevokeIdSigner) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgRevokeIdSigner.Merge(m, src)
+func (m *MsgRevokeIdSigners) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgRevokeIdSigners.Merge(m, src)
 }
-func (m *MsgRevokeIdSigner) XXX_Size() int {
+func (m *MsgRevokeIdSigners) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgRevokeIdSigner) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgRevokeIdSigner.DiscardUnknown(m)
+func (m *MsgRevokeIdSigners) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgRevokeIdSigners.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgRevokeIdSigner proto.InternalMessageInfo
+var xxx_messageInfo_MsgRevokeIdSigners proto.InternalMessageInfo
 
-func (m *MsgRevokeIdSigner) GetCreator() string {
+func (m *MsgRevokeIdSigners) GetCreator() string {
 	if m != nil {
 		return m.Creator
 	}
 	return ""
 }
 
-func (m *MsgRevokeIdSigner) GetAddresses() []string {
+func (m *MsgRevokeIdSigners) GetAddresses() []string {
 	if m != nil {
 		return m.Addresses
 	}
 	return nil
 }
 
-type MsgRevokeIdSignerResponse struct {
+type MsgRevokeIdSignersResponse struct {
 }
 
-func (m *MsgRevokeIdSignerResponse) Reset()         { *m = MsgRevokeIdSignerResponse{} }
-func (m *MsgRevokeIdSignerResponse) String() string { return proto.CompactTextString(m) }
-func (*MsgRevokeIdSignerResponse) ProtoMessage()    {}
-func (*MsgRevokeIdSignerResponse) Descriptor() ([]byte, []int) {
+func (m *MsgRevokeIdSignersResponse) Reset()         { *m = MsgRevokeIdSignersResponse{} }
+func (m *MsgRevokeIdSignersResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgRevokeIdSignersResponse) ProtoMessage()    {}
+func (*MsgRevokeIdSignersResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_10832aea077e441f, []int{11}
 }
-func (m *MsgRevokeIdSignerResponse) XXX_Unmarshal(b []byte) error {
+func (m *MsgRevokeIdSignersResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgRevokeIdSignerResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgRevokeIdSignersResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgRevokeIdSignerResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgRevokeIdSignersResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -543,35 +543,35 @@ func (m *MsgRevokeIdSignerResponse) XXX_Marshal(b []byte, deterministic bool) ([
 		return b[:n], nil
 	}
 }
-func (m *MsgRevokeIdSignerResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgRevokeIdSignerResponse.Merge(m, src)
+func (m *MsgRevokeIdSignersResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgRevokeIdSignersResponse.Merge(m, src)
 }
-func (m *MsgRevokeIdSignerResponse) XXX_Size() int {
+func (m *MsgRevokeIdSignersResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgRevokeIdSignerResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgRevokeIdSignerResponse.DiscardUnknown(m)
+func (m *MsgRevokeIdSignersResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgRevokeIdSignersResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgRevokeIdSignerResponse proto.InternalMessageInfo
+var xxx_messageInfo_MsgRevokeIdSignersResponse proto.InternalMessageInfo
 
-type MsgEnrollDocIssuer struct {
+type MsgEnrollDocIssuers struct {
 	Creator   string   `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
 	Addresses []string `protobuf:"bytes,2,rep,name=addresses,proto3" json:"addresses,omitempty"`
 }
 
-func (m *MsgEnrollDocIssuer) Reset()         { *m = MsgEnrollDocIssuer{} }
-func (m *MsgEnrollDocIssuer) String() string { return proto.CompactTextString(m) }
-func (*MsgEnrollDocIssuer) ProtoMessage()    {}
-func (*MsgEnrollDocIssuer) Descriptor() ([]byte, []int) {
+func (m *MsgEnrollDocIssuers) Reset()         { *m = MsgEnrollDocIssuers{} }
+func (m *MsgEnrollDocIssuers) String() string { return proto.CompactTextString(m) }
+func (*MsgEnrollDocIssuers) ProtoMessage()    {}
+func (*MsgEnrollDocIssuers) Descriptor() ([]byte, []int) {
 	return fileDescriptor_10832aea077e441f, []int{12}
 }
-func (m *MsgEnrollDocIssuer) XXX_Unmarshal(b []byte) error {
+func (m *MsgEnrollDocIssuers) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgEnrollDocIssuer) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgEnrollDocIssuers) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgEnrollDocIssuer.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgEnrollDocIssuers.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -581,47 +581,47 @@ func (m *MsgEnrollDocIssuer) XXX_Marshal(b []byte, deterministic bool) ([]byte, 
 		return b[:n], nil
 	}
 }
-func (m *MsgEnrollDocIssuer) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgEnrollDocIssuer.Merge(m, src)
+func (m *MsgEnrollDocIssuers) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgEnrollDocIssuers.Merge(m, src)
 }
-func (m *MsgEnrollDocIssuer) XXX_Size() int {
+func (m *MsgEnrollDocIssuers) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgEnrollDocIssuer) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgEnrollDocIssuer.DiscardUnknown(m)
+func (m *MsgEnrollDocIssuers) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgEnrollDocIssuers.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgEnrollDocIssuer proto.InternalMessageInfo
+var xxx_messageInfo_MsgEnrollDocIssuers proto.InternalMessageInfo
 
-func (m *MsgEnrollDocIssuer) GetCreator() string {
+func (m *MsgEnrollDocIssuers) GetCreator() string {
 	if m != nil {
 		return m.Creator
 	}
 	return ""
 }
 
-func (m *MsgEnrollDocIssuer) GetAddresses() []string {
+func (m *MsgEnrollDocIssuers) GetAddresses() []string {
 	if m != nil {
 		return m.Addresses
 	}
 	return nil
 }
 
-type MsgEnrollDocIssuerResponse struct {
+type MsgEnrollDocIssuersResponse struct {
 }
 
-func (m *MsgEnrollDocIssuerResponse) Reset()         { *m = MsgEnrollDocIssuerResponse{} }
-func (m *MsgEnrollDocIssuerResponse) String() string { return proto.CompactTextString(m) }
-func (*MsgEnrollDocIssuerResponse) ProtoMessage()    {}
-func (*MsgEnrollDocIssuerResponse) Descriptor() ([]byte, []int) {
+func (m *MsgEnrollDocIssuersResponse) Reset()         { *m = MsgEnrollDocIssuersResponse{} }
+func (m *MsgEnrollDocIssuersResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgEnrollDocIssuersResponse) ProtoMessage()    {}
+func (*MsgEnrollDocIssuersResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_10832aea077e441f, []int{13}
 }
-func (m *MsgEnrollDocIssuerResponse) XXX_Unmarshal(b []byte) error {
+func (m *MsgEnrollDocIssuersResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgEnrollDocIssuerResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgEnrollDocIssuersResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgEnrollDocIssuerResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgEnrollDocIssuersResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -631,35 +631,35 @@ func (m *MsgEnrollDocIssuerResponse) XXX_Marshal(b []byte, deterministic bool) (
 		return b[:n], nil
 	}
 }
-func (m *MsgEnrollDocIssuerResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgEnrollDocIssuerResponse.Merge(m, src)
+func (m *MsgEnrollDocIssuersResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgEnrollDocIssuersResponse.Merge(m, src)
 }
-func (m *MsgEnrollDocIssuerResponse) XXX_Size() int {
+func (m *MsgEnrollDocIssuersResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgEnrollDocIssuerResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgEnrollDocIssuerResponse.DiscardUnknown(m)
+func (m *MsgEnrollDocIssuersResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgEnrollDocIssuersResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgEnrollDocIssuerResponse proto.InternalMessageInfo
+var xxx_messageInfo_MsgEnrollDocIssuersResponse proto.InternalMessageInfo
 
-type MsgRevokeDocIssuer struct {
+type MsgRevokeDocIssuers struct {
 	Creator   string   `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
 	Addresses []string `protobuf:"bytes,2,rep,name=addresses,proto3" json:"addresses,omitempty"`
 }
 
-func (m *MsgRevokeDocIssuer) Reset()         { *m = MsgRevokeDocIssuer{} }
-func (m *MsgRevokeDocIssuer) String() string { return proto.CompactTextString(m) }
-func (*MsgRevokeDocIssuer) ProtoMessage()    {}
-func (*MsgRevokeDocIssuer) Descriptor() ([]byte, []int) {
+func (m *MsgRevokeDocIssuers) Reset()         { *m = MsgRevokeDocIssuers{} }
+func (m *MsgRevokeDocIssuers) String() string { return proto.CompactTextString(m) }
+func (*MsgRevokeDocIssuers) ProtoMessage()    {}
+func (*MsgRevokeDocIssuers) Descriptor() ([]byte, []int) {
 	return fileDescriptor_10832aea077e441f, []int{14}
 }
-func (m *MsgRevokeDocIssuer) XXX_Unmarshal(b []byte) error {
+func (m *MsgRevokeDocIssuers) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgRevokeDocIssuer) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgRevokeDocIssuers) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgRevokeDocIssuer.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgRevokeDocIssuers.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -669,47 +669,47 @@ func (m *MsgRevokeDocIssuer) XXX_Marshal(b []byte, deterministic bool) ([]byte, 
 		return b[:n], nil
 	}
 }
-func (m *MsgRevokeDocIssuer) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgRevokeDocIssuer.Merge(m, src)
+func (m *MsgRevokeDocIssuers) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgRevokeDocIssuers.Merge(m, src)
 }
-func (m *MsgRevokeDocIssuer) XXX_Size() int {
+func (m *MsgRevokeDocIssuers) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgRevokeDocIssuer) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgRevokeDocIssuer.DiscardUnknown(m)
+func (m *MsgRevokeDocIssuers) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgRevokeDocIssuers.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgRevokeDocIssuer proto.InternalMessageInfo
+var xxx_messageInfo_MsgRevokeDocIssuers proto.InternalMessageInfo
 
-func (m *MsgRevokeDocIssuer) GetCreator() string {
+func (m *MsgRevokeDocIssuers) GetCreator() string {
 	if m != nil {
 		return m.Creator
 	}
 	return ""
 }
 
-func (m *MsgRevokeDocIssuer) GetAddresses() []string {
+func (m *MsgRevokeDocIssuers) GetAddresses() []string {
 	if m != nil {
 		return m.Addresses
 	}
 	return nil
 }
 
-type MsgRevokeDocIssuerResponse struct {
+type MsgRevokeDocIssuersResponse struct {
 }
 
-func (m *MsgRevokeDocIssuerResponse) Reset()         { *m = MsgRevokeDocIssuerResponse{} }
-func (m *MsgRevokeDocIssuerResponse) String() string { return proto.CompactTextString(m) }
-func (*MsgRevokeDocIssuerResponse) ProtoMessage()    {}
-func (*MsgRevokeDocIssuerResponse) Descriptor() ([]byte, []int) {
+func (m *MsgRevokeDocIssuersResponse) Reset()         { *m = MsgRevokeDocIssuersResponse{} }
+func (m *MsgRevokeDocIssuersResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgRevokeDocIssuersResponse) ProtoMessage()    {}
+func (*MsgRevokeDocIssuersResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_10832aea077e441f, []int{15}
 }
-func (m *MsgRevokeDocIssuerResponse) XXX_Unmarshal(b []byte) error {
+func (m *MsgRevokeDocIssuersResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgRevokeDocIssuerResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgRevokeDocIssuersResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgRevokeDocIssuerResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgRevokeDocIssuersResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -719,35 +719,35 @@ func (m *MsgRevokeDocIssuerResponse) XXX_Marshal(b []byte, deterministic bool) (
 		return b[:n], nil
 	}
 }
-func (m *MsgRevokeDocIssuerResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgRevokeDocIssuerResponse.Merge(m, src)
+func (m *MsgRevokeDocIssuersResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgRevokeDocIssuersResponse.Merge(m, src)
 }
-func (m *MsgRevokeDocIssuerResponse) XXX_Size() int {
+func (m *MsgRevokeDocIssuersResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgRevokeDocIssuerResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgRevokeDocIssuerResponse.DiscardUnknown(m)
+func (m *MsgRevokeDocIssuersResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgRevokeDocIssuersResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgRevokeDocIssuerResponse proto.InternalMessageInfo
+var xxx_messageInfo_MsgRevokeDocIssuersResponse proto.InternalMessageInfo
 
-type MsgEnrollAccountOperator struct {
+type MsgEnrollAccountOperators struct {
 	Creator   string   `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
 	Addresses []string `protobuf:"bytes,2,rep,name=addresses,proto3" json:"addresses,omitempty"`
 }
 
-func (m *MsgEnrollAccountOperator) Reset()         { *m = MsgEnrollAccountOperator{} }
-func (m *MsgEnrollAccountOperator) String() string { return proto.CompactTextString(m) }
-func (*MsgEnrollAccountOperator) ProtoMessage()    {}
-func (*MsgEnrollAccountOperator) Descriptor() ([]byte, []int) {
+func (m *MsgEnrollAccountOperators) Reset()         { *m = MsgEnrollAccountOperators{} }
+func (m *MsgEnrollAccountOperators) String() string { return proto.CompactTextString(m) }
+func (*MsgEnrollAccountOperators) ProtoMessage()    {}
+func (*MsgEnrollAccountOperators) Descriptor() ([]byte, []int) {
 	return fileDescriptor_10832aea077e441f, []int{16}
 }
-func (m *MsgEnrollAccountOperator) XXX_Unmarshal(b []byte) error {
+func (m *MsgEnrollAccountOperators) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgEnrollAccountOperator) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgEnrollAccountOperators) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgEnrollAccountOperator.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgEnrollAccountOperators.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -757,47 +757,47 @@ func (m *MsgEnrollAccountOperator) XXX_Marshal(b []byte, deterministic bool) ([]
 		return b[:n], nil
 	}
 }
-func (m *MsgEnrollAccountOperator) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgEnrollAccountOperator.Merge(m, src)
+func (m *MsgEnrollAccountOperators) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgEnrollAccountOperators.Merge(m, src)
 }
-func (m *MsgEnrollAccountOperator) XXX_Size() int {
+func (m *MsgEnrollAccountOperators) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgEnrollAccountOperator) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgEnrollAccountOperator.DiscardUnknown(m)
+func (m *MsgEnrollAccountOperators) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgEnrollAccountOperators.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgEnrollAccountOperator proto.InternalMessageInfo
+var xxx_messageInfo_MsgEnrollAccountOperators proto.InternalMessageInfo
 
-func (m *MsgEnrollAccountOperator) GetCreator() string {
+func (m *MsgEnrollAccountOperators) GetCreator() string {
 	if m != nil {
 		return m.Creator
 	}
 	return ""
 }
 
-func (m *MsgEnrollAccountOperator) GetAddresses() []string {
+func (m *MsgEnrollAccountOperators) GetAddresses() []string {
 	if m != nil {
 		return m.Addresses
 	}
 	return nil
 }
 
-type MsgEnrollAccountOperatorResponse struct {
+type MsgEnrollAccountOperatorsResponse struct {
 }
 
-func (m *MsgEnrollAccountOperatorResponse) Reset()         { *m = MsgEnrollAccountOperatorResponse{} }
-func (m *MsgEnrollAccountOperatorResponse) String() string { return proto.CompactTextString(m) }
-func (*MsgEnrollAccountOperatorResponse) ProtoMessage()    {}
-func (*MsgEnrollAccountOperatorResponse) Descriptor() ([]byte, []int) {
+func (m *MsgEnrollAccountOperatorsResponse) Reset()         { *m = MsgEnrollAccountOperatorsResponse{} }
+func (m *MsgEnrollAccountOperatorsResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgEnrollAccountOperatorsResponse) ProtoMessage()    {}
+func (*MsgEnrollAccountOperatorsResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_10832aea077e441f, []int{17}
 }
-func (m *MsgEnrollAccountOperatorResponse) XXX_Unmarshal(b []byte) error {
+func (m *MsgEnrollAccountOperatorsResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgEnrollAccountOperatorResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgEnrollAccountOperatorsResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgEnrollAccountOperatorResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgEnrollAccountOperatorsResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -807,35 +807,35 @@ func (m *MsgEnrollAccountOperatorResponse) XXX_Marshal(b []byte, deterministic b
 		return b[:n], nil
 	}
 }
-func (m *MsgEnrollAccountOperatorResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgEnrollAccountOperatorResponse.Merge(m, src)
+func (m *MsgEnrollAccountOperatorsResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgEnrollAccountOperatorsResponse.Merge(m, src)
 }
-func (m *MsgEnrollAccountOperatorResponse) XXX_Size() int {
+func (m *MsgEnrollAccountOperatorsResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgEnrollAccountOperatorResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgEnrollAccountOperatorResponse.DiscardUnknown(m)
+func (m *MsgEnrollAccountOperatorsResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgEnrollAccountOperatorsResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgEnrollAccountOperatorResponse proto.InternalMessageInfo
+var xxx_messageInfo_MsgEnrollAccountOperatorsResponse proto.InternalMessageInfo
 
-type MsgRevokeAccountOperator struct {
+type MsgRevokeAccountOperators struct {
 	Creator   string   `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
 	Addresses []string `protobuf:"bytes,2,rep,name=addresses,proto3" json:"addresses,omitempty"`
 }
 
-func (m *MsgRevokeAccountOperator) Reset()         { *m = MsgRevokeAccountOperator{} }
-func (m *MsgRevokeAccountOperator) String() string { return proto.CompactTextString(m) }
-func (*MsgRevokeAccountOperator) ProtoMessage()    {}
-func (*MsgRevokeAccountOperator) Descriptor() ([]byte, []int) {
+func (m *MsgRevokeAccountOperators) Reset()         { *m = MsgRevokeAccountOperators{} }
+func (m *MsgRevokeAccountOperators) String() string { return proto.CompactTextString(m) }
+func (*MsgRevokeAccountOperators) ProtoMessage()    {}
+func (*MsgRevokeAccountOperators) Descriptor() ([]byte, []int) {
 	return fileDescriptor_10832aea077e441f, []int{18}
 }
-func (m *MsgRevokeAccountOperator) XXX_Unmarshal(b []byte) error {
+func (m *MsgRevokeAccountOperators) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgRevokeAccountOperator) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgRevokeAccountOperators) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgRevokeAccountOperator.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgRevokeAccountOperators.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -845,47 +845,47 @@ func (m *MsgRevokeAccountOperator) XXX_Marshal(b []byte, deterministic bool) ([]
 		return b[:n], nil
 	}
 }
-func (m *MsgRevokeAccountOperator) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgRevokeAccountOperator.Merge(m, src)
+func (m *MsgRevokeAccountOperators) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgRevokeAccountOperators.Merge(m, src)
 }
-func (m *MsgRevokeAccountOperator) XXX_Size() int {
+func (m *MsgRevokeAccountOperators) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgRevokeAccountOperator) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgRevokeAccountOperator.DiscardUnknown(m)
+func (m *MsgRevokeAccountOperators) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgRevokeAccountOperators.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgRevokeAccountOperator proto.InternalMessageInfo
+var xxx_messageInfo_MsgRevokeAccountOperators proto.InternalMessageInfo
 
-func (m *MsgRevokeAccountOperator) GetCreator() string {
+func (m *MsgRevokeAccountOperators) GetCreator() string {
 	if m != nil {
 		return m.Creator
 	}
 	return ""
 }
 
-func (m *MsgRevokeAccountOperator) GetAddresses() []string {
+func (m *MsgRevokeAccountOperators) GetAddresses() []string {
 	if m != nil {
 		return m.Addresses
 	}
 	return nil
 }
 
-type MsgRevokeAccountOperatorResponse struct {
+type MsgRevokeAccountOperatorsResponse struct {
 }
 
-func (m *MsgRevokeAccountOperatorResponse) Reset()         { *m = MsgRevokeAccountOperatorResponse{} }
-func (m *MsgRevokeAccountOperatorResponse) String() string { return proto.CompactTextString(m) }
-func (*MsgRevokeAccountOperatorResponse) ProtoMessage()    {}
-func (*MsgRevokeAccountOperatorResponse) Descriptor() ([]byte, []int) {
+func (m *MsgRevokeAccountOperatorsResponse) Reset()         { *m = MsgRevokeAccountOperatorsResponse{} }
+func (m *MsgRevokeAccountOperatorsResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgRevokeAccountOperatorsResponse) ProtoMessage()    {}
+func (*MsgRevokeAccountOperatorsResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_10832aea077e441f, []int{19}
 }
-func (m *MsgRevokeAccountOperatorResponse) XXX_Unmarshal(b []byte) error {
+func (m *MsgRevokeAccountOperatorsResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgRevokeAccountOperatorResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgRevokeAccountOperatorsResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgRevokeAccountOperatorResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgRevokeAccountOperatorsResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -895,17 +895,17 @@ func (m *MsgRevokeAccountOperatorResponse) XXX_Marshal(b []byte, deterministic b
 		return b[:n], nil
 	}
 }
-func (m *MsgRevokeAccountOperatorResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgRevokeAccountOperatorResponse.Merge(m, src)
+func (m *MsgRevokeAccountOperatorsResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgRevokeAccountOperatorsResponse.Merge(m, src)
 }
-func (m *MsgRevokeAccountOperatorResponse) XXX_Size() int {
+func (m *MsgRevokeAccountOperatorsResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgRevokeAccountOperatorResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgRevokeAccountOperatorResponse.DiscardUnknown(m)
+func (m *MsgRevokeAccountOperatorsResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgRevokeAccountOperatorsResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgRevokeAccountOperatorResponse proto.InternalMessageInfo
+var xxx_messageInfo_MsgRevokeAccountOperatorsResponse proto.InternalMessageInfo
 
 func init() {
 	proto.RegisterType((*MsgEnrollVoter)(nil), "shareledger.electoral.MsgEnrollVoter")
@@ -916,56 +916,57 @@ func init() {
 	proto.RegisterType((*MsgEnrollLoadersResponse)(nil), "shareledger.electoral.MsgEnrollLoadersResponse")
 	proto.RegisterType((*MsgRevokeLoaders)(nil), "shareledger.electoral.MsgRevokeLoaders")
 	proto.RegisterType((*MsgRevokeLoadersResponse)(nil), "shareledger.electoral.MsgRevokeLoadersResponse")
-	proto.RegisterType((*MsgEnrollIdSigner)(nil), "shareledger.electoral.MsgEnrollIdSigner")
-	proto.RegisterType((*MsgEnrollIdSignerResponse)(nil), "shareledger.electoral.MsgEnrollIdSignerResponse")
-	proto.RegisterType((*MsgRevokeIdSigner)(nil), "shareledger.electoral.MsgRevokeIdSigner")
-	proto.RegisterType((*MsgRevokeIdSignerResponse)(nil), "shareledger.electoral.MsgRevokeIdSignerResponse")
-	proto.RegisterType((*MsgEnrollDocIssuer)(nil), "shareledger.electoral.MsgEnrollDocIssuer")
-	proto.RegisterType((*MsgEnrollDocIssuerResponse)(nil), "shareledger.electoral.MsgEnrollDocIssuerResponse")
-	proto.RegisterType((*MsgRevokeDocIssuer)(nil), "shareledger.electoral.MsgRevokeDocIssuer")
-	proto.RegisterType((*MsgRevokeDocIssuerResponse)(nil), "shareledger.electoral.MsgRevokeDocIssuerResponse")
-	proto.RegisterType((*MsgEnrollAccountOperator)(nil), "shareledger.electoral.MsgEnrollAccountOperator")
-	proto.RegisterType((*MsgEnrollAccountOperatorResponse)(nil), "shareledger.electoral.MsgEnrollAccountOperatorResponse")
-	proto.RegisterType((*MsgRevokeAccountOperator)(nil), "shareledger.electoral.MsgRevokeAccountOperator")
-	proto.RegisterType((*MsgRevokeAccountOperatorResponse)(nil), "shareledger.electoral.MsgRevokeAccountOperatorResponse")
+	proto.RegisterType((*MsgEnrollIdSigners)(nil), "shareledger.electoral.MsgEnrollIdSigners")
+	proto.RegisterType((*MsgEnrollIdSignersResponse)(nil), "shareledger.electoral.MsgEnrollIdSignersResponse")
+	proto.RegisterType((*MsgRevokeIdSigners)(nil), "shareledger.electoral.MsgRevokeIdSigners")
+	proto.RegisterType((*MsgRevokeIdSignersResponse)(nil), "shareledger.electoral.MsgRevokeIdSignersResponse")
+	proto.RegisterType((*MsgEnrollDocIssuers)(nil), "shareledger.electoral.MsgEnrollDocIssuers")
+	proto.RegisterType((*MsgEnrollDocIssuersResponse)(nil), "shareledger.electoral.MsgEnrollDocIssuersResponse")
+	proto.RegisterType((*MsgRevokeDocIssuers)(nil), "shareledger.electoral.MsgRevokeDocIssuers")
+	proto.RegisterType((*MsgRevokeDocIssuersResponse)(nil), "shareledger.electoral.MsgRevokeDocIssuersResponse")
+	proto.RegisterType((*MsgEnrollAccountOperators)(nil), "shareledger.electoral.MsgEnrollAccountOperators")
+	proto.RegisterType((*MsgEnrollAccountOperatorsResponse)(nil), "shareledger.electoral.MsgEnrollAccountOperatorsResponse")
+	proto.RegisterType((*MsgRevokeAccountOperators)(nil), "shareledger.electoral.MsgRevokeAccountOperators")
+	proto.RegisterType((*MsgRevokeAccountOperatorsResponse)(nil), "shareledger.electoral.MsgRevokeAccountOperatorsResponse")
 }
 
 func init() { proto.RegisterFile("electoral/tx.proto", fileDescriptor_10832aea077e441f) }
 
 var fileDescriptor_10832aea077e441f = []byte{
-	// 512 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xac, 0x96, 0x41, 0x6b, 0xd4, 0x40,
-	0x18, 0x86, 0x37, 0x16, 0xd4, 0xfd, 0xc4, 0xaa, 0x03, 0x95, 0x74, 0x2c, 0xa1, 0x2c, 0x48, 0xb7,
-	0x07, 0x13, 0xad, 0x07, 0xcf, 0x4a, 0x3d, 0x54, 0xb7, 0x08, 0x11, 0x3c, 0x78, 0x91, 0x74, 0xf2,
-	0x91, 0x2e, 0xc6, 0xcc, 0x32, 0x33, 0x2b, 0xf5, 0xe8, 0x3f, 0xf0, 0x67, 0x79, 0xec, 0xd1, 0xa3,
-	0xec, 0x1e, 0xfd, 0x13, 0xb2, 0xcd, 0x66, 0x3a, 0x99, 0xa6, 0x99, 0xb4, 0xdd, 0x63, 0x36, 0xef,
-	0xbc, 0xcf, 0xcb, 0x32, 0x3c, 0x04, 0x08, 0xe6, 0xc8, 0x14, 0x17, 0x49, 0x1e, 0xa9, 0x93, 0x70,
-	0x22, 0xb8, 0xe2, 0x64, 0x43, 0x1e, 0x27, 0x02, 0x73, 0x4c, 0x33, 0x14, 0xa1, 0x7e, 0x4f, 0x37,
-	0xcf, 0xa3, 0x09, 0x63, 0x5f, 0xa4, 0x4a, 0x14, 0x96, 0x27, 0x06, 0xfb, 0xb0, 0x7e, 0x28, 0xb3,
-	0xb7, 0x85, 0xe0, 0x79, 0xfe, 0x89, 0x2b, 0x14, 0xc4, 0x87, 0x3b, 0x4c, 0x60, 0xa2, 0xb8, 0xf0,
-	0xbd, 0x6d, 0x6f, 0xd8, 0x8f, 0xab, 0xc7, 0xc5, 0x9b, 0x24, 0x4d, 0x05, 0x4a, 0xe9, 0xdf, 0x2a,
-	0xdf, 0x2c, 0x1f, 0x07, 0x3e, 0x3c, 0xae, 0xb7, 0xc4, 0x28, 0x27, 0xbc, 0x90, 0xb8, 0xec, 0x8f,
-	0xf1, 0x3b, 0xff, 0x8a, 0x37, 0xed, 0x37, 0x5a, 0x74, 0xff, 0x3b, 0x78, 0xa8, 0xc9, 0x23, 0x9e,
-	0xa4, 0x28, 0x64, 0x0b, 0x61, 0x0b, 0xfa, 0xcb, 0x4a, 0x5c, 0x30, 0xd6, 0x86, 0xfd, 0xf8, 0xfc,
-	0x87, 0x01, 0x05, 0xdf, 0xee, 0xb2, 0x38, 0xe5, 0x82, 0xd5, 0x70, 0x6a, 0x5d, 0x9a, 0xf3, 0x1e,
-	0x1e, 0xe9, 0x0d, 0x07, 0xe9, 0xc7, 0x71, 0x56, 0xb4, 0xfe, 0x65, 0xed, 0xa0, 0x27, 0xb0, 0x79,
-	0xa1, 0xcc, 0x22, 0x95, 0x2b, 0x56, 0x44, 0xaa, 0x97, 0x69, 0xd2, 0x08, 0x88, 0x9e, 0xb1, 0xcf,
-	0xd9, 0x81, 0x94, 0xd3, 0x1b, 0xa0, 0xb6, 0x80, 0x5e, 0x6c, 0xb3, 0x58, 0xe5, 0x90, 0x55, 0xb1,
-	0xac, 0x36, 0xcd, 0x8a, 0x8d, 0xfb, 0xf2, 0x9a, 0x31, 0x3e, 0x2d, 0xd4, 0x87, 0x09, 0x8a, 0xea,
-	0x2e, 0x5f, 0x8b, 0x38, 0x80, 0xed, 0xcb, 0x3a, 0x2d, 0x6e, 0xb9, 0x6a, 0xb5, 0xdc, 0xc6, 0xce,
-	0x8a, 0xbb, 0xf7, 0xef, 0x2e, 0xac, 0x1d, 0xca, 0x8c, 0x30, 0xb8, 0x67, 0x0a, 0xe3, 0x69, 0xd8,
-	0x68, 0x9d, 0xb0, 0x6e, 0x04, 0xfa, 0xac, 0x53, 0xac, 0x82, 0x2d, 0x20, 0xa6, 0x35, 0x5a, 0x20,
-	0x46, 0xac, 0x0d, 0xd2, 0x60, 0x0f, 0x32, 0x86, 0xfb, 0x75, 0x75, 0xec, 0xb8, 0x46, 0x2e, 0x83,
-	0x34, 0xea, 0x18, 0x34, 0x51, 0x75, 0x7b, 0xec, 0xb8, 0xa6, 0x76, 0x40, 0x35, 0x3a, 0x84, 0xe4,
-	0xb0, 0x6e, 0x09, 0x64, 0xe8, 0x5a, 0x5b, 0x25, 0xe9, 0xf3, 0xae, 0x49, 0x93, 0x66, 0x49, 0x64,
-	0xe8, 0x1a, 0xdc, 0x85, 0xd6, 0xec, 0x12, 0xc2, 0xe1, 0x81, 0x2d, 0x92, 0x5d, 0xd7, 0x64, 0x1d,
-	0xa5, 0x2f, 0x3a, 0x47, 0x4d, 0xa0, 0x6d, 0x93, 0x5d, 0xd7, 0xea, 0x4e, 0xc0, 0x4b, 0xac, 0x42,
-	0x7e, 0x7a, 0xb0, 0xd1, 0xec, 0x14, 0xe7, 0x9d, 0xb3, 0x0e, 0xd0, 0x57, 0x57, 0x3c, 0x50, 0xdb,
-	0xd0, 0xec, 0x17, 0xe7, 0x65, 0xbc, 0xc2, 0x86, 0x56, 0xdb, 0xbc, 0x19, 0xfd, 0x9e, 0x05, 0xde,
-	0xe9, 0x2c, 0xf0, 0xfe, 0xce, 0x02, 0xef, 0xd7, 0x3c, 0xe8, 0x9d, 0xce, 0x83, 0xde, 0x9f, 0x79,
-	0xd0, 0xfb, 0xbc, 0x97, 0x8d, 0xd5, 0xf1, 0xf4, 0x28, 0x64, 0xfc, 0x5b, 0x74, 0x56, 0x2e, 0xc6,
-	0x45, 0x16, 0x19, 0x98, 0xe8, 0x24, 0x32, 0x3e, 0x8e, 0x7e, 0x4c, 0x50, 0x1e, 0xdd, 0x3e, 0xfb,
-	0xdc, 0x79, 0xf9, 0x3f, 0x00, 0x00, 0xff, 0xff, 0x88, 0xb4, 0x8f, 0x2a, 0x36, 0x09, 0x00, 0x00,
+	// 513 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xac, 0x96, 0x4f, 0x8b, 0xd3, 0x40,
+	0x18, 0xc6, 0x1b, 0x17, 0xd4, 0xbe, 0xa2, 0x2e, 0x23, 0x2e, 0xd9, 0xb8, 0x06, 0xad, 0xc8, 0xfe,
+	0x01, 0x93, 0xb5, 0x5e, 0xbc, 0x2a, 0xeb, 0x61, 0xa5, 0x45, 0xe8, 0x82, 0x07, 0x2f, 0x92, 0x9d,
+	0xbc, 0x64, 0x8b, 0x31, 0x53, 0x66, 0xa6, 0xb2, 0xde, 0xfd, 0x00, 0x7e, 0x2c, 0x8f, 0x7b, 0xf4,
+	0x28, 0xed, 0xe7, 0x10, 0xa4, 0x9b, 0x76, 0x3a, 0x99, 0x26, 0x9d, 0xd4, 0xf6, 0x98, 0xcc, 0x33,
+	0xcf, 0xef, 0xc9, 0xe5, 0x47, 0x80, 0x60, 0x8a, 0x54, 0x32, 0x1e, 0xa5, 0xa1, 0xbc, 0x0c, 0x06,
+	0x9c, 0x49, 0x46, 0x1e, 0x8a, 0x8b, 0x88, 0x63, 0x8a, 0x71, 0x82, 0x3c, 0x50, 0xe7, 0xde, 0xee,
+	0x3c, 0x1a, 0x51, 0xfa, 0x59, 0xc8, 0x48, 0x62, 0x7e, 0xa3, 0x75, 0x02, 0xf7, 0xba, 0x22, 0x79,
+	0x97, 0x71, 0x96, 0xa6, 0x1f, 0x99, 0x44, 0x4e, 0x5c, 0xb8, 0x45, 0x39, 0x46, 0x92, 0x71, 0xd7,
+	0x79, 0xe2, 0x1c, 0x34, 0x7b, 0xb3, 0xc7, 0xc9, 0x49, 0x14, 0xc7, 0x1c, 0x85, 0x70, 0x6f, 0xe4,
+	0x27, 0xd3, 0xc7, 0x96, 0x0b, 0x3b, 0xc5, 0x96, 0x1e, 0x8a, 0x01, 0xcb, 0x04, 0x4e, 0xfb, 0x7b,
+	0xf8, 0x8d, 0x7d, 0xc1, 0x75, 0xfb, 0xb5, 0x16, 0xd5, 0xff, 0x1e, 0xb6, 0x15, 0xb9, 0xc3, 0xa2,
+	0x18, 0xb9, 0x58, 0x42, 0xd8, 0x83, 0xe6, 0xb4, 0x12, 0x27, 0x8c, 0xad, 0x83, 0x66, 0x6f, 0xfe,
+	0xa2, 0xe5, 0x81, 0x6b, 0x76, 0x19, 0x9c, 0x7c, 0xc1, 0x66, 0x38, 0x85, 0x2e, 0xc5, 0xe9, 0x00,
+	0x51, 0x1b, 0x4e, 0xe3, 0xb3, 0x7e, 0x92, 0xad, 0x43, 0xda, 0x03, 0x6f, 0xb1, 0xcd, 0x60, 0xe5,
+	0x3b, 0x36, 0xc5, 0x32, 0xda, 0x14, 0xab, 0x0b, 0x0f, 0xd4, 0x92, 0x13, 0x46, 0x4f, 0x85, 0x18,
+	0xae, 0x03, 0x7b, 0x0c, 0x8f, 0x4a, 0xea, 0x0c, 0x5a, 0xbe, 0x65, 0x63, 0x34, 0xb3, 0x4e, 0xd1,
+	0xce, 0x60, 0x57, 0x8d, 0x79, 0x43, 0x29, 0x1b, 0x66, 0xf2, 0xc3, 0x00, 0xf9, 0xa4, 0xf8, 0xff,
+	0x99, 0xcf, 0xe0, 0x69, 0x65, 0xa9, 0x41, 0xce, 0x87, 0x6d, 0x98, 0x5c, 0x5e, 0x3a, 0x23, 0xb7,
+	0xff, 0xde, 0x86, 0xad, 0xae, 0x48, 0x08, 0x85, 0x3b, 0xba, 0x3c, 0x9e, 0x07, 0xa5, 0x06, 0x0a,
+	0x8a, 0x76, 0xf0, 0x5e, 0xd4, 0x8a, 0xcd, 0x60, 0x13, 0x88, 0x6e, 0x90, 0x25, 0x10, 0x2d, 0xb6,
+	0x0c, 0x52, 0x62, 0x12, 0xd2, 0x87, 0xbb, 0x45, 0x8d, 0xec, 0xdb, 0x46, 0x4e, 0x83, 0x5e, 0x58,
+	0x33, 0xa8, 0xa3, 0x8a, 0x26, 0xd9, 0xb7, 0x4d, 0xad, 0x81, 0x2a, 0xf5, 0x09, 0x61, 0x70, 0xdf,
+	0x94, 0xc9, 0xa1, 0x6d, 0xae, 0x8a, 0x7a, 0x2f, 0x6b, 0x47, 0x75, 0xa0, 0x69, 0x94, 0x43, 0xdb,
+	0xe8, 0x5a, 0xc0, 0x0a, 0xb3, 0x10, 0x0e, 0xdb, 0x0b, 0x5a, 0x39, 0xb2, 0xed, 0x9e, 0x67, 0xbd,
+	0x76, 0xfd, 0xac, 0xce, 0x5c, 0x90, 0xcb, 0x91, 0x6d, 0x7a, 0x3d, 0x66, 0x95, 0x65, 0xc8, 0x0f,
+	0x07, 0x76, 0x2a, 0x1c, 0x73, 0x6c, 0xfb, 0x04, 0xf3, 0x86, 0xf7, 0x7a, 0xd5, 0x1b, 0x85, 0x19,
+	0x15, 0xc2, 0x39, 0xb6, 0x7d, 0xd5, 0x2a, 0x33, 0x96, 0xfb, 0xe7, 0x6d, 0xe7, 0xd7, 0xc8, 0x77,
+	0xae, 0x46, 0xbe, 0xf3, 0x67, 0xe4, 0x3b, 0x3f, 0xc7, 0x7e, 0xe3, 0x6a, 0xec, 0x37, 0x7e, 0x8f,
+	0xfd, 0xc6, 0xa7, 0x76, 0xd2, 0x97, 0x17, 0xc3, 0xf3, 0x80, 0xb2, 0xaf, 0xe1, 0x75, 0x3b, 0xef,
+	0x67, 0x49, 0xa8, 0x71, 0xc2, 0xcb, 0x50, 0xfb, 0x75, 0xfa, 0x3e, 0x40, 0x71, 0x7e, 0xf3, 0xfa,
+	0x67, 0xe8, 0xd5, 0xbf, 0x00, 0x00, 0x00, 0xff, 0xff, 0x56, 0xae, 0xf2, 0xaa, 0x54, 0x09, 0x00,
+	0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -984,12 +985,12 @@ type MsgClient interface {
 	RevokeVoter(ctx context.Context, in *MsgRevokeVoter, opts ...grpc.CallOption) (*MsgRevokeVoterResponse, error)
 	EnrollLoaders(ctx context.Context, in *MsgEnrollLoaders, opts ...grpc.CallOption) (*MsgEnrollLoadersResponse, error)
 	RevokeLoaders(ctx context.Context, in *MsgRevokeLoaders, opts ...grpc.CallOption) (*MsgRevokeLoadersResponse, error)
-	EnrollIdSigner(ctx context.Context, in *MsgEnrollIdSigner, opts ...grpc.CallOption) (*MsgEnrollIdSignerResponse, error)
-	RevokeIdSigner(ctx context.Context, in *MsgRevokeIdSigner, opts ...grpc.CallOption) (*MsgRevokeIdSignerResponse, error)
-	EnrollDocIssuer(ctx context.Context, in *MsgEnrollDocIssuer, opts ...grpc.CallOption) (*MsgEnrollDocIssuerResponse, error)
-	RevokeDocIssuer(ctx context.Context, in *MsgRevokeDocIssuer, opts ...grpc.CallOption) (*MsgRevokeDocIssuerResponse, error)
-	EnrollAccountOperator(ctx context.Context, in *MsgEnrollAccountOperator, opts ...grpc.CallOption) (*MsgEnrollAccountOperatorResponse, error)
-	RevokeAccountOperator(ctx context.Context, in *MsgRevokeAccountOperator, opts ...grpc.CallOption) (*MsgRevokeAccountOperatorResponse, error)
+	EnrollIdSigners(ctx context.Context, in *MsgEnrollIdSigners, opts ...grpc.CallOption) (*MsgEnrollIdSignersResponse, error)
+	RevokeIdSigners(ctx context.Context, in *MsgRevokeIdSigners, opts ...grpc.CallOption) (*MsgRevokeIdSignersResponse, error)
+	EnrollDocIssuers(ctx context.Context, in *MsgEnrollDocIssuers, opts ...grpc.CallOption) (*MsgEnrollDocIssuersResponse, error)
+	RevokeDocIssuers(ctx context.Context, in *MsgRevokeDocIssuers, opts ...grpc.CallOption) (*MsgRevokeDocIssuersResponse, error)
+	EnrollAccountOperators(ctx context.Context, in *MsgEnrollAccountOperators, opts ...grpc.CallOption) (*MsgEnrollAccountOperatorsResponse, error)
+	RevokeAccountOperators(ctx context.Context, in *MsgRevokeAccountOperators, opts ...grpc.CallOption) (*MsgRevokeAccountOperatorsResponse, error)
 }
 
 type msgClient struct {
@@ -1036,54 +1037,54 @@ func (c *msgClient) RevokeLoaders(ctx context.Context, in *MsgRevokeLoaders, opt
 	return out, nil
 }
 
-func (c *msgClient) EnrollIdSigner(ctx context.Context, in *MsgEnrollIdSigner, opts ...grpc.CallOption) (*MsgEnrollIdSignerResponse, error) {
-	out := new(MsgEnrollIdSignerResponse)
-	err := c.cc.Invoke(ctx, "/shareledger.electoral.Msg/EnrollIdSigner", in, out, opts...)
+func (c *msgClient) EnrollIdSigners(ctx context.Context, in *MsgEnrollIdSigners, opts ...grpc.CallOption) (*MsgEnrollIdSignersResponse, error) {
+	out := new(MsgEnrollIdSignersResponse)
+	err := c.cc.Invoke(ctx, "/shareledger.electoral.Msg/EnrollIdSigners", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *msgClient) RevokeIdSigner(ctx context.Context, in *MsgRevokeIdSigner, opts ...grpc.CallOption) (*MsgRevokeIdSignerResponse, error) {
-	out := new(MsgRevokeIdSignerResponse)
-	err := c.cc.Invoke(ctx, "/shareledger.electoral.Msg/RevokeIdSigner", in, out, opts...)
+func (c *msgClient) RevokeIdSigners(ctx context.Context, in *MsgRevokeIdSigners, opts ...grpc.CallOption) (*MsgRevokeIdSignersResponse, error) {
+	out := new(MsgRevokeIdSignersResponse)
+	err := c.cc.Invoke(ctx, "/shareledger.electoral.Msg/RevokeIdSigners", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *msgClient) EnrollDocIssuer(ctx context.Context, in *MsgEnrollDocIssuer, opts ...grpc.CallOption) (*MsgEnrollDocIssuerResponse, error) {
-	out := new(MsgEnrollDocIssuerResponse)
-	err := c.cc.Invoke(ctx, "/shareledger.electoral.Msg/EnrollDocIssuer", in, out, opts...)
+func (c *msgClient) EnrollDocIssuers(ctx context.Context, in *MsgEnrollDocIssuers, opts ...grpc.CallOption) (*MsgEnrollDocIssuersResponse, error) {
+	out := new(MsgEnrollDocIssuersResponse)
+	err := c.cc.Invoke(ctx, "/shareledger.electoral.Msg/EnrollDocIssuers", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *msgClient) RevokeDocIssuer(ctx context.Context, in *MsgRevokeDocIssuer, opts ...grpc.CallOption) (*MsgRevokeDocIssuerResponse, error) {
-	out := new(MsgRevokeDocIssuerResponse)
-	err := c.cc.Invoke(ctx, "/shareledger.electoral.Msg/RevokeDocIssuer", in, out, opts...)
+func (c *msgClient) RevokeDocIssuers(ctx context.Context, in *MsgRevokeDocIssuers, opts ...grpc.CallOption) (*MsgRevokeDocIssuersResponse, error) {
+	out := new(MsgRevokeDocIssuersResponse)
+	err := c.cc.Invoke(ctx, "/shareledger.electoral.Msg/RevokeDocIssuers", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *msgClient) EnrollAccountOperator(ctx context.Context, in *MsgEnrollAccountOperator, opts ...grpc.CallOption) (*MsgEnrollAccountOperatorResponse, error) {
-	out := new(MsgEnrollAccountOperatorResponse)
-	err := c.cc.Invoke(ctx, "/shareledger.electoral.Msg/EnrollAccountOperator", in, out, opts...)
+func (c *msgClient) EnrollAccountOperators(ctx context.Context, in *MsgEnrollAccountOperators, opts ...grpc.CallOption) (*MsgEnrollAccountOperatorsResponse, error) {
+	out := new(MsgEnrollAccountOperatorsResponse)
+	err := c.cc.Invoke(ctx, "/shareledger.electoral.Msg/EnrollAccountOperators", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *msgClient) RevokeAccountOperator(ctx context.Context, in *MsgRevokeAccountOperator, opts ...grpc.CallOption) (*MsgRevokeAccountOperatorResponse, error) {
-	out := new(MsgRevokeAccountOperatorResponse)
-	err := c.cc.Invoke(ctx, "/shareledger.electoral.Msg/RevokeAccountOperator", in, out, opts...)
+func (c *msgClient) RevokeAccountOperators(ctx context.Context, in *MsgRevokeAccountOperators, opts ...grpc.CallOption) (*MsgRevokeAccountOperatorsResponse, error) {
+	out := new(MsgRevokeAccountOperatorsResponse)
+	err := c.cc.Invoke(ctx, "/shareledger.electoral.Msg/RevokeAccountOperators", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1096,12 +1097,12 @@ type MsgServer interface {
 	RevokeVoter(context.Context, *MsgRevokeVoter) (*MsgRevokeVoterResponse, error)
 	EnrollLoaders(context.Context, *MsgEnrollLoaders) (*MsgEnrollLoadersResponse, error)
 	RevokeLoaders(context.Context, *MsgRevokeLoaders) (*MsgRevokeLoadersResponse, error)
-	EnrollIdSigner(context.Context, *MsgEnrollIdSigner) (*MsgEnrollIdSignerResponse, error)
-	RevokeIdSigner(context.Context, *MsgRevokeIdSigner) (*MsgRevokeIdSignerResponse, error)
-	EnrollDocIssuer(context.Context, *MsgEnrollDocIssuer) (*MsgEnrollDocIssuerResponse, error)
-	RevokeDocIssuer(context.Context, *MsgRevokeDocIssuer) (*MsgRevokeDocIssuerResponse, error)
-	EnrollAccountOperator(context.Context, *MsgEnrollAccountOperator) (*MsgEnrollAccountOperatorResponse, error)
-	RevokeAccountOperator(context.Context, *MsgRevokeAccountOperator) (*MsgRevokeAccountOperatorResponse, error)
+	EnrollIdSigners(context.Context, *MsgEnrollIdSigners) (*MsgEnrollIdSignersResponse, error)
+	RevokeIdSigners(context.Context, *MsgRevokeIdSigners) (*MsgRevokeIdSignersResponse, error)
+	EnrollDocIssuers(context.Context, *MsgEnrollDocIssuers) (*MsgEnrollDocIssuersResponse, error)
+	RevokeDocIssuers(context.Context, *MsgRevokeDocIssuers) (*MsgRevokeDocIssuersResponse, error)
+	EnrollAccountOperators(context.Context, *MsgEnrollAccountOperators) (*MsgEnrollAccountOperatorsResponse, error)
+	RevokeAccountOperators(context.Context, *MsgRevokeAccountOperators) (*MsgRevokeAccountOperatorsResponse, error)
 }
 
 // UnimplementedMsgServer can be embedded to have forward compatible implementations.
@@ -1120,23 +1121,23 @@ func (*UnimplementedMsgServer) EnrollLoaders(ctx context.Context, req *MsgEnroll
 func (*UnimplementedMsgServer) RevokeLoaders(ctx context.Context, req *MsgRevokeLoaders) (*MsgRevokeLoadersResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RevokeLoaders not implemented")
 }
-func (*UnimplementedMsgServer) EnrollIdSigner(ctx context.Context, req *MsgEnrollIdSigner) (*MsgEnrollIdSignerResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method EnrollIdSigner not implemented")
+func (*UnimplementedMsgServer) EnrollIdSigners(ctx context.Context, req *MsgEnrollIdSigners) (*MsgEnrollIdSignersResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method EnrollIdSigners not implemented")
 }
-func (*UnimplementedMsgServer) RevokeIdSigner(ctx context.Context, req *MsgRevokeIdSigner) (*MsgRevokeIdSignerResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method RevokeIdSigner not implemented")
+func (*UnimplementedMsgServer) RevokeIdSigners(ctx context.Context, req *MsgRevokeIdSigners) (*MsgRevokeIdSignersResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RevokeIdSigners not implemented")
 }
-func (*UnimplementedMsgServer) EnrollDocIssuer(ctx context.Context, req *MsgEnrollDocIssuer) (*MsgEnrollDocIssuerResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method EnrollDocIssuer not implemented")
+func (*UnimplementedMsgServer) EnrollDocIssuers(ctx context.Context, req *MsgEnrollDocIssuers) (*MsgEnrollDocIssuersResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method EnrollDocIssuers not implemented")
 }
-func (*UnimplementedMsgServer) RevokeDocIssuer(ctx context.Context, req *MsgRevokeDocIssuer) (*MsgRevokeDocIssuerResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method RevokeDocIssuer not implemented")
+func (*UnimplementedMsgServer) RevokeDocIssuers(ctx context.Context, req *MsgRevokeDocIssuers) (*MsgRevokeDocIssuersResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RevokeDocIssuers not implemented")
 }
-func (*UnimplementedMsgServer) EnrollAccountOperator(ctx context.Context, req *MsgEnrollAccountOperator) (*MsgEnrollAccountOperatorResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method EnrollAccountOperator not implemented")
+func (*UnimplementedMsgServer) EnrollAccountOperators(ctx context.Context, req *MsgEnrollAccountOperators) (*MsgEnrollAccountOperatorsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method EnrollAccountOperators not implemented")
 }
-func (*UnimplementedMsgServer) RevokeAccountOperator(ctx context.Context, req *MsgRevokeAccountOperator) (*MsgRevokeAccountOperatorResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method RevokeAccountOperator not implemented")
+func (*UnimplementedMsgServer) RevokeAccountOperators(ctx context.Context, req *MsgRevokeAccountOperators) (*MsgRevokeAccountOperatorsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RevokeAccountOperators not implemented")
 }
 
 func RegisterMsgServer(s grpc1.Server, srv MsgServer) {
@@ -1215,110 +1216,110 @@ func _Msg_RevokeLoaders_Handler(srv interface{}, ctx context.Context, dec func(i
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Msg_EnrollIdSigner_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgEnrollIdSigner)
+func _Msg_EnrollIdSigners_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgEnrollIdSigners)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MsgServer).EnrollIdSigner(ctx, in)
+		return srv.(MsgServer).EnrollIdSigners(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/shareledger.electoral.Msg/EnrollIdSigner",
+		FullMethod: "/shareledger.electoral.Msg/EnrollIdSigners",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).EnrollIdSigner(ctx, req.(*MsgEnrollIdSigner))
+		return srv.(MsgServer).EnrollIdSigners(ctx, req.(*MsgEnrollIdSigners))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Msg_RevokeIdSigner_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgRevokeIdSigner)
+func _Msg_RevokeIdSigners_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgRevokeIdSigners)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MsgServer).RevokeIdSigner(ctx, in)
+		return srv.(MsgServer).RevokeIdSigners(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/shareledger.electoral.Msg/RevokeIdSigner",
+		FullMethod: "/shareledger.electoral.Msg/RevokeIdSigners",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).RevokeIdSigner(ctx, req.(*MsgRevokeIdSigner))
+		return srv.(MsgServer).RevokeIdSigners(ctx, req.(*MsgRevokeIdSigners))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Msg_EnrollDocIssuer_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgEnrollDocIssuer)
+func _Msg_EnrollDocIssuers_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgEnrollDocIssuers)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MsgServer).EnrollDocIssuer(ctx, in)
+		return srv.(MsgServer).EnrollDocIssuers(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/shareledger.electoral.Msg/EnrollDocIssuer",
+		FullMethod: "/shareledger.electoral.Msg/EnrollDocIssuers",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).EnrollDocIssuer(ctx, req.(*MsgEnrollDocIssuer))
+		return srv.(MsgServer).EnrollDocIssuers(ctx, req.(*MsgEnrollDocIssuers))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Msg_RevokeDocIssuer_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgRevokeDocIssuer)
+func _Msg_RevokeDocIssuers_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgRevokeDocIssuers)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MsgServer).RevokeDocIssuer(ctx, in)
+		return srv.(MsgServer).RevokeDocIssuers(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/shareledger.electoral.Msg/RevokeDocIssuer",
+		FullMethod: "/shareledger.electoral.Msg/RevokeDocIssuers",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).RevokeDocIssuer(ctx, req.(*MsgRevokeDocIssuer))
+		return srv.(MsgServer).RevokeDocIssuers(ctx, req.(*MsgRevokeDocIssuers))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Msg_EnrollAccountOperator_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgEnrollAccountOperator)
+func _Msg_EnrollAccountOperators_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgEnrollAccountOperators)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MsgServer).EnrollAccountOperator(ctx, in)
+		return srv.(MsgServer).EnrollAccountOperators(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/shareledger.electoral.Msg/EnrollAccountOperator",
+		FullMethod: "/shareledger.electoral.Msg/EnrollAccountOperators",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).EnrollAccountOperator(ctx, req.(*MsgEnrollAccountOperator))
+		return srv.(MsgServer).EnrollAccountOperators(ctx, req.(*MsgEnrollAccountOperators))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Msg_RevokeAccountOperator_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgRevokeAccountOperator)
+func _Msg_RevokeAccountOperators_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgRevokeAccountOperators)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MsgServer).RevokeAccountOperator(ctx, in)
+		return srv.(MsgServer).RevokeAccountOperators(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/shareledger.electoral.Msg/RevokeAccountOperator",
+		FullMethod: "/shareledger.electoral.Msg/RevokeAccountOperators",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).RevokeAccountOperator(ctx, req.(*MsgRevokeAccountOperator))
+		return srv.(MsgServer).RevokeAccountOperators(ctx, req.(*MsgRevokeAccountOperators))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1344,28 +1345,28 @@ var _Msg_serviceDesc = grpc.ServiceDesc{
 			Handler:    _Msg_RevokeLoaders_Handler,
 		},
 		{
-			MethodName: "EnrollIdSigner",
-			Handler:    _Msg_EnrollIdSigner_Handler,
+			MethodName: "EnrollIdSigners",
+			Handler:    _Msg_EnrollIdSigners_Handler,
 		},
 		{
-			MethodName: "RevokeIdSigner",
-			Handler:    _Msg_RevokeIdSigner_Handler,
+			MethodName: "RevokeIdSigners",
+			Handler:    _Msg_RevokeIdSigners_Handler,
 		},
 		{
-			MethodName: "EnrollDocIssuer",
-			Handler:    _Msg_EnrollDocIssuer_Handler,
+			MethodName: "EnrollDocIssuers",
+			Handler:    _Msg_EnrollDocIssuers_Handler,
 		},
 		{
-			MethodName: "RevokeDocIssuer",
-			Handler:    _Msg_RevokeDocIssuer_Handler,
+			MethodName: "RevokeDocIssuers",
+			Handler:    _Msg_RevokeDocIssuers_Handler,
 		},
 		{
-			MethodName: "EnrollAccountOperator",
-			Handler:    _Msg_EnrollAccountOperator_Handler,
+			MethodName: "EnrollAccountOperators",
+			Handler:    _Msg_EnrollAccountOperators_Handler,
 		},
 		{
-			MethodName: "RevokeAccountOperator",
-			Handler:    _Msg_RevokeAccountOperator_Handler,
+			MethodName: "RevokeAccountOperators",
+			Handler:    _Msg_RevokeAccountOperators_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -1616,7 +1617,7 @@ func (m *MsgRevokeLoadersResponse) MarshalToSizedBuffer(dAtA []byte) (int, error
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgEnrollIdSigner) Marshal() (dAtA []byte, err error) {
+func (m *MsgEnrollIdSigners) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -1626,12 +1627,12 @@ func (m *MsgEnrollIdSigner) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgEnrollIdSigner) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgEnrollIdSigners) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgEnrollIdSigner) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgEnrollIdSigners) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -1655,7 +1656,7 @@ func (m *MsgEnrollIdSigner) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgEnrollIdSignerResponse) Marshal() (dAtA []byte, err error) {
+func (m *MsgEnrollIdSignersResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -1665,12 +1666,12 @@ func (m *MsgEnrollIdSignerResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgEnrollIdSignerResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgEnrollIdSignersResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgEnrollIdSignerResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgEnrollIdSignersResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -1678,7 +1679,7 @@ func (m *MsgEnrollIdSignerResponse) MarshalToSizedBuffer(dAtA []byte) (int, erro
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgRevokeIdSigner) Marshal() (dAtA []byte, err error) {
+func (m *MsgRevokeIdSigners) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -1688,74 +1689,12 @@ func (m *MsgRevokeIdSigner) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgRevokeIdSigner) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgRevokeIdSigners) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgRevokeIdSigner) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	_ = i
-	var l int
-	_ = l
-	if len(m.Addresses) > 0 {
-		for iNdEx := len(m.Addresses) - 1; iNdEx >= 0; iNdEx-- {
-			i -= len(m.Addresses[iNdEx])
-			copy(dAtA[i:], m.Addresses[iNdEx])
-			i = encodeVarintTx(dAtA, i, uint64(len(m.Addresses[iNdEx])))
-			i--
-			dAtA[i] = 0x12
-		}
-	}
-	if len(m.Creator) > 0 {
-		i -= len(m.Creator)
-		copy(dAtA[i:], m.Creator)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.Creator)))
-		i--
-		dAtA[i] = 0xa
-	}
-	return len(dAtA) - i, nil
-}
-
-func (m *MsgRevokeIdSignerResponse) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *MsgRevokeIdSignerResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *MsgRevokeIdSignerResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	_ = i
-	var l int
-	_ = l
-	return len(dAtA) - i, nil
-}
-
-func (m *MsgEnrollDocIssuer) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *MsgEnrollDocIssuer) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *MsgEnrollDocIssuer) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgRevokeIdSigners) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -1779,7 +1718,7 @@ func (m *MsgEnrollDocIssuer) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgEnrollDocIssuerResponse) Marshal() (dAtA []byte, err error) {
+func (m *MsgRevokeIdSignersResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -1789,12 +1728,12 @@ func (m *MsgEnrollDocIssuerResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgEnrollDocIssuerResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgRevokeIdSignersResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgEnrollDocIssuerResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgRevokeIdSignersResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -1802,7 +1741,7 @@ func (m *MsgEnrollDocIssuerResponse) MarshalToSizedBuffer(dAtA []byte) (int, err
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgRevokeDocIssuer) Marshal() (dAtA []byte, err error) {
+func (m *MsgEnrollDocIssuers) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -1812,74 +1751,12 @@ func (m *MsgRevokeDocIssuer) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgRevokeDocIssuer) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgEnrollDocIssuers) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgRevokeDocIssuer) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	_ = i
-	var l int
-	_ = l
-	if len(m.Addresses) > 0 {
-		for iNdEx := len(m.Addresses) - 1; iNdEx >= 0; iNdEx-- {
-			i -= len(m.Addresses[iNdEx])
-			copy(dAtA[i:], m.Addresses[iNdEx])
-			i = encodeVarintTx(dAtA, i, uint64(len(m.Addresses[iNdEx])))
-			i--
-			dAtA[i] = 0x12
-		}
-	}
-	if len(m.Creator) > 0 {
-		i -= len(m.Creator)
-		copy(dAtA[i:], m.Creator)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.Creator)))
-		i--
-		dAtA[i] = 0xa
-	}
-	return len(dAtA) - i, nil
-}
-
-func (m *MsgRevokeDocIssuerResponse) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *MsgRevokeDocIssuerResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *MsgRevokeDocIssuerResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	_ = i
-	var l int
-	_ = l
-	return len(dAtA) - i, nil
-}
-
-func (m *MsgEnrollAccountOperator) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *MsgEnrollAccountOperator) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *MsgEnrollAccountOperator) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgEnrollDocIssuers) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -1903,7 +1780,7 @@ func (m *MsgEnrollAccountOperator) MarshalToSizedBuffer(dAtA []byte) (int, error
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgEnrollAccountOperatorResponse) Marshal() (dAtA []byte, err error) {
+func (m *MsgEnrollDocIssuersResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -1913,12 +1790,12 @@ func (m *MsgEnrollAccountOperatorResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgEnrollAccountOperatorResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgEnrollDocIssuersResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgEnrollAccountOperatorResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgEnrollDocIssuersResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -1926,7 +1803,7 @@ func (m *MsgEnrollAccountOperatorResponse) MarshalToSizedBuffer(dAtA []byte) (in
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgRevokeAccountOperator) Marshal() (dAtA []byte, err error) {
+func (m *MsgRevokeDocIssuers) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -1936,12 +1813,12 @@ func (m *MsgRevokeAccountOperator) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgRevokeAccountOperator) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgRevokeDocIssuers) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgRevokeAccountOperator) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgRevokeDocIssuers) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -1965,7 +1842,7 @@ func (m *MsgRevokeAccountOperator) MarshalToSizedBuffer(dAtA []byte) (int, error
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgRevokeAccountOperatorResponse) Marshal() (dAtA []byte, err error) {
+func (m *MsgRevokeDocIssuersResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -1975,12 +1852,136 @@ func (m *MsgRevokeAccountOperatorResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgRevokeAccountOperatorResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgRevokeDocIssuersResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgRevokeAccountOperatorResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgRevokeDocIssuersResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgEnrollAccountOperators) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgEnrollAccountOperators) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgEnrollAccountOperators) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Addresses) > 0 {
+		for iNdEx := len(m.Addresses) - 1; iNdEx >= 0; iNdEx-- {
+			i -= len(m.Addresses[iNdEx])
+			copy(dAtA[i:], m.Addresses[iNdEx])
+			i = encodeVarintTx(dAtA, i, uint64(len(m.Addresses[iNdEx])))
+			i--
+			dAtA[i] = 0x12
+		}
+	}
+	if len(m.Creator) > 0 {
+		i -= len(m.Creator)
+		copy(dAtA[i:], m.Creator)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Creator)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgEnrollAccountOperatorsResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgEnrollAccountOperatorsResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgEnrollAccountOperatorsResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgRevokeAccountOperators) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgRevokeAccountOperators) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgRevokeAccountOperators) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Addresses) > 0 {
+		for iNdEx := len(m.Addresses) - 1; iNdEx >= 0; iNdEx-- {
+			i -= len(m.Addresses[iNdEx])
+			copy(dAtA[i:], m.Addresses[iNdEx])
+			i = encodeVarintTx(dAtA, i, uint64(len(m.Addresses[iNdEx])))
+			i--
+			dAtA[i] = 0x12
+		}
+	}
+	if len(m.Creator) > 0 {
+		i -= len(m.Creator)
+		copy(dAtA[i:], m.Creator)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Creator)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgRevokeAccountOperatorsResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgRevokeAccountOperatorsResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgRevokeAccountOperatorsResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -2107,7 +2108,7 @@ func (m *MsgRevokeLoadersResponse) Size() (n int) {
 	return n
 }
 
-func (m *MsgEnrollIdSigner) Size() (n int) {
+func (m *MsgEnrollIdSigners) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -2126,7 +2127,7 @@ func (m *MsgEnrollIdSigner) Size() (n int) {
 	return n
 }
 
-func (m *MsgEnrollIdSignerResponse) Size() (n int) {
+func (m *MsgEnrollIdSignersResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -2135,35 +2136,7 @@ func (m *MsgEnrollIdSignerResponse) Size() (n int) {
 	return n
 }
 
-func (m *MsgRevokeIdSigner) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	l = len(m.Creator)
-	if l > 0 {
-		n += 1 + l + sovTx(uint64(l))
-	}
-	if len(m.Addresses) > 0 {
-		for _, s := range m.Addresses {
-			l = len(s)
-			n += 1 + l + sovTx(uint64(l))
-		}
-	}
-	return n
-}
-
-func (m *MsgRevokeIdSignerResponse) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	return n
-}
-
-func (m *MsgEnrollDocIssuer) Size() (n int) {
+func (m *MsgRevokeIdSigners) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -2182,7 +2155,7 @@ func (m *MsgEnrollDocIssuer) Size() (n int) {
 	return n
 }
 
-func (m *MsgEnrollDocIssuerResponse) Size() (n int) {
+func (m *MsgRevokeIdSignersResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -2191,35 +2164,7 @@ func (m *MsgEnrollDocIssuerResponse) Size() (n int) {
 	return n
 }
 
-func (m *MsgRevokeDocIssuer) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	l = len(m.Creator)
-	if l > 0 {
-		n += 1 + l + sovTx(uint64(l))
-	}
-	if len(m.Addresses) > 0 {
-		for _, s := range m.Addresses {
-			l = len(s)
-			n += 1 + l + sovTx(uint64(l))
-		}
-	}
-	return n
-}
-
-func (m *MsgRevokeDocIssuerResponse) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	return n
-}
-
-func (m *MsgEnrollAccountOperator) Size() (n int) {
+func (m *MsgEnrollDocIssuers) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -2238,7 +2183,7 @@ func (m *MsgEnrollAccountOperator) Size() (n int) {
 	return n
 }
 
-func (m *MsgEnrollAccountOperatorResponse) Size() (n int) {
+func (m *MsgEnrollDocIssuersResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -2247,7 +2192,7 @@ func (m *MsgEnrollAccountOperatorResponse) Size() (n int) {
 	return n
 }
 
-func (m *MsgRevokeAccountOperator) Size() (n int) {
+func (m *MsgRevokeDocIssuers) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -2266,7 +2211,63 @@ func (m *MsgRevokeAccountOperator) Size() (n int) {
 	return n
 }
 
-func (m *MsgRevokeAccountOperatorResponse) Size() (n int) {
+func (m *MsgRevokeDocIssuersResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
+func (m *MsgEnrollAccountOperators) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Creator)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	if len(m.Addresses) > 0 {
+		for _, s := range m.Addresses {
+			l = len(s)
+			n += 1 + l + sovTx(uint64(l))
+		}
+	}
+	return n
+}
+
+func (m *MsgEnrollAccountOperatorsResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
+func (m *MsgRevokeAccountOperators) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Creator)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	if len(m.Addresses) > 0 {
+		for _, s := range m.Addresses {
+			l = len(s)
+			n += 1 + l + sovTx(uint64(l))
+		}
+	}
+	return n
+}
+
+func (m *MsgRevokeAccountOperatorsResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -2937,7 +2938,7 @@ func (m *MsgRevokeLoadersResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgEnrollIdSigner) Unmarshal(dAtA []byte) error {
+func (m *MsgEnrollIdSigners) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -2960,10 +2961,10 @@ func (m *MsgEnrollIdSigner) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgEnrollIdSigner: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgEnrollIdSigners: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgEnrollIdSigner: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgEnrollIdSigners: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -3051,7 +3052,7 @@ func (m *MsgEnrollIdSigner) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgEnrollIdSignerResponse) Unmarshal(dAtA []byte) error {
+func (m *MsgEnrollIdSignersResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -3074,10 +3075,10 @@ func (m *MsgEnrollIdSignerResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgEnrollIdSignerResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgEnrollIdSignersResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgEnrollIdSignerResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgEnrollIdSignersResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:
@@ -3101,7 +3102,7 @@ func (m *MsgEnrollIdSignerResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgRevokeIdSigner) Unmarshal(dAtA []byte) error {
+func (m *MsgRevokeIdSigners) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -3124,174 +3125,10 @@ func (m *MsgRevokeIdSigner) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgRevokeIdSigner: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgRevokeIdSigners: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgRevokeIdSigner: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		case 1:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Creator", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthTx
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthTx
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Creator = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 2:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Addresses", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthTx
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthTx
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Addresses = append(m.Addresses, string(dAtA[iNdEx:postIndex]))
-			iNdEx = postIndex
-		default:
-			iNdEx = preIndex
-			skippy, err := skipTx(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthTx
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
-func (m *MsgRevokeIdSignerResponse) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowTx
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= uint64(b&0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: MsgRevokeIdSignerResponse: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgRevokeIdSignerResponse: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		default:
-			iNdEx = preIndex
-			skippy, err := skipTx(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthTx
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
-func (m *MsgEnrollDocIssuer) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowTx
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= uint64(b&0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: MsgEnrollDocIssuer: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgEnrollDocIssuer: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgRevokeIdSigners: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -3379,7 +3216,7 @@ func (m *MsgEnrollDocIssuer) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgEnrollDocIssuerResponse) Unmarshal(dAtA []byte) error {
+func (m *MsgRevokeIdSignersResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -3402,10 +3239,10 @@ func (m *MsgEnrollDocIssuerResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgEnrollDocIssuerResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgRevokeIdSignersResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgEnrollDocIssuerResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgRevokeIdSignersResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:
@@ -3429,7 +3266,7 @@ func (m *MsgEnrollDocIssuerResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgRevokeDocIssuer) Unmarshal(dAtA []byte) error {
+func (m *MsgEnrollDocIssuers) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -3452,174 +3289,10 @@ func (m *MsgRevokeDocIssuer) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgRevokeDocIssuer: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgEnrollDocIssuers: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgRevokeDocIssuer: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		case 1:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Creator", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthTx
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthTx
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Creator = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 2:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Addresses", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthTx
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthTx
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Addresses = append(m.Addresses, string(dAtA[iNdEx:postIndex]))
-			iNdEx = postIndex
-		default:
-			iNdEx = preIndex
-			skippy, err := skipTx(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthTx
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
-func (m *MsgRevokeDocIssuerResponse) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowTx
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= uint64(b&0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: MsgRevokeDocIssuerResponse: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgRevokeDocIssuerResponse: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		default:
-			iNdEx = preIndex
-			skippy, err := skipTx(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthTx
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
-func (m *MsgEnrollAccountOperator) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowTx
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= uint64(b&0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: MsgEnrollAccountOperator: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgEnrollAccountOperator: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgEnrollDocIssuers: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -3707,7 +3380,7 @@ func (m *MsgEnrollAccountOperator) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgEnrollAccountOperatorResponse) Unmarshal(dAtA []byte) error {
+func (m *MsgEnrollDocIssuersResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -3730,10 +3403,10 @@ func (m *MsgEnrollAccountOperatorResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgEnrollAccountOperatorResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgEnrollDocIssuersResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgEnrollAccountOperatorResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgEnrollDocIssuersResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:
@@ -3757,7 +3430,7 @@ func (m *MsgEnrollAccountOperatorResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgRevokeAccountOperator) Unmarshal(dAtA []byte) error {
+func (m *MsgRevokeDocIssuers) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -3780,10 +3453,10 @@ func (m *MsgRevokeAccountOperator) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgRevokeAccountOperator: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgRevokeDocIssuers: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgRevokeAccountOperator: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgRevokeDocIssuers: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -3871,7 +3544,7 @@ func (m *MsgRevokeAccountOperator) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgRevokeAccountOperatorResponse) Unmarshal(dAtA []byte) error {
+func (m *MsgRevokeDocIssuersResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -3894,10 +3567,338 @@ func (m *MsgRevokeAccountOperatorResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgRevokeAccountOperatorResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgRevokeDocIssuersResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgRevokeAccountOperatorResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgRevokeDocIssuersResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgEnrollAccountOperators) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgEnrollAccountOperators: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgEnrollAccountOperators: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Creator", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Creator = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Addresses", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Addresses = append(m.Addresses, string(dAtA[iNdEx:postIndex]))
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgEnrollAccountOperatorsResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgEnrollAccountOperatorsResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgEnrollAccountOperatorsResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgRevokeAccountOperators) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgRevokeAccountOperators: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgRevokeAccountOperators: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Creator", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Creator = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Addresses", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Addresses = append(m.Addresses, string(dAtA[iNdEx:postIndex]))
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgRevokeAccountOperatorsResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgRevokeAccountOperatorsResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgRevokeAccountOperatorsResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:
