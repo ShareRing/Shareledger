@@ -26,9 +26,9 @@ func CmdGetLoaders() *cobra.Command {
 
 			queryClient := types.NewQueryClient(clientCtx)
 
-			params := &types.QueryGetLoadersRequest{}
+			params := &types.QueryLoadersRequest{}
 
-			res, err := queryClient.GetLoaders(cmd.Context(), params)
+			res, err := queryClient.Loaders(cmd.Context(), params)
 			if err != nil {
 				return err
 			}

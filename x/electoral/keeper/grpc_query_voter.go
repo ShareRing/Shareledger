@@ -8,7 +8,7 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (k Keeper) GetVoter(goCtx context.Context, req *types.QueryGetVoterRequest) (result *types.QueryGetVoterResponse, err error) {
+func (k Keeper) Voter(goCtx context.Context, req *types.QueryVoterRequest) (result *types.QueryVoterResponse, err error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
@@ -19,7 +19,7 @@ func (k Keeper) GetVoter(goCtx context.Context, req *types.QueryGetVoterRequest)
 	if err != nil {
 		return nil, err
 	}
-	result = &types.QueryGetVoterResponse{
+	result = &types.QueryVoterResponse{
 		Voter: types.AccState{
 			Status: string(types.StatusInactive),
 		},
@@ -29,7 +29,7 @@ func (k Keeper) GetVoter(goCtx context.Context, req *types.QueryGetVoterRequest)
 	if !found {
 		return
 	}
-	result = &types.QueryGetVoterResponse{
+	result = &types.QueryVoterResponse{
 		Voter: voter,
 	}
 

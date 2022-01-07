@@ -9,7 +9,7 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (k Keeper) GetLoader(goCtx context.Context, req *types.QueryGetLoaderRequest) (*types.QueryGetLoaderResponse, error) {
+func (k Keeper) Loader(goCtx context.Context, req *types.QueryLoaderRequest) (*types.QueryLoaderResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
@@ -25,7 +25,7 @@ func (k Keeper) GetLoader(goCtx context.Context, req *types.QueryGetLoaderReques
 		return nil, status.Error(codes.InvalidArgument, "not found")
 	}
 
-	return &types.QueryGetLoaderResponse{
+	return &types.QueryLoaderResponse{
 		AccState: &types.AccState{
 			Key:     m.Key,
 			Address: m.Address,

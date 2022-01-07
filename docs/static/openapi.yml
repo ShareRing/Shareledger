@@ -12755,10 +12755,10 @@ paths:
           type: string
       tags:
         - Query
-  /shareledger/electoral/accState:
+  /shareledger/electoral/accStates:
     get:
       summary: Queries a list of accState items.
-      operationId: ShareledgerElectoralAccStateAll
+      operationId: ShareledgerElectoralAccStates
       responses:
         '200':
           description: A successful response.
@@ -12877,7 +12877,7 @@ paths:
           type: boolean
       tags:
         - Query
-  '/shareledger/electoral/accState/{key}':
+  '/shareledger/electoral/accStates/{key}':
     get:
       summary: Queries a accState by index.
       operationId: ShareledgerElectoralAccState
@@ -12918,50 +12918,6 @@ paths:
         - name: key
           in: path
           required: true
-          type: string
-      tags:
-        - Query
-  /shareledger/electoral/accountOperator:
-    get:
-      summary: Queries a list of accountOperator items.
-      operationId: ShareledgerElectoralAccountOperator
-      responses:
-        '200':
-          description: A successful response.
-          schema:
-            type: object
-            properties:
-              accState:
-                type: object
-                properties:
-                  key:
-                    type: string
-                  address:
-                    type: string
-                  status:
-                    type: string
-        default:
-          description: An unexpected error response.
-          schema:
-            type: object
-            properties:
-              code:
-                type: integer
-                format: int32
-              message:
-                type: string
-              details:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    '@type':
-                      type: string
-                  additionalProperties: {}
-      parameters:
-        - name: address
-          in: query
-          required: false
           type: string
       tags:
         - Query
@@ -13006,10 +12962,10 @@ paths:
                   additionalProperties: {}
       tags:
         - Query
-  /shareledger/electoral/documentIssuer:
+  '/shareledger/electoral/accountOperators/{address}':
     get:
-      summary: Queries a list of documentIssuer items.
-      operationId: ShareledgerElectoralDocumentIssuer
+      summary: Queries a list of accountOperator items.
+      operationId: ShareledgerElectoralAccountOperator
       responses:
         '200':
           description: A successful response.
@@ -13045,8 +13001,8 @@ paths:
                   additionalProperties: {}
       parameters:
         - name: address
-          in: query
-          required: false
+          in: path
+          required: true
           type: string
       tags:
         - Query
@@ -13091,10 +13047,10 @@ paths:
                   additionalProperties: {}
       tags:
         - Query
-  /shareledger/electoral/getLoader:
+  '/shareledger/electoral/documentIssuers/{address}':
     get:
-      summary: Queries a list of getLoader items.
-      operationId: ShareledgerElectoralGetLoader
+      summary: Queries a list of documentIssuer items.
+      operationId: ShareledgerElectoralDocumentIssuer
       responses:
         '200':
           description: A successful response.
@@ -13130,96 +13086,8 @@ paths:
                   additionalProperties: {}
       parameters:
         - name: address
-          in: query
-          required: false
-          type: string
-      tags:
-        - Query
-  /shareledger/electoral/getVoter:
-    get:
-      summary: Queries a list of getVoter items.
-      operationId: ShareledgerElectoralGetVoter
-      responses:
-        '200':
-          description: A successful response.
-          schema:
-            type: object
-            properties:
-              voter:
-                type: object
-                properties:
-                  key:
-                    type: string
-                  address:
-                    type: string
-                  status:
-                    type: string
-        default:
-          description: An unexpected error response.
-          schema:
-            type: object
-            properties:
-              code:
-                type: integer
-                format: int32
-              message:
-                type: string
-              details:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    '@type':
-                      type: string
-                  additionalProperties: {}
-      parameters:
-        - name: address
-          in: query
-          required: false
-          type: string
-      tags:
-        - Query
-  /shareledger/electoral/idSigner:
-    get:
-      summary: Queries a list of idSigner items.
-      operationId: ShareledgerElectoralIdSigner
-      responses:
-        '200':
-          description: A successful response.
-          schema:
-            type: object
-            properties:
-              accState:
-                type: object
-                properties:
-                  key:
-                    type: string
-                  address:
-                    type: string
-                  status:
-                    type: string
-        default:
-          description: An unexpected error response.
-          schema:
-            type: object
-            properties:
-              code:
-                type: integer
-                format: int32
-              message:
-                type: string
-              details:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    '@type':
-                      type: string
-                  additionalProperties: {}
-      parameters:
-        - name: address
-          in: query
-          required: false
+          in: path
+          required: true
           type: string
       tags:
         - Query
@@ -13264,10 +13132,54 @@ paths:
                   additionalProperties: {}
       tags:
         - Query
-  /sharering/shareledger/electoral/getLoaders:
+  '/shareledger/electoral/idSigners/{address}':
     get:
-      summary: Queries a list of getLoaders items.
-      operationId: ShareledgerElectoralGetLoaders
+      summary: Queries a list of idSigner items.
+      operationId: ShareledgerElectoralIdSigner
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              accState:
+                type: object
+                properties:
+                  key:
+                    type: string
+                  address:
+                    type: string
+                  status:
+                    type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: address
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  /shareledger/electoral/loaders:
+    get:
+      summary: Queries a list of Loaders items.
+      operationId: ShareledgerElectoralLoaders
       responses:
         '200':
           description: A successful response.
@@ -13305,10 +13217,54 @@ paths:
                   additionalProperties: {}
       tags:
         - Query
-  /sharering/shareledger/electoral/getVoters:
+  '/shareledger/electoral/loaders/{address}':
     get:
-      summary: Queries a list of getVoters items.
-      operationId: ShareledgerElectoralGetVoters
+      summary: Queries a list of Loader items.
+      operationId: ShareledgerElectoralLoader
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              accState:
+                type: object
+                properties:
+                  key:
+                    type: string
+                  address:
+                    type: string
+                  status:
+                    type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: address
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  /shareledger/electoral/voters:
+    get:
+      summary: Queries a list of Voters items.
+      operationId: ShareledgerElectoralVoters
       responses:
         '200':
           description: A successful response.
@@ -13344,6 +13300,50 @@ paths:
                     '@type':
                       type: string
                   additionalProperties: {}
+      tags:
+        - Query
+  '/shareledger/electoral/voters/{address}':
+    get:
+      summary: Queries a list of Voter items.
+      operationId: ShareledgerElectoralVoter
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              voter:
+                type: object
+                properties:
+                  key:
+                    type: string
+                  address:
+                    type: string
+                  status:
+                    type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: address
+          in: path
+          required: true
+          type: string
       tags:
         - Query
   /shareledger/gentlemint/getExchangeRate:
@@ -20975,7 +20975,7 @@ definitions:
     type: object
   shareledger.electoral.MsgRevokeVoterResponse:
     type: object
-  shareledger.electoral.QueryAccountOperatorResponse:
+  shareledger.electoral.QueryAccStateResponse:
     type: object
     properties:
       accState:
@@ -20987,21 +20987,7 @@ definitions:
             type: string
           status:
             type: string
-  shareledger.electoral.QueryAccountOperatorsResponse:
-    type: object
-    properties:
-      accStates:
-        type: array
-        items:
-          type: object
-          properties:
-            key:
-              type: string
-            address:
-              type: string
-            status:
-              type: string
-  shareledger.electoral.QueryAllAccStateResponse:
+  shareledger.electoral.QueryAccStatesResponse:
     type: object
     properties:
       accState:
@@ -21040,6 +21026,32 @@ definitions:
                    repeated Bar results = 1;
                    PageResponse page = 2;
            }
+  shareledger.electoral.QueryAccountOperatorResponse:
+    type: object
+    properties:
+      accState:
+        type: object
+        properties:
+          key:
+            type: string
+          address:
+            type: string
+          status:
+            type: string
+  shareledger.electoral.QueryAccountOperatorsResponse:
+    type: object
+    properties:
+      accStates:
+        type: array
+        items:
+          type: object
+          properties:
+            key:
+              type: string
+            address:
+              type: string
+            status:
+              type: string
   shareledger.electoral.QueryDocumentIssuerResponse:
     type: object
     properties:
@@ -21066,70 +21078,6 @@ definitions:
               type: string
             status:
               type: string
-  shareledger.electoral.QueryGetAccStateResponse:
-    type: object
-    properties:
-      accState:
-        type: object
-        properties:
-          key:
-            type: string
-          address:
-            type: string
-          status:
-            type: string
-  shareledger.electoral.QueryGetLoaderResponse:
-    type: object
-    properties:
-      accState:
-        type: object
-        properties:
-          key:
-            type: string
-          address:
-            type: string
-          status:
-            type: string
-  shareledger.electoral.QueryGetLoadersResponse:
-    type: object
-    properties:
-      loaders:
-        type: array
-        items:
-          type: object
-          properties:
-            key:
-              type: string
-            address:
-              type: string
-            status:
-              type: string
-  shareledger.electoral.QueryGetVoterResponse:
-    type: object
-    properties:
-      voter:
-        type: object
-        properties:
-          key:
-            type: string
-          address:
-            type: string
-          status:
-            type: string
-  shareledger.electoral.QueryGetVotersResponse:
-    type: object
-    properties:
-      voters:
-        type: array
-        items:
-          type: object
-          properties:
-            key:
-              type: string
-            address:
-              type: string
-            status:
-              type: string
   shareledger.electoral.QueryIdSignerResponse:
     type: object
     properties:
@@ -21146,6 +21094,58 @@ definitions:
     type: object
     properties:
       accStates:
+        type: array
+        items:
+          type: object
+          properties:
+            key:
+              type: string
+            address:
+              type: string
+            status:
+              type: string
+  shareledger.electoral.QueryLoaderResponse:
+    type: object
+    properties:
+      accState:
+        type: object
+        properties:
+          key:
+            type: string
+          address:
+            type: string
+          status:
+            type: string
+  shareledger.electoral.QueryLoadersResponse:
+    type: object
+    properties:
+      loaders:
+        type: array
+        items:
+          type: object
+          properties:
+            key:
+              type: string
+            address:
+              type: string
+            status:
+              type: string
+  shareledger.electoral.QueryVoterResponse:
+    type: object
+    properties:
+      voter:
+        type: object
+        properties:
+          key:
+            type: string
+          address:
+            type: string
+          status:
+            type: string
+  shareledger.electoral.QueryVotersResponse:
+    type: object
+    properties:
+      voters:
         type: array
         items:
           type: object

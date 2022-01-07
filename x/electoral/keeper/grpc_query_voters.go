@@ -9,14 +9,14 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (k Keeper) GetLoaders(goCtx context.Context, req *types.QueryGetLoadersRequest) (*types.QueryGetLoadersResponse, error) {
+func (k Keeper) Voters(goCtx context.Context, req *types.QueryVotersRequest) (*types.QueryVotersResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	list := k.IterateAccState(ctx, types.AccStateKeyShrpLoaders)
+	list := k.IterateAccState(ctx, types.AccStateKeyVoter)
 	res := make([]*types.AccState, 0, len(list))
 	for _, i := range list {
 		res = append(res, &types.AccState{
@@ -26,7 +26,7 @@ func (k Keeper) GetLoaders(goCtx context.Context, req *types.QueryGetLoadersRequ
 		})
 	}
 
-	return &types.QueryGetLoadersResponse{
-		Loaders: res,
+	return &types.QueryVotersResponse{
+		Voters: res,
 	}, nil
 }

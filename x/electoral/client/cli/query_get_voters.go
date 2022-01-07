@@ -26,9 +26,9 @@ func CmdGetVoters() *cobra.Command {
 
 			queryClient := types.NewQueryClient(clientCtx)
 
-			params := &types.QueryGetVotersRequest{}
+			params := &types.QueryVotersRequest{}
 
-			res, err := queryClient.GetVoters(cmd.Context(), params)
+			res, err := queryClient.Voters(cmd.Context(), params)
 			if err != nil {
 				return err
 			}

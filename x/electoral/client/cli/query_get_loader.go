@@ -28,12 +28,12 @@ func CmdGetLoader() *cobra.Command {
 
 			queryClient := types.NewQueryClient(clientCtx)
 
-			params := &types.QueryGetLoaderRequest{
+			params := &types.QueryLoaderRequest{
 
 				Address: reqAddress,
 			}
 
-			res, err := queryClient.GetLoader(cmd.Context(), params)
+			res, err := queryClient.Loader(cmd.Context(), params)
 			if err != nil {
 				return err
 			}
@@ -64,11 +64,11 @@ func CmdGetLoadersFromFile() *cobra.Command {
 			queryClient := types.NewQueryClient(clientCtx)
 
 			for _, addr := range addrList {
-				params := &types.QueryGetLoaderRequest{
+				params := &types.QueryLoaderRequest{
 					Address: addr,
 				}
 
-				res, err := queryClient.GetLoader(cmd.Context(), params)
+				res, err := queryClient.Loader(cmd.Context(), params)
 				if err != nil {
 					return err
 				}

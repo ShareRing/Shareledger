@@ -23,27 +23,27 @@ func TestAccStateQuerySingle(t *testing.T) {
 	msgs := createNAccState(keeper, ctx, 2)
 	for _, tc := range []struct {
 		desc     string
-		request  *types.QueryGetAccStateRequest
-		response *types.QueryGetAccStateResponse
+		request  *types.QueryAccStateRequest
+		response *types.QueryAccStateResponse
 		err      error
 	}{
 		{
 			desc: "First",
-			request: &types.QueryGetAccStateRequest{
+			request: &types.QueryAccStateRequest{
 				Key: msgs[0].Key,
 			},
-			response: &types.QueryGetAccStateResponse{AccState: msgs[0]},
+			response: &types.QueryAccStateResponse{AccState: msgs[0]},
 		},
 		{
 			desc: "Second",
-			request: &types.QueryGetAccStateRequest{
+			request: &types.QueryAccStateRequest{
 				Key: msgs[1].Key,
 			},
-			response: &types.QueryGetAccStateResponse{AccState: msgs[1]},
+			response: &types.QueryAccStateResponse{AccState: msgs[1]},
 		},
 		{
 			desc: "KeyNotFound",
-			request: &types.QueryGetAccStateRequest{
+			request: &types.QueryAccStateRequest{
 				Key: strconv.Itoa(100000),
 			},
 			err: status.Error(codes.InvalidArgument, "not found"),
@@ -69,8 +69,8 @@ func TestAccStateQueryPaginated(t *testing.T) {
 	wctx := sdk.WrapSDKContext(ctx)
 	msgs := createNAccState(keeper, ctx, 5)
 
-	request := func(next []byte, offset, limit uint64, total bool) *types.QueryAllAccStateRequest {
-		return &types.QueryAllAccStateRequest{
+	request := func(next []byte, offset, limit uint64, total bool) *types.QueryAccStatesRequest {
+		return &types.QueryAccStatesRequest{
 			Pagination: &query.PageRequest{
 				Key:        next,
 				Offset:     offset,
