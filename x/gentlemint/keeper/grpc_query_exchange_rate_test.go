@@ -18,14 +18,14 @@ func TestExchangeRateQuery(t *testing.T) {
 	item := createTestExchangeRate(keeper, ctx)
 	for _, tc := range []struct {
 		desc     string
-		request  *types.QueryGetExchangeRateRequest
-		response *types.QueryGetExchangeRateResponse
+		request  *types.QueryExchangeRateRequest
+		response *types.QueryExchangeRateResponse
 		err      error
 	}{
 		{
 			desc:     "First",
-			request:  &types.QueryGetExchangeRateRequest{},
-			response: &types.QueryGetExchangeRateResponse{Rate: item.Rate},
+			request:  &types.QueryExchangeRateRequest{},
+			response: &types.QueryExchangeRateResponse{Rate: item.Rate},
 		},
 		{
 			desc: "InvalidRequest",

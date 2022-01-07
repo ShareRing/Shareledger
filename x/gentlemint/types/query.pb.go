@@ -31,21 +31,21 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
-type QueryGetExchangeRateRequest struct {
+type QueryExchangeRateRequest struct {
 }
 
-func (m *QueryGetExchangeRateRequest) Reset()         { *m = QueryGetExchangeRateRequest{} }
-func (m *QueryGetExchangeRateRequest) String() string { return proto.CompactTextString(m) }
-func (*QueryGetExchangeRateRequest) ProtoMessage()    {}
-func (*QueryGetExchangeRateRequest) Descriptor() ([]byte, []int) {
+func (m *QueryExchangeRateRequest) Reset()         { *m = QueryExchangeRateRequest{} }
+func (m *QueryExchangeRateRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryExchangeRateRequest) ProtoMessage()    {}
+func (*QueryExchangeRateRequest) Descriptor() ([]byte, []int) {
 	return fileDescriptor_4c3912bb3197ea16, []int{0}
 }
-func (m *QueryGetExchangeRateRequest) XXX_Unmarshal(b []byte) error {
+func (m *QueryExchangeRateRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *QueryGetExchangeRateRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *QueryExchangeRateRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_QueryGetExchangeRateRequest.Marshal(b, m, deterministic)
+		return xxx_messageInfo_QueryExchangeRateRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -55,34 +55,34 @@ func (m *QueryGetExchangeRateRequest) XXX_Marshal(b []byte, deterministic bool) 
 		return b[:n], nil
 	}
 }
-func (m *QueryGetExchangeRateRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QueryGetExchangeRateRequest.Merge(m, src)
+func (m *QueryExchangeRateRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryExchangeRateRequest.Merge(m, src)
 }
-func (m *QueryGetExchangeRateRequest) XXX_Size() int {
+func (m *QueryExchangeRateRequest) XXX_Size() int {
 	return m.Size()
 }
-func (m *QueryGetExchangeRateRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_QueryGetExchangeRateRequest.DiscardUnknown(m)
+func (m *QueryExchangeRateRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryExchangeRateRequest.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_QueryGetExchangeRateRequest proto.InternalMessageInfo
+var xxx_messageInfo_QueryExchangeRateRequest proto.InternalMessageInfo
 
-type QueryGetExchangeRateResponse struct {
+type QueryExchangeRateResponse struct {
 	Rate float64 `protobuf:"fixed64,1,opt,name=rate,proto3" json:"rate,omitempty"`
 }
 
-func (m *QueryGetExchangeRateResponse) Reset()         { *m = QueryGetExchangeRateResponse{} }
-func (m *QueryGetExchangeRateResponse) String() string { return proto.CompactTextString(m) }
-func (*QueryGetExchangeRateResponse) ProtoMessage()    {}
-func (*QueryGetExchangeRateResponse) Descriptor() ([]byte, []int) {
+func (m *QueryExchangeRateResponse) Reset()         { *m = QueryExchangeRateResponse{} }
+func (m *QueryExchangeRateResponse) String() string { return proto.CompactTextString(m) }
+func (*QueryExchangeRateResponse) ProtoMessage()    {}
+func (*QueryExchangeRateResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_4c3912bb3197ea16, []int{1}
 }
-func (m *QueryGetExchangeRateResponse) XXX_Unmarshal(b []byte) error {
+func (m *QueryExchangeRateResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *QueryGetExchangeRateResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *QueryExchangeRateResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_QueryGetExchangeRateResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_QueryExchangeRateResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -92,19 +92,19 @@ func (m *QueryGetExchangeRateResponse) XXX_Marshal(b []byte, deterministic bool)
 		return b[:n], nil
 	}
 }
-func (m *QueryGetExchangeRateResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QueryGetExchangeRateResponse.Merge(m, src)
+func (m *QueryExchangeRateResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryExchangeRateResponse.Merge(m, src)
 }
-func (m *QueryGetExchangeRateResponse) XXX_Size() int {
+func (m *QueryExchangeRateResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *QueryGetExchangeRateResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_QueryGetExchangeRateResponse.DiscardUnknown(m)
+func (m *QueryExchangeRateResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryExchangeRateResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_QueryGetExchangeRateResponse proto.InternalMessageInfo
+var xxx_messageInfo_QueryExchangeRateResponse proto.InternalMessageInfo
 
-func (m *QueryGetExchangeRateResponse) GetRate() float64 {
+func (m *QueryExchangeRateResponse) GetRate() float64 {
 	if m != nil {
 		return m.Rate
 	}
@@ -112,34 +112,34 @@ func (m *QueryGetExchangeRateResponse) GetRate() float64 {
 }
 
 func init() {
-	proto.RegisterType((*QueryGetExchangeRateRequest)(nil), "shareledger.gentlemint.QueryGetExchangeRateRequest")
-	proto.RegisterType((*QueryGetExchangeRateResponse)(nil), "shareledger.gentlemint.QueryGetExchangeRateResponse")
+	proto.RegisterType((*QueryExchangeRateRequest)(nil), "shareledger.gentlemint.QueryExchangeRateRequest")
+	proto.RegisterType((*QueryExchangeRateResponse)(nil), "shareledger.gentlemint.QueryExchangeRateResponse")
 }
 
 func init() { proto.RegisterFile("gentlemint/query.proto", fileDescriptor_4c3912bb3197ea16) }
 
 var fileDescriptor_4c3912bb3197ea16 = []byte{
-	// 308 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x94, 0x90, 0xbf, 0x4a, 0x03, 0x41,
-	0x10, 0xc6, 0xb3, 0xa2, 0x16, 0x8b, 0xd5, 0x22, 0x41, 0x62, 0x5c, 0x24, 0x8d, 0x7f, 0x8a, 0x5b,
-	0x92, 0xf8, 0x04, 0x82, 0x58, 0x59, 0x98, 0xd2, 0x46, 0xf6, 0xe2, 0xb0, 0x59, 0x48, 0x76, 0x2e,
-	0xbb, 0x73, 0x92, 0xb4, 0x3e, 0x81, 0xe0, 0x5b, 0x58, 0xfb, 0x10, 0x96, 0x01, 0x1b, 0x4b, 0xb9,
-	0xf3, 0x41, 0xe4, 0xfe, 0x80, 0x17, 0x08, 0x82, 0xdd, 0xc7, 0xcc, 0xf7, 0xfb, 0x66, 0xf8, 0x78,
-	0xdb, 0x80, 0xa3, 0x29, 0xcc, 0xac, 0x23, 0x35, 0x4f, 0xc1, 0x2f, 0xa3, 0xc4, 0x23, 0xa1, 0x68,
-	0x87, 0x89, 0xf6, 0x30, 0x85, 0x07, 0x03, 0x3e, 0xfa, 0xf5, 0x74, 0xba, 0x06, 0xd1, 0x4c, 0x41,
-	0xe9, 0xc4, 0x2a, 0xed, 0x1c, 0x92, 0x26, 0x8b, 0x2e, 0x54, 0x54, 0xe7, 0x7c, 0x8c, 0x61, 0x86,
-	0x41, 0xc5, 0x3a, 0x40, 0x15, 0xa7, 0x1e, 0xfb, 0x31, 0x90, 0xee, 0xab, 0x44, 0x1b, 0xeb, 0x4a,
-	0x73, 0xed, 0x95, 0x8d, 0xcb, 0xb0, 0x18, 0x4f, 0xb4, 0x33, 0x70, 0xef, 0x35, 0x41, 0xbd, 0xdf,
-	0x37, 0x68, 0xb0, 0x94, 0xaa, 0x50, 0xd5, 0xb4, 0x77, 0xc4, 0x0f, 0x6f, 0x8b, 0xdc, 0x6b, 0xa0,
-	0xab, 0x1a, 0x1a, 0x69, 0x82, 0x11, 0xcc, 0x53, 0x08, 0xd4, 0x1b, 0xf0, 0xee, 0xe6, 0x75, 0x48,
-	0xd0, 0x05, 0x10, 0x82, 0x6f, 0x17, 0x27, 0x0e, 0xd8, 0x31, 0x3b, 0x65, 0xa3, 0x52, 0x0f, 0xde,
-	0x18, 0xdf, 0x29, 0x21, 0xf1, 0xca, 0xf8, 0x5e, 0x13, 0x13, 0xc3, 0x68, 0x73, 0x0d, 0xd1, 0x1f,
-	0x3f, 0x74, 0x2e, 0xfe, 0x07, 0x55, 0x9f, 0xf5, 0xd4, 0xd3, 0xc7, 0xf7, 0xcb, 0xd6, 0x99, 0x38,
-	0x51, 0x0d, 0x5a, 0x35, 0x3a, 0x32, 0xeb, 0xe0, 0xe5, 0xcd, 0x7b, 0x26, 0xd9, 0x2a, 0x93, 0xec,
-	0x2b, 0x93, 0xec, 0x39, 0x97, 0xad, 0x55, 0x2e, 0x5b, 0x9f, 0xb9, 0x6c, 0xdd, 0x0d, 0x8d, 0xa5,
-	0x49, 0x1a, 0x47, 0x63, 0x9c, 0x55, 0x61, 0xde, 0x3a, 0xb3, 0x16, 0xbb, 0x68, 0x06, 0xd3, 0x32,
-	0x81, 0x10, 0xef, 0x96, 0xfd, 0x0e, 0x7f, 0x02, 0x00, 0x00, 0xff, 0xff, 0x05, 0x30, 0x9d, 0x9b,
-	0x11, 0x02, 0x00, 0x00,
+	// 305 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x94, 0x90, 0xcd, 0x4a, 0xf4, 0x30,
+	0x14, 0x86, 0x27, 0x1f, 0x9f, 0x2e, 0x82, 0xab, 0x20, 0xc3, 0x58, 0x24, 0xc8, 0x20, 0x22, 0x22,
+	0x8d, 0xe3, 0xdc, 0x81, 0xe0, 0xd2, 0x85, 0xb3, 0x74, 0x23, 0x69, 0x3d, 0xa4, 0x81, 0x36, 0xa7,
+	0x93, 0xa4, 0x32, 0xb3, 0xf5, 0x0a, 0x04, 0xaf, 0xc0, 0xb5, 0x37, 0xe2, 0x72, 0xc0, 0x8d, 0x4b,
+	0x69, 0xbd, 0x10, 0xe9, 0x0f, 0x58, 0xa1, 0x2e, 0xdc, 0x1d, 0x72, 0xde, 0xe7, 0x39, 0xe1, 0xa5,
+	0x63, 0x05, 0xc6, 0xa7, 0x90, 0x69, 0xe3, 0xc5, 0xb2, 0x00, 0xbb, 0x0e, 0x73, 0x8b, 0x1e, 0xd9,
+	0xd8, 0x25, 0xd2, 0x42, 0x0a, 0x77, 0x0a, 0x6c, 0xf8, 0x9d, 0x09, 0xf6, 0x15, 0xa2, 0x4a, 0x41,
+	0xc8, 0x5c, 0x0b, 0x69, 0x0c, 0x7a, 0xe9, 0x35, 0x1a, 0xd7, 0x52, 0xc1, 0x49, 0x8c, 0x2e, 0x43,
+	0x27, 0x22, 0xe9, 0xa0, 0xd5, 0x89, 0xfb, 0x59, 0x04, 0x5e, 0xce, 0x44, 0x2e, 0x95, 0x36, 0x4d,
+	0xb8, 0xcb, 0xf2, 0xde, 0x65, 0x58, 0xc5, 0x89, 0x34, 0x0a, 0x6e, 0xad, 0xf4, 0xd0, 0xed, 0x77,
+	0x15, 0x2a, 0x6c, 0x46, 0x51, 0x4f, 0xed, 0xeb, 0x34, 0xa0, 0x93, 0xeb, 0xda, 0x7b, 0xd9, 0x11,
+	0x0b, 0xe9, 0x61, 0x01, 0xcb, 0x02, 0x9c, 0x9f, 0x0a, 0xba, 0x37, 0xb0, 0x73, 0x39, 0x1a, 0x07,
+	0x8c, 0xd1, 0xff, 0xb5, 0x7c, 0x42, 0x0e, 0xc8, 0x31, 0x59, 0x34, 0xf3, 0xf9, 0x0b, 0xa1, 0x5b,
+	0x0d, 0xc1, 0x9e, 0x09, 0xdd, 0xe9, 0x63, 0xec, 0x2c, 0x1c, 0x2e, 0x20, 0xfc, 0xed, 0x7a, 0x30,
+	0xfb, 0x03, 0xd1, 0xfe, 0x69, 0x7a, 0xfa, 0xf0, 0xf6, 0xf9, 0xf4, 0xef, 0x88, 0x1d, 0x8a, 0x1e,
+	0x2a, 0x06, 0x7a, 0xa9, 0xa9, 0x8b, 0xab, 0xd7, 0x92, 0x93, 0x4d, 0xc9, 0xc9, 0x47, 0xc9, 0xc9,
+	0x63, 0xc5, 0x47, 0x9b, 0x8a, 0x8f, 0xde, 0x2b, 0x3e, 0xba, 0x99, 0x2b, 0xed, 0x93, 0x22, 0x0a,
+	0x63, 0xcc, 0x5a, 0x93, 0xd5, 0x46, 0xfd, 0x70, 0xae, 0xfa, 0x56, 0xbf, 0xce, 0xc1, 0x45, 0xdb,
+	0x4d, 0xa1, 0xf3, 0xaf, 0x00, 0x00, 0x00, 0xff, 0xff, 0xa5, 0x4d, 0x3c, 0x23, 0x02, 0x02, 0x00,
+	0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -155,7 +155,7 @@ const _ = grpc.SupportPackageIsVersion4
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type QueryClient interface {
 	// Queries a exchangeRate by index.
-	ExchangeRate(ctx context.Context, in *QueryGetExchangeRateRequest, opts ...grpc.CallOption) (*QueryGetExchangeRateResponse, error)
+	ExchangeRate(ctx context.Context, in *QueryExchangeRateRequest, opts ...grpc.CallOption) (*QueryExchangeRateResponse, error)
 }
 
 type queryClient struct {
@@ -166,8 +166,8 @@ func NewQueryClient(cc grpc1.ClientConn) QueryClient {
 	return &queryClient{cc}
 }
 
-func (c *queryClient) ExchangeRate(ctx context.Context, in *QueryGetExchangeRateRequest, opts ...grpc.CallOption) (*QueryGetExchangeRateResponse, error) {
-	out := new(QueryGetExchangeRateResponse)
+func (c *queryClient) ExchangeRate(ctx context.Context, in *QueryExchangeRateRequest, opts ...grpc.CallOption) (*QueryExchangeRateResponse, error) {
+	out := new(QueryExchangeRateResponse)
 	err := c.cc.Invoke(ctx, "/shareledger.gentlemint.Query/ExchangeRate", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -178,14 +178,14 @@ func (c *queryClient) ExchangeRate(ctx context.Context, in *QueryGetExchangeRate
 // QueryServer is the server API for Query service.
 type QueryServer interface {
 	// Queries a exchangeRate by index.
-	ExchangeRate(context.Context, *QueryGetExchangeRateRequest) (*QueryGetExchangeRateResponse, error)
+	ExchangeRate(context.Context, *QueryExchangeRateRequest) (*QueryExchangeRateResponse, error)
 }
 
 // UnimplementedQueryServer can be embedded to have forward compatible implementations.
 type UnimplementedQueryServer struct {
 }
 
-func (*UnimplementedQueryServer) ExchangeRate(ctx context.Context, req *QueryGetExchangeRateRequest) (*QueryGetExchangeRateResponse, error) {
+func (*UnimplementedQueryServer) ExchangeRate(ctx context.Context, req *QueryExchangeRateRequest) (*QueryExchangeRateResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ExchangeRate not implemented")
 }
 
@@ -194,7 +194,7 @@ func RegisterQueryServer(s grpc1.Server, srv QueryServer) {
 }
 
 func _Query_ExchangeRate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryGetExchangeRateRequest)
+	in := new(QueryExchangeRateRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -206,7 +206,7 @@ func _Query_ExchangeRate_Handler(srv interface{}, ctx context.Context, dec func(
 		FullMethod: "/shareledger.gentlemint.Query/ExchangeRate",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QueryServer).ExchangeRate(ctx, req.(*QueryGetExchangeRateRequest))
+		return srv.(QueryServer).ExchangeRate(ctx, req.(*QueryExchangeRateRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -224,7 +224,7 @@ var _Query_serviceDesc = grpc.ServiceDesc{
 	Metadata: "gentlemint/query.proto",
 }
 
-func (m *QueryGetExchangeRateRequest) Marshal() (dAtA []byte, err error) {
+func (m *QueryExchangeRateRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -234,12 +234,12 @@ func (m *QueryGetExchangeRateRequest) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *QueryGetExchangeRateRequest) MarshalTo(dAtA []byte) (int, error) {
+func (m *QueryExchangeRateRequest) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *QueryGetExchangeRateRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *QueryExchangeRateRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -247,7 +247,7 @@ func (m *QueryGetExchangeRateRequest) MarshalToSizedBuffer(dAtA []byte) (int, er
 	return len(dAtA) - i, nil
 }
 
-func (m *QueryGetExchangeRateResponse) Marshal() (dAtA []byte, err error) {
+func (m *QueryExchangeRateResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -257,12 +257,12 @@ func (m *QueryGetExchangeRateResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *QueryGetExchangeRateResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *QueryExchangeRateResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *QueryGetExchangeRateResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *QueryExchangeRateResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -287,7 +287,7 @@ func encodeVarintQuery(dAtA []byte, offset int, v uint64) int {
 	dAtA[offset] = uint8(v)
 	return base
 }
-func (m *QueryGetExchangeRateRequest) Size() (n int) {
+func (m *QueryExchangeRateRequest) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -296,7 +296,7 @@ func (m *QueryGetExchangeRateRequest) Size() (n int) {
 	return n
 }
 
-func (m *QueryGetExchangeRateResponse) Size() (n int) {
+func (m *QueryExchangeRateResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -314,7 +314,7 @@ func sovQuery(x uint64) (n int) {
 func sozQuery(x uint64) (n int) {
 	return sovQuery(uint64((x << 1) ^ uint64((int64(x) >> 63))))
 }
-func (m *QueryGetExchangeRateRequest) Unmarshal(dAtA []byte) error {
+func (m *QueryExchangeRateRequest) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -337,10 +337,10 @@ func (m *QueryGetExchangeRateRequest) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: QueryGetExchangeRateRequest: wiretype end group for non-group")
+			return fmt.Errorf("proto: QueryExchangeRateRequest: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QueryGetExchangeRateRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: QueryExchangeRateRequest: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:
@@ -364,7 +364,7 @@ func (m *QueryGetExchangeRateRequest) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *QueryGetExchangeRateResponse) Unmarshal(dAtA []byte) error {
+func (m *QueryExchangeRateResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -387,10 +387,10 @@ func (m *QueryGetExchangeRateResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: QueryGetExchangeRateResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: QueryExchangeRateResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QueryGetExchangeRateResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: QueryExchangeRateResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:

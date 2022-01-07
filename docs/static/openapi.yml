@@ -13346,7 +13346,7 @@ paths:
           type: string
       tags:
         - Query
-  /shareledger/gentlemint/getExchangeRate:
+  /shareledger/gentlemint/exchangeRate:
     get:
       summary: Queries a exchangeRate by index.
       operationId: ShareledgerGentlemintExchangeRate
@@ -21198,7 +21198,7 @@ definitions:
         type: string
   shareledger.gentlemint.MsgSetExchangeResponse:
     type: object
-  shareledger.gentlemint.QueryGetExchangeRateResponse:
+  shareledger.gentlemint.QueryExchangeRateResponse:
     type: object
     properties:
       rate:

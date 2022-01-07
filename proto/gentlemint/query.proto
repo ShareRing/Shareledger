@@ -12,16 +12,16 @@ option go_package = "github.com/sharering/shareledger/x/gentlemint/types";
 // Query defines the gRPC querier service.
 service Query {
 // Queries a exchangeRate by index.
-	rpc ExchangeRate(QueryGetExchangeRateRequest) returns (QueryGetExchangeRateResponse) {
-		option (google.api.http).get = "/shareledger/gentlemint/getExchangeRate";
+	rpc ExchangeRate(QueryExchangeRateRequest) returns (QueryExchangeRateResponse) {
+		option (google.api.http).get = "/shareledger/gentlemint/exchangeRate";
 	}
 
 // this line is used by starport scaffolding # 2
 }
 
-message QueryGetExchangeRateRequest {}
+message QueryExchangeRateRequest {}
 
-message QueryGetExchangeRateResponse {
+message QueryExchangeRateResponse {
 	double rate = 1;
 }
 
