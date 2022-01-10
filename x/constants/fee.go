@@ -97,6 +97,15 @@ var mapActions = map[reflect.Type]string{
 type TableFee struct {
 }
 
-func (t TableFee) GetNameMsg(msg sdk.Msg) string {
-	return ""
+func (t TableFee) GetActionKey(msg sdk.Msg) string {
+	k := mapActions[reflect.TypeOf(msg)]
+	return k
+}
+
+func (t TableFee) GetListActions() []string {
+	actions := make([]string, 0, len(mapActions))
+	for _, v := range mapActions {
+		actions = append(actions, v)
+	}
+	return actions
 }
