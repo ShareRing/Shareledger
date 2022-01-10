@@ -11,7 +11,7 @@ import (
 
 func CmdShowExchangeRate() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "get-exchange",
+		Use:   "exchange",
 		Short: "get shrp to shr exchange rate",
 		Args:  cobra.NoArgs,
 		RunE: func(cmd *cobra.Command, args []string) error {
