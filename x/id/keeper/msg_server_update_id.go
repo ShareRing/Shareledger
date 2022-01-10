@@ -17,6 +17,11 @@ func (k msgServer) UpdateId(goCtx context.Context, msg *types.MsgUpdateId) (*typ
 		return nil, sdkerrors.Wrap(types.ErrIdNotExisted, msg.Id)
 	}
 
+	// check owner permission
+	if id.Data.OwnerAddress != msg.IssuerAddress {
+		return nil, sdkerrors.Wrap(types.ErrNotOwner, msg.IssuerAddress)
+	}
+
 	// update extra data
 	id.Data.ExtraData = msg.ExtraData
 	k.SetID(ctx, id)
