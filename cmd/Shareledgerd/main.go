@@ -6,7 +6,6 @@ import (
 	"github.com/sharering/shareledger/cmd/Shareledgerd/sub"
 	"github.com/sharering/shareledger/cmd/Shareledgerd/tools"
 
-	"github.com/cosmos/cosmos-sdk/client/flags"
 	svrcmd "github.com/cosmos/cosmos-sdk/server/cmd"
 	"github.com/sharering/shareledger/app"
 	"github.com/spf13/cobra"
@@ -23,10 +22,6 @@ func main() {
 		app.New,
 		cosmoscmd.AddSubCmd(
 			sub.NewImportKeyCmd(),
-			getStakingCmd(),
-			getSlashingCmd(),
-			getDistributionCmd(),
-			getFeegrantCmd(),
 			getGenesisCmd(app.DefaultNodeHome),
 		),
 	)
@@ -60,24 +55,6 @@ func main() {
 	}
 }
 
-func getStakingCmd() *cobra.Command {
-	cmd := &cobra.Command{
-		Use:   "staking",
-		Short: "Staking transaction subcommands",
-	}
-
-	cmd.AddCommand(
-		sub.NewCreateValidatorCmd(),
-		sub.NewEditValidatorCmd(),
-		sub.NewDelegateCmd(),
-		sub.NewRedelegateCmd(),
-		sub.NewUnbondCmd(),
-	)
-	cmd.PersistentFlags().String(flags.FlagChainID, "", "The network chain ID")
-
-	return cmd
-}
-
 func getGenesisCmd(defaultNodeHome string) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "genesis",
@@ -89,49 +66,5 @@ func getGenesisCmd(defaultNodeHome string) *cobra.Command {
 		tools.NewGenesisAddValidatorAccountCmd(defaultNodeHome),
 		tools.NewGenesisAddAccountOperatorCmd(defaultNodeHome),
 	)
-	return cmd
-}
-
-func getSlashingCmd() *cobra.Command {
-	cmd := &cobra.Command{
-		Use:   "slashing",
-		Short: "Slashing transaction subcommands",
-	}
-
-	cmd.AddCommand(
-		sub.NewUnjailTxCmd(),
-	)
-	cmd.PersistentFlags().String(flags.FlagChainID, "", "The network chain ID")
-
-	return cmd
-}
-
-func getDistributionCmd() *cobra.Command {
-	cmd := &cobra.Command{
-		Use:   "distribution",
-		Short: "Distribution transaction subcommands",
-	}
-
-	cmd.AddCommand(
-		sub.NewWithdrawRewardsCmd(),
-		sub.NewWithdrawAllRewardsCmd(),
-	)
-	cmd.PersistentFlags().String(flags.FlagChainID, "", "The network chain ID")
-
-	return cmd
-}
-
-func getFeegrantCmd() *cobra.Command {
-	cmd := &cobra.Command{
-		Use:   "feegrant",
-		Short: "Feegrant transaction subcommands",
-	}
-
-	cmd.AddCommand(
-		sub.NewCmdFeeGrant(),
-		sub.NewCmdRevokeFeegrant(),
-	)
-	cmd.PersistentFlags().String(flags.FlagChainID, "", "The network chain ID")
-
 	return cmd
 }

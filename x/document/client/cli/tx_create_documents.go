@@ -6,14 +6,12 @@ import (
 	"strings"
 
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
 	"github.com/cosmos/cosmos-sdk/version"
 	"github.com/sharering/shareledger/x/document/types"
-	myutils "github.com/sharering/shareledger/x/utils"
 )
 
 var _ = strconv.Itoa(0)
@@ -37,15 +35,6 @@ $ %s tx %s create-documents uuid-5122,uuid-0218 c89efdaa54c0f20c7adf6,c89efdaa54
 				return err
 			}
 
-			// seed implementation
-			keySeed := viper.GetString(myutils.FlagKeySeed)
-			if keySeed != "" {
-				clientCtx, err = myutils.CreateContextFromSeed(keySeed, clientCtx)
-				if err != nil {
-					return err
-				}
-			}
-
 			msg := types.NewMsgCreateDocuments(
 				argData,
 				argHolder,
@@ -60,7 +49,6 @@ $ %s tx %s create-documents uuid-5122,uuid-0218 c89efdaa54c0f20c7adf6,c89efdaa54
 	}
 
 	flags.AddTxFlagsToCmd(cmd)
-	cmd.Flags().String(myutils.FlagKeySeed, "", myutils.KeySeedUsage)
 
 	return cmd
 }
