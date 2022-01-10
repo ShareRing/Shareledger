@@ -13,7 +13,11 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 	if genState.ExchangeRate != nil {
 		k.SetExchangeRate(ctx, *genState.ExchangeRate)
 	}
-	// this line is used by starport scaffolding # genesis/module/init
+	// Set all the levelFee
+for _, elem := range genState.LevelFeeList {
+	k.SetLevelFee(ctx, elem)
+}
+// this line is used by starport scaffolding # genesis/module/init
 }
 
 // ExportGenesis returns the capability module's exported genesis.
@@ -25,7 +29,8 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 	if found {
 		genesis.ExchangeRate = &exchangeRate
 	}
-	// this line is used by starport scaffolding # genesis/module/export
+	genesis.LevelFeeList = k.GetAllLevelFee(ctx)
+// this line is used by starport scaffolding # genesis/module/export
 
 	return genesis
 }

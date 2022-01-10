@@ -28,7 +28,15 @@ func TestGenesis(t *testing.T) {
 		ExchangeRate: &types.ExchangeRate{
 			Rate: 200,
 		},
-		// this line is used by starport scaffolding # genesis/test/state
+		LevelFeeList: []types.LevelFee{
+	{
+		Level: "0",
+},
+	{
+		Level: "1",
+},
+},
+// this line is used by starport scaffolding # genesis/test/state
 	}
 
 	k, ctx := keepertest.GentlemintKeeper(t)
@@ -41,5 +49,7 @@ func TestGenesis(t *testing.T) {
 	require.Equal(t, genesisState.Authority, got.Authority)
 	require.Equal(t, genesisState.Treasurer, got.Treasurer)
 	require.Equal(t, genesisState.ExchangeRate, got.ExchangeRate)
-	// this line is used by starport scaffolding # genesis/test/assert
+	require.Len(t, got.LevelFeeList, len(genesisState.LevelFeeList))
+require.Subset(t, genesisState.LevelFeeList, got.LevelFeeList)
+// this line is used by starport scaffolding # genesis/test/assert
 }

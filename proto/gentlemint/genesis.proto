@@ -2,6 +2,7 @@ syntax = "proto3";
 package shareledger.gentlemint;
 
 import "gentlemint/exchange_rate.proto";
+import "gentlemint/level_fee.proto";
 // this line is used by starport scaffolding # genesis/proto/import
 import "gogoproto/gogo.proto";
 
@@ -10,5 +11,6 @@ option go_package = "github.com/sharering/shareledger/x/gentlemint/types";
 // GenesisState defines the gentlemint module's genesis state.
 message GenesisState {
   ExchangeRate exchangeRate = 1;
+  repeated LevelFee levelFeeList = 2 [(gogoproto.nullable) = false];
   // this line is used by starport scaffolding # genesis/proto/state
 }

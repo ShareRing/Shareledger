@@ -4,6 +4,7 @@ package shareledger.gentlemint;
 import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "gentlemint/exchange_rate.proto";
+import "gentlemint/level_fee.proto";
 // this line is used by starport scaffolding # 1
 import "gogoproto/gogo.proto";
 
@@ -16,6 +17,16 @@ service Query {
 		option (google.api.http).get = "/shareledger/gentlemint/exchangeRate";
 	}
 
+// Queries a levelFee by index.
+	rpc LevelFee(QueryGetLevelFeeRequest) returns (QueryGetLevelFeeResponse) {
+		option (google.api.http).get = "/sharering/shareledger/gentlemint/levelFee/{level}";
+	}
+
+	// Queries a list of levelFee items.
+	rpc LevelFeeAll(QueryAllLevelFeeRequest) returns (QueryAllLevelFeeResponse) {
+		option (google.api.http).get = "/sharering/shareledger/gentlemint/levelFee";
+	}
+
 // this line is used by starport scaffolding # 2
 }
 
@@ -23,6 +34,24 @@ message QueryExchangeRateRequest {}
 
 message QueryExchangeRateResponse {
 	double rate = 1;
+}
+
+message QueryGetLevelFeeRequest {
+	  string level = 1;
+
+}
+
+message QueryGetLevelFeeResponse {
+	LevelFee levelFee = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllLevelFeeRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllLevelFeeResponse {
+	repeated LevelFee levelFee = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 
 // this line is used by starport scaffolding # 3

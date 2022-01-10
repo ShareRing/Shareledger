@@ -72,10 +72,5 @@ func KeyPrefix(p string) []byte {
 }
 
 const (
-	AuthorityKey = "A"
-	TreasurerKey = "T"
-)
-
-const (
 	ExchangeRateKey = "exchange_shrp_to_shr"
 )

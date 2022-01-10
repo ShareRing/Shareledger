@@ -1,6 +1,8 @@
 package types
 
-// this line is used by starport scaffolding # genesis/types/import
+import (
+"fmt"
+)
 
 // DefaultIndex is the default capability global index
 const DefaultIndex uint64 = 1
@@ -9,7 +11,8 @@ const DefaultIndex uint64 = 1
 func DefaultGenesis() *GenesisState {
 	return &GenesisState{
 		ExchangeRate: nil,
-		// this line is used by starport scaffolding # genesis/types/default
+		LevelFeeList: []LevelFee{},
+// this line is used by starport scaffolding # genesis/types/default
 	}
 }
 
@@ -17,7 +20,17 @@ func DefaultGenesis() *GenesisState {
 // failure.
 func (gs GenesisState) Validate() error {
 
-	// this line is used by starport scaffolding # genesis/types/validate
+	// Check for duplicated index in levelFee
+levelFeeIndexMap := make(map[string]struct{})
+
+for _, elem := range gs.LevelFeeList {
+	index := string(LevelFeeKey(elem.Level))
+	if _, ok := levelFeeIndexMap[index]; ok {
+		return fmt.Errorf("duplicated index for levelFee")
+	}
+	levelFeeIndexMap[index] = struct{}{}
+}
+// this line is used by starport scaffolding # genesis/types/validate
 
 	return nil
 }

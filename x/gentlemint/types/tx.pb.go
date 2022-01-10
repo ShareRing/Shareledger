@@ -915,6 +915,286 @@ func (m *MsgSetExchangeResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_MsgSetExchangeResponse proto.InternalMessageInfo
 
+type MsgCreateLevelFee struct {
+	Creator string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+	Level   string `protobuf:"bytes,2,opt,name=level,proto3" json:"level,omitempty"`
+	Fee     string `protobuf:"bytes,3,opt,name=fee,proto3" json:"fee,omitempty"`
+}
+
+func (m *MsgCreateLevelFee) Reset()         { *m = MsgCreateLevelFee{} }
+func (m *MsgCreateLevelFee) String() string { return proto.CompactTextString(m) }
+func (*MsgCreateLevelFee) ProtoMessage()    {}
+func (*MsgCreateLevelFee) Descriptor() ([]byte, []int) {
+	return fileDescriptor_d3542f4930ea9a46, []int{18}
+}
+func (m *MsgCreateLevelFee) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgCreateLevelFee) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgCreateLevelFee.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgCreateLevelFee) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgCreateLevelFee.Merge(m, src)
+}
+func (m *MsgCreateLevelFee) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgCreateLevelFee) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgCreateLevelFee.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgCreateLevelFee proto.InternalMessageInfo
+
+func (m *MsgCreateLevelFee) GetCreator() string {
+	if m != nil {
+		return m.Creator
+	}
+	return ""
+}
+
+func (m *MsgCreateLevelFee) GetLevel() string {
+	if m != nil {
+		return m.Level
+	}
+	return ""
+}
+
+func (m *MsgCreateLevelFee) GetFee() string {
+	if m != nil {
+		return m.Fee
+	}
+	return ""
+}
+
+type MsgCreateLevelFeeResponse struct {
+}
+
+func (m *MsgCreateLevelFeeResponse) Reset()         { *m = MsgCreateLevelFeeResponse{} }
+func (m *MsgCreateLevelFeeResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgCreateLevelFeeResponse) ProtoMessage()    {}
+func (*MsgCreateLevelFeeResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_d3542f4930ea9a46, []int{19}
+}
+func (m *MsgCreateLevelFeeResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgCreateLevelFeeResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgCreateLevelFeeResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgCreateLevelFeeResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgCreateLevelFeeResponse.Merge(m, src)
+}
+func (m *MsgCreateLevelFeeResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgCreateLevelFeeResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgCreateLevelFeeResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgCreateLevelFeeResponse proto.InternalMessageInfo
+
+type MsgUpdateLevelFee struct {
+	Creator string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+	Level   string `protobuf:"bytes,2,opt,name=level,proto3" json:"level,omitempty"`
+	Fee     string `protobuf:"bytes,3,opt,name=fee,proto3" json:"fee,omitempty"`
+}
+
+func (m *MsgUpdateLevelFee) Reset()         { *m = MsgUpdateLevelFee{} }
+func (m *MsgUpdateLevelFee) String() string { return proto.CompactTextString(m) }
+func (*MsgUpdateLevelFee) ProtoMessage()    {}
+func (*MsgUpdateLevelFee) Descriptor() ([]byte, []int) {
+	return fileDescriptor_d3542f4930ea9a46, []int{20}
+}
+func (m *MsgUpdateLevelFee) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgUpdateLevelFee) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgUpdateLevelFee.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgUpdateLevelFee) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgUpdateLevelFee.Merge(m, src)
+}
+func (m *MsgUpdateLevelFee) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgUpdateLevelFee) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgUpdateLevelFee.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgUpdateLevelFee proto.InternalMessageInfo
+
+func (m *MsgUpdateLevelFee) GetCreator() string {
+	if m != nil {
+		return m.Creator
+	}
+	return ""
+}
+
+func (m *MsgUpdateLevelFee) GetLevel() string {
+	if m != nil {
+		return m.Level
+	}
+	return ""
+}
+
+func (m *MsgUpdateLevelFee) GetFee() string {
+	if m != nil {
+		return m.Fee
+	}
+	return ""
+}
+
+type MsgUpdateLevelFeeResponse struct {
+}
+
+func (m *MsgUpdateLevelFeeResponse) Reset()         { *m = MsgUpdateLevelFeeResponse{} }
+func (m *MsgUpdateLevelFeeResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgUpdateLevelFeeResponse) ProtoMessage()    {}
+func (*MsgUpdateLevelFeeResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_d3542f4930ea9a46, []int{21}
+}
+func (m *MsgUpdateLevelFeeResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgUpdateLevelFeeResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgUpdateLevelFeeResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgUpdateLevelFeeResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgUpdateLevelFeeResponse.Merge(m, src)
+}
+func (m *MsgUpdateLevelFeeResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgUpdateLevelFeeResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgUpdateLevelFeeResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgUpdateLevelFeeResponse proto.InternalMessageInfo
+
+type MsgDeleteLevelFee struct {
+	Creator string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+	Level   string `protobuf:"bytes,2,opt,name=level,proto3" json:"level,omitempty"`
+}
+
+func (m *MsgDeleteLevelFee) Reset()         { *m = MsgDeleteLevelFee{} }
+func (m *MsgDeleteLevelFee) String() string { return proto.CompactTextString(m) }
+func (*MsgDeleteLevelFee) ProtoMessage()    {}
+func (*MsgDeleteLevelFee) Descriptor() ([]byte, []int) {
+	return fileDescriptor_d3542f4930ea9a46, []int{22}
+}
+func (m *MsgDeleteLevelFee) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgDeleteLevelFee) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgDeleteLevelFee.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgDeleteLevelFee) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgDeleteLevelFee.Merge(m, src)
+}
+func (m *MsgDeleteLevelFee) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgDeleteLevelFee) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgDeleteLevelFee.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgDeleteLevelFee proto.InternalMessageInfo
+
+func (m *MsgDeleteLevelFee) GetCreator() string {
+	if m != nil {
+		return m.Creator
+	}
+	return ""
+}
+
+func (m *MsgDeleteLevelFee) GetLevel() string {
+	if m != nil {
+		return m.Level
+	}
+	return ""
+}
+
+type MsgDeleteLevelFeeResponse struct {
+}
+
+func (m *MsgDeleteLevelFeeResponse) Reset()         { *m = MsgDeleteLevelFeeResponse{} }
+func (m *MsgDeleteLevelFeeResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgDeleteLevelFeeResponse) ProtoMessage()    {}
+func (*MsgDeleteLevelFeeResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_d3542f4930ea9a46, []int{23}
+}
+func (m *MsgDeleteLevelFeeResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgDeleteLevelFeeResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgDeleteLevelFeeResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgDeleteLevelFeeResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgDeleteLevelFeeResponse.Merge(m, src)
+}
+func (m *MsgDeleteLevelFeeResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgDeleteLevelFeeResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgDeleteLevelFeeResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgDeleteLevelFeeResponse proto.InternalMessageInfo
+
 func init() {
 	proto.RegisterType((*MsgLoadShr)(nil), "shareledger.gentlemint.MsgLoadShr")
 	proto.RegisterType((*MsgLoadShrResponse)(nil), "shareledger.gentlemint.MsgLoadShrResponse")
@@ -934,44 +1214,57 @@ func init() {
 	proto.RegisterType((*MsgBurnShrResponse)(nil), "shareledger.gentlemint.MsgBurnShrResponse")
 	proto.RegisterType((*MsgSetExchange)(nil), "shareledger.gentlemint.MsgSetExchange")
 	proto.RegisterType((*MsgSetExchangeResponse)(nil), "shareledger.gentlemint.MsgSetExchangeResponse")
+	proto.RegisterType((*MsgCreateLevelFee)(nil), "shareledger.gentlemint.MsgCreateLevelFee")
+	proto.RegisterType((*MsgCreateLevelFeeResponse)(nil), "shareledger.gentlemint.MsgCreateLevelFeeResponse")
+	proto.RegisterType((*MsgUpdateLevelFee)(nil), "shareledger.gentlemint.MsgUpdateLevelFee")
+	proto.RegisterType((*MsgUpdateLevelFeeResponse)(nil), "shareledger.gentlemint.MsgUpdateLevelFeeResponse")
+	proto.RegisterType((*MsgDeleteLevelFee)(nil), "shareledger.gentlemint.MsgDeleteLevelFee")
+	proto.RegisterType((*MsgDeleteLevelFeeResponse)(nil), "shareledger.gentlemint.MsgDeleteLevelFeeResponse")
 }
 
 func init() { proto.RegisterFile("gentlemint/tx.proto", fileDescriptor_d3542f4930ea9a46) }
 
 var fileDescriptor_d3542f4930ea9a46 = []byte{
-	// 498 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xb4, 0x55, 0x4d, 0x6b, 0xdb, 0x40,
-	0x10, 0xb5, 0xe2, 0x62, 0x3b, 0x13, 0x28, 0xad, 0x02, 0x46, 0xf8, 0x20, 0x5a, 0x99, 0xa6, 0x5f,
-	0x20, 0x41, 0x73, 0x6e, 0x0b, 0x2e, 0xbd, 0xd5, 0x97, 0x04, 0x4a, 0x5d, 0x7c, 0x51, 0xec, 0x65,
-	0x6d, 0xb0, 0x57, 0x62, 0x77, 0x05, 0xf6, 0xbf, 0xe8, 0xcf, 0x2a, 0x3d, 0xe5, 0xd8, 0x63, 0xb1,
-	0xff, 0x48, 0xf1, 0x6a, 0x77, 0x25, 0x27, 0xed, 0xac, 0x69, 0x93, 0x9b, 0x96, 0x7d, 0xf3, 0xde,
-	0xcc, 0x43, 0x6f, 0x16, 0x4e, 0x29, 0x61, 0x72, 0x41, 0x96, 0x73, 0x26, 0x13, 0xb9, 0x8a, 0x73,
-	0x9e, 0xc9, 0xcc, 0xef, 0x8a, 0x59, 0xca, 0xc9, 0x82, 0x4c, 0x29, 0xe1, 0x71, 0x05, 0x88, 0xbe,
-	0x00, 0x0c, 0x05, 0xfd, 0x94, 0xa5, 0xd3, 0xcb, 0x19, 0xf7, 0x03, 0x68, 0x4f, 0x38, 0x49, 0x65,
-	0xc6, 0x03, 0xef, 0x89, 0xf7, 0xe2, 0xf8, 0xc2, 0x1c, 0x77, 0x37, 0xe9, 0x74, 0xca, 0x89, 0x10,
-	0xc1, 0x51, 0x79, 0xa3, 0x8f, 0x7e, 0x17, 0x5a, 0xe9, 0x32, 0x2b, 0x98, 0x0c, 0x9a, 0xea, 0x42,
-	0x9f, 0xa2, 0x33, 0xf0, 0x2b, 0xe6, 0x0b, 0x22, 0xf2, 0x8c, 0x09, 0xe2, 0x3f, 0x82, 0xe6, 0x22,
-	0xa3, 0x9a, 0x7d, 0xf7, 0x19, 0x8d, 0xe0, 0xa4, 0xc2, 0xe5, 0x77, 0xda, 0xc2, 0x73, 0x38, 0xad,
-	0x51, 0x23, 0x3d, 0xbc, 0x85, 0xe3, 0xa1, 0xa0, 0x83, 0x62, 0x8d, 0x9b, 0x50, 0xe9, 0x1c, 0xed,
-	0xe9, 0x3c, 0x83, 0xc7, 0xb6, 0x1c, 0x51, 0x29, 0xbd, 0xbe, 0x24, 0xec, 0x9e, 0xbc, 0xd6, 0xcc,
-	0x4e, 0xaf, 0x35, 0xee, 0x3e, 0xbc, 0x36, 0xd4, 0x48, 0x0f, 0xef, 0x94, 0x0b, 0x83, 0x62, 0xfd,
-	0x81, 0x30, 0xf9, 0x0f, 0x66, 0x97, 0xb3, 0xea, 0x7a, 0x44, 0xe7, 0xbd, 0x9a, 0x75, 0x50, 0x70,
-	0xe6, 0x98, 0xf5, 0x6f, 0x42, 0xe5, 0x44, 0x86, 0xe0, 0x80, 0x89, 0x14, 0xf0, 0x3f, 0x26, 0x52,
-	0xf5, 0xa8, 0xce, 0x43, 0x65, 0xb1, 0xfc, 0xb8, 0x9a, 0xcc, 0x52, 0x46, 0x09, 0xa2, 0xe5, 0xc3,
-	0x03, 0x9e, 0x4a, 0xa2, 0x95, 0xd4, 0x77, 0x14, 0x40, 0x77, 0xbf, 0xde, 0x68, 0xbd, 0xf9, 0xd1,
-	0x82, 0xe6, 0x50, 0x50, 0x7f, 0x04, 0x6d, 0xb3, 0x0a, 0xa2, 0xf8, 0xcf, 0x1b, 0x23, 0xae, 0x12,
-	0xd5, 0x7b, 0xe5, 0xc6, 0xd8, 0x71, 0xc6, 0xd0, 0xb1, 0x19, 0xef, 0xbb, 0xeb, 0xf2, 0xde, 0xeb,
-	0x03, 0x40, 0x96, 0xfd, 0x33, 0xb4, 0x74, 0x7a, 0x9f, 0x22, 0x65, 0x25, 0xa4, 0xf7, 0xd2, 0x09,
-	0xb1, 0xbc, 0x23, 0x68, 0x9b, 0xbc, 0x62, 0x86, 0x68, 0x0c, 0x6a, 0xc8, 0xcd, 0x74, 0x8e, 0xa0,
-	0x6d, 0x42, 0x10, 0xe1, 0x0d, 0xed, 0x30, 0x28, 0xf5, 0xcd, 0x30, 0x8c, 0xa1, 0x63, 0xff, 0xfb,
-	0x3e, 0x5a, 0x57, 0x82, 0x50, 0xaf, 0x6f, 0x05, 0x60, 0x0c, 0x1d, 0xbb, 0x41, 0xfa, 0xee, 0x81,
-	0x71, 0xf6, 0x5b, 0x0b, 0x43, 0xd9, 0x52, 0x26, 0x29, 0x72, 0x77, 0xe5, 0xb0, 0x65, 0x3f, 0x51,
-	0x04, 0x4e, 0xea, 0xe1, 0x39, 0x43, 0xdb, 0xb2, 0xb8, 0x5e, 0x7c, 0x18, 0xce, 0xc8, 0x0c, 0x86,
-	0xdf, 0x37, 0xa1, 0x77, 0xbd, 0x09, 0xbd, 0x5f, 0x9b, 0xd0, 0xfb, 0xb6, 0x0d, 0x1b, 0xd7, 0xdb,
-	0xb0, 0xf1, 0x73, 0x1b, 0x36, 0xbe, 0x9e, 0xd3, 0xb9, 0x9c, 0x15, 0x57, 0xf1, 0x24, 0x5b, 0x26,
-	0x8a, 0x93, 0xcf, 0x19, 0x4d, 0x6a, 0xec, 0xc9, 0x2a, 0xa9, 0x3f, 0xde, 0xeb, 0x9c, 0x88, 0xab,
-	0x96, 0x7a, 0xc0, 0xcf, 0x7f, 0x07, 0x00, 0x00, 0xff, 0xff, 0x15, 0xc3, 0x1c, 0x55, 0xd7, 0x07,
-	0x00, 0x00,
+	// 612 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xb4, 0x96, 0x4d, 0x8b, 0xd3, 0x5e,
+	0x14, 0xc6, 0xdb, 0xe9, 0xff, 0xdf, 0x97, 0x33, 0x30, 0x68, 0x46, 0x4a, 0x8d, 0x10, 0x34, 0xc5,
+	0xf1, 0x0d, 0x52, 0x74, 0xd6, 0x2a, 0xb4, 0xea, 0x6a, 0xba, 0x99, 0x61, 0xc4, 0x4a, 0x41, 0x32,
+	0xed, 0x99, 0xb4, 0x90, 0x26, 0x21, 0xb9, 0x95, 0xf6, 0x5b, 0xb8, 0xf6, 0x13, 0xb9, 0x9c, 0xa5,
+	0x4b, 0x69, 0xbf, 0x88, 0xe4, 0xe6, 0xe6, 0xe6, 0xa5, 0xf5, 0xa4, 0x8c, 0x76, 0x97, 0xcb, 0x7d,
+	0xce, 0xf3, 0x3b, 0xe7, 0x70, 0x79, 0x08, 0x1c, 0x5b, 0xe8, 0x30, 0x1b, 0x67, 0x53, 0x87, 0x75,
+	0xd8, 0xc2, 0xf0, 0x7c, 0x97, 0xb9, 0x4a, 0x33, 0x98, 0x98, 0x3e, 0xda, 0x38, 0xb6, 0xd0, 0x37,
+	0x12, 0x81, 0xaa, 0xa6, 0xc4, 0x36, 0x7e, 0x45, 0xfb, 0xcb, 0x35, 0x62, 0x54, 0xa3, 0x7f, 0x02,
+	0xe8, 0x07, 0xd6, 0x99, 0x6b, 0x8e, 0x2f, 0x26, 0xbe, 0xd2, 0x82, 0xda, 0xc8, 0x47, 0x93, 0xb9,
+	0x7e, 0xab, 0xfc, 0xb0, 0xfc, 0xb4, 0x71, 0x1e, 0x1f, 0xc3, 0x1b, 0x73, 0x3c, 0xf6, 0x31, 0x08,
+	0x5a, 0x07, 0xd1, 0x8d, 0x38, 0x2a, 0x4d, 0xa8, 0x9a, 0x33, 0x77, 0xee, 0xb0, 0x56, 0x85, 0x5f,
+	0x88, 0x93, 0x7e, 0x02, 0x4a, 0xe2, 0x7c, 0x8e, 0x81, 0xe7, 0x3a, 0x01, 0x2a, 0x77, 0xa0, 0x62,
+	0xbb, 0x96, 0x70, 0x0f, 0x3f, 0xf5, 0x01, 0x1c, 0x26, 0x3a, 0xef, 0x9f, 0xb6, 0xf0, 0x04, 0x8e,
+	0x53, 0xd6, 0x44, 0x0f, 0xaf, 0xa1, 0xd1, 0x0f, 0xac, 0xee, 0x7c, 0x49, 0x2f, 0x21, 0xe1, 0x1c,
+	0x64, 0x38, 0x8f, 0xe1, 0xae, 0x2c, 0x27, 0x28, 0xd1, 0xae, 0x2f, 0xd0, 0xd9, 0xd3, 0xae, 0x85,
+	0x73, 0xe1, 0xae, 0x85, 0x6e, 0x1f, 0xbb, 0x8e, 0xad, 0x89, 0x1e, 0xde, 0xf0, 0x2d, 0x74, 0xe7,
+	0xcb, 0x1e, 0x3a, 0xec, 0x16, 0xcb, 0x8e, 0x66, 0x15, 0xf5, 0x04, 0xe7, 0x2d, 0x9f, 0xb5, 0x3b,
+	0xf7, 0x9d, 0x82, 0x59, 0xff, 0x04, 0x8a, 0x26, 0x8a, 0x0d, 0x76, 0x98, 0x88, 0x0b, 0xff, 0x62,
+	0x22, 0x5e, 0x4f, 0x72, 0x8e, 0xf8, 0x8a, 0xd9, 0xfb, 0xc5, 0x68, 0x62, 0x3a, 0x16, 0x12, 0x2c,
+	0x05, 0xfe, 0xf3, 0x4d, 0x86, 0x82, 0xc4, 0xbf, 0xf5, 0x16, 0x34, 0xb3, 0xf5, 0x31, 0x4b, 0xbf,
+	0xe4, 0x0f, 0xb8, 0x17, 0xd6, 0xe2, 0x59, 0x98, 0x10, 0x1f, 0x90, 0x32, 0xbf, 0x07, 0xff, 0xf3,
+	0x1c, 0x11, 0xee, 0xd1, 0x21, 0x6c, 0xf8, 0x1a, 0x51, 0x3c, 0x8b, 0xf0, 0x53, 0x7f, 0x00, 0xf7,
+	0x37, 0x6c, 0x73, 0xcc, 0x4b, 0x6f, 0xbc, 0x0f, 0x66, 0xd6, 0x56, 0x32, 0x7b, 0x9c, 0xf9, 0x0e,
+	0x6d, 0xbc, 0x3d, 0x53, 0x10, 0xb2, 0x26, 0x31, 0xe1, 0xd5, 0xf7, 0x06, 0x54, 0xfa, 0x81, 0xa5,
+	0x0c, 0xa0, 0x16, 0x87, 0xaa, 0x6e, 0x6c, 0xcf, 0x65, 0x23, 0xc9, 0x26, 0xf5, 0x79, 0xb1, 0x46,
+	0x3e, 0x8c, 0x21, 0xd4, 0x65, 0x5a, 0xb6, 0x8b, 0xeb, 0x3c, 0xf5, 0xc5, 0x0e, 0x22, 0xe9, 0xfe,
+	0x11, 0xaa, 0x22, 0x07, 0x1f, 0x11, 0x65, 0x91, 0x44, 0x7d, 0x56, 0x28, 0x91, 0xbe, 0x03, 0xa8,
+	0xc5, 0xc9, 0x47, 0x2d, 0x44, 0x68, 0xc8, 0x85, 0xe4, 0x73, 0x6e, 0x00, 0xb5, 0x38, 0x4e, 0x74,
+	0xba, 0xa1, 0x50, 0x43, 0x5a, 0xe7, 0x63, 0x65, 0x08, 0x75, 0x99, 0x20, 0x6d, 0xb2, 0x2e, 0x12,
+	0x91, 0xbb, 0xde, 0x88, 0x92, 0x21, 0xd4, 0x65, 0x16, 0xb7, 0x8b, 0x07, 0xa6, 0xdd, 0x37, 0xa2,
+	0x97, 0xaf, 0x25, 0xca, 0x24, 0xbd, 0xb8, 0xab, 0x82, 0xb5, 0x64, 0xb3, 0x09, 0xe1, 0x30, 0x1d,
+	0x43, 0x27, 0x64, 0x5b, 0x52, 0xa7, 0x1a, 0xbb, 0xe9, 0x24, 0xc6, 0x81, 0xa3, 0x5c, 0x26, 0x51,
+	0x0f, 0x2e, 0x2b, 0x55, 0x5f, 0xee, 0x2c, 0x4d, 0xf3, 0x72, 0x79, 0x44, 0xf1, 0xb2, 0x52, 0x92,
+	0xb7, 0x3d, 0x8e, 0x42, 0x5e, 0x2e, 0x8b, 0x28, 0x5e, 0x56, 0x4a, 0xf2, 0xb6, 0x87, 0x53, 0xb7,
+	0xff, 0x63, 0xa5, 0x95, 0x6f, 0x56, 0x5a, 0xf9, 0xd7, 0x4a, 0x2b, 0x7f, 0x5b, 0x6b, 0xa5, 0x9b,
+	0xb5, 0x56, 0xfa, 0xb9, 0xd6, 0x4a, 0x9f, 0x4f, 0xad, 0x29, 0x9b, 0xcc, 0xaf, 0x8c, 0x91, 0x3b,
+	0xeb, 0x70, 0x5b, 0x7f, 0xea, 0x58, 0x9d, 0x14, 0xa0, 0xb3, 0xe8, 0xa4, 0x7f, 0x39, 0x97, 0x1e,
+	0x06, 0x57, 0x55, 0xfe, 0x0b, 0x79, 0xfa, 0x3b, 0x00, 0x00, 0xff, 0xff, 0x43, 0x0f, 0xe0, 0x8e,
+	0x8d, 0x0a, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -995,6 +1288,9 @@ type MsgClient interface {
 	SendShrp(ctx context.Context, in *MsgSendShrp, opts ...grpc.CallOption) (*MsgSendShrpResponse, error)
 	BurnShr(ctx context.Context, in *MsgBurnShr, opts ...grpc.CallOption) (*MsgBurnShrResponse, error)
 	SetExchange(ctx context.Context, in *MsgSetExchange, opts ...grpc.CallOption) (*MsgSetExchangeResponse, error)
+	CreateLevelFee(ctx context.Context, in *MsgCreateLevelFee, opts ...grpc.CallOption) (*MsgCreateLevelFeeResponse, error)
+	UpdateLevelFee(ctx context.Context, in *MsgUpdateLevelFee, opts ...grpc.CallOption) (*MsgUpdateLevelFeeResponse, error)
+	DeleteLevelFee(ctx context.Context, in *MsgDeleteLevelFee, opts ...grpc.CallOption) (*MsgDeleteLevelFeeResponse, error)
 }
 
 type msgClient struct {
@@ -1086,6 +1382,33 @@ func (c *msgClient) SetExchange(ctx context.Context, in *MsgSetExchange, opts ..
 	return out, nil
 }
 
+func (c *msgClient) CreateLevelFee(ctx context.Context, in *MsgCreateLevelFee, opts ...grpc.CallOption) (*MsgCreateLevelFeeResponse, error) {
+	out := new(MsgCreateLevelFeeResponse)
+	err := c.cc.Invoke(ctx, "/shareledger.gentlemint.Msg/CreateLevelFee", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *msgClient) UpdateLevelFee(ctx context.Context, in *MsgUpdateLevelFee, opts ...grpc.CallOption) (*MsgUpdateLevelFeeResponse, error) {
+	out := new(MsgUpdateLevelFeeResponse)
+	err := c.cc.Invoke(ctx, "/shareledger.gentlemint.Msg/UpdateLevelFee", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *msgClient) DeleteLevelFee(ctx context.Context, in *MsgDeleteLevelFee, opts ...grpc.CallOption) (*MsgDeleteLevelFeeResponse, error) {
+	out := new(MsgDeleteLevelFeeResponse)
+	err := c.cc.Invoke(ctx, "/shareledger.gentlemint.Msg/DeleteLevelFee", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MsgServer is the server API for Msg service.
 type MsgServer interface {
 	LoadShr(context.Context, *MsgLoadShr) (*MsgLoadShrResponse, error)
@@ -1097,6 +1420,9 @@ type MsgServer interface {
 	SendShrp(context.Context, *MsgSendShrp) (*MsgSendShrpResponse, error)
 	BurnShr(context.Context, *MsgBurnShr) (*MsgBurnShrResponse, error)
 	SetExchange(context.Context, *MsgSetExchange) (*MsgSetExchangeResponse, error)
+	CreateLevelFee(context.Context, *MsgCreateLevelFee) (*MsgCreateLevelFeeResponse, error)
+	UpdateLevelFee(context.Context, *MsgUpdateLevelFee) (*MsgUpdateLevelFeeResponse, error)
+	DeleteLevelFee(context.Context, *MsgDeleteLevelFee) (*MsgDeleteLevelFeeResponse, error)
 }
 
 // UnimplementedMsgServer can be embedded to have forward compatible implementations.
@@ -1129,6 +1455,15 @@ func (*UnimplementedMsgServer) BurnShr(ctx context.Context, req *MsgBurnShr) (*M
 }
 func (*UnimplementedMsgServer) SetExchange(ctx context.Context, req *MsgSetExchange) (*MsgSetExchangeResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SetExchange not implemented")
+}
+func (*UnimplementedMsgServer) CreateLevelFee(ctx context.Context, req *MsgCreateLevelFee) (*MsgCreateLevelFeeResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateLevelFee not implemented")
+}
+func (*UnimplementedMsgServer) UpdateLevelFee(ctx context.Context, req *MsgUpdateLevelFee) (*MsgUpdateLevelFeeResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateLevelFee not implemented")
+}
+func (*UnimplementedMsgServer) DeleteLevelFee(ctx context.Context, req *MsgDeleteLevelFee) (*MsgDeleteLevelFeeResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteLevelFee not implemented")
 }
 
 func RegisterMsgServer(s grpc1.Server, srv MsgServer) {
@@ -1297,6 +1632,60 @@ func _Msg_SetExchange_Handler(srv interface{}, ctx context.Context, dec func(int
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Msg_CreateLevelFee_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgCreateLevelFee)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).CreateLevelFee(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/shareledger.gentlemint.Msg/CreateLevelFee",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).CreateLevelFee(ctx, req.(*MsgCreateLevelFee))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Msg_UpdateLevelFee_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgUpdateLevelFee)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).UpdateLevelFee(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/shareledger.gentlemint.Msg/UpdateLevelFee",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).UpdateLevelFee(ctx, req.(*MsgUpdateLevelFee))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Msg_DeleteLevelFee_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgDeleteLevelFee)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).DeleteLevelFee(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/shareledger.gentlemint.Msg/DeleteLevelFee",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).DeleteLevelFee(ctx, req.(*MsgDeleteLevelFee))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var _Msg_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "shareledger.gentlemint.Msg",
 	HandlerType: (*MsgServer)(nil),
@@ -1336,6 +1725,18 @@ var _Msg_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SetExchange",
 			Handler:    _Msg_SetExchange_Handler,
+		},
+		{
+			MethodName: "CreateLevelFee",
+			Handler:    _Msg_CreateLevelFee_Handler,
+		},
+		{
+			MethodName: "UpdateLevelFee",
+			Handler:    _Msg_UpdateLevelFee_Handler,
+		},
+		{
+			MethodName: "DeleteLevelFee",
+			Handler:    _Msg_DeleteLevelFee_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -1966,6 +2367,200 @@ func (m *MsgSetExchangeResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) 
 	return len(dAtA) - i, nil
 }
 
+func (m *MsgCreateLevelFee) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgCreateLevelFee) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgCreateLevelFee) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Fee) > 0 {
+		i -= len(m.Fee)
+		copy(dAtA[i:], m.Fee)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Fee)))
+		i--
+		dAtA[i] = 0x1a
+	}
+	if len(m.Level) > 0 {
+		i -= len(m.Level)
+		copy(dAtA[i:], m.Level)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Level)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.Creator) > 0 {
+		i -= len(m.Creator)
+		copy(dAtA[i:], m.Creator)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Creator)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgCreateLevelFeeResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgCreateLevelFeeResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgCreateLevelFeeResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgUpdateLevelFee) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgUpdateLevelFee) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgUpdateLevelFee) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Fee) > 0 {
+		i -= len(m.Fee)
+		copy(dAtA[i:], m.Fee)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Fee)))
+		i--
+		dAtA[i] = 0x1a
+	}
+	if len(m.Level) > 0 {
+		i -= len(m.Level)
+		copy(dAtA[i:], m.Level)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Level)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.Creator) > 0 {
+		i -= len(m.Creator)
+		copy(dAtA[i:], m.Creator)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Creator)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgUpdateLevelFeeResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgUpdateLevelFeeResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgUpdateLevelFeeResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgDeleteLevelFee) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgDeleteLevelFee) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgDeleteLevelFee) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Level) > 0 {
+		i -= len(m.Level)
+		copy(dAtA[i:], m.Level)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Level)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.Creator) > 0 {
+		i -= len(m.Creator)
+		copy(dAtA[i:], m.Creator)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Creator)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgDeleteLevelFeeResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgDeleteLevelFeeResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgDeleteLevelFeeResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
 func encodeVarintTx(dAtA []byte, offset int, v uint64) int {
 	offset -= sovTx(v)
 	base := offset
@@ -2251,6 +2846,92 @@ func (m *MsgSetExchange) Size() (n int) {
 }
 
 func (m *MsgSetExchangeResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
+func (m *MsgCreateLevelFee) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Creator)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	l = len(m.Level)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	l = len(m.Fee)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	return n
+}
+
+func (m *MsgCreateLevelFeeResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
+func (m *MsgUpdateLevelFee) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Creator)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	l = len(m.Level)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	l = len(m.Fee)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	return n
+}
+
+func (m *MsgUpdateLevelFeeResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
+func (m *MsgDeleteLevelFee) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Creator)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	l = len(m.Level)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	return n
+}
+
+func (m *MsgDeleteLevelFeeResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -4102,6 +4783,562 @@ func (m *MsgSetExchangeResponse) Unmarshal(dAtA []byte) error {
 		}
 		if fieldNum <= 0 {
 			return fmt.Errorf("proto: MsgSetExchangeResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgCreateLevelFee) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgCreateLevelFee: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgCreateLevelFee: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Creator", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Creator = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Level", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Level = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Fee", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Fee = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgCreateLevelFeeResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgCreateLevelFeeResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgCreateLevelFeeResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgUpdateLevelFee) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgUpdateLevelFee: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgUpdateLevelFee: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Creator", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Creator = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Level", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Level = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Fee", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Fee = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgUpdateLevelFeeResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgUpdateLevelFeeResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgUpdateLevelFeeResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgDeleteLevelFee) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgDeleteLevelFee: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgDeleteLevelFee: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Creator", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Creator = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Level", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Level = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgDeleteLevelFeeResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgDeleteLevelFeeResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgDeleteLevelFeeResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:

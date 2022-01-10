@@ -7,7 +7,7 @@ import (
 	context "context"
 	encoding_binary "encoding/binary"
 	fmt "fmt"
-	_ "github.com/cosmos/cosmos-sdk/types/query"
+	query "github.com/cosmos/cosmos-sdk/types/query"
 	_ "github.com/gogo/protobuf/gogoproto"
 	grpc1 "github.com/gogo/protobuf/grpc"
 	proto "github.com/gogo/protobuf/proto"
@@ -111,35 +111,235 @@ func (m *QueryExchangeRateResponse) GetRate() float64 {
 	return 0
 }
 
+type QueryGetLevelFeeRequest struct {
+	Level string `protobuf:"bytes,1,opt,name=level,proto3" json:"level,omitempty"`
+}
+
+func (m *QueryGetLevelFeeRequest) Reset()         { *m = QueryGetLevelFeeRequest{} }
+func (m *QueryGetLevelFeeRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryGetLevelFeeRequest) ProtoMessage()    {}
+func (*QueryGetLevelFeeRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_4c3912bb3197ea16, []int{2}
+}
+func (m *QueryGetLevelFeeRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryGetLevelFeeRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryGetLevelFeeRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryGetLevelFeeRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryGetLevelFeeRequest.Merge(m, src)
+}
+func (m *QueryGetLevelFeeRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryGetLevelFeeRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryGetLevelFeeRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryGetLevelFeeRequest proto.InternalMessageInfo
+
+func (m *QueryGetLevelFeeRequest) GetLevel() string {
+	if m != nil {
+		return m.Level
+	}
+	return ""
+}
+
+type QueryGetLevelFeeResponse struct {
+	LevelFee LevelFee `protobuf:"bytes,1,opt,name=levelFee,proto3" json:"levelFee"`
+}
+
+func (m *QueryGetLevelFeeResponse) Reset()         { *m = QueryGetLevelFeeResponse{} }
+func (m *QueryGetLevelFeeResponse) String() string { return proto.CompactTextString(m) }
+func (*QueryGetLevelFeeResponse) ProtoMessage()    {}
+func (*QueryGetLevelFeeResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_4c3912bb3197ea16, []int{3}
+}
+func (m *QueryGetLevelFeeResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryGetLevelFeeResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryGetLevelFeeResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryGetLevelFeeResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryGetLevelFeeResponse.Merge(m, src)
+}
+func (m *QueryGetLevelFeeResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryGetLevelFeeResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryGetLevelFeeResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryGetLevelFeeResponse proto.InternalMessageInfo
+
+func (m *QueryGetLevelFeeResponse) GetLevelFee() LevelFee {
+	if m != nil {
+		return m.LevelFee
+	}
+	return LevelFee{}
+}
+
+type QueryAllLevelFeeRequest struct {
+	Pagination *query.PageRequest `protobuf:"bytes,1,opt,name=pagination,proto3" json:"pagination,omitempty"`
+}
+
+func (m *QueryAllLevelFeeRequest) Reset()         { *m = QueryAllLevelFeeRequest{} }
+func (m *QueryAllLevelFeeRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryAllLevelFeeRequest) ProtoMessage()    {}
+func (*QueryAllLevelFeeRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_4c3912bb3197ea16, []int{4}
+}
+func (m *QueryAllLevelFeeRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryAllLevelFeeRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryAllLevelFeeRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryAllLevelFeeRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryAllLevelFeeRequest.Merge(m, src)
+}
+func (m *QueryAllLevelFeeRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryAllLevelFeeRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryAllLevelFeeRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryAllLevelFeeRequest proto.InternalMessageInfo
+
+func (m *QueryAllLevelFeeRequest) GetPagination() *query.PageRequest {
+	if m != nil {
+		return m.Pagination
+	}
+	return nil
+}
+
+type QueryAllLevelFeeResponse struct {
+	LevelFee   []LevelFee          `protobuf:"bytes,1,rep,name=levelFee,proto3" json:"levelFee"`
+	Pagination *query.PageResponse `protobuf:"bytes,2,opt,name=pagination,proto3" json:"pagination,omitempty"`
+}
+
+func (m *QueryAllLevelFeeResponse) Reset()         { *m = QueryAllLevelFeeResponse{} }
+func (m *QueryAllLevelFeeResponse) String() string { return proto.CompactTextString(m) }
+func (*QueryAllLevelFeeResponse) ProtoMessage()    {}
+func (*QueryAllLevelFeeResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_4c3912bb3197ea16, []int{5}
+}
+func (m *QueryAllLevelFeeResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryAllLevelFeeResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryAllLevelFeeResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryAllLevelFeeResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryAllLevelFeeResponse.Merge(m, src)
+}
+func (m *QueryAllLevelFeeResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryAllLevelFeeResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryAllLevelFeeResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryAllLevelFeeResponse proto.InternalMessageInfo
+
+func (m *QueryAllLevelFeeResponse) GetLevelFee() []LevelFee {
+	if m != nil {
+		return m.LevelFee
+	}
+	return nil
+}
+
+func (m *QueryAllLevelFeeResponse) GetPagination() *query.PageResponse {
+	if m != nil {
+		return m.Pagination
+	}
+	return nil
+}
+
 func init() {
 	proto.RegisterType((*QueryExchangeRateRequest)(nil), "shareledger.gentlemint.QueryExchangeRateRequest")
 	proto.RegisterType((*QueryExchangeRateResponse)(nil), "shareledger.gentlemint.QueryExchangeRateResponse")
+	proto.RegisterType((*QueryGetLevelFeeRequest)(nil), "shareledger.gentlemint.QueryGetLevelFeeRequest")
+	proto.RegisterType((*QueryGetLevelFeeResponse)(nil), "shareledger.gentlemint.QueryGetLevelFeeResponse")
+	proto.RegisterType((*QueryAllLevelFeeRequest)(nil), "shareledger.gentlemint.QueryAllLevelFeeRequest")
+	proto.RegisterType((*QueryAllLevelFeeResponse)(nil), "shareledger.gentlemint.QueryAllLevelFeeResponse")
 }
 
 func init() { proto.RegisterFile("gentlemint/query.proto", fileDescriptor_4c3912bb3197ea16) }
 
 var fileDescriptor_4c3912bb3197ea16 = []byte{
-	// 305 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x94, 0x90, 0xcd, 0x4a, 0xf4, 0x30,
-	0x14, 0x86, 0x27, 0x1f, 0x9f, 0x2e, 0x82, 0xab, 0x20, 0xc3, 0x58, 0x24, 0xc8, 0x20, 0x22, 0x22,
-	0x8d, 0xe3, 0xdc, 0x81, 0xe0, 0xd2, 0x85, 0xb3, 0x74, 0x23, 0x69, 0x3d, 0xa4, 0x81, 0x36, 0xa7,
-	0x93, 0xa4, 0x32, 0xb3, 0xf5, 0x0a, 0x04, 0xaf, 0xc0, 0xb5, 0x37, 0xe2, 0x72, 0xc0, 0x8d, 0x4b,
-	0x69, 0xbd, 0x10, 0xe9, 0x0f, 0x58, 0xa1, 0x2e, 0xdc, 0x1d, 0x72, 0xde, 0xe7, 0x39, 0xe1, 0xa5,
-	0x63, 0x05, 0xc6, 0xa7, 0x90, 0x69, 0xe3, 0xc5, 0xb2, 0x00, 0xbb, 0x0e, 0x73, 0x8b, 0x1e, 0xd9,
-	0xd8, 0x25, 0xd2, 0x42, 0x0a, 0x77, 0x0a, 0x6c, 0xf8, 0x9d, 0x09, 0xf6, 0x15, 0xa2, 0x4a, 0x41,
-	0xc8, 0x5c, 0x0b, 0x69, 0x0c, 0x7a, 0xe9, 0x35, 0x1a, 0xd7, 0x52, 0xc1, 0x49, 0x8c, 0x2e, 0x43,
-	0x27, 0x22, 0xe9, 0xa0, 0xd5, 0x89, 0xfb, 0x59, 0x04, 0x5e, 0xce, 0x44, 0x2e, 0x95, 0x36, 0x4d,
-	0xb8, 0xcb, 0xf2, 0xde, 0x65, 0x58, 0xc5, 0x89, 0x34, 0x0a, 0x6e, 0xad, 0xf4, 0xd0, 0xed, 0x77,
-	0x15, 0x2a, 0x6c, 0x46, 0x51, 0x4f, 0xed, 0xeb, 0x34, 0xa0, 0x93, 0xeb, 0xda, 0x7b, 0xd9, 0x11,
-	0x0b, 0xe9, 0x61, 0x01, 0xcb, 0x02, 0x9c, 0x9f, 0x0a, 0xba, 0x37, 0xb0, 0x73, 0x39, 0x1a, 0x07,
-	0x8c, 0xd1, 0xff, 0xb5, 0x7c, 0x42, 0x0e, 0xc8, 0x31, 0x59, 0x34, 0xf3, 0xf9, 0x0b, 0xa1, 0x5b,
-	0x0d, 0xc1, 0x9e, 0x09, 0xdd, 0xe9, 0x63, 0xec, 0x2c, 0x1c, 0x2e, 0x20, 0xfc, 0xed, 0x7a, 0x30,
-	0xfb, 0x03, 0xd1, 0xfe, 0x69, 0x7a, 0xfa, 0xf0, 0xf6, 0xf9, 0xf4, 0xef, 0x88, 0x1d, 0x8a, 0x1e,
-	0x2a, 0x06, 0x7a, 0xa9, 0xa9, 0x8b, 0xab, 0xd7, 0x92, 0x93, 0x4d, 0xc9, 0xc9, 0x47, 0xc9, 0xc9,
-	0x63, 0xc5, 0x47, 0x9b, 0x8a, 0x8f, 0xde, 0x2b, 0x3e, 0xba, 0x99, 0x2b, 0xed, 0x93, 0x22, 0x0a,
-	0x63, 0xcc, 0x5a, 0x93, 0xd5, 0x46, 0xfd, 0x70, 0xae, 0xfa, 0x56, 0xbf, 0xce, 0xc1, 0x45, 0xdb,
-	0x4d, 0xa1, 0xf3, 0xaf, 0x00, 0x00, 0x00, 0xff, 0xff, 0xa5, 0x4d, 0x3c, 0x23, 0x02, 0x02, 0x00,
-	0x00,
+	// 506 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x9c, 0x94, 0xcf, 0x6b, 0x14, 0x31,
+	0x14, 0xc7, 0x37, 0xfd, 0x21, 0x35, 0xf5, 0x14, 0x4a, 0xad, 0x83, 0x8c, 0x65, 0x90, 0x2a, 0xa5,
+	0x24, 0xed, 0xd6, 0x93, 0xb7, 0x2e, 0xd8, 0x5e, 0x14, 0x74, 0x8e, 0x1e, 0x2c, 0xd9, 0xf5, 0x99,
+	0x1d, 0xc8, 0x26, 0xd3, 0x49, 0xb6, 0xb4, 0x88, 0x17, 0xff, 0x02, 0xc1, 0xbf, 0x40, 0x10, 0xc4,
+	0xff, 0xa4, 0xc7, 0x82, 0x17, 0x4f, 0x22, 0xbb, 0xfe, 0x1d, 0x22, 0x93, 0x64, 0xec, 0xac, 0x9d,
+	0x75, 0xab, 0xb7, 0x37, 0x79, 0xef, 0xfb, 0xbe, 0x9f, 0xe4, 0x3d, 0x06, 0xaf, 0x0a, 0x50, 0x56,
+	0xc2, 0x20, 0x53, 0x96, 0x1d, 0x0d, 0xa1, 0x38, 0xa5, 0x79, 0xa1, 0xad, 0x26, 0xab, 0xa6, 0xcf,
+	0x0b, 0x90, 0xf0, 0x52, 0x40, 0x41, 0x2f, 0x6a, 0xa2, 0xdb, 0x42, 0x6b, 0x21, 0x81, 0xf1, 0x3c,
+	0x63, 0x5c, 0x29, 0x6d, 0xb9, 0xcd, 0xb4, 0x32, 0x5e, 0x15, 0x6d, 0xf6, 0xb4, 0x19, 0x68, 0xc3,
+	0xba, 0xdc, 0x80, 0x6f, 0xc7, 0x8e, 0x77, 0xba, 0x60, 0xf9, 0x0e, 0xcb, 0xb9, 0xc8, 0x94, 0x2b,
+	0x0e, 0xb5, 0x71, 0xcd, 0x19, 0x4e, 0x7a, 0x7d, 0xae, 0x04, 0x1c, 0x16, 0xdc, 0x42, 0xc8, 0x47,
+	0xb5, 0xbc, 0x84, 0x63, 0x90, 0x87, 0xaf, 0xa0, 0xca, 0xad, 0x08, 0x2d, 0xb4, 0x0b, 0x59, 0x19,
+	0xf9, 0xd3, 0x24, 0xc2, 0x6b, 0xcf, 0x4a, 0xcf, 0x47, 0xa1, 0x5b, 0xca, 0x2d, 0xa4, 0x70, 0x34,
+	0x04, 0x63, 0x13, 0x86, 0x6f, 0x35, 0xe4, 0x4c, 0xae, 0x95, 0x01, 0x42, 0xf0, 0x42, 0x69, 0xbc,
+	0x86, 0xd6, 0xd1, 0x7d, 0x94, 0xba, 0x38, 0x61, 0xf8, 0xa6, 0x13, 0x1c, 0x80, 0x7d, 0x5c, 0xba,
+	0xef, 0x43, 0xd5, 0x8b, 0xac, 0xe0, 0x45, 0x07, 0xe4, 0xea, 0xaf, 0xa7, 0xfe, 0x23, 0x79, 0x11,
+	0xdc, 0x27, 0x04, 0xc1, 0xa0, 0x83, 0x97, 0x64, 0x38, 0x73, 0xa2, 0xe5, 0xf6, 0x3a, 0x6d, 0x7e,
+	0x60, 0x5a, 0x69, 0x3b, 0x0b, 0x67, 0xdf, 0xee, 0xb4, 0xd2, 0xdf, 0xba, 0x84, 0x07, 0xa0, 0x3d,
+	0x29, 0xff, 0x04, 0xda, 0xc7, 0xf8, 0xe2, 0x79, 0x83, 0xc1, 0x06, 0xf5, 0xb3, 0xa0, 0xe5, 0x2c,
+	0xa8, 0x1f, 0x6d, 0x98, 0x05, 0x7d, 0xca, 0x45, 0xa5, 0x4d, 0x6b, 0xca, 0xe4, 0x13, 0x0a, 0x77,
+	0x98, 0xf0, 0x68, 0xbc, 0xc3, 0xfc, 0xff, 0xdc, 0x81, 0x1c, 0x4c, 0x80, 0xce, 0x39, 0xd0, 0x7b,
+	0x33, 0x41, 0x3d, 0x40, 0x9d, 0xb4, 0xfd, 0x73, 0x1e, 0x2f, 0x3a, 0x52, 0xf2, 0x01, 0xe1, 0x1b,
+	0xf5, 0xa1, 0x92, 0xed, 0x69, 0x54, 0xd3, 0x76, 0x23, 0xda, 0xf9, 0x07, 0x85, 0x67, 0x49, 0xb6,
+	0xde, 0x7e, 0xf9, 0xf1, 0x7e, 0x6e, 0x83, 0xdc, 0x65, 0x35, 0x29, 0x6b, 0xd8, 0x68, 0x87, 0xf4,
+	0x19, 0xe1, 0xa5, 0xea, 0x4d, 0x08, 0xfb, 0xab, 0xdb, 0xe5, 0x75, 0x8b, 0xb6, 0xaf, 0x2e, 0x08,
+	0x74, 0x0f, 0x1d, 0xdd, 0x03, 0xd2, 0xf6, 0x74, 0x45, 0xa6, 0xc4, 0x34, 0xce, 0x6a, 0x34, 0xec,
+	0xb5, 0x8b, 0xde, 0x90, 0x8f, 0x08, 0x2f, 0x57, 0x0d, 0xf7, 0xa4, 0x9c, 0x81, 0x7b, 0x79, 0x19,
+	0x67, 0xe0, 0x36, 0x6c, 0x56, 0xd2, 0x76, 0xb8, 0x5b, 0x64, 0xf3, 0xea, 0xb8, 0x9d, 0x27, 0x67,
+	0xa3, 0x18, 0x9d, 0x8f, 0x62, 0xf4, 0x7d, 0x14, 0xa3, 0x77, 0xe3, 0xb8, 0x75, 0x3e, 0x8e, 0x5b,
+	0x5f, 0xc7, 0x71, 0xeb, 0xf9, 0xae, 0xc8, 0x6c, 0x7f, 0xd8, 0xa5, 0x3d, 0x3d, 0x98, 0xd2, 0xef,
+	0xa4, 0xde, 0xd1, 0x9e, 0xe6, 0x60, 0xba, 0xd7, 0xdc, 0x1f, 0x64, 0xf7, 0x57, 0x00, 0x00, 0x00,
+	0xff, 0xff, 0xb6, 0x78, 0xd1, 0xe7, 0x0f, 0x05, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -156,6 +356,10 @@ const _ = grpc.SupportPackageIsVersion4
 type QueryClient interface {
 	// Queries a exchangeRate by index.
 	ExchangeRate(ctx context.Context, in *QueryExchangeRateRequest, opts ...grpc.CallOption) (*QueryExchangeRateResponse, error)
+	// Queries a levelFee by index.
+	LevelFee(ctx context.Context, in *QueryGetLevelFeeRequest, opts ...grpc.CallOption) (*QueryGetLevelFeeResponse, error)
+	// Queries a list of levelFee items.
+	LevelFeeAll(ctx context.Context, in *QueryAllLevelFeeRequest, opts ...grpc.CallOption) (*QueryAllLevelFeeResponse, error)
 }
 
 type queryClient struct {
@@ -175,10 +379,32 @@ func (c *queryClient) ExchangeRate(ctx context.Context, in *QueryExchangeRateReq
 	return out, nil
 }
 
+func (c *queryClient) LevelFee(ctx context.Context, in *QueryGetLevelFeeRequest, opts ...grpc.CallOption) (*QueryGetLevelFeeResponse, error) {
+	out := new(QueryGetLevelFeeResponse)
+	err := c.cc.Invoke(ctx, "/shareledger.gentlemint.Query/LevelFee", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *queryClient) LevelFeeAll(ctx context.Context, in *QueryAllLevelFeeRequest, opts ...grpc.CallOption) (*QueryAllLevelFeeResponse, error) {
+	out := new(QueryAllLevelFeeResponse)
+	err := c.cc.Invoke(ctx, "/shareledger.gentlemint.Query/LevelFeeAll", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // QueryServer is the server API for Query service.
 type QueryServer interface {
 	// Queries a exchangeRate by index.
 	ExchangeRate(context.Context, *QueryExchangeRateRequest) (*QueryExchangeRateResponse, error)
+	// Queries a levelFee by index.
+	LevelFee(context.Context, *QueryGetLevelFeeRequest) (*QueryGetLevelFeeResponse, error)
+	// Queries a list of levelFee items.
+	LevelFeeAll(context.Context, *QueryAllLevelFeeRequest) (*QueryAllLevelFeeResponse, error)
 }
 
 // UnimplementedQueryServer can be embedded to have forward compatible implementations.
@@ -187,6 +413,12 @@ type UnimplementedQueryServer struct {
 
 func (*UnimplementedQueryServer) ExchangeRate(ctx context.Context, req *QueryExchangeRateRequest) (*QueryExchangeRateResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ExchangeRate not implemented")
+}
+func (*UnimplementedQueryServer) LevelFee(ctx context.Context, req *QueryGetLevelFeeRequest) (*QueryGetLevelFeeResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method LevelFee not implemented")
+}
+func (*UnimplementedQueryServer) LevelFeeAll(ctx context.Context, req *QueryAllLevelFeeRequest) (*QueryAllLevelFeeResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method LevelFeeAll not implemented")
 }
 
 func RegisterQueryServer(s grpc1.Server, srv QueryServer) {
@@ -211,6 +443,42 @@ func _Query_ExchangeRate_Handler(srv interface{}, ctx context.Context, dec func(
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Query_LevelFee_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryGetLevelFeeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).LevelFee(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/shareledger.gentlemint.Query/LevelFee",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).LevelFee(ctx, req.(*QueryGetLevelFeeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Query_LevelFeeAll_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryAllLevelFeeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).LevelFeeAll(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/shareledger.gentlemint.Query/LevelFeeAll",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).LevelFeeAll(ctx, req.(*QueryAllLevelFeeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var _Query_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "shareledger.gentlemint.Query",
 	HandlerType: (*QueryServer)(nil),
@@ -218,6 +486,14 @@ var _Query_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ExchangeRate",
 			Handler:    _Query_ExchangeRate_Handler,
+		},
+		{
+			MethodName: "LevelFee",
+			Handler:    _Query_LevelFee_Handler,
+		},
+		{
+			MethodName: "LevelFeeAll",
+			Handler:    _Query_LevelFeeAll_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -276,6 +552,153 @@ func (m *QueryExchangeRateResponse) MarshalToSizedBuffer(dAtA []byte) (int, erro
 	return len(dAtA) - i, nil
 }
 
+func (m *QueryGetLevelFeeRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryGetLevelFeeRequest) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryGetLevelFeeRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Level) > 0 {
+		i -= len(m.Level)
+		copy(dAtA[i:], m.Level)
+		i = encodeVarintQuery(dAtA, i, uint64(len(m.Level)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *QueryGetLevelFeeResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryGetLevelFeeResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryGetLevelFeeResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	{
+		size, err := m.LevelFee.MarshalToSizedBuffer(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = encodeVarintQuery(dAtA, i, uint64(size))
+	}
+	i--
+	dAtA[i] = 0xa
+	return len(dAtA) - i, nil
+}
+
+func (m *QueryAllLevelFeeRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryAllLevelFeeRequest) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryAllLevelFeeRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Pagination != nil {
+		{
+			size, err := m.Pagination.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintQuery(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *QueryAllLevelFeeResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryAllLevelFeeResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryAllLevelFeeResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Pagination != nil {
+		{
+			size, err := m.Pagination.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintQuery(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.LevelFee) > 0 {
+		for iNdEx := len(m.LevelFee) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.LevelFee[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintQuery(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0xa
+		}
+	}
+	return len(dAtA) - i, nil
+}
+
 func encodeVarintQuery(dAtA []byte, offset int, v uint64) int {
 	offset -= sovQuery(v)
 	base := offset
@@ -304,6 +727,62 @@ func (m *QueryExchangeRateResponse) Size() (n int) {
 	_ = l
 	if m.Rate != 0 {
 		n += 9
+	}
+	return n
+}
+
+func (m *QueryGetLevelFeeRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Level)
+	if l > 0 {
+		n += 1 + l + sovQuery(uint64(l))
+	}
+	return n
+}
+
+func (m *QueryGetLevelFeeResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = m.LevelFee.Size()
+	n += 1 + l + sovQuery(uint64(l))
+	return n
+}
+
+func (m *QueryAllLevelFeeRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Pagination != nil {
+		l = m.Pagination.Size()
+		n += 1 + l + sovQuery(uint64(l))
+	}
+	return n
+}
+
+func (m *QueryAllLevelFeeResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if len(m.LevelFee) > 0 {
+		for _, e := range m.LevelFee {
+			l = e.Size()
+			n += 1 + l + sovQuery(uint64(l))
+		}
+	}
+	if m.Pagination != nil {
+		l = m.Pagination.Size()
+		n += 1 + l + sovQuery(uint64(l))
 	}
 	return n
 }
@@ -404,6 +883,377 @@ func (m *QueryExchangeRateResponse) Unmarshal(dAtA []byte) error {
 			v = uint64(encoding_binary.LittleEndian.Uint64(dAtA[iNdEx:]))
 			iNdEx += 8
 			m.Rate = float64(math.Float64frombits(v))
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryGetLevelFeeRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryGetLevelFeeRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryGetLevelFeeRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Level", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Level = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryGetLevelFeeResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryGetLevelFeeResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryGetLevelFeeResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field LevelFee", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if err := m.LevelFee.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryAllLevelFeeRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryAllLevelFeeRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryAllLevelFeeRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Pagination", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Pagination == nil {
+				m.Pagination = &query.PageRequest{}
+			}
+			if err := m.Pagination.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryAllLevelFeeResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryAllLevelFeeResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryAllLevelFeeResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field LevelFee", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.LevelFee = append(m.LevelFee, LevelFee{})
+			if err := m.LevelFee[len(m.LevelFee)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Pagination", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Pagination == nil {
+				m.Pagination = &query.PageResponse{}
+			}
+			if err := m.Pagination.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
 			skippy, err := skipQuery(dAtA[iNdEx:])
