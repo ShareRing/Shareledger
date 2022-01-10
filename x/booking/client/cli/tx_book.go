@@ -4,13 +4,11 @@ import (
 	"strconv"
 
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
 	"github.com/sharering/shareledger/x/booking/types"
-	myutils "github.com/sharering/shareledger/x/utils"
 )
 
 var _ = strconv.Itoa(0)
@@ -32,15 +30,6 @@ func CmdBook() *cobra.Command {
 				return err
 			}
 
-			// seed implementation
-			keySeed := viper.GetString(myutils.FlagKeySeed)
-			if keySeed != "" {
-				clientCtx, err = myutils.CreateContextFromSeed(keySeed, clientCtx)
-				if err != nil {
-					return err
-				}
-			}
-
 			msg := types.NewMsgBook(
 				clientCtx.GetFromAddress().String(),
 				argUUID,
@@ -54,7 +43,6 @@ func CmdBook() *cobra.Command {
 	}
 
 	flags.AddTxFlagsToCmd(cmd)
-	cmd.Flags().String(myutils.FlagKeySeed, "", myutils.KeySeedUsage)
 
 	return cmd
 }

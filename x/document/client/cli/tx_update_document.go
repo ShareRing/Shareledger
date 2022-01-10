@@ -4,13 +4,11 @@ import (
 	"strconv"
 
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
 	"github.com/sharering/shareledger/x/document/types"
-	myutils "github.com/sharering/shareledger/x/utils"
 )
 
 var _ = strconv.Itoa(0)
@@ -30,15 +28,6 @@ func CmdUpdateDocument() *cobra.Command {
 				return err
 			}
 
-			// seed implementation
-			keySeed := viper.GetString(myutils.FlagKeySeed)
-			if keySeed != "" {
-				clientCtx, err = myutils.CreateContextFromSeed(keySeed, clientCtx)
-				if err != nil {
-					return err
-				}
-			}
-
 			msg := types.NewMsgUpdateDocument(
 				argData,
 				argHolder,
@@ -53,7 +42,6 @@ func CmdUpdateDocument() *cobra.Command {
 	}
 
 	flags.AddTxFlagsToCmd(cmd)
-	cmd.Flags().String(myutils.FlagKeySeed, "", myutils.KeySeedUsage)
 
 	return cmd
 }
