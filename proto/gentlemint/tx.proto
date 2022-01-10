@@ -2,6 +2,7 @@ syntax = "proto3";
 package shareledger.gentlemint;
 
 import "gentlemint/level_fee.proto";
+import "gentlemint/action_level_fee.proto";
 // this line is used by starport scaffolding # proto/tx/import
 
 option go_package = "github.com/sharering/shareledger/x/gentlemint/types";
@@ -20,6 +21,9 @@ service Msg {
   rpc CreateLevelFee(MsgCreateLevelFee) returns (MsgCreateLevelFeeResponse);
   rpc UpdateLevelFee(MsgUpdateLevelFee) returns (MsgUpdateLevelFeeResponse);
   rpc DeleteLevelFee(MsgDeleteLevelFee) returns (MsgDeleteLevelFeeResponse);
+  rpc CreateActionLevelFee(MsgCreateActionLevelFee) returns (MsgCreateActionLevelFeeResponse);
+  rpc UpdateActionLevelFee(MsgUpdateActionLevelFee) returns (MsgUpdateActionLevelFeeResponse);
+  rpc DeleteActionLevelFee(MsgDeleteActionLevelFee) returns (MsgDeleteActionLevelFeeResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -128,5 +132,27 @@ message MsgDeleteLevelFee {
   string level = 2;
 }
 message MsgDeleteLevelFeeResponse {}
+
+message MsgCreateActionLevelFee {
+  string creator = 1;
+  string action = 2;
+
+  string level = 3;
+}
+message MsgCreateActionLevelFeeResponse {}
+
+message MsgUpdateActionLevelFee {
+  string creator = 1;
+  string action = 2;
+
+  string level = 3;
+}
+message MsgUpdateActionLevelFeeResponse {}
+
+message MsgDeleteActionLevelFee {
+  string creator = 1;
+  string action = 2;
+}
+message MsgDeleteActionLevelFeeResponse {}
 
 // this line is used by starport scaffolding # proto/tx/message

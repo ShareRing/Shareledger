@@ -32,6 +32,14 @@ func TestGenesisState_Validate(t *testing.T) {
 		Level: "1",
 },
 },
+ActionLevelFeeList: []types.ActionLevelFee{
+	{
+		Action: "0",
+},
+	{
+		Action: "1",
+},
+},
 // this line is used by starport scaffolding # types/genesis/validField
 			},
 			valid: true,
@@ -45,6 +53,20 @@ func TestGenesisState_Validate(t *testing.T) {
 },
 			{
 				Level: "0",
+},
+		},
+	},
+	valid:    false,
+},
+{
+	desc:     "duplicated actionLevelFee",
+	genState: &types.GenesisState{
+		ActionLevelFeeList: []types.ActionLevelFee{
+			{
+				Action: "0",
+},
+			{
+				Action: "0",
 },
 		},
 	},

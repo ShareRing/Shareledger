@@ -12,6 +12,7 @@ func DefaultGenesis() *GenesisState {
 	return &GenesisState{
 		ExchangeRate: nil,
 		LevelFeeList: []LevelFee{},
+ActionLevelFeeList: []ActionLevelFee{},
 // this line is used by starport scaffolding # genesis/types/default
 	}
 }
@@ -29,6 +30,16 @@ for _, elem := range gs.LevelFeeList {
 		return fmt.Errorf("duplicated index for levelFee")
 	}
 	levelFeeIndexMap[index] = struct{}{}
+}
+// Check for duplicated index in actionLevelFee
+actionLevelFeeIndexMap := make(map[string]struct{})
+
+for _, elem := range gs.ActionLevelFeeList {
+	index := string(ActionLevelFeeKey(elem.Action))
+	if _, ok := actionLevelFeeIndexMap[index]; ok {
+		return fmt.Errorf("duplicated index for actionLevelFee")
+	}
+	actionLevelFeeIndexMap[index] = struct{}{}
 }
 // this line is used by starport scaffolding # genesis/types/validate
 

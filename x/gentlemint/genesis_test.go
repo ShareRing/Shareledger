@@ -36,6 +36,14 @@ func TestGenesis(t *testing.T) {
 		Level: "1",
 },
 },
+ActionLevelFeeList: []types.ActionLevelFee{
+	{
+		Action: "0",
+},
+	{
+		Action: "1",
+},
+},
 // this line is used by starport scaffolding # genesis/test/state
 	}
 
@@ -51,5 +59,7 @@ func TestGenesis(t *testing.T) {
 	require.Equal(t, genesisState.ExchangeRate, got.ExchangeRate)
 	require.Len(t, got.LevelFeeList, len(genesisState.LevelFeeList))
 require.Subset(t, genesisState.LevelFeeList, got.LevelFeeList)
+require.Len(t, got.ActionLevelFeeList, len(genesisState.ActionLevelFeeList))
+require.Subset(t, genesisState.ActionLevelFeeList, got.ActionLevelFeeList)
 // this line is used by starport scaffolding # genesis/test/assert
 }

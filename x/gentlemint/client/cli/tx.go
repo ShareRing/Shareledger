@@ -41,6 +41,9 @@ func GetTxCmd() *cobra.Command {
 	cmd.AddCommand(CmdCreateLevelFee())
 	cmd.AddCommand(CmdUpdateLevelFee())
 	cmd.AddCommand(CmdDeleteLevelFee())
+cmd.AddCommand(CmdCreateActionLevelFee())
+	cmd.AddCommand(CmdUpdateActionLevelFee())
+	cmd.AddCommand(CmdDeleteActionLevelFee())
 // this line is used by starport scaffolding # 1
 
 	return cmd

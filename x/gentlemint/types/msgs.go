@@ -14,6 +14,10 @@ type AdjustmentCoins struct {
 	Add sdk.Coins
 }
 
+//func ShrpToShr(shrp sdk.DecCoins, rate float64) sdk.Coins {
+//
+//}
+
 func GetCostShrpForShr(currentShrp sdk.Coins, needShr sdk.Int, rate float64) (cost AdjustmentCoins, err error) {
 	neededShrpF := float64(needShr.Int64()) / rate
 	neededShrp, err := ParseShrpCoinsFloat(neededShrpF)

@@ -1,0 +1,13 @@
+syntax = "proto3";
+package shareledger.gentlemint;
+
+option go_package = "github.com/sharering/shareledger/x/gentlemint/types";
+
+
+
+message ActionLevelFee {
+  string action = 1; 
+  string level = 2; 
+  string creator = 3;
+}
+
