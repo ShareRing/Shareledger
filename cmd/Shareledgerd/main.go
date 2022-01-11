@@ -26,30 +26,6 @@ func main() {
 		),
 	)
 
-	//fmt.Println("PreRun E", rootCmd.PreRunE)
-
-	//for _, c := range rootCmd.Commands() {
-	//	if c.Name() == "query" {
-	//		for _, moduleCommands := range c.Commands() {
-	//			subTxCommands := moduleCommands.Commands()
-	//			for i, _ := range subTxCommands {
-	//				fmt.Println("subTxCommands", subTxCommands[i].Name())
-	//				subTxCommands[i].PreRunE = func(cmd *cobra.Command, args []string) error {
-	//					fmt.Println("--- IN PreRunE ----")
-	//					return nil
-	//				}
-	//			}
-	//			//fmt.Println("subTxCommands", subTxCommands[i].Name(), subTxCommands[i].PreRunE)
-	//		}
-	//	}
-	//}
-
-	//rootCmd.PreRunE = func(cmd *cobra.Command, args []string) error {
-	//
-	//	fmt.Println("IN PreRunE", cmd.UsageString())
-	//	return nil
-	//}
-
 	if err := svrcmd.Execute(rootCmd, app.DefaultNodeHome); err != nil {
 		os.Exit(1)
 	}

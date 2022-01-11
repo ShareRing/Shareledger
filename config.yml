@@ -14,7 +14,7 @@ accounts:
   - name: idsigner
     coins: ["100000000shr", "1000000000shrp"]
     mnemonic: "memory mind warfare pull risk math concert address zero speak glimpse outside economy hill boil boss pulp much connect install clip short object tobacco"
-  - name: hoai
+  - name: user
     coins: [ "100000000shr", "1000000000shrp" ]
     mnemonic: "bright payment cash tomato tragic impulse perfect jacket matter jelly artist pulse will cinnamon erase middle elevator away clinic razor rotate tide unfair trigger"
 validator:
