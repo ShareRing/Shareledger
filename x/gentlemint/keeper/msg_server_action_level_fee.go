@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+	"github.com/sharering/shareledger/x/fee"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
@@ -11,7 +12,7 @@ import (
 func (k msgServer) CreateActionLevelFee(goCtx context.Context, msg *types.MsgCreateActionLevelFee) (*types.MsgCreateActionLevelFeeResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	if found := k.actionsTable.HaveAction(msg.Action); !found {
+	if found := fee.HaveActionKey(msg.Action); !found {
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrKeyNotFound, "%s action was not found in fee table", msg.Action)
 	}
 

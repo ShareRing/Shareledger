@@ -6,7 +6,6 @@ import (
 
 type msgServer struct {
 	Keeper
-	actionsTable ActionsTable
 }
 
 // NewMsgServerImpl returns an implementation of the MsgServer interface

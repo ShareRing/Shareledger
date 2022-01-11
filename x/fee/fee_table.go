@@ -15,18 +15,25 @@ import (
 	gentlemintmoduletypes "github.com/sharering/shareledger/x/gentlemint/types"
 	idmoduletypes "github.com/sharering/shareledger/x/id/types"
 	"reflect"
+	"sync"
 )
 
 func init() {
-	vm := make(map[string]struct{})
-	// We check fee of transactions based on mapActions' values. So it should not be duplicated.
-	for _, v := range mapActions {
-		if _, found := vm[v]; found {
-			panic(fmt.Sprintf("map actions has duplicate values, %v.", v))
+	// init map action string _ msg type
+	doOnce.Do(func() {
+		mapMsg = make(map[string]reflect.Type)
+		// We check fee of transactions based on mapActions' values. So it should not be duplicated.
+		for msg, v := range mapActions {
+			if _, found := mapMsg[v]; found {
+				panic(fmt.Sprintf("map actions has duplicate values, %v.", v))
+			}
+			mapMsg[v] = msg
 		}
-		vm[v] = struct{}{}
-	}
+	})
 }
+
+var mapMsg map[string]reflect.Type
+var doOnce sync.Once
 
 var mapActions = map[reflect.Type]string{
 	reflect.ValueOf(&assettypes.MsgCreateAsset{}).Type(): "asset_create",
@@ -94,18 +101,20 @@ var mapActions = map[reflect.Type]string{
 	reflect.ValueOf(&stakingmoduletypes.MsgUndelegate{}).Type():      "staking_unbond",
 }
 
-type TableFee struct {
-}
-
-func (t TableFee) GetActionKey(msg sdk.Msg) string {
+func GetActionKey(msg sdk.Msg) string {
 	k := mapActions[reflect.TypeOf(msg)]
 	return k
 }
 
-func (t TableFee) GetListActions() []string {
+func GetListActions() []string {
 	actions := make([]string, 0, len(mapActions))
 	for _, v := range mapActions {
 		actions = append(actions, v)
 	}
 	return actions
+}
+
+func HaveActionKey(actionKey string) bool {
+	_, found := mapMsg[actionKey]
+	return found
 }
