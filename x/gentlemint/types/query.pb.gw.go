@@ -52,7 +52,7 @@ func local_request_Query_ExchangeRate_0(ctx context.Context, marshaler runtime.M
 }
 
 func request_Query_LevelFee_0(ctx context.Context, marshaler runtime.Marshaler, client QueryClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq QueryGetLevelFeeRequest
+	var protoReq QueryLevelFeeRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -79,7 +79,7 @@ func request_Query_LevelFee_0(ctx context.Context, marshaler runtime.Marshaler, 
 }
 
 func local_request_Query_LevelFee_0(ctx context.Context, marshaler runtime.Marshaler, server QueryServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq QueryGetLevelFeeRequest
+	var protoReq QueryLevelFeeRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -105,26 +105,26 @@ func local_request_Query_LevelFee_0(ctx context.Context, marshaler runtime.Marsh
 
 }
 
-func request_Query_LevelFeeAll_0(ctx context.Context, marshaler runtime.Marshaler, client QueryClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq QueryAllLevelFeeRequest
+func request_Query_LevelFees_0(ctx context.Context, marshaler runtime.Marshaler, client QueryClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq QueryLevelFeesRequest
 	var metadata runtime.ServerMetadata
 
-	msg, err := client.LevelFeeAll(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	msg, err := client.LevelFees(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 
 }
 
-func local_request_Query_LevelFeeAll_0(ctx context.Context, marshaler runtime.Marshaler, server QueryServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq QueryAllLevelFeeRequest
+func local_request_Query_LevelFees_0(ctx context.Context, marshaler runtime.Marshaler, server QueryServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq QueryLevelFeesRequest
 	var metadata runtime.ServerMetadata
 
-	msg, err := server.LevelFeeAll(ctx, &protoReq)
+	msg, err := server.LevelFees(ctx, &protoReq)
 	return msg, metadata, err
 
 }
 
 func request_Query_ActionLevelFee_0(ctx context.Context, marshaler runtime.Marshaler, client QueryClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq QueryGetActionLevelFeeRequest
+	var protoReq QueryActionLevelFeeRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -151,7 +151,7 @@ func request_Query_ActionLevelFee_0(ctx context.Context, marshaler runtime.Marsh
 }
 
 func local_request_Query_ActionLevelFee_0(ctx context.Context, marshaler runtime.Marshaler, server QueryServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq QueryGetActionLevelFeeRequest
+	var protoReq QueryActionLevelFeeRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -177,20 +177,20 @@ func local_request_Query_ActionLevelFee_0(ctx context.Context, marshaler runtime
 
 }
 
-func request_Query_ActionLevelFeeAll_0(ctx context.Context, marshaler runtime.Marshaler, client QueryClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq QueryAllActionLevelFeeRequest
+func request_Query_ActionLevelFees_0(ctx context.Context, marshaler runtime.Marshaler, client QueryClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq QueryActionLevelFeesRequest
 	var metadata runtime.ServerMetadata
 
-	msg, err := client.ActionLevelFeeAll(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	msg, err := client.ActionLevelFees(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 
 }
 
-func local_request_Query_ActionLevelFeeAll_0(ctx context.Context, marshaler runtime.Marshaler, server QueryServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq QueryAllActionLevelFeeRequest
+func local_request_Query_ActionLevelFees_0(ctx context.Context, marshaler runtime.Marshaler, server QueryServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq QueryActionLevelFeesRequest
 	var metadata runtime.ServerMetadata
 
-	msg, err := server.ActionLevelFeeAll(ctx, &protoReq)
+	msg, err := server.ActionLevelFees(ctx, &protoReq)
 	return msg, metadata, err
 
 }
@@ -247,7 +247,7 @@ func RegisterQueryHandlerServer(ctx context.Context, mux *runtime.ServeMux, serv
 
 	})
 
-	mux.Handle("GET", pattern_Query_LevelFeeAll_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_Query_LevelFees_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -258,7 +258,7 @@ func RegisterQueryHandlerServer(ctx context.Context, mux *runtime.ServeMux, serv
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_Query_LevelFeeAll_0(rctx, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_Query_LevelFees_0(rctx, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
@@ -266,7 +266,7 @@ func RegisterQueryHandlerServer(ctx context.Context, mux *runtime.ServeMux, serv
 			return
 		}
 
-		forward_Query_LevelFeeAll_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_Query_LevelFees_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -293,7 +293,7 @@ func RegisterQueryHandlerServer(ctx context.Context, mux *runtime.ServeMux, serv
 
 	})
 
-	mux.Handle("GET", pattern_Query_ActionLevelFeeAll_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_Query_ActionLevelFees_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -304,7 +304,7 @@ func RegisterQueryHandlerServer(ctx context.Context, mux *runtime.ServeMux, serv
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_Query_ActionLevelFeeAll_0(rctx, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_Query_ActionLevelFees_0(rctx, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
@@ -312,7 +312,7 @@ func RegisterQueryHandlerServer(ctx context.Context, mux *runtime.ServeMux, serv
 			return
 		}
 
-		forward_Query_ActionLevelFeeAll_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_Query_ActionLevelFees_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -397,7 +397,7 @@ func RegisterQueryHandlerClient(ctx context.Context, mux *runtime.ServeMux, clie
 
 	})
 
-	mux.Handle("GET", pattern_Query_LevelFeeAll_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_Query_LevelFees_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -406,14 +406,14 @@ func RegisterQueryHandlerClient(ctx context.Context, mux *runtime.ServeMux, clie
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_Query_LevelFeeAll_0(rctx, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_Query_LevelFees_0(rctx, inboundMarshaler, client, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_Query_LevelFeeAll_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_Query_LevelFees_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -437,7 +437,7 @@ func RegisterQueryHandlerClient(ctx context.Context, mux *runtime.ServeMux, clie
 
 	})
 
-	mux.Handle("GET", pattern_Query_ActionLevelFeeAll_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_Query_ActionLevelFees_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -446,14 +446,14 @@ func RegisterQueryHandlerClient(ctx context.Context, mux *runtime.ServeMux, clie
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_Query_ActionLevelFeeAll_0(rctx, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_Query_ActionLevelFees_0(rctx, inboundMarshaler, client, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_Query_ActionLevelFeeAll_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_Query_ActionLevelFees_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -463,13 +463,13 @@ func RegisterQueryHandlerClient(ctx context.Context, mux *runtime.ServeMux, clie
 var (
 	pattern_Query_ExchangeRate_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"shareledger", "gentlemint", "exchangeRate"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_LevelFee_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"sharering", "shareledger", "gentlemint", "levelFee", "level"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_LevelFee_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"shareledger", "gentlemint", "levelFee", "level"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_LevelFeeAll_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"sharering", "shareledger", "gentlemint", "levelFee"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_LevelFees_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"shareledger", "gentlemint", "levelFee"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_ActionLevelFee_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"sharering", "shareledger", "gentlemint", "actionLevelFee", "action"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_ActionLevelFee_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"shareledger", "gentlemint", "actionLevelFee", "action"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_ActionLevelFeeAll_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"sharering", "shareledger", "gentlemint", "actionLevelFee"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_ActionLevelFees_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"shareledger", "gentlemint", "actionLevelFee"}, "", runtime.AssumeColonVerbOpt(true)))
 )
 
 var (
@@ -477,9 +477,9 @@ var (
 
 	forward_Query_LevelFee_0 = runtime.ForwardResponseMessage
 
-	forward_Query_LevelFeeAll_0 = runtime.ForwardResponseMessage
+	forward_Query_LevelFees_0 = runtime.ForwardResponseMessage
 
 	forward_Query_ActionLevelFee_0 = runtime.ForwardResponseMessage
 
-	forward_Query_ActionLevelFeeAll_0 = runtime.ForwardResponseMessage
+	forward_Query_ActionLevelFees_0 = runtime.ForwardResponseMessage
 )

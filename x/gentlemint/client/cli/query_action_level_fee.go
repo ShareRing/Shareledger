@@ -12,16 +12,16 @@ import (
 
 func CmdListActionLevelFee() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "list-action-level-fee",
+		Use:   "action-level-fees",
 		Short: "list all action-level-fee",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx := client.GetClientContextFromCmd(cmd)
 
 			queryClient := types.NewQueryClient(clientCtx)
 
-			params := &types.QueryAllActionLevelFeeRequest{}
+			params := &types.QueryActionLevelFeesRequest{}
 
-			res, err := queryClient.ActionLevelFeeAll(context.Background(), params)
+			res, err := queryClient.ActionLevelFees(context.Background(), params)
 			if err != nil {
 				return err
 			}
@@ -47,7 +47,7 @@ func CmdShowActionLevelFee() *cobra.Command {
 
 			argAction := args[0]
 
-			params := &types.QueryGetActionLevelFeeRequest{
+			params := &types.QueryActionLevelFeeRequest{
 				Action: argAction,
 			}
 

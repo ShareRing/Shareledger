@@ -72,7 +72,7 @@ package keeper_test
 //	t.Run("ByOffset", func(t *testing.T) {
 //		step := 2
 //		for i := 0; i < len(msgs); i += step {
-//			resp, err := keeper.ActionLevelFeeAll(wctx, request(nil, uint64(i), uint64(step), false))
+//			resp, err := keeper.ActionLevelFees(wctx, request(nil, uint64(i), uint64(step), false))
 //			require.NoError(t, err)
 //			require.LessOrEqual(t, len(resp.ActionLevelFee), step)
 //			require.Subset(t, msgs, resp.ActionLevelFee)
@@ -82,7 +82,7 @@ package keeper_test
 //		step := 2
 //		var next []byte
 //		for i := 0; i < len(msgs); i += step {
-//			resp, err := keeper.ActionLevelFeeAll(wctx, request(next, 0, uint64(step), false))
+//			resp, err := keeper.ActionLevelFees(wctx, request(next, 0, uint64(step), false))
 //			require.NoError(t, err)
 //			require.LessOrEqual(t, len(resp.ActionLevelFee), step)
 //			require.Subset(t, msgs, resp.ActionLevelFee)
@@ -90,12 +90,12 @@ package keeper_test
 //		}
 //	})
 //	t.Run("Total", func(t *testing.T) {
-//		resp, err := keeper.ActionLevelFeeAll(wctx, request(nil, 0, 0, true))
+//		resp, err := keeper.ActionLevelFees(wctx, request(nil, 0, 0, true))
 //		require.NoError(t, err)
 //		require.Equal(t, len(msgs), int(resp.Pagination.Total))
 //	})
 //	t.Run("InvalidRequest", func(t *testing.T) {
-//		_, err := keeper.ActionLevelFeeAll(wctx, nil)
+//		_, err := keeper.ActionLevelFees(wctx, nil)
 //		require.ErrorIs(t, err, status.Error(codes.InvalidArgument, "invalid request"))
 //	})
 //}

@@ -80,7 +80,7 @@ func TestShowActionLevelFee(t *testing.T) {
 				require.ErrorIs(t, stat.Err(), tc.err)
 			} else {
 				require.NoError(t, err)
-				var resp types.QueryGetActionLevelFeeResponse
+				var resp types.QueryActionLevelFeeResponse
 				require.NoError(t, net.Config.Codec.UnmarshalJSON(out.Bytes(), &resp))
 				require.NotNil(t, resp)
 				require.Equal(t, tc.obj, resp)
@@ -114,7 +114,7 @@ func TestListActionLevelFee(t *testing.T) {
 			args := request(nil, uint64(i), uint64(step), false)
 			out, err := clitestutil.ExecTestCLICmd(ctx, cli.CmdListActionLevelFee(), args)
 			require.NoError(t, err)
-			var resp types.QueryAllActionLevelFeeResponse
+			var resp types.QueryActionLevelFeesResponse
 			require.NoError(t, net.Config.Codec.UnmarshalJSON(out.Bytes(), &resp))
 			require.LessOrEqual(t, len(resp.ActionLevelFee), step)
 			require.Subset(t, objs, resp.ActionLevelFee)
@@ -127,7 +127,7 @@ func TestListActionLevelFee(t *testing.T) {
 			args := request(next, 0, uint64(step), false)
 			out, err := clitestutil.ExecTestCLICmd(ctx, cli.CmdListActionLevelFee(), args)
 			require.NoError(t, err)
-			var resp types.QueryAllActionLevelFeeResponse
+			var resp types.QueryActionLevelFeesResponse
 			require.NoError(t, net.Config.Codec.UnmarshalJSON(out.Bytes(), &resp))
 			require.LessOrEqual(t, len(resp.ActionLevelFee), step)
 			require.Subset(t, objs, resp.ActionLevelFee)

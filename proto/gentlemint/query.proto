@@ -19,23 +19,23 @@ service Query {
 	}
 
 // Queries a levelFee by index.
-	rpc LevelFee(QueryGetLevelFeeRequest) returns (QueryGetLevelFeeResponse) {
-		option (google.api.http).get = "/sharering/shareledger/gentlemint/levelFee/{level}";
+	rpc LevelFee(QueryLevelFeeRequest) returns (QueryLevelFeeResponse) {
+		option (google.api.http).get = "/shareledger/gentlemint/levelFee/{level}";
 	}
 
 	// Queries a list of levelFee items.
-	rpc LevelFeeAll(QueryAllLevelFeeRequest) returns (QueryAllLevelFeeResponse) {
-		option (google.api.http).get = "/sharering/shareledger/gentlemint/levelFee";
+	rpc LevelFees(QueryLevelFeesRequest) returns (QueryLevelFeesResponse) {
+		option (google.api.http).get = "/shareledger/gentlemint/levelFee";
 	}
 
 // Queries a actionLevelFee by index.
-	rpc ActionLevelFee(QueryGetActionLevelFeeRequest) returns (QueryGetActionLevelFeeResponse) {
-		option (google.api.http).get = "/sharering/shareledger/gentlemint/actionLevelFee/{action}";
+	rpc ActionLevelFee(QueryActionLevelFeeRequest) returns (QueryActionLevelFeeResponse) {
+		option (google.api.http).get = "/shareledger/gentlemint/actionLevelFee/{action}";
 	}
 
 	// Queries a list of actionLevelFee items.
-	rpc ActionLevelFeeAll(QueryAllActionLevelFeeRequest) returns (QueryAllActionLevelFeeResponse) {
-		option (google.api.http).get = "/sharering/shareledger/gentlemint/actionLevelFee";
+	rpc ActionLevelFees(QueryActionLevelFeesRequest) returns (QueryActionLevelFeesResponse) {
+		option (google.api.http).get = "/shareledger/gentlemint/actionLevelFee";
 	}
 
 // this line is used by starport scaffolding # 2
@@ -47,38 +47,38 @@ message QueryExchangeRateResponse {
 	string rate = 1;
 }
 
-message QueryGetLevelFeeRequest {
+message QueryLevelFeeRequest {
 	  string level = 1;
 
 }
 
-message QueryGetLevelFeeResponse {
+message QueryLevelFeeResponse {
 	LevelFee levelFee = 1 [(gogoproto.nullable) = false];
 }
 
-message QueryAllLevelFeeRequest {
+message QueryLevelFeesRequest {
 }
 
-message QueryAllLevelFeeResponse {
+message QueryLevelFeesResponse {
 	repeated LevelFee levelFee = 1 [(gogoproto.nullable) = false];
 }
 
-message QueryGetActionLevelFeeRequest {
+message QueryActionLevelFeeRequest {
 	  string action = 1;
 
 }
 
-message QueryGetActionLevelFeeResponse {
+message QueryActionLevelFeeResponse {
 	string action = 1;
 	string level = 2;
 	string fee = 3;
 }
 
-message QueryAllActionLevelFeeRequest {
+message QueryActionLevelFeesRequest {
 
 }
 
-message QueryAllActionLevelFeeResponse {
+message QueryActionLevelFeesResponse {
 	repeated ActionLevelFee actionLevelFee = 1 [(gogoproto.nullable) = false];
 }
 

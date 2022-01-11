@@ -19,9 +19,9 @@ func CmdListLevelFee() *cobra.Command {
 
 			queryClient := types.NewQueryClient(clientCtx)
 
-			params := &types.QueryAllLevelFeeRequest{}
+			params := &types.QueryLevelFeesRequest{}
 
-			res, err := queryClient.LevelFeeAll(context.Background(), params)
+			res, err := queryClient.LevelFees(context.Background(), params)
 			if err != nil {
 				return err
 			}
@@ -47,7 +47,7 @@ func CmdShowLevelFee() *cobra.Command {
 
 			argLevel := args[0]
 
-			params := &types.QueryGetLevelFeeRequest{
+			params := &types.QueryLevelFeeRequest{
 				Level: argLevel,
 			}
 

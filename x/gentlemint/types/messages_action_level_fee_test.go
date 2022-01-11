@@ -39,21 +39,21 @@ func TestMsgCreateActionLevelFee_ValidateBasic(t *testing.T) {
 	}
 }
 
-func TestMsgUpdateActionLevelFee_ValidateBasic(t *testing.T) {
+func TestMsgSetActionLevelFee_ValidateBasic(t *testing.T) {
 	tests := []struct {
 		name string
-		msg  MsgUpdateActionLevelFee
+		msg  MsgSetActionLevelFee
 		err  error
 	}{
 		{
 			name: "invalid address",
-			msg: MsgUpdateActionLevelFee{
+			msg: MsgSetActionLevelFee{
 				Creator: "invalid_address",
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
-			msg: MsgUpdateActionLevelFee{
+			msg: MsgSetActionLevelFee{
 				Creator: sample.AccAddress(),
 			},
 		},

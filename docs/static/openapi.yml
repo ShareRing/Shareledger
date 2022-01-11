@@ -13346,42 +13346,10 @@ paths:
           type: string
       tags:
         - Query
-  /shareledger/gentlemint/exchangeRate:
-    get:
-      summary: Queries a exchangeRate by index.
-      operationId: ShareledgerGentlemintExchangeRate
-      responses:
-        '200':
-          description: A successful response.
-          schema:
-            type: object
-            properties:
-              rate:
-                type: string
-        default:
-          description: An unexpected error response.
-          schema:
-            type: object
-            properties:
-              code:
-                type: integer
-                format: int32
-              message:
-                type: string
-              details:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    '@type':
-                      type: string
-                  additionalProperties: {}
-      tags:
-        - Query
-  /sharering/shareledger/gentlemint/actionLevelFee:
+  /shareledger/gentlemint/actionLevelFee:
     get:
       summary: Queries a list of actionLevelFee items.
-      operationId: ShareledgerGentlemintActionLevelFeeAll
+      operationId: ShareledgerGentlemintActionLevelFees
       responses:
         '200':
           description: A successful response.
@@ -13419,7 +13387,7 @@ paths:
                   additionalProperties: {}
       tags:
         - Query
-  '/sharering/shareledger/gentlemint/actionLevelFee/{action}':
+  '/shareledger/gentlemint/actionLevelFee/{action}':
     get:
       summary: Queries a actionLevelFee by index.
       operationId: ShareledgerGentlemintActionLevelFee
@@ -13460,10 +13428,42 @@ paths:
           type: string
       tags:
         - Query
-  /sharering/shareledger/gentlemint/levelFee:
+  /shareledger/gentlemint/exchangeRate:
+    get:
+      summary: Queries a exchangeRate by index.
+      operationId: ShareledgerGentlemintExchangeRate
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              rate:
+                type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
+  /shareledger/gentlemint/levelFee:
     get:
       summary: Queries a list of levelFee items.
-      operationId: ShareledgerGentlemintLevelFeeAll
+      operationId: ShareledgerGentlemintLevelFees
       responses:
         '200':
           description: A successful response.
@@ -13501,7 +13501,7 @@ paths:
                   additionalProperties: {}
       tags:
         - Query
-  '/sharering/shareledger/gentlemint/levelFee/{level}':
+  '/shareledger/gentlemint/levelFee/{level}':
     get:
       summary: Queries a levelFee by index.
       operationId: ShareledgerGentlemintLevelFee
@@ -21390,7 +21390,16 @@ definitions:
     type: object
   shareledger.gentlemint.MsgSetLevelFeeResponse:
     type: object
-  shareledger.gentlemint.QueryAllActionLevelFeeResponse:
+  shareledger.gentlemint.QueryActionLevelFeeResponse:
+    type: object
+    properties:
+      action:
+        type: string
+      level:
+        type: string
+      fee:
+        type: string
+  shareledger.gentlemint.QueryActionLevelFeesResponse:
     type: object
     properties:
       actionLevelFee:
@@ -21404,7 +21413,24 @@ definitions:
               type: string
             creator:
               type: string
-  shareledger.gentlemint.QueryAllLevelFeeResponse:
+  shareledger.gentlemint.QueryExchangeRateResponse:
+    type: object
+    properties:
+      rate:
+        type: string
+  shareledger.gentlemint.QueryLevelFeeResponse:
+    type: object
+    properties:
+      levelFee:
+        type: object
+        properties:
+          level:
+            type: string
+          fee:
+            type: string
+          creator:
+            type: string
+  shareledger.gentlemint.QueryLevelFeesResponse:
     type: object
     properties:
       levelFee:
@@ -21418,32 +21444,6 @@ definitions:
               type: string
             creator:
               type: string
-  shareledger.gentlemint.QueryExchangeRateResponse:
-    type: object
-    properties:
-      rate:
-        type: string
-  shareledger.gentlemint.QueryGetActionLevelFeeResponse:
-    type: object
-    properties:
-      action:
-        type: string
-      level:
-        type: string
-      fee:
-        type: string
-  shareledger.gentlemint.QueryGetLevelFeeResponse:
-    type: object
-    properties:
-      levelFee:
-        type: object
-        properties:
-          level:
-            type: string
-          fee:
-            type: string
-          creator:
-            type: string
   shareledger.id.BaseID:
     type: object
     properties:

@@ -22,27 +22,27 @@ func TestLevelFeeQuerySingle(t *testing.T) {
 	msgs := createNLevelFee(keeper, ctx, 2)
 	for _, tc := range []struct {
 		desc     string
-		request  *types.QueryGetLevelFeeRequest
-		response *types.QueryGetLevelFeeResponse
+		request  *types.QueryLevelFeeRequest
+		response *types.QueryLevelFeeResponse
 		err      error
 	}{
 		{
 			desc: "First",
-			request: &types.QueryGetLevelFeeRequest{
+			request: &types.QueryLevelFeeRequest{
 				Level: msgs[0].Level,
 			},
-			response: &types.QueryGetLevelFeeResponse{LevelFee: msgs[0]},
+			response: &types.QueryLevelFeeResponse{LevelFee: msgs[0]},
 		},
 		{
 			desc: "Second",
-			request: &types.QueryGetLevelFeeRequest{
+			request: &types.QueryLevelFeeRequest{
 				Level: msgs[1].Level,
 			},
-			response: &types.QueryGetLevelFeeResponse{LevelFee: msgs[1]},
+			response: &types.QueryLevelFeeResponse{LevelFee: msgs[1]},
 		},
 		{
 			desc: "KeyNotFound",
-			request: &types.QueryGetLevelFeeRequest{
+			request: &types.QueryLevelFeeRequest{
 				Level: strconv.Itoa(100000),
 			},
 			err: status.Error(codes.InvalidArgument, "not found"),
@@ -68,13 +68,13 @@ func TestLevelFeeQueryPaginated(t *testing.T) {
 	wctx := sdk.WrapSDKContext(ctx)
 	msgs := createNLevelFee(keeper, ctx, 5)
 
-	request := func(next []byte, offset, limit uint64, total bool) *types.QueryAllLevelFeeRequest {
-		return &types.QueryAllLevelFeeRequest{}
+	request := func(next []byte, offset, limit uint64, total bool) *types.QueryLevelFeesRequest {
+		return &types.QueryLevelFeesRequest{}
 	}
 	t.Run("ByOffset", func(t *testing.T) {
 		step := 2
 		for i := 0; i < len(msgs); i += step {
-			resp, err := keeper.LevelFeeAll(wctx, request(nil, uint64(i), uint64(step), false))
+			resp, err := keeper.LevelFees(wctx, request(nil, uint64(i), uint64(step), false))
 			require.NoError(t, err)
 			require.LessOrEqual(t, len(resp.LevelFee), step)
 			require.Subset(t, msgs, resp.LevelFee)
@@ -83,13 +83,13 @@ func TestLevelFeeQueryPaginated(t *testing.T) {
 	t.Run("ByKey", func(t *testing.T) {
 		step := 2
 
-		resp, err := keeper.LevelFeeAll(wctx, &types.QueryAllLevelFeeRequest{})
+		resp, err := keeper.LevelFees(wctx, &types.QueryLevelFeesRequest{})
 		require.NoError(t, err)
 		require.LessOrEqual(t, len(resp.LevelFee), step)
 		require.Subset(t, msgs, resp.LevelFee)
 	})
 	t.Run("InvalidRequest", func(t *testing.T) {
-		_, err := keeper.LevelFeeAll(wctx, nil)
+		_, err := keeper.LevelFees(wctx, nil)
 		require.ErrorIs(t, err, status.Error(codes.InvalidArgument, "invalid request"))
 	})
 }

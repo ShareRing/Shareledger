@@ -12,7 +12,7 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (k Keeper) ActionLevelFeeAll(c context.Context, req *types.QueryAllActionLevelFeeRequest) (*types.QueryAllActionLevelFeeResponse, error) {
+func (k Keeper) ActionLevelFees(c context.Context, req *types.QueryActionLevelFeesRequest) (*types.QueryActionLevelFeesResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
@@ -40,10 +40,10 @@ func (k Keeper) ActionLevelFeeAll(c context.Context, req *types.QueryAllActionLe
 		return actionLevelFees[i].Action < actionLevelFees[j].Action
 	})
 
-	return &types.QueryAllActionLevelFeeResponse{ActionLevelFee: actionLevelFees}, nil
+	return &types.QueryActionLevelFeesResponse{ActionLevelFee: actionLevelFees}, nil
 }
 
-func (k Keeper) ActionLevelFee(c context.Context, req *types.QueryGetActionLevelFeeRequest) (*types.QueryGetActionLevelFeeResponse, error) {
+func (k Keeper) ActionLevelFee(c context.Context, req *types.QueryActionLevelFeeRequest) (*types.QueryActionLevelFeeResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
@@ -59,7 +59,7 @@ func (k Keeper) ActionLevelFee(c context.Context, req *types.QueryGetActionLevel
 		defaultLevel = val.Level
 	}
 
-	return &types.QueryGetActionLevelFeeResponse{
+	return &types.QueryActionLevelFeeResponse{
 		Action: req.Action,
 		Level:  defaultLevel,
 		Fee:    k.GetFeeByLevel(ctx, defaultLevel).String(),

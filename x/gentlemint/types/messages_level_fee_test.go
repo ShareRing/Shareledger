@@ -44,15 +44,15 @@ func TestMsgCreateLevelFee_ValidateBasic(t *testing.T) {
 	}
 }
 
-func TestMsgUpdateLevelFee_ValidateBasic(t *testing.T) {
+func TestMsgSetLevelFee_ValidateBasic(t *testing.T) {
 	tests := []struct {
 		name string
-		msg  MsgUpdateLevelFee
+		msg  MsgSetLevelFee
 		err  error
 	}{
 		{
 			name: "invalid address",
-			msg: MsgUpdateLevelFee{
+			msg: MsgSetLevelFee{
 				Level:   string(constant.HighFee),
 				Fee:     "10.9shrp",
 				Creator: "invalid_address",
@@ -60,7 +60,7 @@ func TestMsgUpdateLevelFee_ValidateBasic(t *testing.T) {
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
-			msg: MsgUpdateLevelFee{
+			msg: MsgSetLevelFee{
 				Level:   string(constant.HighFee),
 				Fee:     "10.9shrp",
 				Creator: sample.AccAddress(),
