@@ -3,6 +3,7 @@ package keeper
 import (
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/sharering/shareledger/x/constant"
 	"github.com/sharering/shareledger/x/gentlemint/types"
 )
 
@@ -27,10 +28,17 @@ func (k Keeper) GetLevelFee(
 		level,
 	))
 	if b == nil {
-		return val, false
+		// Check if it's defined default level.
+		d, f := constant.DefaultFeeLevel[constant.DefaultLevel(level)]
+		if !f {
+			return val, false
+		}
+		val.Fee = d.String()
+		val.Level = level
+	} else {
+		k.cdc.MustUnmarshal(b, &val)
 	}
 
-	k.cdc.MustUnmarshal(b, &val)
 	return val, true
 }
 

@@ -57,12 +57,10 @@ message QueryGetLevelFeeResponse {
 }
 
 message QueryAllLevelFeeRequest {
-	cosmos.base.query.v1beta1.PageRequest pagination = 1;
 }
 
 message QueryAllLevelFeeResponse {
 	repeated LevelFee levelFee = 1 [(gogoproto.nullable) = false];
-	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 
 message QueryGetActionLevelFeeRequest {
@@ -77,12 +75,11 @@ message QueryGetActionLevelFeeResponse {
 }
 
 message QueryAllActionLevelFeeRequest {
-	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+
 }
 
 message QueryAllActionLevelFeeResponse {
 	repeated ActionLevelFee actionLevelFee = 1 [(gogoproto.nullable) = false];
-	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 
 // this line is used by starport scaffolding # 3

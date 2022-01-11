@@ -14,7 +14,7 @@ import (
 
 	"github.com/sharering/shareledger/testutil/network"
 	"github.com/sharering/shareledger/x/gentlemint/client/cli"
-    "github.com/sharering/shareledger/x/gentlemint/types"
+	"github.com/sharering/shareledger/x/gentlemint/types"
 )
 
 // Prevent strconv unused error
@@ -24,12 +24,11 @@ func networkWithLevelFeeObjects(t *testing.T, n int) (*network.Network, []types.
 	t.Helper()
 	cfg := network.DefaultConfig()
 	state := types.GenesisState{}
-    require.NoError(t, cfg.Codec.UnmarshalJSON(cfg.GenesisState[types.ModuleName], &state))
+	require.NoError(t, cfg.Codec.UnmarshalJSON(cfg.GenesisState[types.ModuleName], &state))
 
 	for i := 0; i < n; i++ {
 		state.LevelFeeList = append(state.LevelFeeList, types.LevelFee{
-		    Level: strconv.Itoa(i),
-		    
+			Level: strconv.Itoa(i),
 		})
 	}
 	buf, err := cfg.Codec.MarshalJSON(&state)
@@ -46,24 +45,24 @@ func TestShowLevelFee(t *testing.T) {
 		fmt.Sprintf("--%s=json", tmcli.OutputFlag),
 	}
 	for _, tc := range []struct {
-		desc string
+		desc    string
 		idLevel string
-        
+
 		args []string
 		err  error
 		obj  types.LevelFee
 	}{
 		{
-			desc: "found",
+			desc:    "found",
 			idLevel: objs[0].Level,
-            
+
 			args: common,
 			obj:  objs[0],
 		},
 		{
-			desc: "not found",
+			desc:    "not found",
 			idLevel: strconv.Itoa(100000),
-            
+
 			args: common,
 			err:  status.Error(codes.InvalidArgument, "not found"),
 		},
@@ -71,8 +70,7 @@ func TestShowLevelFee(t *testing.T) {
 		tc := tc
 		t.Run(tc.desc, func(t *testing.T) {
 			args := []string{
-			    tc.idLevel,
-                
+				tc.idLevel,
 			}
 			args = append(args, tc.args...)
 			out, err := clitestutil.ExecTestCLICmd(ctx, cli.CmdShowLevelFee(), args)
@@ -133,17 +131,6 @@ func TestListLevelFee(t *testing.T) {
 			require.NoError(t, net.Config.Codec.UnmarshalJSON(out.Bytes(), &resp))
 			require.LessOrEqual(t, len(resp.LevelFee), step)
 			require.Subset(t, objs, resp.LevelFee)
-			next = resp.Pagination.NextKey
 		}
-	})
-	t.Run("Total", func(t *testing.T) {
-		args := request(nil, 0, uint64(len(objs)), true)
-		out, err := clitestutil.ExecTestCLICmd(ctx, cli.CmdListLevelFee(), args)
-		require.NoError(t, err)
-		var resp types.QueryAllLevelFeeResponse
-		require.NoError(t, net.Config.Codec.UnmarshalJSON(out.Bytes(), &resp))
-		require.NoError(t, err)
-		require.Equal(t, len(objs), int(resp.Pagination.Total))
-		require.Equal(t, objs, resp.LevelFee)
 	})
 }

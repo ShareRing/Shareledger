@@ -1,15 +1,13 @@
 package cli
 
 import (
-    "context"
-	
+	"context"
 
-	
-    "github.com/spf13/cobra"
-    
+	"github.com/spf13/cobra"
+
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
-    "github.com/sharering/shareledger/x/gentlemint/types"
+	"github.com/sharering/shareledger/x/gentlemint/types"
 )
 
 func CmdListLevelFee() *cobra.Command {
@@ -17,32 +15,24 @@ func CmdListLevelFee() *cobra.Command {
 		Use:   "list-level-fee",
 		Short: "list all level-fee",
 		RunE: func(cmd *cobra.Command, args []string) error {
-            clientCtx := client.GetClientContextFromCmd(cmd)
+			clientCtx := client.GetClientContextFromCmd(cmd)
 
-            pageReq, err := client.ReadPageRequest(cmd.Flags())
-            if err != nil {
-                return err
-            }
+			queryClient := types.NewQueryClient(clientCtx)
 
-            queryClient := types.NewQueryClient(clientCtx)
+			params := &types.QueryAllLevelFeeRequest{}
 
-            params := &types.QueryAllLevelFeeRequest{
-                Pagination: pageReq,
-            }
+			res, err := queryClient.LevelFeeAll(context.Background(), params)
+			if err != nil {
+				return err
+			}
 
-            res, err := queryClient.LevelFeeAll(context.Background(), params)
-            if err != nil {
-                return err
-            }
-
-            return clientCtx.PrintProto(res)
+			return clientCtx.PrintProto(res)
 		},
 	}
 
-	flags.AddPaginationFlagsToCmd(cmd, cmd.Use)
 	flags.AddQueryFlagsToCmd(cmd)
 
-    return cmd
+	return cmd
 }
 
 func CmdShowLevelFee() *cobra.Command {
@@ -51,27 +41,26 @@ func CmdShowLevelFee() *cobra.Command {
 		Short: "shows a level-fee",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-            clientCtx := client.GetClientContextFromCmd(cmd)
+			clientCtx := client.GetClientContextFromCmd(cmd)
 
-            queryClient := types.NewQueryClient(clientCtx)
+			queryClient := types.NewQueryClient(clientCtx)
 
-             argLevel := args[0]
-            
-            params := &types.QueryGetLevelFeeRequest{
-                Level: argLevel,
-                
-            }
+			argLevel := args[0]
 
-            res, err := queryClient.LevelFee(context.Background(), params)
-            if err != nil {
-                return err
-            }
+			params := &types.QueryGetLevelFeeRequest{
+				Level: argLevel,
+			}
 
-            return clientCtx.PrintProto(res)
+			res, err := queryClient.LevelFee(context.Background(), params)
+			if err != nil {
+				return err
+			}
+
+			return clientCtx.PrintProto(res)
 		},
 	}
 
 	flags.AddQueryFlagsToCmd(cmd)
 
-    return cmd
+	return cmd
 }

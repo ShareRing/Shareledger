@@ -14,7 +14,7 @@ import (
 
 	"github.com/sharering/shareledger/testutil/network"
 	"github.com/sharering/shareledger/x/gentlemint/client/cli"
-    "github.com/sharering/shareledger/x/gentlemint/types"
+	"github.com/sharering/shareledger/x/gentlemint/types"
 )
 
 // Prevent strconv unused error
@@ -24,12 +24,11 @@ func networkWithActionLevelFeeObjects(t *testing.T, n int) (*network.Network, []
 	t.Helper()
 	cfg := network.DefaultConfig()
 	state := types.GenesisState{}
-    require.NoError(t, cfg.Codec.UnmarshalJSON(cfg.GenesisState[types.ModuleName], &state))
+	require.NoError(t, cfg.Codec.UnmarshalJSON(cfg.GenesisState[types.ModuleName], &state))
 
 	for i := 0; i < n; i++ {
 		state.ActionLevelFeeList = append(state.ActionLevelFeeList, types.ActionLevelFee{
-		    Action: strconv.Itoa(i),
-		    
+			Action: strconv.Itoa(i),
 		})
 	}
 	buf, err := cfg.Codec.MarshalJSON(&state)
@@ -46,24 +45,24 @@ func TestShowActionLevelFee(t *testing.T) {
 		fmt.Sprintf("--%s=json", tmcli.OutputFlag),
 	}
 	for _, tc := range []struct {
-		desc string
+		desc     string
 		idAction string
-        
+
 		args []string
 		err  error
 		obj  types.ActionLevelFee
 	}{
 		{
-			desc: "found",
+			desc:     "found",
 			idAction: objs[0].Action,
-            
+
 			args: common,
 			obj:  objs[0],
 		},
 		{
-			desc: "not found",
+			desc:     "not found",
 			idAction: strconv.Itoa(100000),
-            
+
 			args: common,
 			err:  status.Error(codes.InvalidArgument, "not found"),
 		},
@@ -71,8 +70,7 @@ func TestShowActionLevelFee(t *testing.T) {
 		tc := tc
 		t.Run(tc.desc, func(t *testing.T) {
 			args := []string{
-			    tc.idAction,
-                
+				tc.idAction,
 			}
 			args = append(args, tc.args...)
 			out, err := clitestutil.ExecTestCLICmd(ctx, cli.CmdShowActionLevelFee(), args)
@@ -84,8 +82,8 @@ func TestShowActionLevelFee(t *testing.T) {
 				require.NoError(t, err)
 				var resp types.QueryGetActionLevelFeeResponse
 				require.NoError(t, net.Config.Codec.UnmarshalJSON(out.Bytes(), &resp))
-				require.NotNil(t, resp.ActionLevelFee)
-				require.Equal(t, tc.obj, resp.ActionLevelFee)
+				require.NotNil(t, resp)
+				require.Equal(t, tc.obj, resp)
 			}
 		})
 	}
@@ -133,17 +131,6 @@ func TestListActionLevelFee(t *testing.T) {
 			require.NoError(t, net.Config.Codec.UnmarshalJSON(out.Bytes(), &resp))
 			require.LessOrEqual(t, len(resp.ActionLevelFee), step)
 			require.Subset(t, objs, resp.ActionLevelFee)
-			next = resp.Pagination.NextKey
 		}
-	})
-	t.Run("Total", func(t *testing.T) {
-		args := request(nil, 0, uint64(len(objs)), true)
-		out, err := clitestutil.ExecTestCLICmd(ctx, cli.CmdListActionLevelFee(), args)
-		require.NoError(t, err)
-		var resp types.QueryAllActionLevelFeeResponse
-		require.NoError(t, net.Config.Codec.UnmarshalJSON(out.Bytes(), &resp))
-		require.NoError(t, err)
-		require.Equal(t, len(objs), int(resp.Pagination.Total))
-		require.Equal(t, objs, resp.ActionLevelFee)
 	})
 }

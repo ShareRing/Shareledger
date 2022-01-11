@@ -10,6 +10,7 @@ import (
 	stakingmoduletypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 	assettypes "github.com/sharering/shareledger/x/asset/types"
 	bookingtypes "github.com/sharering/shareledger/x/booking/types"
+	"github.com/sharering/shareledger/x/constant"
 	documenttypes "github.com/sharering/shareledger/x/document/types"
 	electoralmoduletypes "github.com/sharering/shareledger/x/electoral/types"
 	gentlemintmoduletypes "github.com/sharering/shareledger/x/gentlemint/types"
@@ -112,6 +113,14 @@ func GetListActions() []string {
 		actions = append(actions, v)
 	}
 	return actions
+}
+
+func GetListActionsWithDefaultLevel() map[string]string {
+	m := make(map[string]string)
+	for _, v := range mapActions {
+		m[v] = string(constant.MinFee)
+	}
+	return m
 }
 
 func HaveActionKey(actionKey string) bool {

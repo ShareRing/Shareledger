@@ -32,20 +32,6 @@ func (k msgServer) CreateLevelFee(goCtx context.Context, msg *types.MsgCreateLev
 func (k msgServer) UpdateLevelFee(goCtx context.Context, msg *types.MsgUpdateLevelFee) (*types.MsgUpdateLevelFeeResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	// Check if the value exists
-	valFound, isFound := k.GetLevelFee(
-		ctx,
-		msg.Level,
-	)
-	if !isFound {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "index not set")
-	}
-
-	// Checks if the the msg creator is the same as the current owner
-	if msg.Creator != valFound.Creator {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "incorrect owner")
-	}
-
 	var levelFee = types.LevelFee{
 		Creator: msg.Creator,
 		Level:   msg.Level,
