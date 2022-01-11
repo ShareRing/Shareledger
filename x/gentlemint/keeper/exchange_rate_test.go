@@ -12,7 +12,9 @@ import (
 )
 
 func createTestExchangeRate(keeper *keeper.Keeper, ctx sdk.Context) types.ExchangeRate {
-	item := types.ExchangeRate{}
+	item := types.ExchangeRate{
+		Rate: "200.1",
+	}
 	keeper.SetExchangeRate(ctx, item)
 	return item
 }
@@ -28,6 +30,7 @@ func TestExchangeRateRemove(t *testing.T) {
 	keeper, ctx := keepertest.GentlemintKeeper(t)
 	createTestExchangeRate(keeper, ctx)
 	keeper.RemoveExchangeRate(ctx)
-	_, found := keeper.GetExchangeRate(ctx)
-	require.False(t, found)
+	v, found := keeper.GetExchangeRate(ctx)
+	require.True(t, found)
+	require.Equal(t, types.DefaultExchangeRate, sdk.MustNewDecFromStr(v.Rate))
 }

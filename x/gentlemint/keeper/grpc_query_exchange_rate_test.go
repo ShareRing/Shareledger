@@ -37,7 +37,7 @@ func TestExchangeRateQuery(t *testing.T) {
 			if tc.err != nil {
 				require.ErrorIs(t, err, tc.err)
 			} else {
-				require.Equal(t, tc.response, response)
+				require.Equal(t, sdk.MustNewDecFromStr(tc.response.Rate), sdk.MustNewDecFromStr(response.Rate))
 			}
 		})
 	}
