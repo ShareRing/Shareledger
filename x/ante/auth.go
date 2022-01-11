@@ -38,6 +38,12 @@ func (a Auth) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate bool, next sdk.Ant
 		switch msg := msgI.(type) {
 		case // Authority
 			*gentleminttypes.MsgLoadShr,
+			*gentleminttypes.MsgCreateActionLevelFee,
+			*gentleminttypes.MsgDeleteActionLevelFee,
+			*gentleminttypes.MsgUpdateActionLevelFee,
+			*gentleminttypes.MsgCreateLevelFee,
+			*gentleminttypes.MsgUpdateLevelFee,
+			*gentleminttypes.MsgDeleteLevelFee,
 			*electoraltypes.MsgEnrollLoaders,
 			*electoraltypes.MsgRevokeLoaders,
 			*electoraltypes.MsgEnrollAccountOperators,

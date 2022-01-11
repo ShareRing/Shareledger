@@ -60,7 +60,7 @@ func (k Keeper) ActionLevelFee(c context.Context, req *types.QueryGetActionLevel
 	}
 
 	return &types.QueryGetActionLevelFeeResponse{
-		Action: val.Action,
+		Action: req.Action,
 		Level:  defaultLevel,
 		Fee:    k.GetFeeByLevel(ctx, defaultLevel).String(),
 	}, nil

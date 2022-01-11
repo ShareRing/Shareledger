@@ -25,7 +25,8 @@ func (cfd CheckFeeDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate boo
 	requiredFees := sdk.NewCoins()
 	for _, msg := range msgs {
 		fee := cfd.gk.GetShrFeeByMsg(ctx, msg)
-		requiredFees.Add(fee)
+		ctx.Logger().Info(msg.String(), fee)
+		requiredFees = requiredFees.Add(fee)
 	}
 	shrTXFee := feeTx.GetFee().AmountOf(gentleminttypes.DenomSHR)
 	shrRequiredFee := requiredFees.AmountOf(gentleminttypes.DenomSHR)
