@@ -13357,8 +13357,7 @@ paths:
             type: object
             properties:
               rate:
-                type: number
-                format: double
+                type: string
         default:
           description: An unexpected error response.
           schema:
@@ -21639,8 +21638,7 @@ definitions:
     type: object
     properties:
       rate:
-        type: number
-        format: double
+        type: string
   shareledger.gentlemint.QueryGetActionLevelFeeResponse:
     type: object
     properties:

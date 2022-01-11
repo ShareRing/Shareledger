@@ -1,11 +1,12 @@
 package types
 
 import (
+	"github.com/sharering/shareledger/x/constant"
 	"testing"
 
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	"github.com/stretchr/testify/require"
 	"github.com/sharering/shareledger/testutil/sample"
+	"github.com/stretchr/testify/require"
 )
 
 func TestMsgCreateLevelFee_ValidateBasic(t *testing.T) {
@@ -17,12 +18,16 @@ func TestMsgCreateLevelFee_ValidateBasic(t *testing.T) {
 		{
 			name: "invalid address",
 			msg: MsgCreateLevelFee{
+				Level:   string(constant.HighFee),
+				Fee:     "10.9shrp",
 				Creator: "invalid_address",
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
 			msg: MsgCreateLevelFee{
+				Level:   string(constant.HighFee),
+				Fee:     "10.9shrp",
 				Creator: sample.AccAddress(),
 			},
 		},
@@ -48,12 +53,16 @@ func TestMsgUpdateLevelFee_ValidateBasic(t *testing.T) {
 		{
 			name: "invalid address",
 			msg: MsgUpdateLevelFee{
+				Level:   string(constant.HighFee),
+				Fee:     "10.9shrp",
 				Creator: "invalid_address",
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
 			msg: MsgUpdateLevelFee{
+				Level:   string(constant.HighFee),
+				Fee:     "10.9shrp",
 				Creator: sample.AccAddress(),
 			},
 		},
@@ -79,12 +88,14 @@ func TestMsgDeleteLevelFee_ValidateBasic(t *testing.T) {
 		{
 			name: "invalid address",
 			msg: MsgDeleteLevelFee{
+				Level:   string(constant.HighFee),
 				Creator: "invalid_address",
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
 			msg: MsgDeleteLevelFee{
+				Level:   string(constant.HighFee),
 				Creator: sample.AccAddress(),
 			},
 		},

@@ -17,12 +17,14 @@ func TestMsgSetExchange_ValidateBasic(t *testing.T) {
 		{
 			name: "invalid address",
 			msg: MsgSetExchange{
+				Rate:    "200",
 				Creator: "invalid_address",
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
 			msg: MsgSetExchange{
+				Rate:    "200",
 				Creator: sample.AccAddress(),
 			},
 		},

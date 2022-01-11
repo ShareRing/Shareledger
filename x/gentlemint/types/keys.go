@@ -28,7 +28,7 @@ const (
 var (
 	RequiredSHRAmt      = sdk.NewInt(10)
 	MaxSHRSupply        = sdk.NewInt(4396000000)
-	DefaultExchangeRate = float64(200)
+	DefaultExchangeRate = sdk.NewDec(200)
 )
 
 type ShrpStatus string

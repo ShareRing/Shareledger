@@ -86,11 +86,11 @@ func TestAddShrpCoins(t *testing.T) {
 }
 
 func TestGetCostShrpForShr(t *testing.T) {
-	rate := float64(200)
+	rate := sdk.NewDec(200)
 	type testCase struct {
 		iCurrent sdk.Coins
 		iNeed    sdk.Int
-		iRate    float64
+		iRate    sdk.Dec
 		oCost    AdjustmentCoins
 		oError   error
 		d        string

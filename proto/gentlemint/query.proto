@@ -44,7 +44,7 @@ service Query {
 message QueryExchangeRateRequest {}
 
 message QueryExchangeRateResponse {
-	double rate = 1;
+	string rate = 1;
 }
 
 message QueryGetLevelFeeRequest {

@@ -6,12 +6,12 @@ import (
 	"github.com/sharering/shareledger/x/gentlemint/types"
 )
 
-func (k Keeper) GetExchangeRateF(ctx sdk.Context) float64 {
+func (k Keeper) GetExchangeRateF(ctx sdk.Context) sdk.Dec {
 	v, found := k.GetExchangeRate(ctx)
 	if !found {
 		return types.DefaultExchangeRate
 	}
-	return v.Rate
+	return sdk.MustNewDecFromStr(v.Rate)
 }
 
 // SetExchangeRate set exchangeRate in the store
@@ -26,7 +26,7 @@ func (k Keeper) GetExchangeRate(ctx sdk.Context) (val types.ExchangeRate, found 
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ExchangeRateKey))
 	b := store.Get([]byte{0})
 
-	val = types.ExchangeRate{Rate: types.DefaultExchangeRate}
+	val = types.ExchangeRate{Rate: types.DefaultExchangeRate.String()}
 
 	if b != nil {
 		k.cdc.MustUnmarshal(b, &val)

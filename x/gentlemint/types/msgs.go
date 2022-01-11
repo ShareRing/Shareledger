@@ -1,7 +1,6 @@
 package types
 
 import (
-	"math"
 	"strconv"
 	"strings"
 
@@ -14,14 +13,26 @@ type AdjustmentCoins struct {
 	Add sdk.Coins
 }
 
-//func ShrpToShr(shrp sdk.DecCoins, rate float64) sdk.Coins {
-//
-//}
+func ShrToShrp(shr sdk.Coin, rate sdk.Dec) (coin sdk.Coins) {
+	shrp := sdk.NewDec(shr.Amount.Int64()).Quo(rate)
+	return ShrpDecToCoins(shrp)
+}
+func ShrpToShr(shrp sdk.Coins, rate sdk.Dec) (coin sdk.Coin) {
+	shrpDec := sdk.NewDec(shrp.AmountOf(DenomSHRP).Int64()).Add(sdk.NewDec(shrp.AmountOf(DenomCent).Int64()).Quo(sdk.NewDec(100)))
+	coin = sdk.NewCoin(DenomSHR, shrpDec.Mul(rate).TruncateInt())
+	return coin
+}
 
-func GetCostShrpForShr(currentShrp sdk.Coins, needShr sdk.Int, rate float64) (cost AdjustmentCoins, err error) {
-	neededShrpF := float64(needShr.Int64()) / rate
+func ShrpDecToCoins(shrp sdk.Dec) (coin sdk.Coins) {
+	return sdk.NewCoins(
+		sdk.NewCoin(DenomSHRP, shrp.TruncateInt()),
+		sdk.NewCoin(DenomCent, shrp.Sub(shrp.TruncateDec()).MulInt(sdk.NewInt(100)).Ceil().TruncateInt()),
+	)
+}
 
-	neededShrp, err := ParseShrpCoinsFloat(neededShrpF)
+func GetCostShrpForShr(currentShrp sdk.Coins, needShr sdk.Int, rate sdk.Dec) (cost AdjustmentCoins, err error) {
+
+	neededShrp := ShrToShrp(sdk.NewCoin(DenomSHR, needShr), rate)
 	if err != nil {
 		return
 	}
@@ -145,24 +156,24 @@ func ParseShrpCoinsStr(s string) (coins sdk.Coins, err error) {
 	), nil
 }
 
-// ParseShrpCoinsFloat parse float to shrp coins: shrp and cent.
-// Always round up.
-// E.g: 1.000000000000001 => 1.01
-func ParseShrpCoinsFloat(v float64) (coins sdk.Coins, err error) {
-	if v < 0 {
-		err = sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "Negative Coins are not accepted")
-		return
-	}
-
-	v = math.Ceil(v*100) / 100
-	shrp := int64(v)
-	cent := int64(v*100) - shrp*100
-
-	return sdk.NewCoins(
-		sdk.NewCoin(DenomSHRP, sdk.NewInt(shrp)),
-		sdk.NewCoin(DenomCent, sdk.NewInt(cent)),
-	), nil
-}
+//// ParseShrpCoinsFloat parse float to shrp coins: shrp and cent.
+//// Always round up.
+//// E.g: 1.000000000000001 => 1.01
+//func ParseShrpCoinsFloat(v float64) (coins sdk.Coins, err error) {
+//	if v < 0 {
+//		err = sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "Negative Coins are not accepted")
+//		return
+//	}
+//
+//	v = math.Ceil(v*100) / 100
+//	shrp := int64(v)
+//	cent := int64(v*100) - shrp*100
+//
+//	return sdk.NewCoins(
+//		sdk.NewCoin(DenomSHRP, sdk.NewInt(shrp)),
+//		sdk.NewCoin(DenomCent, sdk.NewInt(cent)),
+//	), nil
+//}
 
 func ParseShrCoinsStr(s string) (coins sdk.Coins, err error) {
 	v, ok := sdk.NewIntFromString(s)
