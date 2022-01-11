@@ -6,7 +6,8 @@ import (
 )
 
 type GentlemintKeeper interface {
-	GetExchangeRateF(ctx sdk.Context) sdk.Dec
+	GetExchangeRateD(ctx sdk.Context) sdk.Dec
+	GetShrFeeByMsg(ctx sdk.Context, msg sdk.Msg) sdk.Coin
 }
 
 type BankKeeper interface {

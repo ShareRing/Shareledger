@@ -4,7 +4,17 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/sharering/shareledger/x/constant"
 	"github.com/sharering/shareledger/x/fee"
+	"github.com/sharering/shareledger/x/gentlemint/types"
 )
+
+func (k Keeper) GetShrFeeByMsg(ctx sdk.Context, msg sdk.Msg) sdk.Coin {
+	feeD := k.GetFeeByMsg(ctx, msg)
+	amount := feeD.Amount.TruncateInt()
+	if feeD.Denom != types.DenomSHR {
+		return types.ShrpToShr(types.ShrpDecToCoins(feeD.Amount), k.GetExchangeRateD(ctx))
+	}
+	return sdk.NewCoin(types.DenomCent, amount)
+}
 
 // GetFeeByMsg return fee based on message
 // return min fee if msg not found

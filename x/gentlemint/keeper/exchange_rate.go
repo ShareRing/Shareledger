@@ -6,7 +6,7 @@ import (
 	"github.com/sharering/shareledger/x/gentlemint/types"
 )
 
-func (k Keeper) GetExchangeRateF(ctx sdk.Context) sdk.Dec {
+func (k Keeper) GetExchangeRateD(ctx sdk.Context) sdk.Dec {
 	v, found := k.GetExchangeRate(ctx)
 	if !found {
 		return types.DefaultExchangeRate

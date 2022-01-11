@@ -47,7 +47,7 @@ func (msg *MsgCreateLevelFee) ValidateBasic() error {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
 	}
 	if _, err := sdk.ParseDecCoin(msg.Fee); err != nil {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "invalid fee, %s", msg.Fee)
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "invalid fee, %s. Format should be 2shr or 2.3shrp", msg.Fee)
 	}
 
 	return nil
