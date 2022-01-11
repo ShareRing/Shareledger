@@ -32,6 +32,9 @@ func (k msgServer) CreateLevelFee(goCtx context.Context, msg *types.MsgCreateLev
 func (k msgServer) UpdateLevelFee(goCtx context.Context, msg *types.MsgUpdateLevelFee) (*types.MsgUpdateLevelFeeResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
+	if err := msg.ValidateBasic(); err != nil {
+		return nil, err
+	}
 	var levelFee = types.LevelFee{
 		Creator: msg.Creator,
 		Level:   msg.Level,

@@ -46,10 +46,16 @@ func (msg *MsgCreateLevelFee) ValidateBasic() error {
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
 	}
-	if _, err := sdk.ParseDecCoin(msg.Fee); err != nil {
+	dc, err := sdk.ParseDecCoin(msg.Fee)
+	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "invalid fee, %s. Format should be 2shr or 2.3shrp", msg.Fee)
 	}
-
+	if dc.Denom != DenomSHR && dc.Denom != DenomSHRP {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "invalid token type, %s. Only support shr or shrp", dc.Denom)
+	}
+	if dc.Denom == DenomSHR && !dc.Amount.Equal(dc.Amount.RoundInt().ToDec()) {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "shr amount should be int, %v", dc)
+	}
 	return nil
 }
 
@@ -93,6 +99,16 @@ func (msg *MsgUpdateLevelFee) ValidateBasic() error {
 	_, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
+	}
+	dc, err := sdk.ParseDecCoin(msg.Fee)
+	if err != nil {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "invalid fee, %s. Format should be <amount><denom>", msg.Fee)
+	}
+	if dc.Denom != DenomSHR && dc.Denom != DenomSHRP {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "invalid token type, %s. Only support shr or shrp", dc.Denom)
+	}
+	if dc.Denom == DenomSHR && !dc.Amount.Equal(dc.Amount.RoundInt().ToDec()) {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "shr amount should be int, %v", dc)
 	}
 	return nil
 }
