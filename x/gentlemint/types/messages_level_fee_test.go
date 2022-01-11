@@ -12,12 +12,12 @@ import (
 func TestMsgCreateLevelFee_ValidateBasic(t *testing.T) {
 	tests := []struct {
 		name string
-		msg  MsgCreateLevelFee
+		msg  MsgSetLevelFee
 		err  error
 	}{
 		{
 			name: "invalid address",
-			msg: MsgCreateLevelFee{
+			msg: MsgSetLevelFee{
 				Level:   string(constant.HighFee),
 				Fee:     "10.9shrp",
 				Creator: "invalid_address",
@@ -25,7 +25,7 @@ func TestMsgCreateLevelFee_ValidateBasic(t *testing.T) {
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
-			msg: MsgCreateLevelFee{
+			msg: MsgSetLevelFee{
 				Level:   string(constant.HighFee),
 				Fee:     "10.9shrp",
 				Creator: sample.AccAddress(),

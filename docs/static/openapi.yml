@@ -21360,10 +21360,6 @@ definitions:
     properties:
       log:
         type: string
-  shareledger.gentlemint.MsgCreateActionLevelFeeResponse:
-    type: object
-  shareledger.gentlemint.MsgCreateLevelFeeResponse:
-    type: object
   shareledger.gentlemint.MsgDeleteActionLevelFeeResponse:
     type: object
   shareledger.gentlemint.MsgDeleteLevelFeeResponse:
@@ -21388,11 +21384,11 @@ definitions:
     properties:
       log:
         type: string
+  shareledger.gentlemint.MsgSetActionLevelFeeResponse:
+    type: object
   shareledger.gentlemint.MsgSetExchangeResponse:
     type: object
-  shareledger.gentlemint.MsgUpdateActionLevelFeeResponse:
-    type: object
-  shareledger.gentlemint.MsgUpdateLevelFeeResponse:
+  shareledger.gentlemint.MsgSetLevelFeeResponse:
     type: object
   shareledger.gentlemint.QueryAllActionLevelFeeResponse:
     type: object

@@ -4,25 +4,25 @@ import (
 	"testing"
 
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	"github.com/stretchr/testify/require"
 	"github.com/sharering/shareledger/testutil/sample"
+	"github.com/stretchr/testify/require"
 )
 
 func TestMsgCreateActionLevelFee_ValidateBasic(t *testing.T) {
 	tests := []struct {
 		name string
-		msg  MsgCreateActionLevelFee
+		msg  MsgSetActionLevelFee
 		err  error
 	}{
 		{
 			name: "invalid address",
-			msg: MsgCreateActionLevelFee{
+			msg: MsgSetActionLevelFee{
 				Creator: "invalid_address",
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
-			msg: MsgCreateActionLevelFee{
+			msg: MsgSetActionLevelFee{
 				Creator: sample.AccAddress(),
 			},
 		},

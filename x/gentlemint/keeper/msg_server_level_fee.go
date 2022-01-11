@@ -8,7 +8,7 @@ import (
 	"github.com/sharering/shareledger/x/gentlemint/types"
 )
 
-func (k msgServer) CreateLevelFee(goCtx context.Context, msg *types.MsgCreateLevelFee) (*types.MsgCreateLevelFeeResponse, error) {
+func (k msgServer) SetLevelFee(goCtx context.Context, msg *types.MsgSetLevelFee) (*types.MsgSetLevelFeeResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	if err := msg.ValidateBasic(); err != nil {
@@ -22,28 +22,11 @@ func (k msgServer) CreateLevelFee(goCtx context.Context, msg *types.MsgCreateLev
 		Fee:     msg.Fee,
 	}
 
-	k.SetLevelFee(
+	k.Keeper.SetLevelFee(
 		ctx,
 		levelFee,
 	)
-	return &types.MsgCreateLevelFeeResponse{}, nil
-}
-
-func (k msgServer) UpdateLevelFee(goCtx context.Context, msg *types.MsgUpdateLevelFee) (*types.MsgUpdateLevelFeeResponse, error) {
-	ctx := sdk.UnwrapSDKContext(goCtx)
-
-	if err := msg.ValidateBasic(); err != nil {
-		return nil, err
-	}
-	var levelFee = types.LevelFee{
-		Creator: msg.Creator,
-		Level:   msg.Level,
-		Fee:     msg.Fee,
-	}
-
-	k.SetLevelFee(ctx, levelFee)
-
-	return &types.MsgUpdateLevelFeeResponse{}, nil
+	return &types.MsgSetLevelFeeResponse{}, nil
 }
 
 func (k msgServer) DeleteLevelFee(goCtx context.Context, msg *types.MsgDeleteLevelFee) (*types.MsgDeleteLevelFeeResponse, error) {

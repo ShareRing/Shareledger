@@ -2,7 +2,7 @@ package cli_test
 
 import (
 	"fmt"
-    "strconv"
+	"strconv"
 	"testing"
 
 	"github.com/cosmos/cosmos-sdk/client/flags"
@@ -23,18 +23,18 @@ func TestCreateLevelFee(t *testing.T) {
 	val := net.Validators[0]
 	ctx := val.ClientCtx
 
-    fields := []string{ "xyz", }
+	fields := []string{"xyz"}
 	for _, tc := range []struct {
-		desc string
-        idLevel string
-        
+		desc    string
+		idLevel string
+
 		args []string
 		err  error
 		code uint32
 	}{
 		{
-            idLevel: strconv.Itoa(0),
-            
+			idLevel: strconv.Itoa(0),
+
 			desc: "valid",
 			args: []string{
 				fmt.Sprintf("--%s=%s", flags.FlagFrom, val.Address.String()),
@@ -46,13 +46,12 @@ func TestCreateLevelFee(t *testing.T) {
 	} {
 		tc := tc
 		t.Run(tc.desc, func(t *testing.T) {
-            args := []string{
-                tc.idLevel,
-                
-            }
-            args = append(args, fields...)
-            args = append(args, tc.args...)
-			out, err := clitestutil.ExecTestCLICmd(ctx, cli.CmdCreateLevelFee(), args)
+			args := []string{
+				tc.idLevel,
+			}
+			args = append(args, fields...)
+			args = append(args, tc.args...)
+			out, err := clitestutil.ExecTestCLICmd(ctx, cli.CmdSetLevelFee(), args)
 			if tc.err != nil {
 				require.ErrorIs(t, err, tc.err)
 			} else {
@@ -70,52 +69,50 @@ func TestUpdateLevelFee(t *testing.T) {
 	val := net.Validators[0]
 	ctx := val.ClientCtx
 
-    fields := []string{ "xyz", }
+	fields := []string{"xyz"}
 	common := []string{
 		fmt.Sprintf("--%s=%s", flags.FlagFrom, val.Address.String()),
 		fmt.Sprintf("--%s=true", flags.FlagSkipConfirmation),
 		fmt.Sprintf("--%s=%s", flags.FlagBroadcastMode, flags.BroadcastBlock),
 		fmt.Sprintf("--%s=%s", flags.FlagFees, sdk.NewCoins(sdk.NewCoin(net.Config.BondDenom, sdk.NewInt(10))).String()),
 	}
-    args := []string{
-        "0",
-        
-    }
+	args := []string{
+		"0",
+	}
 	args = append(args, fields...)
 	args = append(args, common...)
-	_, err := clitestutil.ExecTestCLICmd(ctx, cli.CmdCreateLevelFee(), args)
+	_, err := clitestutil.ExecTestCLICmd(ctx, cli.CmdSetLevelFee(), args)
 	require.NoError(t, err)
 
 	for _, tc := range []struct {
-		desc string
+		desc    string
 		idLevel string
-        
+
 		args []string
 		code uint32
 		err  error
 	}{
 		{
-			desc: "valid",
+			desc:    "valid",
 			idLevel: strconv.Itoa(0),
-            
+
 			args: common,
 		},
 		{
-			desc: "key not found",
+			desc:    "key not found",
 			idLevel: strconv.Itoa(100000),
-            
+
 			args: common,
 			code: sdkerrors.ErrKeyNotFound.ABCICode(),
 		},
 	} {
 		tc := tc
 		t.Run(tc.desc, func(t *testing.T) {
-            args := []string{
-                tc.idLevel,
-                
-            }
-            args = append(args, fields...)
-            args = append(args, tc.args...)
+			args := []string{
+				tc.idLevel,
+			}
+			args = append(args, fields...)
+			args = append(args, tc.args...)
 			out, err := clitestutil.ExecTestCLICmd(ctx, cli.CmdUpdateLevelFee(), args)
 			if tc.err != nil {
 				require.ErrorIs(t, err, tc.err)
@@ -135,51 +132,49 @@ func TestDeleteLevelFee(t *testing.T) {
 	val := net.Validators[0]
 	ctx := val.ClientCtx
 
-	fields := []string{ "xyz", }
+	fields := []string{"xyz"}
 	common := []string{
 		fmt.Sprintf("--%s=%s", flags.FlagFrom, val.Address.String()),
 		fmt.Sprintf("--%s=true", flags.FlagSkipConfirmation),
 		fmt.Sprintf("--%s=%s", flags.FlagBroadcastMode, flags.BroadcastBlock),
 		fmt.Sprintf("--%s=%s", flags.FlagFees, sdk.NewCoins(sdk.NewCoin(net.Config.BondDenom, sdk.NewInt(10))).String()),
 	}
-    args := []string{
-        "0",
-        
-    }
+	args := []string{
+		"0",
+	}
 	args = append(args, fields...)
 	args = append(args, common...)
-	_, err := clitestutil.ExecTestCLICmd(ctx, cli.CmdCreateLevelFee(), args)
+	_, err := clitestutil.ExecTestCLICmd(ctx, cli.CmdSetLevelFee(), args)
 	require.NoError(t, err)
 
 	for _, tc := range []struct {
-		desc string
+		desc    string
 		idLevel string
-        
+
 		args []string
 		code uint32
 		err  error
 	}{
 		{
-			desc: "valid",
+			desc:    "valid",
 			idLevel: strconv.Itoa(0),
-            
+
 			args: common,
 		},
 		{
-			desc: "key not found",
+			desc:    "key not found",
 			idLevel: strconv.Itoa(100000),
-            
+
 			args: common,
 			code: sdkerrors.ErrKeyNotFound.ABCICode(),
 		},
 	} {
 		tc := tc
 		t.Run(tc.desc, func(t *testing.T) {
-		    args := []string{
-                tc.idLevel,
-                
-            }
-            args = append(args, tc.args...)
+			args := []string{
+				tc.idLevel,
+			}
+			args = append(args, tc.args...)
 			out, err := clitestutil.ExecTestCLICmd(ctx, cli.CmdDeleteLevelFee(), args)
 			if tc.err != nil {
 				require.ErrorIs(t, err, tc.err)

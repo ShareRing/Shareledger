@@ -915,24 +915,24 @@ func (m *MsgSetExchangeResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_MsgSetExchangeResponse proto.InternalMessageInfo
 
-type MsgCreateLevelFee struct {
+type MsgSetLevelFee struct {
 	Creator string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
 	Level   string `protobuf:"bytes,2,opt,name=level,proto3" json:"level,omitempty"`
 	Fee     string `protobuf:"bytes,3,opt,name=fee,proto3" json:"fee,omitempty"`
 }
 
-func (m *MsgCreateLevelFee) Reset()         { *m = MsgCreateLevelFee{} }
-func (m *MsgCreateLevelFee) String() string { return proto.CompactTextString(m) }
-func (*MsgCreateLevelFee) ProtoMessage()    {}
-func (*MsgCreateLevelFee) Descriptor() ([]byte, []int) {
+func (m *MsgSetLevelFee) Reset()         { *m = MsgSetLevelFee{} }
+func (m *MsgSetLevelFee) String() string { return proto.CompactTextString(m) }
+func (*MsgSetLevelFee) ProtoMessage()    {}
+func (*MsgSetLevelFee) Descriptor() ([]byte, []int) {
 	return fileDescriptor_d3542f4930ea9a46, []int{18}
 }
-func (m *MsgCreateLevelFee) XXX_Unmarshal(b []byte) error {
+func (m *MsgSetLevelFee) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgCreateLevelFee) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgSetLevelFee) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgCreateLevelFee.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgSetLevelFee.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -942,54 +942,54 @@ func (m *MsgCreateLevelFee) XXX_Marshal(b []byte, deterministic bool) ([]byte, e
 		return b[:n], nil
 	}
 }
-func (m *MsgCreateLevelFee) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgCreateLevelFee.Merge(m, src)
+func (m *MsgSetLevelFee) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgSetLevelFee.Merge(m, src)
 }
-func (m *MsgCreateLevelFee) XXX_Size() int {
+func (m *MsgSetLevelFee) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgCreateLevelFee) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgCreateLevelFee.DiscardUnknown(m)
+func (m *MsgSetLevelFee) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgSetLevelFee.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgCreateLevelFee proto.InternalMessageInfo
+var xxx_messageInfo_MsgSetLevelFee proto.InternalMessageInfo
 
-func (m *MsgCreateLevelFee) GetCreator() string {
+func (m *MsgSetLevelFee) GetCreator() string {
 	if m != nil {
 		return m.Creator
 	}
 	return ""
 }
 
-func (m *MsgCreateLevelFee) GetLevel() string {
+func (m *MsgSetLevelFee) GetLevel() string {
 	if m != nil {
 		return m.Level
 	}
 	return ""
 }
 
-func (m *MsgCreateLevelFee) GetFee() string {
+func (m *MsgSetLevelFee) GetFee() string {
 	if m != nil {
 		return m.Fee
 	}
 	return ""
 }
 
-type MsgCreateLevelFeeResponse struct {
+type MsgSetLevelFeeResponse struct {
 }
 
-func (m *MsgCreateLevelFeeResponse) Reset()         { *m = MsgCreateLevelFeeResponse{} }
-func (m *MsgCreateLevelFeeResponse) String() string { return proto.CompactTextString(m) }
-func (*MsgCreateLevelFeeResponse) ProtoMessage()    {}
-func (*MsgCreateLevelFeeResponse) Descriptor() ([]byte, []int) {
+func (m *MsgSetLevelFeeResponse) Reset()         { *m = MsgSetLevelFeeResponse{} }
+func (m *MsgSetLevelFeeResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgSetLevelFeeResponse) ProtoMessage()    {}
+func (*MsgSetLevelFeeResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_d3542f4930ea9a46, []int{19}
 }
-func (m *MsgCreateLevelFeeResponse) XXX_Unmarshal(b []byte) error {
+func (m *MsgSetLevelFeeResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgCreateLevelFeeResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgSetLevelFeeResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgCreateLevelFeeResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgSetLevelFeeResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -999,113 +999,17 @@ func (m *MsgCreateLevelFeeResponse) XXX_Marshal(b []byte, deterministic bool) ([
 		return b[:n], nil
 	}
 }
-func (m *MsgCreateLevelFeeResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgCreateLevelFeeResponse.Merge(m, src)
+func (m *MsgSetLevelFeeResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgSetLevelFeeResponse.Merge(m, src)
 }
-func (m *MsgCreateLevelFeeResponse) XXX_Size() int {
+func (m *MsgSetLevelFeeResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgCreateLevelFeeResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgCreateLevelFeeResponse.DiscardUnknown(m)
+func (m *MsgSetLevelFeeResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgSetLevelFeeResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgCreateLevelFeeResponse proto.InternalMessageInfo
-
-type MsgUpdateLevelFee struct {
-	Creator string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
-	Level   string `protobuf:"bytes,2,opt,name=level,proto3" json:"level,omitempty"`
-	Fee     string `protobuf:"bytes,3,opt,name=fee,proto3" json:"fee,omitempty"`
-}
-
-func (m *MsgUpdateLevelFee) Reset()         { *m = MsgUpdateLevelFee{} }
-func (m *MsgUpdateLevelFee) String() string { return proto.CompactTextString(m) }
-func (*MsgUpdateLevelFee) ProtoMessage()    {}
-func (*MsgUpdateLevelFee) Descriptor() ([]byte, []int) {
-	return fileDescriptor_d3542f4930ea9a46, []int{20}
-}
-func (m *MsgUpdateLevelFee) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *MsgUpdateLevelFee) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_MsgUpdateLevelFee.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (m *MsgUpdateLevelFee) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgUpdateLevelFee.Merge(m, src)
-}
-func (m *MsgUpdateLevelFee) XXX_Size() int {
-	return m.Size()
-}
-func (m *MsgUpdateLevelFee) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgUpdateLevelFee.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_MsgUpdateLevelFee proto.InternalMessageInfo
-
-func (m *MsgUpdateLevelFee) GetCreator() string {
-	if m != nil {
-		return m.Creator
-	}
-	return ""
-}
-
-func (m *MsgUpdateLevelFee) GetLevel() string {
-	if m != nil {
-		return m.Level
-	}
-	return ""
-}
-
-func (m *MsgUpdateLevelFee) GetFee() string {
-	if m != nil {
-		return m.Fee
-	}
-	return ""
-}
-
-type MsgUpdateLevelFeeResponse struct {
-}
-
-func (m *MsgUpdateLevelFeeResponse) Reset()         { *m = MsgUpdateLevelFeeResponse{} }
-func (m *MsgUpdateLevelFeeResponse) String() string { return proto.CompactTextString(m) }
-func (*MsgUpdateLevelFeeResponse) ProtoMessage()    {}
-func (*MsgUpdateLevelFeeResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_d3542f4930ea9a46, []int{21}
-}
-func (m *MsgUpdateLevelFeeResponse) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *MsgUpdateLevelFeeResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_MsgUpdateLevelFeeResponse.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (m *MsgUpdateLevelFeeResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgUpdateLevelFeeResponse.Merge(m, src)
-}
-func (m *MsgUpdateLevelFeeResponse) XXX_Size() int {
-	return m.Size()
-}
-func (m *MsgUpdateLevelFeeResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgUpdateLevelFeeResponse.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_MsgUpdateLevelFeeResponse proto.InternalMessageInfo
+var xxx_messageInfo_MsgSetLevelFeeResponse proto.InternalMessageInfo
 
 type MsgDeleteLevelFee struct {
 	Creator string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
@@ -1116,7 +1020,7 @@ func (m *MsgDeleteLevelFee) Reset()         { *m = MsgDeleteLevelFee{} }
 func (m *MsgDeleteLevelFee) String() string { return proto.CompactTextString(m) }
 func (*MsgDeleteLevelFee) ProtoMessage()    {}
 func (*MsgDeleteLevelFee) Descriptor() ([]byte, []int) {
-	return fileDescriptor_d3542f4930ea9a46, []int{22}
+	return fileDescriptor_d3542f4930ea9a46, []int{20}
 }
 func (m *MsgDeleteLevelFee) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1166,7 +1070,7 @@ func (m *MsgDeleteLevelFeeResponse) Reset()         { *m = MsgDeleteLevelFeeResp
 func (m *MsgDeleteLevelFeeResponse) String() string { return proto.CompactTextString(m) }
 func (*MsgDeleteLevelFeeResponse) ProtoMessage()    {}
 func (*MsgDeleteLevelFeeResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_d3542f4930ea9a46, []int{23}
+	return fileDescriptor_d3542f4930ea9a46, []int{21}
 }
 func (m *MsgDeleteLevelFeeResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1195,24 +1099,24 @@ func (m *MsgDeleteLevelFeeResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_MsgDeleteLevelFeeResponse proto.InternalMessageInfo
 
-type MsgCreateActionLevelFee struct {
+type MsgSetActionLevelFee struct {
 	Creator string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
 	Action  string `protobuf:"bytes,2,opt,name=action,proto3" json:"action,omitempty"`
 	Level   string `protobuf:"bytes,3,opt,name=level,proto3" json:"level,omitempty"`
 }
 
-func (m *MsgCreateActionLevelFee) Reset()         { *m = MsgCreateActionLevelFee{} }
-func (m *MsgCreateActionLevelFee) String() string { return proto.CompactTextString(m) }
-func (*MsgCreateActionLevelFee) ProtoMessage()    {}
-func (*MsgCreateActionLevelFee) Descriptor() ([]byte, []int) {
-	return fileDescriptor_d3542f4930ea9a46, []int{24}
+func (m *MsgSetActionLevelFee) Reset()         { *m = MsgSetActionLevelFee{} }
+func (m *MsgSetActionLevelFee) String() string { return proto.CompactTextString(m) }
+func (*MsgSetActionLevelFee) ProtoMessage()    {}
+func (*MsgSetActionLevelFee) Descriptor() ([]byte, []int) {
+	return fileDescriptor_d3542f4930ea9a46, []int{22}
 }
-func (m *MsgCreateActionLevelFee) XXX_Unmarshal(b []byte) error {
+func (m *MsgSetActionLevelFee) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgCreateActionLevelFee) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgSetActionLevelFee) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgCreateActionLevelFee.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgSetActionLevelFee.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -1222,54 +1126,54 @@ func (m *MsgCreateActionLevelFee) XXX_Marshal(b []byte, deterministic bool) ([]b
 		return b[:n], nil
 	}
 }
-func (m *MsgCreateActionLevelFee) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgCreateActionLevelFee.Merge(m, src)
+func (m *MsgSetActionLevelFee) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgSetActionLevelFee.Merge(m, src)
 }
-func (m *MsgCreateActionLevelFee) XXX_Size() int {
+func (m *MsgSetActionLevelFee) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgCreateActionLevelFee) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgCreateActionLevelFee.DiscardUnknown(m)
+func (m *MsgSetActionLevelFee) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgSetActionLevelFee.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgCreateActionLevelFee proto.InternalMessageInfo
+var xxx_messageInfo_MsgSetActionLevelFee proto.InternalMessageInfo
 
-func (m *MsgCreateActionLevelFee) GetCreator() string {
+func (m *MsgSetActionLevelFee) GetCreator() string {
 	if m != nil {
 		return m.Creator
 	}
 	return ""
 }
 
-func (m *MsgCreateActionLevelFee) GetAction() string {
+func (m *MsgSetActionLevelFee) GetAction() string {
 	if m != nil {
 		return m.Action
 	}
 	return ""
 }
 
-func (m *MsgCreateActionLevelFee) GetLevel() string {
+func (m *MsgSetActionLevelFee) GetLevel() string {
 	if m != nil {
 		return m.Level
 	}
 	return ""
 }
 
-type MsgCreateActionLevelFeeResponse struct {
+type MsgSetActionLevelFeeResponse struct {
 }
 
-func (m *MsgCreateActionLevelFeeResponse) Reset()         { *m = MsgCreateActionLevelFeeResponse{} }
-func (m *MsgCreateActionLevelFeeResponse) String() string { return proto.CompactTextString(m) }
-func (*MsgCreateActionLevelFeeResponse) ProtoMessage()    {}
-func (*MsgCreateActionLevelFeeResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_d3542f4930ea9a46, []int{25}
+func (m *MsgSetActionLevelFeeResponse) Reset()         { *m = MsgSetActionLevelFeeResponse{} }
+func (m *MsgSetActionLevelFeeResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgSetActionLevelFeeResponse) ProtoMessage()    {}
+func (*MsgSetActionLevelFeeResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_d3542f4930ea9a46, []int{23}
 }
-func (m *MsgCreateActionLevelFeeResponse) XXX_Unmarshal(b []byte) error {
+func (m *MsgSetActionLevelFeeResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgCreateActionLevelFeeResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgSetActionLevelFeeResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgCreateActionLevelFeeResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgSetActionLevelFeeResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -1279,113 +1183,17 @@ func (m *MsgCreateActionLevelFeeResponse) XXX_Marshal(b []byte, deterministic bo
 		return b[:n], nil
 	}
 }
-func (m *MsgCreateActionLevelFeeResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgCreateActionLevelFeeResponse.Merge(m, src)
+func (m *MsgSetActionLevelFeeResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgSetActionLevelFeeResponse.Merge(m, src)
 }
-func (m *MsgCreateActionLevelFeeResponse) XXX_Size() int {
+func (m *MsgSetActionLevelFeeResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgCreateActionLevelFeeResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgCreateActionLevelFeeResponse.DiscardUnknown(m)
+func (m *MsgSetActionLevelFeeResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgSetActionLevelFeeResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgCreateActionLevelFeeResponse proto.InternalMessageInfo
-
-type MsgUpdateActionLevelFee struct {
-	Creator string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
-	Action  string `protobuf:"bytes,2,opt,name=action,proto3" json:"action,omitempty"`
-	Level   string `protobuf:"bytes,3,opt,name=level,proto3" json:"level,omitempty"`
-}
-
-func (m *MsgUpdateActionLevelFee) Reset()         { *m = MsgUpdateActionLevelFee{} }
-func (m *MsgUpdateActionLevelFee) String() string { return proto.CompactTextString(m) }
-func (*MsgUpdateActionLevelFee) ProtoMessage()    {}
-func (*MsgUpdateActionLevelFee) Descriptor() ([]byte, []int) {
-	return fileDescriptor_d3542f4930ea9a46, []int{26}
-}
-func (m *MsgUpdateActionLevelFee) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *MsgUpdateActionLevelFee) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_MsgUpdateActionLevelFee.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (m *MsgUpdateActionLevelFee) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgUpdateActionLevelFee.Merge(m, src)
-}
-func (m *MsgUpdateActionLevelFee) XXX_Size() int {
-	return m.Size()
-}
-func (m *MsgUpdateActionLevelFee) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgUpdateActionLevelFee.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_MsgUpdateActionLevelFee proto.InternalMessageInfo
-
-func (m *MsgUpdateActionLevelFee) GetCreator() string {
-	if m != nil {
-		return m.Creator
-	}
-	return ""
-}
-
-func (m *MsgUpdateActionLevelFee) GetAction() string {
-	if m != nil {
-		return m.Action
-	}
-	return ""
-}
-
-func (m *MsgUpdateActionLevelFee) GetLevel() string {
-	if m != nil {
-		return m.Level
-	}
-	return ""
-}
-
-type MsgUpdateActionLevelFeeResponse struct {
-}
-
-func (m *MsgUpdateActionLevelFeeResponse) Reset()         { *m = MsgUpdateActionLevelFeeResponse{} }
-func (m *MsgUpdateActionLevelFeeResponse) String() string { return proto.CompactTextString(m) }
-func (*MsgUpdateActionLevelFeeResponse) ProtoMessage()    {}
-func (*MsgUpdateActionLevelFeeResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_d3542f4930ea9a46, []int{27}
-}
-func (m *MsgUpdateActionLevelFeeResponse) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *MsgUpdateActionLevelFeeResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_MsgUpdateActionLevelFeeResponse.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (m *MsgUpdateActionLevelFeeResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgUpdateActionLevelFeeResponse.Merge(m, src)
-}
-func (m *MsgUpdateActionLevelFeeResponse) XXX_Size() int {
-	return m.Size()
-}
-func (m *MsgUpdateActionLevelFeeResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgUpdateActionLevelFeeResponse.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_MsgUpdateActionLevelFeeResponse proto.InternalMessageInfo
+var xxx_messageInfo_MsgSetActionLevelFeeResponse proto.InternalMessageInfo
 
 type MsgDeleteActionLevelFee struct {
 	Creator string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
@@ -1396,7 +1204,7 @@ func (m *MsgDeleteActionLevelFee) Reset()         { *m = MsgDeleteActionLevelFee
 func (m *MsgDeleteActionLevelFee) String() string { return proto.CompactTextString(m) }
 func (*MsgDeleteActionLevelFee) ProtoMessage()    {}
 func (*MsgDeleteActionLevelFee) Descriptor() ([]byte, []int) {
-	return fileDescriptor_d3542f4930ea9a46, []int{28}
+	return fileDescriptor_d3542f4930ea9a46, []int{24}
 }
 func (m *MsgDeleteActionLevelFee) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1446,7 +1254,7 @@ func (m *MsgDeleteActionLevelFeeResponse) Reset()         { *m = MsgDeleteAction
 func (m *MsgDeleteActionLevelFeeResponse) String() string { return proto.CompactTextString(m) }
 func (*MsgDeleteActionLevelFeeResponse) ProtoMessage()    {}
 func (*MsgDeleteActionLevelFeeResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_d3542f4930ea9a46, []int{29}
+	return fileDescriptor_d3542f4930ea9a46, []int{25}
 }
 func (m *MsgDeleteActionLevelFeeResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1494,16 +1302,12 @@ func init() {
 	proto.RegisterType((*MsgBurnShrResponse)(nil), "shareledger.gentlemint.MsgBurnShrResponse")
 	proto.RegisterType((*MsgSetExchange)(nil), "shareledger.gentlemint.MsgSetExchange")
 	proto.RegisterType((*MsgSetExchangeResponse)(nil), "shareledger.gentlemint.MsgSetExchangeResponse")
-	proto.RegisterType((*MsgCreateLevelFee)(nil), "shareledger.gentlemint.MsgCreateLevelFee")
-	proto.RegisterType((*MsgCreateLevelFeeResponse)(nil), "shareledger.gentlemint.MsgCreateLevelFeeResponse")
-	proto.RegisterType((*MsgUpdateLevelFee)(nil), "shareledger.gentlemint.MsgUpdateLevelFee")
-	proto.RegisterType((*MsgUpdateLevelFeeResponse)(nil), "shareledger.gentlemint.MsgUpdateLevelFeeResponse")
+	proto.RegisterType((*MsgSetLevelFee)(nil), "shareledger.gentlemint.MsgSetLevelFee")
+	proto.RegisterType((*MsgSetLevelFeeResponse)(nil), "shareledger.gentlemint.MsgSetLevelFeeResponse")
 	proto.RegisterType((*MsgDeleteLevelFee)(nil), "shareledger.gentlemint.MsgDeleteLevelFee")
 	proto.RegisterType((*MsgDeleteLevelFeeResponse)(nil), "shareledger.gentlemint.MsgDeleteLevelFeeResponse")
-	proto.RegisterType((*MsgCreateActionLevelFee)(nil), "shareledger.gentlemint.MsgCreateActionLevelFee")
-	proto.RegisterType((*MsgCreateActionLevelFeeResponse)(nil), "shareledger.gentlemint.MsgCreateActionLevelFeeResponse")
-	proto.RegisterType((*MsgUpdateActionLevelFee)(nil), "shareledger.gentlemint.MsgUpdateActionLevelFee")
-	proto.RegisterType((*MsgUpdateActionLevelFeeResponse)(nil), "shareledger.gentlemint.MsgUpdateActionLevelFeeResponse")
+	proto.RegisterType((*MsgSetActionLevelFee)(nil), "shareledger.gentlemint.MsgSetActionLevelFee")
+	proto.RegisterType((*MsgSetActionLevelFeeResponse)(nil), "shareledger.gentlemint.MsgSetActionLevelFeeResponse")
 	proto.RegisterType((*MsgDeleteActionLevelFee)(nil), "shareledger.gentlemint.MsgDeleteActionLevelFee")
 	proto.RegisterType((*MsgDeleteActionLevelFeeResponse)(nil), "shareledger.gentlemint.MsgDeleteActionLevelFeeResponse")
 }
@@ -1511,53 +1315,50 @@ func init() {
 func init() { proto.RegisterFile("gentlemint/tx.proto", fileDescriptor_d3542f4930ea9a46) }
 
 var fileDescriptor_d3542f4930ea9a46 = []byte{
-	// 722 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xb4, 0x57, 0xcd, 0x6e, 0xd3, 0x4c,
-	0x14, 0xad, 0x9b, 0xef, 0x6b, 0xda, 0x5b, 0x54, 0x81, 0x5b, 0x95, 0x60, 0x24, 0x43, 0x5d, 0x51,
-	0xfe, 0x24, 0x5b, 0xd0, 0x05, 0x2b, 0x40, 0xa4, 0xc0, 0x86, 0x66, 0xd3, 0xaa, 0x88, 0xa0, 0x4a,
-	0x95, 0x9b, 0xdc, 0x3a, 0x91, 0x5c, 0xdb, 0xb2, 0x1d, 0xd4, 0xec, 0x78, 0x04, 0xde, 0x81, 0x97,
-	0x61, 0xd9, 0x25, 0x4b, 0x94, 0xbc, 0x08, 0xf2, 0x78, 0x3c, 0xfe, 0x89, 0x7b, 0x9d, 0xb4, 0x64,
-	0xe7, 0xd1, 0x9c, 0x7b, 0xce, 0x99, 0xa3, 0xc9, 0x1c, 0x05, 0xd6, 0x2d, 0x74, 0x42, 0x1b, 0xcf,
-	0xfb, 0x4e, 0x68, 0x84, 0x17, 0xba, 0xe7, 0xbb, 0xa1, 0x2b, 0x6f, 0x06, 0x3d, 0xd3, 0x47, 0x1b,
-	0xbb, 0x16, 0xfa, 0x7a, 0x0a, 0x50, 0x94, 0x0c, 0xd8, 0xc6, 0x6f, 0x68, 0x9f, 0x9c, 0x21, 0xc6,
-	0x33, 0xca, 0x56, 0x66, 0xcf, 0xec, 0x84, 0x7d, 0xd7, 0x39, 0x29, 0x40, 0xb4, 0x2f, 0x00, 0xad,
-	0xc0, 0xda, 0x77, 0xcd, 0xee, 0x61, 0xcf, 0x97, 0x1b, 0x50, 0xef, 0xf8, 0x68, 0x86, 0xae, 0xdf,
-	0x90, 0x1e, 0x4a, 0x4f, 0x56, 0x0e, 0x92, 0x65, 0xb4, 0x63, 0x76, 0xbb, 0x3e, 0x06, 0x41, 0x63,
-	0x31, 0xde, 0xe1, 0x4b, 0x79, 0x13, 0x96, 0xcc, 0x73, 0x77, 0xe0, 0x84, 0x8d, 0x1a, 0xdb, 0xe0,
-	0x2b, 0x6d, 0x07, 0xe4, 0x94, 0xf9, 0x00, 0x03, 0xcf, 0x75, 0x02, 0x94, 0x6f, 0x43, 0xcd, 0x76,
-	0x2d, 0xce, 0x1e, 0x7d, 0x6a, 0x6d, 0x58, 0x4d, 0x71, 0xde, 0x3f, 0xb5, 0xf0, 0x18, 0xd6, 0x33,
-	0xd4, 0x84, 0x87, 0xd7, 0xb0, 0xd2, 0x0a, 0xac, 0xe6, 0x60, 0x48, 0x87, 0x90, 0xea, 0x2c, 0xe6,
-	0x74, 0x1e, 0xc1, 0x1d, 0x31, 0x4e, 0xa8, 0xc4, 0x59, 0x1f, 0xa2, 0x33, 0xa7, 0xac, 0x39, 0x73,
-	0x65, 0xd6, 0x1c, 0x37, 0x8f, 0xac, 0x13, 0x6a, 0xc2, 0xc3, 0x1b, 0x96, 0x42, 0x73, 0x30, 0xdc,
-	0x43, 0x27, 0xbc, 0x46, 0xd8, 0xf1, 0x59, 0xf9, 0x3c, 0xa1, 0xf3, 0x96, 0x9d, 0xb5, 0x39, 0xf0,
-	0x9d, 0x8a, 0xb3, 0x5e, 0x25, 0x14, 0x9f, 0x28, 0x21, 0x98, 0xe2, 0x44, 0x0c, 0x78, 0x83, 0x13,
-	0xb1, 0x79, 0x52, 0x67, 0x8d, 0x45, 0x1c, 0x7e, 0xb8, 0xe8, 0xf4, 0x4c, 0xc7, 0x42, 0x42, 0x4b,
-	0x86, 0xff, 0x7c, 0x33, 0x44, 0xae, 0xc4, 0xbe, 0xb5, 0x06, 0x6c, 0xe6, 0xe7, 0x13, 0x2d, 0xed,
-	0x88, 0x5d, 0xe0, 0xbd, 0x68, 0x16, 0xf7, 0xa3, 0x17, 0xe2, 0x23, 0x52, 0xe4, 0x1b, 0xf0, 0x3f,
-	0x7b, 0x47, 0x38, 0x7b, 0xbc, 0x88, 0x0c, 0x9f, 0x21, 0xf2, 0x6b, 0x11, 0x7d, 0x6a, 0xf7, 0xe1,
-	0xde, 0x04, 0x6d, 0x41, 0xf3, 0xc8, 0xeb, 0xce, 0x43, 0x33, 0x4f, 0x2b, 0x34, 0xf7, 0x98, 0xe6,
-	0x7b, 0xb4, 0xf1, 0xfa, 0x9a, 0x5c, 0x21, 0x4f, 0x22, 0x14, 0x4c, 0xb8, 0x2b, 0x8e, 0xfc, 0x8e,
-	0x3d, 0xb9, 0x53, 0xe8, 0x44, 0x17, 0x83, 0x61, 0xc5, 0xc5, 0x60, 0xab, 0x54, 0xbf, 0x96, 0xd5,
-	0xdf, 0x82, 0x07, 0x57, 0x48, 0x14, 0x5c, 0xc4, 0x21, 0xcc, 0xd5, 0x45, 0x99, 0x84, 0x70, 0xf1,
-	0x89, 0xb9, 0x88, 0x83, 0xba, 0xa9, 0x0b, 0xae, 0x57, 0x46, 0x96, 0xe8, 0xbd, 0xfc, 0x79, 0x0b,
-	0x6a, 0xad, 0xc0, 0x92, 0xdb, 0x50, 0x4f, 0x0a, 0x4d, 0xd3, 0xcb, 0x6b, 0x53, 0x4f, 0x7b, 0x41,
-	0x79, 0x56, 0x8d, 0x11, 0x3f, 0xca, 0x63, 0x58, 0x16, 0x4d, 0xb5, 0x5d, 0x3d, 0xe7, 0x29, 0xcf,
-	0xa7, 0x00, 0x09, 0xf6, 0xcf, 0xb0, 0xc4, 0x3b, 0x68, 0x8b, 0x18, 0x8b, 0x21, 0xca, 0xd3, 0x4a,
-	0x88, 0xe0, 0x6d, 0x43, 0x3d, 0x69, 0x1d, 0x2a, 0x10, 0x8e, 0x21, 0x03, 0x29, 0x76, 0x4c, 0x1b,
-	0xea, 0xc9, 0x53, 0xae, 0xd1, 0x86, 0x22, 0x0c, 0x49, 0x5d, 0x7c, 0xd2, 0x8f, 0x61, 0x59, 0xbc,
-	0xde, 0xdb, 0xe4, 0x5c, 0x0c, 0x22, 0xb3, 0x9e, 0x78, 0xc6, 0x8f, 0x61, 0x59, 0xf4, 0xe0, 0x76,
-	0xf5, 0x81, 0x69, 0xf6, 0x89, 0xda, 0x63, 0xb1, 0xc4, 0x7d, 0xa0, 0x55, 0xbb, 0xaa, 0x88, 0x25,
-	0xdf, 0x0b, 0x08, 0xab, 0xd9, 0x0a, 0xd8, 0x21, 0x6d, 0x09, 0x9c, 0xa2, 0x4f, 0x87, 0x13, 0x32,
-	0x0e, 0xac, 0x15, 0xfa, 0x80, 0xba, 0x70, 0x79, 0xa8, 0xf2, 0x62, 0x6a, 0x68, 0x56, 0xaf, 0xd0,
-	0x05, 0x94, 0x5e, 0x1e, 0x4a, 0xea, 0x95, 0x57, 0x41, 0xa4, 0x57, 0xe8, 0x01, 0x4a, 0x2f, 0x0f,
-	0x25, 0xf5, 0xca, 0x8b, 0x41, 0xfe, 0x2e, 0xc1, 0x46, 0x69, 0x2d, 0x18, 0x95, 0x59, 0xe5, 0x07,
-	0x94, 0x57, 0x33, 0x0e, 0xe4, 0x2c, 0x94, 0x76, 0x82, 0x51, 0x19, 0xdf, 0x0c, 0x16, 0xa8, 0x4a,
-	0x60, 0x16, 0x4a, 0x0b, 0xc1, 0xa8, 0x4c, 0x74, 0x06, 0x0b, 0x54, 0x4b, 0x34, 0x5b, 0xbf, 0x46,
-	0xaa, 0x74, 0x39, 0x52, 0xa5, 0x3f, 0x23, 0x55, 0xfa, 0x31, 0x56, 0x17, 0x2e, 0xc7, 0xea, 0xc2,
-	0xef, 0xb1, 0xba, 0xf0, 0x75, 0xd7, 0xea, 0x87, 0xbd, 0xc1, 0xa9, 0xde, 0x71, 0xcf, 0x0d, 0x46,
-	0xee, 0xf7, 0x1d, 0xcb, 0xc8, 0xc8, 0x18, 0x17, 0x46, 0xf6, 0xaf, 0xd9, 0xd0, 0xc3, 0xe0, 0x74,
-	0x89, 0xfd, 0x8f, 0xda, 0xfd, 0x1b, 0x00, 0x00, 0xff, 0xff, 0x8d, 0x10, 0x97, 0x83, 0xb5, 0x0d,
-	0x00, 0x00,
+	// 681 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xb4, 0x56, 0x4d, 0x6f, 0xd3, 0x40,
+	0x10, 0xad, 0x1b, 0x48, 0xd2, 0xa9, 0x54, 0x51, 0x37, 0x0a, 0xc1, 0x20, 0x43, 0x1c, 0x51, 0x3e,
+	0x65, 0x0b, 0x8a, 0xc4, 0x09, 0x10, 0x29, 0x70, 0xa1, 0xb9, 0xa4, 0x12, 0x22, 0x28, 0xa2, 0x72,
+	0x93, 0xa9, 0x13, 0xc9, 0xb1, 0x23, 0x7b, 0x03, 0xc9, 0x8d, 0x9f, 0xc0, 0x1f, 0xe0, 0xff, 0x70,
+	0xec, 0x91, 0x23, 0x4a, 0xfe, 0x08, 0xf2, 0xda, 0xbb, 0x76, 0x9c, 0x74, 0x9d, 0xb6, 0xf4, 0xe6,
+	0xd5, 0xbe, 0x79, 0x6f, 0xe6, 0x79, 0xf7, 0xd9, 0xb0, 0x63, 0xa1, 0x43, 0x6c, 0x1c, 0xf4, 0x1d,
+	0x62, 0x90, 0xb1, 0x3e, 0xf4, 0x5c, 0xe2, 0xca, 0x65, 0xbf, 0x67, 0x7a, 0x68, 0x63, 0xd7, 0x42,
+	0x4f, 0x8f, 0x01, 0x8a, 0x92, 0x00, 0xdb, 0xf8, 0x0d, 0xed, 0xa3, 0x13, 0xc4, 0xb0, 0x46, 0xa9,
+	0x26, 0xf6, 0xcc, 0x0e, 0xe9, 0xbb, 0xce, 0x51, 0x0a, 0xa2, 0x7d, 0x06, 0x68, 0xf8, 0xd6, 0x81,
+	0x6b, 0x76, 0x0f, 0x7b, 0x9e, 0x5c, 0x81, 0x42, 0xc7, 0x43, 0x93, 0xb8, 0x5e, 0x45, 0xba, 0x27,
+	0x3d, 0xdc, 0x68, 0xb2, 0x65, 0xb0, 0x63, 0x76, 0xbb, 0x1e, 0xfa, 0x7e, 0x65, 0x3d, 0xdc, 0x89,
+	0x96, 0x72, 0x19, 0xf2, 0xe6, 0xc0, 0x1d, 0x39, 0xa4, 0x92, 0xa3, 0x1b, 0xd1, 0x4a, 0xdb, 0x05,
+	0x39, 0x66, 0x6e, 0xa2, 0x3f, 0x74, 0x1d, 0x1f, 0xe5, 0x1b, 0x90, 0xb3, 0x5d, 0x2b, 0x62, 0x0f,
+	0x1e, 0xb5, 0x16, 0x6c, 0xc6, 0xb8, 0xe1, 0x7f, 0x6d, 0xe1, 0x01, 0xec, 0x24, 0xa8, 0x05, 0x3d,
+	0xbc, 0x82, 0x8d, 0x86, 0x6f, 0xd5, 0x47, 0x13, 0xb1, 0x09, 0xb1, 0xce, 0xfa, 0x9c, 0xce, 0x7d,
+	0xd8, 0xe6, 0xe5, 0x02, 0x95, 0xd0, 0xeb, 0x43, 0x74, 0xae, 0xc8, 0xeb, 0x88, 0x39, 0xd3, 0xeb,
+	0x08, 0x77, 0x15, 0x5e, 0x33, 0x6a, 0x41, 0x0f, 0xaf, 0xa9, 0x0b, 0xf5, 0xd1, 0x64, 0x1f, 0x1d,
+	0x72, 0x01, 0xb3, 0xc3, 0x59, 0xa3, 0x7a, 0x81, 0xce, 0x1b, 0x3a, 0x6b, 0x7d, 0xe4, 0x39, 0x19,
+	0xb3, 0x9e, 0x25, 0x14, 0x4e, 0xc4, 0x08, 0x56, 0x98, 0x88, 0x02, 0x2f, 0x31, 0x11, 0xad, 0x17,
+	0xea, 0x6c, 0x51, 0x8b, 0xc9, 0xfb, 0x71, 0xa7, 0x67, 0x3a, 0x16, 0x0a, 0xb4, 0x64, 0xb8, 0xe6,
+	0x99, 0x04, 0x23, 0x25, 0xfa, 0xac, 0x55, 0xa0, 0x3c, 0x5f, 0xcf, 0xb4, 0xb4, 0x26, 0x63, 0x3e,
+	0x08, 0xe2, 0xe1, 0x03, 0x8a, 0x98, 0x4b, 0x70, 0x9d, 0x86, 0x48, 0x44, 0x1d, 0x2e, 0x82, 0x6e,
+	0x4f, 0x10, 0xa3, 0x33, 0x11, 0x3c, 0xc6, 0x6a, 0x8c, 0x93, 0xab, 0xed, 0xd3, 0xeb, 0xf2, 0x0e,
+	0x6d, 0x24, 0x78, 0x51, 0x41, 0xed, 0x36, 0xdc, 0x5a, 0x20, 0xe1, 0x0a, 0x5f, 0xa1, 0x14, 0x6a,
+	0xbf, 0xa5, 0xa9, 0xb7, 0x82, 0x48, 0xf0, 0x6e, 0x28, 0x96, 0xbf, 0x1b, 0xba, 0x8a, 0xc5, 0x73,
+	0x49, 0x71, 0x15, 0xee, 0x2c, 0xe3, 0xe7, 0xfa, 0x1f, 0xe1, 0x26, 0x6f, 0xee, 0xb2, 0x2d, 0x68,
+	0x55, 0xb8, 0x7b, 0x06, 0x19, 0xd3, 0x7b, 0xfe, 0x0b, 0x20, 0xd7, 0xf0, 0x2d, 0xb9, 0x05, 0x05,
+	0x16, 0xe5, 0x9a, 0xbe, 0xfc, 0x83, 0xa1, 0xc7, 0x89, 0xa8, 0x3c, 0xce, 0xc6, 0xf0, 0xe3, 0xd8,
+	0x86, 0x22, 0xcf, 0xe8, 0x5a, 0x76, 0xdd, 0x50, 0x79, 0xb2, 0x02, 0x88, 0xb3, 0x7f, 0x82, 0x7c,
+	0x94, 0xbe, 0x55, 0x41, 0x59, 0x08, 0x51, 0x1e, 0x65, 0x42, 0x38, 0x6f, 0x0b, 0x0a, 0x2c, 0x6f,
+	0x45, 0x86, 0x44, 0x18, 0xa1, 0x21, 0xe9, 0x74, 0x6d, 0x41, 0x81, 0x85, 0x98, 0x26, 0x6e, 0x28,
+	0xc0, 0x08, 0xa9, 0xd3, 0x61, 0xd6, 0x86, 0x22, 0xcf, 0xad, 0x9a, 0xb0, 0x2e, 0x04, 0x09, 0xbd,
+	0x5e, 0x08, 0xb0, 0x36, 0x14, 0xf9, 0x17, 0xa0, 0x96, 0x3d, 0xb0, 0x98, 0x7d, 0x21, 0xf0, 0xa9,
+	0x2d, 0x61, 0x12, 0x6a, 0xd9, 0x5d, 0x65, 0xd8, 0x32, 0x9f, 0x88, 0x08, 0x9b, 0xc9, 0xf0, 0xdb,
+	0x15, 0xb6, 0xc5, 0x71, 0x8a, 0xbe, 0x1a, 0x2e, 0x25, 0xc3, 0x2f, 0x6c, 0x86, 0x0c, 0xc3, 0x65,
+	0xc9, 0xa4, 0xef, 0xac, 0xec, 0xc0, 0x56, 0x2a, 0x02, 0x45, 0xe7, 0x7a, 0x1e, 0xaa, 0x3c, 0x5b,
+	0x19, 0xca, 0xf5, 0xbe, 0xc3, 0xf6, 0x62, 0x20, 0x3e, 0x15, 0x37, 0x3d, 0x8f, 0x56, 0x5e, 0x9c,
+	0x07, 0xcd, 0x85, 0x7f, 0x48, 0x50, 0x5a, 0x1a, 0x85, 0x46, 0xe6, 0x10, 0x29, 0xfd, 0x97, 0xe7,
+	0x2c, 0x60, 0x2d, 0xd4, 0x1b, 0xbf, 0xa7, 0xaa, 0x74, 0x3a, 0x55, 0xa5, 0xbf, 0x53, 0x55, 0xfa,
+	0x39, 0x53, 0xd7, 0x4e, 0x67, 0xea, 0xda, 0x9f, 0x99, 0xba, 0xf6, 0x65, 0xcf, 0xea, 0x93, 0xde,
+	0xe8, 0x58, 0xef, 0xb8, 0x03, 0x83, 0x92, 0x7b, 0x7d, 0xc7, 0x32, 0x12, 0x32, 0xc6, 0xd8, 0x48,
+	0xfe, 0x8e, 0x4f, 0x86, 0xe8, 0x1f, 0xe7, 0xe9, 0xbf, 0xf3, 0xde, 0xbf, 0x00, 0x00, 0x00, 0xff,
+	0xff, 0xbc, 0xa3, 0x4e, 0xe2, 0xa9, 0x0b, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -1581,11 +1382,9 @@ type MsgClient interface {
 	SendShrp(ctx context.Context, in *MsgSendShrp, opts ...grpc.CallOption) (*MsgSendShrpResponse, error)
 	BurnShr(ctx context.Context, in *MsgBurnShr, opts ...grpc.CallOption) (*MsgBurnShrResponse, error)
 	SetExchange(ctx context.Context, in *MsgSetExchange, opts ...grpc.CallOption) (*MsgSetExchangeResponse, error)
-	CreateLevelFee(ctx context.Context, in *MsgCreateLevelFee, opts ...grpc.CallOption) (*MsgCreateLevelFeeResponse, error)
-	UpdateLevelFee(ctx context.Context, in *MsgUpdateLevelFee, opts ...grpc.CallOption) (*MsgUpdateLevelFeeResponse, error)
+	SetLevelFee(ctx context.Context, in *MsgSetLevelFee, opts ...grpc.CallOption) (*MsgSetLevelFeeResponse, error)
 	DeleteLevelFee(ctx context.Context, in *MsgDeleteLevelFee, opts ...grpc.CallOption) (*MsgDeleteLevelFeeResponse, error)
-	CreateActionLevelFee(ctx context.Context, in *MsgCreateActionLevelFee, opts ...grpc.CallOption) (*MsgCreateActionLevelFeeResponse, error)
-	UpdateActionLevelFee(ctx context.Context, in *MsgUpdateActionLevelFee, opts ...grpc.CallOption) (*MsgUpdateActionLevelFeeResponse, error)
+	SetActionLevelFee(ctx context.Context, in *MsgSetActionLevelFee, opts ...grpc.CallOption) (*MsgSetActionLevelFeeResponse, error)
 	DeleteActionLevelFee(ctx context.Context, in *MsgDeleteActionLevelFee, opts ...grpc.CallOption) (*MsgDeleteActionLevelFeeResponse, error)
 }
 
@@ -1678,18 +1477,9 @@ func (c *msgClient) SetExchange(ctx context.Context, in *MsgSetExchange, opts ..
 	return out, nil
 }
 
-func (c *msgClient) CreateLevelFee(ctx context.Context, in *MsgCreateLevelFee, opts ...grpc.CallOption) (*MsgCreateLevelFeeResponse, error) {
-	out := new(MsgCreateLevelFeeResponse)
-	err := c.cc.Invoke(ctx, "/shareledger.gentlemint.Msg/CreateLevelFee", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *msgClient) UpdateLevelFee(ctx context.Context, in *MsgUpdateLevelFee, opts ...grpc.CallOption) (*MsgUpdateLevelFeeResponse, error) {
-	out := new(MsgUpdateLevelFeeResponse)
-	err := c.cc.Invoke(ctx, "/shareledger.gentlemint.Msg/UpdateLevelFee", in, out, opts...)
+func (c *msgClient) SetLevelFee(ctx context.Context, in *MsgSetLevelFee, opts ...grpc.CallOption) (*MsgSetLevelFeeResponse, error) {
+	out := new(MsgSetLevelFeeResponse)
+	err := c.cc.Invoke(ctx, "/shareledger.gentlemint.Msg/SetLevelFee", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1705,18 +1495,9 @@ func (c *msgClient) DeleteLevelFee(ctx context.Context, in *MsgDeleteLevelFee, o
 	return out, nil
 }
 
-func (c *msgClient) CreateActionLevelFee(ctx context.Context, in *MsgCreateActionLevelFee, opts ...grpc.CallOption) (*MsgCreateActionLevelFeeResponse, error) {
-	out := new(MsgCreateActionLevelFeeResponse)
-	err := c.cc.Invoke(ctx, "/shareledger.gentlemint.Msg/CreateActionLevelFee", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *msgClient) UpdateActionLevelFee(ctx context.Context, in *MsgUpdateActionLevelFee, opts ...grpc.CallOption) (*MsgUpdateActionLevelFeeResponse, error) {
-	out := new(MsgUpdateActionLevelFeeResponse)
-	err := c.cc.Invoke(ctx, "/shareledger.gentlemint.Msg/UpdateActionLevelFee", in, out, opts...)
+func (c *msgClient) SetActionLevelFee(ctx context.Context, in *MsgSetActionLevelFee, opts ...grpc.CallOption) (*MsgSetActionLevelFeeResponse, error) {
+	out := new(MsgSetActionLevelFeeResponse)
+	err := c.cc.Invoke(ctx, "/shareledger.gentlemint.Msg/SetActionLevelFee", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1743,11 +1524,9 @@ type MsgServer interface {
 	SendShrp(context.Context, *MsgSendShrp) (*MsgSendShrpResponse, error)
 	BurnShr(context.Context, *MsgBurnShr) (*MsgBurnShrResponse, error)
 	SetExchange(context.Context, *MsgSetExchange) (*MsgSetExchangeResponse, error)
-	CreateLevelFee(context.Context, *MsgCreateLevelFee) (*MsgCreateLevelFeeResponse, error)
-	UpdateLevelFee(context.Context, *MsgUpdateLevelFee) (*MsgUpdateLevelFeeResponse, error)
+	SetLevelFee(context.Context, *MsgSetLevelFee) (*MsgSetLevelFeeResponse, error)
 	DeleteLevelFee(context.Context, *MsgDeleteLevelFee) (*MsgDeleteLevelFeeResponse, error)
-	CreateActionLevelFee(context.Context, *MsgCreateActionLevelFee) (*MsgCreateActionLevelFeeResponse, error)
-	UpdateActionLevelFee(context.Context, *MsgUpdateActionLevelFee) (*MsgUpdateActionLevelFeeResponse, error)
+	SetActionLevelFee(context.Context, *MsgSetActionLevelFee) (*MsgSetActionLevelFeeResponse, error)
 	DeleteActionLevelFee(context.Context, *MsgDeleteActionLevelFee) (*MsgDeleteActionLevelFeeResponse, error)
 }
 
@@ -1782,20 +1561,14 @@ func (*UnimplementedMsgServer) BurnShr(ctx context.Context, req *MsgBurnShr) (*M
 func (*UnimplementedMsgServer) SetExchange(ctx context.Context, req *MsgSetExchange) (*MsgSetExchangeResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SetExchange not implemented")
 }
-func (*UnimplementedMsgServer) CreateLevelFee(ctx context.Context, req *MsgCreateLevelFee) (*MsgCreateLevelFeeResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CreateLevelFee not implemented")
-}
-func (*UnimplementedMsgServer) UpdateLevelFee(ctx context.Context, req *MsgUpdateLevelFee) (*MsgUpdateLevelFeeResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method UpdateLevelFee not implemented")
+func (*UnimplementedMsgServer) SetLevelFee(ctx context.Context, req *MsgSetLevelFee) (*MsgSetLevelFeeResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SetLevelFee not implemented")
 }
 func (*UnimplementedMsgServer) DeleteLevelFee(ctx context.Context, req *MsgDeleteLevelFee) (*MsgDeleteLevelFeeResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteLevelFee not implemented")
 }
-func (*UnimplementedMsgServer) CreateActionLevelFee(ctx context.Context, req *MsgCreateActionLevelFee) (*MsgCreateActionLevelFeeResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CreateActionLevelFee not implemented")
-}
-func (*UnimplementedMsgServer) UpdateActionLevelFee(ctx context.Context, req *MsgUpdateActionLevelFee) (*MsgUpdateActionLevelFeeResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method UpdateActionLevelFee not implemented")
+func (*UnimplementedMsgServer) SetActionLevelFee(ctx context.Context, req *MsgSetActionLevelFee) (*MsgSetActionLevelFeeResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SetActionLevelFee not implemented")
 }
 func (*UnimplementedMsgServer) DeleteActionLevelFee(ctx context.Context, req *MsgDeleteActionLevelFee) (*MsgDeleteActionLevelFeeResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteActionLevelFee not implemented")
@@ -1967,38 +1740,20 @@ func _Msg_SetExchange_Handler(srv interface{}, ctx context.Context, dec func(int
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Msg_CreateLevelFee_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgCreateLevelFee)
+func _Msg_SetLevelFee_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgSetLevelFee)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MsgServer).CreateLevelFee(ctx, in)
+		return srv.(MsgServer).SetLevelFee(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/shareledger.gentlemint.Msg/CreateLevelFee",
+		FullMethod: "/shareledger.gentlemint.Msg/SetLevelFee",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).CreateLevelFee(ctx, req.(*MsgCreateLevelFee))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Msg_UpdateLevelFee_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgUpdateLevelFee)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(MsgServer).UpdateLevelFee(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/shareledger.gentlemint.Msg/UpdateLevelFee",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).UpdateLevelFee(ctx, req.(*MsgUpdateLevelFee))
+		return srv.(MsgServer).SetLevelFee(ctx, req.(*MsgSetLevelFee))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -2021,38 +1776,20 @@ func _Msg_DeleteLevelFee_Handler(srv interface{}, ctx context.Context, dec func(
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Msg_CreateActionLevelFee_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgCreateActionLevelFee)
+func _Msg_SetActionLevelFee_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgSetActionLevelFee)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MsgServer).CreateActionLevelFee(ctx, in)
+		return srv.(MsgServer).SetActionLevelFee(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/shareledger.gentlemint.Msg/CreateActionLevelFee",
+		FullMethod: "/shareledger.gentlemint.Msg/SetActionLevelFee",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).CreateActionLevelFee(ctx, req.(*MsgCreateActionLevelFee))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Msg_UpdateActionLevelFee_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgUpdateActionLevelFee)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(MsgServer).UpdateActionLevelFee(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/shareledger.gentlemint.Msg/UpdateActionLevelFee",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).UpdateActionLevelFee(ctx, req.(*MsgUpdateActionLevelFee))
+		return srv.(MsgServer).SetActionLevelFee(ctx, req.(*MsgSetActionLevelFee))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -2116,24 +1853,16 @@ var _Msg_serviceDesc = grpc.ServiceDesc{
 			Handler:    _Msg_SetExchange_Handler,
 		},
 		{
-			MethodName: "CreateLevelFee",
-			Handler:    _Msg_CreateLevelFee_Handler,
-		},
-		{
-			MethodName: "UpdateLevelFee",
-			Handler:    _Msg_UpdateLevelFee_Handler,
+			MethodName: "SetLevelFee",
+			Handler:    _Msg_SetLevelFee_Handler,
 		},
 		{
 			MethodName: "DeleteLevelFee",
 			Handler:    _Msg_DeleteLevelFee_Handler,
 		},
 		{
-			MethodName: "CreateActionLevelFee",
-			Handler:    _Msg_CreateActionLevelFee_Handler,
-		},
-		{
-			MethodName: "UpdateActionLevelFee",
-			Handler:    _Msg_UpdateActionLevelFee_Handler,
+			MethodName: "SetActionLevelFee",
+			Handler:    _Msg_SetActionLevelFee_Handler,
 		},
 		{
 			MethodName: "DeleteActionLevelFee",
@@ -2768,7 +2497,7 @@ func (m *MsgSetExchangeResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) 
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgCreateLevelFee) Marshal() (dAtA []byte, err error) {
+func (m *MsgSetLevelFee) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -2778,12 +2507,12 @@ func (m *MsgCreateLevelFee) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgCreateLevelFee) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgSetLevelFee) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgCreateLevelFee) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgSetLevelFee) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -2812,7 +2541,7 @@ func (m *MsgCreateLevelFee) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgCreateLevelFeeResponse) Marshal() (dAtA []byte, err error) {
+func (m *MsgSetLevelFeeResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -2822,79 +2551,12 @@ func (m *MsgCreateLevelFeeResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgCreateLevelFeeResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgSetLevelFeeResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgCreateLevelFeeResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	_ = i
-	var l int
-	_ = l
-	return len(dAtA) - i, nil
-}
-
-func (m *MsgUpdateLevelFee) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *MsgUpdateLevelFee) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *MsgUpdateLevelFee) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	_ = i
-	var l int
-	_ = l
-	if len(m.Fee) > 0 {
-		i -= len(m.Fee)
-		copy(dAtA[i:], m.Fee)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.Fee)))
-		i--
-		dAtA[i] = 0x1a
-	}
-	if len(m.Level) > 0 {
-		i -= len(m.Level)
-		copy(dAtA[i:], m.Level)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.Level)))
-		i--
-		dAtA[i] = 0x12
-	}
-	if len(m.Creator) > 0 {
-		i -= len(m.Creator)
-		copy(dAtA[i:], m.Creator)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.Creator)))
-		i--
-		dAtA[i] = 0xa
-	}
-	return len(dAtA) - i, nil
-}
-
-func (m *MsgUpdateLevelFeeResponse) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *MsgUpdateLevelFeeResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *MsgUpdateLevelFeeResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgSetLevelFeeResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -2962,7 +2624,7 @@ func (m *MsgDeleteLevelFeeResponse) MarshalToSizedBuffer(dAtA []byte) (int, erro
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgCreateActionLevelFee) Marshal() (dAtA []byte, err error) {
+func (m *MsgSetActionLevelFee) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -2972,12 +2634,12 @@ func (m *MsgCreateActionLevelFee) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgCreateActionLevelFee) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgSetActionLevelFee) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgCreateActionLevelFee) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgSetActionLevelFee) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -3006,7 +2668,7 @@ func (m *MsgCreateActionLevelFee) MarshalToSizedBuffer(dAtA []byte) (int, error)
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgCreateActionLevelFeeResponse) Marshal() (dAtA []byte, err error) {
+func (m *MsgSetActionLevelFeeResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -3016,79 +2678,12 @@ func (m *MsgCreateActionLevelFeeResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgCreateActionLevelFeeResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgSetActionLevelFeeResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgCreateActionLevelFeeResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	_ = i
-	var l int
-	_ = l
-	return len(dAtA) - i, nil
-}
-
-func (m *MsgUpdateActionLevelFee) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *MsgUpdateActionLevelFee) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *MsgUpdateActionLevelFee) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	_ = i
-	var l int
-	_ = l
-	if len(m.Level) > 0 {
-		i -= len(m.Level)
-		copy(dAtA[i:], m.Level)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.Level)))
-		i--
-		dAtA[i] = 0x1a
-	}
-	if len(m.Action) > 0 {
-		i -= len(m.Action)
-		copy(dAtA[i:], m.Action)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.Action)))
-		i--
-		dAtA[i] = 0x12
-	}
-	if len(m.Creator) > 0 {
-		i -= len(m.Creator)
-		copy(dAtA[i:], m.Creator)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.Creator)))
-		i--
-		dAtA[i] = 0xa
-	}
-	return len(dAtA) - i, nil
-}
-
-func (m *MsgUpdateActionLevelFeeResponse) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *MsgUpdateActionLevelFeeResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *MsgUpdateActionLevelFeeResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgSetActionLevelFeeResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -3449,7 +3044,7 @@ func (m *MsgSetExchangeResponse) Size() (n int) {
 	return n
 }
 
-func (m *MsgCreateLevelFee) Size() (n int) {
+func (m *MsgSetLevelFee) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -3470,37 +3065,7 @@ func (m *MsgCreateLevelFee) Size() (n int) {
 	return n
 }
 
-func (m *MsgCreateLevelFeeResponse) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	return n
-}
-
-func (m *MsgUpdateLevelFee) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	l = len(m.Creator)
-	if l > 0 {
-		n += 1 + l + sovTx(uint64(l))
-	}
-	l = len(m.Level)
-	if l > 0 {
-		n += 1 + l + sovTx(uint64(l))
-	}
-	l = len(m.Fee)
-	if l > 0 {
-		n += 1 + l + sovTx(uint64(l))
-	}
-	return n
-}
-
-func (m *MsgUpdateLevelFeeResponse) Size() (n int) {
+func (m *MsgSetLevelFeeResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -3535,7 +3100,7 @@ func (m *MsgDeleteLevelFeeResponse) Size() (n int) {
 	return n
 }
 
-func (m *MsgCreateActionLevelFee) Size() (n int) {
+func (m *MsgSetActionLevelFee) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -3556,37 +3121,7 @@ func (m *MsgCreateActionLevelFee) Size() (n int) {
 	return n
 }
 
-func (m *MsgCreateActionLevelFeeResponse) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	return n
-}
-
-func (m *MsgUpdateActionLevelFee) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	l = len(m.Creator)
-	if l > 0 {
-		n += 1 + l + sovTx(uint64(l))
-	}
-	l = len(m.Action)
-	if l > 0 {
-		n += 1 + l + sovTx(uint64(l))
-	}
-	l = len(m.Level)
-	if l > 0 {
-		n += 1 + l + sovTx(uint64(l))
-	}
-	return n
-}
-
-func (m *MsgUpdateActionLevelFeeResponse) Size() (n int) {
+func (m *MsgSetActionLevelFeeResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -5487,7 +5022,7 @@ func (m *MsgSetExchangeResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgCreateLevelFee) Unmarshal(dAtA []byte) error {
+func (m *MsgSetLevelFee) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -5510,10 +5045,10 @@ func (m *MsgCreateLevelFee) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgCreateLevelFee: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgSetLevelFee: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgCreateLevelFee: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgSetLevelFee: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -5633,7 +5168,7 @@ func (m *MsgCreateLevelFee) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgCreateLevelFeeResponse) Unmarshal(dAtA []byte) error {
+func (m *MsgSetLevelFeeResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -5656,206 +5191,10 @@ func (m *MsgCreateLevelFeeResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgCreateLevelFeeResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgSetLevelFeeResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgCreateLevelFeeResponse: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		default:
-			iNdEx = preIndex
-			skippy, err := skipTx(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthTx
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
-func (m *MsgUpdateLevelFee) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowTx
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= uint64(b&0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: MsgUpdateLevelFee: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgUpdateLevelFee: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		case 1:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Creator", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthTx
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthTx
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Creator = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 2:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Level", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthTx
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthTx
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Level = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 3:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Fee", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthTx
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthTx
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Fee = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		default:
-			iNdEx = preIndex
-			skippy, err := skipTx(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthTx
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
-func (m *MsgUpdateLevelFeeResponse) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowTx
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= uint64(b&0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: MsgUpdateLevelFeeResponse: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgUpdateLevelFeeResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgSetLevelFeeResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:
@@ -6043,7 +5382,7 @@ func (m *MsgDeleteLevelFeeResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgCreateActionLevelFee) Unmarshal(dAtA []byte) error {
+func (m *MsgSetActionLevelFee) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -6066,10 +5405,10 @@ func (m *MsgCreateActionLevelFee) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgCreateActionLevelFee: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgSetActionLevelFee: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgCreateActionLevelFee: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgSetActionLevelFee: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -6189,7 +5528,7 @@ func (m *MsgCreateActionLevelFee) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgCreateActionLevelFeeResponse) Unmarshal(dAtA []byte) error {
+func (m *MsgSetActionLevelFeeResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -6212,206 +5551,10 @@ func (m *MsgCreateActionLevelFeeResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgCreateActionLevelFeeResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgSetActionLevelFeeResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgCreateActionLevelFeeResponse: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		default:
-			iNdEx = preIndex
-			skippy, err := skipTx(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthTx
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
-func (m *MsgUpdateActionLevelFee) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowTx
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= uint64(b&0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: MsgUpdateActionLevelFee: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgUpdateActionLevelFee: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		case 1:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Creator", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthTx
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthTx
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Creator = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 2:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Action", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthTx
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthTx
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Action = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 3:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Level", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthTx
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthTx
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Level = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		default:
-			iNdEx = preIndex
-			skippy, err := skipTx(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthTx
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
-func (m *MsgUpdateActionLevelFeeResponse) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowTx
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= uint64(b&0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: MsgUpdateActionLevelFeeResponse: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgUpdateActionLevelFeeResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgSetActionLevelFeeResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:

@@ -18,11 +18,9 @@ service Msg {
   rpc SendShrp(MsgSendShrp) returns (MsgSendShrpResponse);
   rpc BurnShr(MsgBurnShr) returns (MsgBurnShrResponse);
   rpc SetExchange(MsgSetExchange) returns (MsgSetExchangeResponse);
-  rpc CreateLevelFee(MsgCreateLevelFee) returns (MsgCreateLevelFeeResponse);
-  rpc UpdateLevelFee(MsgUpdateLevelFee) returns (MsgUpdateLevelFeeResponse);
+  rpc SetLevelFee(MsgSetLevelFee) returns (MsgSetLevelFeeResponse);
   rpc DeleteLevelFee(MsgDeleteLevelFee) returns (MsgDeleteLevelFeeResponse);
-  rpc CreateActionLevelFee(MsgCreateActionLevelFee) returns (MsgCreateActionLevelFeeResponse);
-  rpc UpdateActionLevelFee(MsgUpdateActionLevelFee) returns (MsgUpdateActionLevelFeeResponse);
+  rpc SetActionLevelFee(MsgSetActionLevelFee) returns (MsgSetActionLevelFeeResponse);
   rpc DeleteActionLevelFee(MsgDeleteActionLevelFee) returns (MsgDeleteActionLevelFeeResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
@@ -111,21 +109,13 @@ message MsgSetExchange {
 message MsgSetExchangeResponse {
 }
 
-message MsgCreateLevelFee {
+message MsgSetLevelFee {
   string creator = 1;
   string level = 2;
 
   string fee = 3;
 }
-message MsgCreateLevelFeeResponse {}
-
-message MsgUpdateLevelFee {
-  string creator = 1;
-  string level = 2;
-
-  string fee = 3;
-}
-message MsgUpdateLevelFeeResponse {}
+message MsgSetLevelFeeResponse {}
 
 message MsgDeleteLevelFee {
   string creator = 1;
@@ -133,21 +123,13 @@ message MsgDeleteLevelFee {
 }
 message MsgDeleteLevelFeeResponse {}
 
-message MsgCreateActionLevelFee {
+message MsgSetActionLevelFee {
   string creator = 1;
   string action = 2;
 
   string level = 3;
 }
-message MsgCreateActionLevelFeeResponse {}
-
-message MsgUpdateActionLevelFee {
-  string creator = 1;
-  string action = 2;
-
-  string level = 3;
-}
-message MsgUpdateActionLevelFeeResponse {}
+message MsgSetActionLevelFeeResponse {}
 
 message MsgDeleteActionLevelFee {
   string creator = 1;

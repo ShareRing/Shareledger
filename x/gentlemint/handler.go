@@ -44,25 +44,19 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
 		case *types.MsgSetExchange:
 			res, err := msgServer.SetExchange(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
-			case *types.MsgCreateLevelFee:
-					res, err := msgServer.CreateLevelFee(sdk.WrapSDKContext(ctx), msg)
-					return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgUpdateLevelFee:
-					res, err := msgServer.UpdateLevelFee(sdk.WrapSDKContext(ctx), msg)
-					return sdk.WrapServiceResult(ctx, res, err)
+		case *types.MsgSetLevelFee:
+			res, err := msgServer.SetLevelFee(sdk.WrapSDKContext(ctx), msg)
+			return sdk.WrapServiceResult(ctx, res, err)
 		case *types.MsgDeleteLevelFee:
-					res, err := msgServer.DeleteLevelFee(sdk.WrapSDKContext(ctx), msg)
-					return sdk.WrapServiceResult(ctx, res, err)
-case *types.MsgCreateActionLevelFee:
-					res, err := msgServer.CreateActionLevelFee(sdk.WrapSDKContext(ctx), msg)
-					return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgUpdateActionLevelFee:
-					res, err := msgServer.UpdateActionLevelFee(sdk.WrapSDKContext(ctx), msg)
-					return sdk.WrapServiceResult(ctx, res, err)
+			res, err := msgServer.DeleteLevelFee(sdk.WrapSDKContext(ctx), msg)
+			return sdk.WrapServiceResult(ctx, res, err)
+		case *types.MsgSetActionLevelFee:
+			res, err := msgServer.SetActionLevelFee(sdk.WrapSDKContext(ctx), msg)
+			return sdk.WrapServiceResult(ctx, res, err)
 		case *types.MsgDeleteActionLevelFee:
-					res, err := msgServer.DeleteActionLevelFee(sdk.WrapSDKContext(ctx), msg)
-					return sdk.WrapServiceResult(ctx, res, err)
-// this line is used by starport scaffolding # 1
+			res, err := msgServer.DeleteActionLevelFee(sdk.WrapSDKContext(ctx), msg)
+			return sdk.WrapServiceResult(ctx, res, err)
+			// this line is used by starport scaffolding # 1
 		default:
 			errMsg := fmt.Sprintf("unrecognized %s message type: %T", types.ModuleName, msg)
 			return nil, sdkerrors.Wrap(sdkerrors.ErrUnknownRequest, errMsg)

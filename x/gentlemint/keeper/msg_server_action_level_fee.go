@@ -9,7 +9,7 @@ import (
 	"github.com/sharering/shareledger/x/gentlemint/types"
 )
 
-func (k msgServer) CreateActionLevelFee(goCtx context.Context, msg *types.MsgCreateActionLevelFee) (*types.MsgCreateActionLevelFeeResponse, error) {
+func (k msgServer) SetActionLevelFee(goCtx context.Context, msg *types.MsgSetActionLevelFee) (*types.MsgSetActionLevelFeeResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	if found := fee.HaveActionKey(msg.Action); !found {
@@ -26,39 +26,11 @@ func (k msgServer) CreateActionLevelFee(goCtx context.Context, msg *types.MsgCre
 		Level:   msg.Level,
 	}
 
-	k.SetActionLevelFee(
+	k.Keeper.SetActionLevelFee(
 		ctx,
 		actionLevelFee,
 	)
-	return &types.MsgCreateActionLevelFeeResponse{}, nil
-}
-
-func (k msgServer) UpdateActionLevelFee(goCtx context.Context, msg *types.MsgUpdateActionLevelFee) (*types.MsgUpdateActionLevelFeeResponse, error) {
-	ctx := sdk.UnwrapSDKContext(goCtx)
-
-	// Check if the value exists
-	valFound, isFound := k.GetActionLevelFee(
-		ctx,
-		msg.Action,
-	)
-	if !isFound {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "index not set")
-	}
-
-	// Checks if the  msg creator is the same as the current owner
-	if msg.Creator != valFound.Creator {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "incorrect owner")
-	}
-
-	var actionLevelFee = types.ActionLevelFee{
-		Creator: msg.Creator,
-		Action:  msg.Action,
-		Level:   msg.Level,
-	}
-
-	k.SetActionLevelFee(ctx, actionLevelFee)
-
-	return &types.MsgUpdateActionLevelFeeResponse{}, nil
+	return &types.MsgSetActionLevelFeeResponse{}, nil
 }
 
 func (k msgServer) DeleteActionLevelFee(goCtx context.Context, msg *types.MsgDeleteActionLevelFee) (*types.MsgDeleteActionLevelFeeResponse, error) {

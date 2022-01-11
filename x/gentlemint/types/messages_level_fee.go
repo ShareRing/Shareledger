@@ -5,30 +5,30 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
-var _ sdk.Msg = &MsgCreateLevelFee{}
+var _ sdk.Msg = &MsgSetLevelFee{}
 
-func NewMsgCreateLevelFee(
+func NewMsgSetLevelFee(
 	creator string,
 	level string,
 	fee string,
 
-) *MsgCreateLevelFee {
-	return &MsgCreateLevelFee{
+) *MsgSetLevelFee {
+	return &MsgSetLevelFee{
 		Creator: creator,
 		Level:   level,
 		Fee:     fee,
 	}
 }
 
-func (msg *MsgCreateLevelFee) Route() string {
+func (msg *MsgSetLevelFee) Route() string {
 	return RouterKey
 }
 
-func (msg *MsgCreateLevelFee) Type() string {
+func (msg *MsgSetLevelFee) Type() string {
 	return "CreateLevelFee"
 }
 
-func (msg *MsgCreateLevelFee) GetSigners() []sdk.AccAddress {
+func (msg *MsgSetLevelFee) GetSigners() []sdk.AccAddress {
 	creator, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		panic(err)
@@ -36,12 +36,12 @@ func (msg *MsgCreateLevelFee) GetSigners() []sdk.AccAddress {
 	return []sdk.AccAddress{creator}
 }
 
-func (msg *MsgCreateLevelFee) GetSignBytes() []byte {
+func (msg *MsgSetLevelFee) GetSignBytes() []byte {
 	bz := ModuleCdc.MustMarshalJSON(msg)
 	return sdk.MustSortJSON(bz)
 }
 
-func (msg *MsgCreateLevelFee) ValidateBasic() error {
+func (msg *MsgSetLevelFee) ValidateBasic() error {
 	_, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
@@ -49,60 +49,6 @@ func (msg *MsgCreateLevelFee) ValidateBasic() error {
 	dc, err := sdk.ParseDecCoin(msg.Fee)
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "invalid fee, %s. Format should be 2shr or 2.3shrp", msg.Fee)
-	}
-	if dc.Denom != DenomSHR && dc.Denom != DenomSHRP {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "invalid token type, %s. Only support shr or shrp", dc.Denom)
-	}
-	if dc.Denom == DenomSHR && !dc.Amount.Equal(dc.Amount.RoundInt().ToDec()) {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "shr amount should be int, %v", dc)
-	}
-	return nil
-}
-
-var _ sdk.Msg = &MsgUpdateLevelFee{}
-
-func NewMsgUpdateLevelFee(
-	creator string,
-	level string,
-	fee string,
-
-) *MsgUpdateLevelFee {
-	return &MsgUpdateLevelFee{
-		Creator: creator,
-		Level:   level,
-		Fee:     fee,
-	}
-}
-
-func (msg *MsgUpdateLevelFee) Route() string {
-	return RouterKey
-}
-
-func (msg *MsgUpdateLevelFee) Type() string {
-	return "UpdateLevelFee"
-}
-
-func (msg *MsgUpdateLevelFee) GetSigners() []sdk.AccAddress {
-	creator, err := sdk.AccAddressFromBech32(msg.Creator)
-	if err != nil {
-		panic(err)
-	}
-	return []sdk.AccAddress{creator}
-}
-
-func (msg *MsgUpdateLevelFee) GetSignBytes() []byte {
-	bz := ModuleCdc.MustMarshalJSON(msg)
-	return sdk.MustSortJSON(bz)
-}
-
-func (msg *MsgUpdateLevelFee) ValidateBasic() error {
-	_, err := sdk.AccAddressFromBech32(msg.Creator)
-	if err != nil {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
-	}
-	dc, err := sdk.ParseDecCoin(msg.Fee)
-	if err != nil {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "invalid fee, %s. Format should be <amount><denom>", msg.Fee)
 	}
 	if dc.Denom != DenomSHR && dc.Denom != DenomSHRP {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "invalid token type, %s. Only support shr or shrp", dc.Denom)

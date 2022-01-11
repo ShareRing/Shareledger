@@ -17,13 +17,11 @@ func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgSendShrp{}, "gentlemint/SendShrp", nil)
 	cdc.RegisterConcrete(&MsgBurnShr{}, "gentlemint/BurnShr", nil)
 	cdc.RegisterConcrete(&MsgSetExchange{}, "gentlemint/SetExchange", nil)
-	cdc.RegisterConcrete(&MsgCreateLevelFee{}, "gentlemint/CreateLevelFee", nil)
-cdc.RegisterConcrete(&MsgUpdateLevelFee{}, "gentlemint/UpdateLevelFee", nil)
-cdc.RegisterConcrete(&MsgDeleteLevelFee{}, "gentlemint/DeleteLevelFee", nil)
-cdc.RegisterConcrete(&MsgCreateActionLevelFee{}, "gentlemint/CreateActionLevelFee", nil)
-cdc.RegisterConcrete(&MsgUpdateActionLevelFee{}, "gentlemint/UpdateActionLevelFee", nil)
-cdc.RegisterConcrete(&MsgDeleteActionLevelFee{}, "gentlemint/DeleteActionLevelFee", nil)
-// this line is used by starport scaffolding # 2
+	cdc.RegisterConcrete(&MsgSetLevelFee{}, "gentlemint/SetLevelFee", nil)
+	cdc.RegisterConcrete(&MsgDeleteLevelFee{}, "gentlemint/DeleteLevelFee", nil)
+	cdc.RegisterConcrete(&MsgSetActionLevelFee{}, "gentlemint/SetActionLevelFee", nil)
+	cdc.RegisterConcrete(&MsgDeleteActionLevelFee{}, "gentlemint/DeleteActionLevelFee", nil)
+	// this line is used by starport scaffolding # 2
 }
 
 func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
@@ -61,16 +59,14 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 		&MsgSetExchange{},
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
-	&MsgCreateLevelFee{},
-	&MsgUpdateLevelFee{},
-	&MsgDeleteLevelFee{},
-)
-registry.RegisterImplementations((*sdk.Msg)(nil),
-	&MsgCreateActionLevelFee{},
-	&MsgUpdateActionLevelFee{},
-	&MsgDeleteActionLevelFee{},
-)
-// this line is used by starport scaffolding # 3
+		&MsgSetLevelFee{},
+		&MsgDeleteLevelFee{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgSetActionLevelFee{},
+		&MsgDeleteActionLevelFee{},
+	)
+	// this line is used by starport scaffolding # 3
 
 	msgservice.RegisterMsgServiceDesc(registry, &_Msg_serviceDesc)
 }
