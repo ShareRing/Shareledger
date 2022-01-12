@@ -26,6 +26,9 @@ func (k Keeper) GetFeeByMsg(ctx sdk.Context, msg sdk.Msg) sdk.DecCoin {
 // return min fee if not found
 func (k Keeper) GetFeeByAction(ctx sdk.Context, action string) sdk.DecCoin {
 	level := string(constant.MinFee)
+	if fee.IsSpecialActionKey(action) {
+		level = string(constant.NoFee)
+	}
 	if len(action) == 0 {
 		return k.GetFeeByLevel(ctx, level)
 	}

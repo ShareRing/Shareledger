@@ -123,6 +123,10 @@ func GetListActionsWithDefaultLevel() map[string]string {
 	return m
 }
 
+func IsSpecialActionKey(actionKey string) bool {
+	return actionKey == "staking_create-validator"
+}
+
 func HaveActionKey(actionKey string) bool {
 	_, found := mapMsg[actionKey]
 	return found
