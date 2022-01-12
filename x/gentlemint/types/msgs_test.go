@@ -329,6 +329,36 @@ func TestParseShrpCoinsStr(t *testing.T) {
 	}
 }
 
+func TestShrToShrp(t *testing.T) {
+	rate := sdk.NewDec(200)
+	type testCase struct {
+		i sdk.Coin
+		o sdk.Coins
+		d string
+	}
+	tcs := []testCase{
+		{
+			i: sdk.NewCoin(DenomSHR, sdk.NewInt(1)),
+			o: sdk.NewCoins(sdk.NewCoin(DenomCent, sdk.NewInt(1))),
+			d: "1 shr -> 1 cent (should round up when not even)",
+		},
+		{
+			i: sdk.NewCoin(DenomSHR, sdk.NewInt(3)),
+			o: sdk.NewCoins(sdk.NewCoin(DenomCent, sdk.NewInt(2))),
+			d: "3 shr -> 2 cent (should round up when not even)",
+		},
+		{
+			i: sdk.NewCoin(DenomSHR, sdk.NewInt(4)),
+			o: sdk.NewCoins(sdk.NewCoin(DenomCent, sdk.NewInt(2))),
+			d: "4 shr -> 2 cent",
+		},
+	}
+	for _, tc := range tcs {
+		r := ShrToShrp(tc.i, rate)
+		require.Equal(t, tc.o, r, tc.d)
+	}
+}
+
 func TestShrpDecCoinsToCoins(t *testing.T) {
 	type testCase struct {
 		i sdk.DecCoins

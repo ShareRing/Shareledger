@@ -161,25 +161,6 @@ func ParseShrpCoinsStr(s string) (coins sdk.Coins, err error) {
 	), nil
 }
 
-//// ParseShrpCoinsFloat parse float to shrp coins: shrp and cent.
-//// Always round up.
-//// E.g: 1.000000000000001 => 1.01
-//func ParseShrpCoinsFloat(v float64) (coins sdk.Coins, err error) {
-//	if v < 0 {
-//		err = sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "Negative Coins are not accepted")
-//		return
-//	}
-//
-//	v = math.Ceil(v*100) / 100
-//	shrp := int64(v)
-//	cent := int64(v*100) - shrp*100
-//
-//	return sdk.NewCoins(
-//		sdk.NewCoin(DenomSHRP, sdk.NewInt(shrp)),
-//		sdk.NewCoin(DenomCent, sdk.NewInt(cent)),
-//	), nil
-//}
-
 func ParseShrCoinsStr(s string) (coins sdk.Coins, err error) {
 	v, ok := sdk.NewIntFromString(s)
 	if !ok {

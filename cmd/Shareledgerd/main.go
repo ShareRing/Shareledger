@@ -1,7 +1,9 @@
 package main
 
 import (
+	"github.com/sharering/shareledger/cmd/Shareledgerd/cli"
 	"os"
+	"sync"
 
 	"github.com/sharering/shareledger/cmd/Shareledgerd/sub"
 	"github.com/sharering/shareledger/cmd/Shareledgerd/tools"
@@ -11,6 +13,16 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/tendermint/spm/cosmoscmd"
 )
+
+var runOnce sync.Once
+
+func init() {
+	runOnce.Do(func() {
+		if err := cli.EnableAutoLoadFee(); err != nil {
+			panic(err)
+		}
+	})
+}
 
 func main() {
 	rootCmd, _ := cosmoscmd.NewRootCmd(
