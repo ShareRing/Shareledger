@@ -13428,6 +13428,56 @@ paths:
           type: string
       tags:
         - Query
+  /shareledger/gentlemint/checkFees:
+    get:
+      summary: Queries a list of checkFees items.
+      operationId: ShareledgerGentlemintCheckFees
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              shrFee:
+                type: string
+              sufficientFee:
+                type: boolean
+              sufficientFundForFee:
+                type: boolean
+              shrpCostLoadingFee:
+                type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: address
+          in: query
+          required: false
+          type: string
+        - name: actions
+          in: query
+          required: false
+          type: array
+          items:
+            type: string
+          collectionFormat: multi
+      tags:
+        - Query
   /shareledger/gentlemint/exchangeRate:
     get:
       summary: Queries a exchangeRate by index.
@@ -21413,6 +21463,17 @@ definitions:
               type: string
             creator:
               type: string
+  shareledger.gentlemint.QueryCheckFeesResponse:
+    type: object
+    properties:
+      shrFee:
+        type: string
+      sufficientFee:
+        type: boolean
+      sufficientFundForFee:
+        type: boolean
+      shrpCostLoadingFee:
+        type: string
   shareledger.gentlemint.QueryExchangeRateResponse:
     type: object
     properties:

@@ -17,7 +17,7 @@ func CmdEnrollDocIssuers() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "enroll-doc-issuers [addresses]",
 		Short: "Broadcast message enroll-doc-issuers",
-		Args:  cobra.ExactArgs(1),
+		Args:  cobra.MinimumNArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 
 			clientCtx, err := client.GetClientTxContext(cmd)

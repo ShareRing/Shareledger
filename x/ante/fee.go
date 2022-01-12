@@ -31,7 +31,7 @@ func (cfd CheckFeeDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate boo
 	shrRequiredFee := requiredFees.AmountOf(gentleminttypes.DenomSHR)
 
 	if shrRequiredFee.GT(shrTXFee) {
-		return ctx, sdkerrors.Wrapf(sdkerrors.ErrInsufficientFee, "got: %s shr required: %s shr", shrTXFee, shrRequiredFee)
+		return ctx, sdkerrors.Wrapf(sdkerrors.ErrInsufficientFee, "got %s shr, required %s shr", shrTXFee, shrRequiredFee)
 	}
 	return next(ctx, tx, simulate)
 }

@@ -113,7 +113,7 @@ func TestUpdateLevelFee(t *testing.T) {
 			}
 			args = append(args, fields...)
 			args = append(args, tc.args...)
-			out, err := clitestutil.ExecTestCLICmd(ctx, cli.CmdUpdateLevelFee(), args)
+			out, err := clitestutil.ExecTestCLICmd(ctx, cli.CmdSetLevelFee(), args)
 			if tc.err != nil {
 				require.ErrorIs(t, err, tc.err)
 			} else {

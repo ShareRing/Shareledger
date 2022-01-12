@@ -18,7 +18,7 @@ func CmdEnrollLoaders() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "enroll-loaders [addresses]",
 		Short: "Broadcast message enroll-loaders",
-		Args:  cobra.ExactArgs(1),
+		Args:  cobra.MinimumNArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {

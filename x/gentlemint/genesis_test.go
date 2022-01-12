@@ -29,22 +29,22 @@ func TestGenesis(t *testing.T) {
 			Rate: 200,
 		},
 		LevelFeeList: []types.LevelFee{
-	{
-		Level: "0",
-},
-	{
-		Level: "1",
-},
-},
-ActionLevelFeeList: []types.ActionLevelFee{
-	{
-		Action: "0",
-},
-	{
-		Action: "1",
-},
-},
-// this line is used by starport scaffolding # genesis/test/state
+			{
+				Level: "0",
+			},
+			{
+				Level: "1",
+			},
+		},
+		ActionLevelFeeList: []types.ActionLevelFee{
+			{
+				Action: "0",
+			},
+			{
+				Action: "1",
+			},
+		},
+		// this line is used by starport scaffolding # genesis/test/state
 	}
 
 	k, ctx := keepertest.GentlemintKeeper(t)
@@ -58,8 +58,8 @@ ActionLevelFeeList: []types.ActionLevelFee{
 	require.Equal(t, genesisState.Treasurer, got.Treasurer)
 	require.Equal(t, genesisState.ExchangeRate, got.ExchangeRate)
 	require.Len(t, got.LevelFeeList, len(genesisState.LevelFeeList))
-require.Subset(t, genesisState.LevelFeeList, got.LevelFeeList)
-require.Len(t, got.ActionLevelFeeList, len(genesisState.ActionLevelFeeList))
-require.Subset(t, genesisState.ActionLevelFeeList, got.ActionLevelFeeList)
-// this line is used by starport scaffolding # genesis/test/assert
+	require.Subset(t, genesisState.LevelFeeList, got.LevelFeeList)
+	require.Len(t, got.ActionLevelFeeList, len(genesisState.ActionLevelFeeList))
+	require.Subset(t, genesisState.ActionLevelFeeList, got.ActionLevelFeeList)
+	// this line is used by starport scaffolding # genesis/test/assert
 }

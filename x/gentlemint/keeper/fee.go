@@ -9,11 +9,19 @@ import (
 
 func (k Keeper) GetShrFeeByMsg(ctx sdk.Context, msg sdk.Msg) sdk.Coin {
 	feeD := k.GetFeeByMsg(ctx, msg)
-	amount := feeD.Amount.TruncateInt()
-	if feeD.Denom != types.DenomSHR {
-		return types.ShrpToShr(types.ShrpDecToCoins(feeD.Amount), k.GetExchangeRateD(ctx))
+	return k.convertShrCoin(ctx, feeD)
+}
+func (k Keeper) GetShrFeeByActionKey(ctx sdk.Context, action string) sdk.Coin {
+	feeD := k.GetFeeByAction(ctx, action)
+	return k.convertShrCoin(ctx, feeD)
+}
+
+func (k Keeper) convertShrCoin(ctx sdk.Context, amt sdk.DecCoin) sdk.Coin {
+	amount := amt.Amount.TruncateInt()
+	if amt.Denom != types.DenomSHR {
+		return types.ShrpToShr(types.ShrpDecToCoins(amt.Amount), k.GetExchangeRateD(ctx))
 	}
-	return sdk.NewCoin(types.DenomCent, amount)
+	return sdk.NewCoin(types.DenomSHR, amount)
 }
 
 // GetFeeByMsg return fee based on message

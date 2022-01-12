@@ -4,10 +4,10 @@ import (
 	"strconv"
 	"testing"
 
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	keepertest "github.com/sharering/shareledger/testutil/keeper"
 	"github.com/sharering/shareledger/x/gentlemint/keeper"
 	"github.com/sharering/shareledger/x/gentlemint/types"
-	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stretchr/testify/require"
 )
 
@@ -18,7 +18,7 @@ func createNActionLevelFee(keeper *keeper.Keeper, ctx sdk.Context, n int) []type
 	items := make([]types.ActionLevelFee, n)
 	for i := range items {
 		items[i].Action = strconv.Itoa(i)
-        
+
 		keeper.SetActionLevelFee(ctx, items[i])
 	}
 	return items
@@ -29,8 +29,7 @@ func TestActionLevelFeeGet(t *testing.T) {
 	items := createNActionLevelFee(keeper, ctx, 10)
 	for _, item := range items {
 		rst, found := keeper.GetActionLevelFee(ctx,
-		    item.Action,
-            
+			item.Action,
 		)
 		require.True(t, found)
 		require.Equal(t, item, rst)
@@ -41,12 +40,10 @@ func TestActionLevelFeeRemove(t *testing.T) {
 	items := createNActionLevelFee(keeper, ctx, 10)
 	for _, item := range items {
 		keeper.RemoveActionLevelFee(ctx,
-		    item.Action,
-            
+			item.Action,
 		)
 		_, found := keeper.GetActionLevelFee(ctx,
-		    item.Action,
-            
+			item.Action,
 		)
 		require.False(t, found)
 	}

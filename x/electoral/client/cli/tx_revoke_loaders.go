@@ -18,7 +18,7 @@ func CmdRevokeLoaders() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "revoke-loaders [addresses]",
 		Short: "Broadcast message revoke-loaders",
-		Args:  cobra.ExactArgs(1),
+		Args:  cobra.MinimumNArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 
 			clientCtx, err := client.GetClientTxContext(cmd)

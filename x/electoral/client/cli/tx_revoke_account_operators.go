@@ -17,7 +17,7 @@ func CmdRevokeAccountOperators() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "revoke-account-operators [addresses]",
 		Short: "Broadcast message revoke-account-operators",
-		Args:  cobra.ExactArgs(1),
+		Args:  cobra.MinimumNArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 
 			clientCtx, err := client.GetClientTxContext(cmd)

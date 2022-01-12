@@ -17,7 +17,7 @@ func CmdRevokeDocIssuers() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "revoke-doc-issuers [addresses]",
 		Short: "Broadcast message revoke-doc-issuers",
-		Args:  cobra.ExactArgs(1),
+		Args:  cobra.MinimumNArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 
 			clientCtx, err := client.GetClientTxContext(cmd)
