@@ -22,6 +22,7 @@ service Msg {
   rpc DeleteLevelFee(MsgDeleteLevelFee) returns (MsgDeleteLevelFeeResponse);
   rpc SetActionLevelFee(MsgSetActionLevelFee) returns (MsgSetActionLevelFeeResponse);
   rpc DeleteActionLevelFee(MsgDeleteActionLevelFee) returns (MsgDeleteActionLevelFeeResponse);
+  rpc LoadFee(MsgLoadFee) returns (MsgLoadFeeResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -136,5 +137,13 @@ message MsgDeleteActionLevelFee {
   string action = 2;
 }
 message MsgDeleteActionLevelFeeResponse {}
+
+message MsgLoadFee {
+  string creator = 1;
+  string shrp = 2;
+}
+
+message MsgLoadFeeResponse {
+}
 
 // this line is used by starport scaffolding # proto/tx/message

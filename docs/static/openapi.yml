@@ -21414,6 +21414,8 @@ definitions:
     type: object
   shareledger.gentlemint.MsgDeleteLevelFeeResponse:
     type: object
+  shareledger.gentlemint.MsgLoadFeeResponse:
+    type: object
   shareledger.gentlemint.MsgLoadShrResponse:
     type: object
     properties:

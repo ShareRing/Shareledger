@@ -23,6 +23,11 @@ func ShrpToShr(shrp sdk.Coins, rate sdk.Dec) (coin sdk.Coin) {
 	return coin
 }
 
+func ShrpDecCoinsToCoins(shrp sdk.DecCoins) (coin sdk.Coins) {
+	shrpD := shrp.AmountOf(DenomSHRP).Add(shrp.AmountOf(DenomCent).Quo(sdk.NewDec(100)))
+	return ShrpDecToCoins(shrpD)
+}
+
 func ShrpDecToCoins(shrp sdk.Dec) (coin sdk.Coins) {
 	return sdk.NewCoins(
 		sdk.NewCoin(DenomSHRP, shrp.TruncateInt()),
