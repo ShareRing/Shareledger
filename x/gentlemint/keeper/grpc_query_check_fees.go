@@ -41,12 +41,12 @@ func (k Keeper) CheckFees(goCtx context.Context, req *types.QueryCheckFeesReques
 			),
 			rate,
 		)
-		neededShr := fee.Sub(currentShr)
-
-		result.SufficientFundForFee = currentShrFromShrp.IsGTE(neededShr)
+		// Should check for the whole not partial fee to avoid a case that:
+		// User have enough token to send out but not enough fee. So we need to buy whole fee token to let user be able to send out their current balance.
+		result.SufficientFundForFee = currentShrFromShrp.IsGTE(fee)
 
 		if result.SufficientFundForFee {
-			result.ShrpCostLoadingFee = types.ShrToShrp(neededShr, rate).String()
+			result.ShrpCostLoadingFee = types.ShrToShrp(fee, rate).String()
 		}
 	}
 
