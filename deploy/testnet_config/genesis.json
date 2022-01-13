@@ -4832,8 +4832,8 @@
     },
     "crisis": {
       "constant_fee": {
-        "denom": "shr",
-        "amount": "1000"
+        "amount": "1000",
+        "denom": "shr"
       }
     },
     "distribution": {
@@ -28613,66 +28613,68 @@
     },
     "gentlemint": {
       "exchangeRate": {
-        "rate": 200
-      }
+        "rate": "200"
+      },
+      "levelFeeList": [],
+      "actionLevelFeeList": []
     },
     "genutil": {
       "gen_txs": []
     },
     "gov": {
-      "starting_proposal_id": "1",
-      "deposits": [],
-      "votes": [],
-      "proposals": [],
       "deposit_params": {
+        "max_deposit_period": "172800s",
         "min_deposit": [
           {
-            "denom": "shr",
-            "amount": "10000000"
+            "amount": "10000000",
+            "denom": "shr"
           }
-        ],
-        "max_deposit_period": "172800s"
+        ]
       },
-      "voting_params": {
-        "voting_period": "172800s"
-      },
+      "deposits": [],
+      "proposals": [],
+      "starting_proposal_id": "1",
       "tally_params": {
         "quorum": "0.334000000000000000",
         "threshold": "0.500000000000000000",
         "veto_threshold": "0.334000000000000000"
+      },
+      "votes": [],
+      "voting_params": {
+        "voting_period": "172800s"
       }
     },
     "ibc": {
+      "channel_genesis": {
+        "ack_sequences": [],
+        "acknowledgements": [],
+        "channels": [],
+        "commitments": [],
+        "next_channel_sequence": "0",
+        "receipts": [],
+        "recv_sequences": [],
+        "send_sequences": []
+      },
       "client_genesis": {
         "clients": [],
         "clients_consensus": [],
         "clients_metadata": [],
+        "create_localhost": false,
+        "next_client_sequence": "0",
         "params": {
           "allowed_clients": [
             "06-solomachine",
             "07-tendermint"
           ]
-        },
-        "create_localhost": false,
-        "next_client_sequence": "0"
+        }
       },
       "connection_genesis": {
-        "connections": [],
         "client_connection_paths": [],
+        "connections": [],
         "next_connection_sequence": "0",
         "params": {
           "max_expected_time_per_block": "30000000000"
         }
-      },
-      "channel_genesis": {
-        "channels": [],
-        "acknowledgements": [],
-        "commitments": [],
-        "receipts": [],
-        "send_sequences": [],
-        "recv_sequences": [],
-        "ack_sequences": [],
-        "next_channel_sequence": "0"
       }
     },
     "id": {
@@ -43342,16 +43344,16 @@
     },
     "mint": {
       "minter": {
-        "inflation": "0.130000000000000000",
-        "annual_provisions": "0.000000000000000000"
+        "annual_provisions": "0.000000000000000000",
+        "inflation": "0.130000000000000000"
       },
       "params": {
-        "mint_denom": "shr",
-        "inflation_rate_change": "0.130000000000000000",
+        "blocks_per_year": "6311520",
+        "goal_bonded": "0.670000000000000000",
         "inflation_max": "0.200000000000000000",
         "inflation_min": "0.070000000000000000",
-        "goal_bonded": "0.670000000000000000",
-        "blocks_per_year": "6311520"
+        "inflation_rate_change": "0.130000000000000000",
+        "mint_denom": "shr"
       }
     },
     "params": null,
@@ -44502,12 +44504,12 @@
       "exported": true
     },
     "transfer": {
-      "port_id": "transfer",
       "denom_traces": [],
       "params": {
-        "send_enabled": true,
-        "receive_enabled": true
-      }
+        "receive_enabled": true,
+        "send_enabled": true
+      },
+      "port_id": "transfer"
     },
     "upgrade": {},
     "vesting": {}
