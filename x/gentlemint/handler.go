@@ -56,6 +56,9 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
 		case *types.MsgDeleteActionLevelFee:
 			res, err := msgServer.DeleteActionLevelFee(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
+		case *types.MsgLoadFee:
+			// LoadFee was handled in antee fee.
+			return sdk.WrapServiceResult(ctx, &types.MsgLoadFeeResponse{}, nil)
 			// this line is used by starport scaffolding # 1
 		default:
 			errMsg := fmt.Sprintf("unrecognized %s message type: %T", types.ModuleName, msg)

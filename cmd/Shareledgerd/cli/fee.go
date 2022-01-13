@@ -2,9 +2,10 @@ package cli
 
 import (
 	"context"
-	"fmt"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/tx"
+	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/sharering/shareledger/x/fee"
 	"github.com/sharering/shareledger/x/gentlemint/types"
 )
 
@@ -15,21 +16,31 @@ func EnableAutoLoadFee() error {
 	return nil
 }
 
-var autoLoadFee = func(clientCtx client.Context) (status tx.AutoLoadFeeStatus, err error) {
+var autoLoadFee = func(clientCtx client.Context, msgs []sdk.Msg) (status tx.AutoLoadFeeStatus, err error) {
 	queryClient := types.NewQueryClient(clientCtx)
-	msg := &types.QueryCheckFeesRequest{}
+
+	actions := make([]string, 0, len(msgs))
+	for _, m := range msgs {
+		actions = append(actions, fee.GetActionKey(m))
+	}
+
+	msg := &types.QueryCheckFeesRequest{
+		Address: clientCtx.GetFromAddress().String(),
+		Actions: actions,
+	}
 
 	res, err := queryClient.CheckFees(context.Background(), msg)
 	if err != nil {
 		return
 	}
-	status.TotalFees, err = types.ParseShrCoinsStr(res.ShrFee)
+
+	decCoin, err := sdk.ParseDecCoin(res.ShrFee)
 	if err != nil {
 		return
 	}
+	status.TotalFees = sdk.NewCoins(sdk.NewCoin(types.DenomSHR, decCoin.Amount.RoundInt()))
 	if !res.SufficientFee && res.SufficientFundForFee {
 		status.MsgLoadFee = types.NewMsgLoadFee(clientCtx.GetFromAddress().String(), res.ShrpCostLoadingFee)
-		fmt.Println("-----------", res.String())
 	}
 	return
 }

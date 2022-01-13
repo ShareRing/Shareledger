@@ -81,6 +81,7 @@ var mapActions = map[reflect.Type]string{
 	reflect.ValueOf(&gentlemintmoduletypes.MsgBurnShrp{}).Type():    "gentlemint_burn-shrp",
 	reflect.ValueOf(&gentlemintmoduletypes.MsgBurnShr{}).Type():     "gentlemint_burn-shr",
 	reflect.ValueOf(&gentlemintmoduletypes.MsgSetExchange{}).Type(): "gentlemint_set-exchange",
+	reflect.ValueOf(&gentlemintmoduletypes.MsgLoadFee{}).Type():     "gentlemint_load-fee",
 
 	//gov
 	reflect.ValueOf(&govmoduletypes.MsgDeposit{}).Type():        "gov_deposit",
@@ -124,7 +125,8 @@ func GetListActionsWithDefaultLevel() map[string]string {
 }
 
 func IsSpecialActionKey(actionKey string) bool {
-	return actionKey == "staking_create-validator"
+	return actionKey == "staking_create-validator" ||
+		actionKey == "gentlemint_load-fee"
 }
 
 func HaveActionKey(actionKey string) bool {

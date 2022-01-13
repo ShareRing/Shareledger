@@ -2,6 +2,7 @@ package keeper
 
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/sharering/shareledger/x/constant"
 	"github.com/sharering/shareledger/x/fee"
 	"github.com/sharering/shareledger/x/gentlemint/types"
@@ -11,6 +12,21 @@ func (k Keeper) GetShrFeeByMsg(ctx sdk.Context, msg sdk.Msg) sdk.Coin {
 	feeD := k.GetFeeByMsg(ctx, msg)
 	return k.convertShrCoin(ctx, feeD)
 }
+
+func (k Keeper) LoadFeeFromShrp(ctx sdk.Context, msg *types.MsgLoadFee) error {
+	decCoins, err := sdk.ParseDecCoins(msg.Shrp)
+	if err != nil {
+		return err
+	}
+	shrp := types.ShrpDecCoinsToCoins(decCoins)
+	boughtShr := types.ShrpToShr(shrp, k.GetExchangeRateD(ctx))
+
+	if err := k.buyShr(ctx, boughtShr.Amount, msg.GetSigners()[0]); err != nil {
+		return sdkerrors.Wrapf(err, "load fee %+v shr with %+v", boughtShr, shrp)
+	}
+	return nil
+}
+
 func (k Keeper) GetShrFeeByActionKey(ctx sdk.Context, action string) sdk.Coin {
 	feeD := k.GetFeeByAction(ctx, action)
 	return k.convertShrCoin(ctx, feeD)

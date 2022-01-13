@@ -26,39 +26,3 @@ func (k msgServer) BuyShr(goCtx context.Context, msg *types.MsgBuyShr) (*types.M
 		Log: fmt.Sprintf("Successfull buy %v shr for address %s", msg.Amount, msg.Creator),
 	}, nil
 }
-
-func (k msgServer) buyShr(ctx sdk.Context, amount sdk.Int, buyer sdk.AccAddress) error {
-	if !k.ShrMintPossible(ctx, amount) {
-		return sdkerrors.Wrap(types.ErrSHRSupplyExceeded, amount.String())
-	}
-
-	rate := k.GetExchangeRateD(ctx)
-
-	currentBalance := k.bankKeeper.GetAllBalances(ctx, buyer)
-	currentShrpBalance := sdk.NewCoins(
-		sdk.NewCoin(types.DenomSHRP, currentBalance.AmountOf(types.DenomSHRP)),
-		sdk.NewCoin(types.DenomCent, currentBalance.AmountOf(types.DenomCent)),
-	)
-
-	cost, err := types.GetCostShrpForShr(currentShrpBalance, amount, rate)
-	if err != nil {
-		return sdkerrors.Wrapf(err, "current %v balance", currentShrpBalance)
-	}
-	if cost.Sub.Empty() {
-		return sdkerrors.ErrInsufficientFunds
-	}
-
-	if !cost.Add.Empty() {
-		if err := k.loadCoins(ctx, buyer, cost.Add); err != nil {
-			return sdkerrors.Wrapf(err, "%v coins in return", cost.Add)
-		}
-	}
-	if err := k.burnCoins(ctx, buyer, cost.Sub); err != nil {
-		return sdkerrors.Wrapf(err, "charge %v coins", cost.Sub)
-	}
-	boughtShr := sdk.NewCoins(sdk.NewCoin(types.DenomSHR, amount))
-	if err := k.loadCoins(ctx, buyer, boughtShr); err != nil {
-		return sdkerrors.Wrapf(err, "send %v coins", boughtShr)
-	}
-	return nil
-}

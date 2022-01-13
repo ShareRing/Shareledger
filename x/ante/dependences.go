@@ -2,12 +2,14 @@ package ante
 
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/sharering/shareledger/x/gentlemint/types"
 	idtypes "github.com/sharering/shareledger/x/id/types"
 )
 
 type GentlemintKeeper interface {
 	GetExchangeRateD(ctx sdk.Context) sdk.Dec
 	GetShrFeeByMsg(ctx sdk.Context, msg sdk.Msg) sdk.Coin
+	LoadFeeFromShrp(ctx sdk.Context, msg *types.MsgLoadFee) error
 }
 
 type BankKeeper interface {
