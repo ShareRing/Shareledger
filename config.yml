@@ -43,8 +43,12 @@ genesis:
           - amount: "10000000"
             denom: "shr"
     mint:
+      minter:
+        inflation: "0"
       params:
         mint_denom: "shr"
+        inflation_max: "0"
+        inflation_min: "0"
     electoral:
       authority:
         address: shareledger1lq9svs76xwekrrzw7uprekyqydf7fp02p8zp8e
