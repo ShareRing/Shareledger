@@ -12,7 +12,7 @@ import (
 
 func NewGenesisAddTreasureAccountCmd(defaultNodeHome string) *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "add-treasure [address_or_key_name]",
+		Use:   "add-treasurer [address_or_key_name]",
 		Short: "Add a treasure account to genesis.json",
 		Long:  "Add a treasure account to genesis.json",
 		RunE: func(cmd *cobra.Command, args []string) error {
