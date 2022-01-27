@@ -13438,14 +13438,41 @@ paths:
           schema:
             type: object
             properties:
-              shrFee:
-                type: string
+              convertedFee:
+                type: object
+                properties:
+                  denom:
+                    type: string
+                  amount:
+                    type: string
+                description: >-
+                  Coin defines a token with a denomination and an amount.
+
+
+                  NOTE: The amount field is an Int which implements the custom
+                  method
+
+                  signatures required by gogoproto.
               sufficientFee:
                 type: boolean
               sufficientFundForFee:
                 type: boolean
-              shrpCostLoadingFee:
-                type: string
+              costLoadingFee:
+                type: object
+                properties:
+                  denom:
+                    type: string
+                  amount:
+                    type: string
+                description: >-
+                  DecCoin defines a token with a denomination and a decimal
+                  amount.
+
+
+                  NOTE: The amount field is an Dec which implements the custom
+                  method
+
+                  signatures required by gogoproto.
         default:
           description: An unexpected error response.
           schema:
@@ -13520,17 +13547,32 @@ paths:
           schema:
             type: object
             properties:
-              levelFee:
+              levelFees:
                 type: array
                 items:
                   type: object
                   properties:
                     level:
                       type: string
-                    fee:
-                      type: string
                     creator:
                       type: string
+                    originalFee:
+                      type: string
+                    convertedFee:
+                      type: object
+                      properties:
+                        denom:
+                          type: string
+                        amount:
+                          type: string
+                      description: >-
+                        Coin defines a token with a denomination and an amount.
+
+
+                        NOTE: The amount field is an Int which implements the
+                        custom method
+
+                        signatures required by gogoproto.
         default:
           description: An unexpected error response.
           schema:
@@ -21390,6 +21432,27 @@ definitions:
         type: string
       creator:
         type: string
+  shareledger.gentlemint.LevelFeeDetail:
+    type: object
+    properties:
+      level:
+        type: string
+      creator:
+        type: string
+      originalFee:
+        type: string
+      convertedFee:
+        type: object
+        properties:
+          denom:
+            type: string
+          amount:
+            type: string
+        description: |-
+          Coin defines a token with a denomination and an amount.
+
+          NOTE: The amount field is an Int which implements the custom method
+          signatures required by gogoproto.
   shareledger.gentlemint.MsgBurnShrResponse:
     type: object
     properties:
@@ -21468,14 +21531,34 @@ definitions:
   shareledger.gentlemint.QueryCheckFeesResponse:
     type: object
     properties:
-      shrFee:
-        type: string
+      convertedFee:
+        type: object
+        properties:
+          denom:
+            type: string
+          amount:
+            type: string
+        description: |-
+          Coin defines a token with a denomination and an amount.
+
+          NOTE: The amount field is an Int which implements the custom method
+          signatures required by gogoproto.
       sufficientFee:
         type: boolean
       sufficientFundForFee:
         type: boolean
-      shrpCostLoadingFee:
-        type: string
+      costLoadingFee:
+        type: object
+        properties:
+          denom:
+            type: string
+          amount:
+            type: string
+        description: |-
+          DecCoin defines a token with a denomination and a decimal amount.
+
+          NOTE: The amount field is an Dec which implements the custom method
+          signatures required by gogoproto.
   shareledger.gentlemint.QueryExchangeRateResponse:
     type: object
     properties:
@@ -21496,17 +21579,32 @@ definitions:
   shareledger.gentlemint.QueryLevelFeesResponse:
     type: object
     properties:
-      levelFee:
+      levelFees:
         type: array
         items:
           type: object
           properties:
             level:
               type: string
-            fee:
-              type: string
             creator:
               type: string
+            originalFee:
+              type: string
+            convertedFee:
+              type: object
+              properties:
+                denom:
+                  type: string
+                amount:
+                  type: string
+              description: >-
+                Coin defines a token with a denomination and an amount.
+
+
+                NOTE: The amount field is an Int which implements the custom
+                method
+
+                signatures required by gogoproto.
   shareledger.id.BaseID:
     type: object
     properties:

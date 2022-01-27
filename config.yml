@@ -54,7 +54,8 @@ genesis:
         address: shareledger1lq9svs76xwekrrzw7uprekyqydf7fp02p8zp8e
       treasurer:
         address: shareledger1l5hkf2epa5xmvngnjaasj5dp9jp7ut6s9mrqve
-      
+
 init:
   client:
     chain-id: "ShareRing-VoyagerNet"
+

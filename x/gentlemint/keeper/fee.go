@@ -14,13 +14,8 @@ func (k Keeper) GetShrFeeByMsg(ctx sdk.Context, msg sdk.Msg) sdk.Coin {
 }
 
 func (k Keeper) LoadFeeFromShrp(ctx sdk.Context, msg *types.MsgLoadFee) error {
-	decCoins, err := sdk.ParseDecCoins(msg.Shrp)
-	if err != nil {
-		return err
-	}
-	shrp := types.ShrpDecCoinsToCoins(decCoins)
-	boughtShr := types.ShrpToShr(shrp, k.GetExchangeRateD(ctx))
-
+	shrp := types.ShrpDecToCoins(msg.Shrp.Amount)
+	boughtShr := types.CoinsToShr(shrp, k.GetExchangeRateD(ctx))
 	if err := k.buyShr(ctx, boughtShr.Amount, msg.GetSigners()[0]); err != nil {
 		return sdkerrors.Wrapf(err, "load fee %+v shr with %+v", boughtShr, shrp)
 	}
@@ -35,7 +30,7 @@ func (k Keeper) GetShrFeeByActionKey(ctx sdk.Context, action string) sdk.Coin {
 func (k Keeper) convertShrCoin(ctx sdk.Context, amt sdk.DecCoin) sdk.Coin {
 	amount := amt.Amount.TruncateInt()
 	if amt.Denom != types.DenomSHR {
-		return types.ShrpToShr(types.ShrpDecToCoins(amt.Amount), k.GetExchangeRateD(ctx))
+		return types.CoinsToShr(types.ShrpDecToCoins(amt.Amount), k.GetExchangeRateD(ctx))
 	}
 	return sdk.NewCoin(types.DenomSHR, amount)
 }

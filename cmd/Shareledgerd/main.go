@@ -18,9 +18,7 @@ var runOnce sync.Once
 
 func init() {
 	runOnce.Do(func() {
-		if err := cli.EnableAutoLoadFee(); err != nil {
-			panic(err)
-		}
+		cli.InitMiddleWare()
 	})
 }
 

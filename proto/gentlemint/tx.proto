@@ -4,6 +4,7 @@ package shareledger.gentlemint;
 import "gentlemint/level_fee.proto";
 import "gentlemint/action_level_fee.proto";
 // this line is used by starport scaffolding # proto/tx/import
+import "cosmos/base/v1beta1/coin.proto";
 
 option go_package = "github.com/sharering/shareledger/x/gentlemint/types";
 
@@ -140,7 +141,7 @@ message MsgDeleteActionLevelFeeResponse {}
 
 message MsgLoadFee {
   string creator = 1;
-  string shrp = 2;
+  cosmos.base.v1beta1.DecCoin shrp = 2;
 }
 
 message MsgLoadFeeResponse {

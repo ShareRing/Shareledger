@@ -6,8 +6,10 @@ import "cosmos/base/query/v1beta1/pagination.proto";
 import "gentlemint/exchange_rate.proto";
 import "gentlemint/level_fee.proto";
 import "gentlemint/action_level_fee.proto";
+import "cosmos/base/v1beta1/coin.proto";
 // this line is used by starport scaffolding # 1
 import "gogoproto/gogo.proto";
+
 
 option go_package = "github.com/sharering/shareledger/x/gentlemint/types";
 
@@ -65,7 +67,7 @@ message QueryLevelFeesRequest {
 }
 
 message QueryLevelFeesResponse {
-	repeated LevelFee levelFee = 1 [(gogoproto.nullable) = false];
+	repeated LevelFeeDetail levelFees = 1 [(gogoproto.nullable) = false];
 }
 
 message QueryActionLevelFeeRequest {
@@ -93,10 +95,10 @@ message QueryCheckFeesRequest {
 }
 
 message QueryCheckFeesResponse {
-	string shrFee = 1;
+	cosmos.base.v1beta1.Coin convertedFee = 1;
 	bool sufficientFee = 2;
 	bool sufficientFundForFee = 3;
-	string shrpCostLoadingFee = 4;
+	cosmos.base.v1beta1.DecCoin costLoadingFee = 4;
 }
 
 // this line is used by starport scaffolding # 3
