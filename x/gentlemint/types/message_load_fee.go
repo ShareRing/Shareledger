@@ -7,10 +7,10 @@ import (
 
 var _ sdk.Msg = &MsgLoadFee{}
 
-func NewMsgLoadFee(creator string, shrp string) *MsgLoadFee {
+func NewMsgLoadFee(creator string, shrp sdk.DecCoin) *MsgLoadFee {
 	return &MsgLoadFee{
 		Creator: creator,
-		Shrp:    shrp,
+		Shrp:    &shrp,
 	}
 }
 

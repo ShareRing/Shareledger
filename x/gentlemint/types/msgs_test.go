@@ -430,7 +430,7 @@ func TestShrpToShr(t *testing.T) {
 		},
 	}
 	for _, tc := range tcs {
-		r := ShrpToShr(tc.i, rate)
+		r := CoinsToShr(tc.i, rate)
 		require.Equal(t, tc.o, r, tc.d)
 	}
 }

@@ -32,17 +32,13 @@ var autoLoadFee tx.PreRunBroadcastTx = func(clientCtx client.Context, txf tx.Fac
 	}
 
 	res, err := queryClient.CheckFees(context.Background(), msg)
-	if err != nil {
-		return
-	}
 
-	decCoin, err := sdk.ParseDecCoin(res.ShrFee)
 	if err != nil {
 		return
 	}
 	if !res.SufficientFee && res.SufficientFundForFee {
-		nMsgs = append([]sdk.Msg{types.NewMsgLoadFee(clientCtx.GetFromAddress().String(), res.ShrpCostLoadingFee)}, nMsgs...)
+		nMsgs = append([]sdk.Msg{types.NewMsgLoadFee(clientCtx.GetFromAddress().String(), *res.CostLoadingFee)}, nMsgs...)
 	}
-	nTxf = nTxf.WithFees(sdk.NewCoin(types.DenomSHR, decCoin.Amount.RoundInt()).String())
+	nTxf = nTxf.WithFees(res.ConvertedFee.String())
 	return
 }

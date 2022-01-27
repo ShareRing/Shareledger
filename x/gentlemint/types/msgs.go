@@ -13,13 +13,26 @@ type AdjustmentCoins struct {
 	Add sdk.Coins
 }
 
-func ShrToShrp(shr sdk.Coin, rate sdk.Dec) (coin sdk.Coins) {
+func ShrToDecShrp(shr sdk.Coin, rate sdk.Dec) sdk.DecCoin {
 	shrp := sdk.NewDec(shr.Amount.Int64()).Quo(rate)
-	return ShrpDecToCoins(shrp)
+	return sdk.NewDecCoinFromDec(DenomSHRP, shrp)
 }
-func ShrpToShr(shrp sdk.Coins, rate sdk.Dec) (coin sdk.Coin) {
-	shrpDec := sdk.NewDec(shrp.AmountOf(DenomSHRP).Int64()).Add(sdk.NewDec(shrp.AmountOf(DenomCent).Int64()).Quo(sdk.NewDec(100)))
-	coin = sdk.NewCoin(DenomSHR, shrpDec.Mul(rate).TruncateInt())
+
+func ShrToShrp(shr sdk.Coin, rate sdk.Dec) (coin sdk.Coins) {
+	shrp := ShrToDecShrp(shr, rate)
+	return ShrpDecToCoins(shrp.Amount)
+}
+
+func DecCoinsToShr(coins sdk.DecCoins, rate sdk.Dec) (coin sdk.Coin) {
+	shrp := ShrpDecCoinsToCoins(coins)
+	mixedCoins := sdk.NewCoins(sdk.NewCoin(DenomSHR, coins.AmountOf(DenomSHR).TruncateInt()))
+	mixedCoins = mixedCoins.Add(shrp...)
+	return CoinsToShr(mixedCoins, rate)
+}
+
+func CoinsToShr(coins sdk.Coins, rate sdk.Dec) (coin sdk.Coin) {
+	shrpDec := sdk.NewDec(coins.AmountOf(DenomSHRP).Int64()).Add(sdk.NewDec(coins.AmountOf(DenomCent).Int64()).Quo(sdk.NewDec(100)))
+	coin = sdk.NewCoin(DenomSHR, shrpDec.Mul(rate).TruncateInt().Add(coins.AmountOf(DenomSHR)))
 	return coin
 }
 

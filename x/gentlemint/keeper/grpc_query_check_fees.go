@@ -26,7 +26,7 @@ func (k Keeper) CheckFees(goCtx context.Context, req *types.QueryCheckFeesReques
 		af := k.GetShrFeeByActionKey(ctx, a)
 		fee = fee.Add(af)
 	}
-	result.ShrFee = fee.String()
+	result.ConvertedFee = &fee
 
 	currentBalances := k.bankKeeper.GetAllBalances(ctx, addr)
 	currentShr := sdk.NewCoin(types.DenomSHR, currentBalances.AmountOf(types.DenomSHR))
@@ -34,7 +34,7 @@ func (k Keeper) CheckFees(goCtx context.Context, req *types.QueryCheckFeesReques
 	result.SufficientFundForFee = result.SufficientFee // sufficient fee is true, sufficient fund for fee will be true by default
 	if !result.SufficientFee {
 		rate := k.GetExchangeRateD(ctx)
-		currentShrFromShrp := types.ShrpToShr(
+		currentShrFromShrp := types.CoinsToShr(
 			sdk.NewCoins(
 				sdk.NewCoin(types.DenomSHRP, currentBalances.AmountOf(types.DenomSHRP)),
 				sdk.NewCoin(types.DenomCent, currentBalances.AmountOf(types.DenomCent)),
@@ -46,7 +46,8 @@ func (k Keeper) CheckFees(goCtx context.Context, req *types.QueryCheckFeesReques
 		result.SufficientFundForFee = currentShrFromShrp.IsGTE(fee)
 
 		if result.SufficientFundForFee {
-			result.ShrpCostLoadingFee = types.ShrToShrp(fee, rate).String()
+			dC := types.ShrToDecShrp(fee, rate)
+			result.CostLoadingFee = &dC
 		}
 	}
 
