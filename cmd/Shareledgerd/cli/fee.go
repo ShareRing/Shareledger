@@ -9,14 +9,16 @@ import (
 	"github.com/sharering/shareledger/x/gentlemint/types"
 )
 
-func EnableAutoLoadFee() error {
-	if err := tx.SetAutoLoadFee(autoLoadFee); err != nil {
-		return err
+var autoLoadFee tx.PreRunBroadcastTx = func(clientCtx client.Context, txf tx.Factory, msgs ...sdk.Msg) (nClientCtx client.Context, nTxf tx.Factory, nMsgs []sdk.Msg, err error) {
+	// Not autoload fee if there is a flag fee on cli
+	if !txf.Fees().IsZero() {
+		return clientCtx, txf, msgs, nil
 	}
-	return nil
-}
 
-var autoLoadFee = func(clientCtx client.Context, msgs []sdk.Msg) (status tx.AutoLoadFeeStatus, err error) {
+	nClientCtx = clientCtx
+	nTxf = txf
+	nMsgs = msgs[:]
+
 	queryClient := types.NewQueryClient(clientCtx)
 
 	actions := make([]string, 0, len(msgs))
@@ -38,9 +40,9 @@ var autoLoadFee = func(clientCtx client.Context, msgs []sdk.Msg) (status tx.Auto
 	if err != nil {
 		return
 	}
-	status.TotalFees = sdk.NewCoins(sdk.NewCoin(types.DenomSHR, decCoin.Amount.RoundInt()))
 	if !res.SufficientFee && res.SufficientFundForFee {
-		status.MsgLoadFee = types.NewMsgLoadFee(clientCtx.GetFromAddress().String(), res.ShrpCostLoadingFee)
+		nMsgs = append([]sdk.Msg{types.NewMsgLoadFee(clientCtx.GetFromAddress().String(), res.ShrpCostLoadingFee)}, nMsgs...)
 	}
+	nTxf = nTxf.WithFees(sdk.NewCoin(types.DenomSHR, decCoin.Amount.RoundInt()).String())
 	return
 }

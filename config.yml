@@ -1,65 +1,52 @@
 accounts:
   - name: validator
-    coins: ["10000000000000000pshr", "1000000000shrp"]
+    coins: ["100000000shr", "1000000000shrp"]
     mnemonic: "arrange amateur body cotton slim roof hand blush monkey remove expect rug hazard spoil flag choose tomato end duty nominee wheel cushion into stable"
   - name: authority
-    coins: ["10000000000000000pshr", "1000000000shrp"]
+    coins: ["100000000shr", "1000000000shrp"]
     mnemonic: "exile dutch volcano mosquito tree correct blame tape involve fiscal blossom emerge install grant normal divorce shiver barrel island drink local banana educate fix"
   - name: treasurer
-    coins: ["10000000000000000pshr", "1000000000shrp"]
+    coins: ["100000000shr", "1000000000shrp"]
     mnemonic: "hair bacon dirt torch air uphold tackle involve pool time token junior melody option judge thumb dance tube loud noise eternal congress fragile apart"
   - name: account-operator
-    coins: ["10000000000000000pshr", "1000000000shrp"]
+    coins: ["100000000shr", "1000000000shrp"]
     mnemonic: "pool mother column hurdle jealous wear host attack speak vague client demise inherit arrange lens purity time math decade renew south ring retreat balance"
   - name: idsigner
-    coins: ["10000000000000000pshr", "1000000000shrp"]
+    coins: ["100000000shr", "1000000000shrp"]
     mnemonic: "memory mind warfare pull risk math concert address zero speak glimpse outside economy hill boil boss pulp much connect install clip short object tobacco"
   - name: user
-    coins: [ "10000000000pshr" ]
+    coins: [ "100shr" ]
     mnemonic: "bright payment cash tomato tragic impulse perfect jacket matter jelly artist pulse will cinnamon erase middle elevator away clinic razor rotate tide unfair trigger"
 validator:
   name: validator
-  staked: "10000000000000000pshr"
+  staked: "10000000shr"
 client:
   openapi:
     path: "docs/static/openapi.yml"
 build:
   binary: "shareledger"
+# faucet:
+#   name: bob
+#   coins: ["5token", "100000stake"]
 genesis:
   chain_id: "ShareRing-VoyagerNet"
   app_state:
     staking:
       params:
-        bond_denom: "pshr"
+        bond_denom: "shr"
     crisis:
       constant_fee:
-        denom: "pshr"
+        denom: "shr"
     gov:
       deposit_params:
         min_deposit:
-          - amount: "1000000000000"
-            denom: "pshr"
-    bank:
-      denom_metadata:
-        - description: "The native smallest token of shr chain"
-          denom_units:
-            - denom: pshr
-              exponent: 0
-              aliases:
-                - pshr
-            - denom: "shr"
-              exponent: 8
-              aliases:
-                - shr
-          base: "pshr"
-          display: "shr"
-          name: "pshr"
-          symbol: "pshr"
+          - amount: "10000000"
+            denom: "shr"
     mint:
       minter:
         inflation: "0"
       params:
-        mint_denom: "pshr"
+        mint_denom: "shr"
         inflation_max: "0"
         inflation_min: "0"
     electoral:
@@ -67,6 +54,8 @@ genesis:
         address: shareledger1lq9svs76xwekrrzw7uprekyqydf7fp02p8zp8e
       treasurer:
         address: shareledger1l5hkf2epa5xmvngnjaasj5dp9jp7ut6s9mrqve
+
 init:
   client:
     chain-id: "ShareRing-VoyagerNet"
+
