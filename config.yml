@@ -42,6 +42,23 @@ genesis:
         min_deposit:
           - amount: "10000000"
             denom: "pshr"
+    bank:
+      denom_metadata:
+        - description: "The native smallest token of shr chain"
+          denom_units:
+            - denom: pshr
+              exponent: 0
+              aliases:
+                - pshr
+            - denom: "shr"
+              exponent: 8
+              aliases:
+                - shr
+          base: "pshr"
+          display: "shr"
+          name: "pshr"
+          symbol: "pshr"
+
     mint:
       minter:
         inflation: "0"
