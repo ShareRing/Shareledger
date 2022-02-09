@@ -1,6 +1,8 @@
 package cli
 
 import (
+	sdk "github.com/cosmos/cosmos-sdk/types"
+	denom "github.com/sharering/shareledger/x/utils/demo"
 	"strconv"
 
 	"github.com/spf13/cobra"
@@ -33,6 +35,9 @@ func CmdSetExchange() *cobra.Command {
 			if err := msg.ValidateBasic(); err != nil {
 				return err
 			}
+
+			msg.Rate = sdk.MustNewDecFromStr(msg.Rate).Mul(denom.ShrExponent).String()
+
 			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msg)
 		},
 	}

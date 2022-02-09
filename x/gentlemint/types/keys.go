@@ -1,6 +1,9 @@
 package types
 
-import sdk "github.com/cosmos/cosmos-sdk/types"
+import (
+	sdk "github.com/cosmos/cosmos-sdk/types"
+	denom "github.com/sharering/shareledger/x/utils/demo"
+)
 
 const (
 	// ModuleName defines the module name
@@ -28,7 +31,7 @@ const (
 var (
 	RequiredSHRAmt      = sdk.NewInt(10)
 	MaxSHRSupply        = sdk.NewInt(4396000000)
-	DefaultExchangeRate = sdk.NewDec(200)
+	DefaultExchangeRate = sdk.NewDec(200).Mul(denom.ShrExponent)
 )
 
 type ShrpStatus string

@@ -5070,8 +5070,8 @@
           ],
           "base": "pshr",
           "display": "shr",
-          "name": "",
-          "symbol": ""
+          "name": "pshr",
+          "symbol": "pshr"
         }
       ]
     },
@@ -29816,7 +29816,7 @@
     },
     "gentlemint": {
       "exchangeRate": {
-        "rate": "200"
+        "rate": "20000000000"
       },
       "levelFeeList": [],
       "actionLevelFeeList": []
