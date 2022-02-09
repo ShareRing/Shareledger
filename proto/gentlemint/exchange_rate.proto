@@ -7,5 +7,6 @@ import "gogoproto/gogo.proto";
 
 
 message ExchangeRate {
-  string shrpToShr = 1;
+  string rate = 1;
+  
 }

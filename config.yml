@@ -15,7 +15,7 @@ accounts:
     coins: ["10000000000000000pshr", "1000000000shrp"]
     mnemonic: "memory mind warfare pull risk math concert address zero speak glimpse outside economy hill boil boss pulp much connect install clip short object tobacco"
   - name: user
-    coins: [ "10000000000pshr" ]
+    coins: [ "10000000000shr" ]
     mnemonic: "bright payment cash tomato tragic impulse perfect jacket matter jelly artist pulse will cinnamon erase middle elevator away clinic razor rotate tide unfair trigger"
 validator:
   name: validator
@@ -37,7 +37,6 @@ genesis:
     crisis:
       constant_fee:
         denom: "pshr"
-        amount: 100000000000
     gov:
       deposit_params:
         min_deposit:
@@ -59,9 +58,14 @@ genesis:
           display: "shr"
           name: "pshr"
           symbol: "pshr"
+
     mint:
+      minter:
+        inflation: "0"
       params:
         mint_denom: "pshr"
+        inflation_max: "0"
+        inflation_min: "0"
     electoral:
       authority:
         address: shareledger1lq9svs76xwekrrzw7uprekyqydf7fp02p8zp8e

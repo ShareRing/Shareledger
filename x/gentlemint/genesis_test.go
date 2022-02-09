@@ -11,8 +11,22 @@ import (
 
 func TestGenesis(t *testing.T) {
 	genesisState := types.GenesisState{
+		AccStateList: []types.AccState{
+			{
+				Key: "0",
+			},
+			{
+				Key: "1",
+			},
+		},
+		Authority: &types.Authority{
+			Address: "address",
+		},
+		Treasurer: &types.Treasurer{
+			Address: "address",
+		},
 		ExchangeRate: &types.ExchangeRate{
-			ShrpToShr: "200",
+			Rate: 200,
 		},
 		LevelFeeList: []types.LevelFee{
 			{
@@ -38,6 +52,10 @@ func TestGenesis(t *testing.T) {
 	got := gentlemint.ExportGenesis(ctx, *k)
 	require.NotNil(t, got)
 
+	require.Len(t, got.AccStateList, len(genesisState.AccStateList))
+	require.Subset(t, genesisState.AccStateList, got.AccStateList)
+	require.Equal(t, genesisState.Authority, got.Authority)
+	require.Equal(t, genesisState.Treasurer, got.Treasurer)
 	require.Equal(t, genesisState.ExchangeRate, got.ExchangeRate)
 	require.Len(t, got.LevelFeeList, len(genesisState.LevelFeeList))
 	require.Subset(t, genesisState.LevelFeeList, got.LevelFeeList)
