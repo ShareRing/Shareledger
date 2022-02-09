@@ -13,6 +13,6 @@ func (k msgServer) SetExchange(goCtx context.Context, msg *types.MsgSetExchange)
 		return nil, err
 	}
 
-	k.SetExchangeRate(ctx, types.ExchangeRate{Rate: msg.Rate})
+	k.SetExchangeRate(ctx, types.ExchangeRate{ShrpToShr: msg.Rate})
 	return &types.MsgSetExchangeResponse{}, nil
 }

@@ -13,7 +13,7 @@ import (
 
 func createTestExchangeRate(keeper *keeper.Keeper, ctx sdk.Context) types.ExchangeRate {
 	item := types.ExchangeRate{
-		Rate: "200.1",
+		ShrpToShr: "200.1",
 	}
 	keeper.SetExchangeRate(ctx, item)
 	return item
@@ -32,5 +32,5 @@ func TestExchangeRateRemove(t *testing.T) {
 	keeper.RemoveExchangeRate(ctx)
 	v, found := keeper.GetExchangeRate(ctx)
 	require.True(t, found)
-	require.Equal(t, types.DefaultExchangeRate, sdk.MustNewDecFromStr(v.Rate))
+	require.Equal(t, types.DefaultExchangeRate, sdk.MustNewDecFromStr(v.ShrpToShr))
 }

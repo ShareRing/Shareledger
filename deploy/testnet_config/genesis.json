@@ -29816,7 +29816,7 @@
     },
     "gentlemint": {
       "exchangeRate": {
-        "rate": "200"
+        "shrpToShr": "200"
       },
       "levelFeeList": [],
       "actionLevelFeeList": []

@@ -22,7 +22,7 @@ func TestGenesisState_Validate(t *testing.T) {
 			desc: "valid genesis state",
 			genState: &types.GenesisState{
 				ExchangeRate: &types.ExchangeRate{
-					Rate: "200",
+					ShrpToShr: "200",
 				},
 				LevelFeeList: []types.LevelFee{
 					{
