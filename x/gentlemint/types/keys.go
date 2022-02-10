@@ -9,6 +9,8 @@ const (
 	// ModuleName defines the module name
 	ModuleName = "gentlemint"
 
+	ModuleNameAlias = "gm"
+
 	// StoreKey defines the primary module store key
 	StoreKey = ModuleName
 
@@ -20,18 +22,6 @@ const (
 
 	// MemStoreKey defines the in-memory store key
 	MemStoreKey = "mem_gentlemint"
-)
-
-const (
-	DenomPSHR = "pshr"
-	DenomSHRP = "shrp"
-	DenomCent = "cent"
-)
-
-var (
-	RequiredPSHRAmt     = sdk.NewInt(10 * denom.ShrExponent)
-	MaxPSHRSupply       = sdk.NewInt(4396000000 * denom.ShrExponent)
-	DefaultExchangeRate = sdk.NewDec(200).Mul(sdk.NewDec(denom.ShrExponent))
 )
 
 type ShrpStatus string
@@ -49,11 +39,14 @@ var (
 )
 
 var (
-	OneShr          = sdk.NewCoins(sdk.NewCoin(DenomPSHR, sdk.NewInt(denom.ShrExponent)))
-	OneShrP         = sdk.NewCoins(sdk.NewCoin(DenomSHRP, sdk.NewInt(1)))
-	OneHundredCents = sdk.NewCoins(sdk.NewCoin(DenomCent, sdk.NewInt(100)))
-	FeeLoadSHRP     = OneShr
-	AllowanceLoader = sdk.NewCoins(sdk.NewCoin(DenomPSHR, sdk.NewInt(20*denom.ShrExponent)))
+	RequiredPSHRAmt     = sdk.NewInt(10 * denom.ShrExponent)
+	MaxPSHRSupply       = sdk.NewInt(4396000000 * denom.ShrExponent)
+	DefaultExchangeRate = sdk.NewDec(200).Mul(sdk.NewDec(denom.ShrExponent))
+)
+
+var (
+	FeeLoadSHRP     = denom.OneShr
+	AllowanceLoader = sdk.NewCoins(sdk.NewCoin(denom.PShr, sdk.NewInt(20*denom.ShrExponent)))
 )
 
 var (

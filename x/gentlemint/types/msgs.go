@@ -1,6 +1,7 @@
 package types
 
 import (
+	denom "github.com/sharering/shareledger/x/utils/demo"
 	"strconv"
 	"strings"
 
@@ -13,48 +14,48 @@ type AdjustmentCoins struct {
 	Add sdk.Coins
 }
 
-func PShrToDecShrp(pshr sdk.Coin, rate sdk.Dec) sdk.DecCoin {
-	shrp := sdk.NewDec(pshr.Amount.Int64()).Quo(rate)
-	return sdk.NewDecCoinFromDec(DenomSHRP, shrp)
-}
+//func PShrToDecShrp(pshr sdk.Coin, rate sdk.Dec) sdk.DecCoin {
+//	shrp := sdk.NewDec(pshr.Amount.Int64()).Quo(rate)
+//	return sdk.NewDecCoinFromDec(denom.ShrP, shrp)
+//}
 
-func PShrToShrp(pshr sdk.Coin, rate sdk.Dec) (coin sdk.Coins) {
-	shrp := PShrToDecShrp(pshr, rate)
-	return ShrpDecToCoins(shrp.Amount)
-}
+//func PShrToShrp(pshr sdk.Coin, rate sdk.Dec) (coin sdk.Coins) {
+//	shrp := PShrToDecShrp(pshr, rate)
+//	return denom.ShrpDecToCoins(shrp.Amount)
+//}
 
-func DecCoinsToPShr(coins sdk.DecCoins, rate sdk.Dec) (coin sdk.Coin) {
-	shrp := ShrpDecCoinsToCoins(coins)
-	mixedCoins := sdk.NewCoins(sdk.NewCoin(DenomPSHR, coins.AmountOf(DenomPSHR).TruncateInt()))
-	mixedCoins = mixedCoins.Add(shrp...)
-	return CoinsToPShr(mixedCoins, rate)
-}
+//func DecCoinsToPShr(coins sdk.DecCoins, rate sdk.Dec) (coin sdk.Coin) {
+//	shrp := ShrpDecCoinsToCoins(coins)
+//	mixedCoins := sdk.NewCoins(sdk.NewCoin(denom.PShr, coins.AmountOf(denom.PShr).TruncateInt()))
+//	mixedCoins = mixedCoins.Add(shrp...)
+//	return CoinsToPShr(mixedCoins, rate)
+//}
 
-func CoinsToPShr(coins sdk.Coins, rate sdk.Dec) (coin sdk.Coin) {
-	shrpDec := sdk.NewDec(coins.AmountOf(DenomSHRP).Int64()).Add(sdk.NewDec(coins.AmountOf(DenomCent).Int64()).Quo(sdk.NewDec(100)))
-	coin = sdk.NewCoin(DenomPSHR, shrpDec.Mul(rate).TruncateInt().Add(coins.AmountOf(DenomPSHR)))
-	return coin
-}
+//func CoinsToPShr(coins sdk.Coins, rate sdk.Dec) (coin sdk.Coin) {
+//	shrpDec := sdk.NewDec(coins.AmountOf(denom.ShrP).Int64()).Add(sdk.NewDec(coins.AmountOf(denom.Cent).Int64()).Quo(sdk.NewDec(100)))
+//	coin = sdk.NewCoin(denom.PShr, shrpDec.Mul(rate).TruncateInt().Add(coins.AmountOf(denom.PShr)))
+//	return coin
+//}
 
-func ShrpDecCoinsToCoins(shrp sdk.DecCoins) (coin sdk.Coins) {
-	shrpD := shrp.AmountOf(DenomSHRP).Add(shrp.AmountOf(DenomCent).Quo(sdk.NewDec(100)))
-	return ShrpDecToCoins(shrpD)
-}
+//func ShrpDecCoinsToCoins(shrp sdk.DecCoins) (coin sdk.Coins) {
+//	shrpD := shrp.AmountOf(denom.ShrP).Add(shrp.AmountOf(denom.Cent).Quo(sdk.NewDec(100)))
+//	return ShrpDecToCoins(shrpD)
+//}
 
-func ShrpDecToCoins(shrp sdk.Dec) (coin sdk.Coins) {
-	return sdk.NewCoins(
-		sdk.NewCoin(DenomSHRP, shrp.TruncateInt()),
-		sdk.NewCoin(DenomCent, shrp.Sub(shrp.TruncateDec()).MulInt(sdk.NewInt(100)).Ceil().TruncateInt()),
-	)
-}
+//func ShrpDecToCoins(shrp sdk.Dec) (coin sdk.Coins) {
+//	return sdk.NewCoins(
+//		sdk.NewCoin(denom.ShrP, shrp.TruncateInt()),
+//		sdk.NewCoin(denom.Cent, shrp.Sub(shrp.TruncateDec()).MulInt(sdk.NewInt(100)).Ceil().TruncateInt()),
+//	)
+//}
 
 func GetCostShrpForPShr(currentShrp sdk.Coins, needShr sdk.Int, rate sdk.Dec) (cost AdjustmentCoins, err error) {
-
-	neededShrp := PShrToShrp(sdk.NewCoin(DenomPSHR, needShr), rate)
+	neededDecShrp := denom.ToDecShrPCoin(sdk.NewDecCoins(sdk.NewDecCoin(denom.PShr, needShr)), rate)
+	neededShrp := denom.ShrpDecToCoins(sdk.NewDecCoins(neededDecShrp))
 	if err != nil {
 		return
 	}
-	newBalance, err := SubShrpCoins(currentShrp, neededShrp)
+	newBalance, err := denom.SubShrpCoins(currentShrp, neededShrp)
 	if err != nil {
 		return
 	}
@@ -63,14 +64,14 @@ func GetCostShrpForPShr(currentShrp sdk.Coins, needShr sdk.Int, rate sdk.Dec) (c
 		Add: sdk.NewCoins(),
 	}
 	zeroI := sdk.NewInt(0)
-	if v := currentShrp.AmountOf(DenomSHRP).Sub(newBalance.AmountOf(DenomSHRP)); v.GT(zeroI) {
-		cost.Sub = cost.Sub.Add(sdk.NewCoin(DenomSHRP, v))
+	if v := currentShrp.AmountOf(denom.ShrP).Sub(newBalance.AmountOf(denom.ShrP)); v.GT(zeroI) {
+		cost.Sub = cost.Sub.Add(sdk.NewCoin(denom.ShrP, v))
 	}
-	if v := currentShrp.AmountOf(DenomCent).Sub(newBalance.AmountOf(DenomCent)); !v.Equal(zeroI) {
+	if v := currentShrp.AmountOf(denom.Cent).Sub(newBalance.AmountOf(denom.Cent)); !v.Equal(zeroI) {
 		if v.LT(zeroI) {
-			cost.Add = cost.Add.Add(sdk.NewCoin(DenomCent, v.Abs()))
+			cost.Add = cost.Add.Add(sdk.NewCoin(denom.Cent, v.Abs()))
 		} else {
-			cost.Sub = cost.Sub.Add(sdk.NewCoin(DenomCent, v))
+			cost.Sub = cost.Sub.Add(sdk.NewCoin(denom.Cent, v))
 		}
 	}
 	return
@@ -84,54 +85,24 @@ func AddShrpCoins(currentCoins sdk.Coins, addedCoins sdk.Coins) (ac AdjustmentCo
 		return
 	}
 
-	oldCents := currentCoins.AmountOf(DenomCent)
-	addedCents := addedCoins.AmountOf(DenomCent)
+	oldCents := currentCoins.AmountOf(denom.Cent)
+	addedCents := addedCoins.AmountOf(denom.Cent)
 	totalCents := oldCents.Add(addedCents)
 
 	ac.Add = sdk.NewCoins()
 	ac.Sub = sdk.NewCoins()
 	// convert cent to shrp
-	ac.Add = ac.Add.Add(sdk.NewCoin(DenomSHRP, addedCoins.AmountOf(DenomSHRP)))
-	ac.Add = ac.Add.Add(sdk.NewCoin(DenomSHRP, sdk.NewInt(totalCents.Int64()/100)))
+	ac.Add = ac.Add.Add(sdk.NewCoin(denom.ShrP, addedCoins.AmountOf(denom.ShrP)))
+	ac.Add = ac.Add.Add(sdk.NewCoin(denom.ShrP, sdk.NewInt(totalCents.Int64()/100)))
 
 	newCent := sdk.NewInt(totalCents.Int64() % 100)
 	if oldCents.GT(newCent) {
-		ac.Sub = ac.Sub.Add(sdk.NewCoin(DenomCent, oldCents.Sub(newCent)))
+		ac.Sub = ac.Sub.Add(sdk.NewCoin(denom.Cent, oldCents.Sub(newCent)))
 	} else {
-		ac.Add = ac.Add.Add(sdk.NewCoin(DenomCent, newCent.Sub(oldCents)))
+		ac.Add = ac.Add.Add(sdk.NewCoin(denom.Cent, newCent.Sub(oldCents)))
 	}
 
 	return
-}
-
-// SubShrpCoins return x - y.
-// x,y: Coins which can contain [SHRP, cent]
-// z: result in coins
-// err:
-//	coins is not in valid form,
-// 	sdkerrors.ErrInsufficientFunds: negative result.
-func SubShrpCoins(x sdk.Coins, y sdk.Coins) (z sdk.Coins, err error) {
-	if err = x.Validate(); err != nil {
-		return
-	}
-
-	xI := x.AmountOf(DenomSHRP).Mul(sdk.NewInt(100)).Add(x.AmountOf(DenomCent))
-	yI := y.AmountOf(DenomSHRP).Mul(sdk.NewInt(100)).Add(y.AmountOf(DenomCent))
-
-	zI := xI.Sub(yI)
-	if zI.IsNegative() {
-		err = sdkerrors.ErrInsufficientFunds
-		return
-	}
-	shrp := sdk.NewInt(zI.Int64() / 100)
-	cent := sdk.NewInt(zI.Int64() - zI.Int64()/100*100)
-
-	z = sdk.NewCoins(
-		sdk.NewCoin(DenomSHRP, shrp),
-		sdk.NewCoin(DenomCent, cent),
-	)
-	return
-
 }
 
 // ParseShrpCoinsStr return shrp and cent coins.
@@ -169,8 +140,8 @@ func ParseShrpCoinsStr(s string) (coins sdk.Coins, err error) {
 		}
 	}
 	return sdk.NewCoins(
-		sdk.NewCoin(DenomSHRP, sdk.NewInt(shrp)),
-		sdk.NewCoin(DenomCent, sdk.NewInt(cent)),
+		sdk.NewCoin(denom.ShrP, sdk.NewInt(shrp)),
+		sdk.NewCoin(denom.Cent, sdk.NewInt(cent)),
 	), nil
 }
 
@@ -184,6 +155,6 @@ func ParsePShrCoinsStr(s string) (coins sdk.Coins, err error) {
 		err = sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, s)
 		return
 	}
-	coins = sdk.NewCoins(sdk.NewCoin(DenomPSHR, v))
+	coins = sdk.NewCoins(sdk.NewCoin(denom.PShr, v))
 	return
 }

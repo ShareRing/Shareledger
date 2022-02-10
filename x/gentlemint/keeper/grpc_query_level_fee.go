@@ -3,6 +3,7 @@ package keeper
 import (
 	"context"
 	"github.com/sharering/shareledger/x/constant"
+	denom "github.com/sharering/shareledger/x/utils/demo"
 	"sort"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -27,7 +28,7 @@ func (k Keeper) LevelFees(c context.Context, req *types.QueryLevelFeesRequest) (
 		if err != nil {
 			return nil, err
 		}
-		convertedFee := types.DecCoinsToPShr(decCoins, exchangeRate)
+		convertedFee := denom.NormalizeCoins(decCoins, exchangeRate)
 		levelFees = append(levelFees, types.LevelFeeDetail{
 			Level:        lf.Level,
 			OriginalFee:  lf.Fee,
@@ -39,7 +40,7 @@ func (k Keeper) LevelFees(c context.Context, req *types.QueryLevelFeesRequest) (
 	for l, f := range defaultsLevelFees {
 		decCoins := sdk.NewDecCoins(f)
 
-		convertedFee := types.DecCoinsToPShr(decCoins, exchangeRate)
+		convertedFee := denom.NormalizeCoins(decCoins, exchangeRate)
 
 		levelFees = append(levelFees, types.LevelFeeDetail{
 			Level:        string(l),

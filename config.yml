@@ -74,4 +74,3 @@ genesis:
 init:
   client:
     chain-id: "ShareRing-VoyagerNet"
-

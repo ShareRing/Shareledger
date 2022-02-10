@@ -6,33 +6,30 @@ import (
 	"github.com/sharering/shareledger/x/constant"
 	"github.com/sharering/shareledger/x/fee"
 	"github.com/sharering/shareledger/x/gentlemint/types"
+	denom "github.com/sharering/shareledger/x/utils/demo"
 )
 
 func (k Keeper) GetPShrFeeByMsg(ctx sdk.Context, msg sdk.Msg) sdk.Coin {
 	feeD := k.GetFeeByMsg(ctx, msg)
-	return k.convertPShrCoin(ctx, feeD)
+	usdRate := k.GetExchangeRateD(ctx)
+	return denom.NormalizeCoins(sdk.NewDecCoins(feeD), usdRate)
 }
 
-func (k Keeper) LoadFeeFromShrp(ctx sdk.Context, msg *types.MsgLoadFee) error {
-	shrp := types.ShrpDecToCoins(msg.Shrp.Amount)
-	boughtPShr := types.CoinsToPShr(shrp, k.GetExchangeRateD(ctx))
+func (k Keeper) LoadFeeFundFromShrp(ctx sdk.Context, msg *types.MsgLoadFee) error {
+	if msg.Shrp == nil {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "shrp is nil")
+	}
+	boughtPShr := denom.NormalizeCoins(sdk.NewDecCoins(*msg.Shrp), k.GetExchangeRateD(ctx))
 	if err := k.buyPShr(ctx, boughtPShr.Amount, msg.GetSigners()[0]); err != nil {
-		return sdkerrors.Wrapf(err, "load fee %+v pshr with %+v", boughtPShr, shrp)
+		return sdkerrors.Wrapf(err, "load fee %+v pshr with %+v", boughtPShr, msg.Shrp.Amount)
 	}
 	return nil
 }
 
 func (k Keeper) GetPShrFeeByActionKey(ctx sdk.Context, action string) sdk.Coin {
 	feeD := k.GetFeeByAction(ctx, action)
-	return k.convertPShrCoin(ctx, feeD)
-}
-
-func (k Keeper) convertPShrCoin(ctx sdk.Context, amt sdk.DecCoin) sdk.Coin {
-	amount := amt.Amount.TruncateInt()
-	if amt.Denom != types.DenomPSHR {
-		return types.CoinsToPShr(types.ShrpDecToCoins(amt.Amount), k.GetExchangeRateD(ctx))
-	}
-	return sdk.NewCoin(types.DenomPSHR, amount)
+	usdRate := k.GetExchangeRateD(ctx)
+	return denom.NormalizeCoins(sdk.NewDecCoins(feeD), usdRate)
 }
 
 // GetFeeByMsg return fee based on message

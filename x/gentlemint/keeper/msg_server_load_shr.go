@@ -3,6 +3,7 @@ package keeper
 import (
 	"context"
 	"fmt"
+	denom "github.com/sharering/shareledger/x/utils/demo"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
@@ -20,7 +21,7 @@ func (k msgServer) LoadPShr(goCtx context.Context, msg *types.MsgLoadPShr) (*typ
 		return nil, err
 	}
 
-	if !k.PShrMintPossible(ctx, coins.AmountOf(types.DenomPSHR)) {
+	if !k.PShrMintPossible(ctx, coins.AmountOf(denom.PShr)) {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "SHR possible mint exceeded")
 	}
 

@@ -18,6 +18,7 @@ func GetQueryCmd(queryRoute string) *cobra.Command {
 	// Group gentlemint queries under a subcommand
 	cmd := &cobra.Command{
 		Use:                        types.ModuleName,
+		Aliases:                    []string{types.ModuleNameAlias},
 		Short:                      fmt.Sprintf("Querying commands for the %s module", types.ModuleName),
 		DisableFlagParsing:         true,
 		SuggestionsMinimumDistance: 2,

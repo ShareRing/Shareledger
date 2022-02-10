@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"fmt"
+	denom "github.com/sharering/shareledger/x/utils/demo"
 
 	"github.com/tendermint/tendermint/libs/log"
 
@@ -43,7 +44,7 @@ func (k Keeper) Logger(ctx sdk.Context) log.Logger {
 }
 
 func (k Keeper) PShrMintPossible(ctx sdk.Context, amt sdk.Int) bool {
-	total := k.bankKeeper.GetSupply(ctx, types.DenomPSHR)
+	total := k.bankKeeper.GetSupply(ctx, denom.PShr)
 	newAmt := total.Amount.Add(amt)
 	return newAmt.LT(types.MaxPSHRSupply)
 }
@@ -89,8 +90,8 @@ func (k Keeper) buyPShr(ctx sdk.Context, amount sdk.Int, buyer sdk.AccAddress) e
 
 	currentBalance := k.bankKeeper.GetAllBalances(ctx, buyer)
 	currentShrpBalance := sdk.NewCoins(
-		sdk.NewCoin(types.DenomSHRP, currentBalance.AmountOf(types.DenomSHRP)),
-		sdk.NewCoin(types.DenomCent, currentBalance.AmountOf(types.DenomCent)),
+		sdk.NewCoin(denom.ShrP, currentBalance.AmountOf(denom.ShrP)),
+		sdk.NewCoin(denom.Cent, currentBalance.AmountOf(denom.Cent)),
 	)
 
 	cost, err := types.GetCostShrpForPShr(currentShrpBalance, amount, rate)
@@ -109,7 +110,7 @@ func (k Keeper) buyPShr(ctx sdk.Context, amount sdk.Int, buyer sdk.AccAddress) e
 	if err := k.burnCoins(ctx, buyer, cost.Sub); err != nil {
 		return sdkerrors.Wrapf(err, "charge %v coins", cost.Sub)
 	}
-	boughtShr := sdk.NewCoins(sdk.NewCoin(types.DenomPSHR, amount))
+	boughtShr := sdk.NewCoins(sdk.NewCoin(denom.PShr, amount))
 	if err := k.loadCoins(ctx, buyer, boughtShr); err != nil {
 		return sdkerrors.Wrapf(err, "send %v coins", boughtShr)
 	}

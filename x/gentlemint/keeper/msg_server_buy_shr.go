@@ -3,6 +3,7 @@ package keeper
 import (
 	"context"
 	"fmt"
+	denom "github.com/sharering/shareledger/x/utils/demo"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
@@ -19,7 +20,7 @@ func (k msgServer) BuyPShr(goCtx context.Context, msg *types.MsgBuyPShr) (*types
 	if err != nil {
 		return nil, err
 	}
-	if err := k.buyPShr(ctx, coins.AmountOf(types.DenomPSHR), msg.GetSigners()[0]); err != nil {
+	if err := k.buyPShr(ctx, coins.AmountOf(denom.PShr), msg.GetSigners()[0]); err != nil {
 		return nil, sdkerrors.Wrapf(err, "buy %v pshr to %v", msg.Amount, msg.Creator)
 	}
 	return &types.MsgBuyPShrResponse{

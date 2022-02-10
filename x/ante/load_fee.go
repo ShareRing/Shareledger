@@ -21,7 +21,7 @@ func (cfd LoadFeeDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate bool
 	for _, m := range msgs {
 		switch loadFeeMessage := m.(type) {
 		case *gentleminttypes.MsgLoadFee:
-			if err := cfd.gk.LoadFeeFromShrp(ctx, loadFeeMessage); err != nil {
+			if err := cfd.gk.LoadFeeFundFromShrp(ctx, loadFeeMessage); err != nil {
 				return ctx, sdkerrors.Wrapf(err, "load fee from %v", loadFeeMessage.Shrp)
 			}
 		}

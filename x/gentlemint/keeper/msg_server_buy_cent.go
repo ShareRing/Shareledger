@@ -3,6 +3,7 @@ package keeper
 import (
 	"context"
 	"fmt"
+	denom "github.com/sharering/shareledger/x/utils/demo"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
@@ -18,8 +19,8 @@ func (k msgServer) BuyCent(goCtx context.Context, msg *types.MsgBuyCent) (*types
 	buyerAddr := msg.GetSigners()[0]
 
 	amt, _ := sdk.NewIntFromString(msg.Amount)
-	shrpAmount := sdk.NewCoins(sdk.NewCoin(types.DenomSHRP, amt))
-	centAmount := sdk.NewCoins(sdk.NewCoin(types.DenomCent, amt.Mul(sdk.NewInt(100))))
+	shrpAmount := sdk.NewCoins(sdk.NewCoin(denom.ShrP, amt))
+	centAmount := sdk.NewCoins(sdk.NewCoin(denom.Cent, amt.Mul(sdk.NewInt(100))))
 
 	if err := k.burnCoins(ctx, buyerAddr, shrpAmount); err != nil {
 		return nil, sdkerrors.Wrapf(err, "burns %v coins for address %v", shrpAmount, buyerAddr.String())

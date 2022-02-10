@@ -3,6 +3,7 @@ package keeper
 import (
 	"context"
 	"fmt"
+	denom "github.com/sharering/shareledger/x/utils/demo"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
@@ -27,22 +28,22 @@ func (k msgServer) SendShrp(goCtx context.Context, msg *types.MsgSendShrp) (*typ
 	oldCoins := k.bankKeeper.GetAllBalances(ctx, senderAdd)
 
 	// Convert 1 current shrp to cent if sending ammount of cents is large than current cents
-	if oldCoins.AmountOf(types.DenomCent).LT(sentCoins.AmountOf(types.DenomCent)) {
-		if oldCoins.AmountOf(types.DenomSHRP).LTE(sentCoins.AmountOf(types.DenomSHRP)) {
+	if oldCoins.AmountOf(denom.Cent).LT(sentCoins.AmountOf(denom.Cent)) {
+		if oldCoins.AmountOf(denom.ShrP).LTE(sentCoins.AmountOf(denom.ShrP)) {
 			return nil, sdkerrors.Wrapf(sdkerrors.ErrInsufficientFunds, "address %v has %v", senderAdd.String(), oldCoins)
 		}
 		// Exchange 1 shrp to 100 cents for senderAdd
-		if err := k.bankKeeper.SendCoinsFromAccountToModule(ctx, senderAdd, types.ModuleName, types.OneShrP); err != nil {
-			return nil, sdkerrors.Wrapf(err, "send %v coins to module", types.OneShrP)
+		if err := k.bankKeeper.SendCoinsFromAccountToModule(ctx, senderAdd, types.ModuleName, denom.OneShrP); err != nil {
+			return nil, sdkerrors.Wrapf(err, "send %v coins to module", denom.OneShrP)
 		}
-		if err := k.bankKeeper.MintCoins(ctx, types.ModuleName, types.OneHundredCents); err != nil {
-			return nil, sdkerrors.Wrapf(err, "mint %v coins", types.OneHundredCents)
+		if err := k.bankKeeper.MintCoins(ctx, types.ModuleName, denom.OneHundredCents); err != nil {
+			return nil, sdkerrors.Wrapf(err, "mint %v coins", denom.OneHundredCents)
 		}
-		if err := k.bankKeeper.BurnCoins(ctx, types.ModuleName, types.OneShrP); err != nil {
-			return nil, sdkerrors.Wrapf(err, "burn %v coins", types.OneShrP)
+		if err := k.bankKeeper.BurnCoins(ctx, types.ModuleName, denom.OneShrP); err != nil {
+			return nil, sdkerrors.Wrapf(err, "burn %v coins", denom.OneShrP)
 		}
-		if err := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, senderAdd, types.OneHundredCents); err != nil {
-			return nil, sdkerrors.Wrapf(err, "send %v coins from module to account", types.OneHundredCents)
+		if err := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, senderAdd, denom.OneHundredCents); err != nil {
+			return nil, sdkerrors.Wrapf(err, "send %v coins from module to account", denom.OneHundredCents)
 		}
 		// end exchange
 	}
@@ -55,7 +56,7 @@ func (k msgServer) SendShrp(goCtx context.Context, msg *types.MsgSendShrp) (*typ
 		return nil, sdkerrors.Wrapf(err, "%v send %v coins to %v", senderAdd.String(), sentCoins, toAdd.String())
 	}
 
-	log := fmt.Sprintf("Successfully Send SHRP {amount %s, from: %s, to: %s}", msg.Amount, msg.Creator, msg.Address)
+	log := fmt.Sprintf("Successfully Send ShrP {amount %s, from: %s, to: %s}", msg.Amount, msg.Creator, msg.Address)
 
 	return &types.MsgSendShrpResponse{
 		Log: log,

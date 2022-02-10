@@ -3,6 +3,7 @@ package types
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	denom "github.com/sharering/shareledger/x/utils/demo"
 )
 
 var _ sdk.Msg = &MsgSetLevelFee{}
@@ -50,10 +51,10 @@ func (msg *MsgSetLevelFee) ValidateBasic() error {
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "invalid fee, %s. Format should be 2pshr or 2.3shrp", msg.Fee)
 	}
-	if dc.Denom != DenomPSHR && dc.Denom != DenomSHRP {
+	if dc.Denom != denom.PShr && dc.Denom != denom.ShrP {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "invalid token type, %s. Only support pshr or shrp", dc.Denom)
 	}
-	if dc.Denom == DenomPSHR && !dc.Amount.Equal(dc.Amount.RoundInt().ToDec()) {
+	if dc.Denom == denom.PShr && !dc.Amount.Equal(dc.Amount.RoundInt().ToDec()) {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "pshr amount should be int, %v", dc)
 	}
 	return nil
