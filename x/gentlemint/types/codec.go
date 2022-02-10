@@ -8,14 +8,14 @@ import (
 )
 
 func RegisterCodec(cdc *codec.LegacyAmino) {
-	cdc.RegisterConcrete(&MsgLoadShr{}, "gentlemint/LoadShr", nil)
+	cdc.RegisterConcrete(&MsgLoadPShr{}, "gentlemint/LoadPShr", nil)
 	cdc.RegisterConcrete(&MsgLoadShrp{}, "gentlemint/LoadShrp", nil)
-	cdc.RegisterConcrete(&MsgBuyShr{}, "gentlemint/BuyShr", nil)
-	cdc.RegisterConcrete(&MsgSendShr{}, "gentlemint/SendShr", nil)
+	cdc.RegisterConcrete(&MsgBuyPShr{}, "gentlemint/BuyPShr", nil)
+	cdc.RegisterConcrete(&MsgSendPShr{}, "gentlemint/SendPShr", nil)
 	cdc.RegisterConcrete(&MsgBuyCent{}, "gentlemint/BuyCent", nil)
 	cdc.RegisterConcrete(&MsgBurnShrp{}, "gentlemint/BurnShrp", nil)
 	cdc.RegisterConcrete(&MsgSendShrp{}, "gentlemint/SendShrp", nil)
-	cdc.RegisterConcrete(&MsgBurnShr{}, "gentlemint/BurnShr", nil)
+	cdc.RegisterConcrete(&MsgBurnPShr{}, "gentlemint/BurnPShr", nil)
 	cdc.RegisterConcrete(&MsgSetExchange{}, "gentlemint/SetExchange", nil)
 	cdc.RegisterConcrete(&MsgSetLevelFee{}, "gentlemint/SetLevelFee", nil)
 	cdc.RegisterConcrete(&MsgDeleteLevelFee{}, "gentlemint/DeleteLevelFee", nil)
@@ -27,22 +27,22 @@ func RegisterCodec(cdc *codec.LegacyAmino) {
 
 func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	registry.RegisterImplementations((*sdk.Msg)(nil),
-		&MsgLoadShr{},
+		&MsgLoadPShr{},
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgLoadShrp{},
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
-		&MsgBuyShr{},
+		&MsgBuyPShr{},
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
-		&MsgBuyShr{},
+		&MsgBuyPShr{},
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
-		&MsgBuyShr{},
+		&MsgBuyPShr{},
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
-		&MsgSendShr{},
+		&MsgSendPShr{},
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgBuyCent{},
@@ -54,7 +54,7 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 		&MsgSendShrp{},
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
-		&MsgBurnShr{},
+		&MsgBurnPShr{},
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgSetExchange{},

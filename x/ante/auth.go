@@ -37,7 +37,7 @@ func (a Auth) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate bool, next sdk.Ant
 		signer := msgI.GetSigners()[0]
 		switch msg := msgI.(type) {
 		case // Authority
-			*gentleminttypes.MsgLoadShr,
+			*gentleminttypes.MsgLoadPShr,
 			*gentleminttypes.MsgSetActionLevelFee,
 			*gentleminttypes.MsgDeleteActionLevelFee,
 			*gentleminttypes.MsgSetLevelFee,
@@ -58,7 +58,7 @@ func (a Auth) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate bool, next sdk.Ant
 			}
 		case // Treasure account permission
 			*gentleminttypes.MsgBurnShrp,
-			*gentleminttypes.MsgBurnShr,
+			*gentleminttypes.MsgBurnPShr,
 			*gentleminttypes.MsgSetExchange:
 			if !a.rk.IsTreasurer(ctx, signer) {
 				return ctx, sdkerrors.Wrapf(sdkerrors.ErrUnauthorized, ErrMsgNotTreasureAccount)

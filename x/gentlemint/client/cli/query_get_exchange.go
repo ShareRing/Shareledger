@@ -28,7 +28,7 @@ func CmdShowExchangeRate() *cobra.Command {
 				return err
 			}
 
-			res.Rate = sdk.MustNewDecFromStr(res.Rate).Quo(denom.ShrExponent).String()
+			res.Rate = sdk.MustNewDecFromStr(res.Rate).Quo(sdk.NewDec(denom.ShrExponent)).String()
 			return clientCtx.PrintProto(res)
 		},
 	}

@@ -13,26 +13,26 @@ type AdjustmentCoins struct {
 	Add sdk.Coins
 }
 
-func ShrToDecShrp(shr sdk.Coin, rate sdk.Dec) sdk.DecCoin {
-	shrp := sdk.NewDec(shr.Amount.Int64()).Quo(rate)
+func PShrToDecShrp(pshr sdk.Coin, rate sdk.Dec) sdk.DecCoin {
+	shrp := sdk.NewDec(pshr.Amount.Int64()).Quo(rate)
 	return sdk.NewDecCoinFromDec(DenomSHRP, shrp)
 }
 
-func ShrToShrp(shr sdk.Coin, rate sdk.Dec) (coin sdk.Coins) {
-	shrp := ShrToDecShrp(shr, rate)
+func PShrToShrp(pshr sdk.Coin, rate sdk.Dec) (coin sdk.Coins) {
+	shrp := PShrToDecShrp(pshr, rate)
 	return ShrpDecToCoins(shrp.Amount)
 }
 
-func DecCoinsToShr(coins sdk.DecCoins, rate sdk.Dec) (coin sdk.Coin) {
+func DecCoinsToPShr(coins sdk.DecCoins, rate sdk.Dec) (coin sdk.Coin) {
 	shrp := ShrpDecCoinsToCoins(coins)
-	mixedCoins := sdk.NewCoins(sdk.NewCoin(DenomSHR, coins.AmountOf(DenomSHR).TruncateInt()))
+	mixedCoins := sdk.NewCoins(sdk.NewCoin(DenomPSHR, coins.AmountOf(DenomPSHR).TruncateInt()))
 	mixedCoins = mixedCoins.Add(shrp...)
-	return CoinsToShr(mixedCoins, rate)
+	return CoinsToPShr(mixedCoins, rate)
 }
 
-func CoinsToShr(coins sdk.Coins, rate sdk.Dec) (coin sdk.Coin) {
+func CoinsToPShr(coins sdk.Coins, rate sdk.Dec) (coin sdk.Coin) {
 	shrpDec := sdk.NewDec(coins.AmountOf(DenomSHRP).Int64()).Add(sdk.NewDec(coins.AmountOf(DenomCent).Int64()).Quo(sdk.NewDec(100)))
-	coin = sdk.NewCoin(DenomSHR, shrpDec.Mul(rate).TruncateInt().Add(coins.AmountOf(DenomSHR)))
+	coin = sdk.NewCoin(DenomPSHR, shrpDec.Mul(rate).TruncateInt().Add(coins.AmountOf(DenomPSHR)))
 	return coin
 }
 
@@ -48,9 +48,9 @@ func ShrpDecToCoins(shrp sdk.Dec) (coin sdk.Coins) {
 	)
 }
 
-func GetCostShrpForShr(currentShrp sdk.Coins, needShr sdk.Int, rate sdk.Dec) (cost AdjustmentCoins, err error) {
+func GetCostShrpForPShr(currentShrp sdk.Coins, needShr sdk.Int, rate sdk.Dec) (cost AdjustmentCoins, err error) {
 
-	neededShrp := ShrToShrp(sdk.NewCoin(DenomSHR, needShr), rate)
+	neededShrp := PShrToShrp(sdk.NewCoin(DenomPSHR, needShr), rate)
 	if err != nil {
 		return
 	}
@@ -174,7 +174,7 @@ func ParseShrpCoinsStr(s string) (coins sdk.Coins, err error) {
 	), nil
 }
 
-func ParseShrCoinsStr(s string) (coins sdk.Coins, err error) {
+func ParsePShrCoinsStr(s string) (coins sdk.Coins, err error) {
 	v, ok := sdk.NewIntFromString(s)
 	if !ok {
 		err = sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, s)
@@ -184,6 +184,6 @@ func ParseShrCoinsStr(s string) (coins sdk.Coins, err error) {
 		err = sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, s)
 		return
 	}
-	coins = sdk.NewCoins(sdk.NewCoin(DenomSHR, v))
+	coins = sdk.NewCoins(sdk.NewCoin(DenomPSHR, v))
 	return
 }

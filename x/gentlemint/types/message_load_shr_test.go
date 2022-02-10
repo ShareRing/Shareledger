@@ -11,18 +11,18 @@ import (
 func TestMsgLoadShr_ValidateBasic(t *testing.T) {
 	tests := []struct {
 		name string
-		msg  MsgLoadShr
+		msg  MsgLoadPShr
 		err  error
 	}{
 		{
 			name: "invalid address",
-			msg: MsgLoadShr{
+			msg: MsgLoadPShr{
 				Creator: "invalid_address",
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
-			msg: MsgLoadShr{
+			msg: MsgLoadPShr{
 				Creator: sample.AccAddress(),
 				Address: sample.AccAddress(),
 				Amount:  "1",

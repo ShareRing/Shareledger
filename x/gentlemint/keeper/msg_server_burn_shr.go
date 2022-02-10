@@ -9,13 +9,13 @@ import (
 	"github.com/sharering/shareledger/x/gentlemint/types"
 )
 
-func (k msgServer) BurnShr(goCtx context.Context, msg *types.MsgBurnShr) (*types.MsgBurnShrResponse, error) {
+func (k msgServer) BurnPShr(goCtx context.Context, msg *types.MsgBurnPShr) (*types.MsgBurnPShrResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 	if err := msg.ValidateBasic(); err != nil {
 		return nil, err
 	}
 
-	shrCoins, err := types.ParseShrCoinsStr(msg.Amount)
+	shrCoins, err := types.ParsePShrCoinsStr(msg.Amount)
 	if err != nil {
 		return nil, err
 	}
@@ -23,7 +23,7 @@ func (k msgServer) BurnShr(goCtx context.Context, msg *types.MsgBurnShr) (*types
 		return nil, sdkerrors.Wrapf(err, "burns %v coins from %v", shrCoins, msg.Creator)
 	}
 
-	return &types.MsgBurnShrResponse{
-		Log: fmt.Sprintf("Successfully burn %v shr", msg.Amount),
+	return &types.MsgBurnPShrResponse{
+		Log: fmt.Sprintf("Successfully burn %v pshr", msg.Amount),
 	}, nil
 }

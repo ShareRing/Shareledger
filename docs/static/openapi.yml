@@ -21453,7 +21453,7 @@ definitions:
 
           NOTE: The amount field is an Int which implements the custom method
           signatures required by gogoproto.
-  shareledger.gentlemint.MsgBurnShrResponse:
+  shareledger.gentlemint.MsgBurnPShrResponse:
     type: object
     properties:
       log:
@@ -21468,7 +21468,7 @@ definitions:
     properties:
       log:
         type: string
-  shareledger.gentlemint.MsgBuyShrResponse:
+  shareledger.gentlemint.MsgBuyPShrResponse:
     type: object
     properties:
       log:
@@ -21479,7 +21479,7 @@ definitions:
     type: object
   shareledger.gentlemint.MsgLoadFeeResponse:
     type: object
-  shareledger.gentlemint.MsgLoadShrResponse:
+  shareledger.gentlemint.MsgLoadPShrResponse:
     type: object
     properties:
       log:
@@ -21489,7 +21489,7 @@ definitions:
     properties:
       log:
         type: string
-  shareledger.gentlemint.MsgSendShrResponse:
+  shareledger.gentlemint.MsgSendPShrResponse:
     type: object
     properties:
       log:

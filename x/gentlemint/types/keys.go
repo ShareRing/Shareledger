@@ -23,15 +23,15 @@ const (
 )
 
 const (
-	DenomSHR  = "shr"
+	DenomPSHR = "pshr"
 	DenomSHRP = "shrp"
 	DenomCent = "cent"
 )
 
 var (
-	RequiredSHRAmt      = sdk.NewInt(10)
-	MaxSHRSupply        = sdk.NewInt(4396000000)
-	DefaultExchangeRate = sdk.NewDec(200).Mul(denom.ShrExponent)
+	RequiredPSHRAmt     = sdk.NewInt(10 * denom.ShrExponent)
+	MaxPSHRSupply       = sdk.NewInt(4396000000 * denom.ShrExponent)
+	DefaultExchangeRate = sdk.NewDec(200).Mul(sdk.NewDec(denom.ShrExponent))
 )
 
 type ShrpStatus string
@@ -49,11 +49,11 @@ var (
 )
 
 var (
-	OneShr          = sdk.NewCoins(sdk.NewCoin(DenomSHR, sdk.NewInt(1)))
+	OneShr          = sdk.NewCoins(sdk.NewCoin(DenomPSHR, sdk.NewInt(denom.ShrExponent)))
 	OneShrP         = sdk.NewCoins(sdk.NewCoin(DenomSHRP, sdk.NewInt(1)))
 	OneHundredCents = sdk.NewCoins(sdk.NewCoin(DenomCent, sdk.NewInt(100)))
 	FeeLoadSHRP     = OneShr
-	AllowanceLoader = sdk.NewCoins(sdk.NewCoin(DenomSHR, sdk.NewInt(20)))
+	AllowanceLoader = sdk.NewCoins(sdk.NewCoin(DenomPSHR, sdk.NewInt(20*denom.ShrExponent)))
 )
 
 var (
@@ -75,5 +75,5 @@ func KeyPrefix(p string) []byte {
 }
 
 const (
-	ExchangeRateKey = "exchange_shrp_to_shr"
+	ExchangeRateKey = "exchangeRate"
 )

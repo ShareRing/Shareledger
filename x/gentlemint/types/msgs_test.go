@@ -109,7 +109,7 @@ func TestGetCostShrpForShr(t *testing.T) {
 				Add: sdk.NewCoins(),
 			},
 			oError: nil,
-			d:      "1 shrp buy 200 shr (1 shrp) -> cost -1 shrp",
+			d:      "1 shrp buy 200 pshr (1 shrp) -> cost -1 shrp",
 		},
 		{
 			iCurrent: sdk.NewCoins(
@@ -124,7 +124,7 @@ func TestGetCostShrpForShr(t *testing.T) {
 				Add: sdk.NewCoins(),
 			},
 			oError: nil,
-			d:      "1.1 shrp buy 200 shr (1 shrp) -> cost: -1 shrp",
+			d:      "1.1 shrp buy 200 pshr (1 shrp) -> cost: -1 shrp",
 		},
 		{
 			iCurrent: sdk.NewCoins(
@@ -142,7 +142,7 @@ func TestGetCostShrpForShr(t *testing.T) {
 				),
 			},
 			oError: nil,
-			d:      "2.10 shrp buy 300 shr (1.5 shrp)-> new: 0.6 shrp -> cost: - 2 shrp +50 cent",
+			d:      "2.10 shrp buy 300 pshr (1.5 shrp)-> new: 0.6 shrp -> cost: - 2 shrp +50 cent",
 		},
 		{
 			iCurrent: sdk.NewCoins(
@@ -163,7 +163,7 @@ func TestGetCostShrpForShr(t *testing.T) {
 		if i == 2 {
 			fmt.Println(i)
 		}
-		o, e := GetCostShrpForShr(tc.iCurrent, tc.iNeed, tc.iRate)
+		o, e := GetCostShrpForPShr(tc.iCurrent, tc.iNeed, tc.iRate)
 		require.Equal(t, tc.oCost.Sub, o.Sub, tc.d)
 		require.Equal(t, tc.oCost.Add, o.Add, tc.d)
 		if tc.oError != nil {
@@ -338,23 +338,23 @@ func TestShrToShrp(t *testing.T) {
 	}
 	tcs := []testCase{
 		{
-			i: sdk.NewCoin(DenomSHR, sdk.NewInt(1)),
+			i: sdk.NewCoin(DenomPSHR, sdk.NewInt(1)),
 			o: sdk.NewCoins(sdk.NewCoin(DenomCent, sdk.NewInt(1))),
-			d: "1 shr -> 1 cent (should round up when not even)",
+			d: "1 pshr -> 1 cent (should round up when not even)",
 		},
 		{
-			i: sdk.NewCoin(DenomSHR, sdk.NewInt(3)),
+			i: sdk.NewCoin(DenomPSHR, sdk.NewInt(3)),
 			o: sdk.NewCoins(sdk.NewCoin(DenomCent, sdk.NewInt(2))),
-			d: "3 shr -> 2 cent (should round up when not even)",
+			d: "3 pshr -> 2 cent (should round up when not even)",
 		},
 		{
-			i: sdk.NewCoin(DenomSHR, sdk.NewInt(4)),
+			i: sdk.NewCoin(DenomPSHR, sdk.NewInt(4)),
 			o: sdk.NewCoins(sdk.NewCoin(DenomCent, sdk.NewInt(2))),
-			d: "4 shr -> 2 cent",
+			d: "4 pshr -> 2 cent",
 		},
 	}
 	for _, tc := range tcs {
-		r := ShrToShrp(tc.i, rate)
+		r := PShrToShrp(tc.i, rate)
 		require.Equal(t, tc.o, r, tc.d)
 	}
 }
@@ -400,7 +400,7 @@ func TestShrpDecCoinsToCoins(t *testing.T) {
 	}
 }
 
-func TestShrpToShr(t *testing.T) {
+func TestShrpToPShr(t *testing.T) {
 	type testCase struct {
 		i sdk.Coins
 		o sdk.Coin
@@ -410,27 +410,27 @@ func TestShrpToShr(t *testing.T) {
 	tcs := []testCase{
 		{
 			i: sdk.NewCoins(sdk.NewCoin(DenomSHRP, sdk.NewInt(0)), sdk.NewCoin(DenomCent, sdk.NewInt(0))),
-			o: sdk.NewCoin(DenomSHR, sdk.NewInt(0)),
-			d: "0.0 -> 0 shr",
+			o: sdk.NewCoin(DenomPSHR, sdk.NewInt(0)),
+			d: "0.0 -> 0 pshr",
 		},
 		{
 			i: sdk.NewCoins(sdk.NewCoin(DenomSHRP, sdk.NewInt(1)), sdk.NewCoin(DenomCent, sdk.NewInt(0))),
-			o: sdk.NewCoin(DenomSHR, sdk.NewInt(200)),
-			d: "1.0 -> 200 shr",
+			o: sdk.NewCoin(DenomPSHR, sdk.NewInt(200)),
+			d: "1.0 -> 200 pshr",
 		},
 		{
 			i: sdk.NewCoins(sdk.NewCoin(DenomSHRP, sdk.NewInt(0)), sdk.NewCoin(DenomCent, sdk.NewInt(99))),
-			o: sdk.NewCoin(DenomSHR, sdk.NewInt(198)),
-			d: "0.99 -> 198 shr",
+			o: sdk.NewCoin(DenomPSHR, sdk.NewInt(198)),
+			d: "0.99 -> 198 pshr",
 		},
 		{
 			i: sdk.NewCoins(sdk.NewCoin(DenomSHRP, sdk.NewInt(1)), sdk.NewCoin(DenomCent, sdk.NewInt(99))),
-			o: sdk.NewCoin(DenomSHR, sdk.NewInt(398)),
-			d: "1.99 -> 398 shr",
+			o: sdk.NewCoin(DenomPSHR, sdk.NewInt(398)),
+			d: "1.99 -> 398 pshr",
 		},
 	}
 	for _, tc := range tcs {
-		r := CoinsToShr(tc.i, rate)
+		r := CoinsToPShr(tc.i, rate)
 		require.Equal(t, tc.o, r, tc.d)
 	}
 }

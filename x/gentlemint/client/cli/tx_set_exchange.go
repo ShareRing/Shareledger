@@ -36,7 +36,7 @@ func CmdSetExchange() *cobra.Command {
 				return err
 			}
 
-			msg.Rate = sdk.MustNewDecFromStr(msg.Rate).Mul(denom.ShrExponent).String()
+			msg.Rate = sdk.MustNewDecFromStr(msg.Rate).Mul(sdk.NewDec(denom.ShrExponent)).String()
 
 			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msg)
 		},

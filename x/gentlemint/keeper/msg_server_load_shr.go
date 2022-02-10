@@ -9,18 +9,18 @@ import (
 	"github.com/sharering/shareledger/x/gentlemint/types"
 )
 
-func (k msgServer) LoadShr(goCtx context.Context, msg *types.MsgLoadShr) (*types.MsgLoadShrResponse, error) {
+func (k msgServer) LoadPShr(goCtx context.Context, msg *types.MsgLoadPShr) (*types.MsgLoadPShrResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 	if err := msg.ValidateBasic(); err != nil {
 		return nil, err
 	}
 
-	coins, err := types.ParseShrCoinsStr(msg.Amount)
+	coins, err := types.ParsePShrCoinsStr(msg.Amount)
 	if err != nil {
 		return nil, err
 	}
 
-	if !k.ShrMintPossible(ctx, coins.AmountOf(types.DenomSHR)) {
+	if !k.PShrMintPossible(ctx, coins.AmountOf(types.DenomPSHR)) {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "SHR possible mint exceeded")
 	}
 
@@ -32,9 +32,9 @@ func (k msgServer) LoadShr(goCtx context.Context, msg *types.MsgLoadShr) (*types
 	if err := k.loadCoins(ctx, addr, coins); err != nil {
 		return nil, err
 	}
-	log := fmt.Sprintf("Successfully loaded shr {address: %s, amount %v}", msg.Address, coins)
+	log := fmt.Sprintf("Successfully loaded pshr {address: %s, amount %v}", msg.Address, coins)
 
-	return &types.MsgLoadShrResponse{
+	return &types.MsgLoadPShrResponse{
 		Log: log,
 	}, nil
 }

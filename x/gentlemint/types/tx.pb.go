@@ -28,24 +28,24 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
-type MsgLoadShr struct {
+type MsgLoadPShr struct {
 	Creator string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
 	Address string `protobuf:"bytes,2,opt,name=address,proto3" json:"address,omitempty"`
 	Amount  string `protobuf:"bytes,3,opt,name=amount,proto3" json:"amount,omitempty"`
 }
 
-func (m *MsgLoadShr) Reset()         { *m = MsgLoadShr{} }
-func (m *MsgLoadShr) String() string { return proto.CompactTextString(m) }
-func (*MsgLoadShr) ProtoMessage()    {}
-func (*MsgLoadShr) Descriptor() ([]byte, []int) {
+func (m *MsgLoadPShr) Reset()         { *m = MsgLoadPShr{} }
+func (m *MsgLoadPShr) String() string { return proto.CompactTextString(m) }
+func (*MsgLoadPShr) ProtoMessage()    {}
+func (*MsgLoadPShr) Descriptor() ([]byte, []int) {
 	return fileDescriptor_d3542f4930ea9a46, []int{0}
 }
-func (m *MsgLoadShr) XXX_Unmarshal(b []byte) error {
+func (m *MsgLoadPShr) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgLoadShr) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgLoadPShr) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgLoadShr.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgLoadPShr.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -55,55 +55,55 @@ func (m *MsgLoadShr) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return b[:n], nil
 	}
 }
-func (m *MsgLoadShr) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgLoadShr.Merge(m, src)
+func (m *MsgLoadPShr) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgLoadPShr.Merge(m, src)
 }
-func (m *MsgLoadShr) XXX_Size() int {
+func (m *MsgLoadPShr) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgLoadShr) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgLoadShr.DiscardUnknown(m)
+func (m *MsgLoadPShr) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgLoadPShr.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgLoadShr proto.InternalMessageInfo
+var xxx_messageInfo_MsgLoadPShr proto.InternalMessageInfo
 
-func (m *MsgLoadShr) GetCreator() string {
+func (m *MsgLoadPShr) GetCreator() string {
 	if m != nil {
 		return m.Creator
 	}
 	return ""
 }
 
-func (m *MsgLoadShr) GetAddress() string {
+func (m *MsgLoadPShr) GetAddress() string {
 	if m != nil {
 		return m.Address
 	}
 	return ""
 }
 
-func (m *MsgLoadShr) GetAmount() string {
+func (m *MsgLoadPShr) GetAmount() string {
 	if m != nil {
 		return m.Amount
 	}
 	return ""
 }
 
-type MsgLoadShrResponse struct {
+type MsgLoadPShrResponse struct {
 	Log string `protobuf:"bytes,1,opt,name=log,proto3" json:"log,omitempty"`
 }
 
-func (m *MsgLoadShrResponse) Reset()         { *m = MsgLoadShrResponse{} }
-func (m *MsgLoadShrResponse) String() string { return proto.CompactTextString(m) }
-func (*MsgLoadShrResponse) ProtoMessage()    {}
-func (*MsgLoadShrResponse) Descriptor() ([]byte, []int) {
+func (m *MsgLoadPShrResponse) Reset()         { *m = MsgLoadPShrResponse{} }
+func (m *MsgLoadPShrResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgLoadPShrResponse) ProtoMessage()    {}
+func (*MsgLoadPShrResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_d3542f4930ea9a46, []int{1}
 }
-func (m *MsgLoadShrResponse) XXX_Unmarshal(b []byte) error {
+func (m *MsgLoadPShrResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgLoadShrResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgLoadPShrResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgLoadShrResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgLoadPShrResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -113,19 +113,19 @@ func (m *MsgLoadShrResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, 
 		return b[:n], nil
 	}
 }
-func (m *MsgLoadShrResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgLoadShrResponse.Merge(m, src)
+func (m *MsgLoadPShrResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgLoadPShrResponse.Merge(m, src)
 }
-func (m *MsgLoadShrResponse) XXX_Size() int {
+func (m *MsgLoadPShrResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgLoadShrResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgLoadShrResponse.DiscardUnknown(m)
+func (m *MsgLoadPShrResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgLoadPShrResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgLoadShrResponse proto.InternalMessageInfo
+var xxx_messageInfo_MsgLoadPShrResponse proto.InternalMessageInfo
 
-func (m *MsgLoadShrResponse) GetLog() string {
+func (m *MsgLoadPShrResponse) GetLog() string {
 	if m != nil {
 		return m.Log
 	}
@@ -236,23 +236,23 @@ func (m *MsgLoadShrpResponse) GetLog() string {
 	return ""
 }
 
-type MsgBuyShr struct {
+type MsgBuyPShr struct {
 	Creator string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
 	Amount  string `protobuf:"bytes,2,opt,name=amount,proto3" json:"amount,omitempty"`
 }
 
-func (m *MsgBuyShr) Reset()         { *m = MsgBuyShr{} }
-func (m *MsgBuyShr) String() string { return proto.CompactTextString(m) }
-func (*MsgBuyShr) ProtoMessage()    {}
-func (*MsgBuyShr) Descriptor() ([]byte, []int) {
+func (m *MsgBuyPShr) Reset()         { *m = MsgBuyPShr{} }
+func (m *MsgBuyPShr) String() string { return proto.CompactTextString(m) }
+func (*MsgBuyPShr) ProtoMessage()    {}
+func (*MsgBuyPShr) Descriptor() ([]byte, []int) {
 	return fileDescriptor_d3542f4930ea9a46, []int{4}
 }
-func (m *MsgBuyShr) XXX_Unmarshal(b []byte) error {
+func (m *MsgBuyPShr) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgBuyShr) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgBuyPShr) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgBuyShr.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgBuyPShr.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -262,48 +262,48 @@ func (m *MsgBuyShr) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return b[:n], nil
 	}
 }
-func (m *MsgBuyShr) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgBuyShr.Merge(m, src)
+func (m *MsgBuyPShr) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgBuyPShr.Merge(m, src)
 }
-func (m *MsgBuyShr) XXX_Size() int {
+func (m *MsgBuyPShr) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgBuyShr) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgBuyShr.DiscardUnknown(m)
+func (m *MsgBuyPShr) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgBuyPShr.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgBuyShr proto.InternalMessageInfo
+var xxx_messageInfo_MsgBuyPShr proto.InternalMessageInfo
 
-func (m *MsgBuyShr) GetCreator() string {
+func (m *MsgBuyPShr) GetCreator() string {
 	if m != nil {
 		return m.Creator
 	}
 	return ""
 }
 
-func (m *MsgBuyShr) GetAmount() string {
+func (m *MsgBuyPShr) GetAmount() string {
 	if m != nil {
 		return m.Amount
 	}
 	return ""
 }
 
-type MsgBuyShrResponse struct {
+type MsgBuyPShrResponse struct {
 	Log string `protobuf:"bytes,1,opt,name=log,proto3" json:"log,omitempty"`
 }
 
-func (m *MsgBuyShrResponse) Reset()         { *m = MsgBuyShrResponse{} }
-func (m *MsgBuyShrResponse) String() string { return proto.CompactTextString(m) }
-func (*MsgBuyShrResponse) ProtoMessage()    {}
-func (*MsgBuyShrResponse) Descriptor() ([]byte, []int) {
+func (m *MsgBuyPShrResponse) Reset()         { *m = MsgBuyPShrResponse{} }
+func (m *MsgBuyPShrResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgBuyPShrResponse) ProtoMessage()    {}
+func (*MsgBuyPShrResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_d3542f4930ea9a46, []int{5}
 }
-func (m *MsgBuyShrResponse) XXX_Unmarshal(b []byte) error {
+func (m *MsgBuyPShrResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgBuyShrResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgBuyPShrResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgBuyShrResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgBuyPShrResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -313,43 +313,43 @@ func (m *MsgBuyShrResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, e
 		return b[:n], nil
 	}
 }
-func (m *MsgBuyShrResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgBuyShrResponse.Merge(m, src)
+func (m *MsgBuyPShrResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgBuyPShrResponse.Merge(m, src)
 }
-func (m *MsgBuyShrResponse) XXX_Size() int {
+func (m *MsgBuyPShrResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgBuyShrResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgBuyShrResponse.DiscardUnknown(m)
+func (m *MsgBuyPShrResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgBuyPShrResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgBuyShrResponse proto.InternalMessageInfo
+var xxx_messageInfo_MsgBuyPShrResponse proto.InternalMessageInfo
 
-func (m *MsgBuyShrResponse) GetLog() string {
+func (m *MsgBuyPShrResponse) GetLog() string {
 	if m != nil {
 		return m.Log
 	}
 	return ""
 }
 
-type MsgSendShr struct {
+type MsgSendPShr struct {
 	Creator string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
 	Address string `protobuf:"bytes,2,opt,name=address,proto3" json:"address,omitempty"`
 	Amount  string `protobuf:"bytes,3,opt,name=amount,proto3" json:"amount,omitempty"`
 }
 
-func (m *MsgSendShr) Reset()         { *m = MsgSendShr{} }
-func (m *MsgSendShr) String() string { return proto.CompactTextString(m) }
-func (*MsgSendShr) ProtoMessage()    {}
-func (*MsgSendShr) Descriptor() ([]byte, []int) {
+func (m *MsgSendPShr) Reset()         { *m = MsgSendPShr{} }
+func (m *MsgSendPShr) String() string { return proto.CompactTextString(m) }
+func (*MsgSendPShr) ProtoMessage()    {}
+func (*MsgSendPShr) Descriptor() ([]byte, []int) {
 	return fileDescriptor_d3542f4930ea9a46, []int{6}
 }
-func (m *MsgSendShr) XXX_Unmarshal(b []byte) error {
+func (m *MsgSendPShr) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgSendShr) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgSendPShr) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgSendShr.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgSendPShr.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -359,55 +359,55 @@ func (m *MsgSendShr) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return b[:n], nil
 	}
 }
-func (m *MsgSendShr) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgSendShr.Merge(m, src)
+func (m *MsgSendPShr) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgSendPShr.Merge(m, src)
 }
-func (m *MsgSendShr) XXX_Size() int {
+func (m *MsgSendPShr) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgSendShr) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgSendShr.DiscardUnknown(m)
+func (m *MsgSendPShr) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgSendPShr.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgSendShr proto.InternalMessageInfo
+var xxx_messageInfo_MsgSendPShr proto.InternalMessageInfo
 
-func (m *MsgSendShr) GetCreator() string {
+func (m *MsgSendPShr) GetCreator() string {
 	if m != nil {
 		return m.Creator
 	}
 	return ""
 }
 
-func (m *MsgSendShr) GetAddress() string {
+func (m *MsgSendPShr) GetAddress() string {
 	if m != nil {
 		return m.Address
 	}
 	return ""
 }
 
-func (m *MsgSendShr) GetAmount() string {
+func (m *MsgSendPShr) GetAmount() string {
 	if m != nil {
 		return m.Amount
 	}
 	return ""
 }
 
-type MsgSendShrResponse struct {
+type MsgSendPShrResponse struct {
 	Log string `protobuf:"bytes,1,opt,name=log,proto3" json:"log,omitempty"`
 }
 
-func (m *MsgSendShrResponse) Reset()         { *m = MsgSendShrResponse{} }
-func (m *MsgSendShrResponse) String() string { return proto.CompactTextString(m) }
-func (*MsgSendShrResponse) ProtoMessage()    {}
-func (*MsgSendShrResponse) Descriptor() ([]byte, []int) {
+func (m *MsgSendPShrResponse) Reset()         { *m = MsgSendPShrResponse{} }
+func (m *MsgSendPShrResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgSendPShrResponse) ProtoMessage()    {}
+func (*MsgSendPShrResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_d3542f4930ea9a46, []int{7}
 }
-func (m *MsgSendShrResponse) XXX_Unmarshal(b []byte) error {
+func (m *MsgSendPShrResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgSendShrResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgSendPShrResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgSendShrResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgSendPShrResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -417,19 +417,19 @@ func (m *MsgSendShrResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, 
 		return b[:n], nil
 	}
 }
-func (m *MsgSendShrResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgSendShrResponse.Merge(m, src)
+func (m *MsgSendPShrResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgSendPShrResponse.Merge(m, src)
 }
-func (m *MsgSendShrResponse) XXX_Size() int {
+func (m *MsgSendPShrResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgSendShrResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgSendShrResponse.DiscardUnknown(m)
+func (m *MsgSendPShrResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgSendPShrResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgSendShrResponse proto.InternalMessageInfo
+var xxx_messageInfo_MsgSendPShrResponse proto.InternalMessageInfo
 
-func (m *MsgSendShrResponse) GetLog() string {
+func (m *MsgSendPShrResponse) GetLog() string {
 	if m != nil {
 		return m.Log
 	}
@@ -732,23 +732,23 @@ func (m *MsgBurnShrpResponse) GetLog() string {
 	return ""
 }
 
-type MsgBurnShr struct {
+type MsgBurnPShr struct {
 	Creator string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
 	Amount  string `protobuf:"bytes,2,opt,name=amount,proto3" json:"amount,omitempty"`
 }
 
-func (m *MsgBurnShr) Reset()         { *m = MsgBurnShr{} }
-func (m *MsgBurnShr) String() string { return proto.CompactTextString(m) }
-func (*MsgBurnShr) ProtoMessage()    {}
-func (*MsgBurnShr) Descriptor() ([]byte, []int) {
+func (m *MsgBurnPShr) Reset()         { *m = MsgBurnPShr{} }
+func (m *MsgBurnPShr) String() string { return proto.CompactTextString(m) }
+func (*MsgBurnPShr) ProtoMessage()    {}
+func (*MsgBurnPShr) Descriptor() ([]byte, []int) {
 	return fileDescriptor_d3542f4930ea9a46, []int{14}
 }
-func (m *MsgBurnShr) XXX_Unmarshal(b []byte) error {
+func (m *MsgBurnPShr) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgBurnShr) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgBurnPShr) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgBurnShr.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgBurnPShr.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -758,48 +758,48 @@ func (m *MsgBurnShr) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return b[:n], nil
 	}
 }
-func (m *MsgBurnShr) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgBurnShr.Merge(m, src)
+func (m *MsgBurnPShr) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgBurnPShr.Merge(m, src)
 }
-func (m *MsgBurnShr) XXX_Size() int {
+func (m *MsgBurnPShr) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgBurnShr) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgBurnShr.DiscardUnknown(m)
+func (m *MsgBurnPShr) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgBurnPShr.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgBurnShr proto.InternalMessageInfo
+var xxx_messageInfo_MsgBurnPShr proto.InternalMessageInfo
 
-func (m *MsgBurnShr) GetCreator() string {
+func (m *MsgBurnPShr) GetCreator() string {
 	if m != nil {
 		return m.Creator
 	}
 	return ""
 }
 
-func (m *MsgBurnShr) GetAmount() string {
+func (m *MsgBurnPShr) GetAmount() string {
 	if m != nil {
 		return m.Amount
 	}
 	return ""
 }
 
-type MsgBurnShrResponse struct {
+type MsgBurnPShrResponse struct {
 	Log string `protobuf:"bytes,1,opt,name=log,proto3" json:"log,omitempty"`
 }
 
-func (m *MsgBurnShrResponse) Reset()         { *m = MsgBurnShrResponse{} }
-func (m *MsgBurnShrResponse) String() string { return proto.CompactTextString(m) }
-func (*MsgBurnShrResponse) ProtoMessage()    {}
-func (*MsgBurnShrResponse) Descriptor() ([]byte, []int) {
+func (m *MsgBurnPShrResponse) Reset()         { *m = MsgBurnPShrResponse{} }
+func (m *MsgBurnPShrResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgBurnPShrResponse) ProtoMessage()    {}
+func (*MsgBurnPShrResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_d3542f4930ea9a46, []int{15}
 }
-func (m *MsgBurnShrResponse) XXX_Unmarshal(b []byte) error {
+func (m *MsgBurnPShrResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgBurnShrResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgBurnPShrResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgBurnShrResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgBurnPShrResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -809,19 +809,19 @@ func (m *MsgBurnShrResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, 
 		return b[:n], nil
 	}
 }
-func (m *MsgBurnShrResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgBurnShrResponse.Merge(m, src)
+func (m *MsgBurnPShrResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgBurnPShrResponse.Merge(m, src)
 }
-func (m *MsgBurnShrResponse) XXX_Size() int {
+func (m *MsgBurnPShrResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgBurnShrResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgBurnShrResponse.DiscardUnknown(m)
+func (m *MsgBurnPShrResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgBurnPShrResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgBurnShrResponse proto.InternalMessageInfo
+var xxx_messageInfo_MsgBurnPShrResponse proto.InternalMessageInfo
 
-func (m *MsgBurnShrResponse) GetLog() string {
+func (m *MsgBurnPShrResponse) GetLog() string {
 	if m != nil {
 		return m.Log
 	}
@@ -1373,22 +1373,22 @@ func (m *MsgLoadFeeResponse) XXX_DiscardUnknown() {
 var xxx_messageInfo_MsgLoadFeeResponse proto.InternalMessageInfo
 
 func init() {
-	proto.RegisterType((*MsgLoadShr)(nil), "shareledger.gentlemint.MsgLoadShr")
-	proto.RegisterType((*MsgLoadShrResponse)(nil), "shareledger.gentlemint.MsgLoadShrResponse")
+	proto.RegisterType((*MsgLoadPShr)(nil), "shareledger.gentlemint.MsgLoadPShr")
+	proto.RegisterType((*MsgLoadPShrResponse)(nil), "shareledger.gentlemint.MsgLoadPShrResponse")
 	proto.RegisterType((*MsgLoadShrp)(nil), "shareledger.gentlemint.MsgLoadShrp")
 	proto.RegisterType((*MsgLoadShrpResponse)(nil), "shareledger.gentlemint.MsgLoadShrpResponse")
-	proto.RegisterType((*MsgBuyShr)(nil), "shareledger.gentlemint.MsgBuyShr")
-	proto.RegisterType((*MsgBuyShrResponse)(nil), "shareledger.gentlemint.MsgBuyShrResponse")
-	proto.RegisterType((*MsgSendShr)(nil), "shareledger.gentlemint.MsgSendShr")
-	proto.RegisterType((*MsgSendShrResponse)(nil), "shareledger.gentlemint.MsgSendShrResponse")
+	proto.RegisterType((*MsgBuyPShr)(nil), "shareledger.gentlemint.MsgBuyPShr")
+	proto.RegisterType((*MsgBuyPShrResponse)(nil), "shareledger.gentlemint.MsgBuyPShrResponse")
+	proto.RegisterType((*MsgSendPShr)(nil), "shareledger.gentlemint.MsgSendPShr")
+	proto.RegisterType((*MsgSendPShrResponse)(nil), "shareledger.gentlemint.MsgSendPShrResponse")
 	proto.RegisterType((*MsgSendShrp)(nil), "shareledger.gentlemint.MsgSendShrp")
 	proto.RegisterType((*MsgSendShrpResponse)(nil), "shareledger.gentlemint.MsgSendShrpResponse")
 	proto.RegisterType((*MsgBuyCent)(nil), "shareledger.gentlemint.MsgBuyCent")
 	proto.RegisterType((*MsgBuyCentResponse)(nil), "shareledger.gentlemint.MsgBuyCentResponse")
 	proto.RegisterType((*MsgBurnShrp)(nil), "shareledger.gentlemint.MsgBurnShrp")
 	proto.RegisterType((*MsgBurnShrpResponse)(nil), "shareledger.gentlemint.MsgBurnShrpResponse")
-	proto.RegisterType((*MsgBurnShr)(nil), "shareledger.gentlemint.MsgBurnShr")
-	proto.RegisterType((*MsgBurnShrResponse)(nil), "shareledger.gentlemint.MsgBurnShrResponse")
+	proto.RegisterType((*MsgBurnPShr)(nil), "shareledger.gentlemint.MsgBurnPShr")
+	proto.RegisterType((*MsgBurnPShrResponse)(nil), "shareledger.gentlemint.MsgBurnPShrResponse")
 	proto.RegisterType((*MsgSetExchange)(nil), "shareledger.gentlemint.MsgSetExchange")
 	proto.RegisterType((*MsgSetExchangeResponse)(nil), "shareledger.gentlemint.MsgSetExchangeResponse")
 	proto.RegisterType((*MsgSetLevelFee)(nil), "shareledger.gentlemint.MsgSetLevelFee")
@@ -1406,55 +1406,54 @@ func init() {
 func init() { proto.RegisterFile("gentlemint/tx.proto", fileDescriptor_d3542f4930ea9a46) }
 
 var fileDescriptor_d3542f4930ea9a46 = []byte{
-	// 754 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xb4, 0x97, 0x51, 0x4f, 0xd3, 0x50,
-	0x14, 0xc7, 0x19, 0x43, 0x06, 0x87, 0x84, 0x48, 0x59, 0x70, 0x56, 0x52, 0xa5, 0x44, 0x54, 0x34,
-	0xad, 0x80, 0x89, 0x4f, 0x6a, 0x1c, 0xe8, 0x8b, 0xec, 0x65, 0x24, 0xc6, 0x19, 0x22, 0xe9, 0xba,
-	0x43, 0xb7, 0x64, 0xeb, 0x5d, 0x7a, 0xef, 0x10, 0xde, 0xfc, 0x08, 0x7e, 0x2c, 0x1f, 0x79, 0xf4,
-	0xd1, 0xc0, 0x97, 0xf0, 0xd1, 0xf4, 0xb6, 0xbd, 0xed, 0x3a, 0xb8, 0x77, 0x80, 0xbc, 0xf5, 0xe6,
-	0xfe, 0xcf, 0xff, 0x77, 0xee, 0x59, 0xf7, 0xbf, 0x29, 0x2c, 0x7a, 0xe8, 0xb3, 0x2e, 0xf6, 0x3a,
-	0x3e, 0xb3, 0xd9, 0xb1, 0xd5, 0x0f, 0x08, 0x23, 0xda, 0x12, 0x6d, 0x3b, 0x01, 0x76, 0xb1, 0xe5,
-	0x61, 0x60, 0xa5, 0x02, 0x5d, 0xcf, 0x88, 0xbb, 0x78, 0x84, 0xdd, 0x83, 0x43, 0xc4, 0xa8, 0x46,
-	0x5f, 0xc9, 0xec, 0x39, 0x2e, 0xeb, 0x10, 0xff, 0x20, 0x2f, 0x31, 0x5c, 0x42, 0x7b, 0x84, 0xda,
-	0x4d, 0x87, 0xa2, 0x7d, 0xb4, 0xd1, 0x44, 0xe6, 0x6c, 0xd8, 0x2e, 0xe9, 0xf8, 0xd1, 0xbe, 0xf9,
-	0x05, 0xa0, 0x46, 0xbd, 0x5d, 0xe2, 0xb4, 0xf6, 0xda, 0x81, 0x56, 0x81, 0x92, 0x1b, 0xa0, 0xc3,
-	0x48, 0x50, 0x29, 0x3c, 0x2a, 0x3c, 0x9d, 0xad, 0x27, 0xcb, 0x70, 0xc7, 0x69, 0xb5, 0x02, 0xa4,
-	0xb4, 0x32, 0x19, 0xed, 0xc4, 0x4b, 0x6d, 0x09, 0xa6, 0x9d, 0x1e, 0x19, 0xf8, 0xac, 0x52, 0xe4,
-	0x1b, 0xf1, 0xca, 0x5c, 0x03, 0x2d, 0x75, 0xae, 0x23, 0xed, 0x13, 0x9f, 0xa2, 0x76, 0x17, 0x8a,
-	0x5d, 0xe2, 0xc5, 0xee, 0xe1, 0xa3, 0xd9, 0x80, 0xb9, 0x54, 0xd7, 0xff, 0xaf, 0x2d, 0x3c, 0x81,
-	0xc5, 0x8c, 0xb5, 0xa4, 0x87, 0x37, 0x30, 0x5b, 0xa3, 0x5e, 0x75, 0x70, 0x22, 0x1f, 0x42, 0xca,
-	0x99, 0x1c, 0xe2, 0x3c, 0x86, 0x05, 0x51, 0x2e, 0xa1, 0x44, 0xb3, 0xde, 0x43, 0xff, 0x96, 0x66,
-	0x1d, 0x3b, 0x2b, 0x67, 0x1d, 0xeb, 0x6e, 0x63, 0xd6, 0x89, 0xb5, 0xa4, 0x87, 0xb7, 0x7c, 0x0a,
-	0xd5, 0xc1, 0xc9, 0x36, 0xfa, 0xec, 0x1a, 0xc3, 0x8e, 0xce, 0x1a, 0xd7, 0x4b, 0x38, 0xef, 0xf8,
-	0x59, 0xab, 0x83, 0xc0, 0x57, 0x9c, 0xf5, 0x32, 0x50, 0x74, 0xa2, 0xc4, 0x60, 0x8c, 0x13, 0x71,
-	0xe1, 0x0d, 0x4e, 0xc4, 0xeb, 0xa5, 0x9c, 0x79, 0x3e, 0x62, 0xf6, 0xe1, 0xd8, 0x6d, 0x3b, 0xbe,
-	0x87, 0x12, 0x96, 0x06, 0x53, 0x81, 0xc3, 0x30, 0x26, 0xf1, 0x67, 0xb3, 0x02, 0x4b, 0xc3, 0xf5,
-	0x09, 0xcb, 0xac, 0x27, 0xce, 0xbb, 0x61, 0x7c, 0x7c, 0x44, 0x99, 0x73, 0x19, 0xee, 0xf0, 0x90,
-	0x89, 0xad, 0xa3, 0x45, 0xd8, 0xed, 0x21, 0x62, 0xfc, 0x4e, 0x84, 0x8f, 0x29, 0x2d, 0xf1, 0x14,
-	0xb4, 0x6d, 0xfe, 0x77, 0xd9, 0xc1, 0x2e, 0x32, 0xbc, 0x2e, 0xd0, 0x7c, 0x00, 0xf7, 0x47, 0x4c,
-	0x04, 0xe1, 0x1b, 0x94, 0x23, 0xf6, 0x7b, 0x9e, 0x8a, 0x63, 0x40, 0xc2, 0xdf, 0x86, 0x6b, 0xc5,
-	0x6f, 0xc3, 0x57, 0x29, 0xbc, 0x98, 0x85, 0x1b, 0xb0, 0x7c, 0x91, 0xbf, 0xe0, 0x7f, 0x82, 0x7b,
-	0xa2, 0xb9, 0x9b, 0xb6, 0x60, 0xae, 0xc0, 0xc3, 0x4b, 0xcc, 0x04, 0x2f, 0x4d, 0x71, 0x39, 0xe2,
-	0x25, 0x4c, 0xd1, 0x76, 0xd0, 0xe7, 0x80, 0xb9, 0xcd, 0x65, 0x2b, 0xba, 0x1c, 0xac, 0xf0, 0x72,
-	0xb0, 0xe2, 0xcb, 0xc1, 0xda, 0x41, 0x77, 0x9b, 0x74, 0xfc, 0x3a, 0x57, 0x9a, 0x65, 0x91, 0xe2,
-	0x19, 0xde, 0xe6, 0x5f, 0x80, 0x62, 0x8d, 0x7a, 0x5a, 0x03, 0x4a, 0xc9, 0xd5, 0x61, 0x5a, 0x17,
-	0x5f, 0x60, 0x56, 0x9a, 0xc0, 0xfa, 0xba, 0x5a, 0x23, 0x5e, 0xff, 0x7d, 0x98, 0x11, 0x77, 0xc2,
-	0xaa, 0xba, 0xae, 0xaf, 0x3f, 0x1f, 0x43, 0x24, 0xdc, 0x3f, 0xc3, 0x74, 0x9c, 0xf6, 0x2b, 0x92,
-	0xb2, 0x48, 0xa2, 0x3f, 0x53, 0x4a, 0x84, 0x6f, 0x03, 0x4a, 0x49, 0xbe, 0xcb, 0x06, 0x12, 0x6b,
-	0xa4, 0x03, 0xc9, 0xa7, 0x79, 0x03, 0x4a, 0x49, 0x68, 0x9a, 0xf2, 0x86, 0x42, 0x8d, 0xd4, 0x3a,
-	0x1f, 0x9e, 0xfb, 0x30, 0x23, 0x72, 0x72, 0x55, 0x5a, 0x17, 0x89, 0xa4, 0xb3, 0x1e, 0x09, 0xcc,
-	0x7d, 0x98, 0x11, 0x37, 0xce, 0xaa, 0xfa, 0xc0, 0x72, 0xf7, 0x91, 0x0b, 0x86, 0x8f, 0x25, 0x4a,
-	0x5e, 0x53, 0xdd, 0x95, 0x62, 0x2c, 0xc3, 0x09, 0x8c, 0x30, 0x97, 0x0d, 0xdb, 0x35, 0x69, 0x5b,
-	0x42, 0xa7, 0x5b, 0xe3, 0xe9, 0x72, 0x18, 0x11, 0x10, 0x0a, 0x4c, 0xa2, 0x53, 0x61, 0xf2, 0x19,
-	0xa1, 0xf9, 0x30, 0x9f, 0x8b, 0x5c, 0xd9, 0x7b, 0x3d, 0x2c, 0xd5, 0x37, 0xc6, 0x96, 0x0a, 0xde,
-	0x77, 0x58, 0x18, 0x0d, 0xe0, 0x17, 0xf2, 0xa6, 0x87, 0xd5, 0xfa, 0xab, 0xab, 0xa8, 0x05, 0xf8,
-	0x47, 0x01, 0xca, 0x17, 0x46, 0xaf, 0xad, 0x3c, 0x44, 0x8e, 0xff, 0xfa, 0x8a, 0x05, 0xd9, 0x97,
-	0x32, 0x09, 0x63, 0x55, 0x2e, 0x86, 0x9c, 0x75, 0xb5, 0x26, 0xb1, 0xae, 0xd6, 0x7e, 0x9d, 0x19,
-	0x85, 0xd3, 0x33, 0xa3, 0xf0, 0xe7, 0xcc, 0x28, 0xfc, 0x3c, 0x37, 0x26, 0x4e, 0xcf, 0x8d, 0x89,
-	0xdf, 0xe7, 0xc6, 0xc4, 0xd7, 0x2d, 0xaf, 0xc3, 0xda, 0x83, 0xa6, 0xe5, 0x92, 0x9e, 0xcd, 0xfd,
-	0x82, 0x8e, 0xef, 0xd9, 0x19, 0x67, 0xfb, 0xd8, 0xce, 0x7e, 0x79, 0x9c, 0xf4, 0x91, 0x36, 0xa7,
-	0xf9, 0x67, 0xc0, 0xd6, 0xbf, 0x00, 0x00, 0x00, 0xff, 0xff, 0x74, 0xbe, 0xde, 0x73, 0x94, 0x0c,
-	0x00, 0x00,
+	// 739 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xb4, 0x57, 0x41, 0x4f, 0xdb, 0x4c,
+	0x10, 0x25, 0x84, 0x0f, 0xf8, 0x26, 0x12, 0x2a, 0x26, 0xa2, 0xa9, 0x8b, 0xdc, 0x62, 0x24, 0xda,
+	0xd2, 0xca, 0x2e, 0x50, 0xa9, 0x37, 0xaa, 0x02, 0xed, 0xa5, 0x44, 0xaa, 0xc2, 0xa5, 0x54, 0xa8,
+	0xc8, 0x49, 0x06, 0x27, 0x52, 0xe2, 0x8d, 0xbc, 0x1b, 0x0a, 0xb7, 0x1e, 0xfa, 0x03, 0xfa, 0xb3,
+	0x7a, 0xe4, 0xd8, 0x63, 0x05, 0x7f, 0xa4, 0xda, 0xb5, 0x77, 0xe3, 0x24, 0xb0, 0x6b, 0x40, 0xdc,
+	0xbc, 0xda, 0x37, 0xef, 0xbd, 0x1d, 0x7b, 0xdf, 0xc8, 0xb0, 0x10, 0x62, 0xc4, 0x3a, 0xd8, 0x6d,
+	0x47, 0xcc, 0x67, 0xa7, 0x5e, 0x2f, 0x26, 0x8c, 0x58, 0x8b, 0xb4, 0x15, 0xc4, 0xd8, 0xc1, 0x66,
+	0x88, 0xb1, 0x37, 0x00, 0xd8, 0x76, 0x06, 0xdc, 0xc1, 0x13, 0xec, 0x1c, 0x1d, 0x23, 0x26, 0x35,
+	0xf6, 0x72, 0x66, 0x2f, 0x68, 0xb0, 0x36, 0x89, 0x8e, 0x46, 0x21, 0x4e, 0x83, 0xd0, 0x2e, 0xa1,
+	0x7e, 0x3d, 0xa0, 0xe8, 0x9f, 0xac, 0xd7, 0x91, 0x05, 0xeb, 0x7e, 0x83, 0xb4, 0xa3, 0x64, 0xdf,
+	0x3d, 0x80, 0x52, 0x95, 0x86, 0x7b, 0x24, 0x68, 0x7e, 0xde, 0x6f, 0xc5, 0x56, 0x05, 0x66, 0x1a,
+	0x31, 0x06, 0x8c, 0xc4, 0x95, 0xc2, 0xd3, 0xc2, 0xf3, 0xff, 0x6b, 0x72, 0xc9, 0x77, 0x82, 0x66,
+	0x33, 0x46, 0x4a, 0x2b, 0x93, 0xc9, 0x4e, 0xba, 0xb4, 0x16, 0x61, 0x3a, 0xe8, 0x92, 0x7e, 0xc4,
+	0x2a, 0x45, 0xb1, 0x91, 0xae, 0xdc, 0x67, 0xb0, 0x90, 0xa1, 0xae, 0x21, 0xed, 0x91, 0x88, 0xa2,
+	0xf5, 0x00, 0x8a, 0x1d, 0x12, 0xa6, 0xf4, 0xfc, 0x31, 0xe3, 0x61, 0xbf, 0x15, 0xf7, 0xee, 0xc9,
+	0x03, 0xa7, 0xd6, 0x78, 0xd8, 0x02, 0xa8, 0xd2, 0x70, 0xbb, 0x7f, 0x66, 0x68, 0xc3, 0x40, 0x68,
+	0x72, 0x48, 0x68, 0x15, 0xac, 0x41, 0xbd, 0xf1, 0xac, 0xfb, 0x18, 0xdd, 0x57, 0xbf, 0x25, 0x75,
+	0x2e, 0x0f, 0xf7, 0xd4, 0x6f, 0x49, 0x9d, 0xa7, 0xdf, 0x3b, 0x18, 0xb1, 0xbb, 0xf4, 0x9b, 0xd7,
+	0x6b, 0x74, 0xde, 0x89, 0xb3, 0x6e, 0xf7, 0xe3, 0xc8, 0x70, 0xd6, 0xeb, 0x84, 0x92, 0x13, 0x49,
+	0x82, 0x5c, 0x4a, 0xb7, 0xfc, 0x84, 0x06, 0x4a, 0x86, 0xf7, 0xb7, 0x05, 0x73, 0xa2, 0xc9, 0xec,
+	0xc3, 0x69, 0xa3, 0x15, 0x44, 0x21, 0x6a, 0xc4, 0x2c, 0x98, 0x8a, 0x03, 0x86, 0xa9, 0x94, 0x78,
+	0x76, 0x2b, 0xb0, 0x38, 0x5c, 0x2f, 0xb5, 0xdc, 0x9a, 0x64, 0xde, 0xe3, 0x31, 0xf2, 0x11, 0x75,
+	0xcc, 0x65, 0xf8, 0x4f, 0x84, 0x4d, 0x4a, 0x9d, 0x2c, 0xb8, 0xdb, 0x63, 0xc4, 0xf4, 0xab, 0xe0,
+	0x8f, 0x03, 0x35, 0xc9, 0xa9, 0xd4, 0x76, 0x60, 0xbe, 0x4a, 0xc3, 0x5d, 0xec, 0x20, 0xc3, 0xdb,
+	0x0a, 0xba, 0x8f, 0xe1, 0xd1, 0x18, 0x89, 0x52, 0xf8, 0x06, 0xe5, 0x44, 0xfb, 0xbd, 0x48, 0xc7,
+	0x1c, 0x22, 0xfc, 0xe5, 0x08, 0xac, 0x7a, 0x39, 0x62, 0x35, 0x10, 0x2f, 0x66, 0xc5, 0x1d, 0x58,
+	0xba, 0x8a, 0x5f, 0xe9, 0x7f, 0x82, 0x87, 0xca, 0xdc, 0x5d, 0x2d, 0xb8, 0xcb, 0xf0, 0xe4, 0x1a,
+	0x32, 0xa5, 0xf7, 0x45, 0xdc, 0x2a, 0x1e, 0x77, 0x7a, 0x89, 0xd7, 0x30, 0x45, 0x5b, 0x71, 0x4f,
+	0x08, 0x94, 0x36, 0x96, 0xbc, 0x64, 0x48, 0x78, 0x7c, 0x48, 0x78, 0xe9, 0x90, 0xf0, 0x76, 0xb1,
+	0xb1, 0x43, 0xda, 0x51, 0x4d, 0x20, 0xdd, 0xb2, 0xb8, 0x6f, 0x29, 0xb3, 0xd4, 0xdb, 0xf8, 0x59,
+	0x82, 0x62, 0x95, 0x86, 0xd6, 0x21, 0xcc, 0xaa, 0x11, 0xb2, 0xe2, 0x5d, 0x3d, 0xc9, 0xbc, 0xcc,
+	0x30, 0xb0, 0x5f, 0xe6, 0x00, 0xa9, 0x1b, 0x90, 0xb2, 0x8b, 0x0b, 0x6c, 0x62, 0xe7, 0x20, 0x23,
+	0xfb, 0xd0, 0x4d, 0x3e, 0x80, 0x19, 0x19, 0xfb, 0xae, 0xa6, 0x2e, 0xc5, 0xd8, 0x6b, 0x66, 0x4c,
+	0xd6, 0xb8, 0x4a, 0x7a, 0x9d, 0x71, 0x09, 0xd2, 0x1a, 0x1f, 0x0b, 0xf6, 0xc4, 0xb8, 0xc8, 0x4f,
+	0x83, 0x71, 0x8e, 0x31, 0x19, 0x1f, 0xca, 0xd1, 0x43, 0x98, 0x55, 0x91, 0xb9, 0xa2, 0xad, 0x4b,
+	0x40, 0x5a, 0xe3, 0x63, 0xd9, 0x99, 0xb6, 0xc5, 0xc8, 0x2e, 0x41, 0xc6, 0xb6, 0x8c, 0xb2, 0xab,
+	0x10, 0x36, 0x79, 0x37, 0x36, 0x7d, 0x2c, 0x8d, 0x11, 0x4a, 0xd9, 0xe0, 0x5d, 0xd5, 0x3a, 0x53,
+	0x38, 0xdb, 0xcb, 0x87, 0x1b, 0x91, 0x51, 0x61, 0x61, 0x90, 0x91, 0x38, 0x93, 0xcc, 0x68, 0x5e,
+	0x58, 0x11, 0xcc, 0x8d, 0xc4, 0xef, 0x0b, 0x0d, 0xc3, 0x30, 0xd4, 0x5e, 0xcf, 0x0d, 0x55, 0x7a,
+	0xdf, 0x61, 0x7e, 0x3c, 0x8c, 0x5f, 0xe9, 0x4d, 0x0f, 0xa3, 0xed, 0x37, 0x37, 0x41, 0x2b, 0xe1,
+	0x1f, 0x05, 0x28, 0x5f, 0x19, 0xc3, 0xbe, 0xf1, 0x10, 0x23, 0xfa, 0x6f, 0x6f, 0x58, 0x90, 0xbd,
+	0xae, 0x32, 0x98, 0x5d, 0x43, 0x3e, 0x71, 0x9d, 0x35, 0x33, 0x46, 0x52, 0x6f, 0x57, 0x7f, 0x5f,
+	0x38, 0x85, 0xf3, 0x0b, 0xa7, 0xf0, 0xf7, 0xc2, 0x29, 0xfc, 0xba, 0x74, 0x26, 0xce, 0x2f, 0x9d,
+	0x89, 0x3f, 0x97, 0xce, 0xc4, 0xd7, 0xcd, 0xb0, 0xcd, 0x5a, 0xfd, 0xba, 0xd7, 0x20, 0x5d, 0x5f,
+	0xf0, 0xc5, 0xed, 0x28, 0xf4, 0x33, 0xcc, 0xfe, 0xa9, 0x9f, 0xfd, 0x1b, 0x39, 0xeb, 0x21, 0xad,
+	0x4f, 0x8b, 0x5f, 0x83, 0xcd, 0x7f, 0x01, 0x00, 0x00, 0xff, 0xff, 0x37, 0xfc, 0x57, 0x3e, 0xa8,
+	0x0c, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -1469,14 +1468,14 @@ const _ = grpc.SupportPackageIsVersion4
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type MsgClient interface {
-	LoadShr(ctx context.Context, in *MsgLoadShr, opts ...grpc.CallOption) (*MsgLoadShrResponse, error)
+	LoadPShr(ctx context.Context, in *MsgLoadPShr, opts ...grpc.CallOption) (*MsgLoadPShrResponse, error)
 	LoadShrp(ctx context.Context, in *MsgLoadShrp, opts ...grpc.CallOption) (*MsgLoadShrpResponse, error)
-	BuyShr(ctx context.Context, in *MsgBuyShr, opts ...grpc.CallOption) (*MsgBuyShrResponse, error)
-	SendShr(ctx context.Context, in *MsgSendShr, opts ...grpc.CallOption) (*MsgSendShrResponse, error)
+	BuyPShr(ctx context.Context, in *MsgBuyPShr, opts ...grpc.CallOption) (*MsgBuyPShrResponse, error)
+	SendPShr(ctx context.Context, in *MsgSendPShr, opts ...grpc.CallOption) (*MsgSendPShrResponse, error)
 	BuyCent(ctx context.Context, in *MsgBuyCent, opts ...grpc.CallOption) (*MsgBuyCentResponse, error)
 	BurnShrp(ctx context.Context, in *MsgBurnShrp, opts ...grpc.CallOption) (*MsgBurnShrpResponse, error)
 	SendShrp(ctx context.Context, in *MsgSendShrp, opts ...grpc.CallOption) (*MsgSendShrpResponse, error)
-	BurnShr(ctx context.Context, in *MsgBurnShr, opts ...grpc.CallOption) (*MsgBurnShrResponse, error)
+	BurnPShr(ctx context.Context, in *MsgBurnPShr, opts ...grpc.CallOption) (*MsgBurnPShrResponse, error)
 	SetExchange(ctx context.Context, in *MsgSetExchange, opts ...grpc.CallOption) (*MsgSetExchangeResponse, error)
 	SetLevelFee(ctx context.Context, in *MsgSetLevelFee, opts ...grpc.CallOption) (*MsgSetLevelFeeResponse, error)
 	DeleteLevelFee(ctx context.Context, in *MsgDeleteLevelFee, opts ...grpc.CallOption) (*MsgDeleteLevelFeeResponse, error)
@@ -1493,9 +1492,9 @@ func NewMsgClient(cc grpc1.ClientConn) MsgClient {
 	return &msgClient{cc}
 }
 
-func (c *msgClient) LoadShr(ctx context.Context, in *MsgLoadShr, opts ...grpc.CallOption) (*MsgLoadShrResponse, error) {
-	out := new(MsgLoadShrResponse)
-	err := c.cc.Invoke(ctx, "/shareledger.gentlemint.Msg/LoadShr", in, out, opts...)
+func (c *msgClient) LoadPShr(ctx context.Context, in *MsgLoadPShr, opts ...grpc.CallOption) (*MsgLoadPShrResponse, error) {
+	out := new(MsgLoadPShrResponse)
+	err := c.cc.Invoke(ctx, "/shareledger.gentlemint.Msg/LoadPShr", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1511,18 +1510,18 @@ func (c *msgClient) LoadShrp(ctx context.Context, in *MsgLoadShrp, opts ...grpc.
 	return out, nil
 }
 
-func (c *msgClient) BuyShr(ctx context.Context, in *MsgBuyShr, opts ...grpc.CallOption) (*MsgBuyShrResponse, error) {
-	out := new(MsgBuyShrResponse)
-	err := c.cc.Invoke(ctx, "/shareledger.gentlemint.Msg/BuyShr", in, out, opts...)
+func (c *msgClient) BuyPShr(ctx context.Context, in *MsgBuyPShr, opts ...grpc.CallOption) (*MsgBuyPShrResponse, error) {
+	out := new(MsgBuyPShrResponse)
+	err := c.cc.Invoke(ctx, "/shareledger.gentlemint.Msg/BuyPShr", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *msgClient) SendShr(ctx context.Context, in *MsgSendShr, opts ...grpc.CallOption) (*MsgSendShrResponse, error) {
-	out := new(MsgSendShrResponse)
-	err := c.cc.Invoke(ctx, "/shareledger.gentlemint.Msg/SendShr", in, out, opts...)
+func (c *msgClient) SendPShr(ctx context.Context, in *MsgSendPShr, opts ...grpc.CallOption) (*MsgSendPShrResponse, error) {
+	out := new(MsgSendPShrResponse)
+	err := c.cc.Invoke(ctx, "/shareledger.gentlemint.Msg/SendPShr", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1556,9 +1555,9 @@ func (c *msgClient) SendShrp(ctx context.Context, in *MsgSendShrp, opts ...grpc.
 	return out, nil
 }
 
-func (c *msgClient) BurnShr(ctx context.Context, in *MsgBurnShr, opts ...grpc.CallOption) (*MsgBurnShrResponse, error) {
-	out := new(MsgBurnShrResponse)
-	err := c.cc.Invoke(ctx, "/shareledger.gentlemint.Msg/BurnShr", in, out, opts...)
+func (c *msgClient) BurnPShr(ctx context.Context, in *MsgBurnPShr, opts ...grpc.CallOption) (*MsgBurnPShrResponse, error) {
+	out := new(MsgBurnPShrResponse)
+	err := c.cc.Invoke(ctx, "/shareledger.gentlemint.Msg/BurnPShr", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1621,14 +1620,14 @@ func (c *msgClient) LoadFee(ctx context.Context, in *MsgLoadFee, opts ...grpc.Ca
 
 // MsgServer is the server API for Msg service.
 type MsgServer interface {
-	LoadShr(context.Context, *MsgLoadShr) (*MsgLoadShrResponse, error)
+	LoadPShr(context.Context, *MsgLoadPShr) (*MsgLoadPShrResponse, error)
 	LoadShrp(context.Context, *MsgLoadShrp) (*MsgLoadShrpResponse, error)
-	BuyShr(context.Context, *MsgBuyShr) (*MsgBuyShrResponse, error)
-	SendShr(context.Context, *MsgSendShr) (*MsgSendShrResponse, error)
+	BuyPShr(context.Context, *MsgBuyPShr) (*MsgBuyPShrResponse, error)
+	SendPShr(context.Context, *MsgSendPShr) (*MsgSendPShrResponse, error)
 	BuyCent(context.Context, *MsgBuyCent) (*MsgBuyCentResponse, error)
 	BurnShrp(context.Context, *MsgBurnShrp) (*MsgBurnShrpResponse, error)
 	SendShrp(context.Context, *MsgSendShrp) (*MsgSendShrpResponse, error)
-	BurnShr(context.Context, *MsgBurnShr) (*MsgBurnShrResponse, error)
+	BurnPShr(context.Context, *MsgBurnPShr) (*MsgBurnPShrResponse, error)
 	SetExchange(context.Context, *MsgSetExchange) (*MsgSetExchangeResponse, error)
 	SetLevelFee(context.Context, *MsgSetLevelFee) (*MsgSetLevelFeeResponse, error)
 	DeleteLevelFee(context.Context, *MsgDeleteLevelFee) (*MsgDeleteLevelFeeResponse, error)
@@ -1641,17 +1640,17 @@ type MsgServer interface {
 type UnimplementedMsgServer struct {
 }
 
-func (*UnimplementedMsgServer) LoadShr(ctx context.Context, req *MsgLoadShr) (*MsgLoadShrResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method LoadShr not implemented")
+func (*UnimplementedMsgServer) LoadPShr(ctx context.Context, req *MsgLoadPShr) (*MsgLoadPShrResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method LoadPShr not implemented")
 }
 func (*UnimplementedMsgServer) LoadShrp(ctx context.Context, req *MsgLoadShrp) (*MsgLoadShrpResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method LoadShrp not implemented")
 }
-func (*UnimplementedMsgServer) BuyShr(ctx context.Context, req *MsgBuyShr) (*MsgBuyShrResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method BuyShr not implemented")
+func (*UnimplementedMsgServer) BuyPShr(ctx context.Context, req *MsgBuyPShr) (*MsgBuyPShrResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method BuyPShr not implemented")
 }
-func (*UnimplementedMsgServer) SendShr(ctx context.Context, req *MsgSendShr) (*MsgSendShrResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method SendShr not implemented")
+func (*UnimplementedMsgServer) SendPShr(ctx context.Context, req *MsgSendPShr) (*MsgSendPShrResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SendPShr not implemented")
 }
 func (*UnimplementedMsgServer) BuyCent(ctx context.Context, req *MsgBuyCent) (*MsgBuyCentResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method BuyCent not implemented")
@@ -1662,8 +1661,8 @@ func (*UnimplementedMsgServer) BurnShrp(ctx context.Context, req *MsgBurnShrp) (
 func (*UnimplementedMsgServer) SendShrp(ctx context.Context, req *MsgSendShrp) (*MsgSendShrpResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SendShrp not implemented")
 }
-func (*UnimplementedMsgServer) BurnShr(ctx context.Context, req *MsgBurnShr) (*MsgBurnShrResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method BurnShr not implemented")
+func (*UnimplementedMsgServer) BurnPShr(ctx context.Context, req *MsgBurnPShr) (*MsgBurnPShrResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method BurnPShr not implemented")
 }
 func (*UnimplementedMsgServer) SetExchange(ctx context.Context, req *MsgSetExchange) (*MsgSetExchangeResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SetExchange not implemented")
@@ -1688,20 +1687,20 @@ func RegisterMsgServer(s grpc1.Server, srv MsgServer) {
 	s.RegisterService(&_Msg_serviceDesc, srv)
 }
 
-func _Msg_LoadShr_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgLoadShr)
+func _Msg_LoadPShr_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgLoadPShr)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MsgServer).LoadShr(ctx, in)
+		return srv.(MsgServer).LoadPShr(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/shareledger.gentlemint.Msg/LoadShr",
+		FullMethod: "/shareledger.gentlemint.Msg/LoadPShr",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).LoadShr(ctx, req.(*MsgLoadShr))
+		return srv.(MsgServer).LoadPShr(ctx, req.(*MsgLoadPShr))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1724,38 +1723,38 @@ func _Msg_LoadShrp_Handler(srv interface{}, ctx context.Context, dec func(interf
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Msg_BuyShr_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgBuyShr)
+func _Msg_BuyPShr_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgBuyPShr)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MsgServer).BuyShr(ctx, in)
+		return srv.(MsgServer).BuyPShr(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/shareledger.gentlemint.Msg/BuyShr",
+		FullMethod: "/shareledger.gentlemint.Msg/BuyPShr",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).BuyShr(ctx, req.(*MsgBuyShr))
+		return srv.(MsgServer).BuyPShr(ctx, req.(*MsgBuyPShr))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Msg_SendShr_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgSendShr)
+func _Msg_SendPShr_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgSendPShr)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MsgServer).SendShr(ctx, in)
+		return srv.(MsgServer).SendPShr(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/shareledger.gentlemint.Msg/SendShr",
+		FullMethod: "/shareledger.gentlemint.Msg/SendPShr",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).SendShr(ctx, req.(*MsgSendShr))
+		return srv.(MsgServer).SendPShr(ctx, req.(*MsgSendPShr))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1814,20 +1813,20 @@ func _Msg_SendShrp_Handler(srv interface{}, ctx context.Context, dec func(interf
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Msg_BurnShr_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgBurnShr)
+func _Msg_BurnPShr_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgBurnPShr)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MsgServer).BurnShr(ctx, in)
+		return srv.(MsgServer).BurnPShr(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/shareledger.gentlemint.Msg/BurnShr",
+		FullMethod: "/shareledger.gentlemint.Msg/BurnPShr",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).BurnShr(ctx, req.(*MsgBurnShr))
+		return srv.(MsgServer).BurnPShr(ctx, req.(*MsgBurnPShr))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1945,20 +1944,20 @@ var _Msg_serviceDesc = grpc.ServiceDesc{
 	HandlerType: (*MsgServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "LoadShr",
-			Handler:    _Msg_LoadShr_Handler,
+			MethodName: "LoadPShr",
+			Handler:    _Msg_LoadPShr_Handler,
 		},
 		{
 			MethodName: "LoadShrp",
 			Handler:    _Msg_LoadShrp_Handler,
 		},
 		{
-			MethodName: "BuyShr",
-			Handler:    _Msg_BuyShr_Handler,
+			MethodName: "BuyPShr",
+			Handler:    _Msg_BuyPShr_Handler,
 		},
 		{
-			MethodName: "SendShr",
-			Handler:    _Msg_SendShr_Handler,
+			MethodName: "SendPShr",
+			Handler:    _Msg_SendPShr_Handler,
 		},
 		{
 			MethodName: "BuyCent",
@@ -1973,8 +1972,8 @@ var _Msg_serviceDesc = grpc.ServiceDesc{
 			Handler:    _Msg_SendShrp_Handler,
 		},
 		{
-			MethodName: "BurnShr",
-			Handler:    _Msg_BurnShr_Handler,
+			MethodName: "BurnPShr",
+			Handler:    _Msg_BurnPShr_Handler,
 		},
 		{
 			MethodName: "SetExchange",
@@ -2005,7 +2004,7 @@ var _Msg_serviceDesc = grpc.ServiceDesc{
 	Metadata: "gentlemint/tx.proto",
 }
 
-func (m *MsgLoadShr) Marshal() (dAtA []byte, err error) {
+func (m *MsgLoadPShr) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -2015,12 +2014,12 @@ func (m *MsgLoadShr) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgLoadShr) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgLoadPShr) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgLoadShr) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgLoadPShr) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -2049,7 +2048,7 @@ func (m *MsgLoadShr) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgLoadShrResponse) Marshal() (dAtA []byte, err error) {
+func (m *MsgLoadPShrResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -2059,12 +2058,12 @@ func (m *MsgLoadShrResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgLoadShrResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgLoadPShrResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgLoadShrResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgLoadPShrResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -2153,7 +2152,7 @@ func (m *MsgLoadShrpResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgBuyShr) Marshal() (dAtA []byte, err error) {
+func (m *MsgBuyPShr) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -2163,12 +2162,12 @@ func (m *MsgBuyShr) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgBuyShr) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgBuyPShr) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgBuyShr) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgBuyPShr) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -2190,7 +2189,7 @@ func (m *MsgBuyShr) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgBuyShrResponse) Marshal() (dAtA []byte, err error) {
+func (m *MsgBuyPShrResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -2200,12 +2199,12 @@ func (m *MsgBuyShrResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgBuyShrResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgBuyPShrResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgBuyShrResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgBuyPShrResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -2220,7 +2219,7 @@ func (m *MsgBuyShrResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgSendShr) Marshal() (dAtA []byte, err error) {
+func (m *MsgSendPShr) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -2230,12 +2229,12 @@ func (m *MsgSendShr) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgSendShr) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgSendPShr) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgSendShr) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgSendPShr) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -2264,7 +2263,7 @@ func (m *MsgSendShr) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgSendShrResponse) Marshal() (dAtA []byte, err error) {
+func (m *MsgSendPShrResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -2274,12 +2273,12 @@ func (m *MsgSendShrResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgSendShrResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgSendPShrResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgSendShrResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgSendPShrResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -2502,7 +2501,7 @@ func (m *MsgBurnShrpResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgBurnShr) Marshal() (dAtA []byte, err error) {
+func (m *MsgBurnPShr) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -2512,12 +2511,12 @@ func (m *MsgBurnShr) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgBurnShr) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgBurnPShr) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgBurnShr) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgBurnPShr) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -2539,7 +2538,7 @@ func (m *MsgBurnShr) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgBurnShrResponse) Marshal() (dAtA []byte, err error) {
+func (m *MsgBurnPShrResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -2549,12 +2548,12 @@ func (m *MsgBurnShrResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgBurnShrResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgBurnPShrResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgBurnShrResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgBurnPShrResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -2959,7 +2958,7 @@ func encodeVarintTx(dAtA []byte, offset int, v uint64) int {
 	dAtA[offset] = uint8(v)
 	return base
 }
-func (m *MsgLoadShr) Size() (n int) {
+func (m *MsgLoadPShr) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -2980,7 +2979,7 @@ func (m *MsgLoadShr) Size() (n int) {
 	return n
 }
 
-func (m *MsgLoadShrResponse) Size() (n int) {
+func (m *MsgLoadPShrResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -3027,7 +3026,7 @@ func (m *MsgLoadShrpResponse) Size() (n int) {
 	return n
 }
 
-func (m *MsgBuyShr) Size() (n int) {
+func (m *MsgBuyPShr) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -3044,7 +3043,7 @@ func (m *MsgBuyShr) Size() (n int) {
 	return n
 }
 
-func (m *MsgBuyShrResponse) Size() (n int) {
+func (m *MsgBuyPShrResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -3057,7 +3056,7 @@ func (m *MsgBuyShrResponse) Size() (n int) {
 	return n
 }
 
-func (m *MsgSendShr) Size() (n int) {
+func (m *MsgSendPShr) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -3078,7 +3077,7 @@ func (m *MsgSendShr) Size() (n int) {
 	return n
 }
 
-func (m *MsgSendShrResponse) Size() (n int) {
+func (m *MsgSendPShrResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -3185,7 +3184,7 @@ func (m *MsgBurnShrpResponse) Size() (n int) {
 	return n
 }
 
-func (m *MsgBurnShr) Size() (n int) {
+func (m *MsgBurnPShr) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -3202,7 +3201,7 @@ func (m *MsgBurnShr) Size() (n int) {
 	return n
 }
 
-func (m *MsgBurnShrResponse) Size() (n int) {
+func (m *MsgBurnPShrResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -3385,7 +3384,7 @@ func sovTx(x uint64) (n int) {
 func sozTx(x uint64) (n int) {
 	return sovTx(uint64((x << 1) ^ uint64((int64(x) >> 63))))
 }
-func (m *MsgLoadShr) Unmarshal(dAtA []byte) error {
+func (m *MsgLoadPShr) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -3408,10 +3407,10 @@ func (m *MsgLoadShr) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgLoadShr: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgLoadPShr: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgLoadShr: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgLoadPShr: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -3531,7 +3530,7 @@ func (m *MsgLoadShr) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgLoadShrResponse) Unmarshal(dAtA []byte) error {
+func (m *MsgLoadPShrResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -3554,10 +3553,10 @@ func (m *MsgLoadShrResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgLoadShrResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgLoadPShrResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgLoadShrResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgLoadPShrResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -3841,7 +3840,7 @@ func (m *MsgLoadShrpResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgBuyShr) Unmarshal(dAtA []byte) error {
+func (m *MsgBuyPShr) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -3864,10 +3863,10 @@ func (m *MsgBuyShr) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgBuyShr: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgBuyPShr: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgBuyShr: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgBuyPShr: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -3955,7 +3954,7 @@ func (m *MsgBuyShr) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgBuyShrResponse) Unmarshal(dAtA []byte) error {
+func (m *MsgBuyPShrResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -3978,10 +3977,10 @@ func (m *MsgBuyShrResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgBuyShrResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgBuyPShrResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgBuyShrResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgBuyPShrResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -4037,7 +4036,7 @@ func (m *MsgBuyShrResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgSendShr) Unmarshal(dAtA []byte) error {
+func (m *MsgSendPShr) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -4060,10 +4059,10 @@ func (m *MsgSendShr) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgSendShr: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgSendPShr: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgSendShr: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgSendPShr: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -4183,7 +4182,7 @@ func (m *MsgSendShr) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgSendShrResponse) Unmarshal(dAtA []byte) error {
+func (m *MsgSendPShrResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -4206,10 +4205,10 @@ func (m *MsgSendShrResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgSendShrResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgSendPShrResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgSendShrResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgSendPShrResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -4885,7 +4884,7 @@ func (m *MsgBurnShrpResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgBurnShr) Unmarshal(dAtA []byte) error {
+func (m *MsgBurnPShr) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -4908,10 +4907,10 @@ func (m *MsgBurnShr) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgBurnShr: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgBurnPShr: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgBurnShr: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgBurnPShr: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -4999,7 +4998,7 @@ func (m *MsgBurnShr) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgBurnShrResponse) Unmarshal(dAtA []byte) error {
+func (m *MsgBurnPShrResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -5022,10 +5021,10 @@ func (m *MsgBurnShrResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgBurnShrResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgBurnPShrResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgBurnShrResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgBurnPShrResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:

@@ -27,7 +27,7 @@ func (k Keeper) LevelFees(c context.Context, req *types.QueryLevelFeesRequest) (
 		if err != nil {
 			return nil, err
 		}
-		convertedFee := types.DecCoinsToShr(decCoins, exchangeRate)
+		convertedFee := types.DecCoinsToPShr(decCoins, exchangeRate)
 		levelFees = append(levelFees, types.LevelFeeDetail{
 			Level:        lf.Level,
 			OriginalFee:  lf.Fee,
@@ -39,7 +39,7 @@ func (k Keeper) LevelFees(c context.Context, req *types.QueryLevelFeesRequest) (
 	for l, f := range defaultsLevelFees {
 		decCoins := sdk.NewDecCoins(f)
 
-		convertedFee := types.DecCoinsToShr(decCoins, exchangeRate)
+		convertedFee := types.DecCoinsToPShr(decCoins, exchangeRate)
 
 		levelFees = append(levelFees, types.LevelFeeDetail{
 			Level:        string(l),

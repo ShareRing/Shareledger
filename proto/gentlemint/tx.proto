@@ -10,14 +10,14 @@ option go_package = "github.com/sharering/shareledger/x/gentlemint/types";
 
 // Msg defines the Msg service.
 service Msg {
-      rpc LoadShr(MsgLoadShr) returns (MsgLoadShrResponse);
+      rpc LoadPShr(MsgLoadPShr) returns (MsgLoadPShrResponse);
   rpc LoadShrp(MsgLoadShrp) returns (MsgLoadShrpResponse);
-  rpc BuyShr(MsgBuyShr) returns (MsgBuyShrResponse);
-  rpc SendShr(MsgSendShr) returns (MsgSendShrResponse);
+  rpc BuyPShr(MsgBuyPShr) returns (MsgBuyPShrResponse);
+  rpc SendPShr(MsgSendPShr) returns (MsgSendPShrResponse);
   rpc BuyCent(MsgBuyCent) returns (MsgBuyCentResponse);
   rpc BurnShrp(MsgBurnShrp) returns (MsgBurnShrpResponse);
   rpc SendShrp(MsgSendShrp) returns (MsgSendShrpResponse);
-  rpc BurnShr(MsgBurnShr) returns (MsgBurnShrResponse);
+  rpc BurnPShr(MsgBurnPShr) returns (MsgBurnPShrResponse);
   rpc SetExchange(MsgSetExchange) returns (MsgSetExchangeResponse);
   rpc SetLevelFee(MsgSetLevelFee) returns (MsgSetLevelFeeResponse);
   rpc DeleteLevelFee(MsgDeleteLevelFee) returns (MsgDeleteLevelFeeResponse);
@@ -27,13 +27,13 @@ service Msg {
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
-message MsgLoadShr {
+message MsgLoadPShr {
   string creator = 1;
   string address = 2;
   string amount = 3;
 }
 
-message MsgLoadShrResponse {
+message MsgLoadPShrResponse {
   string log = 1;
 }
 
@@ -47,22 +47,22 @@ message MsgLoadShrpResponse {
   string log = 1;
 }
 
-message MsgBuyShr {
+message MsgBuyPShr {
   string creator = 1;
   string amount = 2;
 }
 
-message MsgBuyShrResponse {
+message MsgBuyPShrResponse {
   string log = 1;
 }
 
-message MsgSendShr {
+message MsgSendPShr {
   string creator = 1;
   string address = 2;
   string amount = 3;
 }
 
-message MsgSendShrResponse {
+message MsgSendPShrResponse {
   string log = 1;
 }
 
@@ -94,12 +94,12 @@ message MsgBurnShrpResponse {
   string log = 1;
 }
 
-message MsgBurnShr {
+message MsgBurnPShr {
   string creator = 1;
   string amount = 2;
 }
 
-message MsgBurnShrResponse {
+message MsgBurnPShrResponse {
   string log = 1;
 }
 

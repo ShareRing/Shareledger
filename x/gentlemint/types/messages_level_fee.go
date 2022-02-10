@@ -48,13 +48,13 @@ func (msg *MsgSetLevelFee) ValidateBasic() error {
 	}
 	dc, err := sdk.ParseDecCoin(msg.Fee)
 	if err != nil {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "invalid fee, %s. Format should be 2shr or 2.3shrp", msg.Fee)
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "invalid fee, %s. Format should be 2pshr or 2.3shrp", msg.Fee)
 	}
-	if dc.Denom != DenomSHR && dc.Denom != DenomSHRP {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "invalid token type, %s. Only support shr or shrp", dc.Denom)
+	if dc.Denom != DenomPSHR && dc.Denom != DenomSHRP {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "invalid token type, %s. Only support pshr or shrp", dc.Denom)
 	}
-	if dc.Denom == DenomSHR && !dc.Amount.Equal(dc.Amount.RoundInt().ToDec()) {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "shr amount should be int, %v", dc)
+	if dc.Denom == DenomPSHR && !dc.Amount.Equal(dc.Amount.RoundInt().ToDec()) {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "pshr amount should be int, %v", dc)
 	}
 	return nil
 }

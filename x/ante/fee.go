@@ -24,14 +24,14 @@ func (cfd CheckFeeDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate boo
 	msgs := tx.GetMsgs()
 	requiredFees := sdk.NewCoins()
 	for _, msg := range msgs {
-		fee := cfd.gk.GetShrFeeByMsg(ctx, msg)
+		fee := cfd.gk.GetPShrFeeByMsg(ctx, msg)
 		requiredFees = requiredFees.Add(fee)
 	}
-	shrTXFee := feeTx.GetFee().AmountOf(gentleminttypes.DenomSHR)
-	shrRequiredFee := requiredFees.AmountOf(gentleminttypes.DenomSHR)
+	pShrTXFee := feeTx.GetFee().AmountOf(gentleminttypes.DenomPSHR)
+	pShrRequiredFee := requiredFees.AmountOf(gentleminttypes.DenomPSHR)
 
-	if shrRequiredFee.GT(shrTXFee) {
-		return ctx, sdkerrors.Wrapf(sdkerrors.ErrInsufficientFee, "got %s shr, required %s shr", shrTXFee, shrRequiredFee)
+	if pShrRequiredFee.GT(pShrTXFee) {
+		return ctx, sdkerrors.Wrapf(sdkerrors.ErrInsufficientFee, "got %s pShr, required %s pShr", pShrTXFee, pShrRequiredFee)
 	}
 	return next(ctx, tx, simulate)
 }

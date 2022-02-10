@@ -116,8 +116,8 @@ func TestListLevelFee(t *testing.T) {
 			require.NoError(t, err)
 			var resp types.QueryLevelFeesResponse
 			require.NoError(t, net.Config.Codec.UnmarshalJSON(out.Bytes(), &resp))
-			require.LessOrEqual(t, len(resp.LevelFee), step)
-			require.Subset(t, objs, resp.LevelFee)
+			require.LessOrEqual(t, len(resp.LevelFees), step)
+			require.Subset(t, objs, resp.LevelFees)
 		}
 	})
 	t.Run("ByKey", func(t *testing.T) {
@@ -129,8 +129,8 @@ func TestListLevelFee(t *testing.T) {
 			require.NoError(t, err)
 			var resp types.QueryLevelFeesResponse
 			require.NoError(t, net.Config.Codec.UnmarshalJSON(out.Bytes(), &resp))
-			require.LessOrEqual(t, len(resp.LevelFee), step)
-			require.Subset(t, objs, resp.LevelFee)
+			require.LessOrEqual(t, len(resp.LevelFees), step)
+			require.Subset(t, objs, resp.LevelFees)
 		}
 	})
 }

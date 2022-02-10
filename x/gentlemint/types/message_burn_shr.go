@@ -5,24 +5,24 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
-var _ sdk.Msg = &MsgBurnShr{}
+var _ sdk.Msg = &MsgBurnPShr{}
 
-func NewMsgBurnShr(creator string, amount string) *MsgBurnShr {
-	return &MsgBurnShr{
+func NewMsgBurnShr(creator string, amount string) *MsgBurnPShr {
+	return &MsgBurnPShr{
 		Creator: creator,
 		Amount:  amount,
 	}
 }
 
-func (msg *MsgBurnShr) Route() string {
+func (msg *MsgBurnPShr) Route() string {
 	return RouterKey
 }
 
-func (msg *MsgBurnShr) Type() string {
-	return "BurnShr"
+func (msg *MsgBurnPShr) Type() string {
+	return "BurnPShr"
 }
 
-func (msg *MsgBurnShr) GetSigners() []sdk.AccAddress {
+func (msg *MsgBurnPShr) GetSigners() []sdk.AccAddress {
 	creator, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		panic(err)
@@ -30,12 +30,12 @@ func (msg *MsgBurnShr) GetSigners() []sdk.AccAddress {
 	return []sdk.AccAddress{creator}
 }
 
-func (msg *MsgBurnShr) GetSignBytes() []byte {
+func (msg *MsgBurnPShr) GetSignBytes() []byte {
 	bz := ModuleCdc.MustMarshalJSON(msg)
 	return sdk.MustSortJSON(bz)
 }
 
-func (msg *MsgBurnShr) ValidateBasic() error {
+func (msg *MsgBurnPShr) ValidateBasic() error {
 	_, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)

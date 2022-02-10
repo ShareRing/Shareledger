@@ -5,24 +5,24 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
-var _ sdk.Msg = &MsgBuyShr{}
+var _ sdk.Msg = &MsgBuyPShr{}
 
-func NewMsgBuyShr(creator string, amount string) *MsgBuyShr {
-	return &MsgBuyShr{
+func NewMsgBuyPShr(creator string, amount string) *MsgBuyPShr {
+	return &MsgBuyPShr{
 		Creator: creator,
 		Amount:  amount,
 	}
 }
 
-func (msg *MsgBuyShr) Route() string {
+func (msg *MsgBuyPShr) Route() string {
 	return RouterKey
 }
 
-func (msg *MsgBuyShr) Type() string {
-	return "BuyShr"
+func (msg *MsgBuyPShr) Type() string {
+	return "BuyPShr"
 }
 
-func (msg *MsgBuyShr) GetSigners() []sdk.AccAddress {
+func (msg *MsgBuyPShr) GetSigners() []sdk.AccAddress {
 	creator, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		panic(err)
@@ -30,17 +30,17 @@ func (msg *MsgBuyShr) GetSigners() []sdk.AccAddress {
 	return []sdk.AccAddress{creator}
 }
 
-func (msg *MsgBuyShr) GetSignBytes() []byte {
+func (msg *MsgBuyPShr) GetSignBytes() []byte {
 	bz := ModuleCdc.MustMarshalJSON(msg)
 	return sdk.MustSortJSON(bz)
 }
 
-func (msg *MsgBuyShr) ValidateBasic() error {
+func (msg *MsgBuyPShr) ValidateBasic() error {
 	_, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
 	}
-	if _, err := ParseShrCoinsStr(msg.Amount); err != nil {
+	if _, err := ParsePShrCoinsStr(msg.Amount); err != nil {
 		return err
 	}
 	return nil

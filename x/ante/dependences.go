@@ -8,7 +8,7 @@ import (
 
 type GentlemintKeeper interface {
 	GetExchangeRateD(ctx sdk.Context) sdk.Dec
-	GetShrFeeByMsg(ctx sdk.Context, msg sdk.Msg) sdk.Coin
+	GetPShrFeeByMsg(ctx sdk.Context, msg sdk.Msg) sdk.Coin
 	LoadFeeFromShrp(ctx sdk.Context, msg *types.MsgLoadFee) error
 }
 
