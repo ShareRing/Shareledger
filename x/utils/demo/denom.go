@@ -21,6 +21,16 @@ var (
 	OneHundredCents = sdk.NewCoins(sdk.NewCoin(Cent, sdk.NewInt(100)))
 )
 
+// ToDisplayCoins convert coins to display coins which are SHR and SHRP
+func ToDisplayCoins(coins sdk.Coins) sdk.DecCoin {
+	shr := sdk.NewDecCoinFromDec(Shr,
+		sdk.NewDec(coins.AmountOf(PShr).Int64()).QuoInt64(ShrExponent).
+			Add(coins.AmountOf(Shr).ToDec()))
+	shrP := sdk.NewDecCoinFromDec(ShrP,
+		sdk.NewDec(coins.AmountOf(Cent).Int64()).QuoInt64(ShrPExponent).
+			Add(coins.AmountOf(Shr).ToDec()))
+}
+
 // NormalizeCoins convert all coins to base coin, shrp
 func NormalizeCoins(coins sdk.DecCoins, usdRate sdk.Dec) sdk.Coin {
 	shrpDec := coins.AmountOf(ShrP).

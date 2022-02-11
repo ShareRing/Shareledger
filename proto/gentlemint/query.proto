@@ -45,6 +45,11 @@ service Query {
 		option (google.api.http).get = "/shareledger/gentlemint/checkFees";
 	}
 
+// Queries a list of balances items.
+	rpc Balances(QueryBalancesRequest) returns (QueryBalancesResponse) {
+		option (google.api.http).get = "/shareledger/gentlemint/balances";
+	}
+
 // this line is used by starport scaffolding # 2
 }
 
@@ -99,6 +104,14 @@ message QueryCheckFeesResponse {
 	bool sufficientFee = 2;
 	bool sufficientFundForFee = 3;
 	cosmos.base.v1beta1.DecCoin costLoadingFee = 4;
+}
+
+message QueryBalancesRequest {
+	string address = 1;
+}
+
+message QueryBalancesResponse {
+	repeated cosmos.base.v1beta1.DecCoin coins = 1;
 }
 
 // this line is used by starport scaffolding # 3
