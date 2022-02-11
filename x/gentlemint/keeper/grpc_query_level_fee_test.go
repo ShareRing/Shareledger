@@ -76,8 +76,8 @@ func TestLevelFeeQueryPaginated(t *testing.T) {
 		for i := 0; i < len(msgs); i += step {
 			resp, err := keeper.LevelFees(wctx, request(nil, uint64(i), uint64(step), false))
 			require.NoError(t, err)
-			require.LessOrEqual(t, len(resp.LevelFee), step)
-			require.Subset(t, msgs, resp.LevelFee)
+			require.LessOrEqual(t, len(resp.LevelFees), step)
+			require.Subset(t, msgs, resp.LevelFees)
 		}
 	})
 	t.Run("ByKey", func(t *testing.T) {
@@ -85,8 +85,8 @@ func TestLevelFeeQueryPaginated(t *testing.T) {
 
 		resp, err := keeper.LevelFees(wctx, &types.QueryLevelFeesRequest{})
 		require.NoError(t, err)
-		require.LessOrEqual(t, len(resp.LevelFee), step)
-		require.Subset(t, msgs, resp.LevelFee)
+		require.LessOrEqual(t, len(resp.LevelFees), step)
+		require.Subset(t, msgs, resp.LevelFees)
 	})
 	t.Run("InvalidRequest", func(t *testing.T) {
 		_, err := keeper.LevelFees(wctx, nil)

@@ -21521,7 +21521,7 @@ definitions:
     properties:
       log:
         type: string
-  shareledger.gentlemint.MsgBuyPShrResponse:
+  shareledger.gentlemint.MsgBuyShrResponse:
     type: object
     properties:
       log:

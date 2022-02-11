@@ -11,18 +11,18 @@ import (
 func TestMsgBuyShr_ValidateBasic(t *testing.T) {
 	tests := []struct {
 		name string
-		msg  MsgBuyPShr
+		msg  MsgBuyShr
 		err  error
 	}{
 		{
 			name: "invalid address",
-			msg: MsgBuyPShr{
+			msg: MsgBuyShr{
 				Creator: "invalid_address",
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
-			msg: MsgBuyPShr{
+			msg: MsgBuyShr{
 				Creator: sample.AccAddress(),
 				Amount:  "1",
 			},

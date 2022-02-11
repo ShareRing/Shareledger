@@ -12,7 +12,7 @@ option go_package = "github.com/sharering/shareledger/x/gentlemint/types";
 service Msg {
       rpc LoadShr(MsgLoadShr) returns (MsgLoadShrResponse);
   rpc LoadShrp(MsgLoadShrp) returns (MsgLoadShrpResponse);
-  rpc BuyPShr(MsgBuyPShr) returns (MsgBuyPShrResponse);
+  rpc BuyShr(MsgBuyShr) returns (MsgBuyShrResponse);
   rpc SendPShr(MsgSendPShr) returns (MsgSendPShrResponse);
   rpc BuyCent(MsgBuyCent) returns (MsgBuyCentResponse);
   rpc BurnShrp(MsgBurnShrp) returns (MsgBurnShrpResponse);
@@ -47,12 +47,12 @@ message MsgLoadShrpResponse {
   string log = 1;
 }
 
-message MsgBuyPShr {
+message MsgBuyShr {
   string creator = 1;
   string amount = 2;
 }
 
-message MsgBuyPShrResponse {
+message MsgBuyShrResponse {
   string log = 1;
 }
 

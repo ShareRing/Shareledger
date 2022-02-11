@@ -74,7 +74,7 @@ var mapActions = map[reflect.Type]string{
 	//gentlemint
 	reflect.ValueOf(&gentlemintmoduletypes.MsgLoadShr{}).Type():     "gentlemint_load-shr",
 	reflect.ValueOf(&gentlemintmoduletypes.MsgLoadShrp{}).Type():    "gentlemint_load-shrp",
-	reflect.ValueOf(&gentlemintmoduletypes.MsgBuyPShr{}).Type():     "gentlemint_buy-pshr",
+	reflect.ValueOf(&gentlemintmoduletypes.MsgBuyShr{}).Type():      "gentlemint_buy-shr",
 	reflect.ValueOf(&gentlemintmoduletypes.MsgSendPShr{}).Type():    "gentlemint_send-pshr",
 	reflect.ValueOf(&gentlemintmoduletypes.MsgSendShrp{}).Type():    "gentlemint_send-shrp",
 	reflect.ValueOf(&gentlemintmoduletypes.MsgBuyCent{}).Type():     "gentlemint_buy-cent",

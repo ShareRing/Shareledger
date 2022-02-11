@@ -23,8 +23,8 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
 		case *types.MsgLoadShrp:
 			res, err := msgServer.LoadShrp(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgBuyPShr:
-			res, err := msgServer.BuyPShr(sdk.WrapSDKContext(ctx), msg)
+		case *types.MsgBuyShr:
+			res, err := msgServer.BuyShr(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
 		case *types.MsgSendPShr:
 			res, err := msgServer.SendPShr(sdk.WrapSDKContext(ctx), msg)

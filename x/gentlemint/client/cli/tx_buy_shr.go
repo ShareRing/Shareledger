@@ -15,12 +15,13 @@ var _ = strconv.Itoa(0)
 
 func CmdBuyShr() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "buy-pshr [amount]",
-		Short: "Buy pshr by shrp and cent",
+		Use:   "buy-shr [amount]",
+		Short: "Buy shr by shrp and cent",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			argAmount := args[0]
-
+			if err != nil {
+				return err
+			}
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
@@ -28,7 +29,7 @@ func CmdBuyShr() *cobra.Command {
 
 			msg := types.NewMsgBuyPShr(
 				clientCtx.GetFromAddress().String(),
-				argAmount,
+				args[0],
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err
