@@ -15,7 +15,7 @@ func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgBuyCent{}, "gentlemint/BuyCent", nil)
 	cdc.RegisterConcrete(&MsgBurnShrp{}, "gentlemint/BurnShrp", nil)
 	cdc.RegisterConcrete(&MsgSendShrp{}, "gentlemint/SendShrp", nil)
-	cdc.RegisterConcrete(&MsgBurnPShr{}, "gentlemint/BurnPShr", nil)
+	cdc.RegisterConcrete(&MsgBurnShr{}, "gentlemint/BurnShr", nil)
 	cdc.RegisterConcrete(&MsgSetExchange{}, "gentlemint/SetExchange", nil)
 	cdc.RegisterConcrete(&MsgSetLevelFee{}, "gentlemint/SetLevelFee", nil)
 	cdc.RegisterConcrete(&MsgDeleteLevelFee{}, "gentlemint/DeleteLevelFee", nil)
@@ -54,7 +54,7 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 		&MsgSendShrp{},
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
-		&MsgBurnPShr{},
+		&MsgBurnShr{},
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgSetExchange{},

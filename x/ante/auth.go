@@ -58,7 +58,7 @@ func (a Auth) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate bool, next sdk.Ant
 			}
 		case // Treasure account permission
 			*gentleminttypes.MsgBurnShrp,
-			*gentleminttypes.MsgBurnPShr,
+			*gentleminttypes.MsgBurnShr,
 			*gentleminttypes.MsgSetExchange:
 			if !a.rk.IsTreasurer(ctx, signer) {
 				return ctx, sdkerrors.Wrapf(sdkerrors.ErrUnauthorized, ErrMsgNotTreasureAccount)

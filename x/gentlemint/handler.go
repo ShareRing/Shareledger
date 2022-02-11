@@ -38,8 +38,8 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
 		case *types.MsgSendShrp:
 			res, err := msgServer.SendShrp(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgBurnPShr:
-			res, err := msgServer.BurnPShr(sdk.WrapSDKContext(ctx), msg)
+		case *types.MsgBurnShr:
+			res, err := msgServer.BurnShr(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
 		case *types.MsgSetExchange:
 			res, err := msgServer.SetExchange(sdk.WrapSDKContext(ctx), msg)

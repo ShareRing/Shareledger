@@ -11,18 +11,18 @@ import (
 func TestMsgBurnShr_ValidateBasic(t *testing.T) {
 	tests := []struct {
 		name string
-		msg  MsgBurnPShr
+		msg  MsgBurnShr
 		err  error
 	}{
 		{
 			name: "invalid address",
-			msg: MsgBurnPShr{
+			msg: MsgBurnShr{
 				Creator: "invalid_address",
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
-			msg: MsgBurnPShr{
+			msg: MsgBurnShr{
 				Creator: sample.AccAddress(),
 				Amount:  "1",
 			},
