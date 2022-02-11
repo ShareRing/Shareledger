@@ -21479,7 +21479,7 @@ definitions:
     type: object
   shareledger.gentlemint.MsgLoadFeeResponse:
     type: object
-  shareledger.gentlemint.MsgLoadPShrResponse:
+  shareledger.gentlemint.MsgLoadShrResponse:
     type: object
     properties:
       log:

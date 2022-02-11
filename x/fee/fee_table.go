@@ -72,7 +72,7 @@ var mapActions = map[reflect.Type]string{
 	reflect.ValueOf(&feegrantmoduletypes.MsgRevokeAllowance{}).Type(): "feegrant_revoke",
 
 	//gentlemint
-	reflect.ValueOf(&gentlemintmoduletypes.MsgLoadPShr{}).Type():    "gentlemint_load-pshr",
+	reflect.ValueOf(&gentlemintmoduletypes.MsgLoadShr{}).Type():     "gentlemint_load-shr",
 	reflect.ValueOf(&gentlemintmoduletypes.MsgLoadShrp{}).Type():    "gentlemint_load-shrp",
 	reflect.ValueOf(&gentlemintmoduletypes.MsgBuyPShr{}).Type():     "gentlemint_buy-pshr",
 	reflect.ValueOf(&gentlemintmoduletypes.MsgSendPShr{}).Type():    "gentlemint_send-pshr",

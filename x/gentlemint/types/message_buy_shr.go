@@ -40,8 +40,14 @@ func (msg *MsgBuyPShr) ValidateBasic() error {
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
 	}
-	if _, err := ParsePShrCoinsStr(msg.Amount); err != nil {
-		return err
+
+	v, e := sdk.NewDecFromStr(msg.Amount)
+	if e != nil {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidType, "invalid value. %s", e.Error())
 	}
+	if v.LTE(sdk.NewDec(0)) {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidType, "invalid value, should large then 0")
+	}
+
 	return nil
 }

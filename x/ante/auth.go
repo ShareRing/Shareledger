@@ -37,7 +37,7 @@ func (a Auth) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate bool, next sdk.Ant
 		signer := msgI.GetSigners()[0]
 		switch msg := msgI.(type) {
 		case // Authority
-			*gentleminttypes.MsgLoadPShr,
+			*gentleminttypes.MsgLoadShr,
 			*gentleminttypes.MsgSetActionLevelFee,
 			*gentleminttypes.MsgDeleteActionLevelFee,
 			*gentleminttypes.MsgSetLevelFee,

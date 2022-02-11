@@ -14,41 +14,6 @@ type AdjustmentCoins struct {
 	Add sdk.Coins
 }
 
-//func PShrToDecShrp(pshr sdk.Coin, rate sdk.Dec) sdk.DecCoin {
-//	shrp := sdk.NewDec(pshr.Amount.Int64()).Quo(rate)
-//	return sdk.NewDecCoinFromDec(denom.ShrP, shrp)
-//}
-
-//func PShrToShrp(pshr sdk.Coin, rate sdk.Dec) (coin sdk.Coins) {
-//	shrp := PShrToDecShrp(pshr, rate)
-//	return denom.ShrpDecToCoins(shrp.Amount)
-//}
-
-//func DecCoinsToPShr(coins sdk.DecCoins, rate sdk.Dec) (coin sdk.Coin) {
-//	shrp := ShrpDecCoinsToCoins(coins)
-//	mixedCoins := sdk.NewCoins(sdk.NewCoin(denom.PShr, coins.AmountOf(denom.PShr).TruncateInt()))
-//	mixedCoins = mixedCoins.Add(shrp...)
-//	return CoinsToPShr(mixedCoins, rate)
-//}
-
-//func CoinsToPShr(coins sdk.Coins, rate sdk.Dec) (coin sdk.Coin) {
-//	shrpDec := sdk.NewDec(coins.AmountOf(denom.ShrP).Int64()).Add(sdk.NewDec(coins.AmountOf(denom.Cent).Int64()).Quo(sdk.NewDec(100)))
-//	coin = sdk.NewCoin(denom.PShr, shrpDec.Mul(rate).TruncateInt().Add(coins.AmountOf(denom.PShr)))
-//	return coin
-//}
-
-//func ShrpDecCoinsToCoins(shrp sdk.DecCoins) (coin sdk.Coins) {
-//	shrpD := shrp.AmountOf(denom.ShrP).Add(shrp.AmountOf(denom.Cent).Quo(sdk.NewDec(100)))
-//	return ShrpDecToCoins(shrpD)
-//}
-
-//func ShrpDecToCoins(shrp sdk.Dec) (coin sdk.Coins) {
-//	return sdk.NewCoins(
-//		sdk.NewCoin(denom.ShrP, shrp.TruncateInt()),
-//		sdk.NewCoin(denom.Cent, shrp.Sub(shrp.TruncateDec()).MulInt(sdk.NewInt(100)).Ceil().TruncateInt()),
-//	)
-//}
-
 func GetCostShrpForPShr(currentShrp sdk.Coins, needShr sdk.Int, rate sdk.Dec) (cost AdjustmentCoins, err error) {
 	neededDecShrp := denom.ToDecShrPCoin(sdk.NewDecCoins(sdk.NewDecCoin(denom.PShr, needShr)), rate)
 	neededShrp := denom.ShrpDecToCoins(sdk.NewDecCoins(neededDecShrp))
@@ -143,18 +108,4 @@ func ParseShrpCoinsStr(s string) (coins sdk.Coins, err error) {
 		sdk.NewCoin(denom.ShrP, sdk.NewInt(shrp)),
 		sdk.NewCoin(denom.Cent, sdk.NewInt(cent)),
 	), nil
-}
-
-func ParsePShrCoinsStr(s string) (coins sdk.Coins, err error) {
-	v, ok := sdk.NewIntFromString(s)
-	if !ok {
-		err = sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, s)
-		return
-	}
-	if v.LT(sdk.NewInt(0)) {
-		err = sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, s)
-		return
-	}
-	coins = sdk.NewCoins(sdk.NewCoin(denom.PShr, v))
-	return
 }

@@ -8,7 +8,7 @@ import (
 )
 
 func RegisterCodec(cdc *codec.LegacyAmino) {
-	cdc.RegisterConcrete(&MsgLoadPShr{}, "gentlemint/LoadPShr", nil)
+	cdc.RegisterConcrete(&MsgLoadShr{}, "gentlemint/LoadShr", nil)
 	cdc.RegisterConcrete(&MsgLoadShrp{}, "gentlemint/LoadShrp", nil)
 	cdc.RegisterConcrete(&MsgBuyPShr{}, "gentlemint/BuyPShr", nil)
 	cdc.RegisterConcrete(&MsgSendPShr{}, "gentlemint/SendPShr", nil)
@@ -27,7 +27,7 @@ func RegisterCodec(cdc *codec.LegacyAmino) {
 
 func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	registry.RegisterImplementations((*sdk.Msg)(nil),
-		&MsgLoadPShr{},
+		&MsgLoadShr{},
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgLoadShrp{},

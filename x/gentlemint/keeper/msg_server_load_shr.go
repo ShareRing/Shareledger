@@ -10,19 +10,25 @@ import (
 	"github.com/sharering/shareledger/x/gentlemint/types"
 )
 
-func (k msgServer) LoadPShr(goCtx context.Context, msg *types.MsgLoadPShr) (*types.MsgLoadPShrResponse, error) {
+func (k msgServer) LoadShr(goCtx context.Context, msg *types.MsgLoadShr) (*types.MsgLoadShrResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 	if err := msg.ValidateBasic(); err != nil {
 		return nil, err
 	}
 
-	coins, err := types.ParsePShrCoinsStr(msg.Amount)
-	if err != nil {
-		return nil, err
+	v, e := sdk.NewDecFromStr(msg.Amount)
+	if e != nil {
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "%v", e)
+	}
+	if v.LTE(sdk.NewDec(0)) {
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "amount should be larger than 0")
 	}
 
-	if !k.PShrMintPossible(ctx, coins.AmountOf(denom.PShr)) {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "SHR possible mint exceeded")
+	shrCoin := sdk.NewDecCoinFromDec(denom.Shr, v)
+	buyCoin := denom.NormalizeCoins(sdk.NewDecCoins(shrCoin), sdk.NewDec(1))
+
+	if !k.PShrMintPossible(ctx, buyCoin.Amount) {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "PShr possible mint exceeded")
 	}
 
 	addr, err := sdk.AccAddressFromBech32(msg.Address)
@@ -30,12 +36,12 @@ func (k msgServer) LoadPShr(goCtx context.Context, msg *types.MsgLoadPShr) (*typ
 		return nil, sdkerrors.Wrapf(err, msg.Address)
 	}
 
-	if err := k.loadCoins(ctx, addr, coins); err != nil {
+	if err := k.loadCoins(ctx, addr, sdk.NewCoins(buyCoin)); err != nil {
 		return nil, err
 	}
-	log := fmt.Sprintf("Successfully loaded pshr {address: %s, amount %v}", msg.Address, coins)
+	log := fmt.Sprintf("Successfully loaded pshr {address: %s, amount %v}", msg.Address, buyCoin)
 
-	return &types.MsgLoadPShrResponse{
+	return &types.MsgLoadShrResponse{
 		Log: log,
 	}, nil
 }

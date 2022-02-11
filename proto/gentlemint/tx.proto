@@ -10,7 +10,7 @@ option go_package = "github.com/sharering/shareledger/x/gentlemint/types";
 
 // Msg defines the Msg service.
 service Msg {
-      rpc LoadPShr(MsgLoadPShr) returns (MsgLoadPShrResponse);
+      rpc LoadShr(MsgLoadShr) returns (MsgLoadShrResponse);
   rpc LoadShrp(MsgLoadShrp) returns (MsgLoadShrpResponse);
   rpc BuyPShr(MsgBuyPShr) returns (MsgBuyPShrResponse);
   rpc SendPShr(MsgSendPShr) returns (MsgSendPShrResponse);
@@ -27,13 +27,13 @@ service Msg {
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
-message MsgLoadPShr {
+message MsgLoadShr {
   string creator = 1;
   string address = 2;
   string amount = 3;
 }
 
-message MsgLoadPShrResponse {
+message MsgLoadShrResponse {
   string log = 1;
 }
 
