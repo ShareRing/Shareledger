@@ -21542,7 +21542,7 @@ definitions:
     properties:
       log:
         type: string
-  shareledger.gentlemint.MsgSendPShrResponse:
+  shareledger.gentlemint.MsgSendShrResponse:
     type: object
     properties:
       log:

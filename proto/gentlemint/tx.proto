@@ -13,7 +13,7 @@ service Msg {
       rpc LoadShr(MsgLoadShr) returns (MsgLoadShrResponse);
   rpc LoadShrp(MsgLoadShrp) returns (MsgLoadShrpResponse);
   rpc BuyShr(MsgBuyShr) returns (MsgBuyShrResponse);
-  rpc SendPShr(MsgSendPShr) returns (MsgSendPShrResponse);
+  rpc SendShr(MsgSendShr) returns (MsgSendShrResponse);
   rpc BuyCent(MsgBuyCent) returns (MsgBuyCentResponse);
   rpc BurnShrp(MsgBurnShrp) returns (MsgBurnShrpResponse);
   rpc SendShrp(MsgSendShrp) returns (MsgSendShrpResponse);
@@ -56,13 +56,13 @@ message MsgBuyShrResponse {
   string log = 1;
 }
 
-message MsgSendPShr {
+message MsgSendShr {
   string creator = 1;
   string address = 2;
   string amount = 3;
 }
 
-message MsgSendPShrResponse {
+message MsgSendShrResponse {
   string log = 1;
 }
 

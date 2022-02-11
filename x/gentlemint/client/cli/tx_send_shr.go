@@ -15,8 +15,8 @@ var _ = strconv.Itoa(0)
 
 func CmdSendShr() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "send-pshr [address] [amount]",
-		Short: "send [amount] pshr to [address]",
+		Use:   "send-shr [address] [amount]",
+		Short: "send [amount] shr to [address]",
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argAddress := args[0]

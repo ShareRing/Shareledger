@@ -93,7 +93,6 @@ func (k Keeper) buyPShr(ctx sdk.Context, amount sdk.Int, buyer sdk.AccAddress) e
 		sdk.NewCoin(denom.ShrP, currentBalance.AmountOf(denom.ShrP)),
 		sdk.NewCoin(denom.Cent, currentBalance.AmountOf(denom.Cent)),
 	)
-
 	cost, err := types.GetCostShrpForPShr(currentShrpBalance, amount, rate)
 	if err != nil {
 		return sdkerrors.Wrapf(err, "current %v balance", currentShrpBalance)

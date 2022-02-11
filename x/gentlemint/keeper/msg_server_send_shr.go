@@ -10,13 +10,18 @@ import (
 	"github.com/sharering/shareledger/x/gentlemint/types"
 )
 
-func (k msgServer) SendPShr(goCtx context.Context, msg *types.MsgSendPShr) (*types.MsgSendPShrResponse, error) {
+func (k msgServer) SendShr(goCtx context.Context, msg *types.MsgSendShr) (*types.MsgSendShrResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	if err := msg.ValidateBasic(); err != nil {
 		return nil, sdkerrors.Wrap(err, "invalid message")
 	}
-	amt, _ := sdk.NewIntFromString(msg.Amount)
+	decShr, err := sdk.NewDecFromStr(msg.Amount)
+	amt := denom.NormalizeCoins(sdk.NewDecCoins(sdk.NewDecCoinFromDec(denom.Shr, decShr)), sdk.NewDec(1)).Amount
+
+	if err != nil {
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, err.Error())
+	}
 
 	oldCoin := k.bankKeeper.GetBalance(ctx, msg.GetSigners()[0], denom.PShr)
 
@@ -36,7 +41,7 @@ func (k msgServer) SendPShr(goCtx context.Context, msg *types.MsgSendPShr) (*typ
 	}
 	log := fmt.Sprintf("Successfully Send SHR {amount %s, from: %s, to: %s}", msg.Amount, msg.Creator, msg.Address)
 
-	return &types.MsgSendPShrResponse{
+	return &types.MsgSendShrResponse{
 		Log: log,
 	}, nil
 }
