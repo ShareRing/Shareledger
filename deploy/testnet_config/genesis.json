@@ -1,7 +1,7 @@
 {
   "genesis_time": "2021-02-24T09:04:26.679822768Z",
   "chain_id": "ShareRing-Lifestyle",
-  "initial_height": "1804398",
+  "initial_height": "1964889",
   "consensus_params": {
     "block": {
       "max_bytes": "22020096",
@@ -22,21 +22,12 @@
   },
   "validators": [
     {
-      "address": "21C7548A66D0E5C43C142C6E3A0BE3653A86C4B4",
-      "pub_key": {
-        "type": "tendermint/PubKeyEd25519",
-        "value": "CZp/ZRvmohuTMbvH/jDnDAbTOaLwQCToGgb+bZ/CEdw="
-      },
-      "power": "9",
-      "name": "node3"
-    },
-    {
       "address": "9F5EDCBEB2F7E500E9D751EC5473E7604B3C3AE2",
       "pub_key": {
         "type": "tendermint/PubKeyEd25519",
         "value": "VEeE31lZUFGcsoJHhe3NavaWrtvi3+FHYJY9PUhgELc="
       },
-      "power": "2",
+      "power": "10",
       "name": "node0"
     },
     {
@@ -45,7 +36,7 @@
         "type": "tendermint/PubKeyEd25519",
         "value": "OaXzGMQNz+vWXWTkztTPrb4C6HMRtt34axZLdkQz/Wk="
       },
-      "power": "208",
+      "power": "108",
       "name": "node2"
     },
     {
@@ -54,7 +45,7 @@
         "type": "tendermint/PubKeyEd25519",
         "value": "06LG6DYzDwsU19tSau4xXBj0x3I18B8pBIn90GCYMDk="
       },
-      "power": "3",
+      "power": "93",
       "name": "node1"
     }
   ],
@@ -164,7 +155,7 @@
             "key": "Aim1rQmBV+9PddT+Yog4L7M+8GVgxsj009VYb7DZ9bOt"
           },
           "account_number": "207",
-          "sequence": "285"
+          "sequence": "311"
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
@@ -222,7 +213,7 @@
             "key": "AsT0rFy8nF8pxEP2hBYh0IDP+ax2ZWukim0JuGAJ2uuo"
           },
           "account_number": "6",
-          "sequence": "6"
+          "sequence": "8"
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
@@ -240,6 +231,16 @@
           "pub_key": null,
           "account_number": "132",
           "sequence": "0"
+        },
+        {
+          "@type": "/cosmos.auth.v1beta1.BaseAccount",
+          "address": "shareledger1zf88msk4xmsm7aywgsu33cx2tjnuez469l2xn2",
+          "pub_key": {
+            "@type": "/cosmos.crypto.secp256k1.PubKey",
+            "key": "Alr+lOSVEhpfpdqACeffd6Om5Zk3DmODudq2Ldg8C1Ej"
+          },
+          "account_number": "289",
+          "sequence": "2"
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
@@ -286,7 +287,7 @@
             "key": "At72Z2oteXli/4m4mWGHcdUBT+ncQpMrH9odnlRiXsgZ"
           },
           "account_number": "268",
-          "sequence": "18"
+          "sequence": "22"
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
@@ -317,7 +318,7 @@
             "key": "A5Ht++7yEW3LoFcgUaeTTIPVoNPNxtNWfdn0E7AdnqXP"
           },
           "account_number": "115",
-          "sequence": "34"
+          "sequence": "39"
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
@@ -328,6 +329,16 @@
           },
           "account_number": "110",
           "sequence": "8"
+        },
+        {
+          "@type": "/cosmos.auth.v1beta1.BaseAccount",
+          "address": "shareledger1rpwq3amlc3a79k0culzl7yd4vkrp5xhvm5huya",
+          "pub_key": {
+            "@type": "/cosmos.crypto.secp256k1.PubKey",
+            "key": "AnCGAzu91se4J3li+bJVnaeSHR527MRBTEuJHmYrUp6H"
+          },
+          "account_number": "283",
+          "sequence": "7"
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
@@ -379,6 +390,16 @@
           },
           "account_number": "142",
           "sequence": "4"
+        },
+        {
+          "@type": "/cosmos.auth.v1beta1.BaseAccount",
+          "address": "shareledger1ra48y4sf7m8x7c6j6aa7f9gpln8dgjtfdsayty",
+          "pub_key": {
+            "@type": "/cosmos.crypto.secp256k1.PubKey",
+            "key": "AthxXGltGMtT5KvPvnKFiW1IkFIco+DGGraf5tOxiOw8"
+          },
+          "account_number": "277",
+          "sequence": "15"
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
@@ -452,7 +473,7 @@
             "key": "A+TG6Mg0d21nycjoydiltDLA9Mf+32rIBnqibmVdq1vg"
           },
           "account_number": "271",
-          "sequence": "4"
+          "sequence": "22"
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
@@ -487,6 +508,16 @@
           "pub_key": null,
           "account_number": "57",
           "sequence": "0"
+        },
+        {
+          "@type": "/cosmos.auth.v1beta1.BaseAccount",
+          "address": "shareledger1yntnt854u056q98455czpnrfw8prvrnxmc2cwj",
+          "pub_key": {
+            "@type": "/cosmos.crypto.secp256k1.PubKey",
+            "key": "A5PF8VwFPk+08RFEgUzItyf+Qqzsz8UntnRf4Ab/sA5i"
+          },
+          "account_number": "285",
+          "sequence": "14"
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
@@ -564,7 +595,7 @@
             "key": "Avde6F1LeW1dn/T+lVPRjZiDbQzQK+cwWzdW1B8Tn/zv"
           },
           "account_number": "118",
-          "sequence": "93"
+          "sequence": "102"
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
@@ -608,7 +639,7 @@
             "key": "A11uymiBPIDSJVE6r3StLjm7l4O5c8G+VyVpMwfJD1vb"
           },
           "account_number": "267",
-          "sequence": "1"
+          "sequence": "8"
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
@@ -628,7 +659,7 @@
             "key": "AhHiWeeVdDKFCNiqikQhNmaXerfXmZV0Uz0xnRxg2sOx"
           },
           "account_number": "3",
-          "sequence": "159"
+          "sequence": "163"
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
@@ -696,7 +727,7 @@
             "key": "AvSV4aXV3JVT+EYjmlVtqPTJw4KmimofOrf3C+z+LVGU"
           },
           "account_number": "174",
-          "sequence": "19"
+          "sequence": "20"
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
@@ -740,7 +771,7 @@
             "key": "A06RdrMQXeVZxCR17ABNVGJf3NRYxUeUrKExqulZBRfy"
           },
           "account_number": "5",
-          "sequence": "567"
+          "sequence": "570"
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
@@ -775,6 +806,13 @@
           },
           "account_number": "256",
           "sequence": "6"
+        },
+        {
+          "@type": "/cosmos.auth.v1beta1.BaseAccount",
+          "address": "shareledger1853wc35m4xugd0kddq9mwx9rjy8hxjz06jflgz",
+          "pub_key": null,
+          "account_number": "278",
+          "sequence": "0"
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
@@ -948,7 +986,7 @@
             "key": "A/K4ikCIqE8hIdOLCRhfYH2+SvIiepgJjUON6k9uxu46"
           },
           "account_number": "175",
-          "sequence": "205"
+          "sequence": "245"
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
@@ -1068,7 +1106,7 @@
             "key": "AlcYIfA3yyfnp/jVeISODH4ZLzq9UJeDpKgVgN3uYLNa"
           },
           "account_number": "262",
-          "sequence": "16"
+          "sequence": "30"
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
@@ -1103,13 +1141,23 @@
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
+          "address": "shareledger1tvxdr4jla4ezxq6m0769pawhlqtjdpeaygynqq",
+          "pub_key": {
+            "@type": "/cosmos.crypto.secp256k1.PubKey",
+            "key": "A/3zIWfyzc0kPWYVBWWLZgksya+yEp2mL+xtNcpzquP5"
+          },
+          "account_number": "282",
+          "sequence": "3"
+        },
+        {
+          "@type": "/cosmos.auth.v1beta1.BaseAccount",
           "address": "shareledger1th0wdefvlyprm9mmyn43jvxcgrfak525ltyvef",
           "pub_key": {
             "@type": "/cosmos.crypto.secp256k1.PubKey",
             "key": "A1qSmD9ERKMNbt1kYO1fobKR1r8+RnR8PHvvKJKFvhGZ"
           },
           "account_number": "270",
-          "sequence": "2"
+          "sequence": "12"
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
@@ -1119,7 +1167,7 @@
             "key": "A8HgrGNnNItBwpUcS+I25P+eNEKYinEKzxjr8tx+cLya"
           },
           "account_number": "11",
-          "sequence": "4223"
+          "sequence": "4359"
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
@@ -1144,6 +1192,16 @@
           "pub_key": null,
           "account_number": "46",
           "sequence": "0"
+        },
+        {
+          "@type": "/cosmos.auth.v1beta1.BaseAccount",
+          "address": "shareledger1tl03794zkluwkldfcjqe3frphtakl375kuzvsm",
+          "pub_key": {
+            "@type": "/cosmos.crypto.secp256k1.PubKey",
+            "key": "AlE0ilU37GT9s99UY+obwkVuOZmenH1AenZ8Dp91qu1k"
+          },
+          "account_number": "281",
+          "sequence": "19"
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
@@ -1191,6 +1249,16 @@
           },
           "account_number": "181",
           "sequence": "17"
+        },
+        {
+          "@type": "/cosmos.auth.v1beta1.BaseAccount",
+          "address": "shareledger1vjrqur33scq29s2zmek99rm3yck84rq2dkraxn",
+          "pub_key": {
+            "@type": "/cosmos.crypto.secp256k1.PubKey",
+            "key": "A66/EyaYnJT7P+LTlH2N6wwfhCjRI7smHl+0V5Xy/Pdy"
+          },
+          "account_number": "280",
+          "sequence": "112"
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
@@ -1279,7 +1347,7 @@
             "key": "AsOWJfSkkGM9b6W1rxaIjooa3+uLLtVU9UeCsS4MWbJu"
           },
           "account_number": "229",
-          "sequence": "64"
+          "sequence": "70"
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
@@ -1327,13 +1395,23 @@
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
+          "address": "shareledger1d7h6de406trldye3rnl7fj83g2663ug4w7dup6",
+          "pub_key": {
+            "@type": "/cosmos.crypto.secp256k1.PubKey",
+            "key": "Ahe7lLtkP8lEH36r0EC6oaIkQC0BFVctaWHwJbW7jAzE"
+          },
+          "account_number": "284",
+          "sequence": "1"
+        },
+        {
+          "@type": "/cosmos.auth.v1beta1.BaseAccount",
           "address": "shareledger1wyr9mn9qpjlvd6q0wemsj4rzepff79q67yvhdd",
           "pub_key": {
             "@type": "/cosmos.crypto.secp256k1.PubKey",
             "key": "As0M6vz49hxfMbdeaNjceQUoNRTAMsrV/zovKujhv3Jf"
           },
           "account_number": "13",
-          "sequence": "248"
+          "sequence": "288"
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
@@ -1418,7 +1496,7 @@
             "key": "AusNuuo+G6z5x9aEpxuyk481J2LTjras4Ge8aHg4fKcE"
           },
           "account_number": "233",
-          "sequence": "148"
+          "sequence": "281"
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
@@ -1482,13 +1560,23 @@
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
+          "address": "shareledger10jgl6frhlyg3c0zjvuz7vcgerpz6qp2rlp6eer",
+          "pub_key": {
+            "@type": "/cosmos.crypto.secp256k1.PubKey",
+            "key": "A+2ZiPL/VaD49gJsngUk+TzmQ4+rHK92aueykVgNSUQE"
+          },
+          "account_number": "286",
+          "sequence": "1"
+        },
+        {
+          "@type": "/cosmos.auth.v1beta1.BaseAccount",
           "address": "shareledger1044pfjan847rrg9gt3awyqw55u063z0hnck429",
           "pub_key": {
             "@type": "/cosmos.crypto.secp256k1.PubKey",
             "key": "Ayp9fOpEwVHVoCrWorF7uVbz5A5ZsJm9tPxBlD2XPVPw"
           },
           "account_number": "218",
-          "sequence": "4"
+          "sequence": "5"
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
@@ -1559,7 +1647,7 @@
             "key": "AkGKMGIczGNWody+UHCJr2+UHBkNTTTtS7JPDcNTKRmi"
           },
           "account_number": "263",
-          "sequence": "17"
+          "sequence": "31"
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
@@ -1658,7 +1746,7 @@
             "key": "A5yixe8CQzFIZqiYzijX/YGO5WP0amA1YRvD5AZ5i5sa"
           },
           "account_number": "227",
-          "sequence": "21"
+          "sequence": "22"
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
@@ -1744,7 +1832,7 @@
             "key": "AzEp+oBGLX9kRjbPbGDyaT3rwOzb2Rz9nL+m0YhFm+Y8"
           },
           "account_number": "184",
-          "sequence": "53"
+          "sequence": "73"
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
@@ -1894,6 +1982,16 @@
           "pub_key": null,
           "account_number": "140",
           "sequence": "0"
+        },
+        {
+          "@type": "/cosmos.auth.v1beta1.BaseAccount",
+          "address": "shareledger147uh7vsfzfvar2k3wrmaryf5jfag3h77lk9j9s",
+          "pub_key": {
+            "@type": "/cosmos.crypto.secp256k1.PubKey",
+            "key": "AsXcgIM/hlVMUBbuveyL+IidKvahxWR2Pr16EH7kPKkZ"
+          },
+          "account_number": "279",
+          "sequence": "3"
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
@@ -2221,7 +2319,7 @@
             "key": "Ap5VV/5an33PRigf8NIO/FfquE1BRyz/CDMJ1SPUCC2c"
           },
           "account_number": "208",
-          "sequence": "102"
+          "sequence": "116"
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
@@ -2279,7 +2377,17 @@
             "key": "AmfRSymDbNb5NyMFzeH5h2ISKyqa8KCP6yEoeVhfElHN"
           },
           "account_number": "201",
-          "sequence": "262"
+          "sequence": "315"
+        },
+        {
+          "@type": "/cosmos.auth.v1beta1.BaseAccount",
+          "address": "shareledger1uxeh0qtls6a5rqw7qpq4aeeplufvw0s8km4dxh",
+          "pub_key": {
+            "@type": "/cosmos.crypto.secp256k1.PubKey",
+            "key": "AlupszOFkEpr+cVKr68u6E7UCrToIwj9qAt4sV/oF0aH"
+          },
+          "account_number": "287",
+          "sequence": "3"
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
@@ -2482,6 +2590,16 @@
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
+          "address": "shareledger1ladn3pw8vp7a7xh4ez624r2zdy3wr6jvh2e7rd",
+          "pub_key": {
+            "@type": "/cosmos.crypto.secp256k1.PubKey",
+            "key": "A6ZyKkvUgm8eYdcpV6OLzfnSTZ+vsr8LnH0hno84M/oS"
+          },
+          "account_number": "288",
+          "sequence": "15"
+        },
+        {
+          "@type": "/cosmos.auth.v1beta1.BaseAccount",
           "address": "shareledger1lldrtvyja5xkc6a0ustpy5hzqtd0008a87ymru",
           "pub_key": {
             "@type": "/cosmos.crypto.secp256k1.PubKey",
@@ -2557,7 +2675,7 @@
           "coins": [
             {
               "denom": "shr",
-              "amount": "138888"
+              "amount": "1928512"
             }
           ]
         },
@@ -2620,7 +2738,7 @@
           "coins": [
             {
               "denom": "shr",
-              "amount": "95"
+              "amount": "93"
             }
           ]
         },
@@ -2643,6 +2761,19 @@
           ]
         },
         {
+          "address": "shareledger1zf88msk4xmsm7aywgsu33cx2tjnuez469l2xn2",
+          "coins": [
+            {
+              "denom": "cent",
+              "amount": "1"
+            },
+            {
+              "denom": "shrp",
+              "amount": "80"
+            }
+          ]
+        },
+        {
           "address": "shareledger1z2rz88fddw3gpmwmn5kesrncnsqyyfcm0520d2",
           "coins": []
         },
@@ -2660,11 +2791,11 @@
           "coins": [
             {
               "denom": "cent",
-              "amount": "3898"
+              "amount": "6650"
             },
             {
               "denom": "shrp",
-              "amount": "9182"
+              "amount": "37945"
             }
           ]
         },
@@ -2679,12 +2810,7 @@
         },
         {
           "address": "shareledger1zsrv6twrrvnyfyvzee02z6m7v02raac9h9z4vn",
-          "coins": [
-            {
-              "denom": "shr",
-              "amount": "10391"
-            }
-          ]
+          "coins": []
         },
         {
           "address": "shareledger1zjnj0rwshc4zk6sgz2nr5nhffxemvw8x57g2f5",
@@ -2715,12 +2841,7 @@
         },
         {
           "address": "shareledger1z6qpn2nxt99ma6enza3dzfp7prux55h8ynkdts",
-          "coins": [
-            {
-              "denom": "shr",
-              "amount": "296233"
-            }
-          ]
+          "coins": []
         },
         {
           "address": "shareledger1z7xkd6nf3rkqacxr7qkdtx0v5tdpy6yh5z4a30",
@@ -2728,6 +2849,15 @@
             {
               "denom": "shr",
               "amount": "92"
+            }
+          ]
+        },
+        {
+          "address": "shareledger1rpwq3amlc3a79k0culzl7yd4vkrp5xhvm5huya",
+          "coins": [
+            {
+              "denom": "shr",
+              "amount": "5000223"
             }
           ]
         },
@@ -2786,6 +2916,15 @@
           ]
         },
         {
+          "address": "shareledger1ra48y4sf7m8x7c6j6aa7f9gpln8dgjtfdsayty",
+          "coins": [
+            {
+              "denom": "shr",
+              "amount": "49662"
+            }
+          ]
+        },
+        {
           "address": "shareledger1r7wkuptecxxs3ls6j3d6l7dnvr2ymqj3lvrwrd",
           "coins": [
             {
@@ -2838,7 +2977,7 @@
             },
             {
               "denom": "shr",
-              "amount": "38487"
+              "amount": "63242"
             },
             {
               "denom": "shrp",
@@ -2869,7 +3008,7 @@
           "coins": [
             {
               "denom": "shr",
-              "amount": "96"
+              "amount": "78"
             }
           ]
         },
@@ -2906,6 +3045,15 @@
             {
               "denom": "shr",
               "amount": "102"
+            }
+          ]
+        },
+        {
+          "address": "shareledger1yntnt854u056q98455czpnrfw8prvrnxmc2cwj",
+          "coins": [
+            {
+              "denom": "shr",
+              "amount": "1089"
             }
           ]
         },
@@ -2986,7 +3134,7 @@
           "coins": [
             {
               "denom": "shr",
-              "amount": "22256"
+              "amount": "4154"
             }
           ]
         },
@@ -3031,7 +3179,7 @@
           "coins": [
             {
               "denom": "shr",
-              "amount": "989915"
+              "amount": "89828"
             }
           ]
         },
@@ -3049,7 +3197,7 @@
           "coins": [
             {
               "denom": "shr",
-              "amount": "10328"
+              "amount": "10324"
             }
           ]
         },
@@ -3121,7 +3269,7 @@
           "coins": [
             {
               "denom": "shr",
-              "amount": "987"
+              "amount": "986"
             },
             {
               "denom": "shrp",
@@ -3140,7 +3288,12 @@
         },
         {
           "address": "shareledger1x7m7pa84t5tftvnesl2h5xujjxqgdqac56w5rs",
-          "coins": []
+          "coins": [
+            {
+              "denom": "shr",
+              "amount": "21400"
+            }
+          ]
         },
         {
           "address": "shareledger189r8gxcdnxvr2xeklekemv4jt6jwnp8ygpd8j5",
@@ -3165,7 +3318,7 @@
           "coins": [
             {
               "denom": "shr",
-              "amount": "99305"
+              "amount": "99302"
             }
           ]
         },
@@ -3194,6 +3347,15 @@
         {
           "address": "shareledger18ncqa238qk0xxpgq5v9yz88p79r0mc3tt0yyvx",
           "coins": []
+        },
+        {
+          "address": "shareledger1853wc35m4xugd0kddq9mwx9rjy8hxjz06jflgz",
+          "coins": [
+            {
+              "denom": "shr",
+              "amount": "6000"
+            }
+          ]
         },
         {
           "address": "shareledger185ck7q8ra2cyxkdjn4gjrt2gpjqck9zwv2cytt",
@@ -3236,7 +3398,7 @@
           "coins": [
             {
               "denom": "shr",
-              "amount": "9699923"
+              "amount": "9739923"
             }
           ]
         },
@@ -3316,11 +3478,11 @@
           "coins": [
             {
               "denom": "cent",
-              "amount": "9687"
+              "amount": "11372"
             },
             {
               "denom": "shrp",
-              "amount": "9404"
+              "amount": "12002"
             }
           ]
         },
@@ -3391,12 +3553,16 @@
           "address": "shareledger1fja6aazgvw6zfrh59xjc6w0jdpfhdkharz72lr",
           "coins": [
             {
+              "denom": "cent",
+              "amount": "92"
+            },
+            {
               "denom": "shr",
-              "amount": "9827700"
+              "amount": "9828781"
             },
             {
               "denom": "shrp",
-              "amount": "100000"
+              "amount": "104565"
             }
           ]
         },
@@ -3459,7 +3625,7 @@
           "coins": [
             {
               "denom": "shr",
-              "amount": "223769769"
+              "amount": "212644801"
             }
           ]
         },
@@ -3472,7 +3638,7 @@
             },
             {
               "denom": "shr",
-              "amount": "143001"
+              "amount": "143171"
             },
             {
               "denom": "shrp",
@@ -3530,15 +3696,15 @@
           "coins": [
             {
               "denom": "cent",
-              "amount": "97"
+              "amount": "90"
             },
             {
               "denom": "shr",
-              "amount": "99886"
+              "amount": "99816"
             },
             {
               "denom": "shrp",
-              "amount": "10111"
+              "amount": "9689"
             }
           ]
         },
@@ -3565,20 +3731,28 @@
           "coins": [
             {
               "denom": "shr",
-              "amount": "3267443"
+              "amount": "726826542"
             }
           ]
+        },
+        {
+          "address": "shareledger1tvxdr4jla4ezxq6m0769pawhlqtjdpeaygynqq",
+          "coins": []
         },
         {
           "address": "shareledger1th0wdefvlyprm9mmyn43jvxcgrfak525ltyvef",
           "coins": [
             {
               "denom": "cent",
-              "amount": "60"
+              "amount": "115"
+            },
+            {
+              "denom": "shr",
+              "amount": "8"
             },
             {
               "denom": "shrp",
-              "amount": "5"
+              "amount": "115"
             }
           ]
         },
@@ -3587,7 +3761,7 @@
           "coins": [
             {
               "denom": "shr",
-              "amount": "16880380"
+              "amount": "15616182"
             }
           ]
         },
@@ -3615,6 +3789,15 @@
             {
               "denom": "shr",
               "amount": "2"
+            }
+          ]
+        },
+        {
+          "address": "shareledger1tl03794zkluwkldfcjqe3frphtakl375kuzvsm",
+          "coins": [
+            {
+              "denom": "shr",
+              "amount": "996684629"
             }
           ]
         },
@@ -3668,6 +3851,15 @@
           ]
         },
         {
+          "address": "shareledger1vjrqur33scq29s2zmek99rm3yck84rq2dkraxn",
+          "coins": [
+            {
+              "denom": "shr",
+              "amount": "101387"
+            }
+          ]
+        },
+        {
           "address": "shareledger1vjtat7mgaseugvqpg53jwt2pfeplsq9sp6mk7r",
           "coins": [
             {
@@ -3708,7 +3900,7 @@
           "coins": [
             {
               "denom": "shr",
-              "amount": "17300"
+              "amount": "30300"
             }
           ]
         },
@@ -3762,7 +3954,7 @@
           "coins": [
             {
               "denom": "shr",
-              "amount": "80786"
+              "amount": "62295"
             }
           ]
         },
@@ -3771,7 +3963,7 @@
           "coins": [
             {
               "denom": "shr",
-              "amount": "12048"
+              "amount": "12049"
             }
           ]
         },
@@ -3808,6 +4000,15 @@
             {
               "denom": "shr",
               "amount": "100"
+            }
+          ]
+        },
+        {
+          "address": "shareledger1d7h6de406trldye3rnl7fj83g2663ug4w7dup6",
+          "coins": [
+            {
+              "denom": "shr",
+              "amount": "48989"
             }
           ]
         },
@@ -3883,7 +4084,7 @@
           "coins": [
             {
               "denom": "shr",
-              "amount": "7001065"
+              "amount": "405082704"
             }
           ]
         },
@@ -3945,11 +4146,15 @@
           "coins": []
         },
         {
+          "address": "shareledger10jgl6frhlyg3c0zjvuz7vcgerpz6qp2rlp6eer",
+          "coins": []
+        },
+        {
           "address": "shareledger1044pfjan847rrg9gt3awyqw55u063z0hnck429",
           "coins": [
             {
               "denom": "shr",
-              "amount": "286457"
+              "amount": "6446"
             }
           ]
         },
@@ -4016,15 +4221,15 @@
           "coins": [
             {
               "denom": "cent",
-              "amount": "72"
+              "amount": "4"
             },
             {
               "denom": "shr",
-              "amount": "99886"
+              "amount": "99816"
             },
             {
               "denom": "shrp",
-              "amount": "9320"
+              "amount": "5100"
             }
           ]
         },
@@ -4132,7 +4337,7 @@
           "coins": [
             {
               "denom": "shr",
-              "amount": "90925"
+              "amount": "97975"
             }
           ]
         },
@@ -4159,7 +4364,7 @@
           "coins": [
             {
               "denom": "shr",
-              "amount": "27313"
+              "amount": "29516"
             }
           ]
         },
@@ -4222,15 +4427,15 @@
           "coins": [
             {
               "denom": "cent",
-              "amount": "30"
+              "amount": "254"
             },
             {
               "denom": "shr",
-              "amount": "1460"
+              "amount": "1350"
             },
             {
               "denom": "shrp",
-              "amount": "10549"
+              "amount": "11478"
             }
           ]
         },
@@ -4386,6 +4591,10 @@
               "amount": "100"
             }
           ]
+        },
+        {
+          "address": "shareledger147uh7vsfzfvar2k3wrmaryf5jfag3h77lk9j9s",
+          "coins": []
         },
         {
           "address": "shareledger14lu2t8vqu2kgy9grvg44az4hekz3339s6xdzmr",
@@ -4599,7 +4808,7 @@
           "coins": [
             {
               "denom": "shr",
-              "amount": "126730"
+              "amount": "128720"
             }
           ]
         },
@@ -4747,7 +4956,7 @@
           "coins": [
             {
               "denom": "shr",
-              "amount": "300473843"
+              "amount": "187474894"
             }
           ]
         },
@@ -4810,11 +5019,20 @@
           "coins": [
             {
               "denom": "cent",
-              "amount": "89"
+              "amount": "108"
             },
             {
               "denom": "shrp",
-              "amount": "11226"
+              "amount": "10687"
+            }
+          ]
+        },
+        {
+          "address": "shareledger1uxeh0qtls6a5rqw7qpq4aeeplufvw0s8km4dxh",
+          "coins": [
+            {
+              "denom": "shr",
+              "amount": "50212"
             }
           ]
         },
@@ -4971,7 +5189,7 @@
           "coins": [
             {
               "denom": "shr",
-              "amount": "299771"
+              "amount": "299871"
             }
           ]
         },
@@ -5025,7 +5243,16 @@
           "coins": [
             {
               "denom": "shr",
-              "amount": "11600"
+              "amount": "511201"
+            }
+          ]
+        },
+        {
+          "address": "shareledger1ladn3pw8vp7a7xh4ez624r2zdy3wr6jvh2e7rd",
+          "coins": [
+            {
+              "denom": "shr",
+              "amount": "88140"
             }
           ]
         },
@@ -5042,45 +5269,36 @@
       "supply": [
         {
           "denom": "cent",
-          "amount": "14579"
+          "amount": "19332"
         },
         {
           "denom": "shr",
-          "amount": "637122379"
+          "amount": "2636282723"
         },
         {
           "denom": "shrp",
-          "amount": "1268994"
+          "amount": "1300858"
         }
       ],
       "denom_metadata": [
         {
-          "description": "The native smallest token of shr chain",
+          "description": "The native smallest token of Shareledger chain",
           "denom_units": [
             {
-              "denom": "ushr",
+              "denom": "pshr",
               "exponent": 0,
-              "aliases": [
-                "microshr"
-              ]
-            },
-            {
-              "denom": "mshr",
-              "exponent": 3,
-              "aliases": [
-                "millishr"
-              ]
+              "aliases": []
             },
             {
               "denom": "shr",
-              "exponent": 6,
+              "exponent": 8,
               "aliases": []
             }
           ],
-          "base": "ushr",
+          "base": "pshr",
           "display": "shr",
-          "name": "",
-          "symbol": ""
+          "name": "pshr",
+          "symbol": "pshr"
         }
       ]
     },
@@ -5093,8 +5311,8 @@
     },
     "crisis": {
       "constant_fee": {
-        "amount": "1000",
-        "denom": "shr"
+        "amount": "100000000000",
+        "denom": "pshr"
       }
     },
     "distribution": {
@@ -5108,19 +5326,19 @@
         "community_pool": [
           {
             "denom": "shr",
-            "amount": "653.099644816606281572"
+            "amount": "749.664279948916097184"
           }
         ]
       },
       "delegator_withdraw_infos": [],
-      "previous_proposer": "shareledgervalcons1hqaa8jxkse4mmc4h9es208ayyj43txkft36gsa",
+      "previous_proposer": "shareledgervalcons1yh39aanelyufuczl8gty5v2a3y5537f5u3r8pl",
       "outstanding_rewards": [
         {
           "validator_address": "shareledgervaloper1pdn82hmc36pqfh5qg8q2vcjc60l7h6w8qzcjqz",
           "outstanding_rewards": [
             {
               "denom": "shr",
-              "amount": "8963.278983615275660723"
+              "amount": "9010.835845483718768413"
             }
           ]
         },
@@ -5129,7 +5347,7 @@
           "outstanding_rewards": [
             {
               "denom": "shr",
-              "amount": "3550.472827818784360679"
+              "amount": "3592.179970336214394056"
             }
           ]
         },
@@ -5138,7 +5356,7 @@
           "outstanding_rewards": [
             {
               "denom": "shr",
-              "amount": "9837.987761818103661869"
+              "amount": "11287.445493887139805577"
             }
           ]
         },
@@ -5147,7 +5365,7 @@
           "outstanding_rewards": [
             {
               "denom": "shr",
-              "amount": "4308.160781931230035157"
+              "amount": "4875.874410344010934770"
             }
           ]
         }
@@ -5159,7 +5377,7 @@
             "commission": [
               {
                 "denom": "shr",
-                "amount": "3568.329952757990060585"
+                "amount": "3599.322051804685563908"
               }
             ]
           }
@@ -5170,7 +5388,7 @@
             "commission": [
               {
                 "denom": "shr",
-                "amount": "1469.276756294547084130"
+                "amount": "1477.740610556920416773"
               }
             ]
           }
@@ -5181,7 +5399,7 @@
             "commission": [
               {
                 "denom": "shr",
-                "amount": "5068.771131950447116393"
+                "amount": "6336.493509471380882373"
               }
             ]
           }
@@ -5192,7 +5410,7 @@
             "commission": [
               {
                 "denom": "shr",
-                "amount": "1788.245139262219524059"
+                "amount": "1874.831343906148276625"
               }
             ]
           }
@@ -5368,38 +5586,12 @@
         },
         {
           "validator_address": "shareledgervaloper1pdn82hmc36pqfh5qg8q2vcjc60l7h6w8qzcjqz",
-          "period": "64",
-          "rewards": {
-            "cumulative_reward_ratio": [
-              {
-                "denom": "shr",
-                "amount": "0.000514329815424994"
-              }
-            ],
-            "reference_count": 1
-          }
-        },
-        {
-          "validator_address": "shareledgervaloper1pdn82hmc36pqfh5qg8q2vcjc60l7h6w8qzcjqz",
           "period": "65",
           "rewards": {
             "cumulative_reward_ratio": [
               {
                 "denom": "shr",
                 "amount": "0.000563708672837867"
-              }
-            ],
-            "reference_count": 1
-          }
-        },
-        {
-          "validator_address": "shareledgervaloper1pdn82hmc36pqfh5qg8q2vcjc60l7h6w8qzcjqz",
-          "period": "66",
-          "rewards": {
-            "cumulative_reward_ratio": [
-              {
-                "denom": "shr",
-                "amount": "0.000685372851789910"
               }
             ],
             "reference_count": 1
@@ -5433,19 +5625,6 @@
         },
         {
           "validator_address": "shareledgervaloper1pdn82hmc36pqfh5qg8q2vcjc60l7h6w8qzcjqz",
-          "period": "75",
-          "rewards": {
-            "cumulative_reward_ratio": [
-              {
-                "denom": "shr",
-                "amount": "0.000777426862606458"
-              }
-            ],
-            "reference_count": 1
-          }
-        },
-        {
-          "validator_address": "shareledgervaloper1pdn82hmc36pqfh5qg8q2vcjc60l7h6w8qzcjqz",
           "period": "78",
           "rewards": {
             "cumulative_reward_ratio": [
@@ -5459,12 +5638,12 @@
         },
         {
           "validator_address": "shareledgervaloper1pdn82hmc36pqfh5qg8q2vcjc60l7h6w8qzcjqz",
-          "period": "81",
+          "period": "86",
           "rewards": {
             "cumulative_reward_ratio": [
               {
                 "denom": "shr",
-                "amount": "0.000778215106253168"
+                "amount": "0.000779823922271820"
               }
             ],
             "reference_count": 1
@@ -5472,12 +5651,90 @@
         },
         {
           "validator_address": "shareledgervaloper1pdn82hmc36pqfh5qg8q2vcjc60l7h6w8qzcjqz",
-          "period": "82",
+          "period": "91",
           "rewards": {
             "cumulative_reward_ratio": [
               {
                 "denom": "shr",
-                "amount": "0.000778592087423966"
+                "amount": "0.000780226142528499"
+              }
+            ],
+            "reference_count": 1
+          }
+        },
+        {
+          "validator_address": "shareledgervaloper1pdn82hmc36pqfh5qg8q2vcjc60l7h6w8qzcjqz",
+          "period": "93",
+          "rewards": {
+            "cumulative_reward_ratio": [
+              {
+                "denom": "shr",
+                "amount": "0.000780635351345620"
+              }
+            ],
+            "reference_count": 1
+          }
+        },
+        {
+          "validator_address": "shareledgervaloper1pdn82hmc36pqfh5qg8q2vcjc60l7h6w8qzcjqz",
+          "period": "95",
+          "rewards": {
+            "cumulative_reward_ratio": [
+              {
+                "denom": "shr",
+                "amount": "0.000780635351345620"
+              }
+            ],
+            "reference_count": 1
+          }
+        },
+        {
+          "validator_address": "shareledgervaloper1pdn82hmc36pqfh5qg8q2vcjc60l7h6w8qzcjqz",
+          "period": "96",
+          "rewards": {
+            "cumulative_reward_ratio": [
+              {
+                "denom": "shr",
+                "amount": "0.000780635351345620"
+              }
+            ],
+            "reference_count": 1
+          }
+        },
+        {
+          "validator_address": "shareledgervaloper1pdn82hmc36pqfh5qg8q2vcjc60l7h6w8qzcjqz",
+          "period": "97",
+          "rewards": {
+            "cumulative_reward_ratio": [
+              {
+                "denom": "shr",
+                "amount": "0.000780635351345620"
+              }
+            ],
+            "reference_count": 1
+          }
+        },
+        {
+          "validator_address": "shareledgervaloper1pdn82hmc36pqfh5qg8q2vcjc60l7h6w8qzcjqz",
+          "period": "98",
+          "rewards": {
+            "cumulative_reward_ratio": [
+              {
+                "denom": "shr",
+                "amount": "0.000780635351345620"
+              }
+            ],
+            "reference_count": 1
+          }
+        },
+        {
+          "validator_address": "shareledgervaloper1pdn82hmc36pqfh5qg8q2vcjc60l7h6w8qzcjqz",
+          "period": "99",
+          "rewards": {
+            "cumulative_reward_ratio": [
+              {
+                "denom": "shr",
+                "amount": "0.000780635351345620"
               }
             ],
             "reference_count": 2
@@ -5595,19 +5852,6 @@
         },
         {
           "validator_address": "shareledgervaloper1pasya6jtvglu9q36nl3tqh5drqzeh0s9098x32",
-          "period": "284",
-          "rewards": {
-            "cumulative_reward_ratio": [
-              {
-                "denom": "shr",
-                "amount": "0.001979091090781471"
-              }
-            ],
-            "reference_count": 1
-          }
-        },
-        {
-          "validator_address": "shareledgervaloper1pasya6jtvglu9q36nl3tqh5drqzeh0s9098x32",
           "period": "286",
           "rewards": {
             "cumulative_reward_ratio": [
@@ -5647,19 +5891,6 @@
         },
         {
           "validator_address": "shareledgervaloper1pasya6jtvglu9q36nl3tqh5drqzeh0s9098x32",
-          "period": "296",
-          "rewards": {
-            "cumulative_reward_ratio": [
-              {
-                "denom": "shr",
-                "amount": "0.001992194341397970"
-              }
-            ],
-            "reference_count": 1
-          }
-        },
-        {
-          "validator_address": "shareledgervaloper1pasya6jtvglu9q36nl3tqh5drqzeh0s9098x32",
           "period": "305",
           "rewards": {
             "cumulative_reward_ratio": [
@@ -5673,12 +5904,12 @@
         },
         {
           "validator_address": "shareledgervaloper1pasya6jtvglu9q36nl3tqh5drqzeh0s9098x32",
-          "period": "314",
+          "period": "323",
           "rewards": {
             "cumulative_reward_ratio": [
               {
                 "denom": "shr",
-                "amount": "0.001992743790997783"
+                "amount": "0.001993137956802134"
               }
             ],
             "reference_count": 1
@@ -5686,12 +5917,12 @@
         },
         {
           "validator_address": "shareledgervaloper1pasya6jtvglu9q36nl3tqh5drqzeh0s9098x32",
-          "period": "320",
+          "period": "324",
           "rewards": {
             "cumulative_reward_ratio": [
               {
                 "denom": "shr",
-                "amount": "0.001992975594408538"
+                "amount": "0.001993137956802134"
               }
             ],
             "reference_count": 1
@@ -5699,15 +5930,67 @@
         },
         {
           "validator_address": "shareledgervaloper1pasya6jtvglu9q36nl3tqh5drqzeh0s9098x32",
-          "period": "322",
+          "period": "331",
           "rewards": {
             "cumulative_reward_ratio": [
               {
                 "denom": "shr",
-                "amount": "0.001993109125227915"
+                "amount": "0.001994301521898013"
               }
             ],
-            "reference_count": 2
+            "reference_count": 1
+          }
+        },
+        {
+          "validator_address": "shareledgervaloper1pasya6jtvglu9q36nl3tqh5drqzeh0s9098x32",
+          "period": "341",
+          "rewards": {
+            "cumulative_reward_ratio": [
+              {
+                "denom": "shr",
+                "amount": "0.001994886348354179"
+              }
+            ],
+            "reference_count": 1
+          }
+        },
+        {
+          "validator_address": "shareledgervaloper1pasya6jtvglu9q36nl3tqh5drqzeh0s9098x32",
+          "period": "347",
+          "rewards": {
+            "cumulative_reward_ratio": [
+              {
+                "denom": "shr",
+                "amount": "0.001994950860951139"
+              }
+            ],
+            "reference_count": 1
+          }
+        },
+        {
+          "validator_address": "shareledgervaloper1pasya6jtvglu9q36nl3tqh5drqzeh0s9098x32",
+          "period": "352",
+          "rewards": {
+            "cumulative_reward_ratio": [
+              {
+                "denom": "shr",
+                "amount": "0.001995569333820141"
+              }
+            ],
+            "reference_count": 1
+          }
+        },
+        {
+          "validator_address": "shareledgervaloper1pasya6jtvglu9q36nl3tqh5drqzeh0s9098x32",
+          "period": "353",
+          "rewards": {
+            "cumulative_reward_ratio": [
+              {
+                "denom": "shr",
+                "amount": "0.001995616553948828"
+              }
+            ],
+            "reference_count": 1
           }
         },
         {
@@ -5725,6 +6008,71 @@
         },
         {
           "validator_address": "shareledgervaloper1pasya6jtvglu9q36nl3tqh5drqzeh0s9098x32",
+          "period": "355",
+          "rewards": {
+            "cumulative_reward_ratio": [
+              {
+                "denom": "shr",
+                "amount": "0.001995646084625809"
+              }
+            ],
+            "reference_count": 1
+          }
+        },
+        {
+          "validator_address": "shareledgervaloper1pasya6jtvglu9q36nl3tqh5drqzeh0s9098x32",
+          "period": "356",
+          "rewards": {
+            "cumulative_reward_ratio": [
+              {
+                "denom": "shr",
+                "amount": "0.001995848364310968"
+              }
+            ],
+            "reference_count": 1
+          }
+        },
+        {
+          "validator_address": "shareledgervaloper1pasya6jtvglu9q36nl3tqh5drqzeh0s9098x32",
+          "period": "357",
+          "rewards": {
+            "cumulative_reward_ratio": [
+              {
+                "denom": "shr",
+                "amount": "0.001995973034707915"
+              }
+            ],
+            "reference_count": 1
+          }
+        },
+        {
+          "validator_address": "shareledgervaloper1pasya6jtvglu9q36nl3tqh5drqzeh0s9098x32",
+          "period": "358",
+          "rewards": {
+            "cumulative_reward_ratio": [
+              {
+                "denom": "shr",
+                "amount": "0.001996019725862989"
+              }
+            ],
+            "reference_count": 1
+          }
+        },
+        {
+          "validator_address": "shareledgervaloper1pasya6jtvglu9q36nl3tqh5drqzeh0s9098x32",
+          "period": "359",
+          "rewards": {
+            "cumulative_reward_ratio": [
+              {
+                "denom": "shr",
+                "amount": "0.001997495912442821"
+              }
+            ],
+            "reference_count": 1
+          }
+        },
+        {
+          "validator_address": "shareledgervaloper1pasya6jtvglu9q36nl3tqh5drqzeh0s9098x32",
           "period": "104",
           "rewards": {
             "cumulative_reward_ratio": [
@@ -5734,6 +6082,19 @@
               }
             ],
             "reference_count": 1
+          }
+        },
+        {
+          "validator_address": "shareledgervaloper1pasya6jtvglu9q36nl3tqh5drqzeh0s9098x32",
+          "period": "360",
+          "rewards": {
+            "cumulative_reward_ratio": [
+              {
+                "denom": "shr",
+                "amount": "0.001997575863321876"
+              }
+            ],
+            "reference_count": 2
           }
         },
         {
@@ -6126,19 +6487,6 @@
         },
         {
           "validator_address": "shareledgervaloper1w4l5fchs69d9avlgvdehq9ypvdh4xyeveusq8r",
-          "period": "68",
-          "rewards": {
-            "cumulative_reward_ratio": [
-              {
-                "denom": "shr",
-                "amount": "0.001010482234048615"
-              }
-            ],
-            "reference_count": 1
-          }
-        },
-        {
-          "validator_address": "shareledgervaloper1w4l5fchs69d9avlgvdehq9ypvdh4xyeveusq8r",
           "period": "74",
           "rewards": {
             "cumulative_reward_ratio": [
@@ -6230,19 +6578,6 @@
         },
         {
           "validator_address": "shareledgervaloper1w4l5fchs69d9avlgvdehq9ypvdh4xyeveusq8r",
-          "period": "87",
-          "rewards": {
-            "cumulative_reward_ratio": [
-              {
-                "denom": "shr",
-                "amount": "0.001074239013314458"
-              }
-            ],
-            "reference_count": 1
-          }
-        },
-        {
-          "validator_address": "shareledgervaloper1w4l5fchs69d9avlgvdehq9ypvdh4xyeveusq8r",
           "period": "88",
           "rewards": {
             "cumulative_reward_ratio": [
@@ -6321,19 +6656,6 @@
         },
         {
           "validator_address": "shareledgervaloper1w4l5fchs69d9avlgvdehq9ypvdh4xyeveusq8r",
-          "period": "112",
-          "rewards": {
-            "cumulative_reward_ratio": [
-              {
-                "denom": "shr",
-                "amount": "0.001377278903960014"
-              }
-            ],
-            "reference_count": 1
-          }
-        },
-        {
-          "validator_address": "shareledgervaloper1w4l5fchs69d9avlgvdehq9ypvdh4xyeveusq8r",
           "period": "113",
           "rewards": {
             "cumulative_reward_ratio": [
@@ -6366,6 +6688,84 @@
               {
                 "denom": "shr",
                 "amount": "0.001378141500135795"
+              }
+            ],
+            "reference_count": 1
+          }
+        },
+        {
+          "validator_address": "shareledgervaloper1w4l5fchs69d9avlgvdehq9ypvdh4xyeveusq8r",
+          "period": "126",
+          "rewards": {
+            "cumulative_reward_ratio": [
+              {
+                "denom": "shr",
+                "amount": "0.001379215546373700"
+              }
+            ],
+            "reference_count": 1
+          }
+        },
+        {
+          "validator_address": "shareledgervaloper1w4l5fchs69d9avlgvdehq9ypvdh4xyeveusq8r",
+          "period": "131",
+          "rewards": {
+            "cumulative_reward_ratio": [
+              {
+                "denom": "shr",
+                "amount": "0.001379592308779145"
+              }
+            ],
+            "reference_count": 1
+          }
+        },
+        {
+          "validator_address": "shareledgervaloper1w4l5fchs69d9avlgvdehq9ypvdh4xyeveusq8r",
+          "period": "139",
+          "rewards": {
+            "cumulative_reward_ratio": [
+              {
+                "denom": "shr",
+                "amount": "0.001379753475983766"
+              }
+            ],
+            "reference_count": 1
+          }
+        },
+        {
+          "validator_address": "shareledgervaloper1w4l5fchs69d9avlgvdehq9ypvdh4xyeveusq8r",
+          "period": "151",
+          "rewards": {
+            "cumulative_reward_ratio": [
+              {
+                "denom": "shr",
+                "amount": "0.001381065914793454"
+              }
+            ],
+            "reference_count": 1
+          }
+        },
+        {
+          "validator_address": "shareledgervaloper1w4l5fchs69d9avlgvdehq9ypvdh4xyeveusq8r",
+          "period": "162",
+          "rewards": {
+            "cumulative_reward_ratio": [
+              {
+                "denom": "shr",
+                "amount": "0.001381625928095250"
+              }
+            ],
+            "reference_count": 1
+          }
+        },
+        {
+          "validator_address": "shareledgervaloper1w4l5fchs69d9avlgvdehq9ypvdh4xyeveusq8r",
+          "period": "164",
+          "rewards": {
+            "cumulative_reward_ratio": [
+              {
+                "denom": "shr",
+                "amount": "0.001383083601156827"
               }
             ],
             "reference_count": 2
@@ -6551,19 +6951,6 @@
         },
         {
           "validator_address": "shareledgervaloper1ml6wjyy6hw0gynuzqvvaw4urhcpegcy9xr8002",
-          "period": "69",
-          "rewards": {
-            "cumulative_reward_ratio": [
-              {
-                "denom": "shr",
-                "amount": "0.001337236655569970"
-              }
-            ],
-            "reference_count": 1
-          }
-        },
-        {
-          "validator_address": "shareledgervaloper1ml6wjyy6hw0gynuzqvvaw4urhcpegcy9xr8002",
           "period": "71",
           "rewards": {
             "cumulative_reward_ratio": [
@@ -6694,38 +7081,12 @@
         },
         {
           "validator_address": "shareledgervaloper1ml6wjyy6hw0gynuzqvvaw4urhcpegcy9xr8002",
-          "period": "102",
-          "rewards": {
-            "cumulative_reward_ratio": [
-              {
-                "denom": "shr",
-                "amount": "0.001612338407356220"
-              }
-            ],
-            "reference_count": 1
-          }
-        },
-        {
-          "validator_address": "shareledgervaloper1ml6wjyy6hw0gynuzqvvaw4urhcpegcy9xr8002",
           "period": "106",
           "rewards": {
             "cumulative_reward_ratio": [
               {
                 "denom": "shr",
                 "amount": "0.001623738717674754"
-              }
-            ],
-            "reference_count": 1
-          }
-        },
-        {
-          "validator_address": "shareledgervaloper1ml6wjyy6hw0gynuzqvvaw4urhcpegcy9xr8002",
-          "period": "109",
-          "rewards": {
-            "cumulative_reward_ratio": [
-              {
-                "denom": "shr",
-                "amount": "0.001633559505434432"
               }
             ],
             "reference_count": 1
@@ -6759,12 +7120,12 @@
         },
         {
           "validator_address": "shareledgervaloper1ml6wjyy6hw0gynuzqvvaw4urhcpegcy9xr8002",
-          "period": "121",
+          "period": "125",
           "rewards": {
             "cumulative_reward_ratio": [
               {
                 "denom": "shr",
-                "amount": "0.001634754697423098"
+                "amount": "0.001634900488636174"
               }
             ],
             "reference_count": 1
@@ -6772,12 +7133,142 @@
         },
         {
           "validator_address": "shareledgervaloper1ml6wjyy6hw0gynuzqvvaw4urhcpegcy9xr8002",
-          "period": "125",
+          "period": "138",
           "rewards": {
             "cumulative_reward_ratio": [
               {
                 "denom": "shr",
-                "amount": "0.001634900488636174"
+                "amount": "0.001636426748467598"
+              }
+            ],
+            "reference_count": 1
+          }
+        },
+        {
+          "validator_address": "shareledgervaloper1ml6wjyy6hw0gynuzqvvaw4urhcpegcy9xr8002",
+          "period": "139",
+          "rewards": {
+            "cumulative_reward_ratio": [
+              {
+                "denom": "shr",
+                "amount": "0.001636550631774381"
+              }
+            ],
+            "reference_count": 1
+          }
+        },
+        {
+          "validator_address": "shareledgervaloper1ml6wjyy6hw0gynuzqvvaw4urhcpegcy9xr8002",
+          "period": "143",
+          "rewards": {
+            "cumulative_reward_ratio": [
+              {
+                "denom": "shr",
+                "amount": "0.001637142443969409"
+              }
+            ],
+            "reference_count": 1
+          }
+        },
+        {
+          "validator_address": "shareledgervaloper1ml6wjyy6hw0gynuzqvvaw4urhcpegcy9xr8002",
+          "period": "146",
+          "rewards": {
+            "cumulative_reward_ratio": [
+              {
+                "denom": "shr",
+                "amount": "0.001637866711135242"
+              }
+            ],
+            "reference_count": 1
+          }
+        },
+        {
+          "validator_address": "shareledgervaloper1ml6wjyy6hw0gynuzqvvaw4urhcpegcy9xr8002",
+          "period": "154",
+          "rewards": {
+            "cumulative_reward_ratio": [
+              {
+                "denom": "shr",
+                "amount": "0.001638650033354790"
+              }
+            ],
+            "reference_count": 1
+          }
+        },
+        {
+          "validator_address": "shareledgervaloper1ml6wjyy6hw0gynuzqvvaw4urhcpegcy9xr8002",
+          "period": "155",
+          "rewards": {
+            "cumulative_reward_ratio": [
+              {
+                "denom": "shr",
+                "amount": "0.001638667477801738"
+              }
+            ],
+            "reference_count": 1
+          }
+        },
+        {
+          "validator_address": "shareledgervaloper1ml6wjyy6hw0gynuzqvvaw4urhcpegcy9xr8002",
+          "period": "160",
+          "rewards": {
+            "cumulative_reward_ratio": [
+              {
+                "denom": "shr",
+                "amount": "0.001638774877310561"
+              }
+            ],
+            "reference_count": 1
+          }
+        },
+        {
+          "validator_address": "shareledgervaloper1ml6wjyy6hw0gynuzqvvaw4urhcpegcy9xr8002",
+          "period": "168",
+          "rewards": {
+            "cumulative_reward_ratio": [
+              {
+                "denom": "shr",
+                "amount": "0.001639279447564962"
+              }
+            ],
+            "reference_count": 1
+          }
+        },
+        {
+          "validator_address": "shareledgervaloper1ml6wjyy6hw0gynuzqvvaw4urhcpegcy9xr8002",
+          "period": "169",
+          "rewards": {
+            "cumulative_reward_ratio": [
+              {
+                "denom": "shr",
+                "amount": "0.001639352535583632"
+              }
+            ],
+            "reference_count": 1
+          }
+        },
+        {
+          "validator_address": "shareledgervaloper1ml6wjyy6hw0gynuzqvvaw4urhcpegcy9xr8002",
+          "period": "170",
+          "rewards": {
+            "cumulative_reward_ratio": [
+              {
+                "denom": "shr",
+                "amount": "0.001639716814903368"
+              }
+            ],
+            "reference_count": 1
+          }
+        },
+        {
+          "validator_address": "shareledgervaloper1ml6wjyy6hw0gynuzqvvaw4urhcpegcy9xr8002",
+          "period": "171",
+          "rewards": {
+            "cumulative_reward_ratio": [
+              {
+                "denom": "shr",
+                "amount": "0.001641361193318682"
               }
             ],
             "reference_count": 2
@@ -6788,13 +7279,8 @@
         {
           "validator_address": "shareledgervaloper1pdn82hmc36pqfh5qg8q2vcjc60l7h6w8qzcjqz",
           "rewards": {
-            "rewards": [
-              {
-                "denom": "shr",
-                "amount": "2.400636602666014389"
-              }
-            ],
-            "period": "83"
+            "rewards": [],
+            "period": "100"
           }
         },
         {
@@ -6803,10 +7289,10 @@
             "rewards": [
               {
                 "denom": "shr",
-                "amount": "0.078337837837837838"
+                "amount": "4.158630870825003871"
               }
             ],
-            "period": "323"
+            "period": "361"
           }
         },
         {
@@ -6815,10 +7301,10 @@
             "rewards": [
               {
                 "denom": "shr",
-                "amount": "37.575977742448330671"
+                "amount": "4.058003998113249925"
               }
             ],
-            "period": "117"
+            "period": "165"
           }
         },
         {
@@ -6827,10 +7313,10 @@
             "rewards": [
               {
                 "denom": "shr",
-                "amount": "1.373006756756756661"
+                "amount": "44.080380842748365903"
               }
             ],
-            "period": "126"
+            "period": "172"
           }
         }
       ],
@@ -6839,9 +7325,9 @@
           "delegator_address": "shareledger1p8jjjmtsm9vg3cks9a6ugafgga3a9p65fnkwyw",
           "validator_address": "shareledgervaloper1pdn82hmc36pqfh5qg8q2vcjc60l7h6w8qzcjqz",
           "starting_info": {
-            "previous_period": "81",
-            "stake": "131.021305417685581633",
-            "height": "0"
+            "previous_period": "97",
+            "stake": "1000129.715863575500565382",
+            "height": "1869309"
           }
         },
         {
@@ -6859,16 +7345,25 @@
           "starting_info": {
             "previous_period": "78",
             "stake": "48.000000969538396303",
-            "height": "0"
+            "height": "1799465"
           }
         },
         {
           "delegator_address": "shareledger1z6qpn2nxt99ma6enza3dzfp7prux55h8ynkdts",
           "validator_address": "shareledgervaloper1pdn82hmc36pqfh5qg8q2vcjc60l7h6w8qzcjqz",
           "starting_info": {
-            "previous_period": "82",
-            "stake": "13.999999999999999999",
-            "height": "0"
+            "previous_period": "96",
+            "stake": "52484226.711056050749320883",
+            "height": "1867849"
+          }
+        },
+        {
+          "delegator_address": "shareledger1ra48y4sf7m8x7c6j6aa7f9gpln8dgjtfdsayty",
+          "validator_address": "shareledgervaloper1pdn82hmc36pqfh5qg8q2vcjc60l7h6w8qzcjqz",
+          "starting_info": {
+            "previous_period": "86",
+            "stake": "10.999999999999999998",
+            "height": "1805005"
           }
         },
         {
@@ -6877,7 +7372,7 @@
           "starting_info": {
             "previous_period": "68",
             "stake": "0.171765678740907594",
-            "height": "0"
+            "height": "1754125"
           }
         },
         {
@@ -6886,7 +7381,7 @@
           "starting_info": {
             "previous_period": "53",
             "stake": "10900.000311638733115324",
-            "height": "0"
+            "height": "1583081"
           }
         },
         {
@@ -6895,16 +7390,25 @@
           "starting_info": {
             "previous_period": "60",
             "stake": "2999.999999999999999999",
-            "height": "0"
+            "height": "1611439"
           }
         },
         {
           "delegator_address": "shareledger194y04q628wv0eq062pm9qrwyejdzks5tvztcm9",
           "validator_address": "shareledgervaloper1pdn82hmc36pqfh5qg8q2vcjc60l7h6w8qzcjqz",
           "starting_info": {
-            "previous_period": "66",
-            "stake": "0.000217770728196730",
-            "height": "0"
+            "previous_period": "99",
+            "stake": "0.073021393442709096",
+            "height": "1960298"
+          }
+        },
+        {
+          "delegator_address": "shareledger19mag0eyv0nznfzhxt2lc5xfu4d58ewjqrzfz5z",
+          "validator_address": "shareledgervaloper1pdn82hmc36pqfh5qg8q2vcjc60l7h6w8qzcjqz",
+          "starting_info": {
+            "previous_period": "98",
+            "stake": "200002.999999999999999999",
+            "height": "1939709"
           }
         },
         {
@@ -6913,7 +7417,7 @@
           "starting_info": {
             "previous_period": "3",
             "stake": "150.000000000000000000",
-            "height": "0"
+            "height": "697664"
           }
         },
         {
@@ -6922,7 +7426,7 @@
           "starting_info": {
             "previous_period": "52",
             "stake": "8000.000319889343878163",
-            "height": "0"
+            "height": "1582969"
           }
         },
         {
@@ -6931,7 +7435,7 @@
           "starting_info": {
             "previous_period": "25",
             "stake": "7229999.999999999999999999",
-            "height": "0"
+            "height": "1291169"
           }
         },
         {
@@ -6940,16 +7444,16 @@
           "starting_info": {
             "previous_period": "20",
             "stake": "1026099.999999999999999997",
-            "height": "0"
+            "height": "1286624"
           }
         },
         {
           "delegator_address": "shareledger10yzqsenp5yestl6wlyq5rmm4tdms44p680v7tl",
           "validator_address": "shareledgervaloper1pdn82hmc36pqfh5qg8q2vcjc60l7h6w8qzcjqz",
           "starting_info": {
-            "previous_period": "64",
-            "stake": "0.000000106424223770",
-            "height": "0"
+            "previous_period": "91",
+            "stake": "0.000000106424303915",
+            "height": "1809738"
           }
         },
         {
@@ -6958,7 +7462,7 @@
           "starting_info": {
             "previous_period": "40",
             "stake": "0.999999999999999997",
-            "height": "0"
+            "height": "1573462"
           }
         },
         {
@@ -6967,7 +7471,7 @@
           "starting_info": {
             "previous_period": "62",
             "stake": "999.999999999999999999",
-            "height": "0"
+            "height": "1612851"
           }
         },
         {
@@ -6976,7 +7480,7 @@
           "starting_info": {
             "previous_period": "47",
             "stake": "2997.000212939673241564",
-            "height": "0"
+            "height": "1582873"
           }
         },
         {
@@ -6985,7 +7489,7 @@
           "starting_info": {
             "previous_period": "65",
             "stake": "0.000322105383862649",
-            "height": "0"
+            "height": "1634048"
           }
         },
         {
@@ -6994,7 +7498,7 @@
           "starting_info": {
             "previous_period": "4",
             "stake": "95.000000000000000000",
-            "height": "0"
+            "height": "708690"
           }
         },
         {
@@ -7003,7 +7507,7 @@
           "starting_info": {
             "previous_period": "67",
             "stake": "0.000428606653699903",
-            "height": "0"
+            "height": "1719567"
           }
         },
         {
@@ -7012,7 +7516,7 @@
           "starting_info": {
             "previous_period": "61",
             "stake": "484.999999999999999999",
-            "height": "0"
+            "height": "1612085"
           }
         },
         {
@@ -7021,25 +7525,25 @@
           "starting_info": {
             "previous_period": "56",
             "stake": "9221.000141962429363808",
-            "height": "0"
+            "height": "1583913"
           }
         },
         {
           "delegator_address": "shareledger1mrzlepu0kfz5x0h40fa6d20te0maja7e4c97ts",
           "validator_address": "shareledgervaloper1pdn82hmc36pqfh5qg8q2vcjc60l7h6w8qzcjqz",
           "starting_info": {
-            "previous_period": "75",
-            "stake": "557.001167106430866702",
-            "height": "0"
+            "previous_period": "95",
+            "stake": "62313064.123970863395899789",
+            "height": "1850387"
           }
         },
         {
           "delegator_address": "shareledger1p8jjjmtsm9vg3cks9a6ugafgga3a9p65fnkwyw",
           "validator_address": "shareledgervaloper1pasya6jtvglu9q36nl3tqh5drqzeh0s9098x32",
           "starting_info": {
-            "previous_period": "314",
-            "stake": "98256.115368164062379692",
-            "height": "0"
+            "previous_period": "355",
+            "stake": "508729.390466863145196992",
+            "height": "1874889"
           }
         },
         {
@@ -7057,16 +7561,25 @@
           "starting_info": {
             "previous_period": "305",
             "stake": "4918.477121852184215078",
-            "height": "0"
+            "height": "1799481"
           }
         },
         {
           "delegator_address": "shareledger1z6qpn2nxt99ma6enza3dzfp7prux55h8ynkdts",
           "validator_address": "shareledgervaloper1pasya6jtvglu9q36nl3tqh5drqzeh0s9098x32",
           "starting_info": {
-            "previous_period": "320",
-            "stake": "919.929725215023911899",
-            "height": "0"
+            "previous_period": "324",
+            "stake": "898.158768242632389238",
+            "height": "1804860"
+          }
+        },
+        {
+          "delegator_address": "shareledger1rpwq3amlc3a79k0culzl7yd4vkrp5xhvm5huya",
+          "validator_address": "shareledgervaloper1pasya6jtvglu9q36nl3tqh5drqzeh0s9098x32",
+          "starting_info": {
+            "previous_period": "347",
+            "stake": "1499996.999999999999999996",
+            "height": "1850580"
           }
         },
         {
@@ -7075,7 +7588,16 @@
           "starting_info": {
             "previous_period": "132",
             "stake": "999.000000000000000000",
-            "height": "0"
+            "height": "1573068"
+          }
+        },
+        {
+          "delegator_address": "shareledger1yntnt854u056q98455czpnrfw8prvrnxmc2cwj",
+          "validator_address": "shareledgervaloper1pasya6jtvglu9q36nl3tqh5drqzeh0s9098x32",
+          "starting_info": {
+            "previous_period": "352",
+            "stake": "0.999999999999999999",
+            "height": "1874638"
           }
         },
         {
@@ -7084,7 +7606,7 @@
           "starting_info": {
             "previous_period": "125",
             "stake": "500.000000000000000000",
-            "height": "0"
+            "height": "1527523"
           }
         },
         {
@@ -7093,16 +7615,25 @@
           "starting_info": {
             "previous_period": "198",
             "stake": "9000.000000000000000000",
-            "height": "0"
+            "height": "1613427"
           }
         },
         {
           "delegator_address": "shareledger194y04q628wv0eq062pm9qrwyejdzks5tvztcm9",
           "validator_address": "shareledgervaloper1pasya6jtvglu9q36nl3tqh5drqzeh0s9098x32",
           "starting_info": {
-            "previous_period": "284",
-            "stake": "30222.186443990521827524",
-            "height": "0"
+            "previous_period": "360",
+            "stake": "33593.843036879588859383",
+            "height": "1960329"
+          }
+        },
+        {
+          "delegator_address": "shareledger19mag0eyv0nznfzhxt2lc5xfu4d58ewjqrzfz5z",
+          "validator_address": "shareledgervaloper1pasya6jtvglu9q36nl3tqh5drqzeh0s9098x32",
+          "starting_info": {
+            "previous_period": "358",
+            "stake": "200000.999999999999999998",
+            "height": "1939713"
           }
         },
         {
@@ -7111,7 +7642,7 @@
           "starting_info": {
             "previous_period": "21",
             "stake": "1.000000000000000000",
-            "height": "0"
+            "height": "697948"
           }
         },
         {
@@ -7120,7 +7651,7 @@
           "starting_info": {
             "previous_period": "288",
             "stake": "19988.999999999999999999",
-            "height": "0"
+            "height": "1787690"
           }
         },
         {
@@ -7129,7 +7660,7 @@
           "starting_info": {
             "previous_period": "104",
             "stake": "989.000000000000000000",
-            "height": "0"
+            "height": "982304"
           }
         },
         {
@@ -7138,7 +7669,7 @@
           "starting_info": {
             "previous_period": "245",
             "stake": "82756.000000000000000000",
-            "height": "0"
+            "height": "1679469"
           }
         },
         {
@@ -7147,7 +7678,7 @@
           "starting_info": {
             "previous_period": "184",
             "stake": "200.000000000000000000",
-            "height": "0"
+            "height": "1605854"
           }
         },
         {
@@ -7156,7 +7687,7 @@
           "starting_info": {
             "previous_period": "241",
             "stake": "347610.000000000000000000",
-            "height": "0"
+            "height": "1678600"
           }
         },
         {
@@ -7165,7 +7696,7 @@
           "starting_info": {
             "previous_period": "286",
             "stake": "22152.977781628465663570",
-            "height": "0"
+            "height": "1771356"
           }
         },
         {
@@ -7174,7 +7705,7 @@
           "starting_info": {
             "previous_period": "229",
             "stake": "5200.000000000000000000",
-            "height": "0"
+            "height": "1661876"
           }
         },
         {
@@ -7183,7 +7714,7 @@
           "starting_info": {
             "previous_period": "137",
             "stake": "3208.000000000000000000",
-            "height": "0"
+            "height": "1573288"
           }
         },
         {
@@ -7192,7 +7723,7 @@
           "starting_info": {
             "previous_period": "189",
             "stake": "500.000000000000000000",
-            "height": "0"
+            "height": "1608091"
           }
         },
         {
@@ -7201,7 +7732,7 @@
           "starting_info": {
             "previous_period": "247",
             "stake": "16378.000000000000000000",
-            "height": "0"
+            "height": "1680052"
           }
         },
         {
@@ -7210,7 +7741,16 @@
           "starting_info": {
             "previous_period": "261",
             "stake": "38764.428649042338425505",
-            "height": "0"
+            "height": "1726717"
+          }
+        },
+        {
+          "delegator_address": "shareledger1dn3vh22xcuygxdmk5k8n2f5dysrjx3n9rznz0f",
+          "validator_address": "shareledgervaloper1pasya6jtvglu9q36nl3tqh5drqzeh0s9098x32",
+          "starting_info": {
+            "previous_period": "359",
+            "stake": "11999.999999999999999998",
+            "height": "1960317"
           }
         },
         {
@@ -7219,16 +7759,16 @@
           "starting_info": {
             "previous_period": "268",
             "stake": "998.999999999999999999",
-            "height": "0"
+            "height": "1731419"
           }
         },
         {
           "delegator_address": "shareledger10yzqsenp5yestl6wlyq5rmm4tdms44p680v7tl",
           "validator_address": "shareledgervaloper1pasya6jtvglu9q36nl3tqh5drqzeh0s9098x32",
           "starting_info": {
-            "previous_period": "322",
-            "stake": "850000.994666686870999859",
-            "height": "0"
+            "previous_period": "357",
+            "stake": "0.981981867678468054",
+            "height": "1922476"
           }
         },
         {
@@ -7237,7 +7777,7 @@
           "starting_info": {
             "previous_period": "147",
             "stake": "5518.000000000000000000",
-            "height": "0"
+            "height": "1573477"
           }
         },
         {
@@ -7246,7 +7786,16 @@
           "starting_info": {
             "previous_period": "213",
             "stake": "979.000000000000000000",
-            "height": "0"
+            "height": "1624018"
+          }
+        },
+        {
+          "delegator_address": "shareledger1044pfjan847rrg9gt3awyqw55u063z0hnck429",
+          "validator_address": "shareledgervaloper1pasya6jtvglu9q36nl3tqh5drqzeh0s9098x32",
+          "starting_info": {
+            "previous_period": "356",
+            "stake": "279999.999999999999999999",
+            "height": "1909727"
           }
         },
         {
@@ -7255,7 +7804,7 @@
           "starting_info": {
             "previous_period": "165",
             "stake": "123.000000000000000000",
-            "height": "0"
+            "height": "1583480"
           }
         },
         {
@@ -7264,7 +7813,7 @@
           "starting_info": {
             "previous_period": "190",
             "stake": "1000.000000000000000000",
-            "height": "0"
+            "height": "1610066"
           }
         },
         {
@@ -7273,7 +7822,7 @@
           "starting_info": {
             "previous_period": "17",
             "stake": "125.000000000000000000",
-            "height": "0"
+            "height": "681094"
           }
         },
         {
@@ -7282,7 +7831,7 @@
           "starting_info": {
             "previous_period": "99",
             "stake": "9480.000000000000000000",
-            "height": "0"
+            "height": "837128"
           }
         },
         {
@@ -7291,7 +7840,7 @@
           "starting_info": {
             "previous_period": "257",
             "stake": "0.071398108596611179",
-            "height": "0"
+            "height": "1726668"
           }
         },
         {
@@ -7300,7 +7849,7 @@
           "starting_info": {
             "previous_period": "206",
             "stake": "2419.000000000000000000",
-            "height": "0"
+            "height": "1622556"
           }
         },
         {
@@ -7309,7 +7858,7 @@
           "starting_info": {
             "previous_period": "138",
             "stake": "789.000000000000000000",
-            "height": "0"
+            "height": "1573314"
           }
         },
         {
@@ -7318,7 +7867,7 @@
           "starting_info": {
             "previous_period": "218",
             "stake": "9980.000000000000000000",
-            "height": "0"
+            "height": "1640017"
           }
         },
         {
@@ -7327,7 +7876,7 @@
           "starting_info": {
             "previous_period": "18",
             "stake": "100.000000000000000000",
-            "height": "0"
+            "height": "686959"
           }
         },
         {
@@ -7336,7 +7885,7 @@
           "starting_info": {
             "previous_period": "154",
             "stake": "499.000000000000000000",
-            "height": "0"
+            "height": "1580082"
           }
         },
         {
@@ -7345,7 +7894,7 @@
           "starting_info": {
             "previous_period": "256",
             "stake": "0.884701565789562756",
-            "height": "0"
+            "height": "1719570"
           }
         },
         {
@@ -7354,16 +7903,16 @@
           "starting_info": {
             "previous_period": "196",
             "stake": "3000.000000000000000000",
-            "height": "0"
+            "height": "1611845"
           }
         },
         {
           "delegator_address": "shareledger1mrzlepu0kfz5x0h40fa6d20te0maja7e4c97ts",
           "validator_address": "shareledgervaloper1pasya6jtvglu9q36nl3tqh5drqzeh0s9098x32",
           "starting_info": {
-            "previous_period": "296",
-            "stake": "7839.077697474888076831",
-            "height": "0"
+            "previous_period": "341",
+            "stake": "6007717.276532747562143083",
+            "height": "1850387"
           }
         },
         {
@@ -7372,7 +7921,7 @@
           "starting_info": {
             "previous_period": "276",
             "stake": "999.999999999999999999",
-            "height": "0"
+            "height": "1759979"
           }
         },
         {
@@ -7381,7 +7930,16 @@
           "starting_info": {
             "previous_period": "266",
             "stake": "162274.498461480384025729",
-            "height": "0"
+            "height": "1730955"
+          }
+        },
+        {
+          "delegator_address": "shareledger1ladn3pw8vp7a7xh4ez624r2zdy3wr6jvh2e7rd",
+          "validator_address": "shareledgervaloper1pasya6jtvglu9q36nl3tqh5drqzeh0s9098x32",
+          "starting_info": {
+            "previous_period": "353",
+            "stake": "64999.999999999999999999",
+            "height": "1874868"
           }
         },
         {
@@ -7390,7 +7948,7 @@
           "starting_info": {
             "previous_period": "114",
             "stake": "50.000000000000000000",
-            "height": "0"
+            "height": "1803297"
           }
         },
         {
@@ -7399,7 +7957,7 @@
           "starting_info": {
             "previous_period": "113",
             "stake": "70.000000000000000000",
-            "height": "0"
+            "height": "1799481"
           }
         },
         {
@@ -7408,7 +7966,16 @@
           "starting_info": {
             "previous_period": "116",
             "stake": "2024.000000000000000000",
-            "height": "0"
+            "height": "1804058"
+          }
+        },
+        {
+          "delegator_address": "shareledger1ra48y4sf7m8x7c6j6aa7f9gpln8dgjtfdsayty",
+          "validator_address": "shareledgervaloper1w4l5fchs69d9avlgvdehq9ypvdh4xyeveusq8r",
+          "starting_info": {
+            "previous_period": "126",
+            "stake": "120.000000000000000000",
+            "height": "1805009"
           }
         },
         {
@@ -7417,7 +7984,7 @@
           "starting_info": {
             "previous_period": "7",
             "stake": "12000.000000000000000000",
-            "height": "0"
+            "height": "836781"
           }
         },
         {
@@ -7426,7 +7993,7 @@
           "starting_info": {
             "previous_period": "89",
             "stake": "10000.000000000000000000",
-            "height": "0"
+            "height": "1611765"
           }
         },
         {
@@ -7435,7 +8002,7 @@
           "starting_info": {
             "previous_period": "85",
             "stake": "5000.000000000000000000",
-            "height": "0"
+            "height": "1583080"
           }
         },
         {
@@ -7444,16 +8011,25 @@
           "starting_info": {
             "previous_period": "88",
             "stake": "3000.000000000000000000",
-            "height": "0"
+            "height": "1610412"
           }
         },
         {
           "delegator_address": "shareledger194y04q628wv0eq062pm9qrwyejdzks5tvztcm9",
           "validator_address": "shareledgervaloper1w4l5fchs69d9avlgvdehq9ypvdh4xyeveusq8r",
           "starting_info": {
-            "previous_period": "68",
-            "stake": "3018.000000000000000000",
-            "height": "0"
+            "previous_period": "139",
+            "stake": "8018.000000000000000000",
+            "height": "1831568"
+          }
+        },
+        {
+          "delegator_address": "shareledger19mag0eyv0nznfzhxt2lc5xfu4d58ewjqrzfz5z",
+          "validator_address": "shareledgervaloper1w4l5fchs69d9avlgvdehq9ypvdh4xyeveusq8r",
+          "starting_info": {
+            "previous_period": "162",
+            "stake": "400004.000000000000000000",
+            "height": "1939716"
           }
         },
         {
@@ -7462,7 +8038,7 @@
           "starting_info": {
             "previous_period": "6",
             "stake": "575.000000000000000000",
-            "height": "0"
+            "height": "697648"
           }
         },
         {
@@ -7471,7 +8047,7 @@
           "starting_info": {
             "previous_period": "104",
             "stake": "180000.000000000000000000",
-            "height": "0"
+            "height": "1798231"
           }
         },
         {
@@ -7480,7 +8056,7 @@
           "starting_info": {
             "previous_period": "83",
             "stake": "5000.000000000000000000",
-            "height": "0"
+            "height": "1583031"
           }
         },
         {
@@ -7489,7 +8065,7 @@
           "starting_info": {
             "previous_period": "63",
             "stake": "1105000.000000000000000000",
-            "height": "0"
+            "height": "1286596"
           }
         },
         {
@@ -7498,16 +8074,16 @@
           "starting_info": {
             "previous_period": "64",
             "stake": "6095051.000000000000000000",
-            "height": "0"
+            "height": "1506531"
           }
         },
         {
           "delegator_address": "shareledger1dn3vh22xcuygxdmk5k8n2f5dysrjx3n9rznz0f",
           "validator_address": "shareledgervaloper1w4l5fchs69d9avlgvdehq9ypvdh4xyeveusq8r",
           "starting_info": {
-            "previous_period": "87",
-            "stake": "10039.000000000000000000",
-            "height": "0"
+            "previous_period": "164",
+            "stake": "10539.000000000000000000",
+            "height": "1964515"
           }
         },
         {
@@ -7525,7 +8101,7 @@
           "starting_info": {
             "previous_period": "74",
             "stake": "2597.000000000000000000",
-            "height": "0"
+            "height": "1573409"
           }
         },
         {
@@ -7534,7 +8110,7 @@
           "starting_info": {
             "previous_period": "91",
             "stake": "100.000000000000000000",
-            "height": "0"
+            "height": "1612363"
           }
         },
         {
@@ -7543,7 +8119,7 @@
           "starting_info": {
             "previous_period": "66",
             "stake": "79579.000000000000000000",
-            "height": "0"
+            "height": "1572988"
           }
         },
         {
@@ -7552,7 +8128,7 @@
           "starting_info": {
             "previous_period": "81",
             "stake": "1004.000000000000000000",
-            "height": "0"
+            "height": "1582877"
           }
         },
         {
@@ -7561,7 +8137,7 @@
           "starting_info": {
             "previous_period": "4",
             "stake": "295.000000000000000000",
-            "height": "0"
+            "height": "686705"
           }
         },
         {
@@ -7570,7 +8146,7 @@
           "starting_info": {
             "previous_period": "10",
             "stake": "5000.000000000000000000",
-            "height": "0"
+            "height": "837279"
           }
         },
         {
@@ -7579,7 +8155,7 @@
           "starting_info": {
             "previous_period": "42",
             "stake": "238.000000000000000000",
-            "height": "0"
+            "height": "948086"
           }
         },
         {
@@ -7588,7 +8164,7 @@
           "starting_info": {
             "previous_period": "59",
             "stake": "683.000000000000000000",
-            "height": "0"
+            "height": "1218429"
           }
         },
         {
@@ -7597,7 +8173,7 @@
           "starting_info": {
             "previous_period": "13",
             "stake": "2000.000000000000000000",
-            "height": "0"
+            "height": "891896"
           }
         },
         {
@@ -7606,7 +8182,7 @@
           "starting_info": {
             "previous_period": "86",
             "stake": "991.000000000000000000",
-            "height": "0"
+            "height": "1583139"
           }
         },
         {
@@ -7615,7 +8191,7 @@
           "starting_info": {
             "previous_period": "77",
             "stake": "859.000000000000000000",
-            "height": "0"
+            "height": "1580115"
           }
         },
         {
@@ -7624,7 +8200,7 @@
           "starting_info": {
             "previous_period": "80",
             "stake": "999.000000000000000000",
-            "height": "0"
+            "height": "1582862"
           }
         },
         {
@@ -7633,16 +8209,25 @@
           "starting_info": {
             "previous_period": "90",
             "stake": "3000.000000000000000000",
-            "height": "0"
+            "height": "1611821"
           }
         },
         {
           "delegator_address": "shareledger1mrzlepu0kfz5x0h40fa6d20te0maja7e4c97ts",
           "validator_address": "shareledgervaloper1w4l5fchs69d9avlgvdehq9ypvdh4xyeveusq8r",
           "starting_info": {
-            "previous_period": "112",
-            "stake": "200001968.000000000000000000",
-            "height": "0"
+            "previous_period": "131",
+            "stake": "100001968.000000000000000000",
+            "height": "1809409"
+          }
+        },
+        {
+          "delegator_address": "shareledger1uxeh0qtls6a5rqw7qpq4aeeplufvw0s8km4dxh",
+          "validator_address": "shareledgervaloper1w4l5fchs69d9avlgvdehq9ypvdh4xyeveusq8r",
+          "starting_info": {
+            "previous_period": "151",
+            "stake": "50000.000000000000000000",
+            "height": "1869305"
           }
         },
         {
@@ -7651,7 +8236,7 @@
           "starting_info": {
             "previous_period": "92",
             "stake": "1000.000000000000000000",
-            "height": "0"
+            "height": "1617736"
           }
         },
         {
@@ -7660,7 +8245,7 @@
           "starting_info": {
             "previous_period": "118",
             "stake": "1030.069430530040277870",
-            "height": "0"
+            "height": "1803600"
           }
         },
         {
@@ -7669,7 +8254,7 @@
           "starting_info": {
             "previous_period": "112",
             "stake": "58.999999999999999998",
-            "height": "0"
+            "height": "1799472"
           }
         },
         {
@@ -7678,7 +8263,16 @@
           "starting_info": {
             "previous_period": "125",
             "stake": "1145.831257097807914733",
-            "height": "0"
+            "height": "1803888"
+          }
+        },
+        {
+          "delegator_address": "shareledger1rpwq3amlc3a79k0culzl7yd4vkrp5xhvm5huya",
+          "validator_address": "shareledgervaloper1ml6wjyy6hw0gynuzqvvaw4urhcpegcy9xr8002",
+          "starting_info": {
+            "previous_period": "154",
+            "stake": "2500000.099400853619065349",
+            "height": "1850580"
           }
         },
         {
@@ -7687,7 +8281,16 @@
           "starting_info": {
             "previous_period": "13",
             "stake": "2500.000000000000000000",
-            "height": "0"
+            "height": "759288"
+          }
+        },
+        {
+          "delegator_address": "shareledger1ra48y4sf7m8x7c6j6aa7f9gpln8dgjtfdsayty",
+          "validator_address": "shareledgervaloper1ml6wjyy6hw0gynuzqvvaw4urhcpegcy9xr8002",
+          "starting_info": {
+            "previous_period": "138",
+            "stake": "40.000023768252642481",
+            "height": "1805001"
           }
         },
         {
@@ -7696,7 +8299,16 @@
           "starting_info": {
             "previous_period": "16",
             "stake": "10000.000000000000000000",
-            "height": "0"
+            "height": "828140"
+          }
+        },
+        {
+          "delegator_address": "shareledger1yntnt854u056q98455czpnrfw8prvrnxmc2cwj",
+          "validator_address": "shareledgervaloper1ml6wjyy6hw0gynuzqvvaw4urhcpegcy9xr8002",
+          "starting_info": {
+            "previous_period": "168",
+            "stake": "1070.000001542828716236",
+            "height": "1874638"
           }
         },
         {
@@ -7705,16 +8317,25 @@
           "starting_info": {
             "previous_period": "80",
             "stake": "5999.999999999999999998",
-            "height": "0"
+            "height": "1610285"
           }
         },
         {
           "delegator_address": "shareledger194y04q628wv0eq062pm9qrwyejdzks5tvztcm9",
           "validator_address": "shareledgervaloper1ml6wjyy6hw0gynuzqvvaw4urhcpegcy9xr8002",
           "starting_info": {
-            "previous_period": "102",
-            "stake": "0.069163501987575582",
-            "height": "0"
+            "previous_period": "143",
+            "stake": "5000.069163559486707743",
+            "height": "1831574"
+          }
+        },
+        {
+          "delegator_address": "shareledger19mag0eyv0nznfzhxt2lc5xfu4d58ewjqrzfz5z",
+          "validator_address": "shareledgervaloper1ml6wjyy6hw0gynuzqvvaw4urhcpegcy9xr8002",
+          "starting_info": {
+            "previous_period": "146",
+            "stake": "100001.999999999999999999",
+            "height": "1841502"
           }
         },
         {
@@ -7723,7 +8344,7 @@
           "starting_info": {
             "previous_period": "106",
             "stake": "80000.000000000000000000",
-            "height": "0"
+            "height": "1797897"
           }
         },
         {
@@ -7732,7 +8353,7 @@
           "starting_info": {
             "previous_period": "86",
             "stake": "2117.147703113760999362",
-            "height": "0"
+            "height": "1625824"
           }
         },
         {
@@ -7741,7 +8362,7 @@
           "starting_info": {
             "previous_period": "89",
             "stake": "0.013836389464097142",
-            "height": "0"
+            "height": "1645972"
           }
         },
         {
@@ -7750,7 +8371,16 @@
           "starting_info": {
             "previous_period": "68",
             "stake": "14922.999999999999999996",
-            "height": "0"
+            "height": "1583079"
+          }
+        },
+        {
+          "delegator_address": "shareledger1tl03794zkluwkldfcjqe3frphtakl375kuzvsm",
+          "validator_address": "shareledgervaloper1ml6wjyy6hw0gynuzqvvaw4urhcpegcy9xr8002",
+          "starting_info": {
+            "previous_period": "160",
+            "stake": "0.000319024440262231",
+            "height": "1853527"
           }
         },
         {
@@ -7759,7 +8389,7 @@
           "starting_info": {
             "previous_period": "42",
             "stake": "715000.000000000000000000",
-            "height": "0"
+            "height": "1286610"
           }
         },
         {
@@ -7768,25 +8398,34 @@
           "starting_info": {
             "previous_period": "38",
             "stake": "1015100.000000000000000000",
-            "height": "0"
+            "height": "1228306"
           }
         },
         {
           "delegator_address": "shareledger1dn3vh22xcuygxdmk5k8n2f5dysrjx3n9rznz0f",
           "validator_address": "shareledgervaloper1ml6wjyy6hw0gynuzqvvaw4urhcpegcy9xr8002",
           "starting_info": {
-            "previous_period": "69",
-            "stake": "1990.999999999999999999",
-            "height": "0"
+            "previous_period": "171",
+            "stake": "4962.950786378741594163",
+            "height": "1960328"
+          }
+        },
+        {
+          "delegator_address": "shareledger1d7h6de406trldye3rnl7fj83g2663ug4w7dup6",
+          "validator_address": "shareledgervaloper1ml6wjyy6hw0gynuzqvvaw4urhcpegcy9xr8002",
+          "starting_info": {
+            "previous_period": "155",
+            "stake": "999.999999999999999999",
+            "height": "1850759"
           }
         },
         {
           "delegator_address": "shareledger10yzqsenp5yestl6wlyq5rmm4tdms44p680v7tl",
           "validator_address": "shareledgervaloper1ml6wjyy6hw0gynuzqvvaw4urhcpegcy9xr8002",
           "starting_info": {
-            "previous_period": "121",
-            "stake": "410000.600735527012915405",
-            "height": "0"
+            "previous_period": "170",
+            "stake": "2906273.280244925213415200",
+            "height": "1922476"
           }
         },
         {
@@ -7795,7 +8434,7 @@
           "starting_info": {
             "previous_period": "57",
             "stake": "2898.999999999999999998",
-            "height": "0"
+            "height": "1573373"
           }
         },
         {
@@ -7804,7 +8443,7 @@
           "starting_info": {
             "previous_period": "91",
             "stake": "19000.001046325432913676",
-            "height": "0"
+            "height": "1651352"
           }
         },
         {
@@ -7813,7 +8452,7 @@
           "starting_info": {
             "previous_period": "71",
             "stake": "320.999999999999999999",
-            "height": "0"
+            "height": "1583481"
           }
         },
         {
@@ -7822,7 +8461,7 @@
           "starting_info": {
             "previous_period": "87",
             "stake": "0.999999999999999999",
-            "height": "0"
+            "height": "1634053"
           }
         },
         {
@@ -7831,7 +8470,7 @@
           "starting_info": {
             "previous_period": "6",
             "stake": "10.000000000000000000",
-            "height": "0"
+            "height": "673730"
           }
         },
         {
@@ -7840,7 +8479,7 @@
           "starting_info": {
             "previous_period": "60",
             "stake": "0.999999999999999999",
-            "height": "0"
+            "height": "1578794"
           }
         },
         {
@@ -7849,7 +8488,7 @@
           "starting_info": {
             "previous_period": "2",
             "stake": "10.000000000000000000",
-            "height": "0"
+            "height": "545009"
           }
         },
         {
@@ -7858,7 +8497,7 @@
           "starting_info": {
             "previous_period": "31",
             "stake": "120.000000000000000000",
-            "height": "0"
+            "height": "979575"
           }
         },
         {
@@ -7867,7 +8506,7 @@
           "starting_info": {
             "previous_period": "23",
             "stake": "1500.000000000000000000",
-            "height": "0"
+            "height": "892047"
           }
         },
         {
@@ -7876,7 +8515,7 @@
           "starting_info": {
             "previous_period": "64",
             "stake": "988.999999999999999999",
-            "height": "0"
+            "height": "1582832"
           }
         },
         {
@@ -7885,7 +8524,7 @@
           "starting_info": {
             "previous_period": "7",
             "stake": "50.000000000000000000",
-            "height": "0"
+            "height": "686972"
           }
         },
         {
@@ -7894,16 +8533,16 @@
           "starting_info": {
             "previous_period": "58",
             "stake": "1331.999999999999999998",
-            "height": "0"
+            "height": "1573757"
           }
         },
         {
           "delegator_address": "shareledger1mrzlepu0kfz5x0h40fa6d20te0maja7e4c97ts",
           "validator_address": "shareledgervaloper1ml6wjyy6hw0gynuzqvvaw4urhcpegcy9xr8002",
           "starting_info": {
-            "previous_period": "109",
-            "stake": "8577.229276655467807499",
-            "height": "0"
+            "previous_period": "139",
+            "stake": "85008577.236407341820961840",
+            "height": "1805249"
           }
         },
         {
@@ -7921,7 +8560,7 @@
           "starting_info": {
             "previous_period": "98",
             "stake": "1999.999999999999999999",
-            "height": "0"
+            "height": "1764132"
           }
         },
         {
@@ -7930,14 +8569,23 @@
           "starting_info": {
             "previous_period": "74",
             "stake": "999.999999999999999999",
-            "height": "0"
+            "height": "1599933"
+          }
+        },
+        {
+          "delegator_address": "shareledger1ladn3pw8vp7a7xh4ez624r2zdy3wr6jvh2e7rd",
+          "validator_address": "shareledgervaloper1ml6wjyy6hw0gynuzqvvaw4urhcpegcy9xr8002",
+          "starting_info": {
+            "previous_period": "169",
+            "stake": "1999.999999999999999999",
+            "height": "1874880"
           }
         }
       ],
       "validator_slash_events": [
         {
           "validator_address": "shareledgervaloper1pdn82hmc36pqfh5qg8q2vcjc60l7h6w8qzcjqz",
-          "height": "0",
+          "height": "855735",
           "period": "8",
           "validator_slash_event": {
             "validator_period": "8",
@@ -7945,8 +8593,17 @@
           }
         },
         {
+          "validator_address": "shareledgervaloper1pdn82hmc36pqfh5qg8q2vcjc60l7h6w8qzcjqz",
+          "height": "1839500",
+          "period": "93",
+          "validator_slash_event": {
+            "validator_period": "93",
+            "fraction": "0.009963597103812252"
+          }
+        },
+        {
           "validator_address": "shareledgervaloper1pasya6jtvglu9q36nl3tqh5drqzeh0s9098x32",
-          "height": "0",
+          "height": "1703989",
           "period": "255",
           "validator_slash_event": {
             "validator_period": "255",
@@ -7955,7 +8612,7 @@
         },
         {
           "validator_address": "shareledgervaloper1pasya6jtvglu9q36nl3tqh5drqzeh0s9098x32",
-          "height": "0",
+          "height": "1796636",
           "period": "289",
           "validator_slash_event": {
             "validator_period": "289",
@@ -7963,8 +8620,26 @@
           }
         },
         {
+          "validator_address": "shareledgervaloper1pasya6jtvglu9q36nl3tqh5drqzeh0s9098x32",
+          "height": "1804472",
+          "period": "323",
+          "validator_slash_event": {
+            "validator_period": "323",
+            "fraction": "0.007360829712725219"
+          }
+        },
+        {
+          "validator_address": "shareledgervaloper1pasya6jtvglu9q36nl3tqh5drqzeh0s9098x32",
+          "height": "1832763",
+          "period": "331",
+          "validator_slash_event": {
+            "validator_period": "331",
+            "fraction": "0.008241768996813939"
+          }
+        },
+        {
           "validator_address": "shareledgervaloper1ml6wjyy6hw0gynuzqvvaw4urhcpegcy9xr8002",
-          "height": "0",
+          "height": "1335670",
           "period": "43",
           "validator_slash_event": {
             "validator_period": "43",
@@ -7973,7 +8648,7 @@
         },
         {
           "validator_address": "shareledgervaloper1ml6wjyy6hw0gynuzqvvaw4urhcpegcy9xr8002",
-          "height": "0",
+          "height": "1705248",
           "period": "94",
           "validator_slash_event": {
             "validator_period": "94",
@@ -7982,7 +8657,7 @@
         },
         {
           "validator_address": "shareledgervaloper1ml6wjyy6hw0gynuzqvvaw4urhcpegcy9xr8002",
-          "height": "0",
+          "height": "1725293",
           "period": "95",
           "validator_slash_event": {
             "validator_period": "95",
@@ -8106,6 +8781,13 @@
           "version": 0
         },
         {
+          "holder": "shareledger1044pfjan847rrg9gt3awyqw55u063z0hnck429",
+          "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+          "proof": "dfcf41be9983cf2a1347913be01ee6bdc0185a57198df8b740f0d8cbc3d4c067",
+          "data": "",
+          "version": 0
+        },
+        {
           "holder": "shareledger104cjpt6y3azhn4tkutl5z3tz22as2ppl3mc3lu",
           "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
           "proof": "3197cc9d5a4322f00d93f87f0a5c3df8c390c208f88093a537f811f407f750eb",
@@ -8137,6 +8819,20 @@
           "holder": "shareledger104cjpt6y3azhn4tkutl5z3tz22as2ppl3mc3lu",
           "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
           "proof": "f09381dce668fa19953a8e5fb3a407507c8630d4303ee8690feb52dcbea942f5",
+          "data": "",
+          "version": 0
+        },
+        {
+          "holder": "shareledger104sh8trl7tc650mk5rt7x83su94sv7qsjs0htt",
+          "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+          "proof": "9207bdf59b0ce420ad364c92324b5fd71a3b6f1344783d5a1f1b6f2ad821491d",
+          "data": "",
+          "version": 0
+        },
+        {
+          "holder": "shareledger104sh8trl7tc650mk5rt7x83su94sv7qsjs0htt",
+          "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+          "proof": "f7374f7010888d87de45668dbf62c9f923b662b28f0fbc5e981614c41868ed9f",
           "data": "",
           "version": 0
         },
@@ -8604,8 +9300,36 @@
         },
         {
           "holder": "shareledger10yzqsenp5yestl6wlyq5rmm4tdms44p680v7tl",
+          "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+          "proof": "7f5ce84137d50ea51ef4697d762129b24ebb4d26c4029dd736b1b987d3e9e893",
+          "data": "",
+          "version": 0
+        },
+        {
+          "holder": "shareledger10yzqsenp5yestl6wlyq5rmm4tdms44p680v7tl",
+          "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+          "proof": "84507f6c76dadd1e49b78064156f93705a7609ccdb3ba5ade137de1346c31d18",
+          "data": "",
+          "version": 0
+        },
+        {
+          "holder": "shareledger10yzqsenp5yestl6wlyq5rmm4tdms44p680v7tl",
           "issuer": "shareledger1gnkemrqgkcdm3fc95c4uarwsjexrrgw998yl2l",
           "proof": "a294520b46a3819d114067782e83fe4ac199712e16f5dbf43ccd6439f54d9402",
+          "data": "",
+          "version": 0
+        },
+        {
+          "holder": "shareledger10yzqsenp5yestl6wlyq5rmm4tdms44p680v7tl",
+          "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+          "proof": "b46c8e3a235be6000293fb0495d16d1e62fa68f554c11ed88c30ce1e0294903d",
+          "data": "",
+          "version": 0
+        },
+        {
+          "holder": "shareledger10yzqsenp5yestl6wlyq5rmm4tdms44p680v7tl",
+          "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+          "proof": "dc899d51b65aa2cb5ca150d81f2ea606fb12a05932ffe424c55fa576fa56d25a",
           "data": "",
           "version": 0
         },
@@ -10640,6 +11364,13 @@
           "version": 0
         },
         {
+          "holder": "shareledger14jfqttq6826dm0uhnuq48zldpysamnhpye99xp",
+          "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+          "proof": "2abc659a1e700b6d04c570b99dcd93303b8ca99e1f77bdfb4e2dcb025b56702c",
+          "data": "",
+          "version": 0
+        },
+        {
           "holder": "shareledger14jhmsllntjwqgsz92xac0pkg8g0d44xvk04zhu",
           "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
           "proof": "01f22ce965fd0ddf9094dfaf80c74f48f65b17ac9d445183a77dc0f9e7984428",
@@ -10685,6 +11416,13 @@
           "holder": "shareledger14mr0afvxh53pd8jel62erw07z49wvcpafe9uzk",
           "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
           "proof": "4a20e6179679ac0a90342d271991e7dc3a99ae40455fb83af652ddec0ab87365",
+          "data": "",
+          "version": 0
+        },
+        {
+          "holder": "shareledger14n8nfchxx5klcl8cclng28kpchqpx2psaqlu5t",
+          "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+          "proof": "35482d9ed69a2c97d4b13e3bc4285ca6dc29440c99362137a1c1c9a51be3c166",
           "data": "",
           "version": 0
         },
@@ -13447,6 +14185,13 @@
           "version": 0
         },
         {
+          "holder": "shareledger18n0fg4kktxe68h7eljnyek70g8h3kt75s26hlx",
+          "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+          "proof": "34b0ccefc352b9abbd3cbde342eb61736e83fcc6b4dfa310c288f55ceca5b399",
+          "data": "",
+          "version": 0
+        },
+        {
           "holder": "shareledger18n23sfnslgykncdgw3luzypnnmn8cqqw9lg0kl",
           "issuer": "shareledger1y3fgrec0l0auhr7xte58jht7y4cz0sc8h6d7pr",
           "proof": "1627978368300",
@@ -14065,7 +14810,21 @@
         {
           "holder": "shareledger194y04q628wv0eq062pm9qrwyejdzks5tvztcm9",
           "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+          "proof": "65b597eae0f1c58c6251db430fdbff18540ae17dc15d20389526070a4a7f4089",
+          "data": "",
+          "version": 0
+        },
+        {
+          "holder": "shareledger194y04q628wv0eq062pm9qrwyejdzks5tvztcm9",
+          "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
           "proof": "6872682facf64fcd9b99ee0eac9af7b1fc3f6c2f83c5bee2436104eb2dead76f",
+          "data": "",
+          "version": 0
+        },
+        {
+          "holder": "shareledger194y04q628wv0eq062pm9qrwyejdzks5tvztcm9",
+          "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+          "proof": "cd39bcdbabfc9ea9098685fc2c405c5fa9eedcd79a73a654de63d340b19d057f",
           "data": "",
           "version": 0
         },
@@ -15631,6 +16390,41 @@
           "version": 0
         },
         {
+          "holder": "shareledger1cw3k03j28l8whtl50qdhtyh9yncq2hgqr742ku",
+          "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+          "proof": "17fc21c21e56c653354851f0414f451bb35c5ced222aedac48d455d3467ff8fa",
+          "data": "",
+          "version": 0
+        },
+        {
+          "holder": "shareledger1cw3k03j28l8whtl50qdhtyh9yncq2hgqr742ku",
+          "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+          "proof": "3e45a99ab8a5890564ec8ef68c338203df63b2111936e1553d3ca01c3d98dbe1",
+          "data": "",
+          "version": 0
+        },
+        {
+          "holder": "shareledger1cw3k03j28l8whtl50qdhtyh9yncq2hgqr742ku",
+          "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+          "proof": "467ee78ca275bc0e2bfcc6bff4d4b0d7ea3602a17d293daba3bad954b4211a5b",
+          "data": "",
+          "version": 0
+        },
+        {
+          "holder": "shareledger1cw3k03j28l8whtl50qdhtyh9yncq2hgqr742ku",
+          "issuer": "shareledger1ysfj66na5pc4uzdhxyujvk5rddgwrd4tjuce85",
+          "proof": "59216970b68659d5fceb73d5a172d3a74b0b94301bc7bdbbbb76ec6c27c308f1",
+          "data": "",
+          "version": 0
+        },
+        {
+          "holder": "shareledger1cw3k03j28l8whtl50qdhtyh9yncq2hgqr742ku",
+          "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+          "proof": "a0938becd945d6bb9d3eff48796b482432a450317fc4b97838c6b87f0ca449ea",
+          "data": "",
+          "version": 0
+        },
+        {
           "holder": "shareledger1cwsprztqfetrcnlg8s6q35yxfrmcr53z28r6da",
           "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
           "proof": "73f0f69241c266eedf90ed0475725db0b49574441dffc1e0d0aebfb59069e392d7",
@@ -15739,6 +16533,13 @@
           "holder": "shareledger1d5k6pp9jnl3tlxljqn2klzpq4teflnvh3e98xl",
           "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
           "proof": "cb6d80bb688aefde92c8193e8110b7375258239124c06c79f902ec113cf1f20f17",
+          "data": "",
+          "version": 0
+        },
+        {
+          "holder": "shareledger1d7h6de406trldye3rnl7fj83g2663ug4w7dup6",
+          "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+          "proof": "0385dff0c7ee9d2abb18a6911808705c1f33d72c8d32a093e5841eab1f0a9553",
           "data": "",
           "version": 0
         },
@@ -16530,6 +17331,13 @@
           "holder": "shareledger1dyp32w9kq0f0ee8qygfh8m79q49ldap0f5rn22",
           "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
           "proof": "cab6c5d901401142d48b0a4a96fbc0a17fb55f0f3cdc9ce407ed27f4c3921f85b0",
+          "data": "",
+          "version": 0
+        },
+        {
+          "holder": "shareledger1dyzz5nertryc6c7h5kaqml5wde5hcnjxprlpap",
+          "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+          "proof": "fca298b24bd04a2c4d8c24c5fad3d1ac87e0b7c931a2cd4989c20a438f644a33",
           "data": "",
           "version": 0
         },
@@ -20804,6 +21612,13 @@
           "version": 0
         },
         {
+          "holder": "shareledger1ladn3pw8vp7a7xh4ez624r2zdy3wr6jvh2e7rd",
+          "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+          "proof": "2de125243c35b9d01ad9947a5454621e1440a1f338ab3ca58fb723cfb034e53e",
+          "data": "",
+          "version": 0
+        },
+        {
           "holder": "shareledger1lc5tqqqygvttcgpn9ry2wjuntf7xddnuj2zf45",
           "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
           "proof": "c2e83520e80e495355b0c76d5190e031d13db648b1ee84b8b5a17301d47dff134a",
@@ -22296,6 +23111,13 @@
         },
         {
           "holder": "shareledger1p8jjjmtsm9vg3cks9a6ugafgga3a9p65fnkwyw",
+          "issuer": "shareledger1ysfj66na5pc4uzdhxyujvk5rddgwrd4tjuce85",
+          "proof": "047d3901db39874ccaf9cb18e759f7c36759fe064d4ac682118e862e92cabe9b",
+          "data": "",
+          "version": 0
+        },
+        {
+          "holder": "shareledger1p8jjjmtsm9vg3cks9a6ugafgga3a9p65fnkwyw",
           "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
           "proof": "0950e2e9c73168437d3aaf15626d04a7cd172ac808e62af4e87f1f3e246c475a",
           "data": "",
@@ -22450,6 +23272,13 @@
         },
         {
           "holder": "shareledger1p8jjjmtsm9vg3cks9a6ugafgga3a9p65fnkwyw",
+          "issuer": "shareledger1ysfj66na5pc4uzdhxyujvk5rddgwrd4tjuce85",
+          "proof": "3a0b689ddf596b4c97b6b3397268312407c4f2b919d539f22651727ce78b6715",
+          "data": "",
+          "version": 0
+        },
+        {
+          "holder": "shareledger1p8jjjmtsm9vg3cks9a6ugafgga3a9p65fnkwyw",
           "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
           "proof": "3b035a2f5e2faf7931392d11e48a2f4aa9af4af14dbb2e002cf903c251d2b754",
           "data": "",
@@ -22466,6 +23295,27 @@
           "holder": "shareledger1p8jjjmtsm9vg3cks9a6ugafgga3a9p65fnkwyw",
           "issuer": "shareledger1rrspzptghx4frvj4ktjdr3vmjl6mta9j6krpeg",
           "proof": "43422b58553a39542e0edaa964ff57d66da849739e14cd6b03ea7d8b46eed198",
+          "data": "",
+          "version": 0
+        },
+        {
+          "holder": "shareledger1p8jjjmtsm9vg3cks9a6ugafgga3a9p65fnkwyw",
+          "issuer": "shareledger1ysfj66na5pc4uzdhxyujvk5rddgwrd4tjuce85",
+          "proof": "43df2a97a694ab4868f43580e1c3b466028e90b99d2c1308dd847ccdf6c66f35",
+          "data": "",
+          "version": 0
+        },
+        {
+          "holder": "shareledger1p8jjjmtsm9vg3cks9a6ugafgga3a9p65fnkwyw",
+          "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+          "proof": "48d3bc99d59913d0349fa9b4cdabcf681fff4921ddcdae06685ca98c8bcfe531",
+          "data": "",
+          "version": 0
+        },
+        {
+          "holder": "shareledger1p8jjjmtsm9vg3cks9a6ugafgga3a9p65fnkwyw",
+          "issuer": "shareledger1ysfj66na5pc4uzdhxyujvk5rddgwrd4tjuce85",
+          "proof": "49428a168edbabf87ec3afb3c877b78e4cb7a5acf6cbfc90d12430e256155357",
           "data": "",
           "version": 0
         },
@@ -22513,6 +23363,13 @@
         },
         {
           "holder": "shareledger1p8jjjmtsm9vg3cks9a6ugafgga3a9p65fnkwyw",
+          "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+          "proof": "55ccdea0241b5a05850241c54abdfa7f31a6bc062607c0050cbac446fddffecd",
+          "data": "",
+          "version": 0
+        },
+        {
+          "holder": "shareledger1p8jjjmtsm9vg3cks9a6ugafgga3a9p65fnkwyw",
           "issuer": "shareledger19a8nje2lh7h8n7g0ka9qerknp9vyyygh77cz7s",
           "proof": "5706e8fc4f0e43b2f66e9583c9cc7b2e2a19c8a70869513ad55ca136313657f7",
           "data": "",
@@ -22527,6 +23384,13 @@
         },
         {
           "holder": "shareledger1p8jjjmtsm9vg3cks9a6ugafgga3a9p65fnkwyw",
+          "issuer": "shareledger1ysfj66na5pc4uzdhxyujvk5rddgwrd4tjuce85",
+          "proof": "57f0fc6018ffdf4bf4358f1d62e9b5ebd0bdd78086d217f6488800913c83373e",
+          "data": "",
+          "version": 0
+        },
+        {
+          "holder": "shareledger1p8jjjmtsm9vg3cks9a6ugafgga3a9p65fnkwyw",
           "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
           "proof": "5bf5c039cf42f9c0254c9b82613d1f649f556a91d11e6d42d98957109f0c6b84",
           "data": "",
@@ -22536,6 +23400,13 @@
           "holder": "shareledger1p8jjjmtsm9vg3cks9a6ugafgga3a9p65fnkwyw",
           "issuer": "shareledger19a8nje2lh7h8n7g0ka9qerknp9vyyygh77cz7s",
           "proof": "5d4671c620e1c1d7345fbeab59e4f329d95a0b2c4e942cc70abf22052a107de7",
+          "data": "",
+          "version": 0
+        },
+        {
+          "holder": "shareledger1p8jjjmtsm9vg3cks9a6ugafgga3a9p65fnkwyw",
+          "issuer": "shareledger1ysfj66na5pc4uzdhxyujvk5rddgwrd4tjuce85",
+          "proof": "5d533a87b55328685a377cb88dc99a240248daccd724c3a93cfa3d3fb41d1d53",
           "data": "",
           "version": 0
         },
@@ -22583,6 +23454,13 @@
         },
         {
           "holder": "shareledger1p8jjjmtsm9vg3cks9a6ugafgga3a9p65fnkwyw",
+          "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+          "proof": "7820b2b7f7cfa760f3c572630b7084dab111c6dcfb75b6c798a11f69fd74f803",
+          "data": "",
+          "version": 0
+        },
+        {
+          "holder": "shareledger1p8jjjmtsm9vg3cks9a6ugafgga3a9p65fnkwyw",
           "issuer": "shareledger1ysfj66na5pc4uzdhxyujvk5rddgwrd4tjuce85",
           "proof": "78a5610c850c34a0b4e8c55b3b7161a272bc8dd17b9348e9345b403df49fbb07",
           "data": "",
@@ -22592,6 +23470,13 @@
           "holder": "shareledger1p8jjjmtsm9vg3cks9a6ugafgga3a9p65fnkwyw",
           "issuer": "shareledger19a8nje2lh7h8n7g0ka9qerknp9vyyygh77cz7s",
           "proof": "7b6f5bb9794e7c9aec8d7a61329e66cabe501036514c58d585c20419d1eb59a2",
+          "data": "",
+          "version": 0
+        },
+        {
+          "holder": "shareledger1p8jjjmtsm9vg3cks9a6ugafgga3a9p65fnkwyw",
+          "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+          "proof": "7bc47e5217fb3cc954b286eb03c5d1de3c70fd28b45d752f6d4711d259cf9ed0",
           "data": "",
           "version": 0
         },
@@ -22619,6 +23504,13 @@
         {
           "holder": "shareledger1p8jjjmtsm9vg3cks9a6ugafgga3a9p65fnkwyw",
           "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+          "proof": "87e734a3a84918ab43e03508211b05b2053bc2076f35d6dbdba5380e8665e3b4",
+          "data": "",
+          "version": 0
+        },
+        {
+          "holder": "shareledger1p8jjjmtsm9vg3cks9a6ugafgga3a9p65fnkwyw",
+          "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
           "proof": "881f56e5ccbf9ab67aa4b40a25cbec0660a4628260887a907ee5d9d419fbc872",
           "data": "",
           "version": 0
@@ -22627,6 +23519,20 @@
           "holder": "shareledger1p8jjjmtsm9vg3cks9a6ugafgga3a9p65fnkwyw",
           "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
           "proof": "8c71ef541d64bbfc263c0bd6798875faed3f2790461253ae02dfb063b88a089a",
+          "data": "",
+          "version": 0
+        },
+        {
+          "holder": "shareledger1p8jjjmtsm9vg3cks9a6ugafgga3a9p65fnkwyw",
+          "issuer": "shareledger1ysfj66na5pc4uzdhxyujvk5rddgwrd4tjuce85",
+          "proof": "8e056d1d395a22188cd11d729d24ccb2628863040c5878e246712c4be21e24c1",
+          "data": "",
+          "version": 0
+        },
+        {
+          "holder": "shareledger1p8jjjmtsm9vg3cks9a6ugafgga3a9p65fnkwyw",
+          "issuer": "shareledger1ysfj66na5pc4uzdhxyujvk5rddgwrd4tjuce85",
+          "proof": "911809da17df059b2daac90674c95382540dfbaa98df3746230bae3d9f460126",
           "data": "",
           "version": 0
         },
@@ -22662,6 +23568,13 @@
           "holder": "shareledger1p8jjjmtsm9vg3cks9a6ugafgga3a9p65fnkwyw",
           "issuer": "shareledger1rrspzptghx4frvj4ktjdr3vmjl6mta9j6krpeg",
           "proof": "a3840a5e1518870a82644cb84a766329e631555f49211265e8f9c140932b90c5",
+          "data": "",
+          "version": 0
+        },
+        {
+          "holder": "shareledger1p8jjjmtsm9vg3cks9a6ugafgga3a9p65fnkwyw",
+          "issuer": "shareledger1ysfj66na5pc4uzdhxyujvk5rddgwrd4tjuce85",
+          "proof": "a4530102778c646581d50e1e1e1d19ad367e13c837347a94e7a207f878a28ac6",
           "data": "",
           "version": 0
         },
@@ -22716,6 +23629,13 @@
         },
         {
           "holder": "shareledger1p8jjjmtsm9vg3cks9a6ugafgga3a9p65fnkwyw",
+          "issuer": "shareledger1ysfj66na5pc4uzdhxyujvk5rddgwrd4tjuce85",
+          "proof": "ae689bd5658b30af2d192e3a7dde05ac1446cf77558529e45deb816ac4bfb214",
+          "data": "",
+          "version": 0
+        },
+        {
+          "holder": "shareledger1p8jjjmtsm9vg3cks9a6ugafgga3a9p65fnkwyw",
           "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
           "proof": "b13a50c7531114d1242cf8f2d74f85546dc5a85e56373cee37bab39093b2a45d",
           "data": "",
@@ -22744,8 +23664,22 @@
         },
         {
           "holder": "shareledger1p8jjjmtsm9vg3cks9a6ugafgga3a9p65fnkwyw",
+          "issuer": "shareledger1ysfj66na5pc4uzdhxyujvk5rddgwrd4tjuce85",
+          "proof": "b87689227c59ff37fc2d1da2dacf81378509bc2aa34942a2148346291ed875ac",
+          "data": "",
+          "version": 0
+        },
+        {
+          "holder": "shareledger1p8jjjmtsm9vg3cks9a6ugafgga3a9p65fnkwyw",
           "issuer": "shareledger1rrspzptghx4frvj4ktjdr3vmjl6mta9j6krpeg",
           "proof": "ba4aa781e645cd2d90fd2f5d7f17315e1969b454d22423fc1e813aeb21047ea1",
+          "data": "",
+          "version": 0
+        },
+        {
+          "holder": "shareledger1p8jjjmtsm9vg3cks9a6ugafgga3a9p65fnkwyw",
+          "issuer": "shareledger1ysfj66na5pc4uzdhxyujvk5rddgwrd4tjuce85",
+          "proof": "bb0dec69bd33e0b27d8d02a778e83cdc6788a2de1102e0c6db7c3132172ab3d6",
           "data": "",
           "version": 0
         },
@@ -22793,6 +23727,13 @@
         },
         {
           "holder": "shareledger1p8jjjmtsm9vg3cks9a6ugafgga3a9p65fnkwyw",
+          "issuer": "shareledger1ysfj66na5pc4uzdhxyujvk5rddgwrd4tjuce85",
+          "proof": "cfe117efcf1679bf073c69c3fc2e550e4454e6a8bc2bb16afe70eefc7722461c",
+          "data": "",
+          "version": 0
+        },
+        {
+          "holder": "shareledger1p8jjjmtsm9vg3cks9a6ugafgga3a9p65fnkwyw",
           "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
           "proof": "d13ff30645f8eef50865504fde2dc9dfeca505a71e22755eaaaf804fe309616e",
           "data": "",
@@ -22828,6 +23769,13 @@
         },
         {
           "holder": "shareledger1p8jjjmtsm9vg3cks9a6ugafgga3a9p65fnkwyw",
+          "issuer": "shareledger1ysfj66na5pc4uzdhxyujvk5rddgwrd4tjuce85",
+          "proof": "e2c3aef5f36d630c4724ad40dae8a7717ddc627c8a2de1828f5fd7bf30014654",
+          "data": "",
+          "version": 0
+        },
+        {
+          "holder": "shareledger1p8jjjmtsm9vg3cks9a6ugafgga3a9p65fnkwyw",
           "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
           "proof": "e7c28313b0d95c4398746d00a0dedca9f8c5e114c215e53aceda12bd477b01a9",
           "data": "",
@@ -22837,6 +23785,13 @@
           "holder": "shareledger1p8jjjmtsm9vg3cks9a6ugafgga3a9p65fnkwyw",
           "issuer": "shareledger1rrspzptghx4frvj4ktjdr3vmjl6mta9j6krpeg",
           "proof": "e8f43a24464d0b288de44ed436f06c166931b6ad0f33d16a847bf79d27a9f11a",
+          "data": "",
+          "version": 0
+        },
+        {
+          "holder": "shareledger1p8jjjmtsm9vg3cks9a6ugafgga3a9p65fnkwyw",
+          "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+          "proof": "ef37a81b8da80060c7247034ec791c259427d894a01f3eefbc197ed03ad4dabc",
           "data": "",
           "version": 0
         },
@@ -22879,6 +23834,27 @@
           "holder": "shareledger1p8jjjmtsm9vg3cks9a6ugafgga3a9p65fnkwyw",
           "issuer": "shareledger1rrspzptghx4frvj4ktjdr3vmjl6mta9j6krpeg",
           "proof": "fc09ae74f2e8743b8d4d7dcabd852e268303b919aac47755072cb7252ac6e4e9",
+          "data": "",
+          "version": 0
+        },
+        {
+          "holder": "shareledger1p8jjjmtsm9vg3cks9a6ugafgga3a9p65fnkwyw",
+          "issuer": "shareledger1ysfj66na5pc4uzdhxyujvk5rddgwrd4tjuce85",
+          "proof": "fc3c711d2db188d7771a5b0486d1a6ad653099d7024f27e0d3a8a0ea2b2db58e",
+          "data": "",
+          "version": 0
+        },
+        {
+          "holder": "shareledger1p8jjjmtsm9vg3cks9a6ugafgga3a9p65fnkwyw",
+          "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+          "proof": "fe7e9c89ad528c0f6f041a32bd9435b5763d4f943e6a3ad20469f00cd5ab0085",
+          "data": "",
+          "version": 0
+        },
+        {
+          "holder": "shareledger1p8jjjmtsm9vg3cks9a6ugafgga3a9p65fnkwyw",
+          "issuer": "shareledger1ysfj66na5pc4uzdhxyujvk5rddgwrd4tjuce85",
+          "proof": "feb171be3839ec6daf3d5867d7b1edeceaad46877b559049a9a804b766af1a8e",
           "data": "",
           "version": 0
         },
@@ -24248,6 +25224,13 @@
           "version": 0
         },
         {
+          "holder": "shareledger1ra48y4sf7m8x7c6j6aa7f9gpln8dgjtfdsayty",
+          "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+          "proof": "8a987c250e6606f2e32b9ffe0987bddcd60d14fb13095d469ed7f3124cbace00",
+          "data": "",
+          "version": 0
+        },
+        {
           "holder": "shareledger1ra4jk45v4z3dsx460jl7l79crn55kw3qlefhv6",
           "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
           "proof": "8990f62bf062049764d6136615dd9a5040f57312f0c0aa3275384adbb92e6b3eab__",
@@ -24391,6 +25374,13 @@
           "holder": "shareledger1rnuvruk75xpxyzkgu8h9y9fwzkxfz53mg2hvzv",
           "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
           "proof": "4146b0d4b01d14f450d7542a1f20060e7b6c1eddceef81e868f5ee35ca90f22c",
+          "data": "",
+          "version": 0
+        },
+        {
+          "holder": "shareledger1rpwq3amlc3a79k0culzl7yd4vkrp5xhvm5huya",
+          "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+          "proof": "5a7dbfb59c5fccad4f7141ed6c139ccd9cdc676656ad25dfc59ff15a96b2987a",
           "data": "",
           "version": 0
         },
@@ -25074,9 +26064,23 @@
           "version": 0
         },
         {
+          "holder": "shareledger1tfg4e2ycwjrstdvefu4l7wjrzvsh3tcp3nyzeh",
+          "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+          "proof": "108edfaa6537c196a63a71733a3315d411f2a2e55ad17348fdee250ad48040a3",
+          "data": "",
+          "version": 0
+        },
+        {
           "holder": "shareledger1th0wdefvlyprm9mmyn43jvxcgrfak525ltyvef",
           "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
           "proof": "5e3022995c415db0662cb125f1a8f7936e4ec22951617b999e787156c2ae6b28",
+          "data": "",
+          "version": 0
+        },
+        {
+          "holder": "shareledger1th0wdefvlyprm9mmyn43jvxcgrfak525ltyvef",
+          "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+          "proof": "f6222f88502da14ff657aaf27a25007c8dbe5b11ae3358d41962ad2e493cbfa1",
           "data": "",
           "version": 0
         },
@@ -25098,6 +26102,20 @@
           "holder": "shareledger1thlrv6ydfkv544a38p4yny73pa9c4u94dsv5ur",
           "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
           "proof": "eeff77504011a58918aac9f2fde9fd6431ce0d76c5f96676a351aadfc27c97ec",
+          "data": "",
+          "version": 0
+        },
+        {
+          "holder": "shareledger1tl03794zkluwkldfcjqe3frphtakl375kuzvsm",
+          "issuer": "shareledger1ysfj66na5pc4uzdhxyujvk5rddgwrd4tjuce85",
+          "proof": "4e1bd40d34354a5b2f8e62324111d9b422d6917a830a57436fccf8c6b420a8f7",
+          "data": "",
+          "version": 0
+        },
+        {
+          "holder": "shareledger1tl03794zkluwkldfcjqe3frphtakl375kuzvsm",
+          "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+          "proof": "ff65438a3b3896a1fe83bb2fc875c3b4eb260a138eaa6cf2dea2464847d26b37",
           "data": "",
           "version": 0
         },
@@ -25441,6 +26459,13 @@
           "holder": "shareledger1tuwt9069es6n27vf8l7wwe2u096l087ytkjn7q",
           "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
           "proof": "c495aa0c60fa89926f6fc85dea33465ca2b67e7cfac3eca42578f26557132191",
+          "data": "",
+          "version": 0
+        },
+        {
+          "holder": "shareledger1tvxdr4jla4ezxq6m0769pawhlqtjdpeaygynqq",
+          "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+          "proof": "26b6db861324b257a91422d1c474edc7f852deb85d4e5fe050ebd8b5122e912a",
           "data": "",
           "version": 0
         },
@@ -25830,6 +26855,13 @@
           "version": 0
         },
         {
+          "holder": "shareledger1ur3nrdz37j63zkkvyvf56d9nt8cmsfvtu42lq0",
+          "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+          "proof": "8c1d51b4b6caef9e3ac94a04eb18bc0dcb0be35c417595d43c6e824cb18eeb05",
+          "data": "",
+          "version": 0
+        },
+        {
           "holder": "shareledger1urn6au0uf0ewx7sa78h5necraqlzdqa0te4dtd",
           "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
           "proof": "f6f5633218116015b9805819babcad213cf933c286ca794655a8affe4652ae3e3b",
@@ -25924,6 +26956,13 @@
           "holder": "shareledger1ux4m288agwel4fg7vhesmuyf286qv9v7k30vk7",
           "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
           "proof": "d239085fdd455cf5fd2ef6b95a72534962737f69ef3a287ec3881f1e6386fa9b04",
+          "data": "",
+          "version": 0
+        },
+        {
+          "holder": "shareledger1uxeh0qtls6a5rqw7qpq4aeeplufvw0s8km4dxh",
+          "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+          "proof": "69036236d5bc1b7404ec07171321f0ae6f6273b4f1072778809c1937ec51650f",
           "data": "",
           "version": 0
         },
@@ -26103,6 +27142,13 @@
           "version": 0
         },
         {
+          "holder": "shareledger1vcuh3kvn2rc9ffnhnuhfzn7vge7gjets54fzmp",
+          "issuer": "shareledger1x33wu4t0jsel4vngyevpjx79v05c74j7hty535",
+          "proof": "da999b5d353a3ee55206d0811db10b65e8ecb22d6c3a5ad2340b034174868351",
+          "data": "",
+          "version": 0
+        },
+        {
           "holder": "shareledger1vdzm2tfvwwegtk0j6qyu8v7gusak8uxngk5wng",
           "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
           "proof": "de49468c72583437b6cc9e2b00cee19af0b02a7cae30ed3b72d40e448dbbf5a321",
@@ -26141,6 +27187,20 @@
           "holder": "shareledger1vjj2ufstr4amqr6pp25ywj8y0qaeyd8rc92as9",
           "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
           "proof": "6863554865c89f66dce3ae04fad66aa310066c942dcf698bf08282aba41fca5e",
+          "data": "",
+          "version": 0
+        },
+        {
+          "holder": "shareledger1vjrqur33scq29s2zmek99rm3yck84rq2dkraxn",
+          "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+          "proof": "0df43c1eb435d6cd86947599a6600216bbc35d8e8a173f1fb5daa2dc2ba6f201",
+          "data": "",
+          "version": 0
+        },
+        {
+          "holder": "shareledger1vjrqur33scq29s2zmek99rm3yck84rq2dkraxn",
+          "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+          "proof": "2f23b077d977b9c81592e43fcc034e3e666211630d307d8ba66925948202cfd5",
           "data": "",
           "version": 0
         },
@@ -26376,6 +27436,13 @@
           "version": 0
         },
         {
+          "holder": "shareledger1vw0gkxf8v4c0ghg44rpav72p5wysgnc0mu9jmy",
+          "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+          "proof": "c7f0fba0aeace13abcaf0c0be24ad23022ff6cf7b7c3bd9086a7c31ee4ced10a",
+          "data": "",
+          "version": 0
+        },
+        {
           "holder": "shareledger1vx8q02enr4688mx5vgvs8hh90wap2eq3nnwdzp",
           "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
           "proof": "162f4e2362a864ff54258ea4b4a6f225b072e908b12122ae6242d217ed7b826a",
@@ -26470,6 +27537,13 @@
           "holder": "shareledger1vxlv5y9z9caveymrn30k0zv48e0g07qzav2687",
           "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
           "proof": "f076e165a6d1a9f96b6ca41afe6d7601fa4139933a8190a96fb4c384ec17a6df",
+          "data": "",
+          "version": 0
+        },
+        {
+          "holder": "shareledger1vy0gvf9dzypa6j4ycvf0s4tsyglyqnlcf9dxjf",
+          "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+          "proof": "e5af307905c89fdf1d2ed2438e4d719fb23e1f08c95be045da98084a1d438d5c",
           "data": "",
           "version": 0
         },
@@ -26610,6 +27684,13 @@
           "holder": "shareledger1wevrujawmm5hy3kh8y3ymflteaujxt8sjdpr3f",
           "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
           "proof": "77dfcdc5a48e7d7d965b8bf6dc65a9ec7b1e25cdcf49b4c2d24dbbbcd604b234",
+          "data": "",
+          "version": 0
+        },
+        {
+          "holder": "shareledger1wf0dstk2w5xz02usr9wze59fz2judc0evmx70z",
+          "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+          "proof": "91b8460bc87b18974bac2a25b852677c64b06ca8d77c0c5016d4849ecc59f67c",
           "data": "",
           "version": 0
         },
@@ -26831,6 +27912,13 @@
           "version": 0
         },
         {
+          "holder": "shareledger1wyq32220fe6gw0heq738thp2r948x6rwn7vpva",
+          "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+          "proof": "d9297c3fb056cf76945052ba4756a658572e078bf0609c39ac54ff36639d40a2",
+          "data": "",
+          "version": 0
+        },
+        {
           "holder": "shareledger1x0kkppd7hnmyqd55k36pvllpxu6kpmu6wjmxrk",
           "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
           "proof": "fbedf21c4309dfe69a7d2976fbed098b7fb8022a40e1f3accd2b05d9fce10737",
@@ -26904,6 +27992,13 @@
           "holder": "shareledger1x7m7pa84t5tftvnesl2h5xujjxqgdqac56w5rs",
           "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
           "proof": "cfb16f7d8d07c03fe72fde1bd99c00fb2683419b1f587306d0df8a62ff9af046",
+          "data": "",
+          "version": 0
+        },
+        {
+          "holder": "shareledger1x7n58v9a5g734nyxexmtvh4pt9rvxywn0uc0p2",
+          "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+          "proof": "0cc954998f0bcab35434730abe50882de5e35fb4a0977bce19fb318407829f99",
           "data": "",
           "version": 0
         },
@@ -27433,6 +28528,13 @@
           "version": 0
         },
         {
+          "holder": "shareledger1y4quspa9ux6hkkpah5f9zakum6usa5hsgcwt6l",
+          "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+          "proof": "54b78ef49b70ad9a47b4ac73c64d4cd44ad7371db3a261833772dfa62e224b77",
+          "data": "",
+          "version": 0
+        },
+        {
           "holder": "shareledger1y833lgd4pgdrjcpwa9ad4n45ykvuj6pu9x0ckd",
           "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
           "proof": "741aa58baa643a4f45f3e27e630201850b35771ed5c7f1e2cbbf91bafa850f8d",
@@ -27681,6 +28783,13 @@
           "holder": "shareledger1ynlqepmdn9efuc7hclj7m649p06mt29ce9zlcd",
           "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
           "proof": "621fc64a333c8d913c2ae0e0c0a06b58ab75307d940901a0e52bcce55ec7697a",
+          "data": "",
+          "version": 0
+        },
+        {
+          "holder": "shareledger1yntnt854u056q98455czpnrfw8prvrnxmc2cwj",
+          "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+          "proof": "018112225914f1820021e5acb9890cbe9b2b2c04e5ebfe6cabecf63232256954",
           "data": "",
           "version": 0
         },
@@ -29312,7 +30421,7 @@
         {
           "key": "docIssuershareledger1gnkemrqgkcdm3fc95c4uarwsjexrrgw998yl2l",
           "address": "shareledger1gnkemrqgkcdm3fc95c4uarwsjexrrgw998yl2l",
-          "status": "inactive"
+          "status": "active"
         },
         {
           "key": "docIssuershareledger1h3g702kksf0zpstu26e55v3m2emrul3hagakca",
@@ -29617,7 +30726,7 @@
         {
           "key": "docIssuershareledger1x33wu4t0jsel4vngyevpjx79v05c74j7hty535",
           "address": "shareledger1x33wu4t0jsel4vngyevpjx79v05c74j7hty535",
-          "status": "inactive"
+          "status": "active"
         },
         {
           "key": "docIssuershareledger1x68t235755ysh23fcetk6zqxqmkqnntttjttzm",
@@ -29835,11 +30944,11 @@
     },
     "gov": {
       "deposit_params": {
-        "max_deposit_period": "600s",
+        "max_deposit_period": "172800s",
         "min_deposit": [
           {
-            "amount": "10000000",
-            "denom": "shr"
+            "amount": "1000000000000000",
+            "denom": "pshr"
           }
         ]
       },
@@ -29853,7 +30962,7 @@
       },
       "votes": [],
       "voting_params": {
-        "voting_period": "600s"
+        "voting_period": "172800s"
       }
     },
     "ibc": {
@@ -29951,6 +31060,15 @@
             "issuerAddress": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
             "backupAddress": "shareledger104cjpt6y3azhn4tkutl5z3tz22as2ppl3mc3lu",
             "ownerAddress": "shareledger104cjpt6y3azhn4tkutl5z3tz22as2ppl3mc3lu",
+            "extraData": ""
+          }
+        },
+        {
+          "id": "shareledger104sh8trl7tc650mk5rt7x83su94sv7qsjs0htt",
+          "data": {
+            "issuerAddress": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+            "backupAddress": "shareledger104sh8trl7tc650mk5rt7x83su94sv7qsjs0htt",
+            "ownerAddress": "shareledger104sh8trl7tc650mk5rt7x83su94sv7qsjs0htt",
             "extraData": ""
           }
         },
@@ -31314,6 +32432,15 @@
           }
         },
         {
+          "id": "shareledger14jfqttq6826dm0uhnuq48zldpysamnhpye99xp",
+          "data": {
+            "issuerAddress": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+            "backupAddress": "shareledger14jfqttq6826dm0uhnuq48zldpysamnhpye99xp",
+            "ownerAddress": "shareledger14jfqttq6826dm0uhnuq48zldpysamnhpye99xp",
+            "extraData": ""
+          }
+        },
+        {
           "id": "shareledger14jhmsllntjwqgsz92xac0pkg8g0d44xvk04zhu",
           "data": {
             "issuerAddress": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
@@ -31355,6 +32482,15 @@
             "issuerAddress": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
             "backupAddress": "shareledger14mr0afvxh53pd8jel62erw07z49wvcpafe9uzk",
             "ownerAddress": "shareledger14mr0afvxh53pd8jel62erw07z49wvcpafe9uzk",
+            "extraData": ""
+          }
+        },
+        {
+          "id": "shareledger14n8nfchxx5klcl8cclng28kpchqpx2psaqlu5t",
+          "data": {
+            "issuerAddress": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+            "backupAddress": "shareledger14n8nfchxx5klcl8cclng28kpchqpx2psaqlu5t",
+            "ownerAddress": "shareledger14n8nfchxx5klcl8cclng28kpchqpx2psaqlu5t",
             "extraData": ""
           }
         },
@@ -33321,6 +34457,15 @@
           }
         },
         {
+          "id": "shareledger18n0fg4kktxe68h7eljnyek70g8h3kt75s26hlx",
+          "data": {
+            "issuerAddress": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+            "backupAddress": "shareledger18n0fg4kktxe68h7eljnyek70g8h3kt75s26hlx",
+            "ownerAddress": "shareledger18n0fg4kktxe68h7eljnyek70g8h3kt75s26hlx",
+            "extraData": ""
+          }
+        },
+        {
           "id": "shareledger18pvjzyyeen2d5dcy8zmdqlatss5s2akc0d0uxy",
           "data": {
             "issuerAddress": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
@@ -34770,6 +35915,15 @@
           }
         },
         {
+          "id": "shareledger1cw3k03j28l8whtl50qdhtyh9yncq2hgqr742ku",
+          "data": {
+            "issuerAddress": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+            "backupAddress": "shareledger1cw3k03j28l8whtl50qdhtyh9yncq2hgqr742ku",
+            "ownerAddress": "shareledger1cw3k03j28l8whtl50qdhtyh9yncq2hgqr742ku",
+            "extraData": ""
+          }
+        },
+        {
           "id": "shareledger1cwsprztqfetrcnlg8s6q35yxfrmcr53z28r6da",
           "data": {
             "issuerAddress": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
@@ -34892,6 +36046,15 @@
             "issuerAddress": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
             "backupAddress": "shareledger1d5k6pp9jnl3tlxljqn2klzpq4teflnvh3e98xl",
             "ownerAddress": "shareledger1d5k6pp9jnl3tlxljqn2klzpq4teflnvh3e98xl",
+            "extraData": ""
+          }
+        },
+        {
+          "id": "shareledger1d7h6de406trldye3rnl7fj83g2663ug4w7dup6",
+          "data": {
+            "issuerAddress": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+            "backupAddress": "shareledger1d7h6de406trldye3rnl7fj83g2663ug4w7dup6",
+            "ownerAddress": "shareledger1d7h6de406trldye3rnl7fj83g2663ug4w7dup6",
             "extraData": ""
           }
         },
@@ -35207,6 +36370,15 @@
             "issuerAddress": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
             "backupAddress": "shareledger1dywutlpf93ghkf2k07p6du73uae6hcknll5wuu",
             "ownerAddress": "shareledger1dywutlpf93ghkf2k07p6du73uae6hcknll5wuu",
+            "extraData": ""
+          }
+        },
+        {
+          "id": "shareledger1dyzz5nertryc6c7h5kaqml5wde5hcnjxprlpap",
+          "data": {
+            "issuerAddress": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+            "backupAddress": "shareledger1dyzz5nertryc6c7h5kaqml5wde5hcnjxprlpap",
+            "ownerAddress": "shareledger1dyzz5nertryc6c7h5kaqml5wde5hcnjxprlpap",
             "extraData": ""
           }
         },
@@ -38325,6 +39497,15 @@
           }
         },
         {
+          "id": "shareledger1ladn3pw8vp7a7xh4ez624r2zdy3wr6jvh2e7rd",
+          "data": {
+            "issuerAddress": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+            "backupAddress": "shareledger1ladn3pw8vp7a7xh4ez624r2zdy3wr6jvh2e7rd",
+            "ownerAddress": "shareledger1ladn3pw8vp7a7xh4ez624r2zdy3wr6jvh2e7rd",
+            "extraData": ""
+          }
+        },
+        {
           "id": "shareledger1lav6c4yskkatkgrhtayadke0zzvhtcp5wchl27",
           "data": {
             "issuerAddress": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
@@ -40701,6 +41882,15 @@
           }
         },
         {
+          "id": "shareledger1ra48y4sf7m8x7c6j6aa7f9gpln8dgjtfdsayty",
+          "data": {
+            "issuerAddress": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+            "backupAddress": "shareledger1ra48y4sf7m8x7c6j6aa7f9gpln8dgjtfdsayty",
+            "ownerAddress": "shareledger1ra48y4sf7m8x7c6j6aa7f9gpln8dgjtfdsayty",
+            "extraData": ""
+          }
+        },
+        {
           "id": "shareledger1ra4jk45v4z3dsx460jl7l79crn55kw3qlefhv6",
           "data": {
             "issuerAddress": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
@@ -40868,6 +42058,15 @@
             "issuerAddress": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
             "backupAddress": "shareledger1rnuvruk75xpxyzkgu8h9y9fwzkxfz53mg2hvzv",
             "ownerAddress": "shareledger1rnuvruk75xpxyzkgu8h9y9fwzkxfz53mg2hvzv",
+            "extraData": ""
+          }
+        },
+        {
+          "id": "shareledger1rpwq3amlc3a79k0culzl7yd4vkrp5xhvm5huya",
+          "data": {
+            "issuerAddress": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+            "backupAddress": "shareledger1rpwq3amlc3a79k0culzl7yd4vkrp5xhvm5huya",
+            "ownerAddress": "shareledger1rpwq3amlc3a79k0culzl7yd4vkrp5xhvm5huya",
             "extraData": ""
           }
         },
@@ -41664,6 +42863,15 @@
           }
         },
         {
+          "id": "shareledger1tfg4e2ycwjrstdvefu4l7wjrzvsh3tcp3nyzeh",
+          "data": {
+            "issuerAddress": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+            "backupAddress": "shareledger1tfg4e2ycwjrstdvefu4l7wjrzvsh3tcp3nyzeh",
+            "ownerAddress": "shareledger1tfg4e2ycwjrstdvefu4l7wjrzvsh3tcp3nyzeh",
+            "extraData": ""
+          }
+        },
+        {
           "id": "shareledger1th0wdefvlyprm9mmyn43jvxcgrfak525ltyvef",
           "data": {
             "issuerAddress": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
@@ -41678,6 +42886,15 @@
             "issuerAddress": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
             "backupAddress": "shareledger1thc87zvjezpy50tfahywrlj8q22zngjyl0qg6a",
             "ownerAddress": "shareledger1thc87zvjezpy50tfahywrlj8q22zngjyl0qg6a",
+            "extraData": ""
+          }
+        },
+        {
+          "id": "shareledger1tl03794zkluwkldfcjqe3frphtakl375kuzvsm",
+          "data": {
+            "issuerAddress": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+            "backupAddress": "shareledger1tl03794zkluwkldfcjqe3frphtakl375kuzvsm",
+            "ownerAddress": "shareledger1tl03794zkluwkldfcjqe3frphtakl375kuzvsm",
             "extraData": ""
           }
         },
@@ -41777,6 +42994,15 @@
             "issuerAddress": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
             "backupAddress": "shareledger1tuug2qqr0vg4p5esjkq506mmq09fqye6alcf33",
             "ownerAddress": "shareledger1tuug2qqr0vg4p5esjkq506mmq09fqye6alcf33",
+            "extraData": ""
+          }
+        },
+        {
+          "id": "shareledger1tvxdr4jla4ezxq6m0769pawhlqtjdpeaygynqq",
+          "data": {
+            "issuerAddress": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+            "backupAddress": "shareledger1tvxdr4jla4ezxq6m0769pawhlqtjdpeaygynqq",
+            "ownerAddress": "shareledger1tvxdr4jla4ezxq6m0769pawhlqtjdpeaygynqq",
             "extraData": ""
           }
         },
@@ -42222,6 +43448,15 @@
           }
         },
         {
+          "id": "shareledger1ur3nrdz37j63zkkvyvf56d9nt8cmsfvtu42lq0",
+          "data": {
+            "issuerAddress": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+            "backupAddress": "shareledger1ur3nrdz37j63zkkvyvf56d9nt8cmsfvtu42lq0",
+            "ownerAddress": "shareledger1ur3nrdz37j63zkkvyvf56d9nt8cmsfvtu42lq0",
+            "extraData": ""
+          }
+        },
+        {
           "id": "shareledger1urn6au0uf0ewx7sa78h5necraqlzdqa0te4dtd",
           "data": {
             "issuerAddress": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
@@ -42344,6 +43579,15 @@
             "issuerAddress": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
             "backupAddress": "shareledger1ux4m288agwel4fg7vhesmuyf286qv9v7k30vk7",
             "ownerAddress": "shareledger1ux4m288agwel4fg7vhesmuyf286qv9v7k30vk7",
+            "extraData": ""
+          }
+        },
+        {
+          "id": "shareledger1uxeh0qtls6a5rqw7qpq4aeeplufvw0s8km4dxh",
+          "data": {
+            "issuerAddress": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+            "backupAddress": "shareledger1uxeh0qtls6a5rqw7qpq4aeeplufvw0s8km4dxh",
+            "ownerAddress": "shareledger1uxeh0qtls6a5rqw7qpq4aeeplufvw0s8km4dxh",
             "extraData": ""
           }
         },
@@ -42627,6 +43871,15 @@
           }
         },
         {
+          "id": "shareledger1vjrqur33scq29s2zmek99rm3yck84rq2dkraxn",
+          "data": {
+            "issuerAddress": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+            "backupAddress": "shareledger1vjrqur33scq29s2zmek99rm3yck84rq2dkraxn",
+            "ownerAddress": "shareledger1vjrqur33scq29s2zmek99rm3yck84rq2dkraxn",
+            "extraData": ""
+          }
+        },
+        {
           "id": "shareledger1vjwsmlu33vm66vsscuenjnf6ajsspv9ge2keg8",
           "data": {
             "issuerAddress": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
@@ -42798,6 +44051,15 @@
           }
         },
         {
+          "id": "shareledger1vw0gkxf8v4c0ghg44rpav72p5wysgnc0mu9jmy",
+          "data": {
+            "issuerAddress": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+            "backupAddress": "shareledger1vw0gkxf8v4c0ghg44rpav72p5wysgnc0mu9jmy",
+            "ownerAddress": "shareledger1vw0gkxf8v4c0ghg44rpav72p5wysgnc0mu9jmy",
+            "extraData": ""
+          }
+        },
+        {
           "id": "shareledger1vwxn6g2p88xz8yvfq8p9wkwrzw4mmzknwdk4y0",
           "data": {
             "issuerAddress": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
@@ -42821,6 +44083,15 @@
             "issuerAddress": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
             "backupAddress": "shareledger1vxlv5y9z9caveymrn30k0zv48e0g07qzav2687",
             "ownerAddress": "shareledger1vxlv5y9z9caveymrn30k0zv48e0g07qzav2687",
+            "extraData": ""
+          }
+        },
+        {
+          "id": "shareledger1vy0gvf9dzypa6j4ycvf0s4tsyglyqnlcf9dxjf",
+          "data": {
+            "issuerAddress": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+            "backupAddress": "shareledger1vy0gvf9dzypa6j4ycvf0s4tsyglyqnlcf9dxjf",
+            "ownerAddress": "shareledger1vy0gvf9dzypa6j4ycvf0s4tsyglyqnlcf9dxjf",
             "extraData": ""
           }
         },
@@ -43001,6 +44272,15 @@
             "issuerAddress": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
             "backupAddress": "shareledger1wevrujawmm5hy3kh8y3ymflteaujxt8sjdpr3f",
             "ownerAddress": "shareledger1wevrujawmm5hy3kh8y3ymflteaujxt8sjdpr3f",
+            "extraData": ""
+          }
+        },
+        {
+          "id": "shareledger1wf0dstk2w5xz02usr9wze59fz2judc0evmx70z",
+          "data": {
+            "issuerAddress": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+            "backupAddress": "shareledger1wf0dstk2w5xz02usr9wze59fz2judc0evmx70z",
+            "ownerAddress": "shareledger1wf0dstk2w5xz02usr9wze59fz2judc0evmx70z",
             "extraData": ""
           }
         },
@@ -43248,6 +44528,15 @@
           }
         },
         {
+          "id": "shareledger1wyq32220fe6gw0heq738thp2r948x6rwn7vpva",
+          "data": {
+            "issuerAddress": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+            "backupAddress": "shareledger1wyq32220fe6gw0heq738thp2r948x6rwn7vpva",
+            "ownerAddress": "shareledger1wyq32220fe6gw0heq738thp2r948x6rwn7vpva",
+            "extraData": ""
+          }
+        },
+        {
           "id": "shareledger1wyxwpux2gkvhsjeykq6a8frn6rca7g6y2jetwj",
           "data": {
             "issuerAddress": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
@@ -43325,6 +44614,15 @@
             "issuerAddress": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
             "backupAddress": "shareledger1x7m7pa84t5tftvnesl2h5xujjxqgdqac56w5rs",
             "ownerAddress": "shareledger1x7m7pa84t5tftvnesl2h5xujjxqgdqac56w5rs",
+            "extraData": ""
+          }
+        },
+        {
+          "id": "shareledger1x7n58v9a5g734nyxexmtvh4pt9rvxywn0uc0p2",
+          "data": {
+            "issuerAddress": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+            "backupAddress": "shareledger1x7n58v9a5g734nyxexmtvh4pt9rvxywn0uc0p2",
+            "ownerAddress": "shareledger1x7n58v9a5g734nyxexmtvh4pt9rvxywn0uc0p2",
             "extraData": ""
           }
         },
@@ -43797,6 +45095,15 @@
           }
         },
         {
+          "id": "shareledger1y4quspa9ux6hkkpah5f9zakum6usa5hsgcwt6l",
+          "data": {
+            "issuerAddress": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+            "backupAddress": "shareledger1y4quspa9ux6hkkpah5f9zakum6usa5hsgcwt6l",
+            "ownerAddress": "shareledger1y4quspa9ux6hkkpah5f9zakum6usa5hsgcwt6l",
+            "extraData": ""
+          }
+        },
+        {
           "id": "shareledger1y7wfdqa9cdy67ssplrz5lraummjemj9dr7wcz8",
           "data": {
             "issuerAddress": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
@@ -44063,6 +45370,15 @@
             "issuerAddress": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
             "backupAddress": "shareledger1ynlqepmdn9efuc7hclj7m649p06mt29ce9zlcd",
             "ownerAddress": "shareledger1ynlqepmdn9efuc7hclj7m649p06mt29ce9zlcd",
+            "extraData": ""
+          }
+        },
+        {
+          "id": "shareledger1yntnt854u056q98455czpnrfw8prvrnxmc2cwj",
+          "data": {
+            "issuerAddress": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+            "backupAddress": "shareledger1yntnt854u056q98455czpnrfw8prvrnxmc2cwj",
+            "ownerAddress": "shareledger1yntnt854u056q98455czpnrfw8prvrnxmc2cwj",
             "extraData": ""
           }
         },
@@ -44760,10 +46076,10 @@
       "params": {
         "blocks_per_year": "6311520",
         "goal_bonded": "0.670000000000000000",
-        "inflation_max": "0.200000000000000000",
-        "inflation_min": "0.070000000000000000",
-        "inflation_rate_change": "0.130000000000000000",
-        "mint_denom": "shr"
+        "inflation_max": "0.000000000000000000",
+        "inflation_min": "0.000000000000000000",
+        "inflation_rate_change": "0.000000000000000000",
+        "mint_denom": "pshr"
       }
     },
     "params": null,
@@ -44777,14 +46093,25 @@
       },
       "signing_infos": [
         {
+          "address": "shareledgervalcons1hqaa8jxkse4mmc4h9es208ayyj43txkft36gsa",
+          "validator_signing_info": {
+            "address": "shareledgervalcons1hqaa8jxkse4mmc4h9es208ayyj43txkft36gsa",
+            "start_height": "0",
+            "index_offset": "1964887",
+            "jailed_until": "1970-01-01T00:00:00Z",
+            "tombstoned": false,
+            "missed_blocks_counter": "0"
+          }
+        },
+        {
           "address": "shareledgervalcons1na0de04j7ljsp6wh28k9gul8vp9ncwhz8uajhg",
           "validator_signing_info": {
             "address": "shareledgervalcons1na0de04j7ljsp6wh28k9gul8vp9ncwhz8uajhg",
             "start_height": "0",
-            "index_offset": "6487",
-            "jailed_until": "2022-01-11T23:14:24.692448619Z",
+            "index_offset": "125441",
+            "jailed_until": "2022-01-18T07:08:07.069850866Z",
             "tombstoned": false,
-            "missed_blocks_counter": "0"
+            "missed_blocks_counter": "34"
           }
         },
         {
@@ -44792,10 +46119,10 @@
           "validator_signing_info": {
             "address": "shareledgervalcons1y8r4fznx6rjug0q593hr5zlrv5agd395z2n6m9",
             "start_height": "0",
-            "index_offset": "613861",
-            "jailed_until": "2021-07-26T15:13:42.295042741Z",
+            "index_offset": "2",
+            "jailed_until": "2022-01-20T05:27:47.888675933Z",
             "tombstoned": false,
-            "missed_blocks_counter": "0"
+            "missed_blocks_counter": "2"
           }
         },
         {
@@ -44803,25 +46130,180 @@
           "validator_signing_info": {
             "address": "shareledgervalcons1yh39aanelyufuczl8gty5v2a3y5537f5u3r8pl",
             "start_height": "0",
-            "index_offset": "78998",
+            "index_offset": "239466",
             "jailed_until": "2021-12-30T04:28:44.917401399Z",
-            "tombstoned": false,
-            "missed_blocks_counter": "0"
-          }
-        },
-        {
-          "address": "shareledgervalcons1hqaa8jxkse4mmc4h9es208ayyj43txkft36gsa",
-          "validator_signing_info": {
-            "address": "shareledgervalcons1hqaa8jxkse4mmc4h9es208ayyj43txkft36gsa",
-            "start_height": "0",
-            "index_offset": "1804419",
-            "jailed_until": "1970-01-01T00:00:00Z",
             "tombstoned": false,
             "missed_blocks_counter": "0"
           }
         }
       ],
       "missed_blocks": [
+        {
+          "address": "shareledgervalcons1hqaa8jxkse4mmc4h9es208ayyj43txkft36gsa",
+          "missed_blocks": []
+        },
+        {
+          "address": "shareledgervalcons1na0de04j7ljsp6wh28k9gul8vp9ncwhz8uajhg",
+          "missed_blocks": [
+            {
+              "index": "0",
+              "missed": false
+            },
+            {
+              "index": "1",
+              "missed": false
+            },
+            {
+              "index": "13",
+              "missed": true
+            },
+            {
+              "index": "14",
+              "missed": true
+            },
+            {
+              "index": "15",
+              "missed": true
+            },
+            {
+              "index": "16",
+              "missed": true
+            },
+            {
+              "index": "17",
+              "missed": true
+            },
+            {
+              "index": "18",
+              "missed": true
+            },
+            {
+              "index": "19",
+              "missed": true
+            },
+            {
+              "index": "20",
+              "missed": true
+            },
+            {
+              "index": "21",
+              "missed": true
+            },
+            {
+              "index": "22",
+              "missed": true
+            },
+            {
+              "index": "23",
+              "missed": true
+            },
+            {
+              "index": "24",
+              "missed": true
+            },
+            {
+              "index": "25",
+              "missed": true
+            },
+            {
+              "index": "26",
+              "missed": true
+            },
+            {
+              "index": "27",
+              "missed": true
+            },
+            {
+              "index": "28",
+              "missed": true
+            },
+            {
+              "index": "29",
+              "missed": true
+            },
+            {
+              "index": "30",
+              "missed": true
+            },
+            {
+              "index": "31",
+              "missed": true
+            },
+            {
+              "index": "32",
+              "missed": true
+            },
+            {
+              "index": "33",
+              "missed": true
+            },
+            {
+              "index": "34",
+              "missed": true
+            },
+            {
+              "index": "35",
+              "missed": true
+            },
+            {
+              "index": "36",
+              "missed": true
+            },
+            {
+              "index": "58",
+              "missed": true
+            },
+            {
+              "index": "59",
+              "missed": true
+            },
+            {
+              "index": "60",
+              "missed": true
+            },
+            {
+              "index": "61",
+              "missed": true
+            },
+            {
+              "index": "62",
+              "missed": true
+            },
+            {
+              "index": "63",
+              "missed": true
+            },
+            {
+              "index": "64",
+              "missed": true
+            },
+            {
+              "index": "65",
+              "missed": true
+            },
+            {
+              "index": "66",
+              "missed": true
+            },
+            {
+              "index": "67",
+              "missed": true
+            }
+          ]
+        },
+        {
+          "address": "shareledgervalcons1y8r4fznx6rjug0q593hr5zlrv5agd395z2n6m9",
+          "missed_blocks": [
+            {
+              "index": "0",
+              "missed": true
+            },
+            {
+              "index": "1",
+              "missed": true
+            }
+          ]
+        },
         {
           "address": "shareledgervalcons1yh39aanelyufuczl8gty5v2a3y5537f5u3r8pl",
           "missed_blocks": [
@@ -44886,64 +46368,30 @@
               "missed": false
             }
           ]
-        },
-        {
-          "address": "shareledgervalcons1hqaa8jxkse4mmc4h9es208ayyj43txkft36gsa",
-          "missed_blocks": []
-        },
-        {
-          "address": "shareledgervalcons1na0de04j7ljsp6wh28k9gul8vp9ncwhz8uajhg",
-          "missed_blocks": [
-            {
-              "index": "0",
-              "missed": false
-            },
-            {
-              "index": "1",
-              "missed": false
-            }
-          ]
-        },
-        {
-          "address": "shareledgervalcons1y8r4fznx6rjug0q593hr5zlrv5agd395z2n6m9",
-          "missed_blocks": [
-            {
-              "index": "0",
-              "missed": false
-            },
-            {
-              "index": "1",
-              "missed": false
-            }
-          ]
         }
       ]
     },
     "staking": {
       "params": {
-        "unbonding_time": "600s",
+        "unbonding_time": "1814400s",
         "max_validators": 100,
         "max_entries": 7,
         "historical_entries": 0,
         "bond_denom": "shr"
       },
-      "last_total_power": "222",
+      "last_total_power": "211",
       "last_validator_powers": [
         {
-          "address": "shareledgervaloper1pdn82hmc36pqfh5qg8q2vcjc60l7h6w8qzcjqz",
-          "power": "9"
-        },
-        {
           "address": "shareledgervaloper1pasya6jtvglu9q36nl3tqh5drqzeh0s9098x32",
-          "power": "2"
+          "power": "10"
         },
         {
           "address": "shareledgervaloper1w4l5fchs69d9avlgvdehq9ypvdh4xyeveusq8r",
-          "power": "208"
+          "power": "108"
         },
         {
           "address": "shareledgervaloper1ml6wjyy6hw0gynuzqvvaw4urhcpegcy9xr8002",
-          "power": "3"
+          "power": "93"
         }
       ],
       "validators": [
@@ -44953,10 +46401,10 @@
             "@type": "/cosmos.crypto.ed25519.PubKey",
             "key": "CZp/ZRvmohuTMbvH/jDnDAbTOaLwQCToGgb+bZ/CEdw="
           },
-          "jailed": false,
-          "status": "BOND_STATUS_BONDED",
-          "tokens": "9282953",
-          "delegator_shares": "9374378.526674570608596234",
+          "jailed": true,
+          "status": "BOND_STATUS_UNBONDED",
+          "tokens": "125187202",
+          "delegator_shares": "127692413.173151912492283833",
           "description": {
             "moniker": "node3",
             "identity": "",
@@ -44964,8 +46412,8 @@
             "security_contact": "",
             "details": ""
           },
-          "unbonding_height": "0",
-          "unbonding_time": "2021-08-16T15:03:42.295042741Z",
+          "unbonding_height": "1839500",
+          "unbonding_time": "2022-02-10T05:17:47.888675933Z",
           "commission": {
             "commission_rates": {
               "rate": "0.300000000000000000",
@@ -44984,8 +46432,8 @@
           },
           "jailed": false,
           "status": "BOND_STATUS_BONDED",
-          "tokens": "2717085",
-          "delegator_shares": "2754023.520570635215152162",
+          "tokens": "10311055",
+          "delegator_shares": "10616206.564405032967882813",
           "description": {
             "moniker": "node0",
             "identity": "",
@@ -44993,8 +46441,8 @@
             "security_contact": "",
             "details": ""
           },
-          "unbonding_height": "0",
-          "unbonding_time": "2022-02-01T23:04:24.692448619Z",
+          "unbonding_height": "1832763",
+          "unbonding_time": "2022-02-08T06:58:07.069850866Z",
           "commission": {
             "commission_rates": {
               "rate": "0.150000000000000000",
@@ -45013,8 +46461,8 @@
           },
           "jailed": false,
           "status": "BOND_STATUS_BONDED",
-          "tokens": "208531140",
-          "delegator_shares": "208531140.000000000000000000",
+          "tokens": "108986764",
+          "delegator_shares": "108986764.000000000000000000",
           "description": {
             "moniker": "node2",
             "identity": "",
@@ -45042,8 +46490,8 @@
           },
           "jailed": false,
           "status": "BOND_STATUS_BONDED",
-          "tokens": "3238591",
-          "delegator_shares": "3308975.803762910413444296",
+          "tokens": "93346982",
+          "delegator_shares": "95375651.623025119483557735",
           "description": {
             "moniker": "node1",
             "identity": "",
@@ -45051,7 +46499,7 @@
             "security_contact": "",
             "details": ""
           },
-          "unbonding_height": "0",
+          "unbonding_height": "1725293",
           "unbonding_time": "2022-01-20T04:18:44.917401399Z",
           "commission": {
             "commission_rates": {
@@ -45068,12 +46516,12 @@
         {
           "delegator_address": "shareledger1p8jjjmtsm9vg3cks9a6ugafgga3a9p65fnkwyw",
           "validator_address": "shareledgervaloper1pdn82hmc36pqfh5qg8q2vcjc60l7h6w8qzcjqz",
-          "shares": "132.311702110785468678"
+          "shares": "1020144.039363885989567089"
         },
         {
           "delegator_address": "shareledger1p8jjjmtsm9vg3cks9a6ugafgga3a9p65fnkwyw",
           "validator_address": "shareledgervaloper1pasya6jtvglu9q36nl3tqh5drqzeh0s9098x32",
-          "shares": "99592.058237029105036517"
+          "shares": "523785.034080419871817191"
         },
         {
           "delegator_address": "shareledger1p8jjjmtsm9vg3cks9a6ugafgga3a9p65fnkwyw",
@@ -45118,12 +46566,12 @@
         {
           "delegator_address": "shareledger1z6qpn2nxt99ma6enza3dzfp7prux55h8ynkdts",
           "validator_address": "shareledgervaloper1pdn82hmc36pqfh5qg8q2vcjc60l7h6w8qzcjqz",
-          "shares": "14.137882565326355581"
+          "shares": "53534526.762536572162270844"
         },
         {
           "delegator_address": "shareledger1z6qpn2nxt99ma6enza3dzfp7prux55h8ynkdts",
           "validator_address": "shareledgervaloper1pasya6jtvglu9q36nl3tqh5drqzeh0s9098x32",
-          "shares": "932.436584592446740411"
+          "shares": "917.119917595092364028"
         },
         {
           "delegator_address": "shareledger1z6qpn2nxt99ma6enza3dzfp7prux55h8ynkdts",
@@ -45136,9 +46584,34 @@
           "shares": "1170.733786678183503964"
         },
         {
+          "delegator_address": "shareledger1rpwq3amlc3a79k0culzl7yd4vkrp5xhvm5huya",
+          "validator_address": "shareledgervaloper1pasya6jtvglu9q36nl3tqh5drqzeh0s9098x32",
+          "shares": "1544388.813558637427181340"
+        },
+        {
+          "delegator_address": "shareledger1rpwq3amlc3a79k0culzl7yd4vkrp5xhvm5huya",
+          "validator_address": "shareledgervaloper1ml6wjyy6hw0gynuzqvvaw4urhcpegcy9xr8002",
+          "shares": "2554331.576004287354010196"
+        },
+        {
           "delegator_address": "shareledger1rvnmn7ra90sgjgcghyuj9ug4fkpr8qxj6ssxlx",
           "validator_address": "shareledgervaloper1ml6wjyy6hw0gynuzqvvaw4urhcpegcy9xr8002",
           "shares": "2500.000000000000000000"
+        },
+        {
+          "delegator_address": "shareledger1ra48y4sf7m8x7c6j6aa7f9gpln8dgjtfdsayty",
+          "validator_address": "shareledgervaloper1pdn82hmc36pqfh5qg8q2vcjc60l7h6w8qzcjqz",
+          "shares": "11.108336301327850812"
+        },
+        {
+          "delegator_address": "shareledger1ra48y4sf7m8x7c6j6aa7f9gpln8dgjtfdsayty",
+          "validator_address": "shareledgervaloper1w4l5fchs69d9avlgvdehq9ypvdh4xyeveusq8r",
+          "shares": "120.000000000000000000"
+        },
+        {
+          "delegator_address": "shareledger1ra48y4sf7m8x7c6j6aa7f9gpln8dgjtfdsayty",
+          "validator_address": "shareledgervaloper1ml6wjyy6hw0gynuzqvvaw4urhcpegcy9xr8002",
+          "shares": "40.869329179720903989"
         },
         {
           "delegator_address": "shareledger1r7wkuptecxxs3ls6j3d6l7dnvr2ymqj3lvrwrd",
@@ -45164,6 +46637,16 @@
           "delegator_address": "shareledger1ysw9e8mlp6t5mgmqjypyr8wdm2v2ya8nu4jk70",
           "validator_address": "shareledgervaloper1w4l5fchs69d9avlgvdehq9ypvdh4xyeveusq8r",
           "shares": "10000.000000000000000000"
+        },
+        {
+          "delegator_address": "shareledger1yntnt854u056q98455czpnrfw8prvrnxmc2cwj",
+          "validator_address": "shareledgervaloper1pasya6jtvglu9q36nl3tqh5drqzeh0s9098x32",
+          "shares": "1.029594601561628074"
+        },
+        {
+          "delegator_address": "shareledger1yntnt854u056q98455czpnrfw8prvrnxmc2cwj",
+          "validator_address": "shareledgervaloper1ml6wjyy6hw0gynuzqvvaw4urhcpegcy9xr8002",
+          "shares": "1093.253849211591779166"
         },
         {
           "delegator_address": "shareledger19w2g2pdcwpj5kutn6ve3r4ay5twptlejlcvkq8",
@@ -45203,22 +46686,42 @@
         {
           "delegator_address": "shareledger194y04q628wv0eq062pm9qrwyejdzks5tvztcm9",
           "validator_address": "shareledgervaloper1pdn82hmc36pqfh5qg8q2vcjc60l7h6w8qzcjqz",
-          "shares": "0.000219915617051888"
+          "shares": "0.074482677681767929"
         },
         {
           "delegator_address": "shareledger194y04q628wv0eq062pm9qrwyejdzks5tvztcm9",
           "validator_address": "shareledgervaloper1pasya6jtvglu9q36nl3tqh5drqzeh0s9098x32",
-          "shares": "30469.661030233401664806"
+          "shares": "34588.039436479913963646"
         },
         {
           "delegator_address": "shareledger194y04q628wv0eq062pm9qrwyejdzks5tvztcm9",
           "validator_address": "shareledgervaloper1w4l5fchs69d9avlgvdehq9ypvdh4xyeveusq8r",
-          "shares": "3018.000000000000000000"
+          "shares": "8018.000000000000000000"
         },
         {
           "delegator_address": "shareledger194y04q628wv0eq062pm9qrwyejdzks5tvztcm9",
           "validator_address": "shareledgervaloper1ml6wjyy6hw0gynuzqvvaw4urhcpegcy9xr8002",
-          "shares": "0.070666665007008002"
+          "shares": "5108.733778530232303150"
+        },
+        {
+          "delegator_address": "shareledger19mag0eyv0nznfzhxt2lc5xfu4d58ewjqrzfz5z",
+          "validator_address": "shareledgervaloper1pdn82hmc36pqfh5qg8q2vcjc60l7h6w8qzcjqz",
+          "shares": "204005.405567538026145294"
+        },
+        {
+          "delegator_address": "shareledger19mag0eyv0nznfzhxt2lc5xfu4d58ewjqrzfz5z",
+          "validator_address": "shareledgervaloper1pasya6jtvglu9q36nl3tqh5drqzeh0s9098x32",
+          "shares": "205919.949906927176570149"
+        },
+        {
+          "delegator_address": "shareledger19mag0eyv0nznfzhxt2lc5xfu4d58ewjqrzfz5z",
+          "validator_address": "shareledgervaloper1w4l5fchs69d9avlgvdehq9ypvdh4xyeveusq8r",
+          "shares": "400004.000000000000000000"
+        },
+        {
+          "delegator_address": "shareledger19mag0eyv0nznfzhxt2lc5xfu4d58ewjqrzfz5z",
+          "validator_address": "shareledgervaloper1ml6wjyy6hw0gynuzqvvaw4urhcpegcy9xr8002",
+          "shares": "102175.305702549251993091"
         },
         {
           "delegator_address": "shareledger19lu4qg87t7tsl3sn0q2ez5q0yvp6ltzdaqqy3f",
@@ -45311,6 +46814,11 @@
           "shares": "15032.510892198587285270"
         },
         {
+          "delegator_address": "shareledger1tl03794zkluwkldfcjqe3frphtakl375kuzvsm",
+          "validator_address": "shareledgervaloper1ml6wjyy6hw0gynuzqvvaw4urhcpegcy9xr8002",
+          "shares": "0.000325957667551376"
+        },
+        {
           "delegator_address": "shareledger1v2vlsm6yk7032x9ysexy0kca3lt7t852t5mhwp",
           "validator_address": "shareledgervaloper1pasya6jtvglu9q36nl3tqh5drqzeh0s9098x32",
           "shares": "500.000000000000000000"
@@ -45357,18 +46865,28 @@
         },
         {
           "delegator_address": "shareledger1dn3vh22xcuygxdmk5k8n2f5dysrjx3n9rznz0f",
+          "validator_address": "shareledgervaloper1pasya6jtvglu9q36nl3tqh5drqzeh0s9098x32",
+          "shares": "12355.135218739536896523"
+        },
+        {
+          "delegator_address": "shareledger1dn3vh22xcuygxdmk5k8n2f5dysrjx3n9rznz0f",
           "validator_address": "shareledgervaloper1w4l5fchs69d9avlgvdehq9ypvdh4xyeveusq8r",
-          "shares": "10039.000000000000000000"
+          "shares": "10539.000000000000000000"
         },
         {
           "delegator_address": "shareledger1dn3vh22xcuygxdmk5k8n2f5dysrjx3n9rznz0f",
           "validator_address": "shareledgervaloper1ml6wjyy6hw0gynuzqvvaw4urhcpegcy9xr8002",
-          "shares": "2005.610747595482629831"
+          "shares": "5070.808451245669825499"
         },
         {
           "delegator_address": "shareledger1dk37gqa9n8d8c0x36fgllgzd4vllsgenx7sf8t",
           "validator_address": "shareledgervaloper1pasya6jtvglu9q36nl3tqh5drqzeh0s9098x32",
           "shares": "1007.180899868804201352"
+        },
+        {
+          "delegator_address": "shareledger1d7h6de406trldye3rnl7fj83g2663ug4w7dup6",
+          "validator_address": "shareledgervaloper1ml6wjyy6hw0gynuzqvvaw4urhcpegcy9xr8002",
+          "shares": "1021.732589777278303892"
         },
         {
           "delegator_address": "shareledger1w4l5fchs69d9avlgvdehq9ypvdh4xyev3p490g",
@@ -45383,12 +46901,12 @@
         {
           "delegator_address": "shareledger10yzqsenp5yestl6wlyq5rmm4tdms44p680v7tl",
           "validator_address": "shareledgervaloper1pasya6jtvglu9q36nl3tqh5drqzeh0s9098x32",
-          "shares": "861556.679978907801441617"
+          "shares": "1.011043229793155699"
         },
         {
           "delegator_address": "shareledger10yzqsenp5yestl6wlyq5rmm4tdms44p680v7tl",
           "validator_address": "shareledgervaloper1ml6wjyy6hw0gynuzqvvaw4urhcpegcy9xr8002",
-          "shares": "418911.207794413254408938"
+          "shares": "2969434.061595547238498343"
         },
         {
           "delegator_address": "shareledger10t9emwzsuhtdwev0eqhue4thr2au5f2px73fer",
@@ -45419,6 +46937,11 @@
           "delegator_address": "shareledger1033ln3mvwqmn2ae6evzlj2ldh6dpk3dlevjn5j",
           "validator_address": "shareledgervaloper1pasya6jtvglu9q36nl3tqh5drqzeh0s9098x32",
           "shares": "979.000000000000000000"
+        },
+        {
+          "delegator_address": "shareledger1044pfjan847rrg9gt3awyqw55u063z0hnck429",
+          "validator_address": "shareledgervaloper1pasya6jtvglu9q36nl3tqh5drqzeh0s9098x32",
+          "shares": "288286.488437255860918905"
         },
         {
           "delegator_address": "shareledger1044pfjan847rrg9gt3awyqw55u063z0hnck429",
@@ -45628,27 +47151,32 @@
         {
           "delegator_address": "shareledger1mrzlepu0kfz5x0h40fa6d20te0maja7e4c97ts",
           "validator_address": "shareledgervaloper1pdn82hmc36pqfh5qg8q2vcjc60l7h6w8qzcjqz",
-          "shares": "562.486995544773809257"
+          "shares": "63560056.192990503198771035"
         },
         {
           "delegator_address": "shareledger1mrzlepu0kfz5x0h40fa6d20te0maja7e4c97ts",
           "validator_address": "shareledgervaloper1pasya6jtvglu9q36nl3tqh5drqzeh0s9098x32",
-          "shares": "7945.666256875128839525"
+          "shares": "6185513.275626643577101798"
         },
         {
           "delegator_address": "shareledger1mrzlepu0kfz5x0h40fa6d20te0maja7e4c97ts",
           "validator_address": "shareledgervaloper1w4l5fchs69d9avlgvdehq9ypvdh4xyeveusq8r",
-          "shares": "200001968.000000000000000000"
+          "shares": "100001968.000000000000000000"
         },
         {
           "delegator_address": "shareledger1mrzlepu0kfz5x0h40fa6d20te0maja7e4c97ts",
           "validator_address": "shareledgervaloper1ml6wjyy6hw0gynuzqvvaw4urhcpegcy9xr8002",
-          "shares": "8763.642247186914443485"
+          "shares": "86856036.543956016931971215"
         },
         {
           "delegator_address": "shareledger1ml6wjyy6hw0gynuzqvvaw4urhcpegcy9w7z28p",
           "validator_address": "shareledgervaloper1ml6wjyy6hw0gynuzqvvaw4urhcpegcy9xr8002",
           "shares": "1000000.000000000000000000"
+        },
+        {
+          "delegator_address": "shareledger1uxeh0qtls6a5rqw7qpq4aeeplufvw0s8km4dxh",
+          "validator_address": "shareledgervaloper1w4l5fchs69d9avlgvdehq9ypvdh4xyeveusq8r",
+          "shares": "50000.000000000000000000"
         },
         {
           "delegator_address": "shareledger1un3pf45a397vh9muverny6n26y2zqfvclmneel",
@@ -45674,483 +47202,215 @@
           "delegator_address": "shareledger17h8le488erqyea8apnh9crvkks2gj4tsfzvcxw",
           "validator_address": "shareledgervaloper1ml6wjyy6hw0gynuzqvvaw4urhcpegcy9xr8002",
           "shares": "1007.338043399827007214"
+        },
+        {
+          "delegator_address": "shareledger1ladn3pw8vp7a7xh4ez624r2zdy3wr6jvh2e7rd",
+          "validator_address": "shareledgervaloper1pasya6jtvglu9q36nl3tqh5drqzeh0s9098x32",
+          "shares": "66923.649101505824856174"
+        },
+        {
+          "delegator_address": "shareledger1ladn3pw8vp7a7xh4ez624r2zdy3wr6jvh2e7rd",
+          "validator_address": "shareledgervaloper1ml6wjyy6hw0gynuzqvvaw4urhcpegcy9xr8002",
+          "shares": "2043.465135766791463778"
         }
       ],
       "unbonding_delegations": [
         {
-          "delegator_address": "shareledger1p8jjjmtsm9vg3cks9a6ugafgga3a9p65fnkwyw",
-          "validator_address": "shareledgervaloper1pasya6jtvglu9q36nl3tqh5drqzeh0s9098x32",
-          "entries": [
-            {
-              "creation_height": "0",
-              "completion_time": "2022-01-21T04:11:08.038404766Z",
-              "initial_balance": "1754565",
-              "balance": "1754565"
-            },
-            {
-              "creation_height": "0",
-              "completion_time": "2022-01-21T10:12:12.180762163Z",
-              "initial_balance": "11",
-              "balance": "11"
-            },
-            {
-              "creation_height": "0",
-              "completion_time": "2022-01-28T03:34:15.195397674Z",
-              "initial_balance": "1002190",
-              "balance": "1002190"
-            }
-          ]
-        },
-        {
-          "delegator_address": "shareledger1z6qpn2nxt99ma6enza3dzfp7prux55h8ynkdts",
-          "validator_address": "shareledgervaloper1pasya6jtvglu9q36nl3tqh5drqzeh0s9098x32",
-          "entries": [
-            {
-              "creation_height": "0",
-              "completion_time": "2022-01-21T04:01:22.969059666Z",
-              "initial_balance": "188009",
-              "balance": "188009"
-            }
-          ]
-        },
-        {
-          "delegator_address": "shareledger1z6qpn2nxt99ma6enza3dzfp7prux55h8ynkdts",
+          "delegator_address": "shareledger1yntnt854u056q98455czpnrfw8prvrnxmc2cwj",
           "validator_address": "shareledgervaloper1ml6wjyy6hw0gynuzqvvaw4urhcpegcy9xr8002",
           "entries": [
             {
-              "creation_height": "0",
-              "completion_time": "2022-01-21T04:09:20.577877780Z",
-              "initial_balance": "11",
-              "balance": "11"
-            }
-          ]
-        },
-        {
-          "delegator_address": "shareledger1y9y0askepj7s66cqmcek3xm04309l3kwe3wk53",
-          "validator_address": "shareledgervaloper1pdn82hmc36pqfh5qg8q2vcjc60l7h6w8qzcjqz",
-          "entries": [
+              "creation_height": "1869410",
+              "completion_time": "2022-02-15T10:30:53.911044870Z",
+              "initial_balance": "144",
+              "balance": "144"
+            },
             {
-              "creation_height": "0",
-              "completion_time": "2022-01-25T07:22:03.872588972Z",
-              "initial_balance": "24755",
-              "balance": "24755"
+              "creation_height": "1869424",
+              "completion_time": "2022-02-15T10:34:25.076015483Z",
+              "initial_balance": "19",
+              "balance": "19"
             }
           ]
         },
         {
           "delegator_address": "shareledger194y04q628wv0eq062pm9qrwyejdzks5tvztcm9",
-          "validator_address": "shareledgervaloper1ml6wjyy6hw0gynuzqvvaw4urhcpegcy9xr8002",
-          "entries": [
-            {
-              "creation_height": "0",
-              "completion_time": "2022-01-28T05:38:38.822823242Z",
-              "initial_balance": "963",
-              "balance": "963"
-            }
-          ]
-        },
-        {
-          "delegator_address": "shareledger18aqza5jx3sd39uv7stkqyqmaf596sjvc3sztvm",
-          "validator_address": "shareledgervaloper1w4l5fchs69d9avlgvdehq9ypvdh4xyeveusq8r",
-          "entries": [
-            {
-              "creation_height": "0",
-              "completion_time": "2022-02-02T04:31:50.529570763Z",
-              "initial_balance": "40000",
-              "balance": "40000"
-            }
-          ]
-        },
-        {
-          "delegator_address": "shareledger1dk37gqa9n8d8c0x36fgllgzd4vllsgenx7sf8t",
-          "validator_address": "shareledgervaloper1pasya6jtvglu9q36nl3tqh5drqzeh0s9098x32",
-          "entries": [
-            {
-              "creation_height": "0",
-              "completion_time": "2022-01-21T06:27:40.555473965Z",
-              "initial_balance": "1",
-              "balance": "1"
-            }
-          ]
-        },
-        {
-          "delegator_address": "shareledger10yzqsenp5yestl6wlyq5rmm4tdms44p680v7tl",
-          "validator_address": "shareledgervaloper1pasya6jtvglu9q36nl3tqh5drqzeh0s9098x32",
-          "entries": [
-            {
-              "creation_height": "0",
-              "completion_time": "2022-01-28T05:08:41.485870206Z",
-              "initial_balance": "169998",
-              "balance": "169998"
-            }
-          ]
-        },
-        {
-          "delegator_address": "shareledger10yzqsenp5yestl6wlyq5rmm4tdms44p680v7tl",
-          "validator_address": "shareledgervaloper1ml6wjyy6hw0gynuzqvvaw4urhcpegcy9xr8002",
-          "entries": [
-            {
-              "creation_height": "0",
-              "completion_time": "2022-01-26T13:29:50.436076734Z",
-              "initial_balance": "59796",
-              "balance": "59796"
-            },
-            {
-              "creation_height": "0",
-              "completion_time": "2022-02-03T04:49:52.090946478Z",
-              "initial_balance": "10999",
-              "balance": "10999"
-            }
-          ]
-        },
-        {
-          "delegator_address": "shareledger1j9u8mkphcy5d2srzztm4lydwppktjjhd85spg5",
-          "validator_address": "shareledgervaloper1pasya6jtvglu9q36nl3tqh5drqzeh0s9098x32",
-          "entries": [
-            {
-              "creation_height": "0",
-              "completion_time": "2022-01-20T10:10:51.125028509Z",
-              "initial_balance": "13055",
-              "balance": "13055"
-            }
-          ]
-        },
-        {
-          "delegator_address": "shareledger1cektte2pw58dlycx9tfdtp3t559phzfmrg5ml8",
           "validator_address": "shareledgervaloper1pdn82hmc36pqfh5qg8q2vcjc60l7h6w8qzcjqz",
           "entries": [
             {
-              "creation_height": "0",
-              "completion_time": "2022-01-19T03:51:29.746897777Z",
+              "creation_height": "1960298",
+              "completion_time": "2022-03-03T08:13:10.629280179Z",
+              "initial_balance": "1979",
+              "balance": "1979"
+            }
+          ]
+        },
+        {
+          "delegator_address": "shareledger1tl03794zkluwkldfcjqe3frphtakl375kuzvsm",
+          "validator_address": "shareledgervaloper1w4l5fchs69d9avlgvdehq9ypvdh4xyeveusq8r",
+          "entries": [
+            {
+              "creation_height": "1847408",
+              "completion_time": "2022-02-11T14:23:55.038293216Z",
               "initial_balance": "1000",
               "balance": "1000"
+            },
+            {
+              "creation_height": "1922487",
+              "completion_time": "2022-02-24T16:48:05.308616109Z",
+              "initial_balance": "144100",
+              "balance": "144100"
             }
           ]
         },
         {
-          "delegator_address": "shareledger1cektte2pw58dlycx9tfdtp3t559phzfmrg5ml8",
-          "validator_address": "shareledgervaloper1pasya6jtvglu9q36nl3tqh5drqzeh0s9098x32",
+          "delegator_address": "shareledger1tl03794zkluwkldfcjqe3frphtakl375kuzvsm",
+          "validator_address": "shareledgervaloper1ml6wjyy6hw0gynuzqvvaw4urhcpegcy9xr8002",
           "entries": [
             {
-              "creation_height": "0",
-              "completion_time": "2022-01-19T03:52:15.900789188Z",
-              "initial_balance": "990",
-              "balance": "990"
-            }
-          ]
-        },
-        {
-          "delegator_address": "shareledger1mrzlepu0kfz5x0h40fa6d20te0maja7e4c97ts",
-          "validator_address": "shareledgervaloper1pasya6jtvglu9q36nl3tqh5drqzeh0s9098x32",
-          "entries": [
-            {
-              "creation_height": "0",
-              "completion_time": "2022-02-02T08:54:55.360168406Z",
+              "creation_height": "1853198",
+              "completion_time": "2022-02-12T14:38:23.245109191Z",
               "initial_balance": "1000",
               "balance": "1000"
-            }
-          ]
-        },
-        {
-          "delegator_address": "shareledger17h8le488erqyea8apnh9crvkks2gj4tsfzvcxw",
-          "validator_address": "shareledgervaloper1pasya6jtvglu9q36nl3tqh5drqzeh0s9098x32",
-          "entries": [
+            },
             {
-              "creation_height": "0",
-              "completion_time": "2022-01-20T10:18:16.258292907Z",
+              "creation_height": "1853527",
+              "completion_time": "2022-02-12T16:01:02.254600223Z",
               "initial_balance": "100",
               "balance": "100"
+            }
+          ]
+        },
+        {
+          "delegator_address": "shareledger10yzqsenp5yestl6wlyq5rmm4tdms44p680v7tl",
+          "validator_address": "shareledgervaloper1w4l5fchs69d9avlgvdehq9ypvdh4xyeveusq8r",
+          "entries": [
+            {
+              "creation_height": "1948146",
+              "completion_time": "2022-03-01T04:16:45.569046743Z",
+              "initial_balance": "601413999",
+              "balance": "601413999"
+            }
+          ]
+        },
+        {
+          "delegator_address": "shareledger10yzqsenp5yestl6wlyq5rmm4tdms44p680v7tl",
+          "validator_address": "shareledgervaloper1ml6wjyy6hw0gynuzqvvaw4urhcpegcy9xr8002",
+          "entries": [
+            {
+              "creation_height": "1869396",
+              "completion_time": "2022-02-15T10:27:22.667168621Z",
+              "initial_balance": "76999",
+              "balance": "76999"
             }
           ]
         }
       ],
       "redelegations": [
         {
-          "delegator_address": "shareledger1p8jjjmtsm9vg3cks9a6ugafgga3a9p65fnkwyw",
-          "validator_src_address": "shareledgervaloper1pasya6jtvglu9q36nl3tqh5drqzeh0s9098x32",
-          "validator_dst_address": "shareledgervaloper1pdn82hmc36pqfh5qg8q2vcjc60l7h6w8qzcjqz",
+          "delegator_address": "shareledger1rpwq3amlc3a79k0culzl7yd4vkrp5xhvm5huya",
+          "validator_src_address": "shareledgervaloper1ml6wjyy6hw0gynuzqvvaw4urhcpegcy9xr8002",
+          "validator_dst_address": "shareledgervaloper1pasya6jtvglu9q36nl3tqh5drqzeh0s9098x32",
           "entries": [
             {
-              "creation_height": "0",
-              "completion_time": "2022-02-03T03:09:45.704149076Z",
-              "initial_balance": "60",
-              "shares_dst": "60.590925279970095347"
+              "creation_height": "1850541",
+              "completion_time": "2022-02-12T03:30:51.992005216Z",
+              "initial_balance": "499999",
+              "shares_dst": "514796.271186212475727114"
             },
             {
-              "creation_height": "0",
-              "completion_time": "2022-02-03T03:48:39.280186374Z",
-              "initial_balance": "60",
-              "shares_dst": "60.590925279970095347"
+              "creation_height": "1850566",
+              "completion_time": "2022-02-12T03:37:08.833620589Z",
+              "initial_balance": "200000",
+              "shares_dst": "205918.920312325614942075"
             },
             {
-              "creation_height": "0",
-              "completion_time": "2022-02-03T04:23:46.691694412Z",
-              "initial_balance": "11",
-              "shares_dst": "11.108336301327850813"
+              "creation_height": "1850570",
+              "completion_time": "2022-02-12T03:38:09.189127970Z",
+              "initial_balance": "100000",
+              "shares_dst": "102959.460156162807471037"
+            },
+            {
+              "creation_height": "1850573",
+              "completion_time": "2022-02-12T03:38:54.360034198Z",
+              "initial_balance": "149999",
+              "shares_dst": "154438.160639642649578482"
+            },
+            {
+              "creation_height": "1850577",
+              "completion_time": "2022-02-12T03:39:54.705880553Z",
+              "initial_balance": "249999",
+              "shares_dst": "257397.620795805457049519"
+            },
+            {
+              "creation_height": "1850580",
+              "completion_time": "2022-02-12T03:40:39.843083317Z",
+              "initial_balance": "300000",
+              "shares_dst": "308878.380468488422413113"
             }
           ]
         },
         {
-          "delegator_address": "shareledger1p8jjjmtsm9vg3cks9a6ugafgga3a9p65fnkwyw",
-          "validator_src_address": "shareledgervaloper1pasya6jtvglu9q36nl3tqh5drqzeh0s9098x32",
-          "validator_dst_address": "shareledgervaloper1w4l5fchs69d9avlgvdehq9ypvdh4xyeveusq8r",
-          "entries": [
-            {
-              "creation_height": "0",
-              "completion_time": "2022-02-03T03:09:00.290101527Z",
-              "initial_balance": "50",
-              "shares_dst": "50.000000000000000000"
-            }
-          ]
-        },
-        {
-          "delegator_address": "shareledger1p8jjjmtsm9vg3cks9a6ugafgga3a9p65fnkwyw",
-          "validator_src_address": "shareledgervaloper1pasya6jtvglu9q36nl3tqh5drqzeh0s9098x32",
-          "validator_dst_address": "shareledgervaloper1ml6wjyy6hw0gynuzqvvaw4urhcpegcy9xr8002",
-          "entries": [
-            {
-              "creation_height": "0",
-              "completion_time": "2022-02-03T03:08:15.172680628Z",
-              "initial_balance": "10",
-              "shares_dst": "10.217334717912699813"
-            },
-            {
-              "creation_height": "0",
-              "completion_time": "2022-02-03T03:45:08.465813848Z",
-              "initial_balance": "10",
-              "shares_dst": "10.217334717912699813"
-            },
-            {
-              "creation_height": "0",
-              "completion_time": "2022-02-03T03:46:38.676233949Z",
-              "initial_balance": "10",
-              "shares_dst": "10.217334717912699813"
-            },
-            {
-              "creation_height": "0",
-              "completion_time": "2022-02-03T04:25:01.955364915Z",
-              "initial_balance": "1000",
-              "shares_dst": "1021.733471791269981306"
-            }
-          ]
-        },
-        {
-          "delegator_address": "shareledger1zsrv6twrrvnyfyvzee02z6m7v02raac9h9z4vn",
-          "validator_src_address": "shareledgervaloper1pasya6jtvglu9q36nl3tqh5drqzeh0s9098x32",
-          "validator_dst_address": "shareledgervaloper1pdn82hmc36pqfh5qg8q2vcjc60l7h6w8qzcjqz",
-          "entries": [
-            {
-              "creation_height": "0",
-              "completion_time": "2022-02-02T10:55:09.616623118Z",
-              "initial_balance": "9",
-              "shares_dst": "9.088639771082656412"
-            },
-            {
-              "creation_height": "0",
-              "completion_time": "2022-02-02T11:04:42.171176158Z",
-              "initial_balance": "10",
-              "shares_dst": "10.098487546661682557"
-            },
-            {
-              "creation_height": "0",
-              "completion_time": "2022-02-02T11:05:27.368947582Z",
-              "initial_balance": "10",
-              "shares_dst": "10.098487546661682557"
-            },
-            {
-              "creation_height": "0",
-              "completion_time": "2022-02-02T11:07:27.699315087Z",
-              "initial_balance": "19",
-              "shares_dst": "19.187126338657196860"
-            }
-          ]
-        },
-        {
-          "delegator_address": "shareledger1zsrv6twrrvnyfyvzee02z6m7v02raac9h9z4vn",
-          "validator_src_address": "shareledgervaloper1pasya6jtvglu9q36nl3tqh5drqzeh0s9098x32",
-          "validator_dst_address": "shareledgervaloper1w4l5fchs69d9avlgvdehq9ypvdh4xyeveusq8r",
-          "entries": [
-            {
-              "creation_height": "0",
-              "completion_time": "2022-02-02T10:26:03.475114187Z",
-              "initial_balance": "9",
-              "shares_dst": "9.000000000000000000"
-            },
-            {
-              "creation_height": "0",
-              "completion_time": "2022-02-02T11:04:11.884108576Z",
-              "initial_balance": "10",
-              "shares_dst": "10.000000000000000000"
-            },
-            {
-              "creation_height": "0",
-              "completion_time": "2022-02-02T11:06:12.474579797Z",
-              "initial_balance": "10",
-              "shares_dst": "10.000000000000000000"
-            },
-            {
-              "creation_height": "0",
-              "completion_time": "2022-02-02T11:11:28.707704204Z",
-              "initial_balance": "41",
-              "shares_dst": "41.000000000000000000"
-            }
-          ]
-        },
-        {
-          "delegator_address": "shareledger1zsrv6twrrvnyfyvzee02z6m7v02raac9h9z4vn",
+          "delegator_address": "shareledger1yntnt854u056q98455czpnrfw8prvrnxmc2cwj",
           "validator_src_address": "shareledgervaloper1pasya6jtvglu9q36nl3tqh5drqzeh0s9098x32",
           "validator_dst_address": "shareledgervaloper1ml6wjyy6hw0gynuzqvvaw4urhcpegcy9xr8002",
           "entries": [
             {
-              "creation_height": "0",
-              "completion_time": "2022-02-02T10:24:33.234976288Z",
-              "initial_balance": "9",
-              "shares_dst": "9.195601246121429831"
-            },
-            {
-              "creation_height": "0",
-              "completion_time": "2022-02-02T11:03:26.752047855Z",
+              "creation_height": "1874638",
+              "completion_time": "2022-02-16T08:24:17.304047966Z",
               "initial_balance": "10",
-              "shares_dst": "10.217334717912699813"
-            },
-            {
-              "creation_height": "0",
-              "completion_time": "2022-02-02T11:06:42.548597033Z",
-              "initial_balance": "10",
-              "shares_dst": "10.217334717912699813"
-            },
-            {
-              "creation_height": "0",
-              "completion_time": "2022-02-02T11:09:13.093173913Z",
-              "initial_balance": "30",
-              "shares_dst": "30.652004153738099439"
+              "shares_dst": "10.217325678833957318"
             }
           ]
         },
         {
-          "delegator_address": "shareledger1z6qpn2nxt99ma6enza3dzfp7prux55h8ynkdts",
-          "validator_src_address": "shareledgervaloper1pasya6jtvglu9q36nl3tqh5drqzeh0s9098x32",
-          "validator_dst_address": "shareledgervaloper1pdn82hmc36pqfh5qg8q2vcjc60l7h6w8qzcjqz",
-          "entries": [
-            {
-              "creation_height": "0",
-              "completion_time": "2022-02-03T05:44:49.094920026Z",
-              "initial_balance": "14",
-              "shares_dst": "14.137882565326355581"
-            }
-          ]
-        },
-        {
-          "delegator_address": "shareledger1z6qpn2nxt99ma6enza3dzfp7prux55h8ynkdts",
-          "validator_src_address": "shareledgervaloper1pasya6jtvglu9q36nl3tqh5drqzeh0s9098x32",
-          "validator_dst_address": "shareledgervaloper1w4l5fchs69d9avlgvdehq9ypvdh4xyeveusq8r",
-          "entries": [
-            {
-              "creation_height": "0",
-              "completion_time": "2022-02-03T05:39:33.030419453Z",
-              "initial_balance": "13",
-              "shares_dst": "13.000000000000000000"
-            }
-          ]
-        },
-        {
-          "delegator_address": "shareledger1z6qpn2nxt99ma6enza3dzfp7prux55h8ynkdts",
-          "validator_src_address": "shareledgervaloper1pasya6jtvglu9q36nl3tqh5drqzeh0s9098x32",
+          "delegator_address": "shareledger1yntnt854u056q98455czpnrfw8prvrnxmc2cwj",
+          "validator_src_address": "shareledgervaloper1w4l5fchs69d9avlgvdehq9ypvdh4xyeveusq8r",
           "validator_dst_address": "shareledgervaloper1ml6wjyy6hw0gynuzqvvaw4urhcpegcy9xr8002",
           "entries": [
             {
-              "creation_height": "0",
-              "completion_time": "2022-02-03T05:27:30.346015706Z",
-              "initial_balance": "10",
-              "shares_dst": "10.217331561048957443"
+              "creation_height": "1869382",
+              "completion_time": "2022-02-15T10:23:51.968925512Z",
+              "initial_balance": "144",
+              "shares_dst": "147.129492927928075760"
             },
             {
-              "creation_height": "0",
-              "completion_time": "2022-02-03T05:33:46.921075822Z",
-              "initial_balance": "11",
-              "shares_dst": "11.239064717153853187"
+              "creation_height": "1869416",
+              "completion_time": "2022-02-15T10:32:24.449831010Z",
+              "initial_balance": "20",
+              "shares_dst": "20.434651576606906904"
             },
             {
-              "creation_height": "0",
-              "completion_time": "2022-02-03T05:35:02.131894045Z",
-              "initial_balance": "11",
-              "shares_dst": "11.239064717153853187"
-            },
-            {
-              "creation_height": "0",
-              "completion_time": "2022-02-03T05:37:17.456920586Z",
-              "initial_balance": "13",
-              "shares_dst": "13.282531029363644675"
+              "creation_height": "1871413",
+              "completion_time": "2022-02-15T18:54:08.020930333Z",
+              "initial_balance": "980",
+              "shares_dst": "1001.297916525727817251"
             }
           ]
         },
         {
-          "delegator_address": "shareledger18aqza5jx3sd39uv7stkqyqmaf596sjvc3sztvm",
+          "delegator_address": "shareledger1tl03794zkluwkldfcjqe3frphtakl375kuzvsm",
           "validator_src_address": "shareledgervaloper1ml6wjyy6hw0gynuzqvvaw4urhcpegcy9xr8002",
           "validator_dst_address": "shareledgervaloper1w4l5fchs69d9avlgvdehq9ypvdh4xyeveusq8r",
           "entries": [
             {
-              "creation_height": "0",
-              "completion_time": "2022-02-02T04:22:21.906339360Z",
-              "initial_balance": "100000",
-              "shares_dst": "100000.000000000000000000"
-            },
-            {
-              "creation_height": "0",
-              "completion_time": "2022-02-02T04:26:58.371161425Z",
-              "initial_balance": "20000",
-              "shares_dst": "20000.000000000000000000"
+              "creation_height": "1853208",
+              "completion_time": "2022-02-12T14:40:53.997999305Z",
+              "initial_balance": "9000",
+              "shares_dst": "9000.000000000000000000"
             }
           ]
         },
         {
-          "delegator_address": "shareledger1mrzlepu0kfz5x0h40fa6d20te0maja7e4c97ts",
-          "validator_src_address": "shareledgervaloper1pdn82hmc36pqfh5qg8q2vcjc60l7h6w8qzcjqz",
-          "validator_dst_address": "shareledgervaloper1pasya6jtvglu9q36nl3tqh5drqzeh0s9098x32",
-          "entries": [
-            {
-              "creation_height": "0",
-              "completion_time": "2022-02-02T05:41:12.769916294Z",
-              "initial_balance": "1000",
-              "shares_dst": "1013.598706502134831874"
-            },
-            {
-              "creation_height": "0",
-              "completion_time": "2022-02-02T11:00:26.252853477Z",
-              "initial_balance": "49",
-              "shares_dst": "49.666256875128839525"
-            }
-          ]
-        },
-        {
-          "delegator_address": "shareledger1mrzlepu0kfz5x0h40fa6d20te0maja7e4c97ts",
-          "validator_src_address": "shareledgervaloper1pdn82hmc36pqfh5qg8q2vcjc60l7h6w8qzcjqz",
-          "validator_dst_address": "shareledgervaloper1w4l5fchs69d9avlgvdehq9ypvdh4xyeveusq8r",
-          "entries": [
-            {
-              "creation_height": "0",
-              "completion_time": "2022-02-02T08:42:23.875092940Z",
-              "initial_balance": "199",
-              "shares_dst": "199.000000000000000000"
-            }
-          ]
-        },
-        {
-          "delegator_address": "shareledger1mrzlepu0kfz5x0h40fa6d20te0maja7e4c97ts",
-          "validator_src_address": "shareledgervaloper1pdn82hmc36pqfh5qg8q2vcjc60l7h6w8qzcjqz",
+          "delegator_address": "shareledger10yzqsenp5yestl6wlyq5rmm4tdms44p680v7tl",
+          "validator_src_address": "shareledgervaloper1pasya6jtvglu9q36nl3tqh5drqzeh0s9098x32",
           "validator_dst_address": "shareledgervaloper1ml6wjyy6hw0gynuzqvvaw4urhcpegcy9xr8002",
           "entries": [
             {
-              "creation_height": "0",
-              "completion_time": "2022-02-02T08:39:04.157549159Z",
-              "initial_balance": "100",
-              "shares_dst": "102.173347179126998130"
-            },
-            {
-              "creation_height": "0",
-              "completion_time": "2022-02-02T10:53:39.380361565Z",
-              "initial_balance": "184",
-              "shares_dst": "187.998958809593676560"
+              "creation_height": "1922476",
+              "completion_time": "2022-02-24T16:45:19.580783116Z",
+              "initial_balance": "6000",
+              "shares_dst": "6130.395407300374391336"
             }
           ]
         }
