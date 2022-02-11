@@ -1,6 +1,7 @@
 package cli
 
 import (
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	"strconv"
 
 	"github.com/spf13/cobra"
@@ -16,7 +17,7 @@ func CmdBalances() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "balances",
 		Short: "Query balances from [address]",
-		Args:  cobra.ExactArgs(0),
+		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 
 			clientCtx, err := client.GetClientTxContext(cmd)
@@ -26,7 +27,13 @@ func CmdBalances() *cobra.Command {
 
 			queryClient := types.NewQueryClient(clientCtx)
 
-			params := &types.QueryBalancesRequest{}
+			if _, err := sdk.AccAddressFromBech32(args[0]); err != nil {
+				return err
+			}
+
+			params := &types.QueryBalancesRequest{
+				Address: args[0],
+			}
 
 			res, err := queryClient.Balances(cmd.Context(), params)
 			if err != nil {

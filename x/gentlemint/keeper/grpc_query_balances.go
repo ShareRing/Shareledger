@@ -4,6 +4,7 @@ import (
 	"context"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/sharering/shareledger/x/gentlemint/types"
+	denom "github.com/sharering/shareledger/x/utils/demo"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
@@ -19,6 +20,16 @@ func (k Keeper) Balances(goCtx context.Context, req *types.QueryBalancesRequest)
 	}
 	ctx := sdk.UnwrapSDKContext(goCtx)
 	currentBalances := k.bankKeeper.GetAllBalances(ctx, addr)
+	displayCoins := denom.ToDisplayCoins(currentBalances)
+	r := &types.QueryBalancesResponse{
+		Coins: make([]*sdk.DecCoin, 0, displayCoins.Len()),
+	}
+	for _, c := range displayCoins {
+		r.Coins = append(r.Coins, &sdk.DecCoin{
+			Denom:  c.Denom,
+			Amount: c.Amount,
+		})
+	}
 
-	return &types.QueryBalancesResponse{}, nil
+	return r, nil
 }

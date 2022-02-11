@@ -205,3 +205,43 @@ func TestShrToShrp(t *testing.T) {
 		require.Equal(t, tc.o, r, tc.d)
 	}
 }
+
+func TestToDisplayCoins(t *testing.T) {
+	type testCase struct {
+		i sdk.Coins
+		o sdk.DecCoins
+		d string
+	}
+	tcs := []testCase{
+		{
+			i: sdk.NewCoins(),
+			o: sdk.NewDecCoins(),
+			d: "0 -> 0",
+		},
+		{
+			i: sdk.NewCoins(sdk.NewCoin(Shr, sdk.NewInt(1)), sdk.NewCoin(ShrP, sdk.NewInt(1))),
+			o: sdk.NewDecCoins(sdk.NewDecCoinFromDec(Shr, sdk.NewDec(1)), sdk.NewDecCoinFromDec(ShrP, sdk.NewDec(1))),
+			d: "1shr 1shrp -> 1shr 1shrp",
+		},
+		{
+			i: sdk.NewCoins(sdk.NewCoin(PShr, sdk.NewInt(10)), sdk.NewCoin(Cent, sdk.NewInt(10))),
+			o: sdk.NewDecCoins(sdk.NewDecCoinFromDec(Shr, sdk.MustNewDecFromStr("0.0000001")), sdk.NewDecCoinFromDec(ShrP, sdk.MustNewDecFromStr("0.1"))),
+			d: "10PShr 1cent -> 0.0000001shr 0.01shrp",
+		},
+		{
+			i: sdk.NewCoins(sdk.NewCoin(PShr, sdk.NewInt(210000010)), sdk.NewCoin(Cent, sdk.NewInt(131))),
+			o: sdk.NewDecCoins(sdk.NewDecCoinFromDec(Shr, sdk.MustNewDecFromStr("2.1000001")), sdk.NewDecCoinFromDec(ShrP, sdk.MustNewDecFromStr("1.31"))),
+			d: "210000010PShr 131cent -> 2.1000001shr 1.31shrp",
+		},
+		{
+			i: sdk.NewCoins(sdk.NewCoin(Shr, sdk.NewInt(1)), sdk.NewCoin(PShr, sdk.NewInt(210000010)), sdk.NewCoin(ShrP, sdk.NewInt(2)), sdk.NewCoin(Cent, sdk.NewInt(131))),
+			o: sdk.NewDecCoins(sdk.NewDecCoinFromDec(Shr, sdk.MustNewDecFromStr("3.1000001")), sdk.NewDecCoinFromDec(ShrP, sdk.MustNewDecFromStr("3.31"))),
+			d: "1shr 210000010PShr 1shrp 131cent -> 3.1000001shr 3.31shrp",
+		},
+	}
+
+	for _, tc := range tcs {
+		r := ToDisplayCoins(tc.i)
+		require.Equal(t, tc.o, r, tc.d)
+	}
+}

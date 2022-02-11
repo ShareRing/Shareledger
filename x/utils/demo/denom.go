@@ -22,13 +22,15 @@ var (
 )
 
 // ToDisplayCoins convert coins to display coins which are SHR and SHRP
-func ToDisplayCoins(coins sdk.Coins) sdk.DecCoin {
+func ToDisplayCoins(coins sdk.Coins) sdk.DecCoins {
 	shr := sdk.NewDecCoinFromDec(Shr,
 		sdk.NewDec(coins.AmountOf(PShr).Int64()).QuoInt64(ShrExponent).
 			Add(coins.AmountOf(Shr).ToDec()))
 	shrP := sdk.NewDecCoinFromDec(ShrP,
 		sdk.NewDec(coins.AmountOf(Cent).Int64()).QuoInt64(ShrPExponent).
-			Add(coins.AmountOf(Shr).ToDec()))
+			Add(coins.AmountOf(ShrP).ToDec()))
+
+	return sdk.NewDecCoins(shr, shrP)
 }
 
 // NormalizeCoins convert all coins to base coin, shrp
@@ -76,16 +78,16 @@ func SubShrpCoins(x sdk.Coins, y sdk.Coins) (z sdk.Coins, err error) {
 		return
 	}
 
-	xI := x.AmountOf(ShrP).Mul(sdk.NewInt(100)).Add(x.AmountOf(Cent))
-	yI := y.AmountOf(ShrP).Mul(sdk.NewInt(100)).Add(y.AmountOf(Cent))
+	xI := x.AmountOf(ShrP).Mul(sdk.NewInt(ShrPExponent)).Add(x.AmountOf(Cent))
+	yI := y.AmountOf(ShrP).Mul(sdk.NewInt(ShrPExponent)).Add(y.AmountOf(Cent))
 
 	zI := xI.Sub(yI)
 	if zI.IsNegative() {
 		err = sdkerrors.ErrInsufficientFunds
 		return
 	}
-	shrp := sdk.NewInt(zI.Int64() / 100)
-	cent := sdk.NewInt(zI.Int64() - zI.Int64()/100*100)
+	shrp := sdk.NewInt(zI.Int64() / ShrPExponent)
+	cent := sdk.NewInt(zI.Int64() - zI.Int64()/ShrPExponent*ShrPExponent)
 
 	z = sdk.NewCoins(
 		sdk.NewCoin(ShrP, shrp),
