@@ -34,15 +34,24 @@ func ToDisplayCoins(coins sdk.Coins) sdk.DecCoins {
 }
 
 // NormalizeCoins convert all coins to base coin, shrp
-func NormalizeCoins(coins sdk.DecCoins, usdRate sdk.Dec) sdk.Coin {
+// if there is any amount of SHRP, usdRate should be required
+func NormalizeCoins(coins sdk.DecCoins, usdRate *sdk.Dec) (sdk.Coin, error) {
 	shrpDec := coins.AmountOf(ShrP).
 		Add(coins.AmountOf(Cent).Quo(sdk.NewDec(ShrPExponent)))
+	uRate := sdk.NewDec(1)
+	if shrpDec.GT(sdk.NewDec(0)) {
+		if usdRate == nil {
+			return sdk.Coin{}, sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "shrp rate to pshr is required")
+		}
+		uRate = *usdRate
+	}
 
 	coin := sdk.NewCoin(PShr,
-		shrpDec.Mul(usdRate).
+		shrpDec.Mul(uRate).
+			Add(coins.AmountOf(Shr).Mul(sdk.NewDec(ShrExponent))).
 			Add(coins.AmountOf(PShr)).
-			Add(coins.AmountOf(Shr).Mul(sdk.NewDec(ShrExponent))).TruncateInt())
-	return coin
+			TruncateInt())
+	return coin, nil
 }
 
 // ToDecShrPCoin convert all coins' types to shrp dec coin

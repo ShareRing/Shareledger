@@ -16,7 +16,10 @@ func (k msgServer) BuyShr(goCtx context.Context, msg *types.MsgBuyShr) (*types.M
 		return nil, err
 	}
 	shrCoin := sdk.NewDecCoinFromDec(denom.Shr, sdk.MustNewDecFromStr(fmt.Sprintf(msg.Amount)))
-	coin := denom.NormalizeCoins(sdk.NewDecCoins(shrCoin), sdk.NewDec(1))
+	coin, err := denom.NormalizeCoins(sdk.NewDecCoins(shrCoin), nil)
+	if err != nil {
+		return nil, err
+	}
 	if err := k.buyPShr(ctx, coin.Amount, msg.GetSigners()[0]); err != nil {
 		return nil, sdkerrors.Wrapf(err, "buy %v pshr to %v", msg.Amount, msg.Creator)
 	}

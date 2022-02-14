@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	denom "github.com/sharering/shareledger/x/utils/demo"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -24,7 +25,10 @@ func (k Keeper) CheckFees(goCtx context.Context, req *types.QueryCheckFeesReques
 
 	fee := sdk.NewCoin(denom.PShr, sdk.NewInt(0))
 	for _, a := range req.Actions {
-		af := k.GetPShrFeeByActionKey(ctx, a)
+		af, err := k.GetPShrFeeByActionKey(ctx, a)
+		if err != nil {
+			return nil, sdkerrors.Wrapf(err, "get pshr fee by action %v", a)
+		}
 		fee = fee.Add(af)
 	}
 	result.ConvertedFee = &fee
@@ -35,12 +39,14 @@ func (k Keeper) CheckFees(goCtx context.Context, req *types.QueryCheckFeesReques
 	result.SufficientFundForFee = result.SufficientFee // sufficient fee is true, sufficient fund for fee will be true by default
 	if !result.SufficientFee {
 		rate := k.GetExchangeRateD(ctx)
-		calculatedPShrFromShrpFund := denom.NormalizeCoins(
+		calculatedPShrFromShrpFund, err := denom.NormalizeCoins(
 			sdk.NewDecCoinsFromCoins(sdk.NewCoins(
 				sdk.NewCoin(denom.ShrP, currentBalances.AmountOf(denom.ShrP)),
 				sdk.NewCoin(denom.Cent, currentBalances.AmountOf(denom.Cent)),
-			)...), rate)
-
+			)...), &rate)
+		if err != nil {
+			return nil, sdkerrors.Wrapf(err, "calculate pshr from shrp fund %v", currentBalances)
+		}
 		// Should check for the whole not partial fee to avoid a case that:
 		// User have enough token to send out but not enough fee. So we need to buy whole fee token to let user be able to send out their current balance.
 		result.SufficientFundForFee = calculatedPShrFromShrpFund.IsGTE(fee)

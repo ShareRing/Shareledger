@@ -170,7 +170,7 @@ func TestNormalizeCoins(t *testing.T) {
 		},
 	}
 	for _, tc := range tcs {
-		r := NormalizeCoins(sdk.NewDecCoinsFromCoins(tc.i...), rate)
+		r, _ := NormalizeCoins(sdk.NewDecCoinsFromCoins(tc.i...), &rate)
 		require.Equal(t, tc.o, r, tc.d)
 	}
 }

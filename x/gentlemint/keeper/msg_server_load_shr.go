@@ -25,7 +25,10 @@ func (k msgServer) LoadShr(goCtx context.Context, msg *types.MsgLoadShr) (*types
 	}
 
 	shrCoin := sdk.NewDecCoinFromDec(denom.Shr, v)
-	buyCoin := denom.NormalizeCoins(sdk.NewDecCoins(shrCoin), sdk.NewDec(1))
+	buyCoin, err := denom.NormalizeCoins(sdk.NewDecCoins(shrCoin), nil)
+	if err != nil {
+		return nil, err
+	}
 
 	if !k.PShrMintPossible(ctx, buyCoin.Amount) {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "PShr possible mint exceeded")

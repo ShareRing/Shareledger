@@ -18,7 +18,10 @@ func (k msgServer) BurnShr(goCtx context.Context, msg *types.MsgBurnShr) (*types
 	if err != nil {
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, err.Error())
 	}
-	baseCoins := denom.NormalizeCoins(sdk.NewDecCoins(sdk.NewDecCoinFromDec(denom.Shr, v)), sdk.NewDec(1))
+	baseCoins, err := denom.NormalizeCoins(sdk.NewDecCoins(sdk.NewDecCoinFromDec(denom.Shr, v)), nil)
+	if err != nil {
+		return nil, err
+	}
 	if err != nil {
 		return nil, err
 	}

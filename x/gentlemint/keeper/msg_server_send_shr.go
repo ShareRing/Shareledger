@@ -17,7 +17,14 @@ func (k msgServer) SendShr(goCtx context.Context, msg *types.MsgSendShr) (*types
 		return nil, sdkerrors.Wrap(err, "invalid message")
 	}
 	decShr, err := sdk.NewDecFromStr(msg.Amount)
-	amt := denom.NormalizeCoins(sdk.NewDecCoins(sdk.NewDecCoinFromDec(denom.Shr, decShr)), sdk.NewDec(1)).Amount
+	if err != nil {
+		return nil, err
+	}
+	v, err := denom.NormalizeCoins(sdk.NewDecCoins(sdk.NewDecCoinFromDec(denom.Shr, decShr)), nil)
+	if err != nil {
+		return nil, err
+	}
+	amt := v.Amount
 
 	if err != nil {
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, err.Error())
