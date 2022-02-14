@@ -18,7 +18,7 @@ var _ = strconv.Itoa(0)
 func CmdSetExchange() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "set-exchange [rate]",
-		Short: "set exchange [rate] shrp to shr",
+		Short: "Set exchange [rate] shrp to shr",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argRate := args[0]
