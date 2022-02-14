@@ -1,6 +1,7 @@
 package types
 
 import (
+	"github.com/google/uuid"
 	"testing"
 
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
@@ -24,6 +25,10 @@ func TestMsgCreateIds_ValidateBasic(t *testing.T) {
 			name: "valid address",
 			msg: MsgCreateIds{
 				IssuerAddress: sample.AccAddress(),
+				BackupAddress: []string{sample.AccAddress()},
+				ExtraData:     []string{"data"},
+				Id:            []string{uuid.New().String()},
+				OwnerAddress:  []string{sample.AccAddress()},
 			},
 		},
 	}

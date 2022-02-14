@@ -160,10 +160,7 @@ func TestGetCostShrpForShr(t *testing.T) {
 			d:      "insufficient funds",
 		},
 	}
-	for i, tc := range testCases {
-		if i == 2 {
-			fmt.Println(i)
-		}
+	for _, tc := range testCases {
 		o, e := GetCostShrpForPShr(tc.iCurrent, tc.iNeed, tc.iRate)
 		require.Equal(t, tc.oCost.Sub, o.Sub, tc.d)
 		require.Equal(t, tc.oCost.Add, o.Add, tc.d)

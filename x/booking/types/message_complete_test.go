@@ -24,6 +24,7 @@ func TestMsgComplete_ValidateBasic(t *testing.T) {
 			name: "valid address",
 			msg: MsgCompleteBooking{
 				Booker: sample.AccAddress(),
+				BookID: "abc",
 			},
 		},
 	}

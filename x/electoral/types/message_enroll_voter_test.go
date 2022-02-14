@@ -24,6 +24,7 @@ func TestMsgEnrollVoter_ValidateBasic(t *testing.T) {
 			name: "valid address",
 			msg: MsgEnrollVoter{
 				Creator: sample.AccAddress(),
+				Address: sample.AccAddress(),
 			},
 		},
 	}

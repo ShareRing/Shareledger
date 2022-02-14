@@ -24,6 +24,7 @@ func TestMsgRevokeVoter_ValidateBasic(t *testing.T) {
 			name: "valid address",
 			msg: MsgRevokeVoter{
 				Creator: sample.AccAddress(),
+				Address: sample.AccAddress(),
 			},
 		},
 	}

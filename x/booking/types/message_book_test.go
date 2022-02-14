@@ -1,6 +1,7 @@
 package types
 
 import (
+	"github.com/google/uuid"
 	"testing"
 
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
@@ -23,7 +24,9 @@ func TestMsgBook_ValidateBasic(t *testing.T) {
 		}, {
 			name: "valid address",
 			msg: MsgCreateBooking{
-				Booker: sample.AccAddress(),
+				Booker:   sample.AccAddress(),
+				UUID:     uuid.New().String(),
+				Duration: 1,
 			},
 		},
 	}

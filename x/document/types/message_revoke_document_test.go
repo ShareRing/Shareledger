@@ -23,7 +23,9 @@ func TestMsgRevokeDocument_ValidateBasic(t *testing.T) {
 		}, {
 			name: "valid address",
 			msg: MsgRevokeDocument{
+				Holder: "holder",
 				Issuer: sample.AccAddress(),
+				Proof:  "proof",
 			},
 		},
 	}

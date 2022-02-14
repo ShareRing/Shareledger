@@ -23,7 +23,8 @@ func TestMsgRevokeAccountOperator_ValidateBasic(t *testing.T) {
 		}, {
 			name: "valid address",
 			msg: MsgRevokeAccountOperators{
-				Creator: sample.AccAddress(),
+				Creator:   sample.AccAddress(),
+				Addresses: []string{sample.AccAddress()},
 			},
 		},
 	}

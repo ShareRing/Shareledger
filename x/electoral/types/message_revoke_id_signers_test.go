@@ -23,7 +23,8 @@ func TestMsgRevokeIdSigner_ValidateBasic(t *testing.T) {
 		}, {
 			name: "valid address",
 			msg: MsgRevokeIdSigners{
-				Creator: sample.AccAddress(),
+				Creator:   sample.AccAddress(),
+				Addresses: []string{sample.AccAddress()},
 			},
 		},
 	}

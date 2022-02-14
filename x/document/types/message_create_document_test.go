@@ -23,7 +23,10 @@ func TestMsgCreateDocument_ValidateBasic(t *testing.T) {
 		}, {
 			name: "valid address",
 			msg: MsgCreateDocument{
+				Data:   "data",
+				Holder: "holder",
 				Issuer: sample.AccAddress(),
+				Proof:  "proof",
 			},
 		},
 	}

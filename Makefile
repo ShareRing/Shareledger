@@ -27,3 +27,6 @@ ddown:
     docker-compose down
 
 duprefresh: dinit dup
+
+test:
+	go test ./... -v

@@ -42,7 +42,7 @@ func (msg *MsgDeleteAsset) ValidateBasic() error {
 	}
 
 	if len(msg.UUID) == 0 {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "UUID must not be empty")
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "UUID must not be empty")
 	}
 
 	return nil

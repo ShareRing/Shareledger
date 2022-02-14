@@ -23,7 +23,10 @@ func TestMsgUpdateDocument_ValidateBasic(t *testing.T) {
 		}, {
 			name: "valid address",
 			msg: MsgUpdateDocument{
+				Data:   "data",
+				Holder: "holder",
 				Issuer: sample.AccAddress(),
+				Proof:  "proof",
 			},
 		},
 	}

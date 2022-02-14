@@ -24,6 +24,8 @@ func TestMsgUpdateId_ValidateBasic(t *testing.T) {
 			name: "valid address",
 			msg: MsgUpdateId{
 				IssuerAddress: sample.AccAddress(),
+				Id:            "id",
+				ExtraData:     "extra-data",
 			},
 		},
 	}

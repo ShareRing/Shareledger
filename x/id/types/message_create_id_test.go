@@ -24,6 +24,10 @@ func TestMsgCreateId_ValidateBasic(t *testing.T) {
 			name: "valid address",
 			msg: MsgCreateId{
 				IssuerAddress: sample.AccAddress(),
+				BackupAddress: sample.AccAddress(),
+				ExtraData:     "extra-data",
+				Id:            "id",
+				OwnerAddress:  sample.AccAddress(),
 			},
 		},
 	}

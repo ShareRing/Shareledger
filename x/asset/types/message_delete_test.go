@@ -1,6 +1,7 @@
 package types
 
 import (
+	"github.com/google/uuid"
 	"testing"
 
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
@@ -24,6 +25,7 @@ func TestMsgDelete_ValidateBasic(t *testing.T) {
 			name: "valid address",
 			msg: MsgDeleteAsset{
 				Owner: sample.AccAddress(),
+				UUID:  uuid.New().String(),
 			},
 		},
 	}

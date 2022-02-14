@@ -24,6 +24,8 @@ func TestMsgReplaceIdOwner_ValidateBasic(t *testing.T) {
 			name: "valid address",
 			msg: MsgReplaceIdOwner{
 				BackupAddress: sample.AccAddress(),
+				Id:            "id",
+				OwnerAddress:  sample.AccAddress(),
 			},
 		},
 	}

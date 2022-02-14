@@ -23,7 +23,8 @@ func TestMsgEnrollLoaders_ValidateBasic(t *testing.T) {
 		}, {
 			name: "valid address",
 			msg: MsgEnrollLoaders{
-				Creator: sample.AccAddress(),
+				Creator:   sample.AccAddress(),
+				Addresses: []string{sample.AccAddress()},
 			},
 		},
 	}
