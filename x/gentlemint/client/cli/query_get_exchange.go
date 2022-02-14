@@ -14,7 +14,7 @@ import (
 func CmdShowExchangeRate() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "exchange",
-		Short: "get shrp to shr exchange rate",
+		Short: "Get shrp to shr exchange rate",
 		Args:  cobra.NoArgs,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx := client.GetClientContextFromCmd(cmd)

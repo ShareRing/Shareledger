@@ -13,7 +13,7 @@ import (
 func CmdListActionLevelFee() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "action-level-fees",
-		Short: "list all action-level-fee",
+		Short: "List all action-level-fee",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx := client.GetClientContextFromCmd(cmd)
 
