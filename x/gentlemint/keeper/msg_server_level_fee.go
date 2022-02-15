@@ -33,17 +33,12 @@ func (k msgServer) DeleteLevelFee(goCtx context.Context, msg *types.MsgDeleteLev
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	// Check if the value exists
-	valFound, isFound := k.GetLevelFee(
+	_, isFound := k.GetLevelFee(
 		ctx,
 		msg.Level,
 	)
 	if !isFound {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "index not set")
-	}
-
-	// Checks if the the msg creator is the same as the current owner
-	if msg.Creator != valFound.Creator {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "incorrect owner")
 	}
 
 	k.RemoveLevelFee(

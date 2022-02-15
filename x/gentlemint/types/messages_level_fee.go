@@ -1,6 +1,7 @@
 package types
 
 import (
+	"fmt"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	denom "github.com/sharering/shareledger/x/utils/demo"
@@ -51,12 +52,13 @@ func (msg *MsgSetLevelFee) ValidateBasic() error {
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "invalid fee, %s. Format should be 2%v or 2.3%v", msg.Fee, denom.Base, denom.ShrP)
 	}
-	if dc.Denom != denom.Base && dc.Denom != denom.ShrP {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "invalid token type, %s. Only support %v or %v", dc.Denom, denom.Base, denom.ShrP)
+
+	switch dc.Denom {
+	case denom.Cent, denom.Base, denom.ShrP, denom.Shr:
+	default:
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, fmt.Sprint("invalid denominations. supported ", denom.Base, denom.Shr, denom.ShrP, denom.Cent))
 	}
-	if dc.Denom == denom.Base && !dc.Amount.Equal(dc.Amount.RoundInt().ToDec()) {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "%v amount should be int, %v", denom.Base, dc)
-	}
+
 	return nil
 }
 
