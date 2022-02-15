@@ -30,6 +30,6 @@ func (k msgServer) BurnShr(goCtx context.Context, msg *types.MsgBurnShr) (*types
 	}
 
 	return &types.MsgBurnShrResponse{
-		Log: fmt.Sprintf("Successfully burn %v pshr", baseCoins),
+		Log: fmt.Sprintf("Successfully burn %v", baseCoins),
 	}, nil
 }

@@ -43,10 +43,10 @@ func (k Keeper) Logger(ctx sdk.Context) log.Logger {
 	return ctx.Logger().With("module", fmt.Sprintf("x/%s", types.ModuleName))
 }
 
-func (k Keeper) PShrMintPossible(ctx sdk.Context, amt sdk.Int) bool {
-	total := k.bankKeeper.GetSupply(ctx, denom.PShr)
+func (k Keeper) BaseMintPossible(ctx sdk.Context, amt sdk.Int) bool {
+	total := k.bankKeeper.GetSupply(ctx, denom.Base)
 	newAmt := total.Amount.Add(amt)
-	return newAmt.LT(types.MaxPSHRSupply)
+	return newAmt.LT(types.MaxBaseSupply)
 }
 
 // loadCoins mint amt coins to module address and then send coins to account toAddr
@@ -81,9 +81,9 @@ func (k Keeper) LoadAllowanceLoader(ctx sdk.Context, addr sdk.AccAddress) error 
 	return k.loadCoins(ctx, addr, types.AllowanceLoader)
 }
 
-func (k Keeper) buyPShr(ctx sdk.Context, amount sdk.Int, buyer sdk.AccAddress) error {
-	if !k.PShrMintPossible(ctx, amount) {
-		return sdkerrors.Wrap(types.ErrPSHRSupplyExceeded, amount.String())
+func (k Keeper) buyBaseDenom(ctx sdk.Context, amount sdk.Int, buyer sdk.AccAddress) error {
+	if !k.BaseMintPossible(ctx, amount) {
+		return sdkerrors.Wrap(types.ErrBaseSupplyExceeded, amount.String())
 	}
 
 	rate := k.GetExchangeRateD(ctx)
@@ -93,7 +93,7 @@ func (k Keeper) buyPShr(ctx sdk.Context, amount sdk.Int, buyer sdk.AccAddress) e
 		sdk.NewCoin(denom.ShrP, currentBalance.AmountOf(denom.ShrP)),
 		sdk.NewCoin(denom.Cent, currentBalance.AmountOf(denom.Cent)),
 	)
-	cost, err := types.GetCostShrpForPShr(currentShrpBalance, amount, rate)
+	cost, err := types.GetCostShrpForBaseDenom(currentShrpBalance, amount, rate)
 	if err != nil {
 		return sdkerrors.Wrapf(err, "current %v balance", currentShrpBalance)
 	}
@@ -109,7 +109,7 @@ func (k Keeper) buyPShr(ctx sdk.Context, amount sdk.Int, buyer sdk.AccAddress) e
 	if err := k.burnCoins(ctx, buyer, cost.Sub); err != nil {
 		return sdkerrors.Wrapf(err, "charge %v coins", cost.Sub)
 	}
-	boughtShr := sdk.NewCoins(sdk.NewCoin(denom.PShr, amount))
+	boughtShr := sdk.NewCoins(sdk.NewCoin(denom.Base, amount))
 	if err := k.loadCoins(ctx, buyer, boughtShr); err != nil {
 		return sdkerrors.Wrapf(err, "send %v coins", boughtShr)
 	}

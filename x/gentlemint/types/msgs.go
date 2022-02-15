@@ -14,8 +14,8 @@ type AdjustmentCoins struct {
 	Add sdk.Coins
 }
 
-func GetCostShrpForPShr(currentShrp sdk.Coins, needShr sdk.Int, rate sdk.Dec) (cost AdjustmentCoins, err error) {
-	neededDecShrp := denom.ToDecShrPCoin(sdk.NewDecCoins(sdk.NewDecCoin(denom.PShr, needShr)), rate)
+func GetCostShrpForBaseDenom(currentShrp sdk.Coins, needShr sdk.Int, rate sdk.Dec) (cost AdjustmentCoins, err error) {
+	neededDecShrp := denom.ToDecShrPCoin(sdk.NewDecCoins(sdk.NewDecCoin(denom.Base, needShr)), rate)
 	neededShrp := denom.ShrpDecToCoins(sdk.NewDecCoins(neededDecShrp))
 	if err != nil {
 		return

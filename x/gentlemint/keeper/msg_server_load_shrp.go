@@ -44,12 +44,12 @@ func (k msgServer) LoadShrp(goCtx context.Context, msg *types.MsgLoadShrp) (*typ
 	}
 
 	oldCoins = k.bankKeeper.GetAllBalances(ctx, receiverAddr)
-	oldShr := oldCoins.AmountOf(denom.PShr)
+	oldShr := oldCoins.AmountOf(denom.Base)
 
 	// if there is less than required shr amount, buy more.
-	if oldShr.LT(types.RequiredPSHRAmt) {
-		if err := k.buyPShr(ctx, types.RequiredPSHRAmt, receiverAddr); err != nil {
-			return nil, sdkerrors.Wrapf(err, "buy minimum required pShr, %v, for address %v", types.RequiredPSHRAmt, receiverAddr.String())
+	if oldShr.LT(types.RequiredBaseAmt) {
+		if err := k.buyBaseDenom(ctx, types.RequiredBaseAmt, receiverAddr); err != nil {
+			return nil, sdkerrors.Wrapf(err, "buy minimum required %v%v, for address %v", types.RequiredBaseAmt, denom.Base, receiverAddr.String())
 		}
 	}
 

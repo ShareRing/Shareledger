@@ -150,23 +150,23 @@ func TestNormalizeCoins(t *testing.T) {
 	tcs := []testCase{
 		{
 			i: sdk.NewCoins(sdk.NewCoin(ShrP, sdk.NewInt(0)), sdk.NewCoin(Cent, sdk.NewInt(0))),
-			o: sdk.NewCoin(PShr, sdk.NewInt(0)),
-			d: "0.0 shrp -> 0 pshr",
+			o: sdk.NewCoin(Base, sdk.NewInt(0)),
+			d: "0.0 shrp -> 0 base",
 		},
 		{
 			i: sdk.NewCoins(sdk.NewCoin(ShrP, sdk.NewInt(1)), sdk.NewCoin(Cent, sdk.NewInt(0))),
-			o: sdk.NewCoin(PShr, sdk.NewInt(200)),
-			d: "1.0 shrp -> 200 pshr",
+			o: sdk.NewCoin(Base, sdk.NewInt(200)),
+			d: "1.0 shrp -> 200 base",
 		},
 		{
 			i: sdk.NewCoins(sdk.NewCoin(ShrP, sdk.NewInt(0)), sdk.NewCoin(Cent, sdk.NewInt(99))),
-			o: sdk.NewCoin(PShr, sdk.NewInt(198)),
-			d: "0.99 shrp -> 198 pshr",
+			o: sdk.NewCoin(Base, sdk.NewInt(198)),
+			d: "0.99 shrp -> 198 base",
 		},
 		{
 			i: sdk.NewCoins(sdk.NewCoin(ShrP, sdk.NewInt(1)), sdk.NewCoin(Cent, sdk.NewInt(99))),
-			o: sdk.NewCoin(PShr, sdk.NewInt(398)),
-			d: "1.99 shrp -> 398 pshr",
+			o: sdk.NewCoin(Base, sdk.NewInt(398)),
+			d: "1.99 shrp -> 398 base",
 		},
 	}
 	for _, tc := range tcs {
@@ -184,19 +184,19 @@ func TestShrToShrp(t *testing.T) {
 	}
 	tcs := []testCase{
 		{
-			i: sdk.NewCoin(PShr, sdk.NewInt(1)),
+			i: sdk.NewCoin(Base, sdk.NewInt(1)),
 			o: sdk.NewCoins(sdk.NewCoin(Cent, sdk.NewInt(1))),
-			d: "1 pshr -> 1 cent (should round up when not even)",
+			d: "1 base -> 1 cent (should round up when not even)",
 		},
 		{
-			i: sdk.NewCoin(PShr, sdk.NewInt(3)),
+			i: sdk.NewCoin(Base, sdk.NewInt(3)),
 			o: sdk.NewCoins(sdk.NewCoin(Cent, sdk.NewInt(2))),
-			d: "3 pshr -> 2 cent (should round up when not even)",
+			d: "3 base -> 2 cent (should round up when not even)",
 		},
 		{
-			i: sdk.NewCoin(PShr, sdk.NewInt(4)),
+			i: sdk.NewCoin(Base, sdk.NewInt(4)),
 			o: sdk.NewCoins(sdk.NewCoin(Cent, sdk.NewInt(2))),
-			d: "4 pshr -> 2 cent",
+			d: "4 base -> 2 cent",
 		},
 	}
 	for _, tc := range tcs {
@@ -224,19 +224,19 @@ func TestToDisplayCoins(t *testing.T) {
 			d: "1shr 1shrp -> 1shr 1shrp",
 		},
 		{
-			i: sdk.NewCoins(sdk.NewCoin(PShr, sdk.NewInt(10)), sdk.NewCoin(Cent, sdk.NewInt(10))),
+			i: sdk.NewCoins(sdk.NewCoin(Base, sdk.NewInt(10)), sdk.NewCoin(Cent, sdk.NewInt(10))),
 			o: sdk.NewDecCoins(sdk.NewDecCoinFromDec(Shr, sdk.MustNewDecFromStr("0.0000001")), sdk.NewDecCoinFromDec(ShrP, sdk.MustNewDecFromStr("0.1"))),
-			d: "10PShr 1cent -> 0.0000001shr 0.01shrp",
+			d: "10base 1cent -> 0.0000001shr 0.01shrp",
 		},
 		{
-			i: sdk.NewCoins(sdk.NewCoin(PShr, sdk.NewInt(210000010)), sdk.NewCoin(Cent, sdk.NewInt(131))),
+			i: sdk.NewCoins(sdk.NewCoin(Base, sdk.NewInt(210000010)), sdk.NewCoin(Cent, sdk.NewInt(131))),
 			o: sdk.NewDecCoins(sdk.NewDecCoinFromDec(Shr, sdk.MustNewDecFromStr("2.1000001")), sdk.NewDecCoinFromDec(ShrP, sdk.MustNewDecFromStr("1.31"))),
-			d: "210000010PShr 131cent -> 2.1000001shr 1.31shrp",
+			d: "210000010base 131cent -> 2.1000001shr 1.31shrp",
 		},
 		{
-			i: sdk.NewCoins(sdk.NewCoin(Shr, sdk.NewInt(1)), sdk.NewCoin(PShr, sdk.NewInt(210000010)), sdk.NewCoin(ShrP, sdk.NewInt(2)), sdk.NewCoin(Cent, sdk.NewInt(131))),
+			i: sdk.NewCoins(sdk.NewCoin(Shr, sdk.NewInt(1)), sdk.NewCoin(Base, sdk.NewInt(210000010)), sdk.NewCoin(ShrP, sdk.NewInt(2)), sdk.NewCoin(Cent, sdk.NewInt(131))),
 			o: sdk.NewDecCoins(sdk.NewDecCoinFromDec(Shr, sdk.MustNewDecFromStr("3.1000001")), sdk.NewDecCoinFromDec(ShrP, sdk.MustNewDecFromStr("3.31"))),
-			d: "1shr 210000010PShr 1shrp 131cent -> 3.1000001shr 3.31shrp",
+			d: "1shr 210000010base 2shrp 131cent -> 3.1000001shr 3.31shrp",
 		},
 	}
 

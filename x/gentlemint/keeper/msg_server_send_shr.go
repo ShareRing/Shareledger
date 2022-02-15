@@ -30,15 +30,15 @@ func (k msgServer) SendShr(goCtx context.Context, msg *types.MsgSendShr) (*types
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, err.Error())
 	}
 
-	oldCoin := k.bankKeeper.GetBalance(ctx, msg.GetSigners()[0], denom.PShr)
+	oldCoin := k.bankKeeper.GetBalance(ctx, msg.GetSigners()[0], denom.Base)
 
 	if oldCoin.Amount.LT(amt) {
-		shrToBuy := sdk.NewCoin(denom.PShr, amt.Sub(oldCoin.Amount))
-		if err := k.buyPShr(ctx, shrToBuy.Amount, msg.GetSigners()[0]); err != nil {
-			return nil, sdkerrors.Wrapf(err, "buy %v pshr for address %v", shrToBuy, msg.Creator)
+		baseToBuy := sdk.NewCoin(denom.Base, amt.Sub(oldCoin.Amount))
+		if err := k.buyBaseDenom(ctx, baseToBuy.Amount, msg.GetSigners()[0]); err != nil {
+			return nil, sdkerrors.Wrapf(err, "buy %+v for address %v", baseToBuy, msg.Creator)
 		}
 	}
-	sendCoins := sdk.NewCoins(sdk.NewCoin(denom.PShr, amt))
+	sendCoins := sdk.NewCoins(sdk.NewCoin(denom.Base, amt))
 	receiverAddr, err := sdk.AccAddressFromBech32(msg.Address)
 	if err != nil {
 		return nil, err

@@ -9,7 +9,7 @@ import (
 	denom "github.com/sharering/shareledger/x/utils/demo"
 )
 
-func (k Keeper) GetPShrFeeByMsg(ctx sdk.Context, msg sdk.Msg) (sdk.Coin, error) {
+func (k Keeper) GetBaseFeeByMsg(ctx sdk.Context, msg sdk.Msg) (sdk.Coin, error) {
 	feeD := k.GetFeeByMsg(ctx, msg)
 	usdRate := k.GetExchangeRateD(ctx)
 	return denom.NormalizeCoins(sdk.NewDecCoins(feeD), &usdRate)
@@ -20,17 +20,17 @@ func (k Keeper) LoadFeeFundFromShrp(ctx sdk.Context, msg *types.MsgLoadFee) erro
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "shrp is nil")
 	}
 	rate := k.GetExchangeRateD(ctx)
-	boughtPShr, err := denom.NormalizeCoins(sdk.NewDecCoins(*msg.Shrp), &rate)
+	boughtBase, err := denom.NormalizeCoins(sdk.NewDecCoins(*msg.Shrp), &rate)
 	if err != nil {
 		return err
 	}
-	if err := k.buyPShr(ctx, boughtPShr.Amount, msg.GetSigners()[0]); err != nil {
-		return sdkerrors.Wrapf(err, "load fee %+v pshr with %+v", boughtPShr, msg.Shrp.Amount)
+	if err := k.buyBaseDenom(ctx, boughtBase.Amount, msg.GetSigners()[0]); err != nil {
+		return sdkerrors.Wrapf(err, "load fee %+v with %+v", boughtBase, msg.Shrp.Amount)
 	}
 	return nil
 }
 
-func (k Keeper) GetPShrFeeByActionKey(ctx sdk.Context, action string) (sdk.Coin, error) {
+func (k Keeper) GetBaseDenomFeeByActionKey(ctx sdk.Context, action string) (sdk.Coin, error) {
 	feeD := k.GetFeeByAction(ctx, action)
 	usdRate := k.GetExchangeRateD(ctx)
 	return denom.NormalizeCoins(sdk.NewDecCoins(feeD), &usdRate)

@@ -110,7 +110,7 @@ func TestGetCostShrpForShr(t *testing.T) {
 				Add: sdk.NewCoins(),
 			},
 			oError: nil,
-			d:      "1 shrp buy 200 pshr (1 shrp) -> cost -1 shrp",
+			d:      "1 shrp buy 200 base (1 shrp) -> cost -1 shrp",
 		},
 		{
 			iCurrent: sdk.NewCoins(
@@ -125,7 +125,7 @@ func TestGetCostShrpForShr(t *testing.T) {
 				Add: sdk.NewCoins(),
 			},
 			oError: nil,
-			d:      "1.1 shrp buy 200 pshr (1 shrp) -> cost: -1 shrp",
+			d:      "1.1 shrp buy 200 base (1 shrp) -> cost: -1 shrp",
 		},
 		{
 			iCurrent: sdk.NewCoins(
@@ -143,7 +143,7 @@ func TestGetCostShrpForShr(t *testing.T) {
 				),
 			},
 			oError: nil,
-			d:      "2.10 shrp buy 300 pshr (1.5 shrp)-> new: 0.6 shrp -> cost: - 2 shrp +50 cent",
+			d:      "2.10 shrp buy 300 base (1.5 shrp)-> new: 0.6 shrp -> cost: - 2 shrp +50 cent",
 		},
 		{
 			iCurrent: sdk.NewCoins(
@@ -161,7 +161,7 @@ func TestGetCostShrpForShr(t *testing.T) {
 		},
 	}
 	for _, tc := range testCases {
-		o, e := GetCostShrpForPShr(tc.iCurrent, tc.iNeed, tc.iRate)
+		o, e := GetCostShrpForBaseDenom(tc.iCurrent, tc.iNeed, tc.iRate)
 		require.Equal(t, tc.oCost.Sub, o.Sub, tc.d)
 		require.Equal(t, tc.oCost.Add, o.Add, tc.d)
 		if tc.oError != nil {

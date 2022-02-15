@@ -7,7 +7,7 @@ import (
 
 var _ sdk.Msg = &MsgBuyShr{}
 
-func NewMsgBuyPShr(creator string, amount string) *MsgBuyShr {
+func NewMsgBuyShr(creator string, amount string) *MsgBuyShr {
 	return &MsgBuyShr{
 		Creator: creator,
 		Amount:  amount,

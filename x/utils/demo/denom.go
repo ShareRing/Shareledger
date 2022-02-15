@@ -1,13 +1,14 @@
 package denom
 
 import (
+	"fmt"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"math"
 )
 
 const (
-	PShr = "pshr"
+	Base = "nshr"
 	Shr  = "shr"
 	ShrP = "shrp"
 	Cent = "cent"
@@ -15,8 +16,8 @@ const (
 
 var (
 	ShrPExponent    = int64(100)
-	ShrExponent     = int64(math.Pow(10, 8))
-	OneShr          = sdk.NewCoins(sdk.NewCoin(PShr, sdk.NewInt(ShrExponent)))
+	ShrExponent     = int64(math.Pow(10, 9))
+	OneShr          = sdk.NewCoins(sdk.NewCoin(Base, sdk.NewInt(ShrExponent)))
 	OneShrP         = sdk.NewCoins(sdk.NewCoin(ShrP, sdk.NewInt(1)))
 	OneHundredCents = sdk.NewCoins(sdk.NewCoin(Cent, sdk.NewInt(100)))
 )
@@ -24,7 +25,7 @@ var (
 // ToDisplayCoins convert coins to display coins which are SHR and SHRP
 func ToDisplayCoins(coins sdk.Coins) sdk.DecCoins {
 	shr := sdk.NewDecCoinFromDec(Shr,
-		sdk.NewDec(coins.AmountOf(PShr).Int64()).QuoInt64(ShrExponent).
+		sdk.NewDec(coins.AmountOf(Base).Int64()).QuoInt64(ShrExponent).
 			Add(coins.AmountOf(Shr).ToDec()))
 	shrP := sdk.NewDecCoinFromDec(ShrP,
 		sdk.NewDec(coins.AmountOf(Cent).Int64()).QuoInt64(ShrPExponent).
@@ -41,15 +42,15 @@ func NormalizeCoins(coins sdk.DecCoins, usdRate *sdk.Dec) (sdk.Coin, error) {
 	uRate := sdk.NewDec(1)
 	if shrpDec.GT(sdk.NewDec(0)) {
 		if usdRate == nil {
-			return sdk.Coin{}, sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "shrp rate to pshr is required")
+			return sdk.Coin{}, sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, fmt.Sprintf("shrp rate to %v is required", Base))
 		}
 		uRate = *usdRate
 	}
 
-	coin := sdk.NewCoin(PShr,
+	coin := sdk.NewCoin(Base,
 		shrpDec.Mul(uRate).
 			Add(coins.AmountOf(Shr).Mul(sdk.NewDec(ShrExponent))).
-			Add(coins.AmountOf(PShr)).
+			Add(coins.AmountOf(Base)).
 			TruncateInt())
 	return coin, nil
 }
@@ -59,12 +60,12 @@ func ToDecShrPCoin(coins sdk.DecCoins, usdRate sdk.Dec) sdk.DecCoin {
 	shrpDec := coins.AmountOf(ShrP).
 		Add(coins.AmountOf(Cent).Quo(sdk.NewDec(ShrPExponent)))
 
-	pshr := sdk.NewDecCoinFromDec(PShr,
+	base := sdk.NewDecCoinFromDec(Base,
 		shrpDec.Mul(usdRate).
-			Add(coins.AmountOf(PShr)).
+			Add(coins.AmountOf(Base)).
 			Add(coins.AmountOf(Shr).Mul(sdk.NewDec(ShrExponent))))
 
-	return sdk.NewDecCoinFromDec(ShrP, shrpDec.Add(pshr.Amount.Quo(usdRate)))
+	return sdk.NewDecCoinFromDec(ShrP, shrpDec.Add(base.Amount.Quo(usdRate)))
 }
 
 // ShrpDecToCoins convert shrp dec coins to int coins which contains shrp and cent denom

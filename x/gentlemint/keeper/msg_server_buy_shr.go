@@ -20,10 +20,10 @@ func (k msgServer) BuyShr(goCtx context.Context, msg *types.MsgBuyShr) (*types.M
 	if err != nil {
 		return nil, err
 	}
-	if err := k.buyPShr(ctx, coin.Amount, msg.GetSigners()[0]); err != nil {
-		return nil, sdkerrors.Wrapf(err, "buy %v pshr to %v", msg.Amount, msg.Creator)
+	if err := k.buyBaseDenom(ctx, coin.Amount, msg.GetSigners()[0]); err != nil {
+		return nil, sdkerrors.Wrapf(err, "buy %+v to %v", coin, msg.Creator)
 	}
 	return &types.MsgBuyShrResponse{
-		Log: fmt.Sprintf("Successfull buy %v pshr for address %s", msg.Amount, msg.Creator),
+		Log: fmt.Sprintf("Successfull buy %+v for address %s", coin, msg.Creator),
 	}, nil
 }

@@ -30,19 +30,19 @@ func (k msgServer) LoadShr(goCtx context.Context, msg *types.MsgLoadShr) (*types
 		return nil, err
 	}
 
-	if !k.PShrMintPossible(ctx, buyCoin.Amount) {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "PShr possible mint exceeded")
+	if !k.BaseMintPossible(ctx, buyCoin.Amount) {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "base denom possible mint exceeded")
 	}
 
 	addr, err := sdk.AccAddressFromBech32(msg.Address)
 	if err != nil {
 		return nil, sdkerrors.Wrapf(err, msg.Address)
 	}
-
-	if err := k.loadCoins(ctx, addr, sdk.NewCoins(buyCoin)); err != nil {
+	loadCoins := sdk.NewCoins(buyCoin)
+	if err := k.loadCoins(ctx, addr, loadCoins); err != nil {
 		return nil, err
 	}
-	log := fmt.Sprintf("Successfully loaded pshr {address: %s, amount %v}", msg.Address, buyCoin)
+	log := fmt.Sprintf("Successfully loaded %+v {address: %s, amount %v}", loadCoins, msg.Address, buyCoin)
 
 	return &types.MsgLoadShrResponse{
 		Log: log,

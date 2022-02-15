@@ -27,7 +27,7 @@ func CmdBuyShr() *cobra.Command {
 				return err
 			}
 
-			msg := types.NewMsgBuyPShr(
+			msg := types.NewMsgBuyShr(
 				clientCtx.GetFromAddress().String(),
 				args[0],
 			)

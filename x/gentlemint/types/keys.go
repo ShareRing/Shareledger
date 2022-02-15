@@ -39,14 +39,14 @@ var (
 )
 
 var (
-	RequiredPSHRAmt     = sdk.NewInt(10 * denom.ShrExponent)
-	MaxPSHRSupply       = sdk.NewInt(4396000000 * denom.ShrExponent)
+	RequiredBaseAmt     = sdk.NewInt(10 * denom.ShrExponent)
+	MaxBaseSupply       = sdk.NewInt(4396000000 * denom.ShrExponent)
 	DefaultExchangeRate = sdk.NewDec(200).Mul(sdk.NewDec(denom.ShrExponent))
 )
 
 var (
 	FeeLoadSHRP     = denom.OneShr
-	AllowanceLoader = sdk.NewCoins(sdk.NewCoin(denom.PShr, sdk.NewInt(20*denom.ShrExponent)))
+	AllowanceLoader = sdk.NewCoins(sdk.NewCoin(denom.Base, sdk.NewInt(20*denom.ShrExponent)))
 )
 
 var (
