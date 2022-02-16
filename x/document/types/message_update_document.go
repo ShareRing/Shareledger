@@ -51,7 +51,7 @@ func (msg *MsgUpdateDocument) ValidateBasic() error {
 		return ErrDocInvalidData
 	}
 
-	if len(msg.Data) > MAX_LEN || len(msg.Data) == 0 {
+	if len(msg.Data) > MAX_LEN {
 		return ErrDocInvalidData
 	}
 
