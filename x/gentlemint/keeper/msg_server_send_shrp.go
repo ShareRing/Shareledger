@@ -33,14 +33,14 @@ func (k msgServer) SendShrp(goCtx context.Context, msg *types.MsgSendShrp) (*typ
 			return nil, sdkerrors.Wrapf(sdkerrors.ErrInsufficientFunds, "address %v has %v", senderAdd.String(), oldCoins)
 		}
 		// Exchange 1 shrp to 100 cents for senderAdd
-		if err := k.bankKeeper.SendCoinsFromAccountToModule(ctx, senderAdd, types.ModuleName, denom.OneShrP); err != nil {
-			return nil, sdkerrors.Wrapf(err, "send %v coins to module", denom.OneShrP)
+		if err := k.bankKeeper.SendCoinsFromAccountToModule(ctx, senderAdd, types.ModuleName, denom.OneUSD); err != nil {
+			return nil, sdkerrors.Wrapf(err, "send %v coins to module", denom.OneUSD)
 		}
 		if err := k.bankKeeper.MintCoins(ctx, types.ModuleName, denom.OneHundredCents); err != nil {
 			return nil, sdkerrors.Wrapf(err, "mint %v coins", denom.OneHundredCents)
 		}
-		if err := k.bankKeeper.BurnCoins(ctx, types.ModuleName, denom.OneShrP); err != nil {
-			return nil, sdkerrors.Wrapf(err, "burn %v coins", denom.OneShrP)
+		if err := k.bankKeeper.BurnCoins(ctx, types.ModuleName, denom.OneUSD); err != nil {
+			return nil, sdkerrors.Wrapf(err, "burn %v coins", denom.OneUSD)
 		}
 		if err := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, senderAdd, denom.OneHundredCents); err != nil {
 			return nil, sdkerrors.Wrapf(err, "send %v coins from module to account", denom.OneHundredCents)

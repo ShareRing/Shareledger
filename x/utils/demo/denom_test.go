@@ -225,18 +225,18 @@ func TestToDisplayCoins(t *testing.T) {
 		},
 		{
 			i: sdk.NewCoins(sdk.NewCoin(Base, sdk.NewInt(10)), sdk.NewCoin(Cent, sdk.NewInt(10))),
-			o: sdk.NewDecCoins(sdk.NewDecCoinFromDec(Shr, sdk.MustNewDecFromStr("0.0000001")), sdk.NewDecCoinFromDec(ShrP, sdk.MustNewDecFromStr("0.1"))),
-			d: "10base 1cent -> 0.0000001shr 0.01shrp",
+			o: sdk.NewDecCoins(sdk.NewDecCoinFromDec(Shr, sdk.MustNewDecFromStr("0.00000001")), sdk.NewDecCoinFromDec(ShrP, sdk.MustNewDecFromStr("0.1"))),
+			d: "10base 1cent -> 0.00000001shr 0.01shrp",
 		},
 		{
-			i: sdk.NewCoins(sdk.NewCoin(Base, sdk.NewInt(210000010)), sdk.NewCoin(Cent, sdk.NewInt(131))),
-			o: sdk.NewDecCoins(sdk.NewDecCoinFromDec(Shr, sdk.MustNewDecFromStr("2.1000001")), sdk.NewDecCoinFromDec(ShrP, sdk.MustNewDecFromStr("1.31"))),
-			d: "210000010base 131cent -> 2.1000001shr 1.31shrp",
+			i: sdk.NewCoins(sdk.NewCoin(Base, sdk.NewInt(2100000010)), sdk.NewCoin(Cent, sdk.NewInt(131))),
+			o: sdk.NewDecCoins(sdk.NewDecCoinFromDec(Shr, sdk.MustNewDecFromStr("2.10000001")), sdk.NewDecCoinFromDec(ShrP, sdk.MustNewDecFromStr("1.31"))),
+			d: "2100000010base 131cent -> 2.10000001shr 1.31shrp",
 		},
 		{
-			i: sdk.NewCoins(sdk.NewCoin(Shr, sdk.NewInt(1)), sdk.NewCoin(Base, sdk.NewInt(210000010)), sdk.NewCoin(ShrP, sdk.NewInt(2)), sdk.NewCoin(Cent, sdk.NewInt(131))),
-			o: sdk.NewDecCoins(sdk.NewDecCoinFromDec(Shr, sdk.MustNewDecFromStr("3.1000001")), sdk.NewDecCoinFromDec(ShrP, sdk.MustNewDecFromStr("3.31"))),
-			d: "1shr 210000010base 2shrp 131cent -> 3.1000001shr 3.31shrp",
+			i: sdk.NewCoins(sdk.NewCoin(Shr, sdk.NewInt(1)), sdk.NewCoin(Base, sdk.NewInt(2100000010)), sdk.NewCoin(ShrP, sdk.NewInt(2)), sdk.NewCoin(Cent, sdk.NewInt(131))),
+			o: sdk.NewDecCoins(sdk.NewDecCoinFromDec(Shr, sdk.MustNewDecFromStr("3.10000001")), sdk.NewDecCoinFromDec(ShrP, sdk.MustNewDecFromStr("3.31"))),
+			d: "1shr 2100000010base 2shrp 131cent -> 3.10000001shr 3.31shrp",
 		},
 	}
 

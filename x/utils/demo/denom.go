@@ -10,15 +10,18 @@ import (
 const (
 	Base = "nshr"
 	Shr  = "shr"
-	ShrP = "shrp"
-	Cent = "cent"
+
+	BaseUSD = "cent"
+	ShrP    = "shrp"
+	Cent    = "cent"
 )
 
 var (
-	ShrPExponent    = int64(100)
-	ShrExponent     = int64(math.Pow(10, 9))
+	USDExponent = int64(100)
+	ShrExponent = int64(math.Pow(10, 9))
+
 	OneShr          = sdk.NewCoins(sdk.NewCoin(Base, sdk.NewInt(ShrExponent)))
-	OneShrP         = sdk.NewCoins(sdk.NewCoin(ShrP, sdk.NewInt(1)))
+	OneUSD          = sdk.NewCoins(sdk.NewCoin(ShrP, sdk.NewInt(1)))
 	OneHundredCents = sdk.NewCoins(sdk.NewCoin(Cent, sdk.NewInt(100)))
 )
 
@@ -28,17 +31,33 @@ func ToDisplayCoins(coins sdk.Coins) sdk.DecCoins {
 		sdk.NewDec(coins.AmountOf(Base).Int64()).QuoInt64(ShrExponent).
 			Add(coins.AmountOf(Shr).ToDec()))
 	shrP := sdk.NewDecCoinFromDec(ShrP,
-		sdk.NewDec(coins.AmountOf(Cent).Int64()).QuoInt64(ShrPExponent).
+		sdk.NewDec(coins.AmountOf(Cent).Int64()).QuoInt64(USDExponent).
 			Add(coins.AmountOf(ShrP).ToDec()))
 
 	return sdk.NewDecCoins(shr, shrP)
+}
+
+// NormalizeBaseCoins convert all dec coins into 2 base coins, Base and BaseUSD, in shareledger
+func NormalizeBaseCoins(coins sdk.DecCoins) (baseCoins sdk.Coins, err error) {
+	if err = coins.Validate(); err != nil {
+		return
+	}
+	baseCoins = sdk.NewCoins(
+		sdk.NewCoin(Base, coins.AmountOf(Shr).Mul(sdk.NewDec(ShrExponent)).
+			Add(coins.AmountOf(Base)).
+			TruncateInt()),
+		sdk.NewCoin(BaseUSD, coins.AmountOf(ShrP).Mul(sdk.NewDec(USDExponent)).
+			Add(coins.AmountOf(Base)).
+			TruncateInt()),
+	)
+	return
 }
 
 // NormalizeCoins convert all coins to base coin, shrp
 // if there is any amount of SHRP, usdRate should be required
 func NormalizeCoins(coins sdk.DecCoins, usdRate *sdk.Dec) (sdk.Coin, error) {
 	shrpDec := coins.AmountOf(ShrP).
-		Add(coins.AmountOf(Cent).Quo(sdk.NewDec(ShrPExponent)))
+		Add(coins.AmountOf(Cent).Quo(sdk.NewDec(USDExponent)))
 	uRate := sdk.NewDec(1)
 	if shrpDec.GT(sdk.NewDec(0)) {
 		if usdRate == nil {
@@ -58,7 +77,7 @@ func NormalizeCoins(coins sdk.DecCoins, usdRate *sdk.Dec) (sdk.Coin, error) {
 // ToDecShrPCoin convert all coins' types to shrp dec coin
 func ToDecShrPCoin(coins sdk.DecCoins, usdRate sdk.Dec) sdk.DecCoin {
 	shrpDec := coins.AmountOf(ShrP).
-		Add(coins.AmountOf(Cent).Quo(sdk.NewDec(ShrPExponent)))
+		Add(coins.AmountOf(Cent).Quo(sdk.NewDec(USDExponent)))
 
 	base := sdk.NewDecCoinFromDec(Base,
 		shrpDec.Mul(usdRate).
@@ -70,10 +89,10 @@ func ToDecShrPCoin(coins sdk.DecCoins, usdRate sdk.Dec) sdk.DecCoin {
 
 // ShrpDecToCoins convert shrp dec coins to int coins which contains shrp and cent denom
 func ShrpDecToCoins(dCoins sdk.DecCoins) (coin sdk.Coins) {
-	shrp := dCoins.AmountOf(ShrP).Add(dCoins.AmountOf(Cent).Quo(sdk.NewDec(ShrPExponent)))
+	shrp := dCoins.AmountOf(ShrP).Add(dCoins.AmountOf(Cent).Quo(sdk.NewDec(USDExponent)))
 	return sdk.NewCoins(
 		sdk.NewCoin(ShrP, shrp.TruncateInt()),
-		sdk.NewCoin(Cent, shrp.Sub(shrp.TruncateDec()).MulInt(sdk.NewInt(ShrPExponent)).Ceil().TruncateInt()),
+		sdk.NewCoin(Cent, shrp.Sub(shrp.TruncateDec()).MulInt(sdk.NewInt(USDExponent)).Ceil().TruncateInt()),
 	)
 }
 
@@ -88,16 +107,16 @@ func SubShrpCoins(x sdk.Coins, y sdk.Coins) (z sdk.Coins, err error) {
 		return
 	}
 
-	xI := x.AmountOf(ShrP).Mul(sdk.NewInt(ShrPExponent)).Add(x.AmountOf(Cent))
-	yI := y.AmountOf(ShrP).Mul(sdk.NewInt(ShrPExponent)).Add(y.AmountOf(Cent))
+	xI := x.AmountOf(ShrP).Mul(sdk.NewInt(USDExponent)).Add(x.AmountOf(Cent))
+	yI := y.AmountOf(ShrP).Mul(sdk.NewInt(USDExponent)).Add(y.AmountOf(Cent))
 
 	zI := xI.Sub(yI)
 	if zI.IsNegative() {
 		err = sdkerrors.ErrInsufficientFunds
 		return
 	}
-	shrp := sdk.NewInt(zI.Int64() / ShrPExponent)
-	cent := sdk.NewInt(zI.Int64() - zI.Int64()/ShrPExponent*ShrPExponent)
+	shrp := sdk.NewInt(zI.Int64() / USDExponent)
+	cent := sdk.NewInt(zI.Int64() - zI.Int64()/USDExponent*USDExponent)
 
 	z = sdk.NewCoins(
 		sdk.NewCoin(ShrP, shrp),
