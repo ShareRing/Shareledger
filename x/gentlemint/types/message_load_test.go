@@ -24,6 +24,8 @@ func TestMsgLoad_ValidateBasic(t *testing.T) {
 			name: "valid address",
 			msg: MsgLoad{
 				Creator: sample.AccAddress(),
+				Address: sample.AccAddress(),
+				Coins:   "1.1shr",
 			},
 		},
 	}
