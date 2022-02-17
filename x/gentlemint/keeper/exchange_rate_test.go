@@ -32,5 +32,5 @@ func TestExchangeRateRemove(t *testing.T) {
 	keeper.RemoveExchangeRate(ctx)
 	v, found := keeper.GetExchangeRate(ctx)
 	require.True(t, found)
-	require.Equal(t, types.DefaultExchangeRate, sdk.MustNewDecFromStr(v.Rate))
+	require.Equal(t, types.DefaultExchangeRateSHRPToSHR, sdk.MustNewDecFromStr(v.Rate))
 }
