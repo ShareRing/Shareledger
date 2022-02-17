@@ -14,6 +14,20 @@ func CheckSupport(denom string) error {
 	return nil
 }
 
+func CheckSupportedCoins(dCoins sdk.DecCoins, coins sdk.Coins) error {
+	for _, c := range dCoins {
+		if _, found := supportedDenoms[c.Denom]; !found {
+			return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "%v is not supported", c)
+		}
+	}
+	for _, c := range coins {
+		if _, found := supportedDenoms[c.Denom]; !found {
+			return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "%v is not supported", c)
+		}
+	}
+	return nil
+}
+
 const (
 	Base = "nshr"
 	Shr  = "shr"
@@ -57,6 +71,32 @@ func buildDenomUnits(baseName string, usdRate sdk.Dec) (map[string]sdk.Dec, erro
 	default:
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "provided %v base denom is not supported. Supported Denoms: %v, %v", baseName, Base, BaseUSD)
 	}
+}
+
+func NormalizeToBaseCoins(dcoins sdk.DecCoins, roundUp bool) (sdk.Coins, error) {
+	if err := dcoins.Validate(); err != nil {
+		return nil, err
+	}
+	if err := CheckSupportedCoins(dcoins, nil); err != nil {
+		return nil, err
+	}
+	// there is no need to set usd rate, since we only need to convert BaseUSD and Base
+	base, err := NormalizeToBaseCoin(Base, sdk.NewDecCoins(
+		sdk.NewDecCoinFromDec(Shr, dcoins.AmountOf(Shr)),
+		sdk.NewDecCoinFromDec(Base, dcoins.AmountOf(Base))), sdk.NewDec(1), roundUp)
+	if err != nil {
+		return nil, err
+	}
+	baseUSD, err := NormalizeToBaseCoin(BaseUSD, sdk.NewDecCoins(
+		sdk.NewDecCoinFromDec(ShrP, dcoins.AmountOf(ShrP)),
+		sdk.NewDecCoinFromDec(BaseUSD, dcoins.AmountOf(BaseUSD))), sdk.NewDec(1), roundUp)
+	if err != nil {
+		return nil, err
+	}
+
+	return sdk.NewCoins(
+		base, baseUSD,
+	), err
 }
 
 func NormalizeToBaseCoin(baseName string, dcoins sdk.DecCoins, usdRate sdk.Dec, roundUp bool) (coin sdk.Coin, err error) {

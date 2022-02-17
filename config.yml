@@ -67,6 +67,10 @@ genesis:
         inflation_max: "0"
         inflation_min: "0"
     electoral:
+      accStateList:
+        - key: shrploadershareledger1lq9svs76xwekrrzw7uprekyqydf7fp02p8zp8e
+          address: shareledger1lq9svs76xwekrrzw7uprekyqydf7fp02p8zp8e
+          status: active
       authority:
         address: shareledger1lq9svs76xwekrrzw7uprekyqydf7fp02p8zp8e
       treasurer:
