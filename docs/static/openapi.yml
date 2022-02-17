@@ -21519,6 +21519,8 @@ definitions:
     type: object
   shareledger.gentlemint.MsgLoadResponse:
     type: object
+  shareledger.gentlemint.MsgSendResponse:
+    type: object
   shareledger.gentlemint.MsgSetActionLevelFeeResponse:
     type: object
   shareledger.gentlemint.MsgSetExchangeResponse:
