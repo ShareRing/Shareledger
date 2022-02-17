@@ -2765,11 +2765,7 @@
           "coins": [
             {
               "denom": "cent",
-              "amount": "1"
-            },
-            {
-              "denom": "shrp",
-              "amount": "80"
+              "amount": "8001"
             }
           ]
         },
@@ -2791,11 +2787,7 @@
           "coins": [
             {
               "denom": "cent",
-              "amount": "6650"
-            },
-            {
-              "denom": "shrp",
-              "amount": "37945"
+              "amount": "3801150"
             }
           ]
         },
@@ -2938,15 +2930,11 @@
           "coins": [
             {
               "denom": "cent",
-              "amount": "189"
+              "amount": "30489"
             },
             {
               "denom": "nshr",
               "amount": "7000000000"
-            },
-            {
-              "denom": "shrp",
-              "amount": "303"
             }
           ]
         },
@@ -2973,15 +2961,11 @@
           "coins": [
             {
               "denom": "cent",
-              "amount": "88"
+              "amount": "414388"
             },
             {
               "denom": "nshr",
               "amount": "63242000000000"
-            },
-            {
-              "denom": "shrp",
-              "amount": "4143"
             }
           ]
         },
@@ -3268,12 +3252,12 @@
           "address": "shareledger1x33wu4t0jsel4vngyevpjx79v05c74j7hty535",
           "coins": [
             {
-              "denom": "nshr",
-              "amount": "986000000000"
+              "denom": "cent",
+              "amount": "100001300"
             },
             {
-              "denom": "shrp",
-              "amount": "1000013"
+              "denom": "nshr",
+              "amount": "986000000000"
             }
           ]
         },
@@ -3407,15 +3391,11 @@
           "coins": [
             {
               "denom": "cent",
-              "amount": "88"
+              "amount": "27688"
             },
             {
               "denom": "nshr",
               "amount": "9887000000000"
-            },
-            {
-              "denom": "shrp",
-              "amount": "276"
             }
           ]
         },
@@ -3478,11 +3458,7 @@
           "coins": [
             {
               "denom": "cent",
-              "amount": "11372"
-            },
-            {
-              "denom": "shrp",
-              "amount": "12002"
+              "amount": "1211572"
             }
           ]
         },
@@ -3554,15 +3530,11 @@
           "coins": [
             {
               "denom": "cent",
-              "amount": "92"
+              "amount": "10456592"
             },
             {
               "denom": "nshr",
               "amount": "9828781000000000"
-            },
-            {
-              "denom": "shrp",
-              "amount": "104565"
             }
           ]
         },
@@ -3634,15 +3606,11 @@
           "coins": [
             {
               "denom": "cent",
-              "amount": "84"
+              "amount": "10001484"
             },
             {
               "denom": "nshr",
               "amount": "143171000000000"
-            },
-            {
-              "denom": "shrp",
-              "amount": "100014"
             }
           ]
         },
@@ -3696,15 +3664,11 @@
           "coins": [
             {
               "denom": "cent",
-              "amount": "90"
+              "amount": "968990"
             },
             {
               "denom": "nshr",
               "amount": "99816000000000"
-            },
-            {
-              "denom": "shrp",
-              "amount": "9689"
             }
           ]
         },
@@ -3744,15 +3708,11 @@
           "coins": [
             {
               "denom": "cent",
-              "amount": "115"
+              "amount": "11615"
             },
             {
               "denom": "nshr",
               "amount": "8000000000"
-            },
-            {
-              "denom": "shrp",
-              "amount": "115"
             }
           ]
         },
@@ -3841,12 +3801,12 @@
           "address": "shareledger1v3penclwr9jj2mtr6yyufkxpxd9vvu6ml7chyq",
           "coins": [
             {
-              "denom": "nshr",
-              "amount": "949921000000000"
+              "denom": "cent",
+              "amount": "2000"
             },
             {
-              "denom": "shrp",
-              "amount": "20"
+              "denom": "nshr",
+              "amount": "949921000000000"
             }
           ]
         },
@@ -4093,15 +4053,11 @@
           "coins": [
             {
               "denom": "cent",
-              "amount": "92"
+              "amount": "425392"
             },
             {
               "denom": "nshr",
               "amount": "4894000000000"
-            },
-            {
-              "denom": "shrp",
-              "amount": "4253"
             }
           ]
         },
@@ -4221,15 +4177,11 @@
           "coins": [
             {
               "denom": "cent",
-              "amount": "4"
+              "amount": "510004"
             },
             {
               "denom": "nshr",
               "amount": "99816000000000"
-            },
-            {
-              "denom": "shrp",
-              "amount": "5100"
             }
           ]
         },
@@ -4427,15 +4379,11 @@
           "coins": [
             {
               "denom": "cent",
-              "amount": "254"
+              "amount": "1148054"
             },
             {
               "denom": "nshr",
               "amount": "1350000000000"
-            },
-            {
-              "denom": "shrp",
-              "amount": "11478"
             }
           ]
         },
@@ -4943,11 +4891,7 @@
           "coins": [
             {
               "denom": "cent",
-              "amount": "105"
-            },
-            {
-              "denom": "shrp",
-              "amount": "175"
+              "amount": "17605"
             }
           ]
         },
@@ -5019,11 +4963,7 @@
           "coins": [
             {
               "denom": "cent",
-              "amount": "108"
-            },
-            {
-              "denom": "shrp",
-              "amount": "10687"
+              "amount": "1068808"
             }
           ]
         },
@@ -5269,15 +5209,11 @@
       "supply": [
         {
           "denom": "cent",
-          "amount": "19332"
+          "amount": "130105132"
         },
         {
           "denom": "nshr",
           "amount": "2636282723000000000"
-        },
-        {
-          "denom": "shrp",
-          "amount": "1300858"
         }
       ],
       "denom_metadata": [
@@ -5295,7 +5231,7 @@
               "aliases": []
             }
           ],
-          "base": "shr",
+          "base": "nshr",
           "display": "shr",
           "name": "",
           "symbol": ""
@@ -46139,84 +46075,6 @@
       ],
       "missed_blocks": [
         {
-          "address": "shareledgervalcons1y8r4fznx6rjug0q593hr5zlrv5agd395z2n6m9",
-          "missed_blocks": [
-            {
-              "index": "0",
-              "missed": true
-            },
-            {
-              "index": "1",
-              "missed": true
-            }
-          ]
-        },
-        {
-          "address": "shareledgervalcons1yh39aanelyufuczl8gty5v2a3y5537f5u3r8pl",
-          "missed_blocks": [
-            {
-              "index": "0",
-              "missed": false
-            },
-            {
-              "index": "1",
-              "missed": false
-            },
-            {
-              "index": "21",
-              "missed": false
-            },
-            {
-              "index": "42",
-              "missed": false
-            },
-            {
-              "index": "43",
-              "missed": false
-            },
-            {
-              "index": "44",
-              "missed": false
-            },
-            {
-              "index": "45",
-              "missed": false
-            },
-            {
-              "index": "46",
-              "missed": false
-            },
-            {
-              "index": "48",
-              "missed": false
-            },
-            {
-              "index": "51",
-              "missed": false
-            },
-            {
-              "index": "55",
-              "missed": false
-            },
-            {
-              "index": "59",
-              "missed": false
-            },
-            {
-              "index": "72",
-              "missed": false
-            },
-            {
-              "index": "76",
-              "missed": false
-            },
-            {
-              "index": "82",
-              "missed": false
-            }
-          ]
-        },
-        {
           "address": "shareledgervalcons1hqaa8jxkse4mmc4h9es208ayyj43txkft36gsa",
           "missed_blocks": []
         },
@@ -46366,6 +46224,84 @@
             {
               "index": "67",
               "missed": true
+            }
+          ]
+        },
+        {
+          "address": "shareledgervalcons1y8r4fznx6rjug0q593hr5zlrv5agd395z2n6m9",
+          "missed_blocks": [
+            {
+              "index": "0",
+              "missed": true
+            },
+            {
+              "index": "1",
+              "missed": true
+            }
+          ]
+        },
+        {
+          "address": "shareledgervalcons1yh39aanelyufuczl8gty5v2a3y5537f5u3r8pl",
+          "missed_blocks": [
+            {
+              "index": "0",
+              "missed": false
+            },
+            {
+              "index": "1",
+              "missed": false
+            },
+            {
+              "index": "21",
+              "missed": false
+            },
+            {
+              "index": "42",
+              "missed": false
+            },
+            {
+              "index": "43",
+              "missed": false
+            },
+            {
+              "index": "44",
+              "missed": false
+            },
+            {
+              "index": "45",
+              "missed": false
+            },
+            {
+              "index": "46",
+              "missed": false
+            },
+            {
+              "index": "48",
+              "missed": false
+            },
+            {
+              "index": "51",
+              "missed": false
+            },
+            {
+              "index": "55",
+              "missed": false
+            },
+            {
+              "index": "59",
+              "missed": false
+            },
+            {
+              "index": "72",
+              "missed": false
+            },
+            {
+              "index": "76",
+              "missed": false
+            },
+            {
+              "index": "82",
+              "missed": false
             }
           ]
         }
