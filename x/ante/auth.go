@@ -55,7 +55,6 @@ func (a Auth) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate bool, next sdk.Ant
 				}
 			}
 		case // Authority
-			*gentleminttypes.MsgLoadShr,
 			*gentleminttypes.MsgSetActionLevelFee,
 			*gentleminttypes.MsgDeleteActionLevelFee,
 			*gentleminttypes.MsgSetLevelFee,
@@ -69,15 +68,8 @@ func (a Auth) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate bool, next sdk.Ant
 			if !a.rk.IsAuthority(ctx, signer) {
 				return ctx, sdkerrors.Wrapf(sdkerrors.ErrUnauthorized, ErrMsgNotAuthority)
 			}
-		case // SHRP Loaders
-			*gentleminttypes.MsgLoadShrp:
-			if !a.rk.IsSHRPLoader(ctx, signer) {
-				return ctx, sdkerrors.Wrapf(sdkerrors.ErrUnauthorized, ErrMsgNotSHRPLoader)
-			}
 		case // Treasure account permission
-			*gentleminttypes.MsgBurnShrp,
 			*gentleminttypes.MsgBurn,
-			*gentleminttypes.MsgBurnShr,
 			*gentleminttypes.MsgSetExchange:
 			if !a.rk.IsTreasurer(ctx, signer) {
 				return ctx, sdkerrors.Wrapf(sdkerrors.ErrUnauthorized, ErrMsgNotTreasureAccount)

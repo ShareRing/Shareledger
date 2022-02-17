@@ -30,26 +30,6 @@ service Msg {
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
-message MsgLoadShr {
-  string creator = 1;
-  string address = 2;
-  string amount = 3;
-}
-
-message MsgLoadShrResponse {
-  string log = 1;
-}
-
-message MsgLoadShrp {
-  string creator = 1;
-  string address = 2;
-  string amount = 3;
-}
-
-message MsgLoadShrpResponse {
-  string log = 1;
-}
-
 message MsgBuyShr {
   string creator = 1;
   string amount = 2;
@@ -59,52 +39,6 @@ message MsgBuyShrResponse {
   string log = 1;
 }
 
-message MsgSendShr {
-  string creator = 1;
-  string address = 2;
-  string amount = 3;
-}
-
-message MsgSendShrResponse {
-  string log = 1;
-}
-
-message MsgSendShrp {
-  string creator = 1;
-  string address = 2;
-  string amount = 3;
-}
-
-message MsgSendShrpResponse {
-  string log = 1;
-}
-
-message MsgBuyCent {
-  string creator = 1;
-  string amount = 2;
-}
-
-message MsgBuyCentResponse {
-  string log = 1;
-}
-
-message MsgBurnShrp {
-  string creator = 1;
-  string amount = 2;
-}
-
-message MsgBurnShrpResponse {
-  string log = 1;
-}
-
-message MsgBurnShr {
-  string creator = 1;
-  string amount = 2;
-}
-
-message MsgBurnShrResponse {
-  string log = 1;
-}
 
 message MsgSetExchange {
   string creator = 1;

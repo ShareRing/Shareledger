@@ -72,14 +72,10 @@ var mapActions = map[reflect.Type]string{
 	reflect.ValueOf(&feegrantmoduletypes.MsgRevokeAllowance{}).Type(): "feegrant_revoke",
 
 	//gentlemint
-	reflect.ValueOf(&gentlemintmoduletypes.MsgLoadShr{}).Type():     "gentlemint_load-shr",
-	reflect.ValueOf(&gentlemintmoduletypes.MsgLoadShrp{}).Type():    "gentlemint_load-shrp",
+	reflect.ValueOf(&gentlemintmoduletypes.MsgLoad{}).Type():        "gentlemint_load",
 	reflect.ValueOf(&gentlemintmoduletypes.MsgBuyShr{}).Type():      "gentlemint_buy-shr",
-	reflect.ValueOf(&gentlemintmoduletypes.MsgSendShr{}).Type():     "gentlemint_send-shr",
-	reflect.ValueOf(&gentlemintmoduletypes.MsgSendShrp{}).Type():    "gentlemint_send-shrp",
-	reflect.ValueOf(&gentlemintmoduletypes.MsgBuyCent{}).Type():     "gentlemint_buy-cent",
-	reflect.ValueOf(&gentlemintmoduletypes.MsgBurnShrp{}).Type():    "gentlemint_burn-shrp",
-	reflect.ValueOf(&gentlemintmoduletypes.MsgBurnShr{}).Type():     "gentlemint_burn-shr",
+	reflect.ValueOf(&gentlemintmoduletypes.MsgSend{}).Type():        "gentlemint_send",
+	reflect.ValueOf(&gentlemintmoduletypes.MsgBurn{}).Type():        "gentlemint_burn",
 	reflect.ValueOf(&gentlemintmoduletypes.MsgSetExchange{}).Type(): "gentlemint_set-exchange",
 	reflect.ValueOf(&gentlemintmoduletypes.MsgLoadFee{}).Type():     "gentlemint_load-fee",
 
