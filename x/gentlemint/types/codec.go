@@ -24,6 +24,7 @@ func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgLoadFee{}, "gentlemint/LoadFee", nil)
 	cdc.RegisterConcrete(&MsgLoad{}, "gentlemint/Load", nil)
 	cdc.RegisterConcrete(&MsgSend{}, "gentlemint/Send", nil)
+	cdc.RegisterConcrete(&MsgBurn{}, "gentlemint/Burn", nil)
 	// this line is used by starport scaffolding # 2
 }
 
@@ -77,6 +78,9 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgSend{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgBurn{},
 	)
 	// this line is used by starport scaffolding # 3
 

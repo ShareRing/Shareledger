@@ -26,6 +26,7 @@ service Msg {
   rpc LoadFee(MsgLoadFee) returns (MsgLoadFeeResponse);
   rpc Load(MsgLoad) returns (MsgLoadResponse);
   rpc Send(MsgSend) returns (MsgSendResponse);
+  rpc Burn(MsgBurn) returns (MsgBurnResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -165,6 +166,14 @@ message MsgSend {
 }
 
 message MsgSendResponse {
+}
+
+message MsgBurn {
+  string creator = 1;
+  string coins = 2;
+}
+
+message MsgBurnResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message
