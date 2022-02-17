@@ -17,30 +17,30 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
 		ctx = ctx.WithEventManager(sdk.NewEventManager())
 
 		switch msg := msg.(type) {
-		case *types.MsgLoadShr:
-			res, err := msgServer.LoadShr(sdk.WrapSDKContext(ctx), msg)
-			return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgLoadShrp:
-			res, err := msgServer.LoadShrp(sdk.WrapSDKContext(ctx), msg)
-			return sdk.WrapServiceResult(ctx, res, err)
+		//case *types.MsgLoadShr:
+		//	res, err := msgServer.LoadShr(sdk.WrapSDKContext(ctx), msg)
+		//	return sdk.WrapServiceResult(ctx, res, err)
+		//case *types.MsgLoadShrp:
+		//	res, err := msgServer.LoadShrp(sdk.WrapSDKContext(ctx), msg)
+		//	return sdk.WrapServiceResult(ctx, res, err)
 		case *types.MsgBuyShr:
 			res, err := msgServer.BuyShr(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgSendShr:
-			res, err := msgServer.SendShr(sdk.WrapSDKContext(ctx), msg)
-			return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgBuyCent:
-			res, err := msgServer.BuyCent(sdk.WrapSDKContext(ctx), msg)
-			return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgBurnShrp:
-			res, err := msgServer.BurnShrp(sdk.WrapSDKContext(ctx), msg)
-			return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgSendShrp:
-			res, err := msgServer.SendShrp(sdk.WrapSDKContext(ctx), msg)
-			return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgBurnShr:
-			res, err := msgServer.BurnShr(sdk.WrapSDKContext(ctx), msg)
-			return sdk.WrapServiceResult(ctx, res, err)
+		//case *types.MsgSendShr:
+		//	res, err := msgServer.SendShr(sdk.WrapSDKContext(ctx), msg)
+		//	return sdk.WrapServiceResult(ctx, res, err)
+		//case *types.MsgBuyCent:
+		//	res, err := msgServer.BuyCent(sdk.WrapSDKContext(ctx), msg)
+		//	return sdk.WrapServiceResult(ctx, res, err)
+		//case *types.MsgBurnShrp:
+		//	res, err := msgServer.BurnShrp(sdk.WrapSDKContext(ctx), msg)
+		//	return sdk.WrapServiceResult(ctx, res, err)
+		//case *types.MsgSendShrp:
+		//	res, err := msgServer.SendShrp(sdk.WrapSDKContext(ctx), msg)
+		//	return sdk.WrapServiceResult(ctx, res, err)
+		//case *types.MsgBurnShr:
+		//	res, err := msgServer.BurnShr(sdk.WrapSDKContext(ctx), msg)
+		//	return sdk.WrapServiceResult(ctx, res, err)
 		case *types.MsgSetExchange:
 			res, err := msgServer.SetExchange(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
@@ -59,6 +59,15 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
 		case *types.MsgLoadFee:
 			// LoadFee was handled in antee fee.
 			return sdk.WrapServiceResult(ctx, &types.MsgLoadFeeResponse{}, nil)
+		case *types.MsgLoad:
+			res, err := msgServer.Load(sdk.WrapSDKContext(ctx), msg)
+			return sdk.WrapServiceResult(ctx, res, err)
+		case *types.MsgSend:
+			res, err := msgServer.Send(sdk.WrapSDKContext(ctx), msg)
+			return sdk.WrapServiceResult(ctx, res, err)
+		case *types.MsgBurn:
+			res, err := msgServer.Burn(sdk.WrapSDKContext(ctx), msg)
+			return sdk.WrapServiceResult(ctx, res, err)
 			// this line is used by starport scaffolding # 1
 		default:
 			errMsg := fmt.Sprintf("unrecognized %s message type: %T", types.ModuleName, msg)

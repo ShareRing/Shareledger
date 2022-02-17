@@ -10,41 +10,24 @@ option go_package = "github.com/sharering/shareledger/x/gentlemint/types";
 
 // Msg defines the Msg service.
 service Msg {
-      rpc LoadShr(MsgLoadShr) returns (MsgLoadShrResponse);
-  rpc LoadShrp(MsgLoadShrp) returns (MsgLoadShrpResponse);
+//      rpc LoadShr(MsgLoadShr) returns (MsgLoadShrResponse);
+//  rpc LoadShrp(MsgLoadShrp) returns (MsgLoadShrpResponse);
   rpc BuyShr(MsgBuyShr) returns (MsgBuyShrResponse);
-  rpc SendShr(MsgSendShr) returns (MsgSendShrResponse);
-  rpc BuyCent(MsgBuyCent) returns (MsgBuyCentResponse);
-  rpc BurnShrp(MsgBurnShrp) returns (MsgBurnShrpResponse);
-  rpc SendShrp(MsgSendShrp) returns (MsgSendShrpResponse);
-  rpc BurnShr(MsgBurnShr) returns (MsgBurnShrResponse);
+//  rpc SendShr(MsgSendShr) returns (MsgSendShrResponse);
+//  rpc BuyCent(MsgBuyCent) returns (MsgBuyCentResponse);
+//  rpc BurnShrp(MsgBurnShrp) returns (MsgBurnShrpResponse);
+//  rpc SendShrp(MsgSendShrp) returns (MsgSendShrpResponse);
+//  rpc BurnShr(MsgBurnShr) returns (MsgBurnShrResponse);
   rpc SetExchange(MsgSetExchange) returns (MsgSetExchangeResponse);
   rpc SetLevelFee(MsgSetLevelFee) returns (MsgSetLevelFeeResponse);
   rpc DeleteLevelFee(MsgDeleteLevelFee) returns (MsgDeleteLevelFeeResponse);
   rpc SetActionLevelFee(MsgSetActionLevelFee) returns (MsgSetActionLevelFeeResponse);
   rpc DeleteActionLevelFee(MsgDeleteActionLevelFee) returns (MsgDeleteActionLevelFeeResponse);
   rpc LoadFee(MsgLoadFee) returns (MsgLoadFeeResponse);
+  rpc Load(MsgLoad) returns (MsgLoadResponse);
+  rpc Send(MsgSend) returns (MsgSendResponse);
+  rpc Burn(MsgBurn) returns (MsgBurnResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
-}
-
-message MsgLoadShr {
-  string creator = 1;
-  string address = 2;
-  string amount = 3;
-}
-
-message MsgLoadShrResponse {
-  string log = 1;
-}
-
-message MsgLoadShrp {
-  string creator = 1;
-  string address = 2;
-  string amount = 3;
-}
-
-message MsgLoadShrpResponse {
-  string log = 1;
 }
 
 message MsgBuyShr {
@@ -56,52 +39,6 @@ message MsgBuyShrResponse {
   string log = 1;
 }
 
-message MsgSendShr {
-  string creator = 1;
-  string address = 2;
-  string amount = 3;
-}
-
-message MsgSendShrResponse {
-  string log = 1;
-}
-
-message MsgSendShrp {
-  string creator = 1;
-  string address = 2;
-  string amount = 3;
-}
-
-message MsgSendShrpResponse {
-  string log = 1;
-}
-
-message MsgBuyCent {
-  string creator = 1;
-  string amount = 2;
-}
-
-message MsgBuyCentResponse {
-  string log = 1;
-}
-
-message MsgBurnShrp {
-  string creator = 1;
-  string amount = 2;
-}
-
-message MsgBurnShrpResponse {
-  string log = 1;
-}
-
-message MsgBurnShr {
-  string creator = 1;
-  string amount = 2;
-}
-
-message MsgBurnShrResponse {
-  string log = 1;
-}
 
 message MsgSetExchange {
   string creator = 1;
@@ -145,6 +82,32 @@ message MsgLoadFee {
 }
 
 message MsgLoadFeeResponse {
+}
+
+message MsgLoad {
+  string creator = 1;
+  string address = 2;
+  string coins = 3;
+}
+
+message MsgLoadResponse {
+}
+
+message MsgSend {
+  string creator = 1;
+  string address = 2;
+  string coins = 3;
+}
+
+message MsgSendResponse {
+}
+
+message MsgBurn {
+  string creator = 1;
+  string coins = 2;
+}
+
+message MsgBurnResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message

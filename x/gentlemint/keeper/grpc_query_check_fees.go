@@ -39,11 +39,11 @@ func (k Keeper) CheckFees(goCtx context.Context, req *types.QueryCheckFeesReques
 	result.SufficientFundForFee = result.SufficientFee // sufficient fee is true, sufficient fund for fee will be true by default
 	if !result.SufficientFee {
 		rate := k.GetExchangeRateD(ctx)
-		calculatedBaseDenomFromShrpFund, err := denom.NormalizeCoins(
+		calculatedBaseDenomFromShrpFund, err := denom.NormalizeToBaseCoin(denom.Base,
 			sdk.NewDecCoinsFromCoins(sdk.NewCoins(
 				sdk.NewCoin(denom.ShrP, currentBalances.AmountOf(denom.ShrP)),
-				sdk.NewCoin(denom.Cent, currentBalances.AmountOf(denom.Cent)),
-			)...), &rate)
+				sdk.NewCoin(denom.BaseUSD, currentBalances.AmountOf(denom.BaseUSD)),
+			)...), rate, true)
 		if err != nil {
 			return nil, sdkerrors.Wrapf(err, "calculate %v from %v fund %v", denom.Base, denom.ShrP, currentBalances)
 		}
@@ -52,7 +52,10 @@ func (k Keeper) CheckFees(goCtx context.Context, req *types.QueryCheckFeesReques
 		result.SufficientFundForFee = calculatedBaseDenomFromShrpFund.IsGTE(fee)
 
 		if result.SufficientFundForFee {
-			dC := denom.ToDecShrPCoin(sdk.NewDecCoinsFromCoins(fee), rate)
+			dC, err := denom.To(sdk.NewDecCoinsFromCoins(fee), denom.ShrP, rate)
+			if err != nil {
+				return nil, sdkerrors.Wrapf(err, "convert fee,%v, to usd", fee)
+			}
 			result.CostLoadingFee = &dC
 		}
 	}

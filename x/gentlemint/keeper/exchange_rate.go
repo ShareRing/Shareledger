@@ -9,7 +9,7 @@ import (
 func (k Keeper) GetExchangeRateD(ctx sdk.Context) sdk.Dec {
 	v, found := k.GetExchangeRate(ctx)
 	if !found {
-		return types.DefaultExchangeRate
+		return types.DefaultExchangeRateSHRPToSHR
 	}
 	return sdk.MustNewDecFromStr(v.Rate)
 }
@@ -26,7 +26,7 @@ func (k Keeper) GetExchangeRate(ctx sdk.Context) (val types.ExchangeRate, found 
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ExchangeRateKey))
 	b := store.Get([]byte{0})
 
-	val = types.ExchangeRate{Rate: types.DefaultExchangeRate.String()}
+	val = types.ExchangeRate{Rate: types.DefaultExchangeRateSHRPToSHR.String()}
 
 	if b != nil {
 		k.cdc.MustUnmarshal(b, &val)

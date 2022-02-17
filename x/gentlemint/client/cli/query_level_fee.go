@@ -12,8 +12,8 @@ import (
 
 func CmdListLevelFee() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "list-level-fee",
-		Short: "List all level-fee",
+		Use:   "level-fees",
+		Short: "List all level-fees",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx := client.GetClientContextFromCmd(cmd)
 
@@ -37,7 +37,7 @@ func CmdListLevelFee() *cobra.Command {
 
 func CmdShowLevelFee() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "show-level-fee [level]",
+		Use:   "level-fee [level]",
 		Short: "shows a level-fee",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {

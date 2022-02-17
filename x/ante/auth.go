@@ -7,6 +7,7 @@ import (
 	electoraltypes "github.com/sharering/shareledger/x/electoral/types"
 	gentleminttypes "github.com/sharering/shareledger/x/gentlemint/types"
 	idtypes "github.com/sharering/shareledger/x/id/types"
+	denom "github.com/sharering/shareledger/x/utils/demo"
 )
 
 type Auth struct {
@@ -36,8 +37,24 @@ func (a Auth) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate bool, next sdk.Ant
 	for _, msgI := range tx.GetMsgs() {
 		signer := msgI.GetSigners()[0]
 		switch msg := msgI.(type) {
+		case *gentleminttypes.MsgLoad:
+			coins, err := sdk.ParseDecCoins(msg.Coins)
+			if err != nil {
+				return ctx, err
+			}
+			for _, c := range coins {
+				switch c.Denom {
+				case denom.Base, denom.Shr:
+					if !a.rk.IsAuthority(ctx, signer) {
+						return ctx, sdkerrors.Wrapf(sdkerrors.ErrUnauthorized, ErrMsgNotAuthority)
+					}
+				default: //denom.BaseUSD denom.SHRP
+					if !a.rk.IsSHRPLoader(ctx, signer) {
+						return ctx, sdkerrors.Wrapf(sdkerrors.ErrUnauthorized, ErrMsgNotSHRPLoader)
+					}
+				}
+			}
 		case // Authority
-			*gentleminttypes.MsgLoadShr,
 			*gentleminttypes.MsgSetActionLevelFee,
 			*gentleminttypes.MsgDeleteActionLevelFee,
 			*gentleminttypes.MsgSetLevelFee,
@@ -51,14 +68,8 @@ func (a Auth) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate bool, next sdk.Ant
 			if !a.rk.IsAuthority(ctx, signer) {
 				return ctx, sdkerrors.Wrapf(sdkerrors.ErrUnauthorized, ErrMsgNotAuthority)
 			}
-		case // SHRP Loaders
-			*gentleminttypes.MsgLoadShrp:
-			if !a.rk.IsSHRPLoader(ctx, signer) {
-				return ctx, sdkerrors.Wrapf(sdkerrors.ErrUnauthorized, ErrMsgNotSHRPLoader)
-			}
 		case // Treasure account permission
-			*gentleminttypes.MsgBurnShrp,
-			*gentleminttypes.MsgBurnShr,
+			*gentleminttypes.MsgBurn,
 			*gentleminttypes.MsgSetExchange:
 			if !a.rk.IsTreasurer(ctx, signer) {
 				return ctx, sdkerrors.Wrapf(sdkerrors.ErrUnauthorized, ErrMsgNotTreasureAccount)

@@ -12,7 +12,12 @@ import (
 func (k Keeper) GetBaseFeeByMsg(ctx sdk.Context, msg sdk.Msg) (sdk.Coin, error) {
 	feeD := k.GetFeeByMsg(ctx, msg)
 	usdRate := k.GetExchangeRateD(ctx)
-	return denom.NormalizeCoins(sdk.NewDecCoins(feeD), &usdRate)
+	return denom.NormalizeToBaseCoin(denom.Base, sdk.NewDecCoins(feeD), usdRate, true)
+}
+func (k Keeper) GetBaseDenomFeeByActionKey(ctx sdk.Context, action string) (sdk.Coin, error) {
+	feeD := k.GetFeeByAction(ctx, action)
+	usdRate := k.GetExchangeRateD(ctx)
+	return denom.NormalizeToBaseCoin(denom.Base, sdk.NewDecCoins(feeD), usdRate, true)
 }
 
 func (k Keeper) LoadFeeFundFromShrp(ctx sdk.Context, msg *types.MsgLoadFee) error {
@@ -20,20 +25,15 @@ func (k Keeper) LoadFeeFundFromShrp(ctx sdk.Context, msg *types.MsgLoadFee) erro
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "shrp is nil")
 	}
 	rate := k.GetExchangeRateD(ctx)
-	boughtBase, err := denom.NormalizeCoins(sdk.NewDecCoins(*msg.Shrp), &rate)
+
+	boughtBase, err := denom.NormalizeToBaseCoin(denom.Base, sdk.NewDecCoins(*msg.Shrp), rate, false)
 	if err != nil {
 		return err
 	}
-	if err := k.buyBaseDenom(ctx, boughtBase.Amount, msg.GetSigners()[0]); err != nil {
-		return sdkerrors.Wrapf(err, "load fee %+v with %+v", boughtBase, msg.Shrp.Amount)
+	if err := k.buyBaseDenomByBaseUSD(ctx, boughtBase, msg.GetSigners()[0]); err != nil {
+		return sdkerrors.Wrapf(err, "buy shr by usd")
 	}
 	return nil
-}
-
-func (k Keeper) GetBaseDenomFeeByActionKey(ctx sdk.Context, action string) (sdk.Coin, error) {
-	feeD := k.GetFeeByAction(ctx, action)
-	usdRate := k.GetExchangeRateD(ctx)
-	return denom.NormalizeCoins(sdk.NewDecCoins(feeD), &usdRate)
 }
 
 // GetFeeByMsg return fee based on message

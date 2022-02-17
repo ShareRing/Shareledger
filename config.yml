@@ -1,18 +1,18 @@
 accounts:
   - name: validator
-    coins: ["100000000000000000nshr", "1000000000shrp"]
+    coins: ["100000000000000000nshr", "100000000000cent"]
     mnemonic: "arrange amateur body cotton slim roof hand blush monkey remove expect rug hazard spoil flag choose tomato end duty nominee wheel cushion into stable"
   - name: authority
-    coins: ["100000000000000000nshr", "1000000000shrp"]
+    coins: ["100000000000000000nshr", "100000000000cent"]
     mnemonic: "exile dutch volcano mosquito tree correct blame tape involve fiscal blossom emerge install grant normal divorce shiver barrel island drink local banana educate fix"
   - name: treasurer
-    coins: ["100000000000000000nshr", "1000000000shrp"]
+    coins: ["100000000000000000nshr", "100000000000cent"]
     mnemonic: "hair bacon dirt torch air uphold tackle involve pool time token junior melody option judge thumb dance tube loud noise eternal congress fragile apart"
   - name: account-operator
-    coins: ["100000000000000000nshr", "1000000000shrp"]
+    coins: ["100000000000000000nshr", "100000000000cent"]
     mnemonic: "pool mother column hurdle jealous wear host attack speak vague client demise inherit arrange lens purity time math decade renew south ring retreat balance"
   - name: idsigner
-    coins: ["100000000000000000nshr", "1000000000shrp"]
+    coins: ["100000000000000000nshr", "100000000000cent"]
     mnemonic: "memory mind warfare pull risk math concert address zero speak glimpse outside economy hill boil boss pulp much connect install clip short object tobacco"
   - name: user
     coins: [ "100000000000nshr" ]
@@ -67,6 +67,10 @@ genesis:
         inflation_max: "0"
         inflation_min: "0"
     electoral:
+      accStateList:
+        - key: shrploadershareledger1lq9svs76xwekrrzw7uprekyqydf7fp02p8zp8e
+          address: shareledger1lq9svs76xwekrrzw7uprekyqydf7fp02p8zp8e
+          status: active
       authority:
         address: shareledger1lq9svs76xwekrrzw7uprekyqydf7fp02p8zp8e
       treasurer:
