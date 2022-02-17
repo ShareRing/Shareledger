@@ -1031,14 +1031,7 @@ const _ = grpc.SupportPackageIsVersion4
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type MsgClient interface {
-	//      rpc LoadShr(MsgLoadShr) returns (MsgLoadShrResponse);
-	//  rpc LoadShrp(MsgLoadShrp) returns (MsgLoadShrpResponse);
 	BuyShr(ctx context.Context, in *MsgBuyShr, opts ...grpc.CallOption) (*MsgBuyShrResponse, error)
-	//  rpc SendShr(MsgSendShr) returns (MsgSendShrResponse);
-	//  rpc BuyCent(MsgBuyCent) returns (MsgBuyCentResponse);
-	//  rpc BurnShrp(MsgBurnShrp) returns (MsgBurnShrpResponse);
-	//  rpc SendShrp(MsgSendShrp) returns (MsgSendShrpResponse);
-	//  rpc BurnShr(MsgBurnShr) returns (MsgBurnShrResponse);
 	SetExchange(ctx context.Context, in *MsgSetExchange, opts ...grpc.CallOption) (*MsgSetExchangeResponse, error)
 	SetLevelFee(ctx context.Context, in *MsgSetLevelFee, opts ...grpc.CallOption) (*MsgSetLevelFeeResponse, error)
 	DeleteLevelFee(ctx context.Context, in *MsgDeleteLevelFee, opts ...grpc.CallOption) (*MsgDeleteLevelFeeResponse, error)
@@ -1150,14 +1143,7 @@ func (c *msgClient) Burn(ctx context.Context, in *MsgBurn, opts ...grpc.CallOpti
 
 // MsgServer is the server API for Msg service.
 type MsgServer interface {
-	//      rpc LoadShr(MsgLoadShr) returns (MsgLoadShrResponse);
-	//  rpc LoadShrp(MsgLoadShrp) returns (MsgLoadShrpResponse);
 	BuyShr(context.Context, *MsgBuyShr) (*MsgBuyShrResponse, error)
-	//  rpc SendShr(MsgSendShr) returns (MsgSendShrResponse);
-	//  rpc BuyCent(MsgBuyCent) returns (MsgBuyCentResponse);
-	//  rpc BurnShrp(MsgBurnShrp) returns (MsgBurnShrpResponse);
-	//  rpc SendShrp(MsgSendShrp) returns (MsgSendShrpResponse);
-	//  rpc BurnShr(MsgBurnShr) returns (MsgBurnShrResponse);
 	SetExchange(context.Context, *MsgSetExchange) (*MsgSetExchangeResponse, error)
 	SetLevelFee(context.Context, *MsgSetLevelFee) (*MsgSetLevelFeeResponse, error)
 	DeleteLevelFee(context.Context, *MsgDeleteLevelFee) (*MsgDeleteLevelFeeResponse, error)
