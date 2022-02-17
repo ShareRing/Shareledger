@@ -39,9 +39,6 @@ var supportedDenoms = map[string]struct{}{
 }
 
 func buildDenomUnits(baseName string, usdRate sdk.Dec) (map[string]sdk.Dec, error) {
-	a, _ := usdRate.Float64()
-	b, _ := usdRate.Mul(sdk.NewDec(ShrExponent)).Quo(sdk.NewDec(USDExponent)).Float64()
-	fmt.Println(a, b)
 	switch baseName {
 	case Base: // Base
 		return map[string]sdk.Dec{
@@ -83,11 +80,6 @@ func NormalizeToBaseCoin(baseName string, dcoins sdk.DecCoins, usdRate sdk.Dec, 
 			err = fmt.Errorf("%v not found in base units map", srcUnit)
 			return
 		}
-		a, _ := srcUnit.Float64()
-		b, _ := destUnit.Float64()
-		cc, _ := dValue.Float64()
-		ca, _ := c.Amount.Float64()
-		fmt.Println(a, b, cc, ca)
 		dValue = dValue.Add(c.Amount.Mul(srcUnit).Quo(destUnit))
 	}
 	iv := dValue.TruncateInt()
