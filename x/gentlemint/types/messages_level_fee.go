@@ -54,9 +54,9 @@ func (msg *MsgSetLevelFee) ValidateBasic() error {
 	}
 
 	switch dc.Denom {
-	case denom.Cent, denom.Base, denom.ShrP, denom.Shr:
+	case denom.BaseUSD, denom.Base, denom.ShrP, denom.Shr:
 	default:
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, fmt.Sprint("invalid denominations. supported ", denom.Base, denom.Shr, denom.ShrP, denom.Cent))
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, fmt.Sprint("invalid denominations. supported ", denom.Base, denom.Shr, denom.ShrP, denom.BaseUSD))
 	}
 
 	return nil

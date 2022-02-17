@@ -81,37 +81,56 @@ func (k Keeper) LoadAllowanceLoader(ctx sdk.Context, addr sdk.AccAddress) error 
 	return k.loadCoins(ctx, addr, types.AllowanceLoader)
 }
 
-func (k Keeper) buyBaseDenom(ctx sdk.Context, amount sdk.Int, buyer sdk.AccAddress) error {
-	if !k.BaseMintPossible(ctx, amount) {
-		return sdkerrors.Wrap(types.ErrBaseSupplyExceeded, amount.String())
+func (k Keeper) buyBaseDenomByBaseUSD(ctx sdk.Context, bUSD sdk.Coin, buyer sdk.AccAddress) error {
+	if bUSD.Denom != denom.BaseUSD || bUSD.IsValid() {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "%v", bUSD)
+	}
+	rate := k.GetExchangeRateD(ctx)
+	bought, err := denom.NormalizeToBaseCoin(denom.Base, sdk.NewDecCoinsFromCoins(bUSD), rate, false)
+	if err != nil {
+		return sdkerrors.Wrapf(sdkerrors.ErrLogic, "+%v", err)
+	}
+	if !k.BaseMintPossible(ctx, bought.Amount) {
+		return sdkerrors.Wrap(types.ErrBaseSupplyExceeded, bought.String())
+	}
+	currentBalance := k.bankKeeper.GetAllBalances(ctx, buyer)
+	if !currentBalance.IsAllGTE(sdk.NewCoins(bUSD)) {
+		return sdkerrors.Wrapf(sdkerrors.ErrInsufficientFunds, "current balances %v, Cost: %v", currentBalance, bUSD)
+	}
+	if err := k.burnCoins(ctx, buyer, sdk.NewCoins(bUSD)); err != nil {
+		return sdkerrors.Wrapf(err, "charge %v coins", bUSD)
+	}
+	if err := k.loadCoins(ctx, buyer, sdk.NewCoins(bought)); err != nil {
+		return sdkerrors.Wrapf(err, "load %v coins", bought)
+	}
+	return nil
+}
+
+func (k Keeper) buyBaseDenom(ctx sdk.Context, base sdk.Coin, buyer sdk.AccAddress) error {
+	if base.Denom != denom.Base || !base.IsValid() {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "%v", base)
+	}
+	if !k.BaseMintPossible(ctx, base.Amount) {
+		return sdkerrors.Wrap(types.ErrBaseSupplyExceeded, base.String())
 	}
 
 	rate := k.GetExchangeRateD(ctx)
 
 	currentBalance := k.bankKeeper.GetAllBalances(ctx, buyer)
-	currentShrpBalance := sdk.NewCoins(
-		sdk.NewCoin(denom.ShrP, currentBalance.AmountOf(denom.ShrP)),
-		sdk.NewCoin(denom.Cent, currentBalance.AmountOf(denom.Cent)),
-	)
-	cost, err := types.GetCostShrpForBaseDenom(currentShrpBalance, amount, rate)
+
+	cost, err := denom.NormalizeToBaseCoin(denom.BaseUSD, sdk.NewDecCoinsFromCoins(base), rate, true)
 	if err != nil {
-		return sdkerrors.Wrapf(err, "current %v balance", currentShrpBalance)
+		return sdkerrors.Wrapf(sdkerrors.ErrLogic, "+%v", err)
 	}
-	if cost.Sub.Empty() {
-		return sdkerrors.ErrInsufficientFunds
+	if !currentBalance.IsAllGTE(sdk.NewCoins(cost)) {
+		return sdkerrors.Wrapf(sdkerrors.ErrInsufficientFunds, "current balances %v, Cost: %v", currentBalance, cost)
+	}
+	if err := k.burnCoins(ctx, buyer, sdk.NewCoins(cost)); err != nil {
+		return sdkerrors.Wrapf(err, "charge %v coins", cost)
 	}
 
-	if !cost.Add.Empty() {
-		if err := k.loadCoins(ctx, buyer, cost.Add); err != nil {
-			return sdkerrors.Wrapf(err, "%v coins in return", cost.Add)
-		}
-	}
-	if err := k.burnCoins(ctx, buyer, cost.Sub); err != nil {
-		return sdkerrors.Wrapf(err, "charge %v coins", cost.Sub)
-	}
-	boughtShr := sdk.NewCoins(sdk.NewCoin(denom.Base, amount))
-	if err := k.loadCoins(ctx, buyer, boughtShr); err != nil {
-		return sdkerrors.Wrapf(err, "send %v coins", boughtShr)
+	if err := k.loadCoins(ctx, buyer, sdk.NewCoins(base)); err != nil {
+		return sdkerrors.Wrapf(err, "load %v coins", base)
 	}
 	return nil
 }

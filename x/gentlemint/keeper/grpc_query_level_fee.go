@@ -28,7 +28,7 @@ func (k Keeper) LevelFees(c context.Context, req *types.QueryLevelFeesRequest) (
 		if err != nil {
 			return nil, err
 		}
-		convertedFee, err := denom.NormalizeCoins(decCoins, &exchangeRate)
+		convertedFee, err := denom.NormalizeToBaseCoin(denom.Base, decCoins, exchangeRate, true)
 		if err != nil {
 			return nil, err
 		}
@@ -43,7 +43,7 @@ func (k Keeper) LevelFees(c context.Context, req *types.QueryLevelFeesRequest) (
 	for l, f := range defaultsLevelFees {
 		decCoins := sdk.NewDecCoins(f)
 
-		convertedFee, err := denom.NormalizeCoins(decCoins, &exchangeRate)
+		convertedFee, err := denom.NormalizeToBaseCoin(denom.Base, decCoins, exchangeRate, true)
 		if err != nil {
 			return nil, err
 		}

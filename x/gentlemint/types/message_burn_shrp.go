@@ -40,8 +40,14 @@ func (msg *MsgBurnShrp) ValidateBasic() error {
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
 	}
-	if _, err := ParseShrpCoinsStr(msg.Amount); err != nil {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "parsing amount %s", err.Error())
+
+	v, e := sdk.NewDecFromStr(msg.Amount)
+	if e != nil {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, e.Error())
 	}
+	if v.IsZero() || v.IsNegative() {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "value should a positive decimal")
+	}
+
 	return nil
 }

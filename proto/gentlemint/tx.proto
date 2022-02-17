@@ -10,14 +10,14 @@ option go_package = "github.com/sharering/shareledger/x/gentlemint/types";
 
 // Msg defines the Msg service.
 service Msg {
-      rpc LoadShr(MsgLoadShr) returns (MsgLoadShrResponse);
-  rpc LoadShrp(MsgLoadShrp) returns (MsgLoadShrpResponse);
+//      rpc LoadShr(MsgLoadShr) returns (MsgLoadShrResponse);
+//  rpc LoadShrp(MsgLoadShrp) returns (MsgLoadShrpResponse);
   rpc BuyShr(MsgBuyShr) returns (MsgBuyShrResponse);
-  rpc SendShr(MsgSendShr) returns (MsgSendShrResponse);
-  rpc BuyCent(MsgBuyCent) returns (MsgBuyCentResponse);
-  rpc BurnShrp(MsgBurnShrp) returns (MsgBurnShrpResponse);
-  rpc SendShrp(MsgSendShrp) returns (MsgSendShrpResponse);
-  rpc BurnShr(MsgBurnShr) returns (MsgBurnShrResponse);
+//  rpc SendShr(MsgSendShr) returns (MsgSendShrResponse);
+//  rpc BuyCent(MsgBuyCent) returns (MsgBuyCentResponse);
+//  rpc BurnShrp(MsgBurnShrp) returns (MsgBurnShrpResponse);
+//  rpc SendShrp(MsgSendShrp) returns (MsgSendShrpResponse);
+//  rpc BurnShr(MsgBurnShr) returns (MsgBurnShrResponse);
   rpc SetExchange(MsgSetExchange) returns (MsgSetExchangeResponse);
   rpc SetLevelFee(MsgSetLevelFee) returns (MsgSetLevelFeeResponse);
   rpc DeleteLevelFee(MsgDeleteLevelFee) returns (MsgDeleteLevelFeeResponse);

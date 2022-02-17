@@ -17,30 +17,30 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
 		ctx = ctx.WithEventManager(sdk.NewEventManager())
 
 		switch msg := msg.(type) {
-		case *types.MsgLoadShr:
-			res, err := msgServer.LoadShr(sdk.WrapSDKContext(ctx), msg)
-			return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgLoadShrp:
-			res, err := msgServer.LoadShrp(sdk.WrapSDKContext(ctx), msg)
-			return sdk.WrapServiceResult(ctx, res, err)
+		//case *types.MsgLoadShr:
+		//	res, err := msgServer.LoadShr(sdk.WrapSDKContext(ctx), msg)
+		//	return sdk.WrapServiceResult(ctx, res, err)
+		//case *types.MsgLoadShrp:
+		//	res, err := msgServer.LoadShrp(sdk.WrapSDKContext(ctx), msg)
+		//	return sdk.WrapServiceResult(ctx, res, err)
 		case *types.MsgBuyShr:
 			res, err := msgServer.BuyShr(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgSendShr:
-			res, err := msgServer.SendShr(sdk.WrapSDKContext(ctx), msg)
-			return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgBuyCent:
-			res, err := msgServer.BuyCent(sdk.WrapSDKContext(ctx), msg)
-			return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgBurnShrp:
-			res, err := msgServer.BurnShrp(sdk.WrapSDKContext(ctx), msg)
-			return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgSendShrp:
-			res, err := msgServer.SendShrp(sdk.WrapSDKContext(ctx), msg)
-			return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgBurnShr:
-			res, err := msgServer.BurnShr(sdk.WrapSDKContext(ctx), msg)
-			return sdk.WrapServiceResult(ctx, res, err)
+		//case *types.MsgSendShr:
+		//	res, err := msgServer.SendShr(sdk.WrapSDKContext(ctx), msg)
+		//	return sdk.WrapServiceResult(ctx, res, err)
+		//case *types.MsgBuyCent:
+		//	res, err := msgServer.BuyCent(sdk.WrapSDKContext(ctx), msg)
+		//	return sdk.WrapServiceResult(ctx, res, err)
+		//case *types.MsgBurnShrp:
+		//	res, err := msgServer.BurnShrp(sdk.WrapSDKContext(ctx), msg)
+		//	return sdk.WrapServiceResult(ctx, res, err)
+		//case *types.MsgSendShrp:
+		//	res, err := msgServer.SendShrp(sdk.WrapSDKContext(ctx), msg)
+		//	return sdk.WrapServiceResult(ctx, res, err)
+		//case *types.MsgBurnShr:
+		//	res, err := msgServer.BurnShr(sdk.WrapSDKContext(ctx), msg)
+		//	return sdk.WrapServiceResult(ctx, res, err)
 		case *types.MsgSetExchange:
 			res, err := msgServer.SetExchange(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
