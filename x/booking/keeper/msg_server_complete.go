@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+	denom "github.com/sharering/shareledger/x/utils/demo"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
@@ -34,14 +35,16 @@ func (k msgServer) CompleteBooking(goCtx context.Context, msg *types.MsgComplete
 	}
 
 	price := oldAsset.GetRate() * oldBooking.GetDuration()
-	priceCoin := sdk.NewCoin("shrp", sdk.NewInt(price))
-
+	priceCoin, err := denom.NormalizeToBaseCoins(sdk.NewDecCoinsFromCoins(sdk.NewCoin(denom.ShrP, sdk.NewInt(price))), false)
+	if err != nil {
+		return nil, err
+	}
 	creator, err := sdk.AccAddressFromBech32(oldAsset.GetCreator())
 	if err != nil {
 		return nil, sdkerrors.Wrap(err, oldAsset.GetCreator())
 	}
 
-	if err := k.SendCoinsFromModuleToAccount(ctx, types.ModuleName, creator, sdk.NewCoins(priceCoin)); err != nil {
+	if err := k.SendCoinsFromModuleToAccount(ctx, types.ModuleName, creator, priceCoin); err != nil {
 		return nil, sdkerrors.Wrapf(err, "cant send coins from %s to %s", types.ModuleName, oldAsset.GetCreator())
 	}
 

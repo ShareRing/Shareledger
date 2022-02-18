@@ -5,6 +5,7 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json"
+	denom "github.com/sharering/shareledger/x/utils/demo"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
@@ -33,10 +34,13 @@ func (k msgServer) CreateBooking(goCtx context.Context, msg *types.MsgCreateBook
 	newBooking.BookID = bookID
 	newBooking.IsCompleted = false
 	price := oldAsset.GetRate() * msg.GetDuration()
-	priceCoin := sdk.NewCoin("shrp", sdk.NewInt(price))
+	priceCoin, err := denom.NormalizeToBaseCoins(sdk.NewDecCoinsFromCoins(sdk.NewCoin(denom.ShrP, sdk.NewInt(price))), false)
+	if err != nil {
+		return nil, err
+	}
 	booker, _ := sdk.AccAddressFromBech32(msg.GetBooker())
 
-	if err := k.SendCoinsFromAccountToModule(ctx, booker, types.ModuleName, sdk.NewCoins(priceCoin)); err != nil {
+	if err := k.SendCoinsFromAccountToModule(ctx, booker, types.ModuleName, priceCoin); err != nil {
 		return nil, sdkerrors.Wrapf(err, "cant send coin from %s to %s", msg.GetBooker(), types.ModuleName)
 	}
 
