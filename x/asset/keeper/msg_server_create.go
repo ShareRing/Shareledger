@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/sharering/shareledger/x/asset/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/sharering/shareledger/x/asset/types"
@@ -35,5 +34,5 @@ func (k msgServer) CreateAsset(goCtx context.Context, msg *types.MsgCreateAsset)
 	)
 	ctx.EventManager().EmitEvent(event)
 
-	return &types.MsgCreateResponse{}, nil
+	return &types.MsgCreateAssetResponse{}, nil
 }

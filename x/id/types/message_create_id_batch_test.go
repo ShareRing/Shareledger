@@ -33,7 +33,7 @@ func TestMsgCreateIds_ValidateBasic(t *testing.T) {
 		},
 		{
 			name: "valid data",
-			msg: MsgCreateIdBatch{
+			msg: MsgCreateIds{
 				IssuerAddress: "shareledger1l3pg3zd0u5p3v5wfqavh0gsr83zep8kv5y900z",
 				BackupAddress: []string{
 					"shareledger1zf6q3twxs9dgw0dhjz0msve5ez3638vgddvgar",
