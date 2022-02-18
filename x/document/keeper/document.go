@@ -1,9 +1,9 @@
 package keeper
 
 import (
-	"github.com/sharering/shareledger/x/document/types"
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/sharering/shareledger/x/document/types"
 )
 
 func (k Keeper) SetDoc(ctx sdk.Context, doc *types.Document) {

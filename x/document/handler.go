@@ -3,10 +3,10 @@ package document
 import (
 	"fmt"
 
-	"github.com/sharering/shareledger/x/document/keeper"
-	"github.com/sharering/shareledger/x/document/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	"github.com/sharering/shareledger/x/document/keeper"
+	"github.com/sharering/shareledger/x/document/types"
 )
 
 // NewHandler ...
@@ -20,8 +20,8 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
 		case *types.MsgCreateDocument:
 			res, err := msgServer.CreateDocument(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgCreateDocumentInBatch:
-			res, err := msgServer.CreateDocumentInBatch(sdk.WrapSDKContext(ctx), msg)
+		case *types.MsgCreateDocuments:
+			res, err := msgServer.CreateDocuments(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
 		case *types.MsgRevokeDocument:
 			res, err := msgServer.RevokeDocument(sdk.WrapSDKContext(ctx), msg)

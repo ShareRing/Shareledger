@@ -10,7 +10,7 @@ func (b Booking) GetString() (string, error) {
 	return string(js), nil
 }
 
-func NewBookingFromMsgBook(msg MsgBook) Booking {
+func NewBookingFromMsgBook(msg MsgCreateBooking) Booking {
 	return Booking{
 		UUID:     msg.UUID,
 		Booker:   msg.Booker,

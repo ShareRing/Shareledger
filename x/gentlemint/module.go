@@ -11,14 +11,14 @@ import (
 
 	abci "github.com/tendermint/tendermint/abci/types"
 
-	"github.com/sharering/shareledger/x/gentlemint/client/cli"
-	"github.com/sharering/shareledger/x/gentlemint/keeper"
-	"github.com/sharering/shareledger/x/gentlemint/types"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/codec"
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
+	"github.com/sharering/shareledger/x/gentlemint/client/cli"
+	"github.com/sharering/shareledger/x/gentlemint/keeper"
+	"github.com/sharering/shareledger/x/gentlemint/types"
 )
 
 var (

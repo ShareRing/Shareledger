@@ -30,22 +30,22 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
-type QueryGetAccStateRequest struct {
+type QueryAccStateRequest struct {
 	Key string `protobuf:"bytes,1,opt,name=key,proto3" json:"key,omitempty"`
 }
 
-func (m *QueryGetAccStateRequest) Reset()         { *m = QueryGetAccStateRequest{} }
-func (m *QueryGetAccStateRequest) String() string { return proto.CompactTextString(m) }
-func (*QueryGetAccStateRequest) ProtoMessage()    {}
-func (*QueryGetAccStateRequest) Descriptor() ([]byte, []int) {
+func (m *QueryAccStateRequest) Reset()         { *m = QueryAccStateRequest{} }
+func (m *QueryAccStateRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryAccStateRequest) ProtoMessage()    {}
+func (*QueryAccStateRequest) Descriptor() ([]byte, []int) {
 	return fileDescriptor_e9c721b48ee5d4ec, []int{0}
 }
-func (m *QueryGetAccStateRequest) XXX_Unmarshal(b []byte) error {
+func (m *QueryAccStateRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *QueryGetAccStateRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *QueryAccStateRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_QueryGetAccStateRequest.Marshal(b, m, deterministic)
+		return xxx_messageInfo_QueryAccStateRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -55,41 +55,41 @@ func (m *QueryGetAccStateRequest) XXX_Marshal(b []byte, deterministic bool) ([]b
 		return b[:n], nil
 	}
 }
-func (m *QueryGetAccStateRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QueryGetAccStateRequest.Merge(m, src)
+func (m *QueryAccStateRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryAccStateRequest.Merge(m, src)
 }
-func (m *QueryGetAccStateRequest) XXX_Size() int {
+func (m *QueryAccStateRequest) XXX_Size() int {
 	return m.Size()
 }
-func (m *QueryGetAccStateRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_QueryGetAccStateRequest.DiscardUnknown(m)
+func (m *QueryAccStateRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryAccStateRequest.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_QueryGetAccStateRequest proto.InternalMessageInfo
+var xxx_messageInfo_QueryAccStateRequest proto.InternalMessageInfo
 
-func (m *QueryGetAccStateRequest) GetKey() string {
+func (m *QueryAccStateRequest) GetKey() string {
 	if m != nil {
 		return m.Key
 	}
 	return ""
 }
 
-type QueryGetAccStateResponse struct {
+type QueryAccStateResponse struct {
 	AccState AccState `protobuf:"bytes,1,opt,name=accState,proto3" json:"accState"`
 }
 
-func (m *QueryGetAccStateResponse) Reset()         { *m = QueryGetAccStateResponse{} }
-func (m *QueryGetAccStateResponse) String() string { return proto.CompactTextString(m) }
-func (*QueryGetAccStateResponse) ProtoMessage()    {}
-func (*QueryGetAccStateResponse) Descriptor() ([]byte, []int) {
+func (m *QueryAccStateResponse) Reset()         { *m = QueryAccStateResponse{} }
+func (m *QueryAccStateResponse) String() string { return proto.CompactTextString(m) }
+func (*QueryAccStateResponse) ProtoMessage()    {}
+func (*QueryAccStateResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_e9c721b48ee5d4ec, []int{1}
 }
-func (m *QueryGetAccStateResponse) XXX_Unmarshal(b []byte) error {
+func (m *QueryAccStateResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *QueryGetAccStateResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *QueryAccStateResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_QueryGetAccStateResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_QueryAccStateResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -99,41 +99,41 @@ func (m *QueryGetAccStateResponse) XXX_Marshal(b []byte, deterministic bool) ([]
 		return b[:n], nil
 	}
 }
-func (m *QueryGetAccStateResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QueryGetAccStateResponse.Merge(m, src)
+func (m *QueryAccStateResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryAccStateResponse.Merge(m, src)
 }
-func (m *QueryGetAccStateResponse) XXX_Size() int {
+func (m *QueryAccStateResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *QueryGetAccStateResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_QueryGetAccStateResponse.DiscardUnknown(m)
+func (m *QueryAccStateResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryAccStateResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_QueryGetAccStateResponse proto.InternalMessageInfo
+var xxx_messageInfo_QueryAccStateResponse proto.InternalMessageInfo
 
-func (m *QueryGetAccStateResponse) GetAccState() AccState {
+func (m *QueryAccStateResponse) GetAccState() AccState {
 	if m != nil {
 		return m.AccState
 	}
 	return AccState{}
 }
 
-type QueryAllAccStateRequest struct {
+type QueryAccStatesRequest struct {
 	Pagination *query.PageRequest `protobuf:"bytes,1,opt,name=pagination,proto3" json:"pagination,omitempty"`
 }
 
-func (m *QueryAllAccStateRequest) Reset()         { *m = QueryAllAccStateRequest{} }
-func (m *QueryAllAccStateRequest) String() string { return proto.CompactTextString(m) }
-func (*QueryAllAccStateRequest) ProtoMessage()    {}
-func (*QueryAllAccStateRequest) Descriptor() ([]byte, []int) {
+func (m *QueryAccStatesRequest) Reset()         { *m = QueryAccStatesRequest{} }
+func (m *QueryAccStatesRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryAccStatesRequest) ProtoMessage()    {}
+func (*QueryAccStatesRequest) Descriptor() ([]byte, []int) {
 	return fileDescriptor_e9c721b48ee5d4ec, []int{2}
 }
-func (m *QueryAllAccStateRequest) XXX_Unmarshal(b []byte) error {
+func (m *QueryAccStatesRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *QueryAllAccStateRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *QueryAccStatesRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_QueryAllAccStateRequest.Marshal(b, m, deterministic)
+		return xxx_messageInfo_QueryAccStatesRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -143,42 +143,42 @@ func (m *QueryAllAccStateRequest) XXX_Marshal(b []byte, deterministic bool) ([]b
 		return b[:n], nil
 	}
 }
-func (m *QueryAllAccStateRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QueryAllAccStateRequest.Merge(m, src)
+func (m *QueryAccStatesRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryAccStatesRequest.Merge(m, src)
 }
-func (m *QueryAllAccStateRequest) XXX_Size() int {
+func (m *QueryAccStatesRequest) XXX_Size() int {
 	return m.Size()
 }
-func (m *QueryAllAccStateRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_QueryAllAccStateRequest.DiscardUnknown(m)
+func (m *QueryAccStatesRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryAccStatesRequest.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_QueryAllAccStateRequest proto.InternalMessageInfo
+var xxx_messageInfo_QueryAccStatesRequest proto.InternalMessageInfo
 
-func (m *QueryAllAccStateRequest) GetPagination() *query.PageRequest {
+func (m *QueryAccStatesRequest) GetPagination() *query.PageRequest {
 	if m != nil {
 		return m.Pagination
 	}
 	return nil
 }
 
-type QueryAllAccStateResponse struct {
+type QueryAccStatesResponse struct {
 	AccState   []AccState          `protobuf:"bytes,1,rep,name=accState,proto3" json:"accState"`
 	Pagination *query.PageResponse `protobuf:"bytes,2,opt,name=pagination,proto3" json:"pagination,omitempty"`
 }
 
-func (m *QueryAllAccStateResponse) Reset()         { *m = QueryAllAccStateResponse{} }
-func (m *QueryAllAccStateResponse) String() string { return proto.CompactTextString(m) }
-func (*QueryAllAccStateResponse) ProtoMessage()    {}
-func (*QueryAllAccStateResponse) Descriptor() ([]byte, []int) {
+func (m *QueryAccStatesResponse) Reset()         { *m = QueryAccStatesResponse{} }
+func (m *QueryAccStatesResponse) String() string { return proto.CompactTextString(m) }
+func (*QueryAccStatesResponse) ProtoMessage()    {}
+func (*QueryAccStatesResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_e9c721b48ee5d4ec, []int{3}
 }
-func (m *QueryAllAccStateResponse) XXX_Unmarshal(b []byte) error {
+func (m *QueryAccStatesResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *QueryAllAccStateResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *QueryAccStatesResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_QueryAllAccStateResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_QueryAccStatesResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -188,48 +188,48 @@ func (m *QueryAllAccStateResponse) XXX_Marshal(b []byte, deterministic bool) ([]
 		return b[:n], nil
 	}
 }
-func (m *QueryAllAccStateResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QueryAllAccStateResponse.Merge(m, src)
+func (m *QueryAccStatesResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryAccStatesResponse.Merge(m, src)
 }
-func (m *QueryAllAccStateResponse) XXX_Size() int {
+func (m *QueryAccStatesResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *QueryAllAccStateResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_QueryAllAccStateResponse.DiscardUnknown(m)
+func (m *QueryAccStatesResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryAccStatesResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_QueryAllAccStateResponse proto.InternalMessageInfo
+var xxx_messageInfo_QueryAccStatesResponse proto.InternalMessageInfo
 
-func (m *QueryAllAccStateResponse) GetAccState() []AccState {
+func (m *QueryAccStatesResponse) GetAccState() []AccState {
 	if m != nil {
 		return m.AccState
 	}
 	return nil
 }
 
-func (m *QueryAllAccStateResponse) GetPagination() *query.PageResponse {
+func (m *QueryAccStatesResponse) GetPagination() *query.PageResponse {
 	if m != nil {
 		return m.Pagination
 	}
 	return nil
 }
 
-type QueryGetVoterRequest struct {
+type QueryVoterRequest struct {
 	Address string `protobuf:"bytes,1,opt,name=address,proto3" json:"address,omitempty"`
 }
 
-func (m *QueryGetVoterRequest) Reset()         { *m = QueryGetVoterRequest{} }
-func (m *QueryGetVoterRequest) String() string { return proto.CompactTextString(m) }
-func (*QueryGetVoterRequest) ProtoMessage()    {}
-func (*QueryGetVoterRequest) Descriptor() ([]byte, []int) {
+func (m *QueryVoterRequest) Reset()         { *m = QueryVoterRequest{} }
+func (m *QueryVoterRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryVoterRequest) ProtoMessage()    {}
+func (*QueryVoterRequest) Descriptor() ([]byte, []int) {
 	return fileDescriptor_e9c721b48ee5d4ec, []int{4}
 }
-func (m *QueryGetVoterRequest) XXX_Unmarshal(b []byte) error {
+func (m *QueryVoterRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *QueryGetVoterRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *QueryVoterRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_QueryGetVoterRequest.Marshal(b, m, deterministic)
+		return xxx_messageInfo_QueryVoterRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -239,41 +239,41 @@ func (m *QueryGetVoterRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte
 		return b[:n], nil
 	}
 }
-func (m *QueryGetVoterRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QueryGetVoterRequest.Merge(m, src)
+func (m *QueryVoterRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryVoterRequest.Merge(m, src)
 }
-func (m *QueryGetVoterRequest) XXX_Size() int {
+func (m *QueryVoterRequest) XXX_Size() int {
 	return m.Size()
 }
-func (m *QueryGetVoterRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_QueryGetVoterRequest.DiscardUnknown(m)
+func (m *QueryVoterRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryVoterRequest.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_QueryGetVoterRequest proto.InternalMessageInfo
+var xxx_messageInfo_QueryVoterRequest proto.InternalMessageInfo
 
-func (m *QueryGetVoterRequest) GetAddress() string {
+func (m *QueryVoterRequest) GetAddress() string {
 	if m != nil {
 		return m.Address
 	}
 	return ""
 }
 
-type QueryGetVoterResponse struct {
+type QueryVoterResponse struct {
 	Voter AccState `protobuf:"bytes,1,opt,name=voter,proto3" json:"voter"`
 }
 
-func (m *QueryGetVoterResponse) Reset()         { *m = QueryGetVoterResponse{} }
-func (m *QueryGetVoterResponse) String() string { return proto.CompactTextString(m) }
-func (*QueryGetVoterResponse) ProtoMessage()    {}
-func (*QueryGetVoterResponse) Descriptor() ([]byte, []int) {
+func (m *QueryVoterResponse) Reset()         { *m = QueryVoterResponse{} }
+func (m *QueryVoterResponse) String() string { return proto.CompactTextString(m) }
+func (*QueryVoterResponse) ProtoMessage()    {}
+func (*QueryVoterResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_e9c721b48ee5d4ec, []int{5}
 }
-func (m *QueryGetVoterResponse) XXX_Unmarshal(b []byte) error {
+func (m *QueryVoterResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *QueryGetVoterResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *QueryVoterResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_QueryGetVoterResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_QueryVoterResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -283,41 +283,41 @@ func (m *QueryGetVoterResponse) XXX_Marshal(b []byte, deterministic bool) ([]byt
 		return b[:n], nil
 	}
 }
-func (m *QueryGetVoterResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QueryGetVoterResponse.Merge(m, src)
+func (m *QueryVoterResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryVoterResponse.Merge(m, src)
 }
-func (m *QueryGetVoterResponse) XXX_Size() int {
+func (m *QueryVoterResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *QueryGetVoterResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_QueryGetVoterResponse.DiscardUnknown(m)
+func (m *QueryVoterResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryVoterResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_QueryGetVoterResponse proto.InternalMessageInfo
+var xxx_messageInfo_QueryVoterResponse proto.InternalMessageInfo
 
-func (m *QueryGetVoterResponse) GetVoter() AccState {
+func (m *QueryVoterResponse) GetVoter() AccState {
 	if m != nil {
 		return m.Voter
 	}
 	return AccState{}
 }
 
-type QueryGetLoaderRequest struct {
+type QueryLoaderRequest struct {
 	Address string `protobuf:"bytes,1,opt,name=address,proto3" json:"address,omitempty"`
 }
 
-func (m *QueryGetLoaderRequest) Reset()         { *m = QueryGetLoaderRequest{} }
-func (m *QueryGetLoaderRequest) String() string { return proto.CompactTextString(m) }
-func (*QueryGetLoaderRequest) ProtoMessage()    {}
-func (*QueryGetLoaderRequest) Descriptor() ([]byte, []int) {
+func (m *QueryLoaderRequest) Reset()         { *m = QueryLoaderRequest{} }
+func (m *QueryLoaderRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryLoaderRequest) ProtoMessage()    {}
+func (*QueryLoaderRequest) Descriptor() ([]byte, []int) {
 	return fileDescriptor_e9c721b48ee5d4ec, []int{6}
 }
-func (m *QueryGetLoaderRequest) XXX_Unmarshal(b []byte) error {
+func (m *QueryLoaderRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *QueryGetLoaderRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *QueryLoaderRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_QueryGetLoaderRequest.Marshal(b, m, deterministic)
+		return xxx_messageInfo_QueryLoaderRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -327,41 +327,41 @@ func (m *QueryGetLoaderRequest) XXX_Marshal(b []byte, deterministic bool) ([]byt
 		return b[:n], nil
 	}
 }
-func (m *QueryGetLoaderRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QueryGetLoaderRequest.Merge(m, src)
+func (m *QueryLoaderRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryLoaderRequest.Merge(m, src)
 }
-func (m *QueryGetLoaderRequest) XXX_Size() int {
+func (m *QueryLoaderRequest) XXX_Size() int {
 	return m.Size()
 }
-func (m *QueryGetLoaderRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_QueryGetLoaderRequest.DiscardUnknown(m)
+func (m *QueryLoaderRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryLoaderRequest.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_QueryGetLoaderRequest proto.InternalMessageInfo
+var xxx_messageInfo_QueryLoaderRequest proto.InternalMessageInfo
 
-func (m *QueryGetLoaderRequest) GetAddress() string {
+func (m *QueryLoaderRequest) GetAddress() string {
 	if m != nil {
 		return m.Address
 	}
 	return ""
 }
 
-type QueryGetLoaderResponse struct {
+type QueryLoaderResponse struct {
 	AccState *AccState `protobuf:"bytes,1,opt,name=accState,proto3" json:"accState,omitempty"`
 }
 
-func (m *QueryGetLoaderResponse) Reset()         { *m = QueryGetLoaderResponse{} }
-func (m *QueryGetLoaderResponse) String() string { return proto.CompactTextString(m) }
-func (*QueryGetLoaderResponse) ProtoMessage()    {}
-func (*QueryGetLoaderResponse) Descriptor() ([]byte, []int) {
+func (m *QueryLoaderResponse) Reset()         { *m = QueryLoaderResponse{} }
+func (m *QueryLoaderResponse) String() string { return proto.CompactTextString(m) }
+func (*QueryLoaderResponse) ProtoMessage()    {}
+func (*QueryLoaderResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_e9c721b48ee5d4ec, []int{7}
 }
-func (m *QueryGetLoaderResponse) XXX_Unmarshal(b []byte) error {
+func (m *QueryLoaderResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *QueryGetLoaderResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *QueryLoaderResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_QueryGetLoaderResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_QueryLoaderResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -371,19 +371,19 @@ func (m *QueryGetLoaderResponse) XXX_Marshal(b []byte, deterministic bool) ([]by
 		return b[:n], nil
 	}
 }
-func (m *QueryGetLoaderResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QueryGetLoaderResponse.Merge(m, src)
+func (m *QueryLoaderResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryLoaderResponse.Merge(m, src)
 }
-func (m *QueryGetLoaderResponse) XXX_Size() int {
+func (m *QueryLoaderResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *QueryGetLoaderResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_QueryGetLoaderResponse.DiscardUnknown(m)
+func (m *QueryLoaderResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryLoaderResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_QueryGetLoaderResponse proto.InternalMessageInfo
+var xxx_messageInfo_QueryLoaderResponse proto.InternalMessageInfo
 
-func (m *QueryGetLoaderResponse) GetAccState() *AccState {
+func (m *QueryLoaderResponse) GetAccState() *AccState {
 	if m != nil {
 		return m.AccState
 	}
@@ -894,86 +894,257 @@ func (m *QueryDocumentIssuersResponse) GetAccStates() []*AccState {
 	return nil
 }
 
+type QueryVotersRequest struct {
+}
+
+func (m *QueryVotersRequest) Reset()         { *m = QueryVotersRequest{} }
+func (m *QueryVotersRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryVotersRequest) ProtoMessage()    {}
+func (*QueryVotersRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_e9c721b48ee5d4ec, []int{20}
+}
+func (m *QueryVotersRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryVotersRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryVotersRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryVotersRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryVotersRequest.Merge(m, src)
+}
+func (m *QueryVotersRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryVotersRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryVotersRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryVotersRequest proto.InternalMessageInfo
+
+type QueryVotersResponse struct {
+	Voters []*AccState `protobuf:"bytes,1,rep,name=voters,proto3" json:"voters,omitempty"`
+}
+
+func (m *QueryVotersResponse) Reset()         { *m = QueryVotersResponse{} }
+func (m *QueryVotersResponse) String() string { return proto.CompactTextString(m) }
+func (*QueryVotersResponse) ProtoMessage()    {}
+func (*QueryVotersResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_e9c721b48ee5d4ec, []int{21}
+}
+func (m *QueryVotersResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryVotersResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryVotersResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryVotersResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryVotersResponse.Merge(m, src)
+}
+func (m *QueryVotersResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryVotersResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryVotersResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryVotersResponse proto.InternalMessageInfo
+
+func (m *QueryVotersResponse) GetVoters() []*AccState {
+	if m != nil {
+		return m.Voters
+	}
+	return nil
+}
+
+type QueryLoadersRequest struct {
+}
+
+func (m *QueryLoadersRequest) Reset()         { *m = QueryLoadersRequest{} }
+func (m *QueryLoadersRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryLoadersRequest) ProtoMessage()    {}
+func (*QueryLoadersRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_e9c721b48ee5d4ec, []int{22}
+}
+func (m *QueryLoadersRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryLoadersRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryLoadersRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryLoadersRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryLoadersRequest.Merge(m, src)
+}
+func (m *QueryLoadersRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryLoadersRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryLoadersRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryLoadersRequest proto.InternalMessageInfo
+
+type QueryLoadersResponse struct {
+	Loaders []*AccState `protobuf:"bytes,1,rep,name=loaders,proto3" json:"loaders,omitempty"`
+}
+
+func (m *QueryLoadersResponse) Reset()         { *m = QueryLoadersResponse{} }
+func (m *QueryLoadersResponse) String() string { return proto.CompactTextString(m) }
+func (*QueryLoadersResponse) ProtoMessage()    {}
+func (*QueryLoadersResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_e9c721b48ee5d4ec, []int{23}
+}
+func (m *QueryLoadersResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryLoadersResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryLoadersResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryLoadersResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryLoadersResponse.Merge(m, src)
+}
+func (m *QueryLoadersResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryLoadersResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryLoadersResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryLoadersResponse proto.InternalMessageInfo
+
+func (m *QueryLoadersResponse) GetLoaders() []*AccState {
+	if m != nil {
+		return m.Loaders
+	}
+	return nil
+}
+
 func init() {
-	proto.RegisterType((*QueryGetAccStateRequest)(nil), "ShareRing.shareledger.electoral.QueryGetAccStateRequest")
-	proto.RegisterType((*QueryGetAccStateResponse)(nil), "ShareRing.shareledger.electoral.QueryGetAccStateResponse")
-	proto.RegisterType((*QueryAllAccStateRequest)(nil), "ShareRing.shareledger.electoral.QueryAllAccStateRequest")
-	proto.RegisterType((*QueryAllAccStateResponse)(nil), "ShareRing.shareledger.electoral.QueryAllAccStateResponse")
-	proto.RegisterType((*QueryGetVoterRequest)(nil), "ShareRing.shareledger.electoral.QueryGetVoterRequest")
-	proto.RegisterType((*QueryGetVoterResponse)(nil), "ShareRing.shareledger.electoral.QueryGetVoterResponse")
-	proto.RegisterType((*QueryGetLoaderRequest)(nil), "ShareRing.shareledger.electoral.QueryGetLoaderRequest")
-	proto.RegisterType((*QueryGetLoaderResponse)(nil), "ShareRing.shareledger.electoral.QueryGetLoaderResponse")
-	proto.RegisterType((*QueryIdSignerRequest)(nil), "ShareRing.shareledger.electoral.QueryIdSignerRequest")
-	proto.RegisterType((*QueryIdSignerResponse)(nil), "ShareRing.shareledger.electoral.QueryIdSignerResponse")
-	proto.RegisterType((*QueryIdSignersRequest)(nil), "ShareRing.shareledger.electoral.QueryIdSignersRequest")
-	proto.RegisterType((*QueryIdSignersResponse)(nil), "ShareRing.shareledger.electoral.QueryIdSignersResponse")
-	proto.RegisterType((*QueryAccountOperatorRequest)(nil), "ShareRing.shareledger.electoral.QueryAccountOperatorRequest")
-	proto.RegisterType((*QueryAccountOperatorResponse)(nil), "ShareRing.shareledger.electoral.QueryAccountOperatorResponse")
-	proto.RegisterType((*QueryAccountOperatorsRequest)(nil), "ShareRing.shareledger.electoral.QueryAccountOperatorsRequest")
-	proto.RegisterType((*QueryAccountOperatorsResponse)(nil), "ShareRing.shareledger.electoral.QueryAccountOperatorsResponse")
-	proto.RegisterType((*QueryDocumentIssuerRequest)(nil), "ShareRing.shareledger.electoral.QueryDocumentIssuerRequest")
-	proto.RegisterType((*QueryDocumentIssuerResponse)(nil), "ShareRing.shareledger.electoral.QueryDocumentIssuerResponse")
-	proto.RegisterType((*QueryDocumentIssuersRequest)(nil), "ShareRing.shareledger.electoral.QueryDocumentIssuersRequest")
-	proto.RegisterType((*QueryDocumentIssuersResponse)(nil), "ShareRing.shareledger.electoral.QueryDocumentIssuersResponse")
+	proto.RegisterType((*QueryAccStateRequest)(nil), "shareledger.electoral.QueryAccStateRequest")
+	proto.RegisterType((*QueryAccStateResponse)(nil), "shareledger.electoral.QueryAccStateResponse")
+	proto.RegisterType((*QueryAccStatesRequest)(nil), "shareledger.electoral.QueryAccStatesRequest")
+	proto.RegisterType((*QueryAccStatesResponse)(nil), "shareledger.electoral.QueryAccStatesResponse")
+	proto.RegisterType((*QueryVoterRequest)(nil), "shareledger.electoral.QueryVoterRequest")
+	proto.RegisterType((*QueryVoterResponse)(nil), "shareledger.electoral.QueryVoterResponse")
+	proto.RegisterType((*QueryLoaderRequest)(nil), "shareledger.electoral.QueryLoaderRequest")
+	proto.RegisterType((*QueryLoaderResponse)(nil), "shareledger.electoral.QueryLoaderResponse")
+	proto.RegisterType((*QueryIdSignerRequest)(nil), "shareledger.electoral.QueryIdSignerRequest")
+	proto.RegisterType((*QueryIdSignerResponse)(nil), "shareledger.electoral.QueryIdSignerResponse")
+	proto.RegisterType((*QueryIdSignersRequest)(nil), "shareledger.electoral.QueryIdSignersRequest")
+	proto.RegisterType((*QueryIdSignersResponse)(nil), "shareledger.electoral.QueryIdSignersResponse")
+	proto.RegisterType((*QueryAccountOperatorRequest)(nil), "shareledger.electoral.QueryAccountOperatorRequest")
+	proto.RegisterType((*QueryAccountOperatorResponse)(nil), "shareledger.electoral.QueryAccountOperatorResponse")
+	proto.RegisterType((*QueryAccountOperatorsRequest)(nil), "shareledger.electoral.QueryAccountOperatorsRequest")
+	proto.RegisterType((*QueryAccountOperatorsResponse)(nil), "shareledger.electoral.QueryAccountOperatorsResponse")
+	proto.RegisterType((*QueryDocumentIssuerRequest)(nil), "shareledger.electoral.QueryDocumentIssuerRequest")
+	proto.RegisterType((*QueryDocumentIssuerResponse)(nil), "shareledger.electoral.QueryDocumentIssuerResponse")
+	proto.RegisterType((*QueryDocumentIssuersRequest)(nil), "shareledger.electoral.QueryDocumentIssuersRequest")
+	proto.RegisterType((*QueryDocumentIssuersResponse)(nil), "shareledger.electoral.QueryDocumentIssuersResponse")
+	proto.RegisterType((*QueryVotersRequest)(nil), "shareledger.electoral.QueryVotersRequest")
+	proto.RegisterType((*QueryVotersResponse)(nil), "shareledger.electoral.QueryVotersResponse")
+	proto.RegisterType((*QueryLoadersRequest)(nil), "shareledger.electoral.QueryLoadersRequest")
+	proto.RegisterType((*QueryLoadersResponse)(nil), "shareledger.electoral.QueryLoadersResponse")
 }
 
 func init() { proto.RegisterFile("electoral/query.proto", fileDescriptor_e9c721b48ee5d4ec) }
 
 var fileDescriptor_e9c721b48ee5d4ec = []byte{
-	// 833 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xac, 0x97, 0x41, 0x4f, 0xd4, 0x4c,
-	0x18, 0xc7, 0xb7, 0xf0, 0xf2, 0xbe, 0x30, 0x24, 0xbc, 0x64, 0x02, 0x82, 0x15, 0x16, 0x6c, 0x22,
-	0x0b, 0x1a, 0x5b, 0xc1, 0x08, 0x1a, 0xd1, 0x04, 0xa2, 0x12, 0x22, 0x89, 0xba, 0x24, 0x1e, 0x3c,
-	0x48, 0x66, 0xbb, 0x93, 0xd9, 0x86, 0xd2, 0x59, 0x3a, 0x53, 0xe2, 0xc6, 0x78, 0xf1, 0xe0, 0xd9,
-	0xc4, 0x6f, 0xe0, 0xc1, 0x8b, 0x89, 0xf1, 0xec, 0xc1, 0x83, 0x27, 0x8e, 0x24, 0x5e, 0x3c, 0x19,
-	0x03, 0x7e, 0x10, 0xd3, 0x76, 0xda, 0xdd, 0x76, 0xbb, 0xd9, 0xd9, 0xba, 0xb7, 0xd9, 0xce, 0xfc,
-	0x9f, 0xe7, 0xf7, 0xfc, 0xfb, 0x74, 0x9e, 0x2c, 0x98, 0xc4, 0x36, 0x36, 0x39, 0x75, 0x91, 0x6d,
-	0x1c, 0x7a, 0xd8, 0x6d, 0xe8, 0x75, 0x97, 0x72, 0x0a, 0xe7, 0x76, 0x6b, 0xc8, 0xc5, 0x65, 0xcb,
-	0x21, 0x3a, 0xf3, 0x57, 0x36, 0xae, 0x12, 0xec, 0xea, 0xf1, 0x61, 0x75, 0x86, 0x50, 0x4a, 0x6c,
-	0x6c, 0xa0, 0xba, 0x65, 0x20, 0xc7, 0xa1, 0x1c, 0x71, 0x8b, 0x3a, 0x2c, 0x94, 0xab, 0x97, 0x4d,
-	0xca, 0x0e, 0x28, 0x33, 0x2a, 0x88, 0xe1, 0x30, 0xae, 0x71, 0xb4, 0x5c, 0xc1, 0x1c, 0x2d, 0x1b,
-	0x75, 0x44, 0x2c, 0x27, 0x38, 0x2c, 0xce, 0x9e, 0x6f, 0x12, 0x20, 0xd3, 0xdc, 0x63, 0x1c, 0x71,
-	0x9c, 0xb1, 0xe5, 0xf1, 0x1a, 0x75, 0x2d, 0xde, 0x68, 0xdf, 0xe2, 0x2e, 0x46, 0xcc, 0x73, 0xb1,
-	0x2b, 0xb6, 0x26, 0x08, 0x25, 0x34, 0x58, 0x1a, 0xfe, 0x2a, 0x7c, 0xaa, 0x5d, 0x01, 0x53, 0x4f,
-	0x7c, 0x90, 0x2d, 0xcc, 0x37, 0x4c, 0x73, 0xd7, 0xcf, 0x52, 0xc6, 0x87, 0x1e, 0x66, 0x1c, 0x8e,
-	0x83, 0xc1, 0x7d, 0xdc, 0x98, 0x56, 0xe6, 0x95, 0xc5, 0x91, 0xb2, 0xbf, 0xd4, 0x08, 0x98, 0x6e,
-	0x3f, 0xcc, 0xea, 0xd4, 0x61, 0x18, 0x3e, 0x04, 0xc3, 0x48, 0x3c, 0x0b, 0x24, 0xa3, 0x2b, 0x4b,
-	0x7a, 0x17, 0xb7, 0xf4, 0x28, 0xc8, 0xe6, 0x3f, 0xc7, 0x3f, 0xe7, 0x0a, 0xe5, 0x38, 0x80, 0x86,
-	0x04, 0xd5, 0x86, 0x6d, 0xa7, 0xa9, 0x1e, 0x00, 0xd0, 0xf4, 0x4a, 0x64, 0x5a, 0xd0, 0x43, 0x63,
-	0x75, 0xdf, 0x58, 0x3d, 0x7c, 0x61, 0xc2, 0x58, 0xfd, 0x31, 0x22, 0x91, 0xb6, 0xdc, 0xa2, 0xd4,
-	0x3e, 0x2b, 0xa2, 0x98, 0x44, 0x8e, 0xcc, 0x62, 0x06, 0xff, 0xaa, 0x18, 0xb8, 0x95, 0x20, 0x1e,
-	0x08, 0x88, 0x4b, 0x5d, 0x89, 0x43, 0x92, 0x04, 0xf2, 0x35, 0x30, 0x11, 0xd9, 0xff, 0x94, 0x72,
-	0xec, 0x46, 0x96, 0x4c, 0x83, 0xff, 0x50, 0xb5, 0xea, 0x62, 0xc6, 0xc4, 0xcb, 0x8a, 0x7e, 0x6a,
-	0xcf, 0xc1, 0x64, 0x4a, 0x21, 0x0a, 0xbc, 0x0f, 0x86, 0x8e, 0xfc, 0x07, 0x79, 0x5f, 0x55, 0xa8,
-	0xd6, 0x96, 0x9b, 0xf1, 0x77, 0x28, 0xaa, 0xca, 0x20, 0xed, 0x81, 0x73, 0x69, 0x49, 0xcc, 0x94,
-	0xbf, 0x83, 0x5a, 0x7a, 0x27, 0x72, 0x69, 0xbb, 0xba, 0x6b, 0x11, 0xa7, 0x17, 0x97, 0x9a, 0x8a,
-	0xfe, 0x12, 0x4d, 0xa5, 0xe2, 0x33, 0x81, 0xa4, 0x21, 0xe1, 0x45, 0xcb, 0x86, 0xc8, 0xbc, 0x05,
-	0x46, 0x22, 0x39, 0xeb, 0xb9, 0x03, 0xcb, 0x4d, 0xad, 0xb6, 0x06, 0x2e, 0x84, 0x5d, 0x6e, 0x9a,
-	0xd4, 0x73, 0xf8, 0xa3, 0x3a, 0x76, 0x11, 0xa7, 0x12, 0xa6, 0x60, 0x30, 0x93, 0x2d, 0xec, 0xaf,
-	0x37, 0xc5, 0xec, 0x34, 0xb1, 0x45, 0x35, 0x30, 0xdb, 0x61, 0xbf, 0xdf, 0x4e, 0xad, 0x02, 0x35,
-	0xc8, 0x74, 0x8f, 0x9a, 0xde, 0x01, 0x76, 0xf8, 0x36, 0x63, 0x9e, 0x4c, 0xf7, 0x54, 0x85, 0xc3,
-	0x69, 0x5d, 0x7f, 0x7d, 0x9a, 0xcd, 0xcc, 0x12, 0xdb, 0x44, 0x84, 0x8d, 0x6d, 0xdb, 0x7d, 0x76,
-	0x69, 0xe5, 0xcd, 0x18, 0x18, 0x0a, 0x32, 0xc1, 0x4f, 0x0a, 0x18, 0x8e, 0x4e, 0xc0, 0x9b, 0x5d,
-	0x83, 0x75, 0x98, 0x32, 0xea, 0xad, 0x1c, 0xca, 0xb0, 0x28, 0xed, 0xea, 0xeb, 0xef, 0xbf, 0xdf,
-	0x0d, 0x94, 0xe0, 0x25, 0xa3, 0x45, 0x68, 0x24, 0xe6, 0x66, 0x20, 0x30, 0x5e, 0xee, 0xe3, 0xc6,
-	0x2b, 0xf8, 0x51, 0x01, 0xa3, 0x51, 0x8c, 0x0d, 0xdb, 0x96, 0x65, 0x6e, 0x9f, 0x41, 0xb2, 0xcc,
-	0x19, 0x93, 0x45, 0x2b, 0x05, 0xcc, 0x17, 0xe1, 0x5c, 0x17, 0x66, 0xf8, 0x5e, 0x01, 0xc3, 0xd1,
-	0xb5, 0x0d, 0x6f, 0x48, 0x9b, 0xd4, 0x3a, 0x18, 0xd4, 0xd5, 0x5e, 0x65, 0x92, 0x90, 0x24, 0xe2,
-	0xfa, 0xa0, 0x80, 0x91, 0xf8, 0x22, 0x87, 0xf2, 0xe9, 0x12, 0xc3, 0x42, 0x5d, 0xeb, 0x59, 0x27,
-	0x38, 0x17, 0x03, 0x4e, 0x0d, 0xce, 0x77, 0xe6, 0x14, 0x68, 0xbe, 0x9b, 0xd1, 0x2d, 0x2b, 0xeb,
-	0x66, 0x6a, 0x80, 0xc8, 0xba, 0x99, 0x9e, 0x22, 0x5d, 0xdd, 0xb4, 0x22, 0x2e, 0xdf, 0xcd, 0x78,
-	0x14, 0xc0, 0x1e, 0xd3, 0xb1, 0x1e, 0xdd, 0x6c, 0x9b, 0x39, 0x5d, 0xdd, 0xb4, 0x62, 0xb4, 0xaf,
-	0x0a, 0xf8, 0x3f, 0x75, 0x21, 0xc3, 0x75, 0xc9, 0x6f, 0x22, 0x73, 0x0e, 0xa9, 0x77, 0x72, 0xaa,
-	0x05, 0xba, 0x1e, 0xa0, 0x2f, 0xc2, 0x85, 0xce, 0x5f, 0x55, 0x02, 0xf6, 0x9b, 0x02, 0xc6, 0xd3,
-	0x13, 0x05, 0xe6, 0x63, 0x88, 0x7d, 0xbf, 0x9b, 0x57, 0x2e, 0x6a, 0x30, 0x82, 0x1a, 0x96, 0x60,
-	0x49, 0xae, 0x06, 0x06, 0xbf, 0x28, 0x60, 0x2c, 0x79, 0xdf, 0xc3, 0xdb, 0x72, 0x0c, 0x99, 0x23,
-	0x4e, 0x5d, 0xcf, 0x27, 0x96, 0xbc, 0x8c, 0xab, 0x49, 0x52, 0xbf, 0x85, 0x52, 0xc3, 0x0a, 0xe6,
-	0x02, 0x60, 0x3d, 0xb6, 0x50, 0x87, 0x09, 0xd9, 0xb5, 0x85, 0x92, 0xfc, 0x6c, 0x73, 0xe7, 0xf8,
-	0xb4, 0xa8, 0x9c, 0x9c, 0x16, 0x95, 0x5f, 0xa7, 0x45, 0xe5, 0xed, 0x59, 0xb1, 0x70, 0x72, 0x56,
-	0x2c, 0xfc, 0x38, 0x2b, 0x16, 0x9e, 0xad, 0x10, 0x8b, 0xd7, 0xbc, 0x8a, 0x6e, 0xd2, 0x83, 0x30,
-	0x96, 0x6b, 0x39, 0x24, 0x11, 0xf5, 0x45, 0x4b, 0x5c, 0xde, 0xa8, 0x63, 0x56, 0xf9, 0x37, 0xf8,
-	0x37, 0x76, 0xfd, 0x4f, 0x00, 0x00, 0x00, 0xff, 0xff, 0x30, 0x7e, 0x8b, 0x64, 0x78, 0x0e, 0x00,
-	0x00,
+	// 950 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xac, 0x97, 0x4d, 0x6f, 0xdc, 0x44,
+	0x18, 0xc7, 0x33, 0x2d, 0x79, 0x7b, 0x90, 0xda, 0xf2, 0x90, 0x40, 0x31, 0x8d, 0x13, 0x59, 0x22,
+	0xdd, 0xa6, 0xad, 0x9d, 0x6c, 0x10, 0xa5, 0x42, 0x1c, 0x5a, 0x21, 0x50, 0xa5, 0x0a, 0xc8, 0x16,
+	0x81, 0x14, 0x04, 0xd5, 0xc4, 0x3b, 0x72, 0xac, 0x6e, 0x3c, 0x5b, 0xcf, 0xb8, 0x62, 0x55, 0xf5,
+	0xc2, 0x81, 0x03, 0x12, 0x12, 0x2f, 0xe2, 0xc0, 0x9d, 0x13, 0x07, 0x24, 0x0e, 0x7c, 0x87, 0x1e,
+	0x2b, 0x71, 0xe1, 0x84, 0x50, 0xc2, 0x85, 0x6f, 0x81, 0x76, 0x3c, 0xf6, 0xda, 0x8e, 0xbd, 0x3b,
+	0x8b, 0xf6, 0xe6, 0xcc, 0x3c, 0x2f, 0xbf, 0x7d, 0xe6, 0x3f, 0xf3, 0x57, 0x60, 0x95, 0xf5, 0x98,
+	0x2f, 0x79, 0x4c, 0x7b, 0xde, 0xc3, 0x84, 0xc5, 0x03, 0xb7, 0x1f, 0x73, 0xc9, 0x71, 0x55, 0x1c,
+	0xd2, 0x98, 0xf5, 0x58, 0x37, 0x60, 0xb1, 0x9b, 0x87, 0x58, 0x97, 0x02, 0xce, 0x83, 0x1e, 0xf3,
+	0x68, 0x3f, 0xf4, 0x68, 0x14, 0x71, 0x49, 0x65, 0xc8, 0x23, 0x91, 0x26, 0x59, 0x5b, 0x3e, 0x17,
+	0x47, 0x5c, 0x78, 0x07, 0x54, 0xb0, 0xb4, 0x9a, 0xf7, 0x68, 0xe7, 0x80, 0x49, 0xba, 0xe3, 0xf5,
+	0x69, 0x10, 0x46, 0x2a, 0x58, 0xc7, 0xbe, 0x32, 0xea, 0x4b, 0x7d, 0xff, 0xbe, 0x90, 0x54, 0xb2,
+	0x9a, 0xad, 0x44, 0x1e, 0xf2, 0x38, 0x94, 0x83, 0xd3, 0x5b, 0x32, 0x66, 0x54, 0x24, 0x31, 0x8b,
+	0xf5, 0xd6, 0x4a, 0xc0, 0x03, 0xae, 0x3e, 0xbd, 0xe1, 0x57, 0xba, 0xea, 0xb4, 0x60, 0x65, 0x6f,
+	0x08, 0x72, 0xcb, 0xf7, 0xef, 0x0d, 0x5b, 0x74, 0xd8, 0xc3, 0x84, 0x09, 0x89, 0x17, 0xe0, 0xec,
+	0x03, 0x36, 0xb8, 0x48, 0x36, 0x48, 0x6b, 0xb9, 0x33, 0xfc, 0x74, 0xf6, 0x61, 0xb5, 0x12, 0x29,
+	0xfa, 0x3c, 0x12, 0x0c, 0x6f, 0xc1, 0x12, 0xd5, 0x6b, 0x2a, 0xfe, 0xf9, 0xf6, 0xba, 0x5b, 0x3b,
+	0x1d, 0x37, 0x4b, 0xbd, 0xfd, 0xdc, 0xd3, 0xbf, 0xd6, 0xe7, 0x3a, 0x79, 0x9a, 0x73, 0xbf, 0x52,
+	0x5b, 0x64, 0x18, 0xef, 0x02, 0x8c, 0x26, 0xa3, 0xab, 0x6f, 0xba, 0xe9, 0x18, 0xdd, 0xe1, 0x18,
+	0xdd, 0xf4, 0x50, 0xf4, 0x18, 0xdd, 0x0f, 0x69, 0x90, 0xfd, 0x84, 0x4e, 0x21, 0xd3, 0xf9, 0x99,
+	0xc0, 0x4b, 0xd5, 0x0e, 0xb5, 0xf8, 0x67, 0xff, 0x07, 0x3e, 0xbe, 0x57, 0xa2, 0x3c, 0xa3, 0x28,
+	0x2f, 0x4f, 0xa4, 0x4c, 0xfb, 0x97, 0x30, 0xaf, 0xc3, 0x0b, 0x8a, 0xf2, 0x63, 0x2e, 0x59, 0x9c,
+	0xcd, 0xe0, 0x22, 0x2c, 0xd2, 0x6e, 0x37, 0x66, 0x42, 0xe8, 0xe3, 0xc8, 0xfe, 0x74, 0xf6, 0x00,
+	0x8b, 0xe1, 0xfa, 0x07, 0xbd, 0x05, 0xf3, 0x8f, 0x86, 0x0b, 0xd3, 0x1d, 0x46, 0x9a, 0xe3, 0xb8,
+	0xba, 0xe4, 0x5d, 0x4e, 0xbb, 0x26, 0x08, 0x1d, 0x78, 0xb1, 0x14, 0x9f, 0x33, 0x4c, 0xab, 0x89,
+	0x82, 0x1a, 0xb6, 0xb5, 0x26, 0xef, 0x74, 0xef, 0x85, 0x41, 0x64, 0x42, 0xf1, 0x91, 0xd6, 0xcf,
+	0x28, 0x63, 0x16, 0x1c, 0x2f, 0x57, 0xaa, 0x66, 0xaa, 0x74, 0x3e, 0xd1, 0x62, 0x2a, 0x6c, 0xe8,
+	0x7e, 0x6f, 0xc3, 0x72, 0x96, 0x2e, 0x0c, 0xd5, 0xd4, 0x19, 0x65, 0x38, 0x37, 0xe0, 0xd5, 0x4c,
+	0xa5, 0x3c, 0x89, 0xe4, 0x07, 0x7d, 0x16, 0x53, 0xc9, 0x0d, 0x06, 0xf0, 0x29, 0x5c, 0xaa, 0x4f,
+	0x9c, 0xc5, 0x1c, 0xec, 0xfa, 0xe2, 0xf9, 0x38, 0x3e, 0x87, 0xb5, 0x86, 0xfd, 0xd9, 0x4c, 0xe5,
+	0x0d, 0xb0, 0x54, 0xfd, 0x77, 0xb8, 0x9f, 0x1c, 0xb1, 0x48, 0xde, 0x11, 0x22, 0x31, 0x51, 0xc5,
+	0xbe, 0x9e, 0x66, 0x35, 0x6f, 0x16, 0x33, 0x59, 0xab, 0xad, 0x9d, 0x8f, 0xe4, 0x33, 0x3d, 0xb2,
+	0x53, 0xdb, 0xb3, 0x99, 0xc8, 0x4a, 0xf1, 0xe2, 0xe7, 0x4d, 0xdf, 0xd7, 0x77, 0x31, 0x5b, 0xd5,
+	0xbd, 0x6e, 0xc0, 0x82, 0xba, 0xdb, 0xc6, 0x8d, 0x74, 0xb8, 0xb3, 0x5a, 0xba, 0xdb, 0x79, 0x9b,
+	0x3d, 0x7d, 0x3d, 0xf3, 0x65, 0xdd, 0xe7, 0x26, 0x2c, 0xf6, 0xd2, 0x25, 0xd3, 0x46, 0x59, 0x7c,
+	0xfb, 0xdf, 0x73, 0x30, 0xaf, 0x6a, 0xe2, 0x8f, 0x04, 0x96, 0xb2, 0x7d, 0xbc, 0xda, 0x50, 0xa0,
+	0xce, 0xb1, 0xac, 0x6b, 0x66, 0xc1, 0x29, 0xac, 0xe3, 0x7e, 0xf9, 0xc7, 0x3f, 0x3f, 0x9c, 0x69,
+	0xe1, 0xa6, 0x57, 0xc8, 0xf2, 0x4a, 0x9e, 0x9b, 0xce, 0xda, 0x7b, 0xfc, 0x80, 0x0d, 0x9e, 0xe0,
+	0xf7, 0x04, 0x96, 0x73, 0xef, 0x40, 0xa3, 0x5e, 0xd9, 0xc0, 0xac, 0xeb, 0x86, 0xd1, 0x1a, 0xad,
+	0xa5, 0xd0, 0x1c, 0xdc, 0x98, 0x84, 0x86, 0xdf, 0x10, 0x98, 0x57, 0x87, 0x8d, 0xad, 0x71, 0x2d,
+	0x8a, 0x6e, 0x62, 0x5d, 0x31, 0x88, 0xd4, 0x20, 0x9e, 0x02, 0xb9, 0x82, 0x97, 0x1b, 0x40, 0x52,
+	0x99, 0x78, 0x8f, 0xf5, 0x7d, 0x7b, 0x82, 0xdf, 0x11, 0x58, 0x48, 0x55, 0x81, 0x63, 0xdb, 0x94,
+	0xcc, 0xc5, 0xda, 0x32, 0x09, 0xd5, 0x48, 0xdb, 0x0a, 0x69, 0x0b, 0x5b, 0x0d, 0x48, 0x5a, 0x50,
+	0x05, 0xa6, 0x9f, 0x08, 0x2c, 0x65, 0xef, 0xf4, 0x78, 0x41, 0x55, 0xec, 0x66, 0xbc, 0xa0, 0xaa,
+	0x4e, 0xe3, 0xb4, 0x15, 0xd9, 0x35, 0xdc, 0x6a, 0x20, 0x0b, 0x33, 0xaf, 0x28, 0xb0, 0x0d, 0x45,
+	0x95, 0x7b, 0x08, 0x1a, 0xf5, 0x33, 0x13, 0xd5, 0x29, 0x63, 0x9a, 0x28, 0xaa, 0x1c, 0x0f, 0x7f,
+	0x27, 0x70, 0xbe, 0xf2, 0x92, 0x63, 0x7b, 0x82, 0x82, 0x6b, 0xcc, 0xca, 0xda, 0x9d, 0x2a, 0x47,
+	0x63, 0xde, 0x54, 0x98, 0xbb, 0xb8, 0xd3, 0xac, 0xfd, 0x92, 0xc5, 0x14, 0x86, 0xf9, 0x2b, 0x81,
+	0x0b, 0x55, 0x07, 0xc2, 0x69, 0x20, 0xf2, 0xd1, 0xbe, 0x3e, 0x5d, 0x92, 0xe1, 0x6d, 0xa9, 0xa2,
+	0xe3, 0x6f, 0x04, 0xce, 0x95, 0xfd, 0x01, 0x77, 0xc6, 0x75, 0xae, 0xb5, 0x3f, 0xab, 0x3d, 0x4d,
+	0x8a, 0x46, 0x7d, 0x53, 0xa1, 0xb6, 0x71, 0xbb, 0x01, 0xb5, 0x5b, 0x76, 0xad, 0xc2, 0x90, 0x7f,
+	0x21, 0x70, 0xbe, 0xe2, 0x69, 0x38, 0x05, 0x81, 0x30, 0x12, 0x47, 0x83, 0x69, 0x4e, 0x7c, 0xb3,
+	0x2b, 0xd8, 0xf8, 0x15, 0x81, 0x85, 0xd4, 0x0b, 0x71, 0xf2, 0xab, 0x27, 0x8c, 0x9e, 0xa3, 0xb2,
+	0xb5, 0x3a, 0xaf, 0x29, 0xa2, 0x75, 0x5c, 0x1b, 0xfb, 0x42, 0xe2, 0xd7, 0x04, 0x16, 0xb5, 0x5b,
+	0xa2, 0xc1, 0x6b, 0x97, 0xa3, 0x5c, 0x35, 0x8a, 0xd5, 0x2c, 0x9b, 0x8a, 0x65, 0x03, 0xed, 0xf1,
+	0x4f, 0xe3, 0xed, 0xbb, 0x4f, 0x8f, 0x6d, 0xf2, 0xec, 0xd8, 0x26, 0x7f, 0x1f, 0xdb, 0xe4, 0xdb,
+	0x13, 0x7b, 0xee, 0xd9, 0x89, 0x3d, 0xf7, 0xe7, 0x89, 0x3d, 0xb7, 0xdf, 0x0e, 0x42, 0x79, 0x98,
+	0x1c, 0xb8, 0x3e, 0x3f, 0x4a, 0x6b, 0xc4, 0x61, 0x14, 0x94, 0xaa, 0x7d, 0x51, 0xa8, 0x27, 0x07,
+	0x7d, 0x26, 0x0e, 0x16, 0xd4, 0xbf, 0x91, 0xbb, 0xff, 0x05, 0x00, 0x00, 0xff, 0xff, 0x26, 0xee,
+	0xd4, 0x48, 0x27, 0x0f, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -989,13 +1160,13 @@ const _ = grpc.SupportPackageIsVersion4
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type QueryClient interface {
 	// Queries a accState by index.
-	AccState(ctx context.Context, in *QueryGetAccStateRequest, opts ...grpc.CallOption) (*QueryGetAccStateResponse, error)
+	AccState(ctx context.Context, in *QueryAccStateRequest, opts ...grpc.CallOption) (*QueryAccStateResponse, error)
 	// Queries a list of accState items.
-	AccStateAll(ctx context.Context, in *QueryAllAccStateRequest, opts ...grpc.CallOption) (*QueryAllAccStateResponse, error)
-	// Queries a list of getVoter items.
-	GetVoter(ctx context.Context, in *QueryGetVoterRequest, opts ...grpc.CallOption) (*QueryGetVoterResponse, error)
-	// Queries a list of getLoader items.
-	GetLoader(ctx context.Context, in *QueryGetLoaderRequest, opts ...grpc.CallOption) (*QueryGetLoaderResponse, error)
+	AccStates(ctx context.Context, in *QueryAccStatesRequest, opts ...grpc.CallOption) (*QueryAccStatesResponse, error)
+	// Queries a list of Voter items.
+	Voter(ctx context.Context, in *QueryVoterRequest, opts ...grpc.CallOption) (*QueryVoterResponse, error)
+	// Queries a list of Loader items.
+	Loader(ctx context.Context, in *QueryLoaderRequest, opts ...grpc.CallOption) (*QueryLoaderResponse, error)
 	// Queries a list of idSigner items.
 	IdSigner(ctx context.Context, in *QueryIdSignerRequest, opts ...grpc.CallOption) (*QueryIdSignerResponse, error)
 	// Queries a list of idSigners items.
@@ -1008,6 +1179,10 @@ type QueryClient interface {
 	DocumentIssuer(ctx context.Context, in *QueryDocumentIssuerRequest, opts ...grpc.CallOption) (*QueryDocumentIssuerResponse, error)
 	// Queries a list of documentIssuers items.
 	DocumentIssuers(ctx context.Context, in *QueryDocumentIssuersRequest, opts ...grpc.CallOption) (*QueryDocumentIssuersResponse, error)
+	// Queries a list of Voters items.
+	Voters(ctx context.Context, in *QueryVotersRequest, opts ...grpc.CallOption) (*QueryVotersResponse, error)
+	// Queries a list of Loaders items.
+	Loaders(ctx context.Context, in *QueryLoadersRequest, opts ...grpc.CallOption) (*QueryLoadersResponse, error)
 }
 
 type queryClient struct {
@@ -1018,36 +1193,36 @@ func NewQueryClient(cc grpc1.ClientConn) QueryClient {
 	return &queryClient{cc}
 }
 
-func (c *queryClient) AccState(ctx context.Context, in *QueryGetAccStateRequest, opts ...grpc.CallOption) (*QueryGetAccStateResponse, error) {
-	out := new(QueryGetAccStateResponse)
-	err := c.cc.Invoke(ctx, "/ShareRing.shareledger.electoral.Query/AccState", in, out, opts...)
+func (c *queryClient) AccState(ctx context.Context, in *QueryAccStateRequest, opts ...grpc.CallOption) (*QueryAccStateResponse, error) {
+	out := new(QueryAccStateResponse)
+	err := c.cc.Invoke(ctx, "/shareledger.electoral.Query/AccState", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *queryClient) AccStateAll(ctx context.Context, in *QueryAllAccStateRequest, opts ...grpc.CallOption) (*QueryAllAccStateResponse, error) {
-	out := new(QueryAllAccStateResponse)
-	err := c.cc.Invoke(ctx, "/ShareRing.shareledger.electoral.Query/AccStateAll", in, out, opts...)
+func (c *queryClient) AccStates(ctx context.Context, in *QueryAccStatesRequest, opts ...grpc.CallOption) (*QueryAccStatesResponse, error) {
+	out := new(QueryAccStatesResponse)
+	err := c.cc.Invoke(ctx, "/shareledger.electoral.Query/AccStates", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *queryClient) GetVoter(ctx context.Context, in *QueryGetVoterRequest, opts ...grpc.CallOption) (*QueryGetVoterResponse, error) {
-	out := new(QueryGetVoterResponse)
-	err := c.cc.Invoke(ctx, "/ShareRing.shareledger.electoral.Query/GetVoter", in, out, opts...)
+func (c *queryClient) Voter(ctx context.Context, in *QueryVoterRequest, opts ...grpc.CallOption) (*QueryVoterResponse, error) {
+	out := new(QueryVoterResponse)
+	err := c.cc.Invoke(ctx, "/shareledger.electoral.Query/Voter", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *queryClient) GetLoader(ctx context.Context, in *QueryGetLoaderRequest, opts ...grpc.CallOption) (*QueryGetLoaderResponse, error) {
-	out := new(QueryGetLoaderResponse)
-	err := c.cc.Invoke(ctx, "/ShareRing.shareledger.electoral.Query/GetLoader", in, out, opts...)
+func (c *queryClient) Loader(ctx context.Context, in *QueryLoaderRequest, opts ...grpc.CallOption) (*QueryLoaderResponse, error) {
+	out := new(QueryLoaderResponse)
+	err := c.cc.Invoke(ctx, "/shareledger.electoral.Query/Loader", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1056,7 +1231,7 @@ func (c *queryClient) GetLoader(ctx context.Context, in *QueryGetLoaderRequest, 
 
 func (c *queryClient) IdSigner(ctx context.Context, in *QueryIdSignerRequest, opts ...grpc.CallOption) (*QueryIdSignerResponse, error) {
 	out := new(QueryIdSignerResponse)
-	err := c.cc.Invoke(ctx, "/ShareRing.shareledger.electoral.Query/IdSigner", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/shareledger.electoral.Query/IdSigner", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1065,7 +1240,7 @@ func (c *queryClient) IdSigner(ctx context.Context, in *QueryIdSignerRequest, op
 
 func (c *queryClient) IdSigners(ctx context.Context, in *QueryIdSignersRequest, opts ...grpc.CallOption) (*QueryIdSignersResponse, error) {
 	out := new(QueryIdSignersResponse)
-	err := c.cc.Invoke(ctx, "/ShareRing.shareledger.electoral.Query/IdSigners", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/shareledger.electoral.Query/IdSigners", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1074,7 +1249,7 @@ func (c *queryClient) IdSigners(ctx context.Context, in *QueryIdSignersRequest, 
 
 func (c *queryClient) AccountOperator(ctx context.Context, in *QueryAccountOperatorRequest, opts ...grpc.CallOption) (*QueryAccountOperatorResponse, error) {
 	out := new(QueryAccountOperatorResponse)
-	err := c.cc.Invoke(ctx, "/ShareRing.shareledger.electoral.Query/AccountOperator", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/shareledger.electoral.Query/AccountOperator", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1083,7 +1258,7 @@ func (c *queryClient) AccountOperator(ctx context.Context, in *QueryAccountOpera
 
 func (c *queryClient) AccountOperators(ctx context.Context, in *QueryAccountOperatorsRequest, opts ...grpc.CallOption) (*QueryAccountOperatorsResponse, error) {
 	out := new(QueryAccountOperatorsResponse)
-	err := c.cc.Invoke(ctx, "/ShareRing.shareledger.electoral.Query/AccountOperators", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/shareledger.electoral.Query/AccountOperators", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1092,7 +1267,7 @@ func (c *queryClient) AccountOperators(ctx context.Context, in *QueryAccountOper
 
 func (c *queryClient) DocumentIssuer(ctx context.Context, in *QueryDocumentIssuerRequest, opts ...grpc.CallOption) (*QueryDocumentIssuerResponse, error) {
 	out := new(QueryDocumentIssuerResponse)
-	err := c.cc.Invoke(ctx, "/ShareRing.shareledger.electoral.Query/DocumentIssuer", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/shareledger.electoral.Query/DocumentIssuer", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1101,7 +1276,25 @@ func (c *queryClient) DocumentIssuer(ctx context.Context, in *QueryDocumentIssue
 
 func (c *queryClient) DocumentIssuers(ctx context.Context, in *QueryDocumentIssuersRequest, opts ...grpc.CallOption) (*QueryDocumentIssuersResponse, error) {
 	out := new(QueryDocumentIssuersResponse)
-	err := c.cc.Invoke(ctx, "/ShareRing.shareledger.electoral.Query/DocumentIssuers", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/shareledger.electoral.Query/DocumentIssuers", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *queryClient) Voters(ctx context.Context, in *QueryVotersRequest, opts ...grpc.CallOption) (*QueryVotersResponse, error) {
+	out := new(QueryVotersResponse)
+	err := c.cc.Invoke(ctx, "/shareledger.electoral.Query/Voters", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *queryClient) Loaders(ctx context.Context, in *QueryLoadersRequest, opts ...grpc.CallOption) (*QueryLoadersResponse, error) {
+	out := new(QueryLoadersResponse)
+	err := c.cc.Invoke(ctx, "/shareledger.electoral.Query/Loaders", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1111,13 +1304,13 @@ func (c *queryClient) DocumentIssuers(ctx context.Context, in *QueryDocumentIssu
 // QueryServer is the server API for Query service.
 type QueryServer interface {
 	// Queries a accState by index.
-	AccState(context.Context, *QueryGetAccStateRequest) (*QueryGetAccStateResponse, error)
+	AccState(context.Context, *QueryAccStateRequest) (*QueryAccStateResponse, error)
 	// Queries a list of accState items.
-	AccStateAll(context.Context, *QueryAllAccStateRequest) (*QueryAllAccStateResponse, error)
-	// Queries a list of getVoter items.
-	GetVoter(context.Context, *QueryGetVoterRequest) (*QueryGetVoterResponse, error)
-	// Queries a list of getLoader items.
-	GetLoader(context.Context, *QueryGetLoaderRequest) (*QueryGetLoaderResponse, error)
+	AccStates(context.Context, *QueryAccStatesRequest) (*QueryAccStatesResponse, error)
+	// Queries a list of Voter items.
+	Voter(context.Context, *QueryVoterRequest) (*QueryVoterResponse, error)
+	// Queries a list of Loader items.
+	Loader(context.Context, *QueryLoaderRequest) (*QueryLoaderResponse, error)
 	// Queries a list of idSigner items.
 	IdSigner(context.Context, *QueryIdSignerRequest) (*QueryIdSignerResponse, error)
 	// Queries a list of idSigners items.
@@ -1130,23 +1323,27 @@ type QueryServer interface {
 	DocumentIssuer(context.Context, *QueryDocumentIssuerRequest) (*QueryDocumentIssuerResponse, error)
 	// Queries a list of documentIssuers items.
 	DocumentIssuers(context.Context, *QueryDocumentIssuersRequest) (*QueryDocumentIssuersResponse, error)
+	// Queries a list of Voters items.
+	Voters(context.Context, *QueryVotersRequest) (*QueryVotersResponse, error)
+	// Queries a list of Loaders items.
+	Loaders(context.Context, *QueryLoadersRequest) (*QueryLoadersResponse, error)
 }
 
 // UnimplementedQueryServer can be embedded to have forward compatible implementations.
 type UnimplementedQueryServer struct {
 }
 
-func (*UnimplementedQueryServer) AccState(ctx context.Context, req *QueryGetAccStateRequest) (*QueryGetAccStateResponse, error) {
+func (*UnimplementedQueryServer) AccState(ctx context.Context, req *QueryAccStateRequest) (*QueryAccStateResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AccState not implemented")
 }
-func (*UnimplementedQueryServer) AccStateAll(ctx context.Context, req *QueryAllAccStateRequest) (*QueryAllAccStateResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method AccStateAll not implemented")
+func (*UnimplementedQueryServer) AccStates(ctx context.Context, req *QueryAccStatesRequest) (*QueryAccStatesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AccStates not implemented")
 }
-func (*UnimplementedQueryServer) GetVoter(ctx context.Context, req *QueryGetVoterRequest) (*QueryGetVoterResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetVoter not implemented")
+func (*UnimplementedQueryServer) Voter(ctx context.Context, req *QueryVoterRequest) (*QueryVoterResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Voter not implemented")
 }
-func (*UnimplementedQueryServer) GetLoader(ctx context.Context, req *QueryGetLoaderRequest) (*QueryGetLoaderResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetLoader not implemented")
+func (*UnimplementedQueryServer) Loader(ctx context.Context, req *QueryLoaderRequest) (*QueryLoaderResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Loader not implemented")
 }
 func (*UnimplementedQueryServer) IdSigner(ctx context.Context, req *QueryIdSignerRequest) (*QueryIdSignerResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method IdSigner not implemented")
@@ -1166,13 +1363,19 @@ func (*UnimplementedQueryServer) DocumentIssuer(ctx context.Context, req *QueryD
 func (*UnimplementedQueryServer) DocumentIssuers(ctx context.Context, req *QueryDocumentIssuersRequest) (*QueryDocumentIssuersResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DocumentIssuers not implemented")
 }
+func (*UnimplementedQueryServer) Voters(ctx context.Context, req *QueryVotersRequest) (*QueryVotersResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Voters not implemented")
+}
+func (*UnimplementedQueryServer) Loaders(ctx context.Context, req *QueryLoadersRequest) (*QueryLoadersResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Loaders not implemented")
+}
 
 func RegisterQueryServer(s grpc1.Server, srv QueryServer) {
 	s.RegisterService(&_Query_serviceDesc, srv)
 }
 
 func _Query_AccState_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryGetAccStateRequest)
+	in := new(QueryAccStateRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -1181,64 +1384,64 @@ func _Query_AccState_Handler(srv interface{}, ctx context.Context, dec func(inte
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/ShareRing.shareledger.electoral.Query/AccState",
+		FullMethod: "/shareledger.electoral.Query/AccState",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QueryServer).AccState(ctx, req.(*QueryGetAccStateRequest))
+		return srv.(QueryServer).AccState(ctx, req.(*QueryAccStateRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Query_AccStateAll_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryAllAccStateRequest)
+func _Query_AccStates_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryAccStatesRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(QueryServer).AccStateAll(ctx, in)
+		return srv.(QueryServer).AccStates(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/ShareRing.shareledger.electoral.Query/AccStateAll",
+		FullMethod: "/shareledger.electoral.Query/AccStates",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QueryServer).AccStateAll(ctx, req.(*QueryAllAccStateRequest))
+		return srv.(QueryServer).AccStates(ctx, req.(*QueryAccStatesRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Query_GetVoter_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryGetVoterRequest)
+func _Query_Voter_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryVoterRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(QueryServer).GetVoter(ctx, in)
+		return srv.(QueryServer).Voter(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/ShareRing.shareledger.electoral.Query/GetVoter",
+		FullMethod: "/shareledger.electoral.Query/Voter",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QueryServer).GetVoter(ctx, req.(*QueryGetVoterRequest))
+		return srv.(QueryServer).Voter(ctx, req.(*QueryVoterRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Query_GetLoader_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryGetLoaderRequest)
+func _Query_Loader_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryLoaderRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(QueryServer).GetLoader(ctx, in)
+		return srv.(QueryServer).Loader(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/ShareRing.shareledger.electoral.Query/GetLoader",
+		FullMethod: "/shareledger.electoral.Query/Loader",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QueryServer).GetLoader(ctx, req.(*QueryGetLoaderRequest))
+		return srv.(QueryServer).Loader(ctx, req.(*QueryLoaderRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1253,7 +1456,7 @@ func _Query_IdSigner_Handler(srv interface{}, ctx context.Context, dec func(inte
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/ShareRing.shareledger.electoral.Query/IdSigner",
+		FullMethod: "/shareledger.electoral.Query/IdSigner",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(QueryServer).IdSigner(ctx, req.(*QueryIdSignerRequest))
@@ -1271,7 +1474,7 @@ func _Query_IdSigners_Handler(srv interface{}, ctx context.Context, dec func(int
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/ShareRing.shareledger.electoral.Query/IdSigners",
+		FullMethod: "/shareledger.electoral.Query/IdSigners",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(QueryServer).IdSigners(ctx, req.(*QueryIdSignersRequest))
@@ -1289,7 +1492,7 @@ func _Query_AccountOperator_Handler(srv interface{}, ctx context.Context, dec fu
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/ShareRing.shareledger.electoral.Query/AccountOperator",
+		FullMethod: "/shareledger.electoral.Query/AccountOperator",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(QueryServer).AccountOperator(ctx, req.(*QueryAccountOperatorRequest))
@@ -1307,7 +1510,7 @@ func _Query_AccountOperators_Handler(srv interface{}, ctx context.Context, dec f
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/ShareRing.shareledger.electoral.Query/AccountOperators",
+		FullMethod: "/shareledger.electoral.Query/AccountOperators",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(QueryServer).AccountOperators(ctx, req.(*QueryAccountOperatorsRequest))
@@ -1325,7 +1528,7 @@ func _Query_DocumentIssuer_Handler(srv interface{}, ctx context.Context, dec fun
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/ShareRing.shareledger.electoral.Query/DocumentIssuer",
+		FullMethod: "/shareledger.electoral.Query/DocumentIssuer",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(QueryServer).DocumentIssuer(ctx, req.(*QueryDocumentIssuerRequest))
@@ -1343,7 +1546,7 @@ func _Query_DocumentIssuers_Handler(srv interface{}, ctx context.Context, dec fu
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/ShareRing.shareledger.electoral.Query/DocumentIssuers",
+		FullMethod: "/shareledger.electoral.Query/DocumentIssuers",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(QueryServer).DocumentIssuers(ctx, req.(*QueryDocumentIssuersRequest))
@@ -1351,8 +1554,44 @@ func _Query_DocumentIssuers_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Query_Voters_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryVotersRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).Voters(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/shareledger.electoral.Query/Voters",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).Voters(ctx, req.(*QueryVotersRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Query_Loaders_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryLoadersRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).Loaders(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/shareledger.electoral.Query/Loaders",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).Loaders(ctx, req.(*QueryLoadersRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var _Query_serviceDesc = grpc.ServiceDesc{
-	ServiceName: "ShareRing.shareledger.electoral.Query",
+	ServiceName: "shareledger.electoral.Query",
 	HandlerType: (*QueryServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -1360,16 +1599,16 @@ var _Query_serviceDesc = grpc.ServiceDesc{
 			Handler:    _Query_AccState_Handler,
 		},
 		{
-			MethodName: "AccStateAll",
-			Handler:    _Query_AccStateAll_Handler,
+			MethodName: "AccStates",
+			Handler:    _Query_AccStates_Handler,
 		},
 		{
-			MethodName: "GetVoter",
-			Handler:    _Query_GetVoter_Handler,
+			MethodName: "Voter",
+			Handler:    _Query_Voter_Handler,
 		},
 		{
-			MethodName: "GetLoader",
-			Handler:    _Query_GetLoader_Handler,
+			MethodName: "Loader",
+			Handler:    _Query_Loader_Handler,
 		},
 		{
 			MethodName: "IdSigner",
@@ -1395,12 +1634,20 @@ var _Query_serviceDesc = grpc.ServiceDesc{
 			MethodName: "DocumentIssuers",
 			Handler:    _Query_DocumentIssuers_Handler,
 		},
+		{
+			MethodName: "Voters",
+			Handler:    _Query_Voters_Handler,
+		},
+		{
+			MethodName: "Loaders",
+			Handler:    _Query_Loaders_Handler,
+		},
 	},
 	Streams:  []grpc.StreamDesc{},
 	Metadata: "electoral/query.proto",
 }
 
-func (m *QueryGetAccStateRequest) Marshal() (dAtA []byte, err error) {
+func (m *QueryAccStateRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -1410,12 +1657,12 @@ func (m *QueryGetAccStateRequest) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *QueryGetAccStateRequest) MarshalTo(dAtA []byte) (int, error) {
+func (m *QueryAccStateRequest) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *QueryGetAccStateRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *QueryAccStateRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -1430,7 +1677,7 @@ func (m *QueryGetAccStateRequest) MarshalToSizedBuffer(dAtA []byte) (int, error)
 	return len(dAtA) - i, nil
 }
 
-func (m *QueryGetAccStateResponse) Marshal() (dAtA []byte, err error) {
+func (m *QueryAccStateResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -1440,12 +1687,12 @@ func (m *QueryGetAccStateResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *QueryGetAccStateResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *QueryAccStateResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *QueryGetAccStateResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *QueryAccStateResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -1463,7 +1710,7 @@ func (m *QueryGetAccStateResponse) MarshalToSizedBuffer(dAtA []byte) (int, error
 	return len(dAtA) - i, nil
 }
 
-func (m *QueryAllAccStateRequest) Marshal() (dAtA []byte, err error) {
+func (m *QueryAccStatesRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -1473,12 +1720,12 @@ func (m *QueryAllAccStateRequest) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *QueryAllAccStateRequest) MarshalTo(dAtA []byte) (int, error) {
+func (m *QueryAccStatesRequest) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *QueryAllAccStateRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *QueryAccStatesRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -1498,7 +1745,7 @@ func (m *QueryAllAccStateRequest) MarshalToSizedBuffer(dAtA []byte) (int, error)
 	return len(dAtA) - i, nil
 }
 
-func (m *QueryAllAccStateResponse) Marshal() (dAtA []byte, err error) {
+func (m *QueryAccStatesResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -1508,12 +1755,12 @@ func (m *QueryAllAccStateResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *QueryAllAccStateResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *QueryAccStatesResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *QueryAllAccStateResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *QueryAccStatesResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -1547,7 +1794,7 @@ func (m *QueryAllAccStateResponse) MarshalToSizedBuffer(dAtA []byte) (int, error
 	return len(dAtA) - i, nil
 }
 
-func (m *QueryGetVoterRequest) Marshal() (dAtA []byte, err error) {
+func (m *QueryVoterRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -1557,12 +1804,12 @@ func (m *QueryGetVoterRequest) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *QueryGetVoterRequest) MarshalTo(dAtA []byte) (int, error) {
+func (m *QueryVoterRequest) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *QueryGetVoterRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *QueryVoterRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -1577,7 +1824,7 @@ func (m *QueryGetVoterRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *QueryGetVoterResponse) Marshal() (dAtA []byte, err error) {
+func (m *QueryVoterResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -1587,12 +1834,12 @@ func (m *QueryGetVoterResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *QueryGetVoterResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *QueryVoterResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *QueryGetVoterResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *QueryVoterResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -1610,7 +1857,7 @@ func (m *QueryGetVoterResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *QueryGetLoaderRequest) Marshal() (dAtA []byte, err error) {
+func (m *QueryLoaderRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -1620,12 +1867,12 @@ func (m *QueryGetLoaderRequest) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *QueryGetLoaderRequest) MarshalTo(dAtA []byte) (int, error) {
+func (m *QueryLoaderRequest) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *QueryGetLoaderRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *QueryLoaderRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -1640,7 +1887,7 @@ func (m *QueryGetLoaderRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *QueryGetLoaderResponse) Marshal() (dAtA []byte, err error) {
+func (m *QueryLoaderResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -1650,12 +1897,12 @@ func (m *QueryGetLoaderResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *QueryGetLoaderResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *QueryLoaderResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *QueryGetLoaderResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *QueryLoaderResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -2050,6 +2297,126 @@ func (m *QueryDocumentIssuersResponse) MarshalToSizedBuffer(dAtA []byte) (int, e
 	return len(dAtA) - i, nil
 }
 
+func (m *QueryVotersRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryVotersRequest) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryVotersRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
+func (m *QueryVotersResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryVotersResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryVotersResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Voters) > 0 {
+		for iNdEx := len(m.Voters) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.Voters[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintQuery(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0xa
+		}
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *QueryLoadersRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryLoadersRequest) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryLoadersRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
+func (m *QueryLoadersResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryLoadersResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryLoadersResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Loaders) > 0 {
+		for iNdEx := len(m.Loaders) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.Loaders[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintQuery(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0xa
+		}
+	}
+	return len(dAtA) - i, nil
+}
+
 func encodeVarintQuery(dAtA []byte, offset int, v uint64) int {
 	offset -= sovQuery(v)
 	base := offset
@@ -2061,7 +2428,7 @@ func encodeVarintQuery(dAtA []byte, offset int, v uint64) int {
 	dAtA[offset] = uint8(v)
 	return base
 }
-func (m *QueryGetAccStateRequest) Size() (n int) {
+func (m *QueryAccStateRequest) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -2074,7 +2441,7 @@ func (m *QueryGetAccStateRequest) Size() (n int) {
 	return n
 }
 
-func (m *QueryGetAccStateResponse) Size() (n int) {
+func (m *QueryAccStateResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -2085,7 +2452,7 @@ func (m *QueryGetAccStateResponse) Size() (n int) {
 	return n
 }
 
-func (m *QueryAllAccStateRequest) Size() (n int) {
+func (m *QueryAccStatesRequest) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -2098,7 +2465,7 @@ func (m *QueryAllAccStateRequest) Size() (n int) {
 	return n
 }
 
-func (m *QueryAllAccStateResponse) Size() (n int) {
+func (m *QueryAccStatesResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -2117,7 +2484,7 @@ func (m *QueryAllAccStateResponse) Size() (n int) {
 	return n
 }
 
-func (m *QueryGetVoterRequest) Size() (n int) {
+func (m *QueryVoterRequest) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -2130,7 +2497,7 @@ func (m *QueryGetVoterRequest) Size() (n int) {
 	return n
 }
 
-func (m *QueryGetVoterResponse) Size() (n int) {
+func (m *QueryVoterResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -2141,7 +2508,7 @@ func (m *QueryGetVoterResponse) Size() (n int) {
 	return n
 }
 
-func (m *QueryGetLoaderRequest) Size() (n int) {
+func (m *QueryLoaderRequest) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -2154,7 +2521,7 @@ func (m *QueryGetLoaderRequest) Size() (n int) {
 	return n
 }
 
-func (m *QueryGetLoaderResponse) Size() (n int) {
+func (m *QueryLoaderResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -2317,13 +2684,61 @@ func (m *QueryDocumentIssuersResponse) Size() (n int) {
 	return n
 }
 
+func (m *QueryVotersRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
+func (m *QueryVotersResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if len(m.Voters) > 0 {
+		for _, e := range m.Voters {
+			l = e.Size()
+			n += 1 + l + sovQuery(uint64(l))
+		}
+	}
+	return n
+}
+
+func (m *QueryLoadersRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
+func (m *QueryLoadersResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if len(m.Loaders) > 0 {
+		for _, e := range m.Loaders {
+			l = e.Size()
+			n += 1 + l + sovQuery(uint64(l))
+		}
+	}
+	return n
+}
+
 func sovQuery(x uint64) (n int) {
 	return (math_bits.Len64(x|1) + 6) / 7
 }
 func sozQuery(x uint64) (n int) {
 	return sovQuery(uint64((x << 1) ^ uint64((int64(x) >> 63))))
 }
-func (m *QueryGetAccStateRequest) Unmarshal(dAtA []byte) error {
+func (m *QueryAccStateRequest) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -2346,10 +2761,10 @@ func (m *QueryGetAccStateRequest) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: QueryGetAccStateRequest: wiretype end group for non-group")
+			return fmt.Errorf("proto: QueryAccStateRequest: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QueryGetAccStateRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: QueryAccStateRequest: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -2405,7 +2820,7 @@ func (m *QueryGetAccStateRequest) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *QueryGetAccStateResponse) Unmarshal(dAtA []byte) error {
+func (m *QueryAccStateResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -2428,10 +2843,10 @@ func (m *QueryGetAccStateResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: QueryGetAccStateResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: QueryAccStateResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QueryGetAccStateResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: QueryAccStateResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -2488,7 +2903,7 @@ func (m *QueryGetAccStateResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *QueryAllAccStateRequest) Unmarshal(dAtA []byte) error {
+func (m *QueryAccStatesRequest) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -2511,10 +2926,10 @@ func (m *QueryAllAccStateRequest) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: QueryAllAccStateRequest: wiretype end group for non-group")
+			return fmt.Errorf("proto: QueryAccStatesRequest: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QueryAllAccStateRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: QueryAccStatesRequest: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -2574,7 +2989,7 @@ func (m *QueryAllAccStateRequest) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *QueryAllAccStateResponse) Unmarshal(dAtA []byte) error {
+func (m *QueryAccStatesResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -2597,10 +3012,10 @@ func (m *QueryAllAccStateResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: QueryAllAccStateResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: QueryAccStatesResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QueryAllAccStateResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: QueryAccStatesResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -2694,7 +3109,7 @@ func (m *QueryAllAccStateResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *QueryGetVoterRequest) Unmarshal(dAtA []byte) error {
+func (m *QueryVoterRequest) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -2717,10 +3132,10 @@ func (m *QueryGetVoterRequest) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: QueryGetVoterRequest: wiretype end group for non-group")
+			return fmt.Errorf("proto: QueryVoterRequest: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QueryGetVoterRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: QueryVoterRequest: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -2776,7 +3191,7 @@ func (m *QueryGetVoterRequest) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *QueryGetVoterResponse) Unmarshal(dAtA []byte) error {
+func (m *QueryVoterResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -2799,10 +3214,10 @@ func (m *QueryGetVoterResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: QueryGetVoterResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: QueryVoterResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QueryGetVoterResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: QueryVoterResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -2859,7 +3274,7 @@ func (m *QueryGetVoterResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *QueryGetLoaderRequest) Unmarshal(dAtA []byte) error {
+func (m *QueryLoaderRequest) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -2882,10 +3297,10 @@ func (m *QueryGetLoaderRequest) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: QueryGetLoaderRequest: wiretype end group for non-group")
+			return fmt.Errorf("proto: QueryLoaderRequest: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QueryGetLoaderRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: QueryLoaderRequest: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -2941,7 +3356,7 @@ func (m *QueryGetLoaderRequest) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *QueryGetLoaderResponse) Unmarshal(dAtA []byte) error {
+func (m *QueryLoaderResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -2964,10 +3379,10 @@ func (m *QueryGetLoaderResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: QueryGetLoaderResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: QueryLoaderResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QueryGetLoaderResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: QueryLoaderResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -3909,6 +4324,274 @@ func (m *QueryDocumentIssuersResponse) Unmarshal(dAtA []byte) error {
 			}
 			m.AccStates = append(m.AccStates, &AccState{})
 			if err := m.AccStates[len(m.AccStates)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryVotersRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryVotersRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryVotersRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryVotersResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryVotersResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryVotersResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Voters", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Voters = append(m.Voters, &AccState{})
+			if err := m.Voters[len(m.Voters)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryLoadersRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryLoadersRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryLoadersRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryLoadersResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryLoadersResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryLoadersResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Loaders", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Loaders = append(m.Loaders, &AccState{})
+			if err := m.Loaders[len(m.Loaders)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex

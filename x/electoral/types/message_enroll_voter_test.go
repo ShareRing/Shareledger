@@ -3,8 +3,8 @@ package types
 import (
 	"testing"
 
-	"github.com/sharering/shareledger/testutil/sample"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	"github.com/sharering/shareledger/testutil/sample"
 	"github.com/stretchr/testify/require"
 )
 
@@ -24,6 +24,7 @@ func TestMsgEnrollVoter_ValidateBasic(t *testing.T) {
 			name: "valid address",
 			msg: MsgEnrollVoter{
 				Creator: sample.AccAddress(),
+				Address: sample.AccAddress(),
 			},
 		},
 	}

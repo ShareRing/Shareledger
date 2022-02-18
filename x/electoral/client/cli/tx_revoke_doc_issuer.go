@@ -5,19 +5,19 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/sharering/shareledger/x/electoral/types"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
+	"github.com/sharering/shareledger/x/electoral/types"
 )
 
 var _ = strconv.Itoa(0)
 
-func CmdRevokeDocIssuer() *cobra.Command {
+func CmdRevokeDocIssuers() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "revoke-doc-issuer [addresses]",
-		Short: "Broadcast message revoke-doc-issuer",
-		Args:  cobra.ExactArgs(1),
+		Use:   "revoke-doc-issuers [addresses]",
+		Short: "Broadcast message revoke-doc-issuers",
+		Args:  cobra.MinimumNArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 
 			clientCtx, err := client.GetClientTxContext(cmd)
@@ -25,7 +25,7 @@ func CmdRevokeDocIssuer() *cobra.Command {
 				return err
 			}
 
-			msg := types.NewMsgRevokeDocIssuer(
+			msg := types.NewMsgRevokeDocIssuers(
 				clientCtx.GetFromAddress().String(),
 				args[:],
 			)

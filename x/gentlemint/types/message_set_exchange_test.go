@@ -3,8 +3,8 @@ package types
 import (
 	"testing"
 
-	"github.com/sharering/shareledger/testutil/sample"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	"github.com/sharering/shareledger/testutil/sample"
 	"github.com/stretchr/testify/require"
 )
 
@@ -17,12 +17,14 @@ func TestMsgSetExchange_ValidateBasic(t *testing.T) {
 		{
 			name: "invalid address",
 			msg: MsgSetExchange{
+				Rate:    "200",
 				Creator: "invalid_address",
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
 			msg: MsgSetExchange{
+				Rate:    "200",
 				Creator: sample.AccAddress(),
 			},
 		},

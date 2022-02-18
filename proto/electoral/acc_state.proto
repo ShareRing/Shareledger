@@ -1,5 +1,5 @@
 syntax = "proto3";
-package ShareRing.shareledger.electoral;
+package shareledger.electoral;
 
 option go_package = "github.com/sharering/shareledger/x/electoral/types";
 

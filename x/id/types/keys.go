@@ -18,7 +18,7 @@ const (
 
 	// ID message types
 	TypeMsgCreateID       = "create_id"
-	TypeMsgCreateIDBatch  = "create_id_batch"
+	TypeMsgCreateIDs      = "create_ids"
 	TypeMsgUpdateID       = "update_id"
 	TypeMsgReplaceIdOwner = "replace_id_owner"
 

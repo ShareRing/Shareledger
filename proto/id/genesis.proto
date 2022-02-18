@@ -1,5 +1,5 @@
 syntax = "proto3";
-package ShareRing.shareledger.id;
+package shareledger.id;
 
 // this line is used by starport scaffolding # genesis/proto/import
 import "gogoproto/gogo.proto";

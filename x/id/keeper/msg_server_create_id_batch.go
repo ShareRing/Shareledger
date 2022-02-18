@@ -3,12 +3,12 @@ package keeper
 import (
 	"context"
 
-	"github.com/sharering/shareledger/x/id/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	"github.com/sharering/shareledger/x/id/types"
 )
 
-func (k msgServer) CreateIdBatch(goCtx context.Context, msg *types.MsgCreateIdBatch) (*types.MsgCreateIdBatchResponse, error) {
+func (k msgServer) CreateIds(goCtx context.Context, msg *types.MsgCreateIds) (*types.MsgCreateIdsResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	// TODO: Handling the message
@@ -45,9 +45,9 @@ func (k msgServer) CreateIdBatch(goCtx context.Context, msg *types.MsgCreateIdBa
 			sdk.EventTypeMessage,
 			sdk.NewAttribute(sdk.AttributeKeyModule, types.ModuleName),
 			sdk.NewAttribute(sdk.AttributeKeySender, msg.IssuerAddress),
-			sdk.NewAttribute(sdk.AttributeKeyAction, types.EventCreateIDBatch),
+			sdk.NewAttribute(sdk.AttributeKeyAction, types.EventCreateIDs),
 		),
 	})
 
-	return &types.MsgCreateIdBatchResponse{}, nil
+	return &types.MsgCreateIdsResponse{}, nil
 }

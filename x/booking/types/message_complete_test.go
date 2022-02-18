@@ -3,27 +3,28 @@ package types
 import (
 	"testing"
 
-	"github.com/sharering/shareledger/testutil/sample"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	"github.com/sharering/shareledger/testutil/sample"
 	"github.com/stretchr/testify/require"
 )
 
 func TestMsgComplete_ValidateBasic(t *testing.T) {
 	tests := []struct {
 		name string
-		msg  MsgComplete
+		msg  MsgCompleteBooking
 		err  error
 	}{
 		{
 			name: "invalid address",
-			msg: MsgComplete{
+			msg: MsgCompleteBooking{
 				Booker: "invalid_address",
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
-			msg: MsgComplete{
+			msg: MsgCompleteBooking{
 				Booker: sample.AccAddress(),
+				BookID: "abc",
 			},
 		},
 	}

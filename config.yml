@@ -1,22 +1,25 @@
 accounts:
   - name: validator
-    coins: ["100000000shr", "1000000000shrp"]
+    coins: ["100000000000000000nshr", "100000000000cent"]
     mnemonic: "arrange amateur body cotton slim roof hand blush monkey remove expect rug hazard spoil flag choose tomato end duty nominee wheel cushion into stable"
   - name: authority
-    coins: ["100000000shr", "1000000000shrp"]
+    coins: ["100000000000000000nshr", "100000000000cent"]
     mnemonic: "exile dutch volcano mosquito tree correct blame tape involve fiscal blossom emerge install grant normal divorce shiver barrel island drink local banana educate fix"
   - name: treasurer
-    coins: ["100000000shr", "1000000000shrp"]
+    coins: ["100000000000000000nshr", "100000000000cent"]
     mnemonic: "hair bacon dirt torch air uphold tackle involve pool time token junior melody option judge thumb dance tube loud noise eternal congress fragile apart"
   - name: account-operator
-    coins: ["100000000shr", "1000000000shrp"]
+    coins: ["100000000000000000nshr", "100000000000cent"]
     mnemonic: "pool mother column hurdle jealous wear host attack speak vague client demise inherit arrange lens purity time math decade renew south ring retreat balance"
   - name: idsigner
-    coins: ["100000000shr", "1000000000shrp"]
+    coins: ["100000000000000000nshr", "100000000000cent"]
     mnemonic: "memory mind warfare pull risk math concert address zero speak glimpse outside economy hill boil boss pulp much connect install clip short object tobacco"
+  - name: user
+    coins: [ "100000000000nshr" ]
+    mnemonic: "bright payment cash tomato tragic impulse perfect jacket matter jelly artist pulse will cinnamon erase middle elevator away clinic razor rotate tide unfair trigger"
 validator:
   name: validator
-  staked: "10000000shr"
+  staked: "100000000000000000nshr"
 client:
   openapi:
     path: "docs/static/openapi.yml"
@@ -30,24 +33,48 @@ genesis:
   app_state:
     staking:
       params:
-        bond_denom: "shr"
+        bond_denom: "nshr"
     crisis:
       constant_fee:
-        denom: "shr"
+        denom: "nshr"
     gov:
       deposit_params:
         min_deposit:
-          - amount: "10000000"
-            denom: "shr"
+          - amount: "100000000"
+            denom: "nshr"
+    bank:
+      denom_metadata:
+        - description: "The native smallest token of shr chain"
+          denom_units:
+            - denom: nshr
+              exponent: 0
+              aliases:
+                - nshr
+            - denom: "shr"
+              exponent: 9
+              aliases:
+                - shr
+          base: "nshr"
+          display: "shr"
+          name: "nshr"
+          symbol: "nshr"
+
     mint:
+      minter:
+        inflation: "0"
       params:
-        mint_denom: "shr"
+        mint_denom: "nshr"
+        inflation_max: "0"
+        inflation_min: "0"
     electoral:
+      accStateList:
+        - key: shrploadershareledger1lq9svs76xwekrrzw7uprekyqydf7fp02p8zp8e
+          address: shareledger1lq9svs76xwekrrzw7uprekyqydf7fp02p8zp8e
+          status: active
       authority:
         address: shareledger1lq9svs76xwekrrzw7uprekyqydf7fp02p8zp8e
       treasurer:
         address: shareledger1l5hkf2epa5xmvngnjaasj5dp9jp7ut6s9mrqve
-      
 init:
   client:
     chain-id: "ShareRing-VoyagerNet"

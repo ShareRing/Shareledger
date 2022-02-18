@@ -131,25 +131,25 @@ func (m *MsgCreateDocumentResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_MsgCreateDocumentResponse proto.InternalMessageInfo
 
-type MsgCreateDocumentInBatch struct {
+type MsgCreateDocuments struct {
 	Data   []string `protobuf:"bytes,1,rep,name=data,proto3" json:"data,omitempty"`
 	Holder []string `protobuf:"bytes,2,rep,name=holder,proto3" json:"holder,omitempty"`
 	Issuer string   `protobuf:"bytes,3,opt,name=issuer,proto3" json:"issuer,omitempty"`
 	Proof  []string `protobuf:"bytes,4,rep,name=proof,proto3" json:"proof,omitempty"`
 }
 
-func (m *MsgCreateDocumentInBatch) Reset()         { *m = MsgCreateDocumentInBatch{} }
-func (m *MsgCreateDocumentInBatch) String() string { return proto.CompactTextString(m) }
-func (*MsgCreateDocumentInBatch) ProtoMessage()    {}
-func (*MsgCreateDocumentInBatch) Descriptor() ([]byte, []int) {
+func (m *MsgCreateDocuments) Reset()         { *m = MsgCreateDocuments{} }
+func (m *MsgCreateDocuments) String() string { return proto.CompactTextString(m) }
+func (*MsgCreateDocuments) ProtoMessage()    {}
+func (*MsgCreateDocuments) Descriptor() ([]byte, []int) {
 	return fileDescriptor_9b59fe9729b670ce, []int{2}
 }
-func (m *MsgCreateDocumentInBatch) XXX_Unmarshal(b []byte) error {
+func (m *MsgCreateDocuments) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgCreateDocumentInBatch) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgCreateDocuments) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgCreateDocumentInBatch.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgCreateDocuments.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -159,61 +159,61 @@ func (m *MsgCreateDocumentInBatch) XXX_Marshal(b []byte, deterministic bool) ([]
 		return b[:n], nil
 	}
 }
-func (m *MsgCreateDocumentInBatch) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgCreateDocumentInBatch.Merge(m, src)
+func (m *MsgCreateDocuments) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgCreateDocuments.Merge(m, src)
 }
-func (m *MsgCreateDocumentInBatch) XXX_Size() int {
+func (m *MsgCreateDocuments) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgCreateDocumentInBatch) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgCreateDocumentInBatch.DiscardUnknown(m)
+func (m *MsgCreateDocuments) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgCreateDocuments.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgCreateDocumentInBatch proto.InternalMessageInfo
+var xxx_messageInfo_MsgCreateDocuments proto.InternalMessageInfo
 
-func (m *MsgCreateDocumentInBatch) GetData() []string {
+func (m *MsgCreateDocuments) GetData() []string {
 	if m != nil {
 		return m.Data
 	}
 	return nil
 }
 
-func (m *MsgCreateDocumentInBatch) GetHolder() []string {
+func (m *MsgCreateDocuments) GetHolder() []string {
 	if m != nil {
 		return m.Holder
 	}
 	return nil
 }
 
-func (m *MsgCreateDocumentInBatch) GetIssuer() string {
+func (m *MsgCreateDocuments) GetIssuer() string {
 	if m != nil {
 		return m.Issuer
 	}
 	return ""
 }
 
-func (m *MsgCreateDocumentInBatch) GetProof() []string {
+func (m *MsgCreateDocuments) GetProof() []string {
 	if m != nil {
 		return m.Proof
 	}
 	return nil
 }
 
-type MsgCreateDocumentInBatchResponse struct {
+type MsgCreateDocumentsResponse struct {
 }
 
-func (m *MsgCreateDocumentInBatchResponse) Reset()         { *m = MsgCreateDocumentInBatchResponse{} }
-func (m *MsgCreateDocumentInBatchResponse) String() string { return proto.CompactTextString(m) }
-func (*MsgCreateDocumentInBatchResponse) ProtoMessage()    {}
-func (*MsgCreateDocumentInBatchResponse) Descriptor() ([]byte, []int) {
+func (m *MsgCreateDocumentsResponse) Reset()         { *m = MsgCreateDocumentsResponse{} }
+func (m *MsgCreateDocumentsResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgCreateDocumentsResponse) ProtoMessage()    {}
+func (*MsgCreateDocumentsResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_9b59fe9729b670ce, []int{3}
 }
-func (m *MsgCreateDocumentInBatchResponse) XXX_Unmarshal(b []byte) error {
+func (m *MsgCreateDocumentsResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgCreateDocumentInBatchResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgCreateDocumentsResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgCreateDocumentInBatchResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgCreateDocumentsResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -223,17 +223,17 @@ func (m *MsgCreateDocumentInBatchResponse) XXX_Marshal(b []byte, deterministic b
 		return b[:n], nil
 	}
 }
-func (m *MsgCreateDocumentInBatchResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgCreateDocumentInBatchResponse.Merge(m, src)
+func (m *MsgCreateDocumentsResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgCreateDocumentsResponse.Merge(m, src)
 }
-func (m *MsgCreateDocumentInBatchResponse) XXX_Size() int {
+func (m *MsgCreateDocumentsResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgCreateDocumentInBatchResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgCreateDocumentInBatchResponse.DiscardUnknown(m)
+func (m *MsgCreateDocumentsResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgCreateDocumentsResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgCreateDocumentInBatchResponse proto.InternalMessageInfo
+var xxx_messageInfo_MsgCreateDocumentsResponse proto.InternalMessageInfo
 
 type MsgRevokeDocument struct {
 	Holder string `protobuf:"bytes,1,opt,name=holder,proto3" json:"holder,omitempty"`
@@ -436,44 +436,43 @@ func (m *MsgUpdateDocumentResponse) XXX_DiscardUnknown() {
 var xxx_messageInfo_MsgUpdateDocumentResponse proto.InternalMessageInfo
 
 func init() {
-	proto.RegisterType((*MsgCreateDocument)(nil), "ShareRing.shareledger.document.MsgCreateDocument")
-	proto.RegisterType((*MsgCreateDocumentResponse)(nil), "ShareRing.shareledger.document.MsgCreateDocumentResponse")
-	proto.RegisterType((*MsgCreateDocumentInBatch)(nil), "ShareRing.shareledger.document.MsgCreateDocumentInBatch")
-	proto.RegisterType((*MsgCreateDocumentInBatchResponse)(nil), "ShareRing.shareledger.document.MsgCreateDocumentInBatchResponse")
-	proto.RegisterType((*MsgRevokeDocument)(nil), "ShareRing.shareledger.document.MsgRevokeDocument")
-	proto.RegisterType((*MsgRevokeDocumentResponse)(nil), "ShareRing.shareledger.document.MsgRevokeDocumentResponse")
-	proto.RegisterType((*MsgUpdateDocument)(nil), "ShareRing.shareledger.document.MsgUpdateDocument")
-	proto.RegisterType((*MsgUpdateDocumentResponse)(nil), "ShareRing.shareledger.document.MsgUpdateDocumentResponse")
+	proto.RegisterType((*MsgCreateDocument)(nil), "shareledger.document.MsgCreateDocument")
+	proto.RegisterType((*MsgCreateDocumentResponse)(nil), "shareledger.document.MsgCreateDocumentResponse")
+	proto.RegisterType((*MsgCreateDocuments)(nil), "shareledger.document.MsgCreateDocuments")
+	proto.RegisterType((*MsgCreateDocumentsResponse)(nil), "shareledger.document.MsgCreateDocumentsResponse")
+	proto.RegisterType((*MsgRevokeDocument)(nil), "shareledger.document.MsgRevokeDocument")
+	proto.RegisterType((*MsgRevokeDocumentResponse)(nil), "shareledger.document.MsgRevokeDocumentResponse")
+	proto.RegisterType((*MsgUpdateDocument)(nil), "shareledger.document.MsgUpdateDocument")
+	proto.RegisterType((*MsgUpdateDocumentResponse)(nil), "shareledger.document.MsgUpdateDocumentResponse")
 }
 
 func init() { proto.RegisterFile("document/tx.proto", fileDescriptor_9b59fe9729b670ce) }
 
 var fileDescriptor_9b59fe9729b670ce = []byte{
-	// 377 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x12, 0x4c, 0xc9, 0x4f, 0x2e,
-	0xcd, 0x4d, 0xcd, 0x2b, 0xd1, 0x2f, 0xa9, 0xd0, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0x92, 0x0b,
-	0xce, 0x48, 0x2c, 0x4a, 0x0d, 0xca, 0xcc, 0x4b, 0xd7, 0x2b, 0x06, 0xb1, 0x72, 0x52, 0x53, 0xd2,
-	0x53, 0x8b, 0xf4, 0x60, 0x0a, 0x95, 0x72, 0xb9, 0x04, 0x7d, 0x8b, 0xd3, 0x9d, 0x8b, 0x52, 0x13,
-	0x4b, 0x52, 0x5d, 0xa0, 0x82, 0x42, 0x42, 0x5c, 0x2c, 0x29, 0x89, 0x25, 0x89, 0x12, 0x8c, 0x0a,
-	0x8c, 0x1a, 0x9c, 0x41, 0x60, 0xb6, 0x90, 0x18, 0x17, 0x5b, 0x46, 0x7e, 0x4e, 0x4a, 0x6a, 0x91,
-	0x04, 0x13, 0x58, 0x14, 0xca, 0x03, 0x89, 0x67, 0x16, 0x17, 0x97, 0xa6, 0x16, 0x49, 0x30, 0x43,
-	0xc4, 0x21, 0x3c, 0x21, 0x11, 0x2e, 0xd6, 0x82, 0xa2, 0xfc, 0xfc, 0x34, 0x09, 0x16, 0xb0, 0x30,
-	0x84, 0xa3, 0x24, 0xcd, 0x25, 0x89, 0x61, 0x5d, 0x50, 0x6a, 0x71, 0x41, 0x7e, 0x5e, 0x71, 0xaa,
-	0x52, 0x09, 0x97, 0x04, 0x86, 0xa4, 0x67, 0x9e, 0x53, 0x62, 0x49, 0x72, 0x06, 0x92, 0x93, 0x98,
-	0xb1, 0x3a, 0x89, 0x99, 0x34, 0x27, 0x31, 0x23, 0x9c, 0xa4, 0xc4, 0xa5, 0x80, 0xcb, 0x56, 0xb8,
-	0xcb, 0x22, 0xc1, 0xa1, 0x14, 0x94, 0x5a, 0x96, 0x9f, 0x8d, 0x08, 0x25, 0x84, 0xf5, 0x8c, 0x38,
-	0x42, 0x84, 0x09, 0xbb, 0xf5, 0xcc, 0x98, 0x21, 0x82, 0x6a, 0x34, 0xdc, 0x5e, 0x48, 0xec, 0x84,
-	0x16, 0xa4, 0xd0, 0x33, 0x76, 0x50, 0xad, 0x83, 0xb9, 0xc5, 0x68, 0x36, 0x0b, 0x17, 0xb3, 0x6f,
-	0x71, 0xba, 0x50, 0x1d, 0x17, 0x1f, 0x5a, 0x72, 0x31, 0xd4, 0xc3, 0x9f, 0xc8, 0xf4, 0x30, 0xc2,
-	0x57, 0xca, 0x92, 0x64, 0x2d, 0x30, 0x77, 0x08, 0x4d, 0x66, 0xe4, 0x12, 0xc5, 0x9e, 0x46, 0x2c,
-	0x48, 0x36, 0x14, 0xaa, 0x53, 0xca, 0x81, 0x5c, 0x9d, 0x70, 0x57, 0xd5, 0x71, 0xf1, 0xa1, 0x25,
-	0x0f, 0x62, 0x42, 0x05, 0x55, 0x0b, 0x51, 0xa1, 0x82, 0x3d, 0xa5, 0x80, 0xec, 0x47, 0x4b, 0x26,
-	0xc4, 0xd8, 0x8f, 0xaa, 0x85, 0x28, 0xfb, 0xb1, 0xa7, 0x0e, 0x27, 0xef, 0x13, 0x8f, 0xe4, 0x18,
-	0x2f, 0x3c, 0x92, 0x63, 0x7c, 0xf0, 0x48, 0x8e, 0x71, 0xc2, 0x63, 0x39, 0x86, 0x0b, 0x8f, 0xe5,
-	0x18, 0x6e, 0x3c, 0x96, 0x63, 0x88, 0x32, 0x4c, 0xcf, 0x2c, 0xc9, 0x28, 0x4d, 0xd2, 0x4b, 0xce,
-	0xcf, 0xd5, 0x07, 0x1b, 0x5a, 0x94, 0x99, 0x97, 0xae, 0x8f, 0x64, 0xbc, 0x7e, 0x85, 0x3e, 0xa2,
-	0xdc, 0xaa, 0x2c, 0x48, 0x2d, 0x4e, 0x62, 0x03, 0x97, 0x5d, 0xc6, 0x80, 0x00, 0x00, 0x00, 0xff,
-	0xff, 0x72, 0x68, 0x6d, 0xce, 0xd0, 0x04, 0x00, 0x00,
+	// 359 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xbc, 0x94, 0xcd, 0x4e, 0xc2, 0x40,
+	0x10, 0xc7, 0x29, 0x8b, 0x24, 0xce, 0x01, 0xc3, 0x86, 0x98, 0x8a, 0xa6, 0x31, 0x5c, 0xe4, 0xd4,
+	0xf5, 0xe3, 0x0d, 0xd4, 0x9b, 0xe1, 0x42, 0xe2, 0x41, 0x6f, 0x85, 0x8e, 0x05, 0xa4, 0xdd, 0x66,
+	0x77, 0x31, 0xf8, 0x16, 0x3e, 0x8e, 0x8f, 0xe0, 0x91, 0xa3, 0x47, 0x03, 0x2f, 0x62, 0xd8, 0x02,
+	0xa5, 0x1f, 0x90, 0x7a, 0xf1, 0xb6, 0x33, 0x3b, 0x99, 0xdf, 0x7f, 0xe7, 0x3f, 0x59, 0xa8, 0xbb,
+	0xbc, 0x3f, 0xf1, 0x31, 0x50, 0x4c, 0x4d, 0xed, 0x50, 0x70, 0xc5, 0x69, 0x43, 0x0e, 0x1c, 0x81,
+	0x63, 0x74, 0x3d, 0x14, 0xf6, 0xfa, 0xba, 0xe5, 0x43, 0xbd, 0x23, 0xbd, 0x3b, 0x81, 0x8e, 0xc2,
+	0xfb, 0x55, 0x92, 0x52, 0xa8, 0xb8, 0x8e, 0x72, 0x4c, 0xe3, 0xdc, 0x68, 0x1f, 0x76, 0xf5, 0x99,
+	0x1e, 0x43, 0x75, 0xc0, 0xc7, 0x2e, 0x0a, 0xb3, 0xac, 0xb3, 0xab, 0x68, 0x99, 0x1f, 0x4a, 0x39,
+	0x41, 0x61, 0x92, 0x28, 0x1f, 0x45, 0xb4, 0x01, 0x07, 0xa1, 0xe0, 0xfc, 0xc5, 0xac, 0xe8, 0x74,
+	0x14, 0xb4, 0x4e, 0xe1, 0x24, 0x83, 0xeb, 0xa2, 0x0c, 0x79, 0x20, 0xb1, 0x15, 0x00, 0xcd, 0x5c,
+	0xca, 0x2d, 0x31, 0x24, 0x57, 0x0c, 0xf9, 0x9b, 0x18, 0x12, 0x8b, 0x39, 0x83, 0x66, 0x96, 0xb7,
+	0x51, 0xf3, 0xa4, 0x27, 0xd3, 0xc5, 0x37, 0xfe, 0x1a, 0x4f, 0x26, 0x06, 0x1b, 0x3b, 0xa6, 0x50,
+	0xce, 0x07, 0x93, 0xec, 0x14, 0x92, 0xad, 0x37, 0xdc, 0xc8, 0x91, 0xc7, 0xd0, 0xfd, 0x4f, 0x47,
+	0x92, 0xb8, 0xb5, 0x96, 0xeb, 0x4f, 0x02, 0xa4, 0x23, 0x3d, 0x3a, 0x82, 0x5a, 0x6a, 0x45, 0x2e,
+	0xec, 0xbc, 0x75, 0xb2, 0x33, 0xf3, 0x6c, 0xb2, 0x82, 0x85, 0x6b, 0x26, 0xf5, 0xe1, 0x28, 0xbd,
+	0x02, 0xed, 0x82, 0x3d, 0x64, 0xf3, 0xb2, 0x68, 0xe5, 0x06, 0x37, 0x82, 0x5a, 0xca, 0xe3, 0xdd,
+	0x4f, 0x4b, 0x16, 0xee, 0x79, 0x5a, 0xbe, 0xb5, 0x4b, 0x56, 0xca, 0xd7, 0xdd, 0xac, 0x64, 0xe1,
+	0x1e, 0x56, 0xbe, 0x75, 0xb7, 0x0f, 0x5f, 0x73, 0xcb, 0x98, 0xcd, 0x2d, 0xe3, 0x67, 0x6e, 0x19,
+	0x1f, 0x0b, 0xab, 0x34, 0x5b, 0x58, 0xa5, 0xef, 0x85, 0x55, 0x7a, 0xbe, 0xf2, 0x86, 0x6a, 0x30,
+	0xe9, 0xd9, 0x7d, 0xee, 0x33, 0xdd, 0x54, 0x0c, 0x03, 0x8f, 0x6d, 0xb5, 0x67, 0x53, 0x16, 0x7f,
+	0x1f, 0xef, 0x21, 0xca, 0x5e, 0x55, 0x7f, 0x21, 0x37, 0xbf, 0x01, 0x00, 0x00, 0xff, 0xff, 0x68,
+	0x3d, 0x4b, 0x11, 0x57, 0x04, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -489,7 +488,7 @@ const _ = grpc.SupportPackageIsVersion4
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type MsgClient interface {
 	CreateDocument(ctx context.Context, in *MsgCreateDocument, opts ...grpc.CallOption) (*MsgCreateDocumentResponse, error)
-	CreateDocumentInBatch(ctx context.Context, in *MsgCreateDocumentInBatch, opts ...grpc.CallOption) (*MsgCreateDocumentInBatchResponse, error)
+	CreateDocuments(ctx context.Context, in *MsgCreateDocuments, opts ...grpc.CallOption) (*MsgCreateDocumentsResponse, error)
 	RevokeDocument(ctx context.Context, in *MsgRevokeDocument, opts ...grpc.CallOption) (*MsgRevokeDocumentResponse, error)
 	UpdateDocument(ctx context.Context, in *MsgUpdateDocument, opts ...grpc.CallOption) (*MsgUpdateDocumentResponse, error)
 }
@@ -504,16 +503,16 @@ func NewMsgClient(cc grpc1.ClientConn) MsgClient {
 
 func (c *msgClient) CreateDocument(ctx context.Context, in *MsgCreateDocument, opts ...grpc.CallOption) (*MsgCreateDocumentResponse, error) {
 	out := new(MsgCreateDocumentResponse)
-	err := c.cc.Invoke(ctx, "/ShareRing.shareledger.document.Msg/CreateDocument", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/shareledger.document.Msg/CreateDocument", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *msgClient) CreateDocumentInBatch(ctx context.Context, in *MsgCreateDocumentInBatch, opts ...grpc.CallOption) (*MsgCreateDocumentInBatchResponse, error) {
-	out := new(MsgCreateDocumentInBatchResponse)
-	err := c.cc.Invoke(ctx, "/ShareRing.shareledger.document.Msg/CreateDocumentInBatch", in, out, opts...)
+func (c *msgClient) CreateDocuments(ctx context.Context, in *MsgCreateDocuments, opts ...grpc.CallOption) (*MsgCreateDocumentsResponse, error) {
+	out := new(MsgCreateDocumentsResponse)
+	err := c.cc.Invoke(ctx, "/shareledger.document.Msg/CreateDocuments", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -522,7 +521,7 @@ func (c *msgClient) CreateDocumentInBatch(ctx context.Context, in *MsgCreateDocu
 
 func (c *msgClient) RevokeDocument(ctx context.Context, in *MsgRevokeDocument, opts ...grpc.CallOption) (*MsgRevokeDocumentResponse, error) {
 	out := new(MsgRevokeDocumentResponse)
-	err := c.cc.Invoke(ctx, "/ShareRing.shareledger.document.Msg/RevokeDocument", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/shareledger.document.Msg/RevokeDocument", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -531,7 +530,7 @@ func (c *msgClient) RevokeDocument(ctx context.Context, in *MsgRevokeDocument, o
 
 func (c *msgClient) UpdateDocument(ctx context.Context, in *MsgUpdateDocument, opts ...grpc.CallOption) (*MsgUpdateDocumentResponse, error) {
 	out := new(MsgUpdateDocumentResponse)
-	err := c.cc.Invoke(ctx, "/ShareRing.shareledger.document.Msg/UpdateDocument", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/shareledger.document.Msg/UpdateDocument", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -541,7 +540,7 @@ func (c *msgClient) UpdateDocument(ctx context.Context, in *MsgUpdateDocument, o
 // MsgServer is the server API for Msg service.
 type MsgServer interface {
 	CreateDocument(context.Context, *MsgCreateDocument) (*MsgCreateDocumentResponse, error)
-	CreateDocumentInBatch(context.Context, *MsgCreateDocumentInBatch) (*MsgCreateDocumentInBatchResponse, error)
+	CreateDocuments(context.Context, *MsgCreateDocuments) (*MsgCreateDocumentsResponse, error)
 	RevokeDocument(context.Context, *MsgRevokeDocument) (*MsgRevokeDocumentResponse, error)
 	UpdateDocument(context.Context, *MsgUpdateDocument) (*MsgUpdateDocumentResponse, error)
 }
@@ -553,8 +552,8 @@ type UnimplementedMsgServer struct {
 func (*UnimplementedMsgServer) CreateDocument(ctx context.Context, req *MsgCreateDocument) (*MsgCreateDocumentResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateDocument not implemented")
 }
-func (*UnimplementedMsgServer) CreateDocumentInBatch(ctx context.Context, req *MsgCreateDocumentInBatch) (*MsgCreateDocumentInBatchResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CreateDocumentInBatch not implemented")
+func (*UnimplementedMsgServer) CreateDocuments(ctx context.Context, req *MsgCreateDocuments) (*MsgCreateDocumentsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateDocuments not implemented")
 }
 func (*UnimplementedMsgServer) RevokeDocument(ctx context.Context, req *MsgRevokeDocument) (*MsgRevokeDocumentResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RevokeDocument not implemented")
@@ -577,7 +576,7 @@ func _Msg_CreateDocument_Handler(srv interface{}, ctx context.Context, dec func(
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/ShareRing.shareledger.document.Msg/CreateDocument",
+		FullMethod: "/shareledger.document.Msg/CreateDocument",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(MsgServer).CreateDocument(ctx, req.(*MsgCreateDocument))
@@ -585,20 +584,20 @@ func _Msg_CreateDocument_Handler(srv interface{}, ctx context.Context, dec func(
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Msg_CreateDocumentInBatch_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgCreateDocumentInBatch)
+func _Msg_CreateDocuments_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgCreateDocuments)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MsgServer).CreateDocumentInBatch(ctx, in)
+		return srv.(MsgServer).CreateDocuments(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/ShareRing.shareledger.document.Msg/CreateDocumentInBatch",
+		FullMethod: "/shareledger.document.Msg/CreateDocuments",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).CreateDocumentInBatch(ctx, req.(*MsgCreateDocumentInBatch))
+		return srv.(MsgServer).CreateDocuments(ctx, req.(*MsgCreateDocuments))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -613,7 +612,7 @@ func _Msg_RevokeDocument_Handler(srv interface{}, ctx context.Context, dec func(
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/ShareRing.shareledger.document.Msg/RevokeDocument",
+		FullMethod: "/shareledger.document.Msg/RevokeDocument",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(MsgServer).RevokeDocument(ctx, req.(*MsgRevokeDocument))
@@ -631,7 +630,7 @@ func _Msg_UpdateDocument_Handler(srv interface{}, ctx context.Context, dec func(
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/ShareRing.shareledger.document.Msg/UpdateDocument",
+		FullMethod: "/shareledger.document.Msg/UpdateDocument",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(MsgServer).UpdateDocument(ctx, req.(*MsgUpdateDocument))
@@ -640,7 +639,7 @@ func _Msg_UpdateDocument_Handler(srv interface{}, ctx context.Context, dec func(
 }
 
 var _Msg_serviceDesc = grpc.ServiceDesc{
-	ServiceName: "ShareRing.shareledger.document.Msg",
+	ServiceName: "shareledger.document.Msg",
 	HandlerType: (*MsgServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -648,8 +647,8 @@ var _Msg_serviceDesc = grpc.ServiceDesc{
 			Handler:    _Msg_CreateDocument_Handler,
 		},
 		{
-			MethodName: "CreateDocumentInBatch",
-			Handler:    _Msg_CreateDocumentInBatch_Handler,
+			MethodName: "CreateDocuments",
+			Handler:    _Msg_CreateDocuments_Handler,
 		},
 		{
 			MethodName: "RevokeDocument",
@@ -738,7 +737,7 @@ func (m *MsgCreateDocumentResponse) MarshalToSizedBuffer(dAtA []byte) (int, erro
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgCreateDocumentInBatch) Marshal() (dAtA []byte, err error) {
+func (m *MsgCreateDocuments) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -748,12 +747,12 @@ func (m *MsgCreateDocumentInBatch) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgCreateDocumentInBatch) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgCreateDocuments) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgCreateDocumentInBatch) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgCreateDocuments) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -795,7 +794,7 @@ func (m *MsgCreateDocumentInBatch) MarshalToSizedBuffer(dAtA []byte) (int, error
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgCreateDocumentInBatchResponse) Marshal() (dAtA []byte, err error) {
+func (m *MsgCreateDocumentsResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -805,12 +804,12 @@ func (m *MsgCreateDocumentInBatchResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgCreateDocumentInBatchResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgCreateDocumentsResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgCreateDocumentInBatchResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgCreateDocumentsResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -1004,7 +1003,7 @@ func (m *MsgCreateDocumentResponse) Size() (n int) {
 	return n
 }
 
-func (m *MsgCreateDocumentInBatch) Size() (n int) {
+func (m *MsgCreateDocuments) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -1035,7 +1034,7 @@ func (m *MsgCreateDocumentInBatch) Size() (n int) {
 	return n
 }
 
-func (m *MsgCreateDocumentInBatchResponse) Size() (n int) {
+func (m *MsgCreateDocumentsResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -1342,7 +1341,7 @@ func (m *MsgCreateDocumentResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgCreateDocumentInBatch) Unmarshal(dAtA []byte) error {
+func (m *MsgCreateDocuments) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -1365,10 +1364,10 @@ func (m *MsgCreateDocumentInBatch) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgCreateDocumentInBatch: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgCreateDocuments: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgCreateDocumentInBatch: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgCreateDocuments: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -1520,7 +1519,7 @@ func (m *MsgCreateDocumentInBatch) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgCreateDocumentInBatchResponse) Unmarshal(dAtA []byte) error {
+func (m *MsgCreateDocumentsResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -1543,10 +1542,10 @@ func (m *MsgCreateDocumentInBatchResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgCreateDocumentInBatchResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgCreateDocumentsResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgCreateDocumentInBatchResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgCreateDocumentsResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:

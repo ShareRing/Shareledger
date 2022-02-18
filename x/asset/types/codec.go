@@ -8,21 +8,21 @@ import (
 )
 
 func RegisterCodec(cdc *codec.LegacyAmino) {
-	cdc.RegisterConcrete(&MsgCreate{}, "asset/Create", nil)
-	cdc.RegisterConcrete(&MsgUpdate{}, "asset/Update", nil)
-	cdc.RegisterConcrete(&MsgDelete{}, "asset/Delete", nil)
+	cdc.RegisterConcrete(&MsgCreateAsset{}, "asset/CreateAsset", nil)
+	cdc.RegisterConcrete(&MsgUpdateAsset{}, "asset/UpdateAsset", nil)
+	cdc.RegisterConcrete(&MsgDeleteAsset{}, "asset/DeleteAsset", nil)
 	// this line is used by starport scaffolding # 2
 }
 
 func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	registry.RegisterImplementations((*sdk.Msg)(nil),
-		&MsgCreate{},
+		&MsgCreateAsset{},
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
-		&MsgUpdate{},
+		&MsgUpdateAsset{},
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
-		&MsgDelete{},
+		&MsgDeleteAsset{},
 	)
 	// this line is used by starport scaffolding # 3
 

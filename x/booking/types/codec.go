@@ -8,17 +8,17 @@ import (
 )
 
 func RegisterCodec(cdc *codec.LegacyAmino) {
-	cdc.RegisterConcrete(&MsgBook{}, "booking/Book", nil)
-	cdc.RegisterConcrete(&MsgComplete{}, "booking/Complete", nil)
+	cdc.RegisterConcrete(&MsgCreateBooking{}, "booking/CreateBooking", nil)
+	cdc.RegisterConcrete(&MsgCompleteBooking{}, "booking/CompleteBooking", nil)
 	// this line is used by starport scaffolding # 2
 }
 
 func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	registry.RegisterImplementations((*sdk.Msg)(nil),
-		&MsgBook{},
+		&MsgCreateBooking{},
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
-		&MsgComplete{},
+		&MsgCompleteBooking{},
 	)
 	// this line is used by starport scaffolding # 3
 

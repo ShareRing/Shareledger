@@ -139,7 +139,7 @@ func (m *MsgCreateIdResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_MsgCreateIdResponse proto.InternalMessageInfo
 
-type MsgCreateIdBatch struct {
+type MsgCreateIds struct {
 	IssuerAddress string   `protobuf:"bytes,1,opt,name=issuerAddress,proto3" json:"issuerAddress,omitempty"`
 	BackupAddress []string `protobuf:"bytes,2,rep,name=backupAddress,proto3" json:"backupAddress,omitempty"`
 	ExtraData     []string `protobuf:"bytes,3,rep,name=extraData,proto3" json:"extraData,omitempty"`
@@ -147,18 +147,18 @@ type MsgCreateIdBatch struct {
 	OwnerAddress  []string `protobuf:"bytes,5,rep,name=ownerAddress,proto3" json:"ownerAddress,omitempty"`
 }
 
-func (m *MsgCreateIdBatch) Reset()         { *m = MsgCreateIdBatch{} }
-func (m *MsgCreateIdBatch) String() string { return proto.CompactTextString(m) }
-func (*MsgCreateIdBatch) ProtoMessage()    {}
-func (*MsgCreateIdBatch) Descriptor() ([]byte, []int) {
+func (m *MsgCreateIds) Reset()         { *m = MsgCreateIds{} }
+func (m *MsgCreateIds) String() string { return proto.CompactTextString(m) }
+func (*MsgCreateIds) ProtoMessage()    {}
+func (*MsgCreateIds) Descriptor() ([]byte, []int) {
 	return fileDescriptor_0e9bd79ac8ee1f8f, []int{2}
 }
-func (m *MsgCreateIdBatch) XXX_Unmarshal(b []byte) error {
+func (m *MsgCreateIds) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgCreateIdBatch) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgCreateIds) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgCreateIdBatch.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgCreateIds.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -168,68 +168,68 @@ func (m *MsgCreateIdBatch) XXX_Marshal(b []byte, deterministic bool) ([]byte, er
 		return b[:n], nil
 	}
 }
-func (m *MsgCreateIdBatch) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgCreateIdBatch.Merge(m, src)
+func (m *MsgCreateIds) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgCreateIds.Merge(m, src)
 }
-func (m *MsgCreateIdBatch) XXX_Size() int {
+func (m *MsgCreateIds) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgCreateIdBatch) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgCreateIdBatch.DiscardUnknown(m)
+func (m *MsgCreateIds) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgCreateIds.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgCreateIdBatch proto.InternalMessageInfo
+var xxx_messageInfo_MsgCreateIds proto.InternalMessageInfo
 
-func (m *MsgCreateIdBatch) GetIssuerAddress() string {
+func (m *MsgCreateIds) GetIssuerAddress() string {
 	if m != nil {
 		return m.IssuerAddress
 	}
 	return ""
 }
 
-func (m *MsgCreateIdBatch) GetBackupAddress() []string {
+func (m *MsgCreateIds) GetBackupAddress() []string {
 	if m != nil {
 		return m.BackupAddress
 	}
 	return nil
 }
 
-func (m *MsgCreateIdBatch) GetExtraData() []string {
+func (m *MsgCreateIds) GetExtraData() []string {
 	if m != nil {
 		return m.ExtraData
 	}
 	return nil
 }
 
-func (m *MsgCreateIdBatch) GetId() []string {
+func (m *MsgCreateIds) GetId() []string {
 	if m != nil {
 		return m.Id
 	}
 	return nil
 }
 
-func (m *MsgCreateIdBatch) GetOwnerAddress() []string {
+func (m *MsgCreateIds) GetOwnerAddress() []string {
 	if m != nil {
 		return m.OwnerAddress
 	}
 	return nil
 }
 
-type MsgCreateIdBatchResponse struct {
+type MsgCreateIdsResponse struct {
 }
 
-func (m *MsgCreateIdBatchResponse) Reset()         { *m = MsgCreateIdBatchResponse{} }
-func (m *MsgCreateIdBatchResponse) String() string { return proto.CompactTextString(m) }
-func (*MsgCreateIdBatchResponse) ProtoMessage()    {}
-func (*MsgCreateIdBatchResponse) Descriptor() ([]byte, []int) {
+func (m *MsgCreateIdsResponse) Reset()         { *m = MsgCreateIdsResponse{} }
+func (m *MsgCreateIdsResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgCreateIdsResponse) ProtoMessage()    {}
+func (*MsgCreateIdsResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_0e9bd79ac8ee1f8f, []int{3}
 }
-func (m *MsgCreateIdBatchResponse) XXX_Unmarshal(b []byte) error {
+func (m *MsgCreateIdsResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgCreateIdBatchResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgCreateIdsResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgCreateIdBatchResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgCreateIdsResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -239,17 +239,17 @@ func (m *MsgCreateIdBatchResponse) XXX_Marshal(b []byte, deterministic bool) ([]
 		return b[:n], nil
 	}
 }
-func (m *MsgCreateIdBatchResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgCreateIdBatchResponse.Merge(m, src)
+func (m *MsgCreateIdsResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgCreateIdsResponse.Merge(m, src)
 }
-func (m *MsgCreateIdBatchResponse) XXX_Size() int {
+func (m *MsgCreateIdsResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgCreateIdBatchResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgCreateIdBatchResponse.DiscardUnknown(m)
+func (m *MsgCreateIdsResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgCreateIdsResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgCreateIdBatchResponse proto.InternalMessageInfo
+var xxx_messageInfo_MsgCreateIdsResponse proto.InternalMessageInfo
 
 type MsgUpdateId struct {
 	IssuerAddress string `protobuf:"bytes,1,opt,name=issuerAddress,proto3" json:"issuerAddress,omitempty"`
@@ -444,47 +444,46 @@ func (m *MsgReplaceIdOwnerResponse) XXX_DiscardUnknown() {
 var xxx_messageInfo_MsgReplaceIdOwnerResponse proto.InternalMessageInfo
 
 func init() {
-	proto.RegisterType((*MsgCreateId)(nil), "ShareRing.shareledger.id.MsgCreateId")
-	proto.RegisterType((*MsgCreateIdResponse)(nil), "ShareRing.shareledger.id.MsgCreateIdResponse")
-	proto.RegisterType((*MsgCreateIdBatch)(nil), "ShareRing.shareledger.id.MsgCreateIdBatch")
-	proto.RegisterType((*MsgCreateIdBatchResponse)(nil), "ShareRing.shareledger.id.MsgCreateIdBatchResponse")
-	proto.RegisterType((*MsgUpdateId)(nil), "ShareRing.shareledger.id.MsgUpdateId")
-	proto.RegisterType((*MsgUpdateIdResponse)(nil), "ShareRing.shareledger.id.MsgUpdateIdResponse")
-	proto.RegisterType((*MsgReplaceIdOwner)(nil), "ShareRing.shareledger.id.MsgReplaceIdOwner")
-	proto.RegisterType((*MsgReplaceIdOwnerResponse)(nil), "ShareRing.shareledger.id.MsgReplaceIdOwnerResponse")
+	proto.RegisterType((*MsgCreateId)(nil), "shareledger.id.MsgCreateId")
+	proto.RegisterType((*MsgCreateIdResponse)(nil), "shareledger.id.MsgCreateIdResponse")
+	proto.RegisterType((*MsgCreateIds)(nil), "shareledger.id.MsgCreateIds")
+	proto.RegisterType((*MsgCreateIdsResponse)(nil), "shareledger.id.MsgCreateIdsResponse")
+	proto.RegisterType((*MsgUpdateId)(nil), "shareledger.id.MsgUpdateId")
+	proto.RegisterType((*MsgUpdateIdResponse)(nil), "shareledger.id.MsgUpdateIdResponse")
+	proto.RegisterType((*MsgReplaceIdOwner)(nil), "shareledger.id.MsgReplaceIdOwner")
+	proto.RegisterType((*MsgReplaceIdOwnerResponse)(nil), "shareledger.id.MsgReplaceIdOwnerResponse")
 }
 
 func init() { proto.RegisterFile("id/tx.proto", fileDescriptor_0e9bd79ac8ee1f8f) }
 
 var fileDescriptor_0e9bd79ac8ee1f8f = []byte{
-	// 419 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x9c, 0x54, 0xcd, 0xaa, 0xd3, 0x40,
-	0x18, 0xed, 0x64, 0x54, 0xda, 0xaf, 0xb6, 0xe8, 0x88, 0x10, 0xa3, 0x04, 0x09, 0x0a, 0x62, 0x31,
-	0x81, 0xf6, 0x09, 0xac, 0xba, 0xe8, 0xa2, 0x08, 0x11, 0x37, 0xae, 0x3a, 0xcd, 0x0c, 0xe9, 0x60,
-	0x9b, 0x84, 0x99, 0x14, 0xeb, 0x5b, 0xf8, 0x1e, 0x82, 0xf8, 0x18, 0x77, 0xd9, 0xe5, 0x5d, 0x5e,
-	0xda, 0x17, 0xb9, 0x24, 0xbd, 0x49, 0x93, 0xf4, 0xff, 0xee, 0xca, 0xe9, 0xc9, 0x77, 0xbe, 0x73,
-	0xce, 0xc7, 0x40, 0x53, 0x30, 0x27, 0x5e, 0xd8, 0x91, 0x0c, 0xe3, 0x90, 0xe8, 0xdf, 0x26, 0x54,
-	0x72, 0x57, 0x04, 0xbe, 0xad, 0x92, 0x5f, 0x53, 0xce, 0x7c, 0x2e, 0x6d, 0xc1, 0xac, 0xbf, 0x08,
-	0x9a, 0x43, 0xe5, 0x7f, 0x92, 0x9c, 0xc6, 0x7c, 0xc0, 0xc8, 0x1b, 0x68, 0x09, 0xa5, 0xe6, 0x5c,
-	0x7e, 0x64, 0x4c, 0x72, 0xa5, 0x74, 0xf4, 0x1a, 0xbd, 0x6b, 0xb8, 0x65, 0x30, 0x61, 0x8d, 0xa9,
-	0xf7, 0x73, 0x1e, 0x65, 0x2c, 0x6d, 0xc3, 0x2a, 0x81, 0xe4, 0x15, 0x34, 0xf8, 0x22, 0x96, 0xf4,
-	0x33, 0x8d, 0xa9, 0x8e, 0x53, 0xc6, 0x16, 0x20, 0x6d, 0xd0, 0x04, 0xd3, 0x1f, 0xa4, 0xb0, 0x26,
-	0x18, 0xb1, 0xe0, 0x71, 0xf8, 0x2b, 0xd8, 0x0a, 0x3f, 0x4c, 0xff, 0x29, 0x61, 0xd6, 0x73, 0x78,
-	0x56, 0x58, 0xd6, 0xe5, 0x2a, 0x0a, 0x03, 0xc5, 0xad, 0xff, 0x08, 0x9e, 0x14, 0xf0, 0x3e, 0x8d,
-	0xbd, 0xc9, 0xfd, 0x9d, 0xe0, 0x93, 0x4e, 0xf0, 0x7e, 0x27, 0xf8, 0xa0, 0x13, 0xbc, 0xe3, 0xc4,
-	0x00, 0xbd, 0xba, 0x71, 0x6e, 0x87, 0xa6, 0x95, 0x7c, 0x8f, 0xd8, 0x25, 0x95, 0x6c, 0x96, 0xd0,
-	0xf2, 0x38, 0x8f, 0x86, 0x7f, 0x17, 0x64, 0x26, 0x91, 0x2b, 0xcf, 0xe0, 0xe9, 0x50, 0xf9, 0x2e,
-	0x8f, 0xa6, 0xd4, 0xe3, 0x03, 0xf6, 0x35, 0xd9, 0x78, 0x37, 0x22, 0xb4, 0xaf, 0xec, 0xaa, 0x7e,
-	0x35, 0x04, 0xbc, 0xa7, 0xce, 0x97, 0xf0, 0x62, 0x47, 0x2e, 0xdb, 0xa5, 0xfb, 0x0f, 0x03, 0x1e,
-	0x2a, 0x9f, 0x8c, 0xa0, 0x9e, 0x5f, 0xe7, 0x5b, 0xfb, 0xd0, 0x21, 0xdb, 0x85, 0x34, 0x8d, 0x0f,
-	0x67, 0xd1, 0x32, 0x25, 0x12, 0x42, 0xab, 0x7c, 0x3a, 0xef, 0xcf, 0xfa, 0x3e, 0xe5, 0x1a, 0xdd,
-	0xf3, 0xb9, 0xb9, 0xe0, 0x08, 0xea, 0x79, 0xbb, 0xc7, 0x2d, 0x65, 0xb4, 0x13, 0x96, 0xaa, 0x45,
-	0x12, 0x09, 0xed, 0x4a, 0x8b, 0x9d, 0xa3, 0x03, 0xca, 0x64, 0xa3, 0x77, 0x01, 0x39, 0xd3, 0xec,
-	0x7f, 0xb9, 0x5a, 0x99, 0x68, 0xb9, 0x32, 0xd1, 0xcd, 0xca, 0x44, 0x7f, 0xd6, 0x66, 0x6d, 0xb9,
-	0x36, 0x6b, 0xd7, 0x6b, 0xb3, 0xf6, 0xa3, 0xe3, 0x8b, 0x78, 0x32, 0x1f, 0xdb, 0x5e, 0x38, 0x73,
-	0xd2, 0x71, 0x52, 0x04, 0xbe, 0x53, 0x18, 0xec, 0x2c, 0x9c, 0xe4, 0xb9, 0xfa, 0x1d, 0x71, 0x35,
-	0x7e, 0x94, 0x3e, 0x59, 0xbd, 0xdb, 0x00, 0x00, 0x00, 0xff, 0xff, 0x0a, 0x5f, 0xe4, 0xb4, 0xc1,
-	0x04, 0x00, 0x00,
+	// 405 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x9c, 0x54, 0xcb, 0x4e, 0xf2, 0x40,
+	0x14, 0x66, 0xda, 0xff, 0x37, 0x70, 0x40, 0x12, 0xc7, 0x4b, 0x10, 0x48, 0xa3, 0x95, 0x85, 0xc6,
+	0xa4, 0x4d, 0xf4, 0x09, 0xbc, 0x2d, 0x48, 0x20, 0x24, 0x24, 0x6e, 0x5c, 0x98, 0x0c, 0xcc, 0xa4,
+	0x4c, 0x04, 0xda, 0xcc, 0x94, 0x88, 0x6f, 0xe1, 0x7b, 0xe8, 0x83, 0xb8, 0x24, 0xae, 0x5c, 0x1a,
+	0x78, 0x11, 0x43, 0xb1, 0xa5, 0x2d, 0xb5, 0x44, 0xb7, 0xe7, 0x7c, 0x73, 0xce, 0x77, 0x39, 0x19,
+	0xc8, 0x73, 0x6a, 0xba, 0x63, 0xc3, 0x11, 0xb6, 0x6b, 0xe3, 0xa2, 0xec, 0x11, 0xc1, 0xfa, 0x8c,
+	0x5a, 0x4c, 0x18, 0x9c, 0xea, 0x2f, 0x08, 0xf2, 0x4d, 0x69, 0x5d, 0x09, 0x46, 0x5c, 0x56, 0xa7,
+	0xb8, 0x06, 0x9b, 0x5c, 0xca, 0x11, 0x13, 0x17, 0x94, 0x0a, 0x26, 0x65, 0x09, 0x1d, 0xa0, 0xe3,
+	0x5c, 0x3b, 0x5a, 0x9c, 0xa3, 0x3a, 0xa4, 0xfb, 0x30, 0x72, 0x7c, 0x94, 0xb2, 0x40, 0x45, 0x8a,
+	0xb8, 0x0a, 0x39, 0x36, 0x76, 0x05, 0xb9, 0x26, 0x2e, 0x29, 0xa9, 0x1e, 0x62, 0x59, 0xc0, 0x45,
+	0x50, 0x38, 0x2d, 0xfd, 0xf3, 0xca, 0x0a, 0xa7, 0x58, 0x87, 0x82, 0xfd, 0x38, 0x5c, 0x2e, 0xfe,
+	0xef, 0x75, 0x22, 0x35, 0x7d, 0x17, 0xb6, 0x43, 0x64, 0xdb, 0x4c, 0x3a, 0xf6, 0x50, 0x32, 0xfd,
+	0x15, 0x41, 0x21, 0x54, 0x97, 0x7f, 0x57, 0xa1, 0xae, 0x55, 0xa1, 0x26, 0xab, 0x50, 0x7f, 0x54,
+	0xa1, 0xae, 0xa8, 0xd8, 0x83, 0x9d, 0x30, 0xdb, 0x40, 0x06, 0xf1, 0xa2, 0xb8, 0x75, 0xe8, 0x6f,
+	0xa2, 0x58, 0x10, 0x50, 0x02, 0x1b, 0x53, 0x4d, 0xff, 0x36, 0xd0, 0x5f, 0x11, 0x6c, 0x1e, 0xc0,
+	0x56, 0x53, 0x5a, 0x6d, 0xe6, 0xf4, 0x49, 0x97, 0xd5, 0x69, 0x6b, 0xce, 0x76, 0xd5, 0x1e, 0x94,
+	0x14, 0x72, 0x7c, 0x7f, 0xdc, 0x00, 0x35, 0x21, 0xc6, 0x0a, 0xec, 0xaf, 0xac, 0xf3, 0xb9, 0x9c,
+	0xbd, 0x2b, 0xa0, 0x36, 0xa5, 0x85, 0x1b, 0x90, 0x0d, 0xae, 0xb2, 0x62, 0x44, 0xcf, 0xd6, 0x08,
+	0xf9, 0x57, 0x3e, 0x4a, 0x69, 0xfa, 0x53, 0x71, 0x0b, 0x72, 0xcb, 0xf3, 0xa8, 0xa6, 0xbc, 0x90,
+	0xe5, 0x5a, 0x5a, 0x37, 0x18, 0xd8, 0x80, 0x6c, 0x90, 0x54, 0x12, 0x3d, 0xbf, 0x99, 0x48, 0x2f,
+	0x1e, 0x00, 0xbe, 0x87, 0x62, 0xcc, 0xfd, 0xc3, 0x84, 0x67, 0x51, 0x48, 0xf9, 0x64, 0x2d, 0xc4,
+	0x9f, 0x7f, 0x79, 0xf3, 0x36, 0xd5, 0xd0, 0x64, 0xaa, 0xa1, 0xcf, 0xa9, 0x86, 0x9e, 0x67, 0x5a,
+	0x66, 0x32, 0xd3, 0x32, 0x1f, 0x33, 0x2d, 0x73, 0x77, 0x6a, 0x71, 0xb7, 0x37, 0xea, 0x18, 0x5d,
+	0x7b, 0x60, 0x7a, 0xe3, 0x04, 0x1f, 0x5a, 0x66, 0x68, 0xb0, 0x39, 0x36, 0xe7, 0x1f, 0xc8, 0x93,
+	0xc3, 0x64, 0x67, 0xc3, 0xfb, 0x44, 0xce, 0xbf, 0x02, 0x00, 0x00, 0xff, 0xff, 0xa4, 0x0a, 0x26,
+	0xa8, 0x53, 0x04, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -500,7 +499,7 @@ const _ = grpc.SupportPackageIsVersion4
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type MsgClient interface {
 	CreateId(ctx context.Context, in *MsgCreateId, opts ...grpc.CallOption) (*MsgCreateIdResponse, error)
-	CreateIdBatch(ctx context.Context, in *MsgCreateIdBatch, opts ...grpc.CallOption) (*MsgCreateIdBatchResponse, error)
+	CreateIds(ctx context.Context, in *MsgCreateIds, opts ...grpc.CallOption) (*MsgCreateIdsResponse, error)
 	UpdateId(ctx context.Context, in *MsgUpdateId, opts ...grpc.CallOption) (*MsgUpdateIdResponse, error)
 	ReplaceIdOwner(ctx context.Context, in *MsgReplaceIdOwner, opts ...grpc.CallOption) (*MsgReplaceIdOwnerResponse, error)
 }
@@ -515,16 +514,16 @@ func NewMsgClient(cc grpc1.ClientConn) MsgClient {
 
 func (c *msgClient) CreateId(ctx context.Context, in *MsgCreateId, opts ...grpc.CallOption) (*MsgCreateIdResponse, error) {
 	out := new(MsgCreateIdResponse)
-	err := c.cc.Invoke(ctx, "/ShareRing.shareledger.id.Msg/CreateId", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/shareledger.id.Msg/CreateId", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *msgClient) CreateIdBatch(ctx context.Context, in *MsgCreateIdBatch, opts ...grpc.CallOption) (*MsgCreateIdBatchResponse, error) {
-	out := new(MsgCreateIdBatchResponse)
-	err := c.cc.Invoke(ctx, "/ShareRing.shareledger.id.Msg/CreateIdBatch", in, out, opts...)
+func (c *msgClient) CreateIds(ctx context.Context, in *MsgCreateIds, opts ...grpc.CallOption) (*MsgCreateIdsResponse, error) {
+	out := new(MsgCreateIdsResponse)
+	err := c.cc.Invoke(ctx, "/shareledger.id.Msg/CreateIds", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -533,7 +532,7 @@ func (c *msgClient) CreateIdBatch(ctx context.Context, in *MsgCreateIdBatch, opt
 
 func (c *msgClient) UpdateId(ctx context.Context, in *MsgUpdateId, opts ...grpc.CallOption) (*MsgUpdateIdResponse, error) {
 	out := new(MsgUpdateIdResponse)
-	err := c.cc.Invoke(ctx, "/ShareRing.shareledger.id.Msg/UpdateId", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/shareledger.id.Msg/UpdateId", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -542,7 +541,7 @@ func (c *msgClient) UpdateId(ctx context.Context, in *MsgUpdateId, opts ...grpc.
 
 func (c *msgClient) ReplaceIdOwner(ctx context.Context, in *MsgReplaceIdOwner, opts ...grpc.CallOption) (*MsgReplaceIdOwnerResponse, error) {
 	out := new(MsgReplaceIdOwnerResponse)
-	err := c.cc.Invoke(ctx, "/ShareRing.shareledger.id.Msg/ReplaceIdOwner", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/shareledger.id.Msg/ReplaceIdOwner", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -552,7 +551,7 @@ func (c *msgClient) ReplaceIdOwner(ctx context.Context, in *MsgReplaceIdOwner, o
 // MsgServer is the server API for Msg service.
 type MsgServer interface {
 	CreateId(context.Context, *MsgCreateId) (*MsgCreateIdResponse, error)
-	CreateIdBatch(context.Context, *MsgCreateIdBatch) (*MsgCreateIdBatchResponse, error)
+	CreateIds(context.Context, *MsgCreateIds) (*MsgCreateIdsResponse, error)
 	UpdateId(context.Context, *MsgUpdateId) (*MsgUpdateIdResponse, error)
 	ReplaceIdOwner(context.Context, *MsgReplaceIdOwner) (*MsgReplaceIdOwnerResponse, error)
 }
@@ -564,8 +563,8 @@ type UnimplementedMsgServer struct {
 func (*UnimplementedMsgServer) CreateId(ctx context.Context, req *MsgCreateId) (*MsgCreateIdResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateId not implemented")
 }
-func (*UnimplementedMsgServer) CreateIdBatch(ctx context.Context, req *MsgCreateIdBatch) (*MsgCreateIdBatchResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CreateIdBatch not implemented")
+func (*UnimplementedMsgServer) CreateIds(ctx context.Context, req *MsgCreateIds) (*MsgCreateIdsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateIds not implemented")
 }
 func (*UnimplementedMsgServer) UpdateId(ctx context.Context, req *MsgUpdateId) (*MsgUpdateIdResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateId not implemented")
@@ -588,7 +587,7 @@ func _Msg_CreateId_Handler(srv interface{}, ctx context.Context, dec func(interf
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/ShareRing.shareledger.id.Msg/CreateId",
+		FullMethod: "/shareledger.id.Msg/CreateId",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(MsgServer).CreateId(ctx, req.(*MsgCreateId))
@@ -596,20 +595,20 @@ func _Msg_CreateId_Handler(srv interface{}, ctx context.Context, dec func(interf
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Msg_CreateIdBatch_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgCreateIdBatch)
+func _Msg_CreateIds_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgCreateIds)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MsgServer).CreateIdBatch(ctx, in)
+		return srv.(MsgServer).CreateIds(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/ShareRing.shareledger.id.Msg/CreateIdBatch",
+		FullMethod: "/shareledger.id.Msg/CreateIds",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).CreateIdBatch(ctx, req.(*MsgCreateIdBatch))
+		return srv.(MsgServer).CreateIds(ctx, req.(*MsgCreateIds))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -624,7 +623,7 @@ func _Msg_UpdateId_Handler(srv interface{}, ctx context.Context, dec func(interf
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/ShareRing.shareledger.id.Msg/UpdateId",
+		FullMethod: "/shareledger.id.Msg/UpdateId",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(MsgServer).UpdateId(ctx, req.(*MsgUpdateId))
@@ -642,7 +641,7 @@ func _Msg_ReplaceIdOwner_Handler(srv interface{}, ctx context.Context, dec func(
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/ShareRing.shareledger.id.Msg/ReplaceIdOwner",
+		FullMethod: "/shareledger.id.Msg/ReplaceIdOwner",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(MsgServer).ReplaceIdOwner(ctx, req.(*MsgReplaceIdOwner))
@@ -651,7 +650,7 @@ func _Msg_ReplaceIdOwner_Handler(srv interface{}, ctx context.Context, dec func(
 }
 
 var _Msg_serviceDesc = grpc.ServiceDesc{
-	ServiceName: "ShareRing.shareledger.id.Msg",
+	ServiceName: "shareledger.id.Msg",
 	HandlerType: (*MsgServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -659,8 +658,8 @@ var _Msg_serviceDesc = grpc.ServiceDesc{
 			Handler:    _Msg_CreateId_Handler,
 		},
 		{
-			MethodName: "CreateIdBatch",
-			Handler:    _Msg_CreateIdBatch_Handler,
+			MethodName: "CreateIds",
+			Handler:    _Msg_CreateIds_Handler,
 		},
 		{
 			MethodName: "UpdateId",
@@ -756,7 +755,7 @@ func (m *MsgCreateIdResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgCreateIdBatch) Marshal() (dAtA []byte, err error) {
+func (m *MsgCreateIds) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -766,12 +765,12 @@ func (m *MsgCreateIdBatch) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgCreateIdBatch) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgCreateIds) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgCreateIdBatch) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgCreateIds) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -822,7 +821,7 @@ func (m *MsgCreateIdBatch) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgCreateIdBatchResponse) Marshal() (dAtA []byte, err error) {
+func (m *MsgCreateIdsResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -832,12 +831,12 @@ func (m *MsgCreateIdBatchResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgCreateIdBatchResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgCreateIdsResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgCreateIdBatchResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgCreateIdsResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -1028,7 +1027,7 @@ func (m *MsgCreateIdResponse) Size() (n int) {
 	return n
 }
 
-func (m *MsgCreateIdBatch) Size() (n int) {
+func (m *MsgCreateIds) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -1065,7 +1064,7 @@ func (m *MsgCreateIdBatch) Size() (n int) {
 	return n
 }
 
-func (m *MsgCreateIdBatchResponse) Size() (n int) {
+func (m *MsgCreateIdsResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -1400,7 +1399,7 @@ func (m *MsgCreateIdResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgCreateIdBatch) Unmarshal(dAtA []byte) error {
+func (m *MsgCreateIds) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -1423,10 +1422,10 @@ func (m *MsgCreateIdBatch) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgCreateIdBatch: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgCreateIds: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgCreateIdBatch: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgCreateIds: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -1610,7 +1609,7 @@ func (m *MsgCreateIdBatch) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgCreateIdBatchResponse) Unmarshal(dAtA []byte) error {
+func (m *MsgCreateIdsResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -1633,10 +1632,10 @@ func (m *MsgCreateIdBatchResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgCreateIdBatchResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgCreateIdsResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgCreateIdBatchResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgCreateIdsResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:

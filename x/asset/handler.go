@@ -3,10 +3,10 @@ package asset
 import (
 	"fmt"
 
-	"github.com/sharering/shareledger/x/asset/keeper"
-	"github.com/sharering/shareledger/x/asset/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	"github.com/sharering/shareledger/x/asset/keeper"
+	"github.com/sharering/shareledger/x/asset/types"
 )
 
 // NewHandler ...
@@ -17,14 +17,14 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
 		ctx = ctx.WithEventManager(sdk.NewEventManager())
 
 		switch msg := msg.(type) {
-		case *types.MsgCreate:
-			res, err := msgServer.Create(sdk.WrapSDKContext(ctx), msg)
+		case *types.MsgCreateAsset:
+			res, err := msgServer.CreateAsset(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgUpdate:
-			res, err := msgServer.Update(sdk.WrapSDKContext(ctx), msg)
+		case *types.MsgUpdateAsset:
+			res, err := msgServer.UpdateAsset(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgDelete:
-			res, err := msgServer.Delete(sdk.WrapSDKContext(ctx), msg)
+		case *types.MsgDeleteAsset:
+			res, err := msgServer.DeleteAsset(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
 			// this line is used by starport scaffolding # 1
 		default:

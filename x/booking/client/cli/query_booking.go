@@ -5,9 +5,9 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/sharering/shareledger/x/booking/types"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
+	"github.com/sharering/shareledger/x/booking/types"
 )
 
 var _ = strconv.Itoa(0)

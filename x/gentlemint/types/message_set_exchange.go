@@ -3,7 +3,6 @@ package types
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	"strconv"
 )
 
 var _ sdk.Msg = &MsgSetExchange{}
@@ -41,7 +40,8 @@ func (msg *MsgSetExchange) ValidateBasic() error {
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
 	}
-	if _, err := strconv.ParseFloat(msg.Rate, 64); err != nil {
+
+	if _, err := sdk.NewDecFromStr(msg.Rate); err != nil {
 		return sdkerrors.Wrapf(err, "invalid number format %v", msg.Rate)
 	}
 	return nil

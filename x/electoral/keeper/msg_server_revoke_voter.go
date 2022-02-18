@@ -3,8 +3,8 @@ package keeper
 import (
 	"context"
 
-	"github.com/sharering/shareledger/x/electoral/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/sharering/shareledger/x/electoral/types"
 )
 
 func (k msgServer) RevokeVoter(goCtx context.Context, msg *types.MsgRevokeVoter) (*types.MsgRevokeVoterResponse, error) {

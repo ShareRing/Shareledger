@@ -9,7 +9,7 @@ import (
 
 func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgCreateId{}, "id/CreateId", nil)
-	cdc.RegisterConcrete(&MsgCreateIdBatch{}, "id/CreateIdBatch", nil)
+	cdc.RegisterConcrete(&MsgCreateIds{}, "id/CreateIds", nil)
 	cdc.RegisterConcrete(&MsgUpdateId{}, "id/UpdateId", nil)
 	cdc.RegisterConcrete(&MsgReplaceIdOwner{}, "id/ReplaceIdOwner", nil)
 	// this line is used by starport scaffolding # 2
@@ -20,7 +20,7 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 		&MsgCreateId{},
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
-		&MsgCreateIdBatch{},
+		&MsgCreateIds{},
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgUpdateId{},

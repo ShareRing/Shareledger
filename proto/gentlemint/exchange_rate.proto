@@ -1,5 +1,5 @@
 syntax = "proto3";
-package ShareRing.shareledger.gentlemint;
+package shareledger.gentlemint;
 
 option go_package = "github.com/sharering/shareledger/x/gentlemint/types";
 
@@ -7,6 +7,6 @@ import "gogoproto/gogo.proto";
 
 
 message ExchangeRate {
-  double rate = 1;
+  string rate = 1;
   
 }

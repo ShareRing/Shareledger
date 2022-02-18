@@ -1,29 +1,31 @@
 package types
 
 import (
+	"github.com/google/uuid"
 	"testing"
 
-	"github.com/sharering/shareledger/testutil/sample"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	"github.com/sharering/shareledger/testutil/sample"
 	"github.com/stretchr/testify/require"
 )
 
 func TestMsgDelete_ValidateBasic(t *testing.T) {
 	tests := []struct {
 		name string
-		msg  MsgDelete
+		msg  MsgDeleteAsset
 		err  error
 	}{
 		{
 			name: "invalid address",
-			msg: MsgDelete{
+			msg: MsgDeleteAsset{
 				Owner: "invalid_address",
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
-			msg: MsgDelete{
+			msg: MsgDeleteAsset{
 				Owner: sample.AccAddress(),
+				UUID:  uuid.New().String(),
 			},
 		},
 	}

@@ -1,5 +1,5 @@
 syntax = "proto3";
-package ShareRing.shareledger.id;
+package shareledger.id;
 
 option go_package = "github.com/sharering/shareledger/x/id/types";
 

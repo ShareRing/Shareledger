@@ -3,9 +3,9 @@ package keeper
 import (
 	"context"
 
-	"github.com/sharering/shareledger/x/id/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	"github.com/sharering/shareledger/x/id/types"
 )
 
 func (k msgServer) UpdateId(goCtx context.Context, msg *types.MsgUpdateId) (*types.MsgUpdateIdResponse, error) {
@@ -15,6 +15,11 @@ func (k msgServer) UpdateId(goCtx context.Context, msg *types.MsgUpdateId) (*typ
 	id, found := k.GetFullIDByIDString(ctx, msg.Id)
 	if !found {
 		return nil, sdkerrors.Wrap(types.ErrIdNotExisted, msg.Id)
+	}
+
+	// check owner permission
+	if id.Data.OwnerAddress != msg.IssuerAddress {
+		return nil, sdkerrors.Wrap(types.ErrNotOwner, msg.IssuerAddress)
 	}
 
 	// update extra data

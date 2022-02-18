@@ -1,10 +1,15 @@
 package types
 
-import sdk "github.com/cosmos/cosmos-sdk/types"
+import (
+	sdk "github.com/cosmos/cosmos-sdk/types"
+	denom "github.com/sharering/shareledger/x/utils/demo"
+)
 
 const (
 	// ModuleName defines the module name
 	ModuleName = "gentlemint"
+
+	ModuleNameAlias = "gm"
 
 	// StoreKey defines the primary module store key
 	StoreKey = ModuleName
@@ -17,18 +22,6 @@ const (
 
 	// MemStoreKey defines the in-memory store key
 	MemStoreKey = "mem_gentlemint"
-)
-
-const (
-	DenomSHR  = "shr"
-	DenomSHRP = "shrp"
-	DenomCent = "cent"
-)
-
-var (
-	RequiredSHRAmt      = sdk.NewInt(10)
-	MaxSHRSupply        = sdk.NewInt(4396000000)
-	DefaultExchangeRate = float64(200)
 )
 
 type ShrpStatus string
@@ -46,11 +39,14 @@ var (
 )
 
 var (
-	OneShr          = sdk.NewCoins(sdk.NewCoin(DenomSHR, sdk.NewInt(1)))
-	OneShrP         = sdk.NewCoins(sdk.NewCoin(DenomSHRP, sdk.NewInt(1)))
-	OneHundredCents = sdk.NewCoins(sdk.NewCoin(DenomCent, sdk.NewInt(100)))
-	FeeLoadSHRP     = OneShr
-	AllowanceLoader = sdk.NewCoins(sdk.NewCoin(DenomSHR, sdk.NewInt(20)))
+	RequiredBaseAmt              = sdk.NewCoin(denom.Base, sdk.NewInt(10*denom.ShrExponent))
+	MaxBaseSupply                = sdk.NewInt(4396000000 * denom.ShrExponent)
+	DefaultExchangeRateSHRPToSHR = sdk.NewDec(200)
+)
+
+var (
+	FeeLoadSHRP     = denom.OneShr
+	AllowanceLoader = sdk.NewCoins(sdk.NewCoin(denom.Base, sdk.NewInt(20*denom.ShrExponent)))
 )
 
 var (
@@ -72,10 +68,5 @@ func KeyPrefix(p string) []byte {
 }
 
 const (
-	AuthorityKey = "A"
-	TreasurerKey = "T"
-)
-
-const (
-	ExchangeRateKey = "exchange_shrp_to_shr"
+	ExchangeRateKey = "exchangeRate"
 )

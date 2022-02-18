@@ -2,30 +2,33 @@ package cli
 
 import (
 	"context"
+	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/sharering/shareledger/x/utils/demo"
 
-	"github.com/sharering/shareledger/x/gentlemint/types"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
+	"github.com/sharering/shareledger/x/gentlemint/types"
 	"github.com/spf13/cobra"
 )
 
 func CmdShowExchangeRate() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "get-exchange",
-		Short: "get shrp to shr exchange rate",
+		Use:   "exchange",
+		Short: "Get shrp to shr exchange rate",
 		Args:  cobra.NoArgs,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx := client.GetClientContextFromCmd(cmd)
 
 			queryClient := types.NewQueryClient(clientCtx)
 
-			params := &types.QueryGetExchangeRateRequest{}
+			params := &types.QueryExchangeRateRequest{}
 
 			res, err := queryClient.ExchangeRate(context.Background(), params)
 			if err != nil {
 				return err
 			}
 
+			res.Rate = sdk.MustNewDecFromStr(res.Rate).Quo(sdk.NewDec(denom.ShrExponent)).String()
 			return clientCtx.PrintProto(res)
 		},
 	}

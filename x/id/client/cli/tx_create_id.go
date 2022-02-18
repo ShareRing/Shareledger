@@ -7,11 +7,11 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/sharering/shareledger/x/id/types"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
 	"github.com/cosmos/cosmos-sdk/version"
+	"github.com/sharering/shareledger/x/id/types"
 )
 
 var _ = strconv.Itoa(0)
@@ -19,9 +19,9 @@ var _ = strconv.Itoa(0)
 func CmdCreateId() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "create [id] [backup-address] [owner-address] [extra-data]",
-		Short: "Create new id",
+		Short: "CreateAsset new id",
 		Long: strings.TrimSpace(fmt.Sprintf(`
-Create a new Id by given information
+CreateAsset a new Id by given information
 Example:
 $ %s tx %s create uid-159654 shareledger1s432u6zv95wpluxhf4qru2ewy58kc3w4tkzm3v shareledger1s432u6zv95wpluxhf4qru2ewy58kc3w4tkzm3v http://sharering.network`, version.Name, types.ModuleName)),
 		Args: cobra.ExactArgs(4),

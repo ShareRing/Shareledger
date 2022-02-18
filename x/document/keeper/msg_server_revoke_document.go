@@ -3,9 +3,9 @@ package keeper
 import (
 	"context"
 
-	"github.com/sharering/shareledger/x/document/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	"github.com/sharering/shareledger/x/document/types"
 )
 
 func (k msgServer) RevokeDocument(goCtx context.Context, msg *types.MsgRevokeDocument) (*types.MsgRevokeDocumentResponse, error) {

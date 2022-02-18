@@ -12,12 +12,12 @@ func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgRevokeVoter{}, "electoral/RevokeVoter", nil)
 	cdc.RegisterConcrete(&MsgEnrollLoaders{}, "electoral/EnrollLoaders", nil)
 	cdc.RegisterConcrete(&MsgRevokeLoaders{}, "electoral/RevokeLoaders", nil)
-	cdc.RegisterConcrete(&MsgEnrollIdSigner{}, "electoral/EnrollIdSigner", nil)
-	cdc.RegisterConcrete(&MsgRevokeIdSigner{}, "electoral/RevokeIdSigner", nil)
-	cdc.RegisterConcrete(&MsgEnrollDocIssuer{}, "electoral/EnrollDocIssuer", nil)
-	cdc.RegisterConcrete(&MsgRevokeDocIssuer{}, "electoral/RevokeDocIssuer", nil)
-	cdc.RegisterConcrete(&MsgEnrollAccountOperator{}, "electoral/EnrollAccountOperator", nil)
-	cdc.RegisterConcrete(&MsgRevokeAccountOperator{}, "electoral/RevokeAccountOperator", nil)
+	cdc.RegisterConcrete(&MsgEnrollIdSigners{}, "electoral/EnrollIdSigners", nil)
+	cdc.RegisterConcrete(&MsgRevokeIdSigners{}, "electoral/RevokeIdSigners", nil)
+	cdc.RegisterConcrete(&MsgEnrollDocIssuers{}, "electoral/EnrollDocIssuers", nil)
+	cdc.RegisterConcrete(&MsgRevokeDocIssuers{}, "electoral/RevokeDocIssuers", nil)
+	cdc.RegisterConcrete(&MsgEnrollAccountOperators{}, "electoral/EnrollAccountOperators", nil)
+	cdc.RegisterConcrete(&MsgRevokeAccountOperators{}, "electoral/RevokeAccountOperators", nil)
 	// this line is used by starport scaffolding # 2
 }
 
@@ -35,22 +35,22 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 		&MsgRevokeLoaders{},
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
-		&MsgEnrollIdSigner{},
+		&MsgEnrollIdSigners{},
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
-		&MsgRevokeIdSigner{},
+		&MsgRevokeIdSigners{},
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
-		&MsgEnrollDocIssuer{},
+		&MsgEnrollDocIssuers{},
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
-		&MsgRevokeDocIssuer{},
+		&MsgRevokeDocIssuers{},
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
-		&MsgEnrollAccountOperator{},
+		&MsgEnrollAccountOperators{},
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
-		&MsgRevokeAccountOperator{},
+		&MsgRevokeAccountOperators{},
 	)
 	// this line is used by starport scaffolding # 3
 

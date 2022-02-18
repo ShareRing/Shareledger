@@ -1,35 +1,34 @@
 package types
 
 import (
-	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/google/uuid"
 	"testing"
 
-	"github.com/sharering/shareledger/testutil/sample"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	"github.com/sharering/shareledger/testutil/sample"
 	"github.com/stretchr/testify/require"
 )
 
-func TestMsgCreateIdBatch_ValidateBasic(t *testing.T) {
-
-	config := sdk.GetConfig()
-
-	config.SetBech32PrefixForAccount("shareledger", "shareledgerpub")
-
+func TestMsgCreateIds_ValidateBasic(t *testing.T) {
 	tests := []struct {
 		name string
-		msg  MsgCreateIdBatch
+		msg  MsgCreateIds
 		err  error
 	}{
 		{
 			name: "invalid address",
-			msg: MsgCreateIdBatch{
+			msg: MsgCreateIds{
 				IssuerAddress: "invalid_address",
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
-			msg: MsgCreateIdBatch{
+			msg: MsgCreateIds{
 				IssuerAddress: sample.AccAddress(),
+				BackupAddress: []string{sample.AccAddress()},
+				ExtraData:     []string{"data"},
+				Id:            []string{uuid.New().String()},
+				OwnerAddress:  []string{sample.AccAddress()},
 			},
 		},
 		{

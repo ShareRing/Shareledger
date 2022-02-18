@@ -4,13 +4,11 @@ import (
 	"strconv"
 
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
 	"github.com/sharering/shareledger/x/asset/types"
-	myutils "github.com/sharering/shareledger/x/utils"
 )
 
 var _ = strconv.Itoa(0)
@@ -18,7 +16,7 @@ var _ = strconv.Itoa(0)
 func CmdUpdate() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "update [hash] [uuid] [status] [rate]",
-		Short: "Broadcast message Update",
+		Short: "Broadcast message UpdateAsset",
 		Args:  cobra.ExactArgs(4),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argHash := []byte(args[0])
@@ -37,15 +35,6 @@ func CmdUpdate() *cobra.Command {
 				return err
 			}
 
-			// seed implementation
-			keySeed := viper.GetString(myutils.FlagKeySeed)
-			if keySeed != "" {
-				clientCtx, err = myutils.CreateContextFromSeed(keySeed, clientCtx)
-				if err != nil {
-					return err
-				}
-			}
-
 			msg := types.NewMsgUpdate(
 				clientCtx.GetFromAddress().String(),
 				argHash,
@@ -61,7 +50,6 @@ func CmdUpdate() *cobra.Command {
 	}
 
 	flags.AddTxFlagsToCmd(cmd)
-	cmd.Flags().String(myutils.FlagKeySeed, "", myutils.KeySeedUsage)
 
 	return cmd
 }

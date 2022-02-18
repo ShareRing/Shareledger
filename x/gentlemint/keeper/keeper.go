@@ -2,13 +2,14 @@ package keeper
 
 import (
 	"fmt"
+	denom "github.com/sharering/shareledger/x/utils/demo"
 
 	"github.com/tendermint/tendermint/libs/log"
 
-	"github.com/sharering/shareledger/x/gentlemint/types"
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	"github.com/sharering/shareledger/x/gentlemint/types"
 )
 
 type (
@@ -42,10 +43,10 @@ func (k Keeper) Logger(ctx sdk.Context) log.Logger {
 	return ctx.Logger().With("module", fmt.Sprintf("x/%s", types.ModuleName))
 }
 
-func (k Keeper) ShrMintPossible(ctx sdk.Context, amt sdk.Int) bool {
-	total := k.bankKeeper.GetSupply(ctx, types.DenomSHR)
+func (k Keeper) BaseMintPossible(ctx sdk.Context, amt sdk.Int) bool {
+	total := k.bankKeeper.GetSupply(ctx, denom.Base)
 	newAmt := total.Amount.Add(amt)
-	return newAmt.LT(types.MaxSHRSupply)
+	return newAmt.LT(types.MaxBaseSupply)
 }
 
 // loadCoins mint amt coins to module address and then send coins to account toAddr
@@ -78,4 +79,58 @@ func (k Keeper) burnCoins(ctx sdk.Context, addr sdk.AccAddress, amt sdk.Coins) e
 // LoadAllowanceLoader loads allowance coins to loader
 func (k Keeper) LoadAllowanceLoader(ctx sdk.Context, addr sdk.AccAddress) error {
 	return k.loadCoins(ctx, addr, types.AllowanceLoader)
+}
+
+func (k Keeper) buyBaseDenomByBaseUSD(ctx sdk.Context, bUSD sdk.Coin, buyer sdk.AccAddress) error {
+	if bUSD.Denom != denom.BaseUSD || bUSD.IsValid() {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "%v", bUSD)
+	}
+	rate := k.GetExchangeRateD(ctx)
+	bought, err := denom.NormalizeToBaseCoin(denom.Base, sdk.NewDecCoinsFromCoins(bUSD), rate, false)
+	if err != nil {
+		return sdkerrors.Wrapf(sdkerrors.ErrLogic, "+%v", err)
+	}
+	if !k.BaseMintPossible(ctx, bought.Amount) {
+		return sdkerrors.Wrap(types.ErrBaseSupplyExceeded, bought.String())
+	}
+	currentBalance := k.bankKeeper.GetAllBalances(ctx, buyer)
+	if !currentBalance.IsAllGTE(sdk.NewCoins(bUSD)) {
+		return sdkerrors.Wrapf(sdkerrors.ErrInsufficientFunds, "current balances %v, Cost: %v", currentBalance, bUSD)
+	}
+	if err := k.burnCoins(ctx, buyer, sdk.NewCoins(bUSD)); err != nil {
+		return sdkerrors.Wrapf(err, "charge %v coins", bUSD)
+	}
+	if err := k.loadCoins(ctx, buyer, sdk.NewCoins(bought)); err != nil {
+		return sdkerrors.Wrapf(err, "load %v coins", bought)
+	}
+	return nil
+}
+
+func (k Keeper) buyBaseDenom(ctx sdk.Context, base sdk.Coin, buyer sdk.AccAddress) error {
+	if base.Denom != denom.Base || !base.IsValid() {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "%v", base)
+	}
+	if !k.BaseMintPossible(ctx, base.Amount) {
+		return sdkerrors.Wrap(types.ErrBaseSupplyExceeded, base.String())
+	}
+
+	rate := k.GetExchangeRateD(ctx)
+
+	currentBalance := k.bankKeeper.GetAllBalances(ctx, buyer)
+
+	cost, err := denom.NormalizeToBaseCoin(denom.BaseUSD, sdk.NewDecCoinsFromCoins(base), rate, true)
+	if err != nil {
+		return sdkerrors.Wrapf(sdkerrors.ErrLogic, "+%v", err)
+	}
+	if !currentBalance.IsAllGTE(sdk.NewCoins(cost)) {
+		return sdkerrors.Wrapf(sdkerrors.ErrInsufficientFunds, "current balances %v, Cost: %v", currentBalance, cost)
+	}
+	if err := k.burnCoins(ctx, buyer, sdk.NewCoins(cost)); err != nil {
+		return sdkerrors.Wrapf(err, "charge %v coins", cost)
+	}
+
+	if err := k.loadCoins(ctx, buyer, sdk.NewCoins(base)); err != nil {
+		return sdkerrors.Wrapf(err, "load %v coins", base)
+	}
+	return nil
 }

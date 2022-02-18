@@ -1,12 +1,13 @@
 package ante
 
 import (
+	sdk "github.com/cosmos/cosmos-sdk/types"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	documenttypes "github.com/sharering/shareledger/x/document/types"
 	electoraltypes "github.com/sharering/shareledger/x/electoral/types"
 	gentleminttypes "github.com/sharering/shareledger/x/gentlemint/types"
 	idtypes "github.com/sharering/shareledger/x/id/types"
-	sdk "github.com/cosmos/cosmos-sdk/types"
-	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	denom "github.com/sharering/shareledger/x/utils/demo"
 )
 
 type Auth struct {
@@ -22,6 +23,7 @@ const (
 	ErrMsgNotBackupAccount   = "Transaction's Signer is not the backup account"
 	ErrMsgNotTreasureAccount = "Transaction's Signer is not treasure account"
 	ErrMsgNotOperatorAccount = "Transaction's Signer is not operator account"
+	ErrMsgNotVoterAccount    = "Transaction's Signer is not voter account"
 )
 
 func NewAuthDecorator(rk RoleKeeper, ik IDKeeper) Auth {
@@ -35,32 +37,46 @@ func (a Auth) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate bool, next sdk.Ant
 	for _, msgI := range tx.GetMsgs() {
 		signer := msgI.GetSigners()[0]
 		switch msg := msgI.(type) {
+		case *gentleminttypes.MsgLoad:
+			coins, err := sdk.ParseDecCoins(msg.Coins)
+			if err != nil {
+				return ctx, err
+			}
+			for _, c := range coins {
+				switch c.Denom {
+				case denom.Base, denom.Shr:
+					if !a.rk.IsAuthority(ctx, signer) {
+						return ctx, sdkerrors.Wrapf(sdkerrors.ErrUnauthorized, ErrMsgNotAuthority)
+					}
+				default: //denom.BaseUSD denom.SHRP
+					if !a.rk.IsSHRPLoader(ctx, signer) {
+						return ctx, sdkerrors.Wrapf(sdkerrors.ErrUnauthorized, ErrMsgNotSHRPLoader)
+					}
+				}
+			}
 		case // Authority
-			*gentleminttypes.MsgLoadShr,
+			*gentleminttypes.MsgSetActionLevelFee,
+			*gentleminttypes.MsgDeleteActionLevelFee,
+			*gentleminttypes.MsgSetLevelFee,
+			*gentleminttypes.MsgDeleteLevelFee,
 			*electoraltypes.MsgEnrollLoaders,
 			*electoraltypes.MsgRevokeLoaders,
-			*electoraltypes.MsgEnrollAccountOperator,
-			*electoraltypes.MsgRevokeAccountOperator,
+			*electoraltypes.MsgEnrollAccountOperators,
+			*electoraltypes.MsgRevokeAccountOperators,
 			*electoraltypes.MsgEnrollVoter,
 			*electoraltypes.MsgRevokeVoter:
 			if !a.rk.IsAuthority(ctx, signer) {
 				return ctx, sdkerrors.Wrapf(sdkerrors.ErrUnauthorized, ErrMsgNotAuthority)
 			}
-		case // SHRP Loaders
-			*gentleminttypes.MsgLoadShrp:
-			if !a.rk.IsSHRPLoader(ctx, signer) {
-				return ctx, sdkerrors.Wrapf(sdkerrors.ErrUnauthorized, ErrMsgNotSHRPLoader)
-			}
 		case // Treasure account permission
-			*gentleminttypes.MsgBurnShrp,
-			*gentleminttypes.MsgBurnShr,
+			*gentleminttypes.MsgBurn,
 			*gentleminttypes.MsgSetExchange:
 			if !a.rk.IsTreasurer(ctx, signer) {
 				return ctx, sdkerrors.Wrapf(sdkerrors.ErrUnauthorized, ErrMsgNotTreasureAccount)
 			}
 		case // ID Signer permission
 			*idtypes.MsgCreateId,
-			*idtypes.MsgCreateIdBatch,
+			*idtypes.MsgCreateIds,
 			*idtypes.MsgUpdateId:
 			if !a.rk.IsIDSigner(ctx, signer) {
 				return ctx, sdkerrors.Wrapf(sdkerrors.ErrUnauthorized, ErrMsgNotIdSigner)
@@ -73,20 +89,26 @@ func (a Auth) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate bool, next sdk.Ant
 			}
 		case //Doc Issuer
 			*documenttypes.MsgCreateDocument,
-			*documenttypes.MsgCreateDocumentInBatch,
+			*documenttypes.MsgCreateDocuments,
 			*documenttypes.MsgUpdateDocument,
 			*documenttypes.MsgRevokeDocument:
 			if !a.rk.IsDocIssuer(ctx, signer) {
 				return ctx, sdkerrors.Wrapf(sdkerrors.ErrUnauthorized, ErrMsgNotDocIssuer)
 			}
 		case // Account Operator
-			*electoraltypes.MsgEnrollDocIssuer,
-			*electoraltypes.MsgEnrollIdSigner,
-			*electoraltypes.MsgRevokeDocIssuer,
-			*electoraltypes.MsgRevokeIdSigner:
+			*electoraltypes.MsgEnrollDocIssuers,
+			*electoraltypes.MsgEnrollIdSigners,
+			*electoraltypes.MsgRevokeDocIssuers,
+			*electoraltypes.MsgRevokeIdSigners:
 			if !a.rk.IsAccountOperator(ctx, signer) {
 				return ctx, sdkerrors.Wrapf(sdkerrors.ErrUnauthorized, ErrMsgNotOperatorAccount)
 			}
+			// case
+			// 	*stakingtypes.MsgCreateValidator,
+			// 	*stakingtypes.MsgEditValidator:
+			// 	if !a.rk.IsVoter(ctx, signer) {
+			// 		return ctx, sdkerrors.Wrapf(sdkerrors.ErrUnauthorized, ErrMsgNotVoterAccount)
+			// 	}
 		}
 	}
 

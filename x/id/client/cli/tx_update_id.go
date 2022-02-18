@@ -5,10 +5,10 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/sharering/shareledger/x/id/types"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
+	"github.com/sharering/shareledger/x/id/types"
 )
 
 var _ = strconv.Itoa(0)
@@ -16,7 +16,7 @@ var _ = strconv.Itoa(0)
 func CmdUpdateId() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "update [id] [extra-data]",
-		Short: "Update information of an ID",
+		Short: "UpdateAsset information of an ID",
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argId := args[0]

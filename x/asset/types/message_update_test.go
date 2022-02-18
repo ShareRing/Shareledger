@@ -1,29 +1,31 @@
 package types
 
 import (
+	"github.com/google/uuid"
 	"testing"
 
-	"github.com/sharering/shareledger/testutil/sample"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	"github.com/sharering/shareledger/testutil/sample"
 	"github.com/stretchr/testify/require"
 )
 
 func TestMsgUpdate_ValidateBasic(t *testing.T) {
 	tests := []struct {
 		name string
-		msg  MsgUpdate
+		msg  MsgUpdateAsset
 		err  error
 	}{
 		{
 			name: "invalid address",
-			msg: MsgUpdate{
+			msg: MsgUpdateAsset{
 				Creator: "invalid_address",
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
-			msg: MsgUpdate{
+			msg: MsgUpdateAsset{
 				Creator: sample.AccAddress(),
+				UUID:    uuid.New().String(),
 			},
 		},
 	}

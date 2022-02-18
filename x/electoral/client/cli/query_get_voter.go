@@ -5,9 +5,9 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/sharering/shareledger/x/electoral/types"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
+	"github.com/sharering/shareledger/x/electoral/types"
 )
 
 var _ = strconv.Itoa(0)
@@ -27,12 +27,12 @@ func CmdGetVoter() *cobra.Command {
 
 			queryClient := types.NewQueryClient(clientCtx)
 
-			params := &types.QueryGetVoterRequest{
+			params := &types.QueryVoterRequest{
 
 				Address: reqAddress,
 			}
 
-			res, err := queryClient.GetVoter(cmd.Context(), params)
+			res, err := queryClient.Voter(cmd.Context(), params)
 			if err != nil {
 				return err
 			}

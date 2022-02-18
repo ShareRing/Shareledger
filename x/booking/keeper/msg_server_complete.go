@@ -3,12 +3,12 @@ package keeper
 import (
 	"context"
 
-	"github.com/sharering/shareledger/x/booking/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	"github.com/sharering/shareledger/x/booking/types"
 )
 
-func (k msgServer) Complete(goCtx context.Context, msg *types.MsgComplete) (*types.MsgCompleteResponse, error) {
+func (k msgServer) CompleteBooking(goCtx context.Context, msg *types.MsgCompleteBooking) (*types.MsgCompleteBookingResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	// TODO: Handling the message
@@ -54,7 +54,7 @@ func (k msgServer) Complete(goCtx context.Context, msg *types.MsgComplete) (*typ
 	)
 	ctx.EventManager().EmitEvent(event)
 
-	return &types.MsgCompleteResponse{}, nil
+	return &types.MsgCompleteBookingResponse{}, nil
 }
 
 func checkBooking(b types.Booking) error {

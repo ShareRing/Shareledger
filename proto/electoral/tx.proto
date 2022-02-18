@@ -1,5 +1,5 @@
 syntax = "proto3";
-package ShareRing.shareledger.electoral;
+package shareledger.electoral;
 
 import "electoral/acc_state.proto";
 // this line is used by starport scaffolding # proto/tx/import
@@ -12,12 +12,12 @@ service Msg {
   rpc RevokeVoter(MsgRevokeVoter) returns (MsgRevokeVoterResponse);
   rpc EnrollLoaders(MsgEnrollLoaders) returns (MsgEnrollLoadersResponse);
   rpc RevokeLoaders(MsgRevokeLoaders) returns (MsgRevokeLoadersResponse);
-  rpc EnrollIdSigner(MsgEnrollIdSigner) returns (MsgEnrollIdSignerResponse);
-  rpc RevokeIdSigner(MsgRevokeIdSigner) returns (MsgRevokeIdSignerResponse);
-  rpc EnrollDocIssuer(MsgEnrollDocIssuer) returns (MsgEnrollDocIssuerResponse);
-  rpc RevokeDocIssuer(MsgRevokeDocIssuer) returns (MsgRevokeDocIssuerResponse);
-  rpc EnrollAccountOperator(MsgEnrollAccountOperator) returns (MsgEnrollAccountOperatorResponse);
-  rpc RevokeAccountOperator(MsgRevokeAccountOperator) returns (MsgRevokeAccountOperatorResponse);
+  rpc EnrollIdSigners(MsgEnrollIdSigners) returns (MsgEnrollIdSignersResponse);
+  rpc RevokeIdSigners(MsgRevokeIdSigners) returns (MsgRevokeIdSignersResponse);
+  rpc EnrollDocIssuers(MsgEnrollDocIssuers) returns (MsgEnrollDocIssuersResponse);
+  rpc RevokeDocIssuers(MsgRevokeDocIssuers) returns (MsgRevokeDocIssuersResponse);
+  rpc EnrollAccountOperators(MsgEnrollAccountOperators) returns (MsgEnrollAccountOperatorsResponse);
+  rpc RevokeAccountOperators(MsgRevokeAccountOperators) returns (MsgRevokeAccountOperatorsResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -53,52 +53,52 @@ message MsgRevokeLoaders {
 message MsgRevokeLoadersResponse {
 }
 
-message MsgEnrollIdSigner {
+message MsgEnrollIdSigners {
   string creator = 1;
   repeated string addresses = 2;
 }
 
-message MsgEnrollIdSignerResponse {
+message MsgEnrollIdSignersResponse {
 }
 
-message MsgRevokeIdSigner {
+message MsgRevokeIdSigners {
   string creator = 1;
   repeated string addresses = 2;
 }
 
-message MsgRevokeIdSignerResponse {
+message MsgRevokeIdSignersResponse {
 }
 
-message MsgEnrollDocIssuer {
+message MsgEnrollDocIssuers {
   string creator = 1;
   repeated string addresses = 2;
 }
 
-message MsgEnrollDocIssuerResponse {
+message MsgEnrollDocIssuersResponse {
 }
 
-message MsgRevokeDocIssuer {
+message MsgRevokeDocIssuers {
   string creator = 1;
   repeated string addresses = 2;
 }
 
-message MsgRevokeDocIssuerResponse {
+message MsgRevokeDocIssuersResponse {
 }
 
-message MsgEnrollAccountOperator {
+message MsgEnrollAccountOperators {
   string creator = 1;
   repeated string addresses = 2;
 }
 
-message MsgEnrollAccountOperatorResponse {
+message MsgEnrollAccountOperatorsResponse {
 }
 
-message MsgRevokeAccountOperator {
+message MsgRevokeAccountOperators {
   string creator = 1;
   repeated string addresses = 2;
 }
 
-message MsgRevokeAccountOperatorResponse {
+message MsgRevokeAccountOperatorsResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message

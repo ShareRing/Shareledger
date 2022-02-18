@@ -1,9 +1,9 @@
 package keeper
 
 import (
-	"github.com/sharering/shareledger/x/booking/types"
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/sharering/shareledger/x/booking/types"
 )
 
 func (k Keeper) GetBooking(ctx sdk.Context, bookID string) (types.Booking, bool) {

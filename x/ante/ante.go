@@ -19,6 +19,7 @@ func NewHandler(
 	idKeeper IDKeeper,
 ) sdk.AnteHandler {
 	return sdk.ChainAnteDecorators(
+		NewLoadFeeDecorator(gentlemintKeeper),
 		NewCheckFeeDecorator(gentlemintKeeper),
 		NewCosmosAuthAnteDecorator(
 			accountKeeper,

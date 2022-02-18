@@ -5,10 +5,10 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/sharering/shareledger/x/gentlemint/types"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
+	"github.com/sharering/shareledger/x/gentlemint/types"
 )
 
 var _ = strconv.Itoa(0)
@@ -19,8 +19,9 @@ func CmdBuyShr() *cobra.Command {
 		Short: "Buy shr by shrp and cent",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			argAmount := args[0]
-
+			if err != nil {
+				return err
+			}
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
@@ -28,7 +29,7 @@ func CmdBuyShr() *cobra.Command {
 
 			msg := types.NewMsgBuyShr(
 				clientCtx.GetFromAddress().String(),
-				argAmount,
+				args[0],
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err

@@ -12504,7 +12504,7 @@ paths:
   '/shareledger/asset/{uuid}':
     get:
       summary: Queries a list of assetByUUID items.
-      operationId: ShareRingShareledgerAssetAssetByUUID
+      operationId: ShareledgerAssetAssetByUUID
       responses:
         '200':
           description: A successful response.
@@ -12554,7 +12554,7 @@ paths:
   '/shareledger/booking/{bookID}':
     get:
       summary: Queries a list of booking items.
-      operationId: ShareRingShareledgerBookingBooking
+      operationId: ShareledgerBookingBooking
       responses:
         '200':
           description: A successful response.
@@ -12603,7 +12603,7 @@ paths:
   '/shareledger/document/proof/{proof}':
     get:
       summary: Queries a list of documentByProof items.
-      operationId: ShareRingShareledgerDocumentDocumentByProof
+      operationId: ShareledgerDocumentDocumentByProof
       responses:
         '200':
           description: A successful response.
@@ -12652,7 +12652,7 @@ paths:
   '/shareledger/document/{holder}/{issuer}':
     get:
       summary: Queries a list of documentOfHolderByIssuer items.
-      operationId: ShareRingShareledgerDocumentDocumentOfHolderByIssuer
+      operationId: ShareledgerDocumentDocumentOfHolderByIssuer
       responses:
         '200':
           description: A successful response.
@@ -12707,7 +12707,7 @@ paths:
   '/shareledger/document/{id}':
     get:
       summary: Queries a list of documentByHolderId items.
-      operationId: ShareRingShareledgerDocumentDocumentByHolderId
+      operationId: ShareledgerDocumentDocumentByHolderId
       responses:
         '200':
           description: A successful response.
@@ -12755,10 +12755,10 @@ paths:
           type: string
       tags:
         - Query
-  /shareledger/electoral/accState:
+  /shareledger/electoral/accStates:
     get:
       summary: Queries a list of accState items.
-      operationId: ShareRingShareledgerElectoralAccStateAll
+      operationId: ShareledgerElectoralAccStates
       responses:
         '200':
           description: A successful response.
@@ -12877,10 +12877,10 @@ paths:
           type: boolean
       tags:
         - Query
-  '/shareledger/electoral/accState/{key}':
+  '/shareledger/electoral/accStates/{key}':
     get:
       summary: Queries a accState by index.
-      operationId: ShareRingShareledgerElectoralAccState
+      operationId: ShareledgerElectoralAccState
       responses:
         '200':
           description: A successful response.
@@ -12921,54 +12921,10 @@ paths:
           type: string
       tags:
         - Query
-  /shareledger/electoral/accountOperator:
-    get:
-      summary: Queries a list of accountOperator items.
-      operationId: ShareRingShareledgerElectoralAccountOperator
-      responses:
-        '200':
-          description: A successful response.
-          schema:
-            type: object
-            properties:
-              accState:
-                type: object
-                properties:
-                  key:
-                    type: string
-                  address:
-                    type: string
-                  status:
-                    type: string
-        default:
-          description: An unexpected error response.
-          schema:
-            type: object
-            properties:
-              code:
-                type: integer
-                format: int32
-              message:
-                type: string
-              details:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    '@type':
-                      type: string
-                  additionalProperties: {}
-      parameters:
-        - name: address
-          in: query
-          required: false
-          type: string
-      tags:
-        - Query
   /shareledger/electoral/accountOperators:
     get:
       summary: Queries a list of accountOperators items.
-      operationId: ShareRingShareledgerElectoralAccountOperators
+      operationId: ShareledgerElectoralAccountOperators
       responses:
         '200':
           description: A successful response.
@@ -13006,10 +12962,10 @@ paths:
                   additionalProperties: {}
       tags:
         - Query
-  /shareledger/electoral/documentIssuer:
+  '/shareledger/electoral/accountOperators/{address}':
     get:
-      summary: Queries a list of documentIssuer items.
-      operationId: ShareRingShareledgerElectoralDocumentIssuer
+      summary: Queries a list of accountOperator items.
+      operationId: ShareledgerElectoralAccountOperator
       responses:
         '200':
           description: A successful response.
@@ -13045,15 +13001,15 @@ paths:
                   additionalProperties: {}
       parameters:
         - name: address
-          in: query
-          required: false
+          in: path
+          required: true
           type: string
       tags:
         - Query
   /shareledger/electoral/documentIssuers:
     get:
       summary: Queries a list of documentIssuers items.
-      operationId: ShareRingShareledgerElectoralDocumentIssuers
+      operationId: ShareledgerElectoralDocumentIssuers
       responses:
         '200':
           description: A successful response.
@@ -13091,10 +13047,10 @@ paths:
                   additionalProperties: {}
       tags:
         - Query
-  /shareledger/electoral/getLoader:
+  '/shareledger/electoral/documentIssuers/{address}':
     get:
-      summary: Queries a list of getLoader items.
-      operationId: ShareRingShareledgerElectoralGetLoader
+      summary: Queries a list of documentIssuer items.
+      operationId: ShareledgerElectoralDocumentIssuer
       responses:
         '200':
           description: A successful response.
@@ -13130,15 +13086,226 @@ paths:
                   additionalProperties: {}
       parameters:
         - name: address
-          in: query
-          required: false
+          in: path
+          required: true
           type: string
       tags:
         - Query
-  /shareledger/electoral/getVoter:
+  /shareledger/electoral/idSigners:
     get:
-      summary: Queries a list of getVoter items.
-      operationId: ShareRingShareledgerElectoralGetVoter
+      summary: Queries a list of idSigners items.
+      operationId: ShareledgerElectoralIdSigners
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              accStates:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    key:
+                      type: string
+                    address:
+                      type: string
+                    status:
+                      type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
+  '/shareledger/electoral/idSigners/{address}':
+    get:
+      summary: Queries a list of idSigner items.
+      operationId: ShareledgerElectoralIdSigner
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              accState:
+                type: object
+                properties:
+                  key:
+                    type: string
+                  address:
+                    type: string
+                  status:
+                    type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: address
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  /shareledger/electoral/loaders:
+    get:
+      summary: Queries a list of Loaders items.
+      operationId: ShareledgerElectoralLoaders
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              loaders:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    key:
+                      type: string
+                    address:
+                      type: string
+                    status:
+                      type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
+  '/shareledger/electoral/loaders/{address}':
+    get:
+      summary: Queries a list of Loader items.
+      operationId: ShareledgerElectoralLoader
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              accState:
+                type: object
+                properties:
+                  key:
+                    type: string
+                  address:
+                    type: string
+                  status:
+                    type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: address
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  /shareledger/electoral/voters:
+    get:
+      summary: Queries a list of Voters items.
+      operationId: ShareledgerElectoralVoters
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              voters:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    key:
+                      type: string
+                    address:
+                      type: string
+                    status:
+                      type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
+  '/shareledger/electoral/voters/{address}':
+    get:
+      summary: Queries a list of Voter items.
+      operationId: ShareledgerElectoralVoter
       responses:
         '200':
           description: A successful response.
@@ -13174,30 +13341,121 @@ paths:
                   additionalProperties: {}
       parameters:
         - name: address
-          in: query
-          required: false
+          in: path
+          required: true
           type: string
       tags:
         - Query
-  /shareledger/electoral/idSigner:
+  /shareledger/gentlemint/actionLevelFee:
     get:
-      summary: Queries a list of idSigner items.
-      operationId: ShareRingShareledgerElectoralIdSigner
+      summary: Queries a list of actionLevelFee items.
+      operationId: ShareledgerGentlemintActionLevelFees
       responses:
         '200':
           description: A successful response.
           schema:
             type: object
             properties:
-              accState:
-                type: object
-                properties:
-                  key:
-                    type: string
-                  address:
-                    type: string
-                  status:
-                    type: string
+              actionLevelFee:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    action:
+                      type: string
+                    level:
+                      type: string
+                    creator:
+                      type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
+  '/shareledger/gentlemint/actionLevelFee/{action}':
+    get:
+      summary: Queries a actionLevelFee by index.
+      operationId: ShareledgerGentlemintActionLevelFee
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              action:
+                type: string
+              level:
+                type: string
+              fee:
+                type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: action
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  /shareledger/gentlemint/balances:
+    get:
+      summary: Queries a list of balances items.
+      operationId: ShareledgerGentlemintBalances
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              coins:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    denom:
+                      type: string
+                    amount:
+                      type: string
+                  description: >-
+                    DecCoin defines a token with a denomination and a decimal
+                    amount.
+
+
+                    NOTE: The amount field is an Dec which implements the custom
+                    method
+
+                    signatures required by gogoproto.
         default:
           description: An unexpected error response.
           schema:
@@ -13223,27 +13481,51 @@ paths:
           type: string
       tags:
         - Query
-  /shareledger/electoral/idSigners:
+  /shareledger/gentlemint/checkFees:
     get:
-      summary: Queries a list of idSigners items.
-      operationId: ShareRingShareledgerElectoralIdSigners
+      summary: Queries a list of checkFees items.
+      operationId: ShareledgerGentlemintCheckFees
       responses:
         '200':
           description: A successful response.
           schema:
             type: object
             properties:
-              accStates:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    key:
-                      type: string
-                    address:
-                      type: string
-                    status:
-                      type: string
+              convertedFee:
+                type: object
+                properties:
+                  denom:
+                    type: string
+                  amount:
+                    type: string
+                description: >-
+                  Coin defines a token with a denomination and an amount.
+
+
+                  NOTE: The amount field is an Int which implements the custom
+                  method
+
+                  signatures required by gogoproto.
+              sufficientFee:
+                type: boolean
+              sufficientFundForFee:
+                type: boolean
+              costLoadingFee:
+                type: object
+                properties:
+                  denom:
+                    type: string
+                  amount:
+                    type: string
+                description: >-
+                  DecCoin defines a token with a denomination and a decimal
+                  amount.
+
+
+                  NOTE: The amount field is an Dec which implements the custom
+                  method
+
+                  signatures required by gogoproto.
         default:
           description: An unexpected error response.
           schema:
@@ -13262,12 +13544,24 @@ paths:
                     '@type':
                       type: string
                   additionalProperties: {}
+      parameters:
+        - name: address
+          in: query
+          required: false
+          type: string
+        - name: actions
+          in: query
+          required: false
+          type: array
+          items:
+            type: string
+          collectionFormat: multi
       tags:
         - Query
-  /shareledger/gentlemint/getExchangeRate:
+  /shareledger/gentlemint/exchangeRate:
     get:
       summary: Queries a exchangeRate by index.
-      operationId: ShareRingShareledgerGentlemintExchangeRate
+      operationId: ShareledgerGentlemintExchangeRate
       responses:
         '200':
           description: A successful response.
@@ -13275,8 +13569,7 @@ paths:
             type: object
             properties:
               rate:
-                type: number
-                format: double
+                type: string
         default:
           description: An unexpected error response.
           schema:
@@ -13297,10 +13590,110 @@ paths:
                   additionalProperties: {}
       tags:
         - Query
+  /shareledger/gentlemint/levelFee:
+    get:
+      summary: Queries a list of levelFee items.
+      operationId: ShareledgerGentlemintLevelFees
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              levelFees:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    level:
+                      type: string
+                    creator:
+                      type: string
+                    originalFee:
+                      type: string
+                    convertedFee:
+                      type: object
+                      properties:
+                        denom:
+                          type: string
+                        amount:
+                          type: string
+                      description: >-
+                        Coin defines a token with a denomination and an amount.
+
+
+                        NOTE: The amount field is an Int which implements the
+                        custom method
+
+                        signatures required by gogoproto.
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
+  '/shareledger/gentlemint/levelFee/{level}':
+    get:
+      summary: Queries a levelFee by index.
+      operationId: ShareledgerGentlemintLevelFee
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              levelFee:
+                type: object
+                properties:
+                  level:
+                    type: string
+                  fee:
+                    type: string
+                  creator:
+                    type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: level
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
   '/shareledger/id/address/{address}':
     get:
       summary: Queries a list of idByAddress items.
-      operationId: ShareRingShareledgerIdIdByAddress
+      operationId: ShareledgerIdIdByAddress
       responses:
         '200':
           description: A successful response.
@@ -13351,7 +13744,7 @@ paths:
   '/shareledger/id/id/{id}':
     get:
       summary: Queries a list of idById items.
-      operationId: ShareRingShareledgerIdIdById
+      operationId: ShareledgerIdIdById
       responses:
         '200':
           description: A successful response.
@@ -20713,7 +21106,7 @@ definitions:
       and
 
       freezing clients
-  ShareRing.shareledger.asset.Asset:
+  shareledger.asset.Asset:
     type: object
     properties:
       creator:
@@ -20728,13 +21121,13 @@ definitions:
       rate:
         type: string
         format: int64
-  ShareRing.shareledger.asset.MsgCreateResponse:
+  shareledger.asset.MsgCreateAssetResponse:
     type: object
-  ShareRing.shareledger.asset.MsgDeleteResponse:
+  shareledger.asset.MsgDeleteAssetResponse:
     type: object
-  ShareRing.shareledger.asset.MsgUpdateResponse:
+  shareledger.asset.MsgUpdateAssetResponse:
     type: object
-  ShareRing.shareledger.asset.QueryAssetByUUIDResponse:
+  shareledger.asset.QueryAssetByUUIDResponse:
     type: object
     properties:
       asset:
@@ -20752,7 +21145,7 @@ definitions:
           rate:
             type: string
             format: int64
-  ShareRing.shareledger.booking.Booking:
+  shareledger.booking.Booking:
     type: object
     properties:
       bookID:
@@ -20766,11 +21159,11 @@ definitions:
         format: int64
       isCompleted:
         type: boolean
-  ShareRing.shareledger.booking.MsgBookResponse:
+  shareledger.booking.MsgCompleteBookingResponse:
     type: object
-  ShareRing.shareledger.booking.MsgCompleteResponse:
+  shareledger.booking.MsgCreateBookingResponse:
     type: object
-  ShareRing.shareledger.booking.QueryBookingResponse:
+  shareledger.booking.QueryBookingResponse:
     type: object
     properties:
       booking:
@@ -20787,7 +21180,7 @@ definitions:
             format: int64
           isCompleted:
             type: boolean
-  ShareRing.shareledger.document.Document:
+  shareledger.document.Document:
     type: object
     properties:
       holder:
@@ -20801,15 +21194,15 @@ definitions:
       version:
         type: integer
         format: int32
-  ShareRing.shareledger.document.MsgCreateDocumentInBatchResponse:
+  shareledger.document.MsgCreateDocumentResponse:
     type: object
-  ShareRing.shareledger.document.MsgCreateDocumentResponse:
+  shareledger.document.MsgCreateDocumentsResponse:
     type: object
-  ShareRing.shareledger.document.MsgRevokeDocumentResponse:
+  shareledger.document.MsgRevokeDocumentResponse:
     type: object
-  ShareRing.shareledger.document.MsgUpdateDocumentResponse:
+  shareledger.document.MsgUpdateDocumentResponse:
     type: object
-  ShareRing.shareledger.document.QueryDocumentByHolderIdResponse:
+  shareledger.document.QueryDocumentByHolderIdResponse:
     type: object
     properties:
       documents:
@@ -20828,7 +21221,7 @@ definitions:
             version:
               type: integer
               format: int32
-  ShareRing.shareledger.document.QueryDocumentByProofResponse:
+  shareledger.document.QueryDocumentByProofResponse:
     type: object
     properties:
       document:
@@ -20845,7 +21238,7 @@ definitions:
           version:
             type: integer
             format: int32
-  ShareRing.shareledger.document.QueryDocumentOfHolderByIssuerResponse:
+  shareledger.document.QueryDocumentOfHolderByIssuerResponse:
     type: object
     properties:
       documents:
@@ -20864,7 +21257,7 @@ definitions:
             version:
               type: integer
               format: int32
-  ShareRing.shareledger.electoral.AccState:
+  shareledger.electoral.AccState:
     type: object
     properties:
       key:
@@ -20873,27 +21266,27 @@ definitions:
         type: string
       status:
         type: string
-  ShareRing.shareledger.electoral.MsgEnrollAccountOperatorResponse:
+  shareledger.electoral.MsgEnrollAccountOperatorsResponse:
     type: object
-  ShareRing.shareledger.electoral.MsgEnrollDocIssuerResponse:
+  shareledger.electoral.MsgEnrollDocIssuersResponse:
     type: object
-  ShareRing.shareledger.electoral.MsgEnrollIdSignerResponse:
+  shareledger.electoral.MsgEnrollIdSignersResponse:
     type: object
-  ShareRing.shareledger.electoral.MsgEnrollLoadersResponse:
+  shareledger.electoral.MsgEnrollLoadersResponse:
     type: object
-  ShareRing.shareledger.electoral.MsgEnrollVoterResponse:
+  shareledger.electoral.MsgEnrollVoterResponse:
     type: object
-  ShareRing.shareledger.electoral.MsgRevokeAccountOperatorResponse:
+  shareledger.electoral.MsgRevokeAccountOperatorsResponse:
     type: object
-  ShareRing.shareledger.electoral.MsgRevokeDocIssuerResponse:
+  shareledger.electoral.MsgRevokeDocIssuersResponse:
     type: object
-  ShareRing.shareledger.electoral.MsgRevokeIdSignerResponse:
+  shareledger.electoral.MsgRevokeIdSignersResponse:
     type: object
-  ShareRing.shareledger.electoral.MsgRevokeLoadersResponse:
+  shareledger.electoral.MsgRevokeLoadersResponse:
     type: object
-  ShareRing.shareledger.electoral.MsgRevokeVoterResponse:
+  shareledger.electoral.MsgRevokeVoterResponse:
     type: object
-  ShareRing.shareledger.electoral.QueryAccountOperatorResponse:
+  shareledger.electoral.QueryAccStateResponse:
     type: object
     properties:
       accState:
@@ -20905,21 +21298,7 @@ definitions:
             type: string
           status:
             type: string
-  ShareRing.shareledger.electoral.QueryAccountOperatorsResponse:
-    type: object
-    properties:
-      accStates:
-        type: array
-        items:
-          type: object
-          properties:
-            key:
-              type: string
-            address:
-              type: string
-            status:
-              type: string
-  ShareRing.shareledger.electoral.QueryAllAccStateResponse:
+  shareledger.electoral.QueryAccStatesResponse:
     type: object
     properties:
       accState:
@@ -20958,7 +21337,7 @@ definitions:
                    repeated Bar results = 1;
                    PageResponse page = 2;
            }
-  ShareRing.shareledger.electoral.QueryDocumentIssuerResponse:
+  shareledger.electoral.QueryAccountOperatorResponse:
     type: object
     properties:
       accState:
@@ -20970,7 +21349,7 @@ definitions:
             type: string
           status:
             type: string
-  ShareRing.shareledger.electoral.QueryDocumentIssuersResponse:
+  shareledger.electoral.QueryAccountOperatorsResponse:
     type: object
     properties:
       accStates:
@@ -20984,7 +21363,7 @@ definitions:
               type: string
             status:
               type: string
-  ShareRing.shareledger.electoral.QueryGetAccStateResponse:
+  shareledger.electoral.QueryDocumentIssuerResponse:
     type: object
     properties:
       accState:
@@ -20996,7 +21375,21 @@ definitions:
             type: string
           status:
             type: string
-  ShareRing.shareledger.electoral.QueryGetLoaderResponse:
+  shareledger.electoral.QueryDocumentIssuersResponse:
+    type: object
+    properties:
+      accStates:
+        type: array
+        items:
+          type: object
+          properties:
+            key:
+              type: string
+            address:
+              type: string
+            status:
+              type: string
+  shareledger.electoral.QueryIdSignerResponse:
     type: object
     properties:
       accState:
@@ -21008,7 +21401,47 @@ definitions:
             type: string
           status:
             type: string
-  ShareRing.shareledger.electoral.QueryGetVoterResponse:
+  shareledger.electoral.QueryIdSignersResponse:
+    type: object
+    properties:
+      accStates:
+        type: array
+        items:
+          type: object
+          properties:
+            key:
+              type: string
+            address:
+              type: string
+            status:
+              type: string
+  shareledger.electoral.QueryLoaderResponse:
+    type: object
+    properties:
+      accState:
+        type: object
+        properties:
+          key:
+            type: string
+          address:
+            type: string
+          status:
+            type: string
+  shareledger.electoral.QueryLoadersResponse:
+    type: object
+    properties:
+      loaders:
+        type: array
+        items:
+          type: object
+          properties:
+            key:
+              type: string
+            address:
+              type: string
+            status:
+              type: string
+  shareledger.electoral.QueryVoterResponse:
     type: object
     properties:
       voter:
@@ -21020,22 +21453,10 @@ definitions:
             type: string
           status:
             type: string
-  ShareRing.shareledger.electoral.QueryIdSignerResponse:
+  shareledger.electoral.QueryVotersResponse:
     type: object
     properties:
-      accState:
-        type: object
-        properties:
-          key:
-            type: string
-          address:
-            type: string
-          status:
-            type: string
-  ShareRing.shareledger.electoral.QueryIdSignersResponse:
-    type: object
-    properties:
-      accStates:
+      voters:
         type: array
         items:
           type: object
@@ -21046,55 +21467,186 @@ definitions:
               type: string
             status:
               type: string
-  ShareRing.shareledger.gentlemint.MsgBurnShrResponse:
+  shareledger.gentlemint.ActionLevelFee:
+    type: object
+    properties:
+      action:
+        type: string
+      level:
+        type: string
+      creator:
+        type: string
+  shareledger.gentlemint.LevelFee:
+    type: object
+    properties:
+      level:
+        type: string
+      fee:
+        type: string
+      creator:
+        type: string
+  shareledger.gentlemint.LevelFeeDetail:
+    type: object
+    properties:
+      level:
+        type: string
+      creator:
+        type: string
+      originalFee:
+        type: string
+      convertedFee:
+        type: object
+        properties:
+          denom:
+            type: string
+          amount:
+            type: string
+        description: |-
+          Coin defines a token with a denomination and an amount.
+
+          NOTE: The amount field is an Int which implements the custom method
+          signatures required by gogoproto.
+  shareledger.gentlemint.MsgBurnResponse:
+    type: object
+  shareledger.gentlemint.MsgBuyShrResponse:
     type: object
     properties:
       log:
         type: string
-  ShareRing.shareledger.gentlemint.MsgBurnShrpResponse:
+  shareledger.gentlemint.MsgDeleteActionLevelFeeResponse:
+    type: object
+  shareledger.gentlemint.MsgDeleteLevelFeeResponse:
+    type: object
+  shareledger.gentlemint.MsgLoadFeeResponse:
+    type: object
+  shareledger.gentlemint.MsgLoadResponse:
+    type: object
+  shareledger.gentlemint.MsgSendResponse:
+    type: object
+  shareledger.gentlemint.MsgSetActionLevelFeeResponse:
+    type: object
+  shareledger.gentlemint.MsgSetExchangeResponse:
+    type: object
+  shareledger.gentlemint.MsgSetLevelFeeResponse:
+    type: object
+  shareledger.gentlemint.QueryActionLevelFeeResponse:
     type: object
     properties:
-      log:
+      action:
         type: string
-  ShareRing.shareledger.gentlemint.MsgBuyCentResponse:
+      level:
+        type: string
+      fee:
+        type: string
+  shareledger.gentlemint.QueryActionLevelFeesResponse:
     type: object
     properties:
-      log:
-        type: string
-  ShareRing.shareledger.gentlemint.MsgBuyShrResponse:
+      actionLevelFee:
+        type: array
+        items:
+          type: object
+          properties:
+            action:
+              type: string
+            level:
+              type: string
+            creator:
+              type: string
+  shareledger.gentlemint.QueryBalancesResponse:
     type: object
     properties:
-      log:
-        type: string
-  ShareRing.shareledger.gentlemint.MsgLoadShrResponse:
+      coins:
+        type: array
+        items:
+          type: object
+          properties:
+            denom:
+              type: string
+            amount:
+              type: string
+          description: |-
+            DecCoin defines a token with a denomination and a decimal amount.
+
+            NOTE: The amount field is an Dec which implements the custom method
+            signatures required by gogoproto.
+  shareledger.gentlemint.QueryCheckFeesResponse:
     type: object
     properties:
-      log:
-        type: string
-  ShareRing.shareledger.gentlemint.MsgLoadShrpResponse:
-    type: object
-    properties:
-      log:
-        type: string
-  ShareRing.shareledger.gentlemint.MsgSendShrResponse:
-    type: object
-    properties:
-      log:
-        type: string
-  ShareRing.shareledger.gentlemint.MsgSendShrpResponse:
-    type: object
-    properties:
-      log:
-        type: string
-  ShareRing.shareledger.gentlemint.MsgSetExchangeResponse:
-    type: object
-  ShareRing.shareledger.gentlemint.QueryGetExchangeRateResponse:
+      convertedFee:
+        type: object
+        properties:
+          denom:
+            type: string
+          amount:
+            type: string
+        description: |-
+          Coin defines a token with a denomination and an amount.
+
+          NOTE: The amount field is an Int which implements the custom method
+          signatures required by gogoproto.
+      sufficientFee:
+        type: boolean
+      sufficientFundForFee:
+        type: boolean
+      costLoadingFee:
+        type: object
+        properties:
+          denom:
+            type: string
+          amount:
+            type: string
+        description: |-
+          DecCoin defines a token with a denomination and a decimal amount.
+
+          NOTE: The amount field is an Dec which implements the custom method
+          signatures required by gogoproto.
+  shareledger.gentlemint.QueryExchangeRateResponse:
     type: object
     properties:
       rate:
-        type: number
-        format: double
-  ShareRing.shareledger.id.BaseID:
+        type: string
+  shareledger.gentlemint.QueryLevelFeeResponse:
+    type: object
+    properties:
+      levelFee:
+        type: object
+        properties:
+          level:
+            type: string
+          fee:
+            type: string
+          creator:
+            type: string
+  shareledger.gentlemint.QueryLevelFeesResponse:
+    type: object
+    properties:
+      levelFees:
+        type: array
+        items:
+          type: object
+          properties:
+            level:
+              type: string
+            creator:
+              type: string
+            originalFee:
+              type: string
+            convertedFee:
+              type: object
+              properties:
+                denom:
+                  type: string
+                amount:
+                  type: string
+              description: >-
+                Coin defines a token with a denomination and an amount.
+
+
+                NOTE: The amount field is an Int which implements the custom
+                method
+
+                signatures required by gogoproto.
+  shareledger.id.BaseID:
     type: object
     properties:
       issuerAddress:
@@ -21105,7 +21657,7 @@ definitions:
         type: string
       extraData:
         type: string
-  ShareRing.shareledger.id.Id:
+  shareledger.id.Id:
     type: object
     properties:
       id:
@@ -21121,15 +21673,15 @@ definitions:
             type: string
           extraData:
             type: string
-  ShareRing.shareledger.id.MsgCreateIdBatchResponse:
+  shareledger.id.MsgCreateIdResponse:
     type: object
-  ShareRing.shareledger.id.MsgCreateIdResponse:
+  shareledger.id.MsgCreateIdsResponse:
     type: object
-  ShareRing.shareledger.id.MsgReplaceIdOwnerResponse:
+  shareledger.id.MsgReplaceIdOwnerResponse:
     type: object
-  ShareRing.shareledger.id.MsgUpdateIdResponse:
+  shareledger.id.MsgUpdateIdResponse:
     type: object
-  ShareRing.shareledger.id.QueryIdByAddressResponse:
+  shareledger.id.QueryIdByAddressResponse:
     type: object
     properties:
       id:
@@ -21148,7 +21700,7 @@ definitions:
                 type: string
               extraData:
                 type: string
-  ShareRing.shareledger.id.QueryIdByIdResponse:
+  shareledger.id.QueryIdByIdResponse:
     type: object
     properties:
       id:

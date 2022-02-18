@@ -3,10 +3,10 @@ package electoral
 import (
 	"fmt"
 
-	"github.com/sharering/shareledger/x/electoral/keeper"
-	"github.com/sharering/shareledger/x/electoral/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	"github.com/sharering/shareledger/x/electoral/keeper"
+	"github.com/sharering/shareledger/x/electoral/types"
 )
 
 // NewHandler ...
@@ -29,23 +29,23 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
 		case *types.MsgRevokeLoaders:
 			res, err := msgServer.RevokeLoaders(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgEnrollIdSigner:
-			res, err := msgServer.EnrollIdSigner(sdk.WrapSDKContext(ctx), msg)
+		case *types.MsgEnrollIdSigners:
+			res, err := msgServer.EnrollIdSigners(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgRevokeIdSigner:
-			res, err := msgServer.RevokeIdSigner(sdk.WrapSDKContext(ctx), msg)
+		case *types.MsgRevokeIdSigners:
+			res, err := msgServer.RevokeIdSigners(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgEnrollDocIssuer:
-			res, err := msgServer.EnrollDocIssuer(sdk.WrapSDKContext(ctx), msg)
+		case *types.MsgEnrollDocIssuers:
+			res, err := msgServer.EnrollDocIssuers(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgRevokeDocIssuer:
-			res, err := msgServer.RevokeDocIssuer(sdk.WrapSDKContext(ctx), msg)
+		case *types.MsgRevokeDocIssuers:
+			res, err := msgServer.RevokeDocIssuers(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgEnrollAccountOperator:
-			res, err := msgServer.EnrollAccountOperator(sdk.WrapSDKContext(ctx), msg)
+		case *types.MsgEnrollAccountOperators:
+			res, err := msgServer.EnrollAccountOperators(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgRevokeAccountOperator:
-			res, err := msgServer.RevokeAccountOperator(sdk.WrapSDKContext(ctx), msg)
+		case *types.MsgRevokeAccountOperators:
+			res, err := msgServer.RevokeAccountOperators(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
 			// this line is used by starport scaffolding # 1
 		default:

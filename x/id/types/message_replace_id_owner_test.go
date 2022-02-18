@@ -3,8 +3,8 @@ package types
 import (
 	"testing"
 
-	"github.com/sharering/shareledger/testutil/sample"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	"github.com/sharering/shareledger/testutil/sample"
 	"github.com/stretchr/testify/require"
 )
 
@@ -24,6 +24,8 @@ func TestMsgReplaceIdOwner_ValidateBasic(t *testing.T) {
 			name: "valid address",
 			msg: MsgReplaceIdOwner{
 				BackupAddress: sample.AccAddress(),
+				Id:            "id",
+				OwnerAddress:  sample.AccAddress(),
 			},
 		},
 	}

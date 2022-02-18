@@ -5,24 +5,24 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
-var _ sdk.Msg = &MsgDelete{}
+var _ sdk.Msg = &MsgDeleteAsset{}
 
-func NewMsgDelete(owner, UUID string) *MsgDelete {
-	return &MsgDelete{
+func NewMsgDelete(owner, UUID string) *MsgDeleteAsset {
+	return &MsgDeleteAsset{
 		Owner: owner,
 		UUID:  UUID,
 	}
 }
 
-func (msg *MsgDelete) Route() string {
+func (msg *MsgDeleteAsset) Route() string {
 	return RouterKey
 }
 
-func (msg *MsgDelete) Type() string {
+func (msg *MsgDeleteAsset) Type() string {
 	return TypeAssetDeleteMsg
 }
 
-func (msg *MsgDelete) GetSigners() []sdk.AccAddress {
+func (msg *MsgDeleteAsset) GetSigners() []sdk.AccAddress {
 	owner, err := sdk.AccAddressFromBech32(msg.Owner)
 	if err != nil {
 		panic(err)
@@ -30,19 +30,19 @@ func (msg *MsgDelete) GetSigners() []sdk.AccAddress {
 	return []sdk.AccAddress{owner}
 }
 
-func (msg *MsgDelete) GetSignBytes() []byte {
+func (msg *MsgDeleteAsset) GetSignBytes() []byte {
 	bz := ModuleCdc.MustMarshalJSON(msg)
 	return sdk.MustSortJSON(bz)
 }
 
-func (msg *MsgDelete) ValidateBasic() error {
+func (msg *MsgDeleteAsset) ValidateBasic() error {
 	_, err := sdk.AccAddressFromBech32(msg.Owner)
 	if len(msg.Owner) == 0 || err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid owner address (%s)", err)
 	}
 
 	if len(msg.UUID) == 0 {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "UUID must not be empty")
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "UUID must not be empty")
 	}
 
 	return nil

@@ -3,15 +3,15 @@ package keeper
 import (
 	"context"
 
-	"github.com/sharering/shareledger/x/electoral/types"
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/query"
+	"github.com/sharering/shareledger/x/electoral/types"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
 
-func (k Keeper) AccStateAll(c context.Context, req *types.QueryAllAccStateRequest) (*types.QueryAllAccStateResponse, error) {
+func (k Keeper) AccStates(c context.Context, req *types.QueryAccStatesRequest) (*types.QueryAccStatesResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
@@ -36,10 +36,10 @@ func (k Keeper) AccStateAll(c context.Context, req *types.QueryAllAccStateReques
 		return nil, status.Error(codes.Internal, err.Error())
 	}
 
-	return &types.QueryAllAccStateResponse{AccState: accStates, Pagination: pageRes}, nil
+	return &types.QueryAccStatesResponse{AccState: accStates, Pagination: pageRes}, nil
 }
 
-func (k Keeper) AccState(c context.Context, req *types.QueryGetAccStateRequest) (*types.QueryGetAccStateResponse, error) {
+func (k Keeper) AccState(c context.Context, req *types.QueryAccStateRequest) (*types.QueryAccStateResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
@@ -53,5 +53,5 @@ func (k Keeper) AccState(c context.Context, req *types.QueryGetAccStateRequest) 
 		return nil, status.Error(codes.InvalidArgument, "not found")
 	}
 
-	return &types.QueryGetAccStateResponse{AccState: val}, nil
+	return &types.QueryAccStateResponse{AccState: val}, nil
 }

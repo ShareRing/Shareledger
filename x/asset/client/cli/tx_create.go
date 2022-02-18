@@ -4,13 +4,11 @@ import (
 	"strconv"
 
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
 	"github.com/sharering/shareledger/x/asset/types"
-	myutils "github.com/sharering/shareledger/x/utils"
 )
 
 var _ = strconv.Itoa(0)
@@ -18,7 +16,7 @@ var _ = strconv.Itoa(0)
 func CmdCreate() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "create [hash] [uuid] [status] [rate]",
-		Short: "Broadcast message Create",
+		Short: "Broadcast message CreateAsset",
 		Args:  cobra.ExactArgs(4),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argHash := []byte(args[0])
@@ -37,16 +35,7 @@ func CmdCreate() *cobra.Command {
 				return err
 			}
 
-			// seed implementation
-			keySeed := viper.GetString(myutils.FlagKeySeed)
-			if keySeed != "" {
-				clientCtx, err = myutils.CreateContextFromSeed(keySeed, clientCtx)
-				if err != nil {
-					return err
-				}
-			}
-
-			msg := types.NewMsgCreate(
+			msg := types.NewMsgCreateAsset(
 				clientCtx.GetFromAddress().String(),
 				argHash,
 				argUUID,
@@ -61,7 +50,6 @@ func CmdCreate() *cobra.Command {
 	}
 
 	flags.AddTxFlagsToCmd(cmd)
-	cmd.Flags().String(myutils.FlagKeySeed, "", myutils.KeySeedUsage)
 
 	return cmd
 }

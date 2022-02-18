@@ -3,8 +3,8 @@ package types
 import (
 	"testing"
 
-	"github.com/sharering/shareledger/testutil/sample"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	"github.com/sharering/shareledger/testutil/sample"
 	"github.com/stretchr/testify/require"
 )
 
@@ -23,7 +23,8 @@ func TestMsgRevokeLoaders_ValidateBasic(t *testing.T) {
 		}, {
 			name: "valid address",
 			msg: MsgRevokeLoaders{
-				Creator: sample.AccAddress(),
+				Creator:   sample.AccAddress(),
+				Addresses: []string{sample.AccAddress()},
 			},
 		},
 	}

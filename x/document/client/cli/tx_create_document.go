@@ -6,14 +6,12 @@ import (
 	"strings"
 
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 
-	"github.com/sharering/shareledger/x/document/types"
-	myutils "github.com/sharering/shareledger/x/utils"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
 	"github.com/cosmos/cosmos-sdk/version"
+	"github.com/sharering/shareledger/x/document/types"
 )
 
 var _ = strconv.Itoa(0)
@@ -21,7 +19,7 @@ var _ = strconv.Itoa(0)
 func CmdCreateDocument() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "create [holder id] [proof] [extra data]",
-		Short: "Create a new document",
+		Short: "CreateAsset a new document",
 		Long: strings.TrimSpace(fmt.Sprintf(`
 Example:
 $ %s tx %s create uuid-5132 c89efdaa54c0f20c7adf612882df0950f5a951637e0307cdcb4c672f298b8bc6 https://sharering.network/id/463`, version.Name, types.ModuleName)),
@@ -34,15 +32,6 @@ $ %s tx %s create uuid-5132 c89efdaa54c0f20c7adf612882df0950f5a951637e0307cdcb4c
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
-			}
-
-			// seed implementation
-			keySeed := viper.GetString(myutils.FlagKeySeed)
-			if keySeed != "" {
-				clientCtx, err = myutils.CreateContextFromSeed(keySeed, clientCtx)
-				if err != nil {
-					return err
-				}
 			}
 
 			msg := types.NewMsgCreateDocument(
@@ -60,7 +49,6 @@ $ %s tx %s create uuid-5132 c89efdaa54c0f20c7adf612882df0950f5a951637e0307cdcb4c
 	}
 
 	flags.AddTxFlagsToCmd(cmd)
-	cmd.Flags().String(myutils.FlagKeySeed, "", myutils.KeySeedUsage)
 
 	return cmd
 }

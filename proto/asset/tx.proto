@@ -1,5 +1,5 @@
 syntax = "proto3";
-package ShareRing.shareledger.asset;
+package shareledger.asset;
 
 // this line is used by starport scaffolding # proto/tx/import
 
@@ -7,13 +7,13 @@ option go_package = "github.com/sharering/shareledger/x/asset/types";
 
 // Msg defines the Msg service.
 service Msg {
-  rpc Create(MsgCreate) returns (MsgCreateResponse);
-  rpc Update(MsgUpdate) returns (MsgUpdateResponse);
-  rpc Delete(MsgDelete) returns (MsgDeleteResponse);
+  rpc CreateAsset(MsgCreateAsset) returns (MsgCreateAssetResponse);
+  rpc UpdateAsset(MsgUpdateAsset) returns (MsgUpdateAssetResponse);
+  rpc DeleteAsset(MsgDeleteAsset) returns (MsgDeleteAssetResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
-message MsgCreate {
+message MsgCreateAsset {
   string creator = 1;
   bytes hash = 2;
   string UUID = 3;
@@ -21,10 +21,10 @@ message MsgCreate {
   int64 rate = 5;
 }
 
-message MsgCreateResponse {
+message MsgCreateAssetResponse {
 }
 
-message MsgUpdate {
+message MsgUpdateAsset {
   string creator = 1;
   bytes hash = 2;
   string UUID = 3;
@@ -32,15 +32,15 @@ message MsgUpdate {
   int64 rate = 5;
 }
 
-message MsgUpdateResponse {
+message MsgUpdateAssetResponse {
 }
 
-message MsgDelete {
+message MsgDeleteAsset {
   string owner = 1;
   string UUID = 2;
 }
 
-message MsgDeleteResponse {
+message MsgDeleteAssetResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message

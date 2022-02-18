@@ -1,5 +1,5 @@
 syntax = "proto3";
-package ShareRing.shareledger.document;
+package shareledger.document;
 
 import "gogoproto/gogo.proto";
 import "document/document.proto";

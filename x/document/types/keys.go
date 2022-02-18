@@ -16,10 +16,10 @@ const (
 	// MemStoreKey defines the in-memory store key
 	MemStoreKey = "mem_document"
 
-	TypeMsgCreateDoc        = "create_doc"
-	TypeMsgCreateDocInBatch = "create_doc_batch"
-	TypeMsgUpdateDoc        = "update_doc"
-	TypeMsgRevokeDoc        = "revoke_doc"
+	TypeMsgCreateDoc  = "create_doc"
+	TypeMsgCreateDocs = "create_docs"
+	TypeMsgUpdateDoc  = "update_doc"
+	TypeMsgRevokeDoc  = "revoke_doc"
 
 	DocDetailKeyPrefix = "DocumentDetail/"
 	DocBasicKeyPrefix  = "DocumentBasic/"

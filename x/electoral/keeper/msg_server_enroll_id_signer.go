@@ -3,11 +3,11 @@ package keeper
 import (
 	"context"
 
-	"github.com/sharering/shareledger/x/electoral/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/sharering/shareledger/x/electoral/types"
 )
 
-func (k msgServer) EnrollIdSigner(goCtx context.Context, msg *types.MsgEnrollIdSigner) (*types.MsgEnrollIdSignerResponse, error) {
+func (k msgServer) EnrollIdSigners(goCtx context.Context, msg *types.MsgEnrollIdSigners) (*types.MsgEnrollIdSignersResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	if err := msg.ValidateBasic(); err != nil {
@@ -34,5 +34,5 @@ func (k msgServer) EnrollIdSigner(goCtx context.Context, msg *types.MsgEnrollIdS
 		),
 	}
 	ctx.EventManager().EmitEvents(events)
-	return &types.MsgEnrollIdSignerResponse{}, nil
+	return &types.MsgEnrollIdSignersResponse{}, nil
 }

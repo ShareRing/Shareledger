@@ -3,8 +3,8 @@ package types
 import (
 	"testing"
 
-	"github.com/sharering/shareledger/testutil/sample"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	"github.com/sharering/shareledger/testutil/sample"
 	"github.com/stretchr/testify/require"
 )
 
@@ -24,7 +24,7 @@ func TestMsgBuyShr_ValidateBasic(t *testing.T) {
 			name: "valid address",
 			msg: MsgBuyShr{
 				Creator: sample.AccAddress(),
-				Amount: "1",
+				Amount:  "1",
 			},
 		},
 	}
