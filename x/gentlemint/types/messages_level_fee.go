@@ -49,7 +49,7 @@ func (msg *MsgSetLevelFee) ValidateBasic() error {
 	}
 	dc, err := sdk.ParseDecCoin(msg.Fee)
 	if err != nil {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "invalid fee, %s. Format should be 2%v or 2.3%v", msg.Fee, denom.Base, denom.ShrP)
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, err.Error())
 	}
 	if err := denom.CheckSupportedCoins(sdk.NewDecCoins(dc), nil); err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, err.Error())
