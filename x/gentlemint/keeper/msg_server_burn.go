@@ -14,11 +14,8 @@ func (k msgServer) Burn(goCtx context.Context, msg *types.MsgBurn) (*types.MsgBu
 	if err := msg.ValidateBasic(); err != nil {
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, err.Error())
 	}
-	decCoins, err := sdk.ParseDecCoins(msg.Coins)
-	if err != nil {
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, err.Error())
-	}
-	baseCoins, err := denom.NormalizeToBaseCoins(decCoins, false)
+
+	baseCoins, err := denom.NormalizeToBaseCoins(msg.Coins, false)
 	if err != nil {
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, err.Error())
 	}

@@ -21,11 +21,7 @@ func (k msgServer) Load(goCtx context.Context, msg *types.MsgLoad) (*types.MsgLo
 		return nil, err
 	}
 
-	coins, err := sdk.ParseDecCoins(msg.Coins)
-	if err != nil {
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, err.Error())
-	}
-	baseCoins, err := denom.NormalizeToBaseCoins(coins, false)
+	baseCoins, err := denom.NormalizeToBaseCoins(msg.Coins, false)
 	if err != nil {
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, err.Error())
 	}

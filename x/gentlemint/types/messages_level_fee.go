@@ -11,7 +11,7 @@ var _ sdk.Msg = &MsgSetLevelFee{}
 func NewMsgSetLevelFee(
 	creator string,
 	level string,
-	fee string,
+	fee sdk.DecCoin,
 
 ) *MsgSetLevelFee {
 	return &MsgSetLevelFee{
@@ -47,11 +47,13 @@ func (msg *MsgSetLevelFee) ValidateBasic() error {
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
 	}
-	dc, err := sdk.ParseDecCoin(msg.Fee)
+	if err := msg.Fee.Validate(); err != nil {
+		return err
+	}
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, err.Error())
 	}
-	if err := denom.CheckSupportedCoins(sdk.NewDecCoins(dc), nil); err != nil {
+	if err := denom.CheckSupportedCoins(sdk.NewDecCoins(msg.Fee), nil); err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, err.Error())
 	}
 

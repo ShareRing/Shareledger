@@ -1,6 +1,7 @@
 package cli
 
 import (
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	"strconv"
 
 	"github.com/spf13/cobra"
@@ -20,7 +21,10 @@ func CmdBurn() *cobra.Command {
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argCoins := args[0]
-
+			decCoins, err := sdk.ParseDecCoins(argCoins)
+			if err != nil {
+				return err
+			}
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
@@ -28,7 +32,7 @@ func CmdBurn() *cobra.Command {
 
 			msg := types.NewMsgBurn(
 				clientCtx.GetFromAddress().String(),
-				argCoins,
+				decCoins,
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err

@@ -1,6 +1,7 @@
 package cli
 
 import (
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/spf13/cobra"
 
 	"github.com/cosmos/cosmos-sdk/client"
@@ -19,7 +20,10 @@ func CmdSetLevelFee() *cobra.Command {
 			indexLevel := args[0]
 
 			// Get value arguments
-			argFee := args[1]
+			dc, err := sdk.ParseDecCoin(args[1])
+			if err != nil {
+				return err
+			}
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -29,7 +33,7 @@ func CmdSetLevelFee() *cobra.Command {
 			msg := types.NewMsgSetLevelFee(
 				clientCtx.GetFromAddress().String(),
 				indexLevel,
-				argFee,
+				dc,
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err

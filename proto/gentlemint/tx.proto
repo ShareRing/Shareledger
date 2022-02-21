@@ -3,6 +3,7 @@ package shareledger.gentlemint;
 
 import "gentlemint/level_fee.proto";
 import "gentlemint/action_level_fee.proto";
+import "gogoproto/gogo.proto";
 // this line is used by starport scaffolding # proto/tx/import
 import "cosmos/base/v1beta1/coin.proto";
 
@@ -45,7 +46,8 @@ message MsgSetLevelFee {
   string creator = 1;
   string level = 2;
 
-  string fee = 3;
+  cosmos.base.v1beta1.DecCoin fee = 3
+  [(gogoproto.nullable) = false];
 }
 message MsgSetLevelFeeResponse {}
 
@@ -80,7 +82,8 @@ message MsgLoadFeeResponse {
 message MsgLoad {
   string creator = 1;
   string address = 2;
-  string coins = 3;
+  repeated cosmos.base.v1beta1.DecCoin coins = 3
+  [(gogoproto.nullable) = false, (gogoproto.castrepeated) = "github.com/cosmos/cosmos-sdk/types.DecCoins"];
 }
 
 message MsgLoadResponse {
@@ -89,7 +92,8 @@ message MsgLoadResponse {
 message MsgSend {
   string creator = 1;
   string address = 2;
-  string coins = 3;
+  repeated cosmos.base.v1beta1.DecCoin coins = 3
+  [(gogoproto.nullable) = false, (gogoproto.castrepeated) = "github.com/cosmos/cosmos-sdk/types.DecCoins"];
 }
 
 message MsgSendResponse {
@@ -97,7 +101,8 @@ message MsgSendResponse {
 
 message MsgBurn {
   string creator = 1;
-  string coins = 2;
+  repeated cosmos.base.v1beta1.DecCoin coins = 2
+  [(gogoproto.nullable) = false, (gogoproto.castrepeated) = "github.com/cosmos/cosmos-sdk/types.DecCoins"];
 }
 
 message MsgBurnResponse {
