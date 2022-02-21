@@ -2,9 +2,6 @@ package cli
 
 import (
 	"context"
-	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/sharering/shareledger/x/utils/demo"
-
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/sharering/shareledger/x/gentlemint/types"
@@ -28,7 +25,6 @@ func CmdShowExchangeRate() *cobra.Command {
 				return err
 			}
 
-			res.Rate = sdk.MustNewDecFromStr(res.Rate).Quo(sdk.NewDec(denom.ShrExponent)).String()
 			return clientCtx.PrintProto(res)
 		},
 	}
