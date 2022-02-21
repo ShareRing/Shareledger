@@ -16,15 +16,15 @@ func (k msgServer) Send(goCtx context.Context, msg *types.MsgSend) (*types.MsgSe
 		return nil, err
 	}
 
-	decCoins, err := sdk.ParseDecCoins(msg.Coins)
-	if err != nil {
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, err.Error())
-	}
+	//decCoins, err := sdk.ParseDecCoins(msg.Coins)
+	//if err != nil {
+	//	return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, err.Error())
+	//}
 	dstAddr, err := sdk.AccAddressFromBech32(msg.Address)
 	if err != nil {
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, err.Error())
 	}
-	baseCoins, err := denom.NormalizeToBaseCoins(decCoins, false)
+	baseCoins, err := denom.NormalizeToBaseCoins(msg.Coins, false)
 	if err != nil {
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, err.Error())
 	}

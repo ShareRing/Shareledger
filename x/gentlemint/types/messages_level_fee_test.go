@@ -1,7 +1,9 @@
 package types
 
 import (
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/sharering/shareledger/x/constant"
+	denom "github.com/sharering/shareledger/x/utils/demo"
 	"testing"
 
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
@@ -19,7 +21,7 @@ func TestMsgCreateLevelFee_ValidateBasic(t *testing.T) {
 			name: "invalid address",
 			msg: MsgSetLevelFee{
 				Level:   string(constant.HighFee),
-				Fee:     "10.9shrp",
+				Fee:     sdk.NewDecCoinFromDec(denom.ShrP, sdk.MustNewDecFromStr("10.9")),
 				Creator: "invalid_address",
 			},
 			err: sdkerrors.ErrInvalidAddress,
@@ -27,7 +29,7 @@ func TestMsgCreateLevelFee_ValidateBasic(t *testing.T) {
 			name: "valid address",
 			msg: MsgSetLevelFee{
 				Level:   string(constant.HighFee),
-				Fee:     "10.9shrp",
+				Fee:     sdk.NewDecCoinFromDec(denom.ShrP, sdk.MustNewDecFromStr("10.9")),
 				Creator: sample.AccAddress(),
 			},
 		},
@@ -54,7 +56,7 @@ func TestMsgSetLevelFee_ValidateBasic(t *testing.T) {
 			name: "invalid address",
 			msg: MsgSetLevelFee{
 				Level:   string(constant.HighFee),
-				Fee:     "10.9shrp",
+				Fee:     sdk.NewDecCoinFromDec(denom.ShrP, sdk.MustNewDecFromStr("10.9")),
 				Creator: "invalid_address",
 			},
 			err: sdkerrors.ErrInvalidAddress,
@@ -62,7 +64,7 @@ func TestMsgSetLevelFee_ValidateBasic(t *testing.T) {
 			name: "valid address",
 			msg: MsgSetLevelFee{
 				Level:   string(constant.HighFee),
-				Fee:     "10.9shrp",
+				Fee:     sdk.NewDecCoinFromDec(denom.ShrP, sdk.MustNewDecFromStr("10.9")),
 				Creator: sample.AccAddress(),
 			},
 		},

@@ -1,6 +1,7 @@
 package cli
 
 import (
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	"strconv"
 
 	"github.com/spf13/cobra"
@@ -24,11 +25,14 @@ func CmdLoad() *cobra.Command {
 			if err != nil {
 				return err
 			}
-
+			decCoins, err := sdk.ParseDecCoins(args[1])
+			if err != nil {
+				return err
+			}
 			msg := types.NewMsgLoad(
 				clientCtx.GetFromAddress().String(),
 				args[0],
-				args[1],
+				decCoins,
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err

@@ -8,7 +8,7 @@ import (
 
 var _ sdk.Msg = &MsgBurn{}
 
-func NewMsgBurn(creator string, coins string) *MsgBurn {
+func NewMsgBurn(creator string, coins sdk.DecCoins) *MsgBurn {
 	return &MsgBurn{
 		Creator: creator,
 		Coins:   coins,
@@ -41,11 +41,11 @@ func (msg *MsgBurn) ValidateBasic() error {
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
 	}
-	coins, err := sdk.ParseDecCoins(msg.Coins)
-	if err != nil {
+
+	if err := msg.Coins.Validate(); err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "coins string was not supported. Format should be {amount0}{denomination},...,{amountN}{denominationN}")
 	}
-	if err := denom.CheckSupportedCoins(coins, nil); err != nil {
+	if err := denom.CheckSupportedCoins(msg.Coins, nil); err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, err.Error())
 	}
 	return nil

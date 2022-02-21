@@ -38,10 +38,7 @@ func (a Auth) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate bool, next sdk.Ant
 		signer := msgI.GetSigners()[0]
 		switch msg := msgI.(type) {
 		case *gentleminttypes.MsgLoad:
-			coins, err := sdk.ParseDecCoins(msg.Coins)
-			if err != nil {
-				return ctx, err
-			}
+			coins := msg.Coins
 			for _, c := range coins {
 				switch c.Denom {
 				case denom.Base, denom.Shr:

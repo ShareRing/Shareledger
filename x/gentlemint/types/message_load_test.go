@@ -1,6 +1,8 @@
 package types
 
 import (
+	"github.com/cosmos/cosmos-sdk/types"
+	denom "github.com/sharering/shareledger/x/utils/demo"
 	"testing"
 
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
@@ -25,7 +27,7 @@ func TestMsgLoad_ValidateBasic(t *testing.T) {
 			msg: MsgLoad{
 				Creator: sample.AccAddress(),
 				Address: sample.AccAddress(),
-				Coins:   "1.1shr",
+				Coins:   types.NewDecCoins(types.NewDecCoinFromDec(denom.Shr, types.MustNewDecFromStr("1.1"))),
 			},
 		},
 	}

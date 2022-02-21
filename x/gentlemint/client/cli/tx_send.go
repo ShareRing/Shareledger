@@ -1,6 +1,7 @@
 package cli
 
 import (
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	"strconv"
 
 	"github.com/spf13/cobra"
@@ -20,7 +21,11 @@ func CmdSend() *cobra.Command {
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argAddress := args[0]
-			argCoins := args[1]
+
+			dCoins, err := sdk.ParseDecCoins(args[1])
+			if err != nil {
+				return err
+			}
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -30,7 +35,7 @@ func CmdSend() *cobra.Command {
 			msg := types.NewMsgSend(
 				clientCtx.GetFromAddress().String(),
 				argAddress,
-				argCoins,
+				dCoins,
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err
