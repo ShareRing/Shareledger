@@ -1,7 +1,8 @@
 package tests
 
 import (
-	"fmt"
+	sdk "github.com/cosmos/cosmos-sdk/types"
+	denom "github.com/sharering/shareledger/x/utils/demo"
 
 	testutil2 "github.com/cosmos/cosmos-sdk/x/bank/client/testutil"
 	"github.com/stretchr/testify/suite"
@@ -91,7 +92,8 @@ func (s *BookingIntegrationTestSuite) TestCreateBooking() {
 		s.NoError(err)
 		accBalance := network.BalanceJsonUnmarshal(s.T(), accByte.Bytes())
 		//default shrp 100
-		s.Equal(fmt.Sprintf("%d", 94), accBalance.Balances.AmountOf("shrp").String())
+		s.Equal(sdk.NewCoin(denom.BaseUSD, sdk.NewInt(94*denom.USDExponent)), sdk.NewCoin(denom.BaseUSD, accBalance.Balances.AmountOf(denom.BaseUSD)), accBalance.Balances)
+		//s.Equal(fmt.Sprintf("%d", 94), accBalance.Balances.AmountOf("shrp").String())
 	})
 
 	s.Run("create_booking_with_same_asset_it_should_be_got_error", func() {
@@ -116,7 +118,10 @@ func (s *BookingIntegrationTestSuite) TestCreateBooking() {
 		s.NoError(err)
 		accBalance := network.BalanceJsonUnmarshal(s.T(), accByte.Bytes())
 		//default shrp 100
-		s.Equal(fmt.Sprintf("%d", 100), accBalance.Balances.AmountOf("shrp").String())
+
+		s.Equal(sdk.NewCoin(denom.BaseUSD, sdk.NewInt(100*denom.USDExponent)), sdk.NewCoin(denom.BaseUSD, accBalance.Balances.AmountOf(denom.BaseUSD)), accBalance.Balances)
+
+		//s.Equal(fmt.Sprintf("%d", 100), accBalance.Balances.AmountOf("shrp").String())
 	})
 
 }

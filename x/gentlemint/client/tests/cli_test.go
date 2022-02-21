@@ -1,11 +1,21 @@
 package tests
 
 import (
+	"github.com/sharering/shareledger/cmd/Shareledgerd/cli"
+	"sync"
 	"testing"
 
 	"github.com/sharering/shareledger/testutil/network"
 	"github.com/stretchr/testify/suite"
 )
+
+var runOnce = sync.Once{}
+
+func init() {
+	runOnce.Do(func() {
+		cli.InitMiddleWare()
+	})
+}
 
 func TestGentlemintIntegrationTestSuite(t *testing.T) {
 	networkConfig := network.ShareLedgerTestingConfig()

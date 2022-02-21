@@ -28,7 +28,7 @@ func CmdExNewID(clientCtx client.Context, t *testing.T, userID, backupAddress, a
 func CmdExNewIDInBatch(clientCtx client.Context, t *testing.T, userIDs, backupAddresses, addressOwners, exDatas string, extraFlags ...string) testutil.BufferWriter {
 	args := []string{userIDs, backupAddresses, addressOwners, exDatas}
 	args = append(args, extraFlags...)
-	out, err := clitestutil.ExecTestCLICmd(clientCtx, cli.CmdCreateIdBatch(), args)
+	out, err := clitestutil.ExecTestCLICmd(clientCtx, cli.CmdCreateIds(), args)
 	if err != nil {
 		t.Errorf("fail create id: %v", err)
 	}

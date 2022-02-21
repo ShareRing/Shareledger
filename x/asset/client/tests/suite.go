@@ -54,7 +54,6 @@ func (s *AssetIntegrationTestSuite) TestCreateAsset() {
 			network.JSONFlag(),
 		)
 		asset := AssetJsonUnmarshal(s.T(), cmdQueryResponse.Bytes())
-		s.T().Logf("the asset %v", asset)
 		s.Assert().Equal(assetID, asset.UUID, "asset UUID is not equal")
 		s.Assert().Equal(assetHash, string(asset.Hash), "asset hash is not equal")
 		s.Assert().Equal(assetStatus, fmt.Sprintf("%t", asset.Status), "asset status is not equal")

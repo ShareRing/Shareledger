@@ -20,7 +20,7 @@ func SkipConfirmation() string {
 }
 
 func SHRFee1() string {
-	return fmt.Sprintf("--%s=%s", flags.FlagFees, "1shr")
+	return fmt.Sprintf("--%s=%s", flags.FlagFees, "1000000000nshr")
 }
 
 //SHRFee2 is used in default case
@@ -28,7 +28,7 @@ func SHRFee2() string {
 	return fmt.Sprintf("--%s=%s", flags.FlagFees, "2shr")
 }
 func SHRFee3() string {
-	return fmt.Sprintf("--%s=%s", flags.FlagFees, "3shr")
+	return fmt.Sprintf("--%s=%s", flags.FlagFees, "3000000000nshr")
 }
 
 func SHRFee(number int) string {
@@ -37,17 +37,17 @@ func SHRFee(number int) string {
 
 //SHRFee10 use in case the transaction require high fee
 func SHRFee10() string {
-	return fmt.Sprintf("--%s=%s", flags.FlagFees, "10shr")
+	return fmt.Sprintf("--%s=%s", flags.FlagFees, "10000000000nshr")
 }
 
 //SHRFee6 use in case the transaction require medium fee
 func SHRFee6() string {
-	return fmt.Sprintf("--%s=%s", flags.FlagFees, "6shr")
+	return fmt.Sprintf("--%s=%s", flags.FlagFees, "6000000000nshr")
 }
 
 //SHRFee4 use in case the transaction require low fee
 func SHRFee4() string {
-	return fmt.Sprintf("--%s=%s", flags.FlagFees, "4shr")
+	return fmt.Sprintf("--%s=%s", flags.FlagFees, "4000000000nshr")
 }
 
 func BlockBroadcast() string {

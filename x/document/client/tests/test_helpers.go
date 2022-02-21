@@ -26,7 +26,7 @@ func CmdExCreateDocument(clientCtx client.Context, t *testing.T, holderID, docPr
 func CmdExCreateDocumentInBatch(clientCtx client.Context, t *testing.T, holderID, docProof, extraData string, extraFlags ...string) testutil.BufferWriter {
 	args := []string{holderID, docProof, extraData}
 	args = append(args, extraFlags...)
-	out, err := clitestutil.ExecTestCLICmd(clientCtx, cli.CmdCreateDocumentInBatch(), args)
+	out, err := clitestutil.ExecTestCLICmd(clientCtx, cli.CmdCreateDocuments(), args)
 	if err != nil {
 		t.Errorf("fail create document: %v", err)
 	}

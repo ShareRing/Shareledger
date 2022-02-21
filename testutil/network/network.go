@@ -10,6 +10,7 @@ import (
 	simapp2 "github.com/cosmos/cosmos-sdk/simapp"
 	"github.com/sharering/shareledger/app"
 	electoraltypes "github.com/sharering/shareledger/x/electoral/types"
+	denom "github.com/sharering/shareledger/x/utils/demo"
 	"github.com/tendermint/spm/cosmoscmd"
 	dbm "github.com/tendermint/tm-db"
 	"io/ioutil"
@@ -698,7 +699,7 @@ func ShareLedgerTestingConfig() Config {
 		ChainID:           "chain-" + tmrand.NewRand().Str(6),
 		NumValidators:     2,
 		BondDenom:         sdk.DefaultBondDenom,
-		MinGasPrices:      fmt.Sprintf("0.000006%s", "shr"),
+		MinGasPrices:      fmt.Sprintf("0.000006%s", denom.Base),
 		AccountTokens:     sdk.TokensFromConsensusPower(1000, sdk.DefaultPowerReduction),
 		StakingTokens:     sdk.TokensFromConsensusPower(500, sdk.DefaultPowerReduction),
 		BondedTokens:      sdk.TokensFromConsensusPower(100, sdk.DefaultPowerReduction),

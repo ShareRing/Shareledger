@@ -34,7 +34,7 @@ func (s *IDIntegrationTestSuite) SetupSuite() {
 	out, _ := tests.ExCmdEnrollAccountOperator(
 		s.network.Validators[0].ClientCtx,
 		s.T(),
-		s.network.Accounts[network.KeyOperator].String(),
+		[]string{s.network.Accounts[network.KeyOperator].String()},
 		network.MakeByAccount(network.KeyAuthority),
 		network.SkipConfirmation(),
 		network.BlockBroadcast(),
@@ -47,7 +47,7 @@ func (s *IDIntegrationTestSuite) SetupSuite() {
 	out, _ = tests.ExCmdEnrollIdSigner(
 		s.network.Validators[0].ClientCtx,
 		s.T(),
-		s.network.Accounts[network.KeyIDSigner].String(),
+		[]string{s.network.Accounts[network.KeyIDSigner].String()},
 		network.MakeByAccount(network.KeyOperator),
 		network.SkipConfirmation(),
 		network.BlockBroadcast(),
@@ -187,7 +187,7 @@ func (s *IDIntegrationTestSuite) TestUpdateID() {
 		_, _, addr := sample.RandomAddr(1)
 
 		validatorCtx := s.network.Validators[0].ClientCtx
-		out := CmdExNewID(validatorCtx, s.T(), "ID-forUpdate", addr[0], addr[0], "thisISBackup",
+		out := CmdExNewID(validatorCtx, s.T(), "ID-forUpdate", addr[0], s.network.Accounts[network.KeyIDSigner].String(), "thisISBackup",
 			network.JSONFlag(),
 			network.SkipConfirmation(),
 			network.MakeByAccount(network.KeyIDSigner),

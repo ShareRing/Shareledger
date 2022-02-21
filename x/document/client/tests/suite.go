@@ -46,7 +46,7 @@ func (s *DocumentIntegrationTestSuite) SetupSuite() {
 	out, _ := tests.ExCmdEnrollAccountOperator(
 		s.network.Validators[0].ClientCtx,
 		s.T(),
-		s.network.Accounts[network.KeyOperator].String(),
+		[]string{s.network.Accounts[network.KeyOperator].String()},
 		network.MakeByAccount(network.KeyAuthority),
 		network.SkipConfirmation(),
 		network.BlockBroadcast(),
@@ -60,7 +60,7 @@ func (s *DocumentIntegrationTestSuite) SetupSuite() {
 	out, _ = tests.ExCmdEnrollDocIssuer(
 		s.network.Validators[0].ClientCtx,
 		s.T(),
-		s.network.Accounts[network.KeyAccount1].String(),
+		[]string{s.network.Accounts[network.KeyAccount1].String()},
 		network.SHRFee2(),
 		network.MakeByAccount(network.KeyOperator),
 		network.SkipConfirmation(),
@@ -73,7 +73,7 @@ func (s *DocumentIntegrationTestSuite) SetupSuite() {
 	out, _ = tests.ExCmdEnrollIdSigner(
 		s.network.Validators[0].ClientCtx,
 		s.T(),
-		s.network.Accounts[network.KeyAccount1].String(),
+		[]string{s.network.Accounts[network.KeyAccount1].String()},
 		network.SHRFee2(),
 		network.MakeByAccount(network.KeyOperator),
 		network.SkipConfirmation(),

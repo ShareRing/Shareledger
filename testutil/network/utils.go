@@ -2,6 +2,7 @@ package network
 
 import (
 	"encoding/json"
+	denom "github.com/sharering/shareledger/x/utils/demo"
 	"path/filepath"
 	"testing"
 	"time"
@@ -57,15 +58,11 @@ const (
 	KeyAccount5 string = "acc5" //Use this account if you want more
 	KeyAccount6 string = "acc6" //Use this account if you want more
 
-	defaultInitSHR    = 10000
-	defaultInitSHRP   = 100
-	becauseImRichSHR  = 1000000 //100 million shr and shrp
-	becauseImRichSHRP = 1000000 //100 million shr and shrp
-
 	ShareLedgerSuccessCode             = uint32(0)
 	ShareLedgerErrorCodeUnauthorized   = uint32(4)
 	ShareLedgerErrorCodeInvalidCoin    = uint32(10)
 	ShareLedgerErrorCodeInvalidRequest = uint32(18)
+	ShareLedgerErrorCodeMaxSupply      = uint32(41)
 
 	ShareLedgerErrorCodeAssetNotExisted     = ErrorCodeNotFound
 	ShareLedgerErrorCodeAssetAlreadyExisted = ErrorCodeExisted
@@ -83,9 +80,13 @@ const (
 )
 
 var (
-	defaultCoins  = sdk.Coins{sdk.NewCoin("shr", sdk.NewInt(defaultInitSHR)), sdk.NewCoin("shrp", sdk.NewInt(defaultInitSHRP))}
-	becauseImRich = sdk.Coins{sdk.NewCoin("shr", sdk.NewInt(becauseImRichSHR)), sdk.NewCoin("shrp", sdk.NewInt(becauseImRichSHRP))}
-	poorMen       = sdk.Coins{sdk.NewCoin("shr", sdk.NewInt(0)), sdk.NewCoin("shrp", sdk.NewInt(0))}
+	defaultInitSHR    = 10000 * denom.ShrExponent
+	defaultInitSHRP   = 100 * denom.USDExponent
+	becauseImRichSHR  = 1000000 * denom.ShrExponent //10 0 million shr and shrp
+	becauseImRichSHRP = 1000000 * denom.USDExponent //100 million shr and shrp
+	defaultCoins      = sdk.NewCoins(sdk.NewCoin(denom.Base, sdk.NewInt(defaultInitSHR)), sdk.NewCoin(denom.BaseUSD, sdk.NewInt(defaultInitSHRP)))
+	becauseImRich     = sdk.NewCoins(sdk.NewCoin(denom.Base, sdk.NewInt(becauseImRichSHR)), sdk.NewCoin(denom.BaseUSD, sdk.NewInt(becauseImRichSHRP)))
+	poorMen           = sdk.NewCoins(sdk.NewCoin(denom.Base, sdk.NewInt(0)), sdk.NewCoin(denom.BaseUSD, sdk.NewInt(0)))
 )
 
 type (
@@ -116,6 +117,7 @@ func (e Events) GetEventByType(t *testing.T, eType string) Attributes {
 	}
 	t.Log("event type not found")
 	t.Fail()
+
 	return nil
 }
 
