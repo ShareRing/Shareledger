@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/sharering/shareledger/x/constant"
 	denom "github.com/sharering/shareledger/x/utils/demo"
 	"sort"
@@ -24,11 +25,7 @@ func (k Keeper) LevelFees(c context.Context, req *types.QueryLevelFeesRequest) (
 	exchangeRate := k.GetExchangeRateD(ctx)
 
 	for _, lf := range storedLevelFees {
-		decCoins, err := sdk.ParseDecCoins(lf.Fee)
-		if err != nil {
-			return nil, err
-		}
-		convertedFee, err := denom.NormalizeToBaseCoin(denom.Base, decCoins, exchangeRate, true)
+		convertedFee, err := denom.NormalizeToBaseCoin(denom.Base, sdk.NewDecCoins(lf.Fee), exchangeRate, true)
 		if err != nil {
 			return nil, err
 		}
@@ -50,7 +47,7 @@ func (k Keeper) LevelFees(c context.Context, req *types.QueryLevelFeesRequest) (
 
 		levelFees = append(levelFees, types.LevelFeeDetail{
 			Level:        string(l),
-			OriginalFee:  f.String(),
+			OriginalFee:  f,
 			ConvertedFee: &convertedFee,
 		})
 	}
@@ -71,9 +68,20 @@ func (k Keeper) LevelFee(c context.Context, req *types.QueryLevelFeeRequest) (*t
 		ctx,
 		req.Level,
 	)
+	usdRate := k.GetExchangeRateD(ctx)
+	convertedFee, err := denom.NormalizeToBaseCoin(denom.Base, sdk.NewDecCoins(val.Fee), usdRate, true)
+	if err != nil {
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrLogic, err.Error())
+	}
+	resp := types.LevelFeeDetail{
+		Level:        req.Level,
+		Creator:      val.Creator,
+		OriginalFee:  val.Fee,
+		ConvertedFee: &convertedFee,
+	}
 	if !found {
 		return nil, status.Error(codes.InvalidArgument, "not found")
 	}
 
-	return &types.QueryLevelFeeResponse{LevelFee: val}, nil
+	return &types.QueryLevelFeeResponse{LevelFee: resp}, nil
 }

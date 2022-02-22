@@ -67,10 +67,5 @@ func (k Keeper) GetFeeByLevel(ctx sdk.Context, level string) sdk.DecCoin {
 	if !found {
 		return constant.DefaultFeeLevel[constant.MinFee]
 	}
-	dec, err := sdk.ParseDecCoin(levelCost.Fee)
-	if err != nil {
-		k.Logger(ctx).Error(err.Error(), "level", levelCost.Level, "cost", levelCost.Fee)
-		dec = constant.DefaultFeeLevel[constant.MinFee]
-	}
-	return dec
+	return levelCost.Fee
 }

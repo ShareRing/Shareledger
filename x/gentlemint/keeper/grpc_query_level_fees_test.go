@@ -31,14 +31,14 @@ func TestLevelFeeQuerySingle(t *testing.T) {
 			request: &types.QueryLevelFeeRequest{
 				Level: msgs[0].Level,
 			},
-			response: &types.QueryLevelFeeResponse{LevelFee: msgs[0]},
+			response: &types.QueryLevelFeeResponse{}, //LevelFee: msgs[0]},
 		},
 		{
 			desc: "Second",
 			request: &types.QueryLevelFeeRequest{
 				Level: msgs[1].Level,
 			},
-			response: &types.QueryLevelFeeResponse{LevelFee: msgs[1]},
+			response: &types.QueryLevelFeeResponse{}, //LevelFee: msgs[1]
 		},
 		{
 			desc: "KeyNotFound",

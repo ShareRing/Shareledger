@@ -26,7 +26,7 @@ func (msg *MsgSetLevelFee) Route() string {
 }
 
 func (msg *MsgSetLevelFee) Type() string {
-	return "CreateLevelFee"
+	return "SetLevelFee"
 }
 
 func (msg *MsgSetLevelFee) GetSigners() []sdk.AccAddress {
@@ -53,8 +53,8 @@ func (msg *MsgSetLevelFee) ValidateBasic() error {
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, err.Error())
 	}
-	if err := denom.CheckSupportedCoins(sdk.NewDecCoins(msg.Fee), nil); err != nil {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, err.Error())
+	if err := denom.CheckFeeSupportedCoin(msg.Fee); err != nil {
+		return err
 	}
 
 	return nil

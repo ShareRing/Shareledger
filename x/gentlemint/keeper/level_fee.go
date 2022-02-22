@@ -33,7 +33,7 @@ func (k Keeper) GetLevelFee(
 		if !f {
 			return val, false
 		}
-		val.Fee = d.String()
+		val.Fee = d
 		val.Level = level
 	} else {
 		k.cdc.MustUnmarshal(b, &val)

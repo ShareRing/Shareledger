@@ -13610,7 +13610,21 @@ paths:
                     creator:
                       type: string
                     originalFee:
-                      type: string
+                      type: object
+                      properties:
+                        denom:
+                          type: string
+                        amount:
+                          type: string
+                      description: >-
+                        DecCoin defines a token with a denomination and a
+                        decimal amount.
+
+
+                        NOTE: The amount field is an Dec which implements the
+                        custom method
+
+                        signatures required by gogoproto.
                     convertedFee:
                       type: object
                       properties:
@@ -13661,10 +13675,39 @@ paths:
                 properties:
                   level:
                     type: string
-                  fee:
-                    type: string
                   creator:
                     type: string
+                  originalFee:
+                    type: object
+                    properties:
+                      denom:
+                        type: string
+                      amount:
+                        type: string
+                    description: >-
+                      DecCoin defines a token with a denomination and a decimal
+                      amount.
+
+
+                      NOTE: The amount field is an Dec which implements the
+                      custom method
+
+                      signatures required by gogoproto.
+                  convertedFee:
+                    type: object
+                    properties:
+                      denom:
+                        type: string
+                      amount:
+                        type: string
+                    description: >-
+                      Coin defines a token with a denomination and an amount.
+
+
+                      NOTE: The amount field is an Int which implements the
+                      custom method
+
+                      signatures required by gogoproto.
         default:
           description: An unexpected error response.
           schema:
@@ -21476,15 +21519,6 @@ definitions:
         type: string
       creator:
         type: string
-  shareledger.gentlemint.LevelFee:
-    type: object
-    properties:
-      level:
-        type: string
-      fee:
-        type: string
-      creator:
-        type: string
   shareledger.gentlemint.LevelFeeDetail:
     type: object
     properties:
@@ -21493,7 +21527,17 @@ definitions:
       creator:
         type: string
       originalFee:
-        type: string
+        type: object
+        properties:
+          denom:
+            type: string
+          amount:
+            type: string
+        description: |-
+          DecCoin defines a token with a denomination and a decimal amount.
+
+          NOTE: The amount field is an Dec which implements the custom method
+          signatures required by gogoproto.
       convertedFee:
         type: object
         properties:
@@ -21613,10 +21657,38 @@ definitions:
         properties:
           level:
             type: string
-          fee:
-            type: string
           creator:
             type: string
+          originalFee:
+            type: object
+            properties:
+              denom:
+                type: string
+              amount:
+                type: string
+            description: >-
+              DecCoin defines a token with a denomination and a decimal amount.
+
+
+              NOTE: The amount field is an Dec which implements the custom
+              method
+
+              signatures required by gogoproto.
+          convertedFee:
+            type: object
+            properties:
+              denom:
+                type: string
+              amount:
+                type: string
+            description: >-
+              Coin defines a token with a denomination and an amount.
+
+
+              NOTE: The amount field is an Int which implements the custom
+              method
+
+              signatures required by gogoproto.
   shareledger.gentlemint.QueryLevelFeesResponse:
     type: object
     properties:
@@ -21630,7 +21702,21 @@ definitions:
             creator:
               type: string
             originalFee:
-              type: string
+              type: object
+              properties:
+                denom:
+                  type: string
+                amount:
+                  type: string
+              description: >-
+                DecCoin defines a token with a denomination and a decimal
+                amount.
+
+
+                NOTE: The amount field is an Dec which implements the custom
+                method
+
+                signatures required by gogoproto.
             convertedFee:
               type: object
               properties:

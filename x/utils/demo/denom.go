@@ -14,6 +14,13 @@ func CheckSupport(denom string) error {
 	return nil
 }
 
+func CheckFeeSupportedCoin(dCoin sdk.DecCoin) error {
+	if dCoin.Denom != ShrP {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "%v denomination is not supported. Only support %v", dCoin.Denom, ShrP)
+	}
+	return nil
+}
+
 func CheckSupportedCoins(dCoins sdk.DecCoins, coins sdk.Coins) error {
 	for _, c := range dCoins {
 		if _, found := supportedDenoms[c.Denom]; !found {
