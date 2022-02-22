@@ -14,6 +14,13 @@ func CheckSupport(denom string) error {
 	return nil
 }
 
+func CheckFeeSupportedCoin(dCoin sdk.DecCoin) error {
+	if dCoin.Denom != ShrP {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "%v denomination is not supported. Only support %v", dCoin.Denom, ShrP)
+	}
+	return nil
+}
+
 func CheckSupportedCoins(dCoins sdk.DecCoins, coins sdk.Coins) error {
 	for _, c := range dCoins {
 		if _, found := supportedDenoms[c.Denom]; !found {
@@ -133,12 +140,10 @@ func NormalizeToBaseCoin(baseName string, dcoins sdk.DecCoins, usdRate sdk.Dec, 
 // ToDisplayCoins convert coins to display coins which are Shr and ShrP
 func ToDisplayCoins(coins sdk.Coins) sdk.DecCoins {
 	shr := sdk.NewDecCoinFromDec(Shr,
-		sdk.NewDec(coins.AmountOf(Base).Int64()).QuoInt64(ShrExponent).
-			Add(coins.AmountOf(Shr).ToDec()))
-
+		sdk.NewDecFromInt(coins.AmountOf(Base).Quo(sdk.NewInt(ShrExponent)).Add(coins.AmountOf(Shr))))
 	shrP := sdk.NewDecCoinFromDec(ShrP,
-		sdk.NewDec(coins.AmountOf(BaseUSD).Int64()).QuoInt64(USDExponent).
-			Add(coins.AmountOf(ShrP).ToDec()))
+		sdk.NewDecFromInt(coins.AmountOf(BaseUSD).Quo(sdk.NewInt(USDExponent)).
+			Add(coins.AmountOf(ShrP))))
 
 	return sdk.NewDecCoins(shr, shrP)
 }

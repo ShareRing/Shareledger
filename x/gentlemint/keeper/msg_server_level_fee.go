@@ -19,7 +19,7 @@ func (k msgServer) SetLevelFee(goCtx context.Context, msg *types.MsgSetLevelFee)
 	var levelFee = types.LevelFee{
 		Creator: msg.Creator,
 		Level:   msg.Level,
-		Fee:     msg.Fee.String(),
+		Fee:     msg.Fee,
 	}
 
 	k.Keeper.SetLevelFee(
