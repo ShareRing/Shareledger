@@ -45,7 +45,6 @@ var (
 )
 
 var (
-	FeeLoadSHRP     = denom.OneShr
 	AllowanceLoader = sdk.NewCoins(sdk.NewCoin(denom.Base, sdk.NewInt(20*denom.ShrExponent)))
 )
 
