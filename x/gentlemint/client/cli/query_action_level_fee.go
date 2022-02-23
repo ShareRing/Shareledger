@@ -37,7 +37,7 @@ func CmdListActionLevelFee() *cobra.Command {
 
 func CmdShowActionLevelFee() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "show-action-level-fee [action]",
+		Use:   "action-fee [action]",
 		Short: "shows a action-level-fee",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {

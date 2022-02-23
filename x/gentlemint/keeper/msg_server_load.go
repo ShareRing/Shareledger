@@ -32,10 +32,22 @@ func (k msgServer) Load(goCtx context.Context, msg *types.MsgLoad) (*types.MsgLo
 		return nil, err
 	}
 
-	// Pay fee for loader who is a creator of this message
+	// Pay fee for loader who is a creator of this transaction
 	if msg.Creator != msg.Address {
-		if err := k.bankKeeper.SendCoins(ctx, destAdd, msg.GetSigners()[0], types.FeeLoadSHRP); err != nil {
-			return nil, sdkerrors.Wrapf(err, "pay fee, %v, to approver, %v", types.FeeLoadSHRP, msg.Creator)
+		exchangeRate := k.GetExchangeRateD(ctx)
+		loadDFee := k.GetFeeByMsg(ctx, msg)
+		loadFee, err := denom.NormalizeToBaseCoin(denom.Base, sdk.NewDecCoins(loadDFee), exchangeRate, true)
+		if err != nil {
+			return nil, sdkerrors.Wrapf(sdkerrors.ErrLogic, err.Error())
+		}
+		currentBalance := k.bankKeeper.GetBalance(ctx, destAdd, denom.Base)
+		if currentBalance.IsLT(loadFee) {
+			if err := k.buyBaseDenom(ctx, loadFee.Sub(currentBalance), destAdd); err != nil {
+				return nil, err
+			}
+		}
+		if err := k.bankKeeper.SendCoins(ctx, destAdd, msg.GetSigners()[0], sdk.NewCoins(loadFee)); err != nil {
+			return nil, sdkerrors.Wrapf(err, "pay fee, %v, to approver, %v", loadFee, msg.Creator)
 		}
 	}
 

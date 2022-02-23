@@ -140,11 +140,9 @@ func NormalizeToBaseCoin(baseName string, dcoins sdk.DecCoins, usdRate sdk.Dec, 
 // ToDisplayCoins convert coins to display coins which are Shr and ShrP
 func ToDisplayCoins(coins sdk.Coins) sdk.DecCoins {
 	shr := sdk.NewDecCoinFromDec(Shr,
-		sdk.NewDecFromInt(coins.AmountOf(Base).Quo(sdk.NewInt(ShrExponent)).Add(coins.AmountOf(Shr))))
+		coins.AmountOf(Base).ToDec().Quo(sdk.NewDec(ShrExponent)).Add(coins.AmountOf(Shr).ToDec()))
 	shrP := sdk.NewDecCoinFromDec(ShrP,
-		sdk.NewDecFromInt(coins.AmountOf(BaseUSD).Quo(sdk.NewInt(USDExponent)).
-			Add(coins.AmountOf(ShrP))))
-
+		coins.AmountOf(BaseUSD).ToDec().Quo(sdk.NewDec(USDExponent)).Add(coins.AmountOf(ShrP).ToDec()))
 	return sdk.NewDecCoins(shr, shrP)
 }
 
