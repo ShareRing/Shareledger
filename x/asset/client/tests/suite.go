@@ -2,32 +2,43 @@ package tests
 
 import (
 	"fmt"
+	"github.com/cosmos/cosmos-sdk/testutil/network"
+	"os"
+
+	netutilts "github.com/sharering/shareledger/testutil/network"
 
 	"github.com/stretchr/testify/suite"
-
-	"github.com/sharering/shareledger/testutil/network"
 )
 
 type AssetIntegrationTestSuite struct {
 	suite.Suite
 
-	cfg     network.Config
+	cfg     *network.Config
 	network *network.Network
+	dir     string
 }
 
-func NewAssetIntegrationTestSuite(cfg network.Config) *AssetIntegrationTestSuite {
+func NewAssetIntegrationTestSuite(cfg *network.Config) *AssetIntegrationTestSuite {
 	return &AssetIntegrationTestSuite{cfg: cfg}
 }
 
 func (s *AssetIntegrationTestSuite) SetupSuite() {
 	s.T().Log("setting up integration test suite")
 
-	s.network = network.New(s.T(), s.cfg)
+	kb, dir := netutilts.GetTestingGenesis(s.T(), s.cfg)
+	s.dir = dir
+
+	s.network = network.New(s.T(), *s.cfg)
 	_, err := s.network.WaitForHeight(1)
 	s.Require().NoError(err)
+
+	//override the keyring by our keyring information
+	s.network.Validators[0].ClientCtx.Keyring = kb
+
 	s.T().Log("setting up integration test suite successfully")
 }
 func (s *AssetIntegrationTestSuite) TearDownSuite() {
+	s.NoError(os.RemoveAll(s.dir), "cleanup test case fails")
 	s.T().Log("tearing down integration test suite")
 }
 
@@ -42,16 +53,16 @@ func (s *AssetIntegrationTestSuite) TestCreateAsset() {
 	s.Run("create_the_valid_asset_it_should_be_success", func() {
 
 		stdOut, err := ExCmdCreateAsset(s.network.Validators[0].ClientCtx, assetID, assetHash, assetStatus, SHRPFee,
-			network.SHRFee10(),
-			network.JSONFlag(),
-			network.MakeByAccount(network.KeyAccount1),
+			netutilts.SHRFee10(),
+			netutilts.JSONFlag(),
+			netutilts.MakeByAccount(netutilts.KeyAccount1),
 		)
 		s.Require().NoError(err, "create asset must success")
-		txResponse := network.ParseStdOut(s.T(), stdOut.Bytes())
-		s.Equalf(network.ShareLedgerSuccessCode, txResponse.Code, "some thing wrong %v", stdOut.String())
+		txResponse := netutilts.ParseStdOut(s.T(), stdOut.Bytes())
+		s.Equalf(netutilts.ShareLedgerSuccessCode, txResponse.Code, "some thing wrong %v", stdOut.String())
 		_ = s.network.WaitForNextBlock()
 		cmdQueryResponse, err := ExCmdGetAsset(s.network.Validators[0].ClientCtx, assetID,
-			network.JSONFlag(),
+			netutilts.JSONFlag(),
 		)
 		asset := AssetJsonUnmarshal(s.T(), cmdQueryResponse.Bytes())
 		s.Assert().Equal(assetID, asset.UUID, "asset UUID is not equal")
@@ -62,16 +73,16 @@ func (s *AssetIntegrationTestSuite) TestCreateAsset() {
 	s.Run("create_duplicate_the_asset", func() {
 		_ = s.network.WaitForNextBlock()
 		out, err := ExCmdCreateAsset(s.network.Validators[0].ClientCtx, assetID, assetHash2, assetStatus, SHRPFee,
-			network.SHRFee10(),
-			network.JSONFlag(),
-			network.MakeByAccount(network.KeyAccount1),
+			netutilts.SHRFee10(),
+			netutilts.JSONFlag(),
+			netutilts.MakeByAccount(netutilts.KeyAccount1),
 		)
 		s.Assert().NoError(err)
 
 		_ = s.network.WaitForNextBlock()
 
-		txnResponse := network.ParseStdOut(s.T(), out.Bytes())
-		s.Assert().Equalf(network.ShareLedgerErrorCodeAssetAlreadyExisted, txnResponse.Code, "response after create asset %s", out)
+		txnResponse := netutilts.ParseStdOut(s.T(), out.Bytes())
+		s.Assert().Equalf(netutilts.ShareLedgerErrorCodeAssetAlreadyExisted, txnResponse.Code, "response after create asset %s", out)
 
 		cmdQueryResponse, err := ExCmdGetAsset(s.network.Validators[0].ClientCtx, assetID)
 
@@ -92,21 +103,21 @@ func (s *AssetIntegrationTestSuite) TestUpdateAsset() {
 	SHRPFee := "3"
 
 	_, err := ExCmdCreateAsset(s.network.Validators[0].ClientCtx, assetID, asset2, assetStatus, SHRPFee,
-		network.SHRFee10(),
-		network.JSONFlag(),
-		network.MakeByAccount(network.KeyAccount1),
+		netutilts.SHRFee10(),
+		netutilts.JSONFlag(),
+		netutilts.MakeByAccount(netutilts.KeyAccount1),
 	)
 	s.NoError(err)
 
 	s.Run("update_the_asset_success", func() {
 		out, err := ExCmdUpdateAsset(s.network.Validators[0].ClientCtx, assetID, assetHash, assetStatus, SHRPFee,
-			network.SHRFee6(),
-			network.JSONFlag(),
-			network.MakeByAccount(network.KeyAccount1),
+			netutilts.SHRFee6(),
+			netutilts.JSONFlag(),
+			netutilts.MakeByAccount(netutilts.KeyAccount1),
 		)
 		s.NoError(err)
-		txnResponse := network.ParseStdOut(s.T(), out.Bytes())
-		s.Equal(network.ShareLedgerSuccessCode, txnResponse.Code)
+		txnResponse := netutilts.ParseStdOut(s.T(), out.Bytes())
+		s.Equal(netutilts.ShareLedgerSuccessCode, txnResponse.Code)
 		_ = s.network.WaitForNextBlock()
 		assetByte, err := ExCmdGetAsset(s.network.Validators[0].ClientCtx, assetID)
 		s.NoError(err)
@@ -119,24 +130,24 @@ func (s *AssetIntegrationTestSuite) TestUpdateAsset() {
 	s.Run("update_the_asset_not_found_asset_should_be_fail", func() {
 
 		out, err := ExCmdUpdateAsset(s.network.Validators[0].ClientCtx, "assetID", assetHash, assetStatus, SHRPFee,
-			network.SHRFee6(),
-			network.JSONFlag(),
-			network.MakeByAccount(network.KeyAccount1),
+			netutilts.SHRFee6(),
+			netutilts.JSONFlag(),
+			netutilts.MakeByAccount(netutilts.KeyAccount1),
 		)
 		s.NoError(err)
-		txnResponse := network.ParseStdOut(s.T(), out.Bytes())
-		s.Equal(network.ShareLedgerErrorCodeAssetNotExisted, txnResponse.Code)
+		txnResponse := netutilts.ParseStdOut(s.T(), out.Bytes())
+		s.Equal(netutilts.ShareLedgerErrorCodeAssetNotExisted, txnResponse.Code)
 
 	})
 
 	s.Run("update_the_asset_but_updater_is_not_owner_of_asset", func() {
 		out, err := ExCmdUpdateAsset(s.network.Validators[0].ClientCtx, assetID, "newhash", assetStatus, SHRPFee,
-			network.SHRFee6(),
-			network.JSONFlag(),
-			network.MakeByAccount(network.KeyAccount2))
+			netutilts.SHRFee6(),
+			netutilts.JSONFlag(),
+			netutilts.MakeByAccount(netutilts.KeyAccount2))
 		s.NoError(err)
-		txnResponse := network.ParseStdOut(s.T(), out.Bytes())
-		s.Equal(network.ShareLedgerErrorCodeUnauthorized, txnResponse.Code)
+		txnResponse := netutilts.ParseStdOut(s.T(), out.Bytes())
+		s.Equal(netutilts.ShareLedgerErrorCodeUnauthorized, txnResponse.Code)
 		_ = s.network.WaitForNextBlock()
 
 		//validating to ensure the asset isn't changed
@@ -155,13 +166,13 @@ func (s *AssetIntegrationTestSuite) TestDeleteAsset() {
 	s.Run("delete_asset_success", func() {
 
 		out, err := ExCmdDeleteAsset(s.network.Validators[0].ClientCtx, assetID,
-			network.SHRFee4(),
-			network.JSONFlag(),
-			network.MakeByAccount(network.KeyAccount1),
+			netutilts.SHRFee4(),
+			netutilts.JSONFlag(),
+			netutilts.MakeByAccount(netutilts.KeyAccount1),
 		)
 		s.NoError(err)
-		txnResponse := network.ParseStdOut(s.T(), out.Bytes())
-		s.Equal(network.ShareLedgerSuccessCode, txnResponse.Code)
+		txnResponse := netutilts.ParseStdOut(s.T(), out.Bytes())
+		s.Equal(netutilts.ShareLedgerSuccessCode, txnResponse.Code)
 		_ = s.network.WaitForNextBlock()
 	})
 

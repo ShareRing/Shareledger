@@ -2,11 +2,13 @@ package tests
 
 import (
 	"fmt"
+	"github.com/cosmos/cosmos-sdk/testutil/network"
+	netutilts "github.com/sharering/shareledger/testutil/network"
+	"os"
 	"strings"
 
 	"github.com/stretchr/testify/suite"
 
-	"github.com/sharering/shareledger/testutil/network"
 	"github.com/sharering/shareledger/testutil/sample"
 	documenttypes "github.com/sharering/shareledger/x/document/types"
 	"github.com/sharering/shareledger/x/electoral/client/tests"
@@ -16,9 +18,9 @@ import (
 type DocumentIntegrationTestSuite struct {
 	suite.Suite
 
-	cfg     network.Config
-	network *network.Network
-
+	cfg         network.Config
+	network     *network.Network
+	dir         string
 	userID1     string
 	userID1Addr string
 	userID2     string
@@ -36,9 +38,15 @@ func NewDocumentIntegrationTestSuite(cf network.Config) *DocumentIntegrationTest
 func (s *DocumentIntegrationTestSuite) SetupSuite() {
 	s.T().Log("setting up integration test suite for document module")
 
+	kb, dir := netutilts.GetTestingGenesis(s.T(), &s.cfg)
+	s.dir = dir
+
 	s.network = network.New(s.T(), s.cfg)
 	_, err := s.network.WaitForHeight(1)
 	s.Require().NoError(err)
+
+	//override the keyring by our keyring information
+	s.network.Validators[0].ClientCtx.Keyring = kb
 
 	s.T().Log("setting up document data....")
 
@@ -46,41 +54,41 @@ func (s *DocumentIntegrationTestSuite) SetupSuite() {
 	out, _ := tests.ExCmdEnrollAccountOperator(
 		s.network.Validators[0].ClientCtx,
 		s.T(),
-		[]string{s.network.Accounts[network.KeyOperator].String()},
-		network.MakeByAccount(network.KeyAuthority),
-		network.SkipConfirmation(),
-		network.BlockBroadcast(),
-		network.SHRFee2(),
+		[]string{netutilts.Accounts[netutilts.KeyOperator].String()},
+		netutilts.MakeByAccount(netutilts.KeyAuthority),
+		netutilts.SkipConfirmation(),
+		netutilts.BlockBroadcast(),
+		netutilts.SHRFee2(),
 	)
 	_ = s.network.WaitForNextBlock()
-	res := network.ParseStdOut(s.T(), out.Bytes())
-	s.Equalf(network.ShareLedgerSuccessCode, res.Code, "init operator fail %v", res.String())
+	res := netutilts.ParseStdOut(s.T(), out.Bytes())
+	s.Equalf(netutilts.ShareLedgerSuccessCode, res.Code, "init operator fail %v", res.String())
 
 	//Enroll DOC_ISSUER
 	out, _ = tests.ExCmdEnrollDocIssuer(
 		s.network.Validators[0].ClientCtx,
 		s.T(),
-		[]string{s.network.Accounts[network.KeyAccount1].String()},
-		network.SHRFee2(),
-		network.MakeByAccount(network.KeyOperator),
-		network.SkipConfirmation(),
+		[]string{netutilts.Accounts[netutilts.KeyAccount1].String()},
+		netutilts.SHRFee2(),
+		netutilts.MakeByAccount(netutilts.KeyOperator),
+		netutilts.SkipConfirmation(),
 	)
 	_ = s.network.WaitForNextBlock()
-	res = network.ParseStdOut(s.T(), out.Bytes())
-	s.Equalf(network.ShareLedgerSuccessCode, res.Code, "init doc issuer fail %v", res.String())
+	res = netutilts.ParseStdOut(s.T(), out.Bytes())
+	s.Equalf(netutilts.ShareLedgerSuccessCode, res.Code, "init doc issuer fail %v", res.String())
 
 	//Enroll ID_SIGNER
 	out, _ = tests.ExCmdEnrollIdSigner(
 		s.network.Validators[0].ClientCtx,
 		s.T(),
-		[]string{s.network.Accounts[network.KeyAccount1].String()},
-		network.SHRFee2(),
-		network.MakeByAccount(network.KeyOperator),
-		network.SkipConfirmation(),
+		[]string{netutilts.Accounts[netutilts.KeyAccount1].String()},
+		netutilts.SHRFee2(),
+		netutilts.MakeByAccount(netutilts.KeyOperator),
+		netutilts.SkipConfirmation(),
 	)
 	_ = s.network.WaitForNextBlock()
-	res = network.ParseStdOut(s.T(), out.Bytes())
-	s.Equalf(network.ShareLedgerSuccessCode, res.Code, "init doc issuer fail %v", res.String())
+	res = netutilts.ParseStdOut(s.T(), out.Bytes())
+	s.Equalf(netutilts.ShareLedgerSuccessCode, res.Code, "init doc issuer fail %v", res.String())
 
 	s.T().Log("create three ID")
 
@@ -94,19 +102,20 @@ func (s *DocumentIntegrationTestSuite) SetupSuite() {
 		strings.Join(addrs, ","),
 		strings.Join(addrs, ","),
 		fmt.Sprintf("%s,%s,%s", "hello1", "hello2", "hello3"),
-		network.MakeByAccount(network.KeyAccount1),
-		network.SkipConfirmation(),
-		network.SHRFee2())
+		netutilts.MakeByAccount(netutilts.KeyAccount1),
+		netutilts.SkipConfirmation(),
+		netutilts.SHRFee2())
 
 	_ = s.network.WaitForNextBlock()
-	res = network.ParseStdOut(s.T(), out.Bytes())
-	s.Equalf(network.ShareLedgerSuccessCode, res.Code, "init id fail %v", res.String())
+	res = netutilts.ParseStdOut(s.T(), out.Bytes())
+	s.Equalf(netutilts.ShareLedgerSuccessCode, res.Code, "init id fail %v", res.String())
 	_ = s.network.WaitForNextBlock()
 
 	s.T().Log("setting up integration test suite successfully")
 
 }
 func (s *DocumentIntegrationTestSuite) TearDownSuite() {
+	s.NoError(os.RemoveAll(s.dir), "cleanup test case fails")
 	s.T().Log("tearing down integration test suite")
 }
 
@@ -121,16 +130,16 @@ func (s *DocumentIntegrationTestSuite) TestCreateDocument() {
 
 		out := CmdExCreateDocument(validationCtx,
 			s.T(), s.userID1, proof, data,
-			network.MakeByAccount(network.KeyAccount1),
-			network.BlockBroadcast(),
-			network.SHRFee2(),
-			network.SkipConfirmation(),
+			netutilts.MakeByAccount(netutilts.KeyAccount1),
+			netutilts.BlockBroadcast(),
+			netutilts.SHRFee2(),
+			netutilts.SkipConfirmation(),
 		)
 
-		txnResponse := network.ParseStdOut(s.T(), out.Bytes())
-		s.Equalf(network.ShareLedgerSuccessCode, txnResponse.Code, "create document fail %v", out.String())
+		txnResponse := netutilts.ParseStdOut(s.T(), out.Bytes())
+		s.Equalf(netutilts.ShareLedgerSuccessCode, txnResponse.Code, "create document fail %v", out.String())
 		_ = s.network.WaitForNextBlock()
-		queryDocResponse := CmdExGetDocByProof(validationCtx, s.T(), proof, network.JSONFlag())
+		queryDocResponse := CmdExGetDocByProof(validationCtx, s.T(), proof, netutilts.JSONFlag())
 		docResponse := queryDocResponse.GetDocument()
 		s.Equalf(s.userID1, docResponse.GetHolder(), "holder ID isn't equal")
 		s.Equalf(proof, docResponse.GetProof(), "proof isn't equal")
@@ -145,16 +154,16 @@ func (s *DocumentIntegrationTestSuite) TestCreateDocument() {
 
 		out := CmdExCreateDocument(validationCtx,
 			s.T(), holderId, proof, data,
-			network.MakeByAccount(network.KeyAccount1),
-			network.BlockBroadcast(),
-			network.SHRFee2(),
-			network.SkipConfirmation(),
+			netutilts.MakeByAccount(netutilts.KeyAccount1),
+			netutilts.BlockBroadcast(),
+			netutilts.SHRFee2(),
+			netutilts.SkipConfirmation(),
 		)
 
-		txnResponse := network.ParseStdOut(s.T(), out.Bytes())
-		s.Equalf(network.ShareLedgerSuccessCode, txnResponse.Code, "create document fail %v", out.String())
+		txnResponse := netutilts.ParseStdOut(s.T(), out.Bytes())
+		s.Equalf(netutilts.ShareLedgerSuccessCode, txnResponse.Code, "create document fail %v", out.String())
 		_ = s.network.WaitForNextBlock()
-		queryDocResponse := CmdExGetDocByProof(validationCtx, s.T(), proof, network.JSONFlag())
+		queryDocResponse := CmdExGetDocByProof(validationCtx, s.T(), proof, netutilts.JSONFlag())
 		docResponse := queryDocResponse.GetDocument()
 		s.Equalf(holderId, docResponse.GetHolder(), "holder ID isn't equal")
 		s.Equalf(proof, docResponse.GetProof(), "proof isn't equal")
@@ -162,14 +171,14 @@ func (s *DocumentIntegrationTestSuite) TestCreateDocument() {
 
 		out = CmdExCreateDocument(validationCtx,
 			s.T(), holderId, proof, data,
-			network.MakeByAccount(network.KeyAccount1),
-			network.BlockBroadcast(),
-			network.SHRFee2(),
-			network.SkipConfirmation(),
+			netutilts.MakeByAccount(netutilts.KeyAccount1),
+			netutilts.BlockBroadcast(),
+			netutilts.SHRFee2(),
+			netutilts.SkipConfirmation(),
 		)
 
-		txnResponse = network.ParseStdOut(s.T(), out.Bytes())
-		s.Equalf(network.ShareLedgerErrorCodeDocumentAlreadyExisted, txnResponse.Code, "create duplicate asset fail %v", out.String())
+		txnResponse = netutilts.ParseStdOut(s.T(), out.Bytes())
+		s.Equalf(netutilts.ShareLedgerErrorCodeDocumentAlreadyExisted, txnResponse.Code, "create duplicate asset fail %v", out.String())
 		_ = s.network.WaitForNextBlock()
 	})
 
@@ -197,31 +206,31 @@ func (s *DocumentIntegrationTestSuite) TestCreateBatchDocument() {
 
 		out := CmdExCreateDocumentInBatch(validationCtx,
 			s.T(), holderId, proof, data,
-			network.MakeByAccount(network.KeyAccount1),
-			network.BlockBroadcast(),
-			network.SHRFee2(),
-			network.SkipConfirmation(),
+			netutilts.MakeByAccount(netutilts.KeyAccount1),
+			netutilts.BlockBroadcast(),
+			netutilts.SHRFee2(),
+			netutilts.SkipConfirmation(),
 		)
 
-		txnResponse := network.ParseStdOut(s.T(), out.Bytes())
-		s.Equalf(network.ShareLedgerSuccessCode, txnResponse.Code, "create document fail %v", out.String())
+		txnResponse := netutilts.ParseStdOut(s.T(), out.Bytes())
+		s.Equalf(netutilts.ShareLedgerSuccessCode, txnResponse.Code, "create document fail %v", out.String())
 		_ = s.network.WaitForNextBlock()
 		//doc-1
-		queryDocResponse := CmdExGetDocByProof(validationCtx, s.T(), proof1, network.JSONFlag())
+		queryDocResponse := CmdExGetDocByProof(validationCtx, s.T(), proof1, netutilts.JSONFlag())
 		docResponse := queryDocResponse.GetDocument()
 		s.Equalf(holderId1, docResponse.GetHolder(), "holder ID isn't equal")
 		s.Equalf(proof1, docResponse.GetProof(), "proof isn't equal")
 		s.Equalf(data1, docResponse.GetData(), "data ID isn't equal")
 
 		//doc-2
-		queryDocResponse = CmdExGetDocByProof(validationCtx, s.T(), proof2, network.JSONFlag())
+		queryDocResponse = CmdExGetDocByProof(validationCtx, s.T(), proof2, netutilts.JSONFlag())
 		docResponse = queryDocResponse.GetDocument()
 		s.Equalf(holderId2, docResponse.GetHolder(), "holder ID isn't equal")
 		s.Equalf(proof2, docResponse.GetProof(), "proof isn't equal")
 		s.Equalf(data2, docResponse.GetData(), "data ID isn't equal")
 
 		//doc-2
-		queryDocResponse = CmdExGetDocByProof(validationCtx, s.T(), proof3, network.JSONFlag())
+		queryDocResponse = CmdExGetDocByProof(validationCtx, s.T(), proof3, netutilts.JSONFlag())
 		docResponse = queryDocResponse.GetDocument()
 		s.Equalf(holderId3, docResponse.GetHolder(), "holder ID isn't equal")
 		s.Equalf(proof3, docResponse.GetProof(), "proof isn't equal")
@@ -248,14 +257,14 @@ func (s *DocumentIntegrationTestSuite) TestCreateBatchDocument() {
 
 		out := CmdExCreateDocumentInBatch(validationCtx,
 			s.T(), holderId, proof, data,
-			network.MakeByAccount(network.KeyAccount1),
-			network.BlockBroadcast(),
-			network.SHRFee2(),
-			network.SkipConfirmation(),
+			netutilts.MakeByAccount(netutilts.KeyAccount1),
+			netutilts.BlockBroadcast(),
+			netutilts.SHRFee2(),
+			netutilts.SkipConfirmation(),
 		)
 
-		txnResponse := network.ParseStdOut(s.T(), out.Bytes())
-		s.NotEqual(network.ShareLedgerSuccessCode, txnResponse.Code, "create document fail %v", out.String())
+		txnResponse := netutilts.ParseStdOut(s.T(), out.Bytes())
+		s.NotEqual(netutilts.ShareLedgerSuccessCode, txnResponse.Code, "create document fail %v", out.String())
 		_ = s.network.WaitForNextBlock()
 	})
 
@@ -275,13 +284,13 @@ func (s *DocumentIntegrationTestSuite) TestUpdateDocument() {
 		strings.Join(addr, ","),
 		strings.Join(addr, ","),
 		fmt.Sprintf("%s,%s,%s", "hello1", "hello2", "hello3"),
-		network.MakeByAccount(network.KeyAccount1),
-		network.SkipConfirmation(),
-		network.SHRFee2())
+		netutilts.MakeByAccount(netutilts.KeyAccount1),
+		netutilts.SkipConfirmation(),
+		netutilts.SHRFee2())
 
 	_ = s.network.WaitForNextBlock()
-	res := network.ParseStdOut(s.T(), out.Bytes())
-	s.Equalf(network.ShareLedgerSuccessCode, res.Code, "init id fail %v", res.String())
+	res := netutilts.ParseStdOut(s.T(), out.Bytes())
+	s.Equalf(netutilts.ShareLedgerSuccessCode, res.Code, "init id fail %v", res.String())
 	_ = s.network.WaitForNextBlock()
 
 	proof1 := "proof-12232"
@@ -298,33 +307,33 @@ func (s *DocumentIntegrationTestSuite) TestUpdateDocument() {
 
 	out = CmdExCreateDocumentInBatch(validationCtx,
 		s.T(), holderId, proof, data,
-		network.MakeByAccount(network.KeyAccount1),
-		network.BlockBroadcast(),
-		network.SHRFee2(),
-		network.SkipConfirmation(),
+		netutilts.MakeByAccount(netutilts.KeyAccount1),
+		netutilts.BlockBroadcast(),
+		netutilts.SHRFee2(),
+		netutilts.SkipConfirmation(),
 	)
 
-	txnResponse := network.ParseStdOut(s.T(), out.Bytes())
-	s.Equalf(network.ShareLedgerSuccessCode, txnResponse.Code, "create document fail %v", out.String())
+	txnResponse := netutilts.ParseStdOut(s.T(), out.Bytes())
+	s.Equalf(netutilts.ShareLedgerSuccessCode, txnResponse.Code, "create document fail %v", out.String())
 	_ = s.network.WaitForNextBlock()
 
-	queryDocResponse := CmdExGetDocByProof(validationCtx, s.T(), proof1, network.JSONFlag())
+	queryDocResponse := CmdExGetDocByProof(validationCtx, s.T(), proof1, netutilts.JSONFlag())
 	docVersion := queryDocResponse.GetDocument().GetVersion()
 
 	s.Run("update_document_success", func() {
 		out = CmdExUpdateDocument(validationCtx, s.T(), holderId1, proof1, "new-dataaaaa",
-			network.SkipConfirmation(),
-			network.MakeByAccount(network.KeyAccount1),
-			network.SHRFee2(),
-			network.BlockBroadcast(),
-			network.JSONFlag(),
+			netutilts.SkipConfirmation(),
+			netutilts.MakeByAccount(netutilts.KeyAccount1),
+			netutilts.SHRFee2(),
+			netutilts.BlockBroadcast(),
+			netutilts.JSONFlag(),
 		)
-		txnResponse = network.ParseStdOut(s.T(), out.Bytes())
-		s.Equalf(network.ShareLedgerSuccessCode, txnResponse.Code, "update document fail %v", out.String())
+		txnResponse = netutilts.ParseStdOut(s.T(), out.Bytes())
+		s.Equalf(netutilts.ShareLedgerSuccessCode, txnResponse.Code, "update document fail %v", out.String())
 		_ = s.network.WaitForNextBlock()
 
 		//doc-2
-		queryDocResponse := CmdExGetDocByProof(validationCtx, s.T(), proof1, network.JSONFlag())
+		queryDocResponse := CmdExGetDocByProof(validationCtx, s.T(), proof1, netutilts.JSONFlag())
 		docResponse := queryDocResponse.GetDocument()
 		s.Equalf(holderId1, docResponse.GetHolder(), "holder ID isn't equal")
 		s.Equalf(proof1, docResponse.GetProof(), "proof isn't equal")
@@ -334,53 +343,53 @@ func (s *DocumentIntegrationTestSuite) TestUpdateDocument() {
 
 	s.Run("update_document_with_not_exist_hold_id_should_be_fail", func() {
 		out = CmdExUpdateDocument(validationCtx, s.T(), holderId1+"hi there", proof1, "new-dataaaaa",
-			network.SkipConfirmation(),
-			network.MakeByAccount(network.KeyAccount1),
-			network.SHRFee2(),
-			network.BlockBroadcast(),
-			network.JSONFlag(),
+			netutilts.SkipConfirmation(),
+			netutilts.MakeByAccount(netutilts.KeyAccount1),
+			netutilts.SHRFee2(),
+			netutilts.BlockBroadcast(),
+			netutilts.JSONFlag(),
 		)
-		txnResponse := network.ParseStdOut(s.T(), out.Bytes())
-		s.Equalf(network.ShareLedgerDocumentNotFound, txnResponse.Code, "update recheck status %v", out.String())
+		txnResponse := netutilts.ParseStdOut(s.T(), out.Bytes())
+		s.Equalf(netutilts.ShareLedgerDocumentNotFound, txnResponse.Code, "update recheck status %v", out.String())
 		_ = s.network.WaitForNextBlock()
 	})
 
 	s.Run("update_document_with_not_exist_proof_should_be_fail", func() {
 		out = CmdExUpdateDocument(validationCtx, s.T(), holderId1, proof1+"hi there", "new-dataaaaa",
-			network.SkipConfirmation(),
-			network.MakeByAccount(network.KeyAccount1),
-			network.SHRFee2(),
-			network.BlockBroadcast(),
-			network.JSONFlag(),
+			netutilts.SkipConfirmation(),
+			netutilts.MakeByAccount(netutilts.KeyAccount1),
+			netutilts.SHRFee2(),
+			netutilts.BlockBroadcast(),
+			netutilts.JSONFlag(),
 		)
-		txnResponse := network.ParseStdOut(s.T(), out.Bytes())
-		s.Equalf(network.ShareLedgerDocumentNotFound, txnResponse.Code, "update recheck status %v", out.String())
+		txnResponse := netutilts.ParseStdOut(s.T(), out.Bytes())
+		s.Equalf(netutilts.ShareLedgerDocumentNotFound, txnResponse.Code, "update recheck status %v", out.String())
 		_ = s.network.WaitForNextBlock()
 	})
 
 	s.Run("update_document_holderId_should_be_fail", func() {
 		out = CmdExUpdateDocument(validationCtx, s.T(), holderId2, proof1, "new-dataaaaa_with_new_holder",
-			network.SkipConfirmation(),
-			network.MakeByAccount(network.KeyAccount1),
-			network.SHRFee2(),
-			network.BlockBroadcast(),
-			network.JSONFlag(),
+			netutilts.SkipConfirmation(),
+			netutilts.MakeByAccount(netutilts.KeyAccount1),
+			netutilts.SHRFee2(),
+			netutilts.BlockBroadcast(),
+			netutilts.JSONFlag(),
 		)
-		txnResponse := network.ParseStdOut(s.T(), out.Bytes())
-		s.Equalf(network.ShareLedgerDocumentNotFound, txnResponse.Code, "update recheck status %v", out.String())
+		txnResponse := netutilts.ParseStdOut(s.T(), out.Bytes())
+		s.Equalf(netutilts.ShareLedgerDocumentNotFound, txnResponse.Code, "update recheck status %v", out.String())
 		_ = s.network.WaitForNextBlock()
 	})
 
 	s.Run("update_document_by_another_doc_issuer", func() {
 		out = CmdExUpdateDocument(validationCtx, s.T(), holderId1, proof1, "new-dataaaaa_with_new_holder",
-			network.SkipConfirmation(),
-			network.MakeByAccount(network.KeyAccount2),
-			network.SHRFee2(),
-			network.BlockBroadcast(),
-			network.JSONFlag(),
+			netutilts.SkipConfirmation(),
+			netutilts.MakeByAccount(netutilts.KeyAccount2),
+			netutilts.SHRFee2(),
+			netutilts.BlockBroadcast(),
+			netutilts.JSONFlag(),
 		)
-		txnResponse := network.ParseStdOut(s.T(), out.Bytes())
-		s.Equalf(network.ShareLedgerErrorCodeUnauthorized, txnResponse.Code, "update recheck status %v", out.String())
+		txnResponse := netutilts.ParseStdOut(s.T(), out.Bytes())
+		s.Equalf(netutilts.ShareLedgerErrorCodeUnauthorized, txnResponse.Code, "update recheck status %v", out.String())
 		_ = s.network.WaitForNextBlock()
 	})
 }
@@ -401,66 +410,66 @@ func (s *DocumentIntegrationTestSuite) TestRevokeDocument() {
 		strings.Join(addrs, ","),
 		strings.Join(addrs, ","),
 		fmt.Sprintf("%s,%s", "hello1", "hello2"),
-		network.MakeByAccount(network.KeyAccount1),
-		network.SkipConfirmation(),
-		network.SHRFee2())
+		netutilts.MakeByAccount(netutilts.KeyAccount1),
+		netutilts.SkipConfirmation(),
+		netutilts.SHRFee2())
 
 	_ = s.network.WaitForNextBlock()
-	res := network.ParseStdOut(s.T(), out.Bytes())
-	s.Equalf(network.ShareLedgerSuccessCode, res.Code, "init id fail %v", res.String())
+	res := netutilts.ParseStdOut(s.T(), out.Bytes())
+	s.Equalf(netutilts.ShareLedgerSuccessCode, res.Code, "init id fail %v", res.String())
 
 	out = CmdExCreateDocument(validationCtx,
 		s.T(), holderIdForRevoke1, proofRevoke1, dataRevoke1,
-		network.MakeByAccount(network.KeyAccount1),
-		network.BlockBroadcast(),
-		network.SHRFee2(),
-		network.SkipConfirmation(),
+		netutilts.MakeByAccount(netutilts.KeyAccount1),
+		netutilts.BlockBroadcast(),
+		netutilts.SHRFee2(),
+		netutilts.SkipConfirmation(),
 	)
 
-	txnResponse := network.ParseStdOut(s.T(), out.Bytes())
-	s.Equalf(network.ShareLedgerSuccessCode, txnResponse.Code, "create document fail %v", out.String())
+	txnResponse := netutilts.ParseStdOut(s.T(), out.Bytes())
+	s.Equalf(netutilts.ShareLedgerSuccessCode, txnResponse.Code, "create document fail %v", out.String())
 	_ = s.network.WaitForNextBlock()
 
 	out = CmdExCreateDocument(validationCtx,
 		s.T(), holderIdForRevoke2, proofRevoke2, dataRevoke2,
-		network.MakeByAccount(network.KeyAccount1),
-		network.BlockBroadcast(),
-		network.SHRFee2(),
-		network.SkipConfirmation(),
+		netutilts.MakeByAccount(netutilts.KeyAccount1),
+		netutilts.BlockBroadcast(),
+		netutilts.SHRFee2(),
+		netutilts.SkipConfirmation(),
 	)
 
-	txnResponse = network.ParseStdOut(s.T(), out.Bytes())
-	s.Equalf(network.ShareLedgerSuccessCode, txnResponse.Code, "create document fail %v", out.String())
+	txnResponse = netutilts.ParseStdOut(s.T(), out.Bytes())
+	s.Equalf(netutilts.ShareLedgerSuccessCode, txnResponse.Code, "create document fail %v", out.String())
 	_ = s.network.WaitForNextBlock()
 
 	s.Run("revoke_document_success", func() {
 		out = CmdExRevokeDocument(validationCtx, s.T(), holderIdForRevoke1, proofRevoke1,
-			network.SkipConfirmation(),
-			network.MakeByAccount(network.KeyAccount1),
-			network.SHRFee2(),
-			network.BlockBroadcast(),
-			network.JSONFlag(),
+			netutilts.SkipConfirmation(),
+			netutilts.MakeByAccount(netutilts.KeyAccount1),
+			netutilts.SHRFee2(),
+			netutilts.BlockBroadcast(),
+			netutilts.JSONFlag(),
 		)
-		txnResponse = network.ParseStdOut(s.T(), out.Bytes())
-		s.Equalf(network.ShareLedgerSuccessCode, txnResponse.Code, "revoke document fail %v", out.String())
+		txnResponse = netutilts.ParseStdOut(s.T(), out.Bytes())
+		s.Equalf(netutilts.ShareLedgerSuccessCode, txnResponse.Code, "revoke document fail %v", out.String())
 		_ = s.network.WaitForNextBlock()
 
 		//doc-2
-		queryDocResponse := CmdExGetDocByProof(validationCtx, s.T(), proofRevoke1, network.JSONFlag())
+		queryDocResponse := CmdExGetDocByProof(validationCtx, s.T(), proofRevoke1, netutilts.JSONFlag())
 		docResponse := queryDocResponse.GetDocument()
 		s.Equalf(int32(documenttypes.DocRevokeFlag), docResponse.GetVersion(), "doc version isn't equal")
 	})
 
 	s.Run("revoke_document_not_exist_should_be_fail", func() {
 		out = CmdExRevokeDocument(validationCtx, s.T(), holderIdForRevoke1, proofRevoke1+"hi there",
-			network.SkipConfirmation(),
-			network.MakeByAccount(network.KeyAccount1),
-			network.SHRFee2(),
-			network.BlockBroadcast(),
-			network.JSONFlag(),
+			netutilts.SkipConfirmation(),
+			netutilts.MakeByAccount(netutilts.KeyAccount1),
+			netutilts.SHRFee2(),
+			netutilts.BlockBroadcast(),
+			netutilts.JSONFlag(),
 		)
-		txnResponse := network.ParseStdOut(s.T(), out.Bytes())
-		s.Equalf(network.ShareLedgerDocumentNotFound, txnResponse.Code, "update recheck status %v", out.String())
+		txnResponse := netutilts.ParseStdOut(s.T(), out.Bytes())
+		s.Equalf(netutilts.ShareLedgerDocumentNotFound, txnResponse.Code, "update recheck status %v", out.String())
 		_ = s.network.WaitForNextBlock()
 	})
 

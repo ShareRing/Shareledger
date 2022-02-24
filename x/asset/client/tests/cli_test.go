@@ -10,6 +10,6 @@ import (
 
 func TestIntegrationTestSuite(t *testing.T) {
 	cfg := network.ShareLedgerTestingConfig()
-	cfg.NumValidators = 2
-	suite.Run(t, NewAssetIntegrationTestSuite(cfg))
+	cfg.NumValidators = 1
+	suite.Run(t, NewAssetIntegrationTestSuite(&cfg))
 }

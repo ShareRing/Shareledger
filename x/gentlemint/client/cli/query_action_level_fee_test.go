@@ -1,10 +1,10 @@
 package cli_test
 
 import (
+	"github.com/cosmos/cosmos-sdk/testutil/network"
 	"strconv"
 	"testing"
 
-	"github.com/sharering/shareledger/testutil/network"
 	"github.com/sharering/shareledger/x/gentlemint/types"
 	"github.com/stretchr/testify/require"
 )

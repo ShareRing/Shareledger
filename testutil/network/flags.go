@@ -6,11 +6,6 @@ import (
 	"github.com/tendermint/tendermint/libs/cli"
 )
 
-var (
-	CommonFeeFlags          = "--fee 1shr"
-	CommonResponseTypeFlags = "--output=json"
-)
-
 func JSONFlag() string {
 	return fmt.Sprintf("--%s=%s", cli.OutputFlag, "json")
 }
