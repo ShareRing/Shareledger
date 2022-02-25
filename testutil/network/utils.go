@@ -3,8 +3,14 @@ package network
 import (
 	"encoding/json"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 	"github.com/sharering/shareledger/app"
+	assettypes "github.com/sharering/shareledger/x/asset/types"
+	bookingtypes "github.com/sharering/shareledger/x/booking/types"
+	documenttypes "github.com/sharering/shareledger/x/document/types"
+	gentleminttypes "github.com/sharering/shareledger/x/gentlemint/types"
+	idtypes "github.com/sharering/shareledger/x/id/types"
 	denom "github.com/sharering/shareledger/x/utils/demo"
 	"github.com/stretchr/testify/require"
 	"github.com/tendermint/spm/cosmoscmd"
@@ -14,10 +20,6 @@ import (
 )
 
 const (
-	ErrorCodeNotFound = uint32(41)
-	ErrorCodeExisted  = uint32(42)
-	ErrorNotAvailable = uint32(45)
-
 	KeyAuthority   string = "authority"
 	KeyTreasurer   string = "treasurer"
 	KeyOperator    string = "operator"
@@ -41,25 +43,7 @@ const (
 	KeyAccount5 string = "acc5" //Use this account if you want more
 	KeyAccount6 string = "acc6" //Use this account if you want more
 
-	ShareLedgerSuccessCode             = uint32(0)
-	ShareLedgerErrorCodeUnauthorized   = uint32(4)
-	ShareLedgerErrorCodeInvalidCoin    = uint32(10)
-	ShareLedgerErrorCodeInvalidRequest = uint32(18)
-	ShareLedgerErrorCodeMaxSupply      = uint32(41)
-
-	ShareLedgerErrorCodeAssetNotExisted     = ErrorCodeNotFound
-	ShareLedgerErrorCodeAssetAlreadyExisted = ErrorCodeExisted
-
-	ShareLedgerErrorCodeDocumentAlreadyExisted = ErrorCodeExisted
-
-	ShareLedgerBookingAssetAlreadyBooked = uint32(43)
-	ShareLedgerBookingBookerIsNotOwner   = uint32(46)
-
-	ShareLedgerDocumentDuplicated = uint32(3)
-	ShareLedgerDocumentNotFound   = ErrorCodeNotFound
-
-	ShareLedgerErrorCodeIDAddressOwnerID = ErrorNotAvailable
-	ShareLedgerCoinInsufficient          = uint32(5)
+	ShareLedgerSuccessCode = uint32(0)
 )
 
 var (
@@ -71,6 +55,22 @@ var (
 	defaultCoins  = sdk.NewCoins(sdk.NewCoin(denom.Base, sdk.NewInt(oneThousandSHR)), sdk.NewCoin(denom.BaseUSD, sdk.NewInt(oneHundredSHRP)))
 	becauseImRich = sdk.NewCoins(sdk.NewCoin(denom.Base, sdk.NewInt(oneMillionSHR)), sdk.NewCoin(denom.BaseUSD, sdk.NewInt(oneMillionSHRP)))
 	poorMen       = sdk.NewCoins(sdk.NewCoin(denom.Base, sdk.NewInt(0)), sdk.NewCoin(denom.BaseUSD, sdk.NewInt(0)))
+
+	ShareLedgerErrorCodeUnauthorized = sdkerrors.ErrUnauthorized.ABCICode()
+	ShareLedgerErrorCodeMaxSupply    = gentleminttypes.ErrBaseSupplyExceeded.ABCICode()
+
+	ShareLedgerErrorCodeAssetNotExisted     = assettypes.ErrNameDoesNotExist.ABCICode()
+	ShareLedgerErrorCodeAssetAlreadyExisted = assettypes.ErrAssetExist.ABCICode()
+
+	ShareLedgerErrorCodeDocumentAlreadyExisted = documenttypes.ErrDocExisted.ABCICode()
+	ShareLedgerDocumentNotFound                = documenttypes.ErrDocNotExisted.ABCICode()
+
+	ShareLedgerCoinInsufficient = sdkerrors.ErrInsufficientFunds.ABCICode()
+
+	ShareLedgerErrorCodeIDAddressOwnerID = idtypes.ErrWrongBackupAddr.ABCICode()
+
+	ShareLedgerBookingAssetAlreadyBooked = bookingtypes.ErrAssetAlreadyBooked.ABCICode()
+	ShareLedgerBookingBookerIsNotOwner   = bookingtypes.ErrNotBookerOfAsset.ABCICode()
 )
 
 type (
