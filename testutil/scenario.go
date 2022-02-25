@@ -1,5 +1,0 @@
-package testutil
-
-func InitShareLedgerTestSate() {
-
-}
