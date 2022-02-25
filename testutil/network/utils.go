@@ -65,8 +65,8 @@ const (
 var (
 	oneThousandSHR = 10000 * denom.ShrExponent
 	oneHundredSHRP = 100 * denom.USDExponent
-	oneMillionSHR  = 1000000 * denom.ShrExponent //10 0 million shr and shrp
-	oneMillionSHRP = 1000000 * denom.USDExponent //100 million shr and shrp
+	oneMillionSHR  = 1000000 * denom.ShrExponent //1 million shr and shrp
+	oneMillionSHRP = 1000000 * denom.USDExponent //1 million shr and shrp
 
 	defaultCoins  = sdk.NewCoins(sdk.NewCoin(denom.Base, sdk.NewInt(oneThousandSHR)), sdk.NewCoin(denom.BaseUSD, sdk.NewInt(oneHundredSHRP)))
 	becauseImRich = sdk.NewCoins(sdk.NewCoin(denom.Base, sdk.NewInt(oneMillionSHR)), sdk.NewCoin(denom.BaseUSD, sdk.NewInt(oneMillionSHRP)))
