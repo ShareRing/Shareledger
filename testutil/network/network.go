@@ -14,36 +14,12 @@ import (
 	electoraltypes "github.com/sharering/shareledger/x/electoral/types"
 	"io/ioutil"
 	"os"
-	"sync"
 	"testing"
 )
 
 const (
-	PrefixValidator = "val"
-
-	PrefixConsensus = "cons"
-
-	PrefixPublic = "pub"
-
-	PrefixOperator = "oper"
-
 	Bech32MainPrefix = "shareledger"
-
-	Bech32PrefixAccAddr = Bech32MainPrefix
-
-	Bech32PrefixAccPub = Bech32MainPrefix + PrefixPublic
-
-	Bech32PrefixValAddr = Bech32MainPrefix + PrefixValidator + PrefixOperator
-
-	Bech32PrefixValPub = Bech32MainPrefix + PrefixValidator + PrefixOperator + PrefixPublic
-
-	Bech32PrefixConsAddr = Bech32MainPrefix + PrefixValidator + PrefixConsensus
-
-	Bech32PrefixConsPub = Bech32MainPrefix + PrefixValidator + PrefixConsensus + PrefixPublic
 )
-
-// package-wide network lock to only allow one test network at a time
-var lock = new(sync.Mutex)
 
 // AppConstructor defines a function which accepts a network configuration and
 // creates an ABCI Application to provide to Tendermint.
@@ -53,25 +29,12 @@ var (
 )
 
 type (
-	// Network defines a local in-process testing network using SimApp. It can be
-	// configured to start any number of validators, each with its own RPC and API
-	// clients. Typically, this test network would be used in client and integration
-	// testing where user input is expected.
-	//
-	// Note, due to Tendermint constraints in regards to RPC functionality, there
-	// may only be one test network running at a time. Thus, any caller must be
-	// sure to Cleanup after testing is finished in order to allow other tests
-	// to create networks. In addition, only the first validator will have a valid
-	// RPC and API server/client.
-	Network struct {
-		T          *testing.T
-		BaseDir    string
-		Validators []*network.Validator
-
-		Config network.Config
-	}
-
 	AppConstructor = func(val network.Validator) servertypes.Application
+
+	AccountInfo struct {
+		Key     string
+		Balance sdk.Coins
+	}
 )
 
 func CompileGenesis(t *testing.T, config *network.Config, genesisState map[string]json.RawMessage, au []authtypes.GenesisAccount, b []banktypes.Balance, elGen electoraltypes.GenesisState) map[string]json.RawMessage {
@@ -124,26 +87,33 @@ func GetTestingGenesis(t *testing.T, config *network.Config) (keyring.Keyring, s
 	if err != nil {
 		t.Errorf("fail to create temp dir %v", err)
 	}
-
 	kb, err := keyring.New(sdk.KeyringServiceName(), keyring.BackendTest, baseDir, buf, config.KeyringOptions...)
 	accountBuilder := NewKeyringBuilder(t, kb)
 
-	accountBuilder.InitUser(KeyAuthority, defaultCoins)
-	accountBuilder.InitUser(KeyTreasurer, defaultCoins)
-	accountBuilder.InitUser(KeyOperator, defaultCoins)
-	accountBuilder.InitUser(KeyIDSigner, defaultCoins)
-	accountBuilder.InitUser(KeyDocIssuer, defaultCoins)
-	accountBuilder.InitUser(KeyMillionaire, becauseImRich)
-	accountBuilder.InitUser(KeyLoader, becauseImRich)
-	accountBuilder.InitUser(KeyEmpty1, poorMen)
-	accountBuilder.InitUser(KeyEmpty2, poorMen)
-	accountBuilder.InitUser(KeyEmpty3, poorMen)
-	accountBuilder.InitUser(KeyEmpty4, poorMen)
-	accountBuilder.InitUser(KeyEmpty5, poorMen)
-	accountBuilder.InitUser(KeyAccount1, defaultCoins)
-	accountBuilder.InitUser(KeyAccount2, defaultCoins)
-	accountBuilder.InitUser(KeyAccount3, defaultCoins)
-	accountBuilder.InitUser(KeyAccount4, defaultCoins)
+	users := []AccountInfo{
+		{Key: KeyAuthority, Balance: defaultCoins},
+		{Key: KeyTreasurer, Balance: defaultCoins},
+		{Key: KeyOperator, Balance: defaultCoins},
+		{Key: KeyIDSigner, Balance: defaultCoins},
+		{Key: KeyDocIssuer, Balance: defaultCoins},
+		{Key: KeyMillionaire, Balance: becauseImRich},
+		{Key: KeyLoader, Balance: becauseImRich},
+
+		{Key: KeyEmpty1, Balance: poorMen},
+		{Key: KeyEmpty2, Balance: poorMen},
+		{Key: KeyEmpty3, Balance: poorMen},
+		{Key: KeyEmpty4, Balance: poorMen},
+		{Key: KeyEmpty5, Balance: poorMen},
+
+		{Key: KeyAccount1, Balance: defaultCoins},
+		{Key: KeyAccount2, Balance: defaultCoins},
+		{Key: KeyAccount3, Balance: defaultCoins},
+		{Key: KeyAccount4, Balance: defaultCoins},
+	}
+
+	for _, u := range users {
+		accountBuilder.InitUser(u.Key, u.Balance)
+	}
 
 	newKeyringService, genAccounts, genBalances := accountBuilder.BuildGenesis()
 
@@ -162,8 +132,8 @@ func GetTestingGenesis(t *testing.T, config *network.Config) (keyring.Keyring, s
 	return newKeyringService, baseDir
 }
 
-// NewAppConstructor returns a new shareLedger AppConstructor
-func NewAppConstructor() AppConstructor {
+// ShareLedgerChainConstructor returns a new shareLedger AppConstructor
+func ShareLedgerChainConstructor() AppConstructor {
 	return func(val network.Validator) servertypes.Application {
 		return simapp.New(val.Ctx.Config.RootDir)
 	}
