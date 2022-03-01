@@ -59,8 +59,7 @@ var (
 	ShareLedgerErrorCodeUnauthorized = sdkerrors.ErrUnauthorized.ABCICode()
 	ShareLedgerErrorCodeMaxSupply    = gentleminttypes.ErrBaseSupplyExceeded.ABCICode()
 
-	ShareLedgerErrorCodeAssetNotExisted     = assettypes.ErrNameDoesNotExist.ABCICode()
-	ShareLedgerErrorCodeAssetAlreadyExisted = assettypes.ErrAssetExist.ABCICode()
+	ShareLedgerErrorCodeAssetNotExisted = assettypes.ErrNameDoesNotExist.ABCICode()
 
 	ShareLedgerErrorCodeDocumentAlreadyExisted = documenttypes.ErrDocExisted.ABCICode()
 	ShareLedgerDocumentNotFound                = documenttypes.ErrDocNotExisted.ABCICode()
@@ -71,6 +70,7 @@ var (
 
 	ShareLedgerBookingAssetAlreadyBooked = bookingtypes.ErrAssetAlreadyBooked.ABCICode()
 	ShareLedgerBookingBookerIsNotOwner   = bookingtypes.ErrNotBookerOfAsset.ABCICode()
+	//ShareLedgerInsufficientTXNFee        = sdkerrors.ErrInsufficientFee.ABCICode()
 )
 
 type (
