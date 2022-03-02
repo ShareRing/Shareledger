@@ -1,7 +1,7 @@
 {
   "genesis_time": "2021-02-24T09:04:26.679822768Z",
   "chain_id": "ShareRing-Lifestyle",
-  "initial_height": "1964889",
+  "initial_height": "2073605",
   "consensus_params": {
     "block": {
       "max_bytes": "22020096",
@@ -22,12 +22,21 @@
   },
   "validators": [
     {
+      "address": "21C7548A66D0E5C43C142C6E3A0BE3653A86C4B4",
+      "pub_key": {
+        "type": "tendermint/PubKeyEd25519",
+        "value": "CZp/ZRvmohuTMbvH/jDnDAbTOaLwQCToGgb+bZ/CEdw="
+      },
+      "power": "72",
+      "name": "node3"
+    },
+    {
       "address": "9F5EDCBEB2F7E500E9D751EC5473E7604B3C3AE2",
       "pub_key": {
         "type": "tendermint/PubKeyEd25519",
         "value": "VEeE31lZUFGcsoJHhe3NavaWrtvi3+FHYJY9PUhgELc="
       },
-      "power": "10",
+      "power": "11",
       "name": "node0"
     },
     {
@@ -38,15 +47,6 @@
       },
       "power": "108",
       "name": "node2"
-    },
-    {
-      "address": "25E25EF679F9389E605F3A164A315D892948F934",
-      "pub_key": {
-        "type": "tendermint/PubKeyEd25519",
-        "value": "06LG6DYzDwsU19tSau4xXBj0x3I18B8pBIn90GCYMDk="
-      },
-      "power": "93",
-      "name": "node1"
     }
   ],
   "app_hash": "",
@@ -115,6 +115,13 @@
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
+          "address": "shareledger1qeevhzxzvgjfe4vvug6thhtevq2tv5zg4syakv",
+          "pub_key": null,
+          "account_number": "292",
+          "sequence": "0"
+        },
+        {
+          "@type": "/cosmos.auth.v1beta1.BaseAccount",
           "address": "shareledger1qa754x52l7zdgau9whfxly2x7nx5ppeua9438t",
           "pub_key": null,
           "account_number": "223",
@@ -155,7 +162,7 @@
             "key": "Aim1rQmBV+9PddT+Yog4L7M+8GVgxsj009VYb7DZ9bOt"
           },
           "account_number": "207",
-          "sequence": "311"
+          "sequence": "320"
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
@@ -172,7 +179,7 @@
             "key": "A1DL7IEbxZs2Q7c6EgHbhP4on82YQNU8s9T8jd6JVcTX"
           },
           "account_number": "9",
-          "sequence": "3"
+          "sequence": "4"
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
@@ -180,6 +187,16 @@
           "pub_key": null,
           "account_number": "97",
           "sequence": "0"
+        },
+        {
+          "@type": "/cosmos.auth.v1beta1.BaseAccount",
+          "address": "shareledger1pjllxlnudvg8kryu4ph0lkm4qpfkyrj52kmsax",
+          "pub_key": {
+            "@type": "/cosmos.crypto.secp256k1.PubKey",
+            "key": "A0IF4vB/gjSQ9QW5vLaZDFgNG6MRx8vhVNAsQTHEibYV"
+          },
+          "account_number": "291",
+          "sequence": "1"
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
@@ -318,7 +335,7 @@
             "key": "A5Ht++7yEW3LoFcgUaeTTIPVoNPNxtNWfdn0E7AdnqXP"
           },
           "account_number": "115",
-          "sequence": "39"
+          "sequence": "50"
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
@@ -473,7 +490,7 @@
             "key": "A+TG6Mg0d21nycjoydiltDLA9Mf+32rIBnqibmVdq1vg"
           },
           "account_number": "271",
-          "sequence": "22"
+          "sequence": "28"
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
@@ -595,7 +612,7 @@
             "key": "Avde6F1LeW1dn/T+lVPRjZiDbQzQK+cwWzdW1B8Tn/zv"
           },
           "account_number": "118",
-          "sequence": "102"
+          "sequence": "103"
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
@@ -639,7 +656,7 @@
             "key": "A11uymiBPIDSJVE6r3StLjm7l4O5c8G+VyVpMwfJD1vb"
           },
           "account_number": "267",
-          "sequence": "8"
+          "sequence": "11"
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
@@ -659,7 +676,7 @@
             "key": "AhHiWeeVdDKFCNiqikQhNmaXerfXmZV0Uz0xnRxg2sOx"
           },
           "account_number": "3",
-          "sequence": "163"
+          "sequence": "165"
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
@@ -986,7 +1003,7 @@
             "key": "A/K4ikCIqE8hIdOLCRhfYH2+SvIiepgJjUON6k9uxu46"
           },
           "account_number": "175",
-          "sequence": "245"
+          "sequence": "252"
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
@@ -1106,7 +1123,7 @@
             "key": "AlcYIfA3yyfnp/jVeISODH4ZLzq9UJeDpKgVgN3uYLNa"
           },
           "account_number": "262",
-          "sequence": "30"
+          "sequence": "38"
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
@@ -1141,6 +1158,16 @@
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
+          "address": "shareledger1tgjjeh29yzj750s9lxv28ne8c8h9cu756hn2m5",
+          "pub_key": {
+            "@type": "/cosmos.crypto.secp256k1.PubKey",
+            "key": "Ayub/qSa6l5F3odVwoyw7TJJUik09wTEMX1F9dgmxfry"
+          },
+          "account_number": "297",
+          "sequence": "14"
+        },
+        {
+          "@type": "/cosmos.auth.v1beta1.BaseAccount",
           "address": "shareledger1tvxdr4jla4ezxq6m0769pawhlqtjdpeaygynqq",
           "pub_key": {
             "@type": "/cosmos.crypto.secp256k1.PubKey",
@@ -1167,7 +1194,7 @@
             "key": "A8HgrGNnNItBwpUcS+I25P+eNEKYinEKzxjr8tx+cLya"
           },
           "account_number": "11",
-          "sequence": "4359"
+          "sequence": "5436"
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
@@ -1201,7 +1228,7 @@
             "key": "AlE0ilU37GT9s99UY+obwkVuOZmenH1AenZ8Dp91qu1k"
           },
           "account_number": "281",
-          "sequence": "19"
+          "sequence": "39"
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
@@ -1307,6 +1334,26 @@
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
+          "address": "shareledger1v6x0gzr4qcr570syfzmd7xcd2ev5fpyyzsnfl6",
+          "pub_key": {
+            "@type": "/cosmos.crypto.secp256k1.PubKey",
+            "key": "A2drYvGtsOwjajFfyMoZr01psMJ8mQGdSYKU6I2mBmM7"
+          },
+          "account_number": "298",
+          "sequence": "6"
+        },
+        {
+          "@type": "/cosmos.auth.v1beta1.BaseAccount",
+          "address": "shareledger1dx8pj8ncxte36hv4ekvmekmk6q7v0q6dr8u22s",
+          "pub_key": {
+            "@type": "/cosmos.crypto.secp256k1.PubKey",
+            "key": "ArfrjkZsgx+AT2TTBqCTMteYXUJV2E6Rlrr2HmLRTmsR"
+          },
+          "account_number": "290",
+          "sequence": "10"
+        },
+        {
+          "@type": "/cosmos.auth.v1beta1.BaseAccount",
           "address": "shareledger1dfy2l3rwulkqnkfqay8py630jhg0m605rrq7ke",
           "pub_key": null,
           "account_number": "139",
@@ -1347,7 +1394,7 @@
             "key": "AsOWJfSkkGM9b6W1rxaIjooa3+uLLtVU9UeCsS4MWbJu"
           },
           "account_number": "229",
-          "sequence": "70"
+          "sequence": "71"
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
@@ -1411,7 +1458,7 @@
             "key": "As0M6vz49hxfMbdeaNjceQUoNRTAMsrV/zovKujhv3Jf"
           },
           "account_number": "13",
-          "sequence": "288"
+          "sequence": "355"
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
@@ -1496,7 +1543,7 @@
             "key": "AusNuuo+G6z5x9aEpxuyk481J2LTjras4Ge8aHg4fKcE"
           },
           "account_number": "233",
-          "sequence": "281"
+          "sequence": "316"
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
@@ -1647,7 +1694,17 @@
             "key": "AkGKMGIczGNWody+UHCJr2+UHBkNTTTtS7JPDcNTKRmi"
           },
           "account_number": "263",
-          "sequence": "31"
+          "sequence": "39"
+        },
+        {
+          "@type": "/cosmos.auth.v1beta1.BaseAccount",
+          "address": "shareledger1s40xm3eftdmyjjxesk3xlxzq3qqmu6p2wvm3tq",
+          "pub_key": {
+            "@type": "/cosmos.crypto.secp256k1.PubKey",
+            "key": "A2+K7x53w73IMqSQFDvi8mYYp+vsHFuIA0qMH+M4JAuR"
+          },
+          "account_number": "294",
+          "sequence": "14"
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
@@ -1832,13 +1889,20 @@
             "key": "AzEp+oBGLX9kRjbPbGDyaT3rwOzb2Rz9nL+m0YhFm+Y8"
           },
           "account_number": "184",
-          "sequence": "73"
+          "sequence": "95"
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
           "address": "shareledger1nhgddhdrwxpwc4jdf4prphpwdjmd7g80andunp",
           "pub_key": null,
           "account_number": "119",
+          "sequence": "0"
+        },
+        {
+          "@type": "/cosmos.auth.v1beta1.BaseAccount",
+          "address": "shareledger1ne90ncftutlsusk3ttu4vu28yr59l4s72pkz2x",
+          "pub_key": null,
+          "account_number": "295",
           "sequence": "0"
         },
         {
@@ -1941,6 +2005,16 @@
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
+          "address": "shareledger14f66vefkax7h64e5j05a2xqjmh9fk8sywmcjsh",
+          "pub_key": {
+            "@type": "/cosmos.crypto.secp256k1.PubKey",
+            "key": "A3w7Kf7qrb4bX2rO+bU9iRfgdwJMOZJMsS0IuLg3VEAB"
+          },
+          "account_number": "299",
+          "sequence": "10"
+        },
+        {
+          "@type": "/cosmos.auth.v1beta1.BaseAccount",
           "address": "shareledger14slcwd2vvxl9x7wh8dvwsx3knl22auy2v4tf42",
           "pub_key": {
             "@type": "/cosmos.crypto.secp256k1.PubKey",
@@ -2005,10 +2079,34 @@
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
+          "address": "shareledger1kqnqukkkvfaxhncyxpvtvcv9kgquk3ayrj2nzq",
+          "pub_key": null,
+          "account_number": "293",
+          "sequence": "0"
+        },
+        {
+          "@type": "/cosmos.auth.v1beta1.BaseAccount",
           "address": "shareledger1krraljy2c3g00pjsmkfqljq38eykra8zyauujv",
           "pub_key": null,
           "account_number": "58",
           "sequence": "0"
+        },
+        {
+          "@type": "/cosmos.auth.v1beta1.BaseAccount",
+          "address": "shareledger1k93kpvs7jhv433g62htax0xdsc8jq848zww4l8",
+          "pub_key": null,
+          "account_number": "296",
+          "sequence": "0"
+        },
+        {
+          "@type": "/cosmos.auth.v1beta1.BaseAccount",
+          "address": "shareledger1k8u5g6xsc96kauenn2gdacrcsdgy9x6sklmjej",
+          "pub_key": {
+            "@type": "/cosmos.crypto.secp256k1.PubKey",
+            "key": "A+jRuoJdVxmx56LWXnwEuCTGKyiHdYMTl6T/WLavNYew"
+          },
+          "account_number": "300",
+          "sequence": "2"
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
@@ -2377,7 +2475,7 @@
             "key": "AmfRSymDbNb5NyMFzeH5h2ISKyqa8KCP6yEoeVhfElHN"
           },
           "account_number": "201",
-          "sequence": "315"
+          "sequence": "365"
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
@@ -2635,6 +2733,15 @@
           ]
         },
         {
+          "address": "shareledger1qeevhzxzvgjfe4vvug6thhtevq2tv5zg4syakv",
+          "coins": [
+            {
+              "denom": "nshr",
+              "amount": "200000000000000"
+            }
+          ]
+        },
+        {
           "address": "shareledger1qa754x52l7zdgau9whfxly2x7nx5ppeua9438t",
           "coins": [
             {
@@ -2675,7 +2782,7 @@
           "coins": [
             {
               "denom": "nshr",
-              "amount": "1928512000000000"
+              "amount": "1727230000000000"
             }
           ]
         },
@@ -2693,7 +2800,7 @@
           "coins": [
             {
               "denom": "nshr",
-              "amount": "98000000000"
+              "amount": "97000000000"
             }
           ]
         },
@@ -2703,6 +2810,15 @@
             {
               "denom": "nshr",
               "amount": "100000000000"
+            }
+          ]
+        },
+        {
+          "address": "shareledger1pjllxlnudvg8kryu4ph0lkm4qpfkyrj52kmsax",
+          "coins": [
+            {
+              "denom": "nshr",
+              "amount": "41995000000000"
             }
           ]
         },
@@ -2787,7 +2903,7 @@
           "coins": [
             {
               "denom": "cent",
-              "amount": "3801150"
+              "amount": "4662146"
             }
           ]
         },
@@ -2833,7 +2949,12 @@
         },
         {
           "address": "shareledger1z6qpn2nxt99ma6enza3dzfp7prux55h8ynkdts",
-          "coins": []
+          "coins": [
+            {
+              "denom": "nshr",
+              "amount": "1034000000000"
+            }
+          ]
         },
         {
           "address": "shareledger1z7xkd6nf3rkqacxr7qkdtx0v5tdpy6yh5z4a30",
@@ -2992,7 +3113,7 @@
           "coins": [
             {
               "denom": "nshr",
-              "amount": "78000000000"
+              "amount": "72000000000"
             }
           ]
         },
@@ -3037,7 +3158,7 @@
           "coins": [
             {
               "denom": "nshr",
-              "amount": "1089000000000"
+              "amount": "1252000000000"
             }
           ]
         },
@@ -3118,7 +3239,7 @@
           "coins": [
             {
               "denom": "nshr",
-              "amount": "4154000000000"
+              "amount": "119954000000000"
             }
           ]
         },
@@ -3163,7 +3284,7 @@
           "coins": [
             {
               "denom": "nshr",
-              "amount": "89828000000000"
+              "amount": "2049808000000000"
             }
           ]
         },
@@ -3181,7 +3302,7 @@
           "coins": [
             {
               "denom": "nshr",
-              "amount": "10324000000000"
+              "amount": "10322000000000"
             }
           ]
         },
@@ -3458,7 +3579,7 @@
           "coins": [
             {
               "denom": "cent",
-              "amount": "1211572"
+              "amount": "1288706"
             }
           ]
         },
@@ -3534,7 +3655,7 @@
             },
             {
               "denom": "nshr",
-              "amount": "9828781000000000"
+              "amount": "24420621000000000"
             }
           ]
         },
@@ -3597,7 +3718,7 @@
           "coins": [
             {
               "denom": "nshr",
-              "amount": "212644801000000000"
+              "amount": "192700661000000000"
             }
           ]
         },
@@ -3664,11 +3785,11 @@
           "coins": [
             {
               "denom": "cent",
-              "amount": "968990"
+              "amount": "962680"
             },
             {
               "denom": "nshr",
-              "amount": "99816000000000"
+              "amount": "99776000000000"
             }
           ]
         },
@@ -3695,7 +3816,20 @@
           "coins": [
             {
               "denom": "nshr",
-              "amount": "726826542000000000"
+              "amount": "145805321000000000"
+            }
+          ]
+        },
+        {
+          "address": "shareledger1tgjjeh29yzj750s9lxv28ne8c8h9cu756hn2m5",
+          "coins": [
+            {
+              "denom": "cent",
+              "amount": "25740"
+            },
+            {
+              "denom": "nshr",
+              "amount": "6000000000"
             }
           ]
         },
@@ -3721,7 +3855,7 @@
           "coins": [
             {
               "denom": "nshr",
-              "amount": "15616182000000000"
+              "amount": "1873544000000000"
             }
           ]
         },
@@ -3757,7 +3891,7 @@
           "coins": [
             {
               "denom": "nshr",
-              "amount": "996684629000000000"
+              "amount": "996072426000000000"
             }
           ]
         },
@@ -3874,6 +4008,28 @@
           ]
         },
         {
+          "address": "shareledger1v6x0gzr4qcr570syfzmd7xcd2ev5fpyyzsnfl6",
+          "coins": [
+            {
+              "denom": "cent",
+              "amount": "995"
+            }
+          ]
+        },
+        {
+          "address": "shareledger1dx8pj8ncxte36hv4ekvmekmk6q7v0q6dr8u22s",
+          "coins": [
+            {
+              "denom": "cent",
+              "amount": "20884"
+            },
+            {
+              "denom": "nshr",
+              "amount": "6000000000"
+            }
+          ]
+        },
+        {
           "address": "shareledger1dfy2l3rwulkqnkfqay8py630jhg0m605rrq7ke",
           "coins": [
             {
@@ -3914,7 +4070,7 @@
           "coins": [
             {
               "denom": "nshr",
-              "amount": "62295000000000"
+              "amount": "60795000000000"
             }
           ]
         },
@@ -4044,7 +4200,7 @@
           "coins": [
             {
               "denom": "nshr",
-              "amount": "405082704000000000"
+              "amount": "1005658221000000000"
             }
           ]
         },
@@ -4177,11 +4333,24 @@
           "coins": [
             {
               "denom": "cent",
-              "amount": "510004"
+              "amount": "446919"
             },
             {
               "denom": "nshr",
-              "amount": "99816000000000"
+              "amount": "99776000000000"
+            }
+          ]
+        },
+        {
+          "address": "shareledger1s40xm3eftdmyjjxesk3xlxzq3qqmu6p2wvm3tq",
+          "coins": [
+            {
+              "denom": "cent",
+              "amount": "37531"
+            },
+            {
+              "denom": "nshr",
+              "amount": "6000000000"
             }
           ]
         },
@@ -4316,7 +4485,7 @@
           "coins": [
             {
               "denom": "nshr",
-              "amount": "29516000000000"
+              "amount": "35906000000000"
             }
           ]
         },
@@ -4379,11 +4548,11 @@
           "coins": [
             {
               "denom": "cent",
-              "amount": "1148054"
+              "amount": "1188949"
             },
             {
               "denom": "nshr",
-              "amount": "1350000000000"
+              "amount": "1230000000000"
             }
           ]
         },
@@ -4393,6 +4562,15 @@
             {
               "denom": "nshr",
               "amount": "100000000000"
+            }
+          ]
+        },
+        {
+          "address": "shareledger1ne90ncftutlsusk3ttu4vu28yr59l4s72pkz2x",
+          "coins": [
+            {
+              "denom": "nshr",
+              "amount": "1000000000000"
             }
           ]
         },
@@ -4496,6 +4674,15 @@
           ]
         },
         {
+          "address": "shareledger14f66vefkax7h64e5j05a2xqjmh9fk8sywmcjsh",
+          "coins": [
+            {
+              "denom": "cent",
+              "amount": "1098"
+            }
+          ]
+        },
+        {
           "address": "shareledger14slcwd2vvxl9x7wh8dvwsx3knl22auy2v4tf42",
           "coins": [
             {
@@ -4554,11 +4741,38 @@
           ]
         },
         {
+          "address": "shareledger1kqnqukkkvfaxhncyxpvtvcv9kgquk3ayrj2nzq",
+          "coins": [
+            {
+              "denom": "nshr",
+              "amount": "100000000000000"
+            }
+          ]
+        },
+        {
           "address": "shareledger1krraljy2c3g00pjsmkfqljq38eykra8zyauujv",
           "coins": [
             {
               "denom": "nshr",
               "amount": "2000000000"
+            }
+          ]
+        },
+        {
+          "address": "shareledger1k93kpvs7jhv433g62htax0xdsc8jq848zww4l8",
+          "coins": [
+            {
+              "denom": "nshr",
+              "amount": "4000000000"
+            }
+          ]
+        },
+        {
+          "address": "shareledger1k8u5g6xsc96kauenn2gdacrcsdgy9x6sklmjej",
+          "coins": [
+            {
+              "denom": "cent",
+              "amount": "1012"
             }
           ]
         },
@@ -4963,7 +5177,7 @@
           "coins": [
             {
               "denom": "cent",
-              "amount": "1068808"
+              "amount": "1048651"
             }
           ]
         },
@@ -5183,7 +5397,7 @@
           "coins": [
             {
               "denom": "nshr",
-              "amount": "511201000000000"
+              "amount": "511251000000000"
             }
           ]
         },
@@ -5209,11 +5423,11 @@
       "supply": [
         {
           "denom": "cent",
-          "amount": "130105132"
+          "amount": "131081865"
         },
         {
           "denom": "nshr",
-          "amount": "2636282723000000000"
+          "amount": "2638353321000000000"
         }
       ],
       "denom_metadata": [
@@ -5262,19 +5476,19 @@
         "community_pool": [
           {
             "denom": "nshr",
-            "amount": "749664279948.916097184000000000"
+            "amount": "878566566346.466758792000000000"
           }
         ]
       },
       "delegator_withdraw_infos": [],
-      "previous_proposer": "shareledgervalcons1yh39aanelyufuczl8gty5v2a3y5537f5u3r8pl",
+      "previous_proposer": "shareledgervalcons1y8r4fznx6rjug0q593hr5zlrv5agd395z2n6m9",
       "outstanding_rewards": [
         {
           "validator_address": "shareledgervaloper1pdn82hmc36pqfh5qg8q2vcjc60l7h6w8qzcjqz",
           "outstanding_rewards": [
             {
               "denom": "nshr",
-              "amount": "9010835845483.718768413000000000"
+              "amount": "11223667568021.430493204000000000"
             }
           ]
         },
@@ -5283,7 +5497,7 @@
           "outstanding_rewards": [
             {
               "denom": "nshr",
-              "amount": "3592179970336.214394056000000000"
+              "amount": "3922794463852.604327758000000000"
             }
           ]
         },
@@ -5292,7 +5506,7 @@
           "outstanding_rewards": [
             {
               "denom": "nshr",
-              "amount": "11287445493887.139805577000000000"
+              "amount": "14827976234524.610172973000000000"
             }
           ]
         },
@@ -5301,7 +5515,7 @@
           "outstanding_rewards": [
             {
               "denom": "nshr",
-              "amount": "4875874410344.010934770000000000"
+              "amount": "5052995167254.888247273000000000"
             }
           ]
         }
@@ -5313,7 +5527,7 @@
             "commission": [
               {
                 "denom": "nshr",
-                "amount": "3599322051804.685563908000000000"
+                "amount": "4263171659928.949825865000000000"
               }
             ]
           }
@@ -5324,7 +5538,7 @@
             "commission": [
               {
                 "denom": "nshr",
-                "amount": "1477740610556.920416773000000000"
+                "amount": "1527574730462.829296601000000000"
               }
             ]
           }
@@ -5335,7 +5549,7 @@
             "commission": [
               {
                 "denom": "nshr",
-                "amount": "6336493509471.380882373000000000"
+                "amount": "7753144062174.676691575000000000"
               }
             ]
           }
@@ -5346,7 +5560,7 @@
             "commission": [
               {
                 "denom": "nshr",
-                "amount": "1874831343906.148276625000000000"
+                "amount": "1903069462674.371336526000000000"
               }
             ]
           }
@@ -5587,19 +5801,6 @@
         },
         {
           "validator_address": "shareledgervaloper1pdn82hmc36pqfh5qg8q2vcjc60l7h6w8qzcjqz",
-          "period": "91",
-          "rewards": {
-            "cumulative_reward_ratio": [
-              {
-                "denom": "nshr",
-                "amount": "780226.142528499000000000"
-              }
-            ],
-            "reference_count": 1
-          }
-        },
-        {
-          "validator_address": "shareledgervaloper1pdn82hmc36pqfh5qg8q2vcjc60l7h6w8qzcjqz",
           "period": "93",
           "rewards": {
             "cumulative_reward_ratio": [
@@ -5614,32 +5815,6 @@
         {
           "validator_address": "shareledgervaloper1pdn82hmc36pqfh5qg8q2vcjc60l7h6w8qzcjqz",
           "period": "95",
-          "rewards": {
-            "cumulative_reward_ratio": [
-              {
-                "denom": "nshr",
-                "amount": "780635.351345620000000000"
-              }
-            ],
-            "reference_count": 1
-          }
-        },
-        {
-          "validator_address": "shareledgervaloper1pdn82hmc36pqfh5qg8q2vcjc60l7h6w8qzcjqz",
-          "period": "96",
-          "rewards": {
-            "cumulative_reward_ratio": [
-              {
-                "denom": "nshr",
-                "amount": "780635.351345620000000000"
-              }
-            ],
-            "reference_count": 1
-          }
-        },
-        {
-          "validator_address": "shareledgervaloper1pdn82hmc36pqfh5qg8q2vcjc60l7h6w8qzcjqz",
-          "period": "97",
           "rewards": {
             "cumulative_reward_ratio": [
               {
@@ -5671,6 +5846,45 @@
               {
                 "denom": "nshr",
                 "amount": "780635.351345620000000000"
+              }
+            ],
+            "reference_count": 1
+          }
+        },
+        {
+          "validator_address": "shareledgervaloper1pdn82hmc36pqfh5qg8q2vcjc60l7h6w8qzcjqz",
+          "period": "102",
+          "rewards": {
+            "cumulative_reward_ratio": [
+              {
+                "denom": "nshr",
+                "amount": "780635.351345620000000000"
+              }
+            ],
+            "reference_count": 1
+          }
+        },
+        {
+          "validator_address": "shareledgervaloper1pdn82hmc36pqfh5qg8q2vcjc60l7h6w8qzcjqz",
+          "period": "103",
+          "rewards": {
+            "cumulative_reward_ratio": [
+              {
+                "denom": "nshr",
+                "amount": "782982.977958860000000000"
+              }
+            ],
+            "reference_count": 1
+          }
+        },
+        {
+          "validator_address": "shareledgervaloper1pdn82hmc36pqfh5qg8q2vcjc60l7h6w8qzcjqz",
+          "period": "104",
+          "rewards": {
+            "cumulative_reward_ratio": [
+              {
+                "denom": "nshr",
+                "amount": "783058.012947320000000000"
               }
             ],
             "reference_count": 2
@@ -5944,19 +6158,6 @@
         },
         {
           "validator_address": "shareledgervaloper1pasya6jtvglu9q36nl3tqh5drqzeh0s9098x32",
-          "period": "355",
-          "rewards": {
-            "cumulative_reward_ratio": [
-              {
-                "denom": "nshr",
-                "amount": "1995646.084625809000000000"
-              }
-            ],
-            "reference_count": 1
-          }
-        },
-        {
-          "validator_address": "shareledgervaloper1pasya6jtvglu9q36nl3tqh5drqzeh0s9098x32",
           "period": "356",
           "rewards": {
             "cumulative_reward_ratio": [
@@ -6028,6 +6229,32 @@
               {
                 "denom": "nshr",
                 "amount": "1997575.863321876000000000"
+              }
+            ],
+            "reference_count": 1
+          }
+        },
+        {
+          "validator_address": "shareledgervaloper1pasya6jtvglu9q36nl3tqh5drqzeh0s9098x32",
+          "period": "361",
+          "rewards": {
+            "cumulative_reward_ratio": [
+              {
+                "denom": "nshr",
+                "amount": "1998769.373020055000000000"
+              }
+            ],
+            "reference_count": 1
+          }
+        },
+        {
+          "validator_address": "shareledgervaloper1pasya6jtvglu9q36nl3tqh5drqzeh0s9098x32",
+          "period": "363",
+          "rewards": {
+            "cumulative_reward_ratio": [
+              {
+                "denom": "nshr",
+                "amount": "2023328.847624660000000000"
               }
             ],
             "reference_count": 2
@@ -6683,12 +6910,12 @@
         },
         {
           "validator_address": "shareledgervaloper1w4l5fchs69d9avlgvdehq9ypvdh4xyeveusq8r",
-          "period": "162",
+          "period": "164",
           "rewards": {
             "cumulative_reward_ratio": [
               {
                 "denom": "nshr",
-                "amount": "1381625.928095250000000000"
+                "amount": "1383083.601156827000000000"
               }
             ],
             "reference_count": 1
@@ -6696,12 +6923,12 @@
         },
         {
           "validator_address": "shareledgervaloper1w4l5fchs69d9avlgvdehq9ypvdh4xyeveusq8r",
-          "period": "164",
+          "period": "168",
           "rewards": {
             "cumulative_reward_ratio": [
               {
                 "denom": "nshr",
-                "amount": "1383083.601156827000000000"
+                "amount": "1402127.105634108000000000"
               }
             ],
             "reference_count": 2
@@ -7186,12 +7413,12 @@
         },
         {
           "validator_address": "shareledgervaloper1ml6wjyy6hw0gynuzqvvaw4urhcpegcy9xr8002",
-          "period": "170",
+          "period": "171",
           "rewards": {
             "cumulative_reward_ratio": [
               {
                 "denom": "nshr",
-                "amount": "1639716.814903368000000000"
+                "amount": "1641361.193318682000000000"
               }
             ],
             "reference_count": 1
@@ -7199,12 +7426,25 @@
         },
         {
           "validator_address": "shareledgervaloper1ml6wjyy6hw0gynuzqvvaw4urhcpegcy9xr8002",
-          "period": "171",
+          "period": "172",
           "rewards": {
             "cumulative_reward_ratio": [
               {
                 "denom": "nshr",
-                "amount": "1641361.193318682000000000"
+                "amount": "1643547.620590599000000000"
+              }
+            ],
+            "reference_count": 1
+          }
+        },
+        {
+          "validator_address": "shareledgervaloper1ml6wjyy6hw0gynuzqvvaw4urhcpegcy9xr8002",
+          "period": "174",
+          "rewards": {
+            "cumulative_reward_ratio": [
+              {
+                "denom": "nshr",
+                "amount": "1643547.620590599000000000"
               }
             ],
             "reference_count": 2
@@ -7215,8 +7455,13 @@
         {
           "validator_address": "shareledgervaloper1pdn82hmc36pqfh5qg8q2vcjc60l7h6w8qzcjqz",
           "rewards": {
-            "rewards": [],
-            "period": "100"
+            "rewards": [
+              {
+                "denom": "nshr",
+                "amount": "1375270384375.861116864000000000"
+              }
+            ],
+            "period": "105"
           }
         },
         {
@@ -7225,10 +7470,10 @@
             "rewards": [
               {
                 "denom": "nshr",
-                "amount": "4158630870.825003871000000000"
+                "amount": "8707738219.895287860000000000"
               }
             ],
-            "period": "361"
+            "period": "364"
           }
         },
         {
@@ -7237,22 +7482,17 @@
             "rewards": [
               {
                 "denom": "nshr",
-                "amount": "4058003998.113249925000000000"
+                "amount": "60648816753.926701551000000000"
               }
             ],
-            "period": "165"
+            "period": "169"
           }
         },
         {
           "validator_address": "shareledgervaloper1ml6wjyy6hw0gynuzqvvaw4urhcpegcy9xr8002",
           "rewards": {
-            "rewards": [
-              {
-                "denom": "nshr",
-                "amount": "44080380842.748365903000000000"
-              }
-            ],
-            "period": "172"
+            "rewards": [],
+            "period": "175"
           }
         }
       ],
@@ -7261,9 +7501,9 @@
           "delegator_address": "shareledger1p8jjjmtsm9vg3cks9a6ugafgga3a9p65fnkwyw",
           "validator_address": "shareledgervaloper1pdn82hmc36pqfh5qg8q2vcjc60l7h6w8qzcjqz",
           "starting_info": {
-            "previous_period": "97",
-            "stake": "1000129715863575.500565382000000000",
-            "height": "1869309"
+            "previous_period": "103",
+            "stake": "723852648.727496749000000000",
+            "height": "2005309"
           }
         },
         {
@@ -7288,9 +7528,9 @@
           "delegator_address": "shareledger1z6qpn2nxt99ma6enza3dzfp7prux55h8ynkdts",
           "validator_address": "shareledgervaloper1pdn82hmc36pqfh5qg8q2vcjc60l7h6w8qzcjqz",
           "starting_info": {
-            "previous_period": "96",
-            "stake": "52484226711056050.749320883000000000",
-            "height": "1867849"
+            "previous_period": "102",
+            "stake": "130301998.352670931000000000",
+            "height": "1992847"
           }
         },
         {
@@ -7387,9 +7627,9 @@
           "delegator_address": "shareledger10yzqsenp5yestl6wlyq5rmm4tdms44p680v7tl",
           "validator_address": "shareledgervaloper1pdn82hmc36pqfh5qg8q2vcjc60l7h6w8qzcjqz",
           "starting_info": {
-            "previous_period": "91",
-            "stake": "106.424303915000000000",
-            "height": "1809738"
+            "previous_period": "104",
+            "stake": "1000000000000105.363937216000000000",
+            "height": "2005313"
           }
         },
         {
@@ -7477,9 +7717,9 @@
           "delegator_address": "shareledger1p8jjjmtsm9vg3cks9a6ugafgga3a9p65fnkwyw",
           "validator_address": "shareledgervaloper1pasya6jtvglu9q36nl3tqh5drqzeh0s9098x32",
           "starting_info": {
-            "previous_period": "355",
-            "stake": "508729390466863.145196992000000000",
-            "height": "1874889"
+            "previous_period": "361",
+            "stake": "1008729390466863.145196991000000000",
+            "height": "1988097"
           }
         },
         {
@@ -7651,6 +7891,15 @@
             "previous_period": "137",
             "stake": "3208000000000.000000000000000000",
             "height": "1573288"
+          }
+        },
+        {
+          "delegator_address": "shareledger1tl03794zkluwkldfcjqe3frphtakl375kuzvsm",
+          "validator_address": "shareledgervaloper1pasya6jtvglu9q36nl3tqh5drqzeh0s9098x32",
+          "starting_info": {
+            "previous_period": "363",
+            "stake": "598999999999999.999999999000000000",
+            "height": "2046282"
           }
         },
         {
@@ -7960,15 +8209,6 @@
           }
         },
         {
-          "delegator_address": "shareledger19mag0eyv0nznfzhxt2lc5xfu4d58ewjqrzfz5z",
-          "validator_address": "shareledgervaloper1w4l5fchs69d9avlgvdehq9ypvdh4xyeveusq8r",
-          "starting_info": {
-            "previous_period": "162",
-            "stake": "400004000000000.000000000000000000",
-            "height": "1939716"
-          }
-        },
-        {
           "delegator_address": "shareledger19lu4qg87t7tsl3sn0q2ez5q0yvp6ltzdaqqy3f",
           "validator_address": "shareledgervaloper1w4l5fchs69d9avlgvdehq9ypvdh4xyeveusq8r",
           "starting_info": {
@@ -7993,6 +8233,15 @@
             "previous_period": "83",
             "stake": "5000000000000.000000000000000000",
             "height": "1583031"
+          }
+        },
+        {
+          "delegator_address": "shareledger1tl03794zkluwkldfcjqe3frphtakl375kuzvsm",
+          "validator_address": "shareledgervaloper1w4l5fchs69d9avlgvdehq9ypvdh4xyeveusq8r",
+          "starting_info": {
+            "previous_period": "168",
+            "stake": "1000000000000.000000000000000000",
+            "height": "2046282"
           }
         },
         {
@@ -8359,9 +8608,9 @@
           "delegator_address": "shareledger10yzqsenp5yestl6wlyq5rmm4tdms44p680v7tl",
           "validator_address": "shareledgervaloper1ml6wjyy6hw0gynuzqvvaw4urhcpegcy9xr8002",
           "starting_info": {
-            "previous_period": "170",
-            "stake": "2906273280244925.213415200000000000",
-            "height": "1922476"
+            "previous_period": "174",
+            "stake": "577128462.589605079000000000",
+            "height": "1994075"
           }
         },
         {
@@ -8599,6 +8848,15 @@
             "validator_period": "95",
             "fraction": "0.007095112106318836"
           }
+        },
+        {
+          "validator_address": "shareledgervaloper1ml6wjyy6hw0gynuzqvvaw4urhcpegcy9xr8002",
+          "height": "1993931",
+          "period": "172",
+          "validator_slash_event": {
+            "validator_period": "172",
+            "fraction": "0.009962828792900879"
+          }
         }
       ]
     },
@@ -8691,6 +8949,20 @@
         {
           "holder": "shareledger1044pfjan847rrg9gt3awyqw55u063z0hnck429",
           "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+          "proof": "0651566b832810bdce66112e577d6805c6d30334d6281bc14bb7d33d1fa8e729",
+          "data": "",
+          "version": 0
+        },
+        {
+          "holder": "shareledger1044pfjan847rrg9gt3awyqw55u063z0hnck429",
+          "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+          "proof": "16d27aaec5b0143215912bab52ba480f5b79ed79196bec054530fbe3913ed6c7",
+          "data": "",
+          "version": 0
+        },
+        {
+          "holder": "shareledger1044pfjan847rrg9gt3awyqw55u063z0hnck429",
+          "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
           "proof": "3e08fe93e41e136d6215ad49dffbff2010f603d025cfba2ea19f2a2fba820a8d",
           "data": "",
           "version": 0
@@ -8705,6 +8977,13 @@
         {
           "holder": "shareledger1044pfjan847rrg9gt3awyqw55u063z0hnck429",
           "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+          "proof": "493fcf40a6151248b6da499258354d30f2748fa4714d787858113926b5dd2801",
+          "data": "",
+          "version": 0
+        },
+        {
+          "holder": "shareledger1044pfjan847rrg9gt3awyqw55u063z0hnck429",
+          "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
           "proof": "5bdcb85c743063fa29e0a4546516810366937a0bd28fc6f13803690683850dd9",
           "data": "",
           "version": 0
@@ -8713,6 +8992,13 @@
           "holder": "shareledger1044pfjan847rrg9gt3awyqw55u063z0hnck429",
           "issuer": "shareledger1j0svcpcql0xfvfezu5n707g80xy8k7tjqxuy02",
           "proof": "6f83fa7fde6f8901f555bcaf2432e92392eb11e66f8c4f2d8864963f35be5570",
+          "data": "",
+          "version": 0
+        },
+        {
+          "holder": "shareledger1044pfjan847rrg9gt3awyqw55u063z0hnck429",
+          "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+          "proof": "aef9fe966e442fc229e2bf632507bb275bcb3176638d89ca30355087ae5088cc",
           "data": "",
           "version": 0
         },
@@ -8759,6 +9045,13 @@
           "version": 0
         },
         {
+          "holder": "shareledger104d87v5e9pxx3sh9kpaznyuwxccr8mv0pr0k32",
+          "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+          "proof": "ec91e4625b50b1fa04ea6d3910ce9571a52dcadb870e5e306acbae0b14f01c3c",
+          "data": "",
+          "version": 0
+        },
+        {
           "holder": "shareledger104sh8trl7tc650mk5rt7x83su94sv7qsjs0htt",
           "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
           "proof": "9207bdf59b0ce420ad364c92324b5fd71a3b6f1344783d5a1f1b6f2ad821491d",
@@ -8776,6 +9069,13 @@
           "holder": "shareledger1052069k30nr8ahj8sl0tk3yfqm0d5eccs6xqga",
           "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
           "proof": "77250c574a7af27cadfbf2dc6705105b63e5248fb2ca8a31cedcd1274fc16673",
+          "data": "",
+          "version": 0
+        },
+        {
+          "holder": "shareledger1054gfpm2hp6mc3vmvpzl8ejx8a8nxwz2zm5mru",
+          "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+          "proof": "c252121ccba8d1872f434a24b0f26ed5394a23befbfd5cd81fd545a5c1c7c9c2",
           "data": "",
           "version": 0
         },
@@ -9137,6 +9437,13 @@
           "version": 0
         },
         {
+          "holder": "shareledger10xldm6y5uyf09xtgwaqrrpuppg7nhdf03x4zep",
+          "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+          "proof": "1e4b3bc4cb1207b3c9c11da6874df6f0222861634b92a2e7aed34f14699b05c1",
+          "data": "",
+          "version": 0
+        },
+        {
           "holder": "shareledger10xtkp9uqekr69vzmh4chwm9k27ujutlv2r94x5",
           "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
           "proof": "67b0d242654249f497e952457d3a156fd1a0fa400aabcb1f78deb4114d4740ca48",
@@ -9371,6 +9678,13 @@
           "holder": "shareledger12334p4yg8gfxcw4y4uweucv7lxm9fsgs60erya",
           "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
           "proof": "aeca08915dc624d68d27f1179124f94ede748fa1cf716e04e038f8e783116d3d",
+          "data": "",
+          "version": 0
+        },
+        {
+          "holder": "shareledger123ern33060ks6lprah7jv8323gy0yejx5kz53g",
+          "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+          "proof": "350a4db68cf3d7b979ce18cd73e2c95fbb95f2c53333864f21803f463fff99fd",
           "data": "",
           "version": 0
         },
@@ -11279,6 +11593,13 @@
           "version": 0
         },
         {
+          "holder": "shareledger14f66vefkax7h64e5j05a2xqjmh9fk8sywmcjsh",
+          "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+          "proof": "d6a4403b584b8e8ba6cf0530fd404dedbfb3a86d51926772085e9c2c1a0f725c",
+          "data": "",
+          "version": 0
+        },
+        {
           "holder": "shareledger14gupe75jgv9ltmgptg74fjcwwdlfvlpzupz5d2",
           "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
           "proof": "28ad11c7f0c402b1da424c877c9b79be397cd0ff759ac0bfaba894f30cde05e7",
@@ -11345,6 +11666,13 @@
           "holder": "shareledger14kql8dfynhzlugusxhkjfv7rwnrrmf8u08kntk",
           "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
           "proof": "980a9813ad880833f7831156b972ccee0c1278fcd5b8517a493196d016808590",
+          "data": "",
+          "version": 0
+        },
+        {
+          "holder": "shareledger14mr0afvxh53pd8jel62erw07z49wvcpafe9uzk",
+          "issuer": "shareledger1ysfj66na5pc4uzdhxyujvk5rddgwrd4tjuce85",
+          "proof": "364733ad8154c680f90fa64d735452773df66e6001dca0597dd9d7a2b15221c7",
           "data": "",
           "version": 0
         },
@@ -11478,6 +11806,13 @@
           "holder": "shareledger14nxvdgzzzdyhn9mn6syyca7twdfhfj5zvvq5at",
           "issuer": "shareledger1zvheht79t6xwl7km2leskhwtmywhnnq5mnnhmp",
           "proof": "f715743f9f3d17119c2063da9d46ba10bf99b4096a6802a995205a55d81e0f4e",
+          "data": "",
+          "version": 0
+        },
+        {
+          "holder": "shareledger14pa8qj6nxxvjn83uhkgr7l0cr2k3lzmxymq44d",
+          "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+          "proof": "27e8583dd678302a60e6794fccad02aa5d45af02f430c9d42aa610fca9db83d1",
           "data": "",
           "version": 0
         },
@@ -11898,6 +12233,13 @@
           "holder": "shareledger1585he9y4s57tmgh28cvthslkfgj9lvh2dsnyx6",
           "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
           "proof": "40a2ce9ec34561826aa4dbd545718cf6d997e589ee9a2c17ff567f0f6d02706ac6",
+          "data": "",
+          "version": 0
+        },
+        {
+          "holder": "shareledger158mnvssgnzn4x60w8xmg6gjyyz87qag7tqruvc",
+          "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+          "proof": "a6bb5d82d06559aecb69bb95339c65c547f15145ef6789c9eae1eae9e5689a57",
           "data": "",
           "version": 0
         },
@@ -14135,6 +14477,20 @@
           "version": 0
         },
         {
+          "holder": "shareledger18pufllgsethcqry093glfaeuj533h2jvuuj80z",
+          "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+          "proof": "0852705f25c1d957d163b65b6b9751361215cb1454bd5777115c5c3af4df7b9f",
+          "data": "",
+          "version": 0
+        },
+        {
+          "holder": "shareledger18pufllgsethcqry093glfaeuj533h2jvuuj80z",
+          "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+          "proof": "117bd9cfc2cea9a66a36330a0faabe1dce41936f93d3eabd629d5cdd1ce1fddc",
+          "data": "",
+          "version": 0
+        },
+        {
           "holder": "shareledger18pvjzyyeen2d5dcy8zmdqlatss5s2akc0d0uxy",
           "issuer": "shareledger10ynhltm8cj9wjczcmkc9tckjq4wded34f39v9w",
           "proof": "00d6a1ada422e8e401bcba3bd1c07d3273a1ad0fffc93255cc9bd2247b65ef42",
@@ -15605,6 +15961,27 @@
           "version": 0
         },
         {
+          "holder": "shareledger1agupcqv5wsj74l9sd9uzw9s8g849zcw4mffss2",
+          "issuer": "shareledger1ysfj66na5pc4uzdhxyujvk5rddgwrd4tjuce85",
+          "proof": "1cd02af0830bd914f8489f45aa8420c1dd6cd6de6be115aa81eed699e548d26d",
+          "data": "",
+          "version": 0
+        },
+        {
+          "holder": "shareledger1agupcqv5wsj74l9sd9uzw9s8g849zcw4mffss2",
+          "issuer": "shareledger1ysfj66na5pc4uzdhxyujvk5rddgwrd4tjuce85",
+          "proof": "2ccb39aaab4fc32b3ca75bf2822551e49dffb55dd95a3ed00bd0dbadf51079be",
+          "data": "",
+          "version": 0
+        },
+        {
+          "holder": "shareledger1agupcqv5wsj74l9sd9uzw9s8g849zcw4mffss2",
+          "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+          "proof": "7ff2ef743280b6296bbbad62ab587a67fe8d80b09f02d4b9f505037efe297ef6",
+          "data": "",
+          "version": 0
+        },
+        {
           "holder": "shareledger1ahr8uqpsmgtmfvhd60ymr3j2ml5vjly90g6vm5",
           "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
           "proof": "4e268325a6d50aee5d6da982fc0d52d0e1f32c8227b14ab2d0620476db8434e537",
@@ -15657,6 +16034,27 @@
           "holder": "shareledger1auxdxvp5gne0hk3a0zpfqmp0v96w9vnvhrdqrf",
           "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
           "proof": "689066e26ef6a424dab22cab1f98ef84d266bb08aa171c64879e740b7f658195b9",
+          "data": "",
+          "version": 0
+        },
+        {
+          "holder": "shareledger1av8s293xwxuwu4sqan66kt99g3z6f9rp4z2d04",
+          "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+          "proof": "5201b8a120278ca77d2a0490c65fa649611de5b2a4a67a9ee35062348efdd4b2",
+          "data": "",
+          "version": 0
+        },
+        {
+          "holder": "shareledger1av8s293xwxuwu4sqan66kt99g3z6f9rp4z2d04",
+          "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+          "proof": "816e9447ebd99f4eb5218e51823922801ac79625d36c475c550841b1d4d44ff6",
+          "data": "",
+          "version": 0
+        },
+        {
+          "holder": "shareledger1av8s293xwxuwu4sqan66kt99g3z6f9rp4z2d04",
+          "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+          "proof": "94dc5f2c9503f37b3f2387a1084fad82ed6df068e1170afea3e7827a2d920d98",
           "data": "",
           "version": 0
         },
@@ -17232,6 +17630,20 @@
           "holder": "shareledger1dv6wtqq96ncyhe6p5yq6tsqd74enkzndsec25k",
           "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
           "proof": "e6bf3a0bcd227c9a153ed45a00c24388abe9fb7ac97ac7f03fe0170b377e11cb",
+          "data": "",
+          "version": 0
+        },
+        {
+          "holder": "shareledger1dx8pj8ncxte36hv4ekvmekmk6q7v0q6dr8u22s",
+          "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+          "proof": "2b456353ce5655e4e18c90c8669fc110d03b88e9c60b15ec511bb63f407a1291",
+          "data": "",
+          "version": 0
+        },
+        {
+          "holder": "shareledger1dx8pj8ncxte36hv4ekvmekmk6q7v0q6dr8u22s",
+          "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+          "proof": "7fc7a53e48b6129b6bc87730727bf36be33846ec7942d500b6cb3cfd15a7c9c6",
           "data": "",
           "version": 0
         },
@@ -19371,6 +19783,13 @@
           "version": 0
         },
         {
+          "holder": "shareledger1g2a7cdqa0kn87dygwm5wvmtyu3mtgw8dlfnnp9",
+          "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+          "proof": "d9416096b9c2a31d8d3cfd1c7f82721196d3edf5193a774da74bb95af0176b44",
+          "data": "",
+          "version": 0
+        },
+        {
           "holder": "shareledger1g2aattwcw5dm8e5vlskxrtvyrfnzvdkptt6puk",
           "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
           "proof": "595e65e7b4899cbdf9076c2b666d72bb9791ee7c6e66790da370ba39bb3c2f5b",
@@ -20604,8 +21023,22 @@
         },
         {
           "holder": "shareledger1j9u8mkphcy5d2srzztm4lydwppktjjhd85spg5",
+          "issuer": "shareledger1ysfj66na5pc4uzdhxyujvk5rddgwrd4tjuce85",
+          "proof": "506ebe7664625dbb34c5b657784b091e8750dd8b04501fe8d093b17314e9aa10",
+          "data": "",
+          "version": 0
+        },
+        {
+          "holder": "shareledger1j9u8mkphcy5d2srzztm4lydwppktjjhd85spg5",
           "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
           "proof": "bf0be31cd887fdb134fe531547f73df702464305e6fe1b1bc98f261c65daada2",
+          "data": "",
+          "version": 0
+        },
+        {
+          "holder": "shareledger1je6s207y386c8t65kkc4asmura76mgrn5ldkpl",
+          "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+          "proof": "c856b8e39e71ae1875da1714591a9b4fdffb09d31088fa0acd39ab5d55c438bb",
           "data": "",
           "version": 0
         },
@@ -20893,6 +21326,20 @@
           "holder": "shareledger1k8qlsycyf9wcdten7l85nhd0px6whr297v4m57",
           "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
           "proof": "5cd07a14f99534b8d269cc550a43a13040aa3c1feebefbdc386e9d76cf0d245292",
+          "data": "",
+          "version": 0
+        },
+        {
+          "holder": "shareledger1k8u5g6xsc96kauenn2gdacrcsdgy9x6sklmjej",
+          "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+          "proof": "d91250937e60b67c6124a00b3eef6b31b11a4fde409875c54eee39470ec490b1",
+          "data": "",
+          "version": 0
+        },
+        {
+          "holder": "shareledger1k93kpvs7jhv433g62htax0xdsc8jq848zww4l8",
+          "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+          "proof": "1453b6baa9bdaacfe80b3e1cb254c02313109b4090e24026c0363ec9510c7cfd",
           "data": "",
           "version": 0
         },
@@ -22269,6 +22716,20 @@
           "version": 0
         },
         {
+          "holder": "shareledger1mcfgvghmekvh3e3dhkvygfhauly5yd5fsrfawy",
+          "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+          "proof": "71c5722cb75397a82b6b1d1ebe6c7b8a3a3b68735dea593cad7e819412854f23",
+          "data": "",
+          "version": 0
+        },
+        {
+          "holder": "shareledger1mcfgvghmekvh3e3dhkvygfhauly5yd5fsrfawy",
+          "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+          "proof": "8fe21f79ad69b1f06fa401b9187f002045b33c28f58f8e26ec9c72cc44a4ca21",
+          "data": "",
+          "version": 0
+        },
+        {
           "holder": "shareledger1mdrp0czr2wdmayf00rg565mtgqul7300cf0ll7",
           "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
           "proof": "2a05c56150c8a4b0cfa665d7978744d0330452448a0b773c55edadc2f2424629",
@@ -22461,6 +22922,13 @@
           "holder": "shareledger1mrzhzf0v9cz00rwgyxcdwrl6s7n7plgdur4z74",
           "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
           "proof": "2a60637c35db849b10c79696c1500d10a9e7de513253a7a8ab921e625a1c2039",
+          "data": "",
+          "version": 0
+        },
+        {
+          "holder": "shareledger1mrzlepu0kfz5x0h40fa6d20te0maja7e4c97ts",
+          "issuer": "shareledger1ysfj66na5pc4uzdhxyujvk5rddgwrd4tjuce85",
+          "proof": "135a1d4ae8be6d4cc08b57246cafca1c7d391cbead3f65a6127f1047ab14c174",
           "data": "",
           "version": 0
         },
@@ -23244,6 +23712,13 @@
         {
           "holder": "shareledger1p8jjjmtsm9vg3cks9a6ugafgga3a9p65fnkwyw",
           "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+          "proof": "453ed1d28e8b0b55f642379e49db09e391c40a937db3a2cd30dd1af1dbf38779",
+          "data": "",
+          "version": 0
+        },
+        {
+          "holder": "shareledger1p8jjjmtsm9vg3cks9a6ugafgga3a9p65fnkwyw",
+          "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
           "proof": "48d3bc99d59913d0349fa9b4cdabcf681fff4921ddcdae06685ca98c8bcfe531",
           "data": "",
           "version": 0
@@ -23712,6 +24187,13 @@
         },
         {
           "holder": "shareledger1p8jjjmtsm9vg3cks9a6ugafgga3a9p65fnkwyw",
+          "issuer": "shareledger1ysfj66na5pc4uzdhxyujvk5rddgwrd4tjuce85",
+          "proof": "e72e1d15bf5e407c42dc100528b5d3550f10cdd474fbc1ed135859ccac4214d2",
+          "data": "",
+          "version": 0
+        },
+        {
+          "holder": "shareledger1p8jjjmtsm9vg3cks9a6ugafgga3a9p65fnkwyw",
           "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
           "proof": "e7c28313b0d95c4398746d00a0dedca9f8c5e114c215e53aceda12bd477b01a9",
           "data": "",
@@ -24071,6 +24553,13 @@
           "holder": "shareledger1pjegegy0h9htuv5fx6dygajhlm7vnqfcjr7ucv",
           "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
           "proof": "695aea27140198b14ced35129d69847190a315909a5ebcc71626c339f26cb9f6",
+          "data": "",
+          "version": 0
+        },
+        {
+          "holder": "shareledger1pjllxlnudvg8kryu4ph0lkm4qpfkyrj52kmsax",
+          "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+          "proof": "fced96c5ce896a7a88c509505f9503f02649f8a4f5a0aa88007b208ea709780e",
           "data": "",
           "version": 0
         },
@@ -25468,6 +25957,34 @@
           "version": 0
         },
         {
+          "holder": "shareledger1s40xm3eftdmyjjxesk3xlxzq3qqmu6p2wvm3tq",
+          "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+          "proof": "31816f9e912c4da233240575da24530988c671c3741ad9569209f31c2a109ff3",
+          "data": "",
+          "version": 0
+        },
+        {
+          "holder": "shareledger1s40xm3eftdmyjjxesk3xlxzq3qqmu6p2wvm3tq",
+          "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+          "proof": "341c89edafbd2dfbb454564b84b8fc9735d9b58f4765dad85065b9218486f282",
+          "data": "",
+          "version": 0
+        },
+        {
+          "holder": "shareledger1s40xm3eftdmyjjxesk3xlxzq3qqmu6p2wvm3tq",
+          "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+          "proof": "5d8dc8715fcff96ff9ecc0cc1d794c623ad1ebd5b64b1bd1ec0815c3e0598435",
+          "data": "",
+          "version": 0
+        },
+        {
+          "holder": "shareledger1s40xm3eftdmyjjxesk3xlxzq3qqmu6p2wvm3tq",
+          "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+          "proof": "afbac8ad17b51c453f8636d94756762860f1a1e3b84a168f392da289151aab9a",
+          "data": "",
+          "version": 0
+        },
+        {
           "holder": "shareledger1s4wjr2m8zfg4r767uzaadgt3ylsgj8vh0dlwgh",
           "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
           "proof": "50d90c06fad6e61dd705fd1eba46a19cf4e8be98dbfbbc61e9a829a0ba090086",
@@ -26007,6 +26524,13 @@
           "version": 0
         },
         {
+          "holder": "shareledger1tgjjeh29yzj750s9lxv28ne8c8h9cu756hn2m5",
+          "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+          "proof": "38962eebc99c8c675d5e7ba5b4669964872cb4c403a1e8f7b62e44cd70409e57",
+          "data": "",
+          "version": 0
+        },
+        {
           "holder": "shareledger1th0wdefvlyprm9mmyn43jvxcgrfak525ltyvef",
           "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
           "proof": "5e3022995c415db0662cb125f1a8f7936e4ec22951617b999e787156c2ae6b28",
@@ -26045,6 +26569,20 @@
           "holder": "shareledger1tl03794zkluwkldfcjqe3frphtakl375kuzvsm",
           "issuer": "shareledger1ysfj66na5pc4uzdhxyujvk5rddgwrd4tjuce85",
           "proof": "4e1bd40d34354a5b2f8e62324111d9b422d6917a830a57436fccf8c6b420a8f7",
+          "data": "",
+          "version": 0
+        },
+        {
+          "holder": "shareledger1tl03794zkluwkldfcjqe3frphtakl375kuzvsm",
+          "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+          "proof": "7f894dc2c3c596167d91c0816bfaa749aa6f98b315e7a5d4585fb7566818a0eb",
+          "data": "",
+          "version": 0
+        },
+        {
+          "holder": "shareledger1tl03794zkluwkldfcjqe3frphtakl375kuzvsm",
+          "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+          "proof": "b196b8e6140a436033f10a7d7bfbc6d504fdb1b206b3261d45719109f82cac9a",
           "data": "",
           "version": 0
         },
@@ -26742,6 +27280,13 @@
           "version": 0
         },
         {
+          "holder": "shareledger1un3pf45a397vh9muverny6n26y2zqfvclmneel",
+          "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+          "proof": "d1fc21314b911728cf066b1bce4a204a9d931e12a0fa8647070ef1545fa9a539",
+          "data": "",
+          "version": 0
+        },
+        {
           "holder": "shareledger1unumxvyvsgkxn3s9c0fj3f7thpv2j0v5z0d48x",
           "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
           "proof": "09f61cd435bb6e5a9f5b02b169dadcbe6c4e912eef2349528a3e00f4650d5e782e",
@@ -27043,6 +27588,13 @@
           "version": 0
         },
         {
+          "holder": "shareledger1v6x0gzr4qcr570syfzmd7xcd2ev5fpyyzsnfl6",
+          "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+          "proof": "5d27f1656893dc04f40a2854b6077ba975298c50e0b9e945c234dec9ef44b407",
+          "data": "",
+          "version": 0
+        },
+        {
           "holder": "shareledger1v82ae2hsgxxztxzr0n380aux4546xerq87fdtv",
           "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
           "proof": "c5911d5415d66a2680a3574788b0252ebedb3010f578b61271df6fdaf298f28172",
@@ -27270,6 +27822,20 @@
           "holder": "shareledger1vnxjhsesf9qd0w7g9etf2azk9srpd3t9pgr47n",
           "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
           "proof": "4618b04165b565decd62cd7e338aea574f474fb7096d82c9220e88ea2a84adb8",
+          "data": "",
+          "version": 0
+        },
+        {
+          "holder": "shareledger1vp8szhyzwyunec48g9apw3vnr38m276s8yfsh0",
+          "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+          "proof": "3ac748534e6e1fa49c15aff6a53529e6105361052f25a433b4c506853b41b1bb",
+          "data": "",
+          "version": 0
+        },
+        {
+          "holder": "shareledger1vp8szhyzwyunec48g9apw3vnr38m276s8yfsh0",
+          "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+          "proof": "c7730ee03331eb7e6ff03beaf9b15ac0a6af3cc60852860264b40b34158b3c29",
           "data": "",
           "version": 0
         },
@@ -28387,6 +28953,41 @@
           "version": 0
         },
         {
+          "holder": "shareledger1xvxr6w7rjhw8ace2jt8j9qguna0yqn7fcnjn5c",
+          "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+          "proof": "0d1c066ab5a2429d7272833d86e06d97f9a68ab1433f065df87a61e5173f8484",
+          "data": "",
+          "version": 0
+        },
+        {
+          "holder": "shareledger1xvxr6w7rjhw8ace2jt8j9qguna0yqn7fcnjn5c",
+          "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+          "proof": "28ad3aa302850ab3c6869cd76317fba08d390e0ebf491466b6bcc319606baa77",
+          "data": "",
+          "version": 0
+        },
+        {
+          "holder": "shareledger1xvxr6w7rjhw8ace2jt8j9qguna0yqn7fcnjn5c",
+          "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+          "proof": "2940d46cd13a9195a2c6d65c4afec18a899480068d051cb902f49704d3b1e44b",
+          "data": "",
+          "version": 0
+        },
+        {
+          "holder": "shareledger1xvxr6w7rjhw8ace2jt8j9qguna0yqn7fcnjn5c",
+          "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+          "proof": "684b74d3c597a2b6abcd207515696c6808e9d4ddc3d93af3dbe1df7cdaba5b1f",
+          "data": "",
+          "version": 0
+        },
+        {
+          "holder": "shareledger1xvxr6w7rjhw8ace2jt8j9qguna0yqn7fcnjn5c",
+          "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+          "proof": "72135872a1212497e75bb0feae2247ca14b204af01da986ba6a837e8c31f5458",
+          "data": "",
+          "version": 0
+        },
+        {
           "holder": "shareledger1xxaf2c0ujavt2g8ghq6ewev77kgf4x250e0hxd",
           "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
           "proof": "b4c319322c52605e0c30590889ba1897f00a676fbc2b4763695e23b81062e858f5",
@@ -28460,6 +29061,13 @@
           "holder": "shareledger1y23eztclyf8t0akygwsfpn6mt77xrnwrskvcfx",
           "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
           "proof": "d1ab2972059294fb6b2653ac3a32ac511122a80c8f0442140979e79fb60d001e",
+          "data": "",
+          "version": 0
+        },
+        {
+          "holder": "shareledger1y3l66ejenc5g8l83ch34ysx0ty6ccm6numwzv8",
+          "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+          "proof": "5039aa664d006aa9c0f64482a2c661cbda7c55423bc398eaec90c39ef2337707",
           "data": "",
           "version": 0
         },
@@ -28950,6 +29558,27 @@
           "holder": "shareledger1z0anr8ljgdd2wufwxdrk4jkgsydklfdkcxrj8l",
           "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
           "proof": "19f4d33ac5d17c6d5e48648dfd966420df00dc25d3a5a7ebfe0af34186f7350c",
+          "data": "",
+          "version": 0
+        },
+        {
+          "holder": "shareledger1z0awjcwn6q9wuydhu8qd2gw6wwldn9pc9yxrmp",
+          "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+          "proof": "0148f4ecdbfa2574c743cc80377617e4c508ab472a9774eb936884da482c1fbe",
+          "data": "",
+          "version": 0
+        },
+        {
+          "holder": "shareledger1z0awjcwn6q9wuydhu8qd2gw6wwldn9pc9yxrmp",
+          "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+          "proof": "4056f75d1acef547f6970a54c49d51a5e9e1d0cf6720fa91dbb31f7e14827def",
+          "data": "",
+          "version": 0
+        },
+        {
+          "holder": "shareledger1z0awjcwn6q9wuydhu8qd2gw6wwldn9pc9yxrmp",
+          "issuer": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+          "proof": "4a759a9587b9e32ac1cc815922b3dc6dd5655cb91312d54be1314a53f5bf31be",
           "data": "",
           "version": 0
         },
@@ -31000,6 +31629,15 @@
           }
         },
         {
+          "id": "shareledger104d87v5e9pxx3sh9kpaznyuwxccr8mv0pr0k32",
+          "data": {
+            "issuerAddress": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+            "backupAddress": "shareledger104d87v5e9pxx3sh9kpaznyuwxccr8mv0pr0k32",
+            "ownerAddress": "shareledger104d87v5e9pxx3sh9kpaznyuwxccr8mv0pr0k32",
+            "extraData": ""
+          }
+        },
+        {
           "id": "shareledger104sh8trl7tc650mk5rt7x83su94sv7qsjs0htt",
           "data": {
             "issuerAddress": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
@@ -31014,6 +31652,15 @@
             "issuerAddress": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
             "backupAddress": "shareledger1052069k30nr8ahj8sl0tk3yfqm0d5eccs6xqga",
             "ownerAddress": "shareledger1052069k30nr8ahj8sl0tk3yfqm0d5eccs6xqga",
+            "extraData": ""
+          }
+        },
+        {
+          "id": "shareledger1054gfpm2hp6mc3vmvpzl8ejx8a8nxwz2zm5mru",
+          "data": {
+            "issuerAddress": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+            "backupAddress": "shareledger1054gfpm2hp6mc3vmvpzl8ejx8a8nxwz2zm5mru",
+            "ownerAddress": "shareledger1054gfpm2hp6mc3vmvpzl8ejx8a8nxwz2zm5mru",
             "extraData": ""
           }
         },
@@ -31333,6 +31980,15 @@
           }
         },
         {
+          "id": "shareledger10xldm6y5uyf09xtgwaqrrpuppg7nhdf03x4zep",
+          "data": {
+            "issuerAddress": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+            "backupAddress": "shareledger10xldm6y5uyf09xtgwaqrrpuppg7nhdf03x4zep",
+            "ownerAddress": "shareledger10xldm6y5uyf09xtgwaqrrpuppg7nhdf03x4zep",
+            "extraData": ""
+          }
+        },
+        {
           "id": "shareledger10xtkp9uqekr69vzmh4chwm9k27ujutlv2r94x5",
           "data": {
             "issuerAddress": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
@@ -31428,6 +32084,15 @@
             "issuerAddress": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
             "backupAddress": "shareledger12334p4yg8gfxcw4y4uweucv7lxm9fsgs60erya",
             "ownerAddress": "shareledger12334p4yg8gfxcw4y4uweucv7lxm9fsgs60erya",
+            "extraData": ""
+          }
+        },
+        {
+          "id": "shareledger123ern33060ks6lprah7jv8323gy0yejx5kz53g",
+          "data": {
+            "issuerAddress": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+            "backupAddress": "shareledger123ern33060ks6lprah7jv8323gy0yejx5kz53g",
+            "ownerAddress": "shareledger123ern33060ks6lprah7jv8323gy0yejx5kz53g",
             "extraData": ""
           }
         },
@@ -32359,6 +33024,15 @@
           }
         },
         {
+          "id": "shareledger14f66vefkax7h64e5j05a2xqjmh9fk8sywmcjsh",
+          "data": {
+            "issuerAddress": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+            "backupAddress": "shareledger14f66vefkax7h64e5j05a2xqjmh9fk8sywmcjsh",
+            "ownerAddress": "shareledger14f66vefkax7h64e5j05a2xqjmh9fk8sywmcjsh",
+            "extraData": ""
+          }
+        },
+        {
           "id": "shareledger14hwt5kfu83cz84uj3algutddxf63w4nnnnulqf",
           "data": {
             "issuerAddress": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
@@ -32436,6 +33110,15 @@
             "issuerAddress": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
             "backupAddress": "shareledger14nxvdgzzzdyhn9mn6syyca7twdfhfj5zvvq5at",
             "ownerAddress": "shareledger14nxvdgzzzdyhn9mn6syyca7twdfhfj5zvvq5at",
+            "extraData": ""
+          }
+        },
+        {
+          "id": "shareledger14pa8qj6nxxvjn83uhkgr7l0cr2k3lzmxymq44d",
+          "data": {
+            "issuerAddress": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+            "backupAddress": "shareledger14pa8qj6nxxvjn83uhkgr7l0cr2k3lzmxymq44d",
+            "ownerAddress": "shareledger14pa8qj6nxxvjn83uhkgr7l0cr2k3lzmxymq44d",
             "extraData": ""
           }
         },
@@ -32679,6 +33362,15 @@
             "issuerAddress": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
             "backupAddress": "shareledger1585he9y4s57tmgh28cvthslkfgj9lvh2dsnyx6",
             "ownerAddress": "shareledger1585he9y4s57tmgh28cvthslkfgj9lvh2dsnyx6",
+            "extraData": ""
+          }
+        },
+        {
+          "id": "shareledger158mnvssgnzn4x60w8xmg6gjyyz87qag7tqruvc",
+          "data": {
+            "issuerAddress": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+            "backupAddress": "shareledger158mnvssgnzn4x60w8xmg6gjyyz87qag7tqruvc",
+            "ownerAddress": "shareledger158mnvssgnzn4x60w8xmg6gjyyz87qag7tqruvc",
             "extraData": ""
           }
         },
@@ -34402,6 +35094,15 @@
           }
         },
         {
+          "id": "shareledger18pufllgsethcqry093glfaeuj533h2jvuuj80z",
+          "data": {
+            "issuerAddress": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+            "backupAddress": "shareledger18pufllgsethcqry093glfaeuj533h2jvuuj80z",
+            "ownerAddress": "shareledger18pufllgsethcqry093glfaeuj533h2jvuuj80z",
+            "extraData": ""
+          }
+        },
+        {
           "id": "shareledger18pvjzyyeen2d5dcy8zmdqlatss5s2akc0d0uxy",
           "data": {
             "issuerAddress": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
@@ -35320,6 +36021,15 @@
           }
         },
         {
+          "id": "shareledger1agupcqv5wsj74l9sd9uzw9s8g849zcw4mffss2",
+          "data": {
+            "issuerAddress": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+            "backupAddress": "shareledger1agupcqv5wsj74l9sd9uzw9s8g849zcw4mffss2",
+            "ownerAddress": "shareledger1agupcqv5wsj74l9sd9uzw9s8g849zcw4mffss2",
+            "extraData": ""
+          }
+        },
+        {
           "id": "shareledger1ahr8uqpsmgtmfvhd60ymr3j2ml5vjly90g6vm5",
           "data": {
             "issuerAddress": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
@@ -35415,6 +36125,15 @@
             "issuerAddress": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
             "backupAddress": "shareledger1auxdxvp5gne0hk3a0zpfqmp0v96w9vnvhrdqrf",
             "ownerAddress": "shareledger1auxdxvp5gne0hk3a0zpfqmp0v96w9vnvhrdqrf",
+            "extraData": ""
+          }
+        },
+        {
+          "id": "shareledger1av8s293xwxuwu4sqan66kt99g3z6f9rp4z2d04",
+          "data": {
+            "issuerAddress": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+            "backupAddress": "shareledger1av8s293xwxuwu4sqan66kt99g3z6f9rp4z2d04",
+            "ownerAddress": "shareledger1av8s293xwxuwu4sqan66kt99g3z6f9rp4z2d04",
             "extraData": ""
           }
         },
@@ -36270,6 +36989,15 @@
             "issuerAddress": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
             "backupAddress": "shareledger1dvp3q2r2guuv3yef83lze7w9w24gkdujnq2nec",
             "ownerAddress": "shareledger1dvp3q2r2guuv3yef83lze7w9w24gkdujnq2nec",
+            "extraData": ""
+          }
+        },
+        {
+          "id": "shareledger1dx8pj8ncxte36hv4ekvmekmk6q7v0q6dr8u22s",
+          "data": {
+            "issuerAddress": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+            "backupAddress": "shareledger1dx8pj8ncxte36hv4ekvmekmk6q7v0q6dr8u22s",
+            "ownerAddress": "shareledger1dx8pj8ncxte36hv4ekvmekmk6q7v0q6dr8u22s",
             "extraData": ""
           }
         },
@@ -37350,6 +38078,15 @@
             "issuerAddress": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
             "backupAddress": "shareledger1g287pu6034c0jcp9n2dvfu85w8fgjjdlvjywhh",
             "ownerAddress": "shareledger1g287pu6034c0jcp9n2dvfu85w8fgjjdlvjywhh",
+            "extraData": ""
+          }
+        },
+        {
+          "id": "shareledger1g2a7cdqa0kn87dygwm5wvmtyu3mtgw8dlfnnp9",
+          "data": {
+            "issuerAddress": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+            "backupAddress": "shareledger1g2a7cdqa0kn87dygwm5wvmtyu3mtgw8dlfnnp9",
+            "ownerAddress": "shareledger1g2a7cdqa0kn87dygwm5wvmtyu3mtgw8dlfnnp9",
             "extraData": ""
           }
         },
@@ -38551,6 +39288,15 @@
           }
         },
         {
+          "id": "shareledger1je6s207y386c8t65kkc4asmura76mgrn5ldkpl",
+          "data": {
+            "issuerAddress": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+            "backupAddress": "shareledger1je6s207y386c8t65kkc4asmura76mgrn5ldkpl",
+            "ownerAddress": "shareledger1je6s207y386c8t65kkc4asmura76mgrn5ldkpl",
+            "extraData": ""
+          }
+        },
+        {
           "id": "shareledger1jf26ava7c5h49etcrn6s23hwd33y9txwf62pm5",
           "data": {
             "issuerAddress": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
@@ -38898,6 +39644,24 @@
             "issuerAddress": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
             "backupAddress": "shareledger1k8qlsycyf9wcdten7l85nhd0px6whr297v4m57",
             "ownerAddress": "shareledger1k8qlsycyf9wcdten7l85nhd0px6whr297v4m57",
+            "extraData": ""
+          }
+        },
+        {
+          "id": "shareledger1k8u5g6xsc96kauenn2gdacrcsdgy9x6sklmjej",
+          "data": {
+            "issuerAddress": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+            "backupAddress": "shareledger1k8u5g6xsc96kauenn2gdacrcsdgy9x6sklmjej",
+            "ownerAddress": "shareledger1k8u5g6xsc96kauenn2gdacrcsdgy9x6sklmjej",
+            "extraData": ""
+          }
+        },
+        {
+          "id": "shareledger1k93kpvs7jhv433g62htax0xdsc8jq848zww4l8",
+          "data": {
+            "issuerAddress": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+            "backupAddress": "shareledger1k93kpvs7jhv433g62htax0xdsc8jq848zww4l8",
+            "ownerAddress": "shareledger1k93kpvs7jhv433g62htax0xdsc8jq848zww4l8",
             "extraData": ""
           }
         },
@@ -39951,6 +40715,15 @@
             "issuerAddress": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
             "backupAddress": "shareledger1madglsvtlmqleyxgzkrvp4gdssrv2tc5z9vh5x",
             "ownerAddress": "shareledger1madglsvtlmqleyxgzkrvp4gdssrv2tc5z9vh5x",
+            "extraData": ""
+          }
+        },
+        {
+          "id": "shareledger1mcfgvghmekvh3e3dhkvygfhauly5yd5fsrfawy",
+          "data": {
+            "issuerAddress": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+            "backupAddress": "shareledger1mcfgvghmekvh3e3dhkvygfhauly5yd5fsrfawy",
+            "ownerAddress": "shareledger1mcfgvghmekvh3e3dhkvygfhauly5yd5fsrfawy",
             "extraData": ""
           }
         },
@@ -41049,6 +41822,15 @@
             "issuerAddress": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
             "backupAddress": "shareledger1pj6q29hrzttyjhwak6xgw9gntxqsaklxfdk4hu",
             "ownerAddress": "shareledger1pj6q29hrzttyjhwak6xgw9gntxqsaklxfdk4hu",
+            "extraData": ""
+          }
+        },
+        {
+          "id": "shareledger1pjllxlnudvg8kryu4ph0lkm4qpfkyrj52kmsax",
+          "data": {
+            "issuerAddress": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+            "backupAddress": "shareledger1pjllxlnudvg8kryu4ph0lkm4qpfkyrj52kmsax",
+            "ownerAddress": "shareledger1pjllxlnudvg8kryu4ph0lkm4qpfkyrj52kmsax",
             "extraData": ""
           }
         },
@@ -42187,6 +42969,15 @@
           }
         },
         {
+          "id": "shareledger1s40xm3eftdmyjjxesk3xlxzq3qqmu6p2wvm3tq",
+          "data": {
+            "issuerAddress": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+            "backupAddress": "shareledger1s40xm3eftdmyjjxesk3xlxzq3qqmu6p2wvm3tq",
+            "ownerAddress": "shareledger1s40xm3eftdmyjjxesk3xlxzq3qqmu6p2wvm3tq",
+            "extraData": ""
+          }
+        },
+        {
           "id": "shareledger1s4dcyr3ppl0xlvtg57tgdms0wlc23fg9mf3plt",
           "data": {
             "issuerAddress": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
@@ -42804,6 +43595,15 @@
             "issuerAddress": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
             "backupAddress": "shareledger1tfg4e2ycwjrstdvefu4l7wjrzvsh3tcp3nyzeh",
             "ownerAddress": "shareledger1tfg4e2ycwjrstdvefu4l7wjrzvsh3tcp3nyzeh",
+            "extraData": ""
+          }
+        },
+        {
+          "id": "shareledger1tgjjeh29yzj750s9lxv28ne8c8h9cu756hn2m5",
+          "data": {
+            "issuerAddress": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+            "backupAddress": "shareledger1tgjjeh29yzj750s9lxv28ne8c8h9cu756hn2m5",
+            "ownerAddress": "shareledger1tgjjeh29yzj750s9lxv28ne8c8h9cu756hn2m5",
             "extraData": ""
           }
         },
@@ -43663,6 +44463,15 @@
           }
         },
         {
+          "id": "shareledger1v6x0gzr4qcr570syfzmd7xcd2ev5fpyyzsnfl6",
+          "data": {
+            "issuerAddress": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+            "backupAddress": "shareledger1v6x0gzr4qcr570syfzmd7xcd2ev5fpyyzsnfl6",
+            "ownerAddress": "shareledger1v6x0gzr4qcr570syfzmd7xcd2ev5fpyyzsnfl6",
+            "extraData": ""
+          }
+        },
+        {
           "id": "shareledger1v80qza9dmvjtf5pwjgmw4wvxra7q53tzn9jq68",
           "data": {
             "issuerAddress": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
@@ -43902,6 +44711,15 @@
             "issuerAddress": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
             "backupAddress": "shareledger1vp82d4swhcwags2xnyplc9zn6lwdefprt2y4mt",
             "ownerAddress": "shareledger1vp82d4swhcwags2xnyplc9zn6lwdefprt2y4mt",
+            "extraData": ""
+          }
+        },
+        {
+          "id": "shareledger1vp8szhyzwyunec48g9apw3vnr38m276s8yfsh0",
+          "data": {
+            "issuerAddress": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+            "backupAddress": "shareledger1vp8szhyzwyunec48g9apw3vnr38m276s8yfsh0",
+            "ownerAddress": "shareledger1vp8szhyzwyunec48g9apw3vnr38m276s8yfsh0",
             "extraData": ""
           }
         },
@@ -44887,6 +45705,15 @@
           }
         },
         {
+          "id": "shareledger1xvxr6w7rjhw8ace2jt8j9qguna0yqn7fcnjn5c",
+          "data": {
+            "issuerAddress": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+            "backupAddress": "shareledger1xvxr6w7rjhw8ace2jt8j9qguna0yqn7fcnjn5c",
+            "ownerAddress": "shareledger1xvxr6w7rjhw8ace2jt8j9qguna0yqn7fcnjn5c",
+            "extraData": ""
+          }
+        },
+        {
           "id": "shareledger1xwd4yepl68974dd8kmkjgucjkrpmwh2q5qjmyx",
           "data": {
             "issuerAddress": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
@@ -45027,6 +45854,15 @@
             "issuerAddress": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
             "backupAddress": "shareledger1y3fgrec0l0auhr7xte58jht7y4cz0sc8h6d7pr",
             "ownerAddress": "shareledger1y3fgrec0l0auhr7xte58jht7y4cz0sc8h6d7pr",
+            "extraData": ""
+          }
+        },
+        {
+          "id": "shareledger1y3l66ejenc5g8l83ch34ysx0ty6ccm6numwzv8",
+          "data": {
+            "issuerAddress": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+            "backupAddress": "shareledger1y3l66ejenc5g8l83ch34ysx0ty6ccm6numwzv8",
+            "ownerAddress": "shareledger1y3l66ejenc5g8l83ch34ysx0ty6ccm6numwzv8",
             "extraData": ""
           }
         },
@@ -45513,6 +46349,15 @@
             "issuerAddress": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
             "backupAddress": "shareledger1z0anr8ljgdd2wufwxdrk4jkgsydklfdkcxrj8l",
             "ownerAddress": "shareledger1z0anr8ljgdd2wufwxdrk4jkgsydklfdkcxrj8l",
+            "extraData": ""
+          }
+        },
+        {
+          "id": "shareledger1z0awjcwn6q9wuydhu8qd2gw6wwldn9pc9yxrmp",
+          "data": {
+            "issuerAddress": "shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
+            "backupAddress": "shareledger1z0awjcwn6q9wuydhu8qd2gw6wwldn9pc9yxrmp",
+            "ownerAddress": "shareledger1z0awjcwn6q9wuydhu8qd2gw6wwldn9pc9yxrmp",
             "extraData": ""
           }
         },
@@ -46029,14 +46874,25 @@
       },
       "signing_infos": [
         {
+          "address": "shareledgervalcons1y8r4fznx6rjug0q593hr5zlrv5agd395z2n6m9",
+          "validator_signing_info": {
+            "address": "shareledgervalcons1y8r4fznx6rjug0q593hr5zlrv5agd395z2n6m9",
+            "start_height": "0",
+            "index_offset": "79746",
+            "jailed_until": "2022-01-20T05:27:47.888675933Z",
+            "tombstoned": false,
+            "missed_blocks_counter": "0"
+          }
+        },
+        {
           "address": "shareledgervalcons1yh39aanelyufuczl8gty5v2a3y5537f5u3r8pl",
           "validator_signing_info": {
             "address": "shareledgervalcons1yh39aanelyufuczl8gty5v2a3y5537f5u3r8pl",
             "start_height": "0",
-            "index_offset": "239466",
-            "jailed_until": "2021-12-30T04:28:44.917401399Z",
+            "index_offset": "2",
+            "jailed_until": "2022-02-16T08:09:26.126822688Z",
             "tombstoned": false,
-            "missed_blocks_counter": "0"
+            "missed_blocks_counter": "2"
           }
         },
         {
@@ -46044,7 +46900,7 @@
           "validator_signing_info": {
             "address": "shareledgervalcons1hqaa8jxkse4mmc4h9es208ayyj43txkft36gsa",
             "start_height": "0",
-            "index_offset": "1964887",
+            "index_offset": "2073620",
             "jailed_until": "1970-01-01T00:00:00Z",
             "tombstoned": false,
             "missed_blocks_counter": "0"
@@ -46055,25 +46911,27 @@
           "validator_signing_info": {
             "address": "shareledgervalcons1na0de04j7ljsp6wh28k9gul8vp9ncwhz8uajhg",
             "start_height": "0",
-            "index_offset": "125441",
+            "index_offset": "234174",
             "jailed_until": "2022-01-18T07:08:07.069850866Z",
             "tombstoned": false,
-            "missed_blocks_counter": "34"
-          }
-        },
-        {
-          "address": "shareledgervalcons1y8r4fznx6rjug0q593hr5zlrv5agd395z2n6m9",
-          "validator_signing_info": {
-            "address": "shareledgervalcons1y8r4fznx6rjug0q593hr5zlrv5agd395z2n6m9",
-            "start_height": "0",
-            "index_offset": "2",
-            "jailed_until": "2022-01-20T05:27:47.888675933Z",
-            "tombstoned": false,
-            "missed_blocks_counter": "2"
+            "missed_blocks_counter": "10"
           }
         }
       ],
       "missed_blocks": [
+        {
+          "address": "shareledgervalcons1yh39aanelyufuczl8gty5v2a3y5537f5u3r8pl",
+          "missed_blocks": [
+            {
+              "index": "0",
+              "missed": true
+            },
+            {
+              "index": "1",
+              "missed": true
+            }
+          ]
+        },
         {
           "address": "shareledgervalcons1hqaa8jxkse4mmc4h9es208ayyj43txkft36gsa",
           "missed_blocks": []
@@ -46091,98 +46949,162 @@
             },
             {
               "index": "13",
-              "missed": true
+              "missed": false
             },
             {
               "index": "14",
-              "missed": true
+              "missed": false
             },
             {
               "index": "15",
-              "missed": true
+              "missed": false
             },
             {
               "index": "16",
-              "missed": true
+              "missed": false
             },
             {
               "index": "17",
-              "missed": true
+              "missed": false
             },
             {
               "index": "18",
-              "missed": true
+              "missed": false
             },
             {
               "index": "19",
-              "missed": true
+              "missed": false
             },
             {
               "index": "20",
-              "missed": true
+              "missed": false
             },
             {
               "index": "21",
-              "missed": true
+              "missed": false
             },
             {
               "index": "22",
-              "missed": true
+              "missed": false
             },
             {
               "index": "23",
-              "missed": true
+              "missed": false
             },
             {
               "index": "24",
-              "missed": true
+              "missed": false
             },
             {
               "index": "25",
-              "missed": true
+              "missed": false
             },
             {
               "index": "26",
-              "missed": true
+              "missed": false
             },
             {
               "index": "27",
-              "missed": true
+              "missed": false
             },
             {
               "index": "28",
-              "missed": true
+              "missed": false
             },
             {
               "index": "29",
-              "missed": true
+              "missed": false
             },
             {
               "index": "30",
-              "missed": true
+              "missed": false
             },
             {
               "index": "31",
-              "missed": true
+              "missed": false
             },
             {
               "index": "32",
-              "missed": true
+              "missed": false
             },
             {
               "index": "33",
-              "missed": true
+              "missed": false
             },
             {
               "index": "34",
-              "missed": true
+              "missed": false
             },
             {
               "index": "35",
-              "missed": true
+              "missed": false
             },
             {
               "index": "36",
+              "missed": false
+            },
+            {
+              "index": "42",
+              "missed": false
+            },
+            {
+              "index": "43",
+              "missed": false
+            },
+            {
+              "index": "44",
+              "missed": false
+            },
+            {
+              "index": "45",
+              "missed": false
+            },
+            {
+              "index": "46",
+              "missed": false
+            },
+            {
+              "index": "47",
+              "missed": false
+            },
+            {
+              "index": "48",
+              "missed": false
+            },
+            {
+              "index": "49",
+              "missed": false
+            },
+            {
+              "index": "50",
+              "missed": false
+            },
+            {
+              "index": "51",
+              "missed": false
+            },
+            {
+              "index": "52",
+              "missed": false
+            },
+            {
+              "index": "53",
+              "missed": false
+            },
+            {
+              "index": "54",
+              "missed": false
+            },
+            {
+              "index": "55",
+              "missed": false
+            },
+            {
+              "index": "56",
+              "missed": false
+            },
+            {
+              "index": "57",
               "missed": true
             },
             {
@@ -46223,7 +47145,7 @@
             },
             {
               "index": "67",
-              "missed": true
+              "missed": false
             }
           ]
         },
@@ -46232,75 +47154,10 @@
           "missed_blocks": [
             {
               "index": "0",
-              "missed": true
-            },
-            {
-              "index": "1",
-              "missed": true
-            }
-          ]
-        },
-        {
-          "address": "shareledgervalcons1yh39aanelyufuczl8gty5v2a3y5537f5u3r8pl",
-          "missed_blocks": [
-            {
-              "index": "0",
               "missed": false
             },
             {
               "index": "1",
-              "missed": false
-            },
-            {
-              "index": "21",
-              "missed": false
-            },
-            {
-              "index": "42",
-              "missed": false
-            },
-            {
-              "index": "43",
-              "missed": false
-            },
-            {
-              "index": "44",
-              "missed": false
-            },
-            {
-              "index": "45",
-              "missed": false
-            },
-            {
-              "index": "46",
-              "missed": false
-            },
-            {
-              "index": "48",
-              "missed": false
-            },
-            {
-              "index": "51",
-              "missed": false
-            },
-            {
-              "index": "55",
-              "missed": false
-            },
-            {
-              "index": "59",
-              "missed": false
-            },
-            {
-              "index": "72",
-              "missed": false
-            },
-            {
-              "index": "76",
-              "missed": false
-            },
-            {
-              "index": "82",
               "missed": false
             }
           ]
@@ -46315,19 +47172,19 @@
         "historical_entries": 0,
         "bond_denom": "nshr"
       },
-      "last_total_power": "211",
+      "last_total_power": "191",
       "last_validator_powers": [
         {
+          "address": "shareledgervaloper1pdn82hmc36pqfh5qg8q2vcjc60l7h6w8qzcjqz",
+          "power": "72"
+        },
+        {
           "address": "shareledgervaloper1pasya6jtvglu9q36nl3tqh5drqzeh0s9098x32",
-          "power": "10"
+          "power": "11"
         },
         {
           "address": "shareledgervaloper1w4l5fchs69d9avlgvdehq9ypvdh4xyeveusq8r",
           "power": "108"
-        },
-        {
-          "address": "shareledgervaloper1ml6wjyy6hw0gynuzqvvaw4urhcpegcy9xr8002",
-          "power": "93"
         }
       ],
       "validators": [
@@ -46337,10 +47194,10 @@
             "@type": "/cosmos.crypto.ed25519.PubKey",
             "key": "CZp/ZRvmohuTMbvH/jDnDAbTOaLwQCToGgb+bZ/CEdw="
           },
-          "jailed": true,
-          "status": "BOND_STATUS_UNBONDED",
-          "tokens": "125187202000000000",
-          "delegator_shares": "127692413173151912.492283833000000000",
+          "jailed": false,
+          "status": "BOND_STATUS_BONDED",
+          "tokens": "72702846000000000",
+          "delegator_shares": "74157754962013088.434806521000000000",
           "description": {
             "moniker": "node3",
             "identity": "",
@@ -46368,8 +47225,8 @@
           },
           "jailed": false,
           "status": "BOND_STATUS_BONDED",
-          "tokens": "10311055000000000",
-          "delegator_shares": "10616206564405032.967882813000000000",
+          "tokens": "11410055000000000",
+          "delegator_shares": "11747731031521262.221989517000000000",
           "description": {
             "moniker": "node0",
             "identity": "",
@@ -46397,8 +47254,8 @@
           },
           "jailed": false,
           "status": "BOND_STATUS_BONDED",
-          "tokens": "108986764000000000",
-          "delegator_shares": "108986764000000000.000000000000000000",
+          "tokens": "108587760000000000",
+          "delegator_shares": "108587760000000000.000000000000000000",
           "description": {
             "moniker": "node2",
             "identity": "",
@@ -46424,10 +47281,10 @@
             "@type": "/cosmos.crypto.ed25519.PubKey",
             "key": "06LG6DYzDwsU19tSau4xXBj0x3I18B8pBIn90GCYMDk="
           },
-          "jailed": false,
-          "status": "BOND_STATUS_BONDED",
-          "tokens": "93346982000000000",
-          "delegator_shares": "95375651623025119.483557735000000000",
+          "jailed": true,
+          "status": "BOND_STATUS_UNBONDING",
+          "tokens": "89539664000000000",
+          "delegator_shares": "92406218157034427.526724613000000000",
           "description": {
             "moniker": "node1",
             "identity": "",
@@ -46435,8 +47292,8 @@
             "security_contact": "",
             "details": ""
           },
-          "unbonding_height": "1725293",
-          "unbonding_time": "2022-01-20T04:18:44.917401399Z",
+          "unbonding_height": "1993931",
+          "unbonding_time": "2022-03-09T07:59:26.126822688Z",
           "commission": {
             "commission_rates": {
               "rate": "0.150000000000000000",
@@ -46452,12 +47309,12 @@
         {
           "delegator_address": "shareledger1p8jjjmtsm9vg3cks9a6ugafgga3a9p65fnkwyw",
           "validator_address": "shareledgervaloper1pdn82hmc36pqfh5qg8q2vcjc60l7h6w8qzcjqz",
-          "shares": "1020144039363885.989567089000000000"
+          "shares": "738338184.903213268000000000"
         },
         {
           "delegator_address": "shareledger1p8jjjmtsm9vg3cks9a6ugafgga3a9p65fnkwyw",
           "validator_address": "shareledgervaloper1pasya6jtvglu9q36nl3tqh5drqzeh0s9098x32",
-          "shares": "523785034080419.871817191000000000"
+          "shares": "1038582334861233.909172379000000000"
         },
         {
           "delegator_address": "shareledger1p8jjjmtsm9vg3cks9a6ugafgga3a9p65fnkwyw",
@@ -46502,7 +47359,7 @@
         {
           "delegator_address": "shareledger1z6qpn2nxt99ma6enza3dzfp7prux55h8ynkdts",
           "validator_address": "shareledgervaloper1pdn82hmc36pqfh5qg8q2vcjc60l7h6w8qzcjqz",
-          "shares": "53534526762536572.162270844000000000"
+          "shares": "132909565.395803131000000000"
         },
         {
           "delegator_address": "shareledger1z6qpn2nxt99ma6enza3dzfp7prux55h8ynkdts",
@@ -46651,11 +47508,6 @@
         },
         {
           "delegator_address": "shareledger19mag0eyv0nznfzhxt2lc5xfu4d58ewjqrzfz5z",
-          "validator_address": "shareledgervaloper1w4l5fchs69d9avlgvdehq9ypvdh4xyeveusq8r",
-          "shares": "400004000000000.000000000000000000"
-        },
-        {
-          "delegator_address": "shareledger19mag0eyv0nznfzhxt2lc5xfu4d58ewjqrzfz5z",
           "validator_address": "shareledgervaloper1ml6wjyy6hw0gynuzqvvaw4urhcpegcy9xr8002",
           "shares": "102175305702549.251993091000000000"
         },
@@ -46751,6 +47603,16 @@
         },
         {
           "delegator_address": "shareledger1tl03794zkluwkldfcjqe3frphtakl375kuzvsm",
+          "validator_address": "shareledgervaloper1pasya6jtvglu9q36nl3tqh5drqzeh0s9098x32",
+          "shares": "616727166335415.216751516000000000"
+        },
+        {
+          "delegator_address": "shareledger1tl03794zkluwkldfcjqe3frphtakl375kuzvsm",
+          "validator_address": "shareledgervaloper1w4l5fchs69d9avlgvdehq9ypvdh4xyeveusq8r",
+          "shares": "1000000000000.000000000000000000"
+        },
+        {
+          "delegator_address": "shareledger1tl03794zkluwkldfcjqe3frphtakl375kuzvsm",
           "validator_address": "shareledgervaloper1ml6wjyy6hw0gynuzqvvaw4urhcpegcy9xr8002",
           "shares": "325957.667551376000000000"
         },
@@ -46832,7 +47694,7 @@
         {
           "delegator_address": "shareledger10yzqsenp5yestl6wlyq5rmm4tdms44p680v7tl",
           "validator_address": "shareledgervaloper1pdn82hmc36pqfh5qg8q2vcjc60l7h6w8qzcjqz",
-          "shares": "107.472450775000000000"
+          "shares": "1020011719513991.267794997000000000"
         },
         {
           "delegator_address": "shareledger10yzqsenp5yestl6wlyq5rmm4tdms44p680v7tl",
@@ -46842,7 +47704,7 @@
         {
           "delegator_address": "shareledger10yzqsenp5yestl6wlyq5rmm4tdms44p680v7tl",
           "validator_address": "shareledgervaloper1ml6wjyy6hw0gynuzqvvaw4urhcpegcy9xr8002",
-          "shares": "2969434061595547.238498343000000000"
+          "shares": "595604855.281665221000000000"
         },
         {
           "delegator_address": "shareledger10t9emwzsuhtdwev0eqhue4thr2au5f2px73fer",
@@ -47152,20 +48014,32 @@
       ],
       "unbonding_delegations": [
         {
-          "delegator_address": "shareledger1yntnt854u056q98455czpnrfw8prvrnxmc2cwj",
-          "validator_address": "shareledgervaloper1ml6wjyy6hw0gynuzqvvaw4urhcpegcy9xr8002",
+          "delegator_address": "shareledger1p8jjjmtsm9vg3cks9a6ugafgga3a9p65fnkwyw",
+          "validator_address": "shareledgervaloper1pdn82hmc36pqfh5qg8q2vcjc60l7h6w8qzcjqz",
           "entries": [
             {
-              "creation_height": "1869410",
-              "completion_time": "2022-02-15T10:30:53.911044870Z",
-              "initial_balance": "144000000000",
-              "balance": "144000000000"
+              "creation_height": "1988102",
+              "completion_time": "2022-03-08T07:03:47.349611553Z",
+              "initial_balance": "500000000000000",
+              "balance": "500000000000000"
             },
             {
-              "creation_height": "1869424",
-              "completion_time": "2022-02-15T10:34:25.076015483Z",
-              "initial_balance": "19000000000",
-              "balance": "19000000000"
+              "creation_height": "2005309",
+              "completion_time": "2022-03-11T08:35:44.483308418Z",
+              "initial_balance": "129000000000",
+              "balance": "129000000000"
+            }
+          ]
+        },
+        {
+          "delegator_address": "shareledger1z6qpn2nxt99ma6enza3dzfp7prux55h8ynkdts",
+          "validator_address": "shareledgervaloper1pdn82hmc36pqfh5qg8q2vcjc60l7h6w8qzcjqz",
+          "entries": [
+            {
+              "creation_height": "1992847",
+              "completion_time": "2022-03-09T03:20:18.463279751Z",
+              "initial_balance": "52484227000000000",
+              "balance": "52484227000000000"
             }
           ]
         },
@@ -47182,50 +48056,14 @@
           ]
         },
         {
-          "delegator_address": "shareledger1tl03794zkluwkldfcjqe3frphtakl375kuzvsm",
+          "delegator_address": "shareledger19mag0eyv0nznfzhxt2lc5xfu4d58ewjqrzfz5z",
           "validator_address": "shareledgervaloper1w4l5fchs69d9avlgvdehq9ypvdh4xyeveusq8r",
           "entries": [
             {
-              "creation_height": "1847408",
-              "completion_time": "2022-02-11T14:23:55.038293216Z",
-              "initial_balance": "1000000000000",
-              "balance": "1000000000000"
-            },
-            {
-              "creation_height": "1922487",
-              "completion_time": "2022-02-24T16:48:05.308616109Z",
-              "initial_balance": "144100000000000",
-              "balance": "144100000000000"
-            }
-          ]
-        },
-        {
-          "delegator_address": "shareledger1tl03794zkluwkldfcjqe3frphtakl375kuzvsm",
-          "validator_address": "shareledgervaloper1ml6wjyy6hw0gynuzqvvaw4urhcpegcy9xr8002",
-          "entries": [
-            {
-              "creation_height": "1853198",
-              "completion_time": "2022-02-12T14:38:23.245109191Z",
-              "initial_balance": "1000000000000",
-              "balance": "1000000000000"
-            },
-            {
-              "creation_height": "1853527",
-              "completion_time": "2022-02-12T16:01:02.254600223Z",
-              "initial_balance": "100000000000",
-              "balance": "100000000000"
-            }
-          ]
-        },
-        {
-          "delegator_address": "shareledger10yzqsenp5yestl6wlyq5rmm4tdms44p680v7tl",
-          "validator_address": "shareledgervaloper1w4l5fchs69d9avlgvdehq9ypvdh4xyeveusq8r",
-          "entries": [
-            {
-              "creation_height": "1948146",
-              "completion_time": "2022-03-01T04:16:45.569046743Z",
-              "initial_balance": "601413999000000000",
-              "balance": "601413999000000000"
+              "creation_height": "1993383",
+              "completion_time": "2022-03-09T05:37:39.444178785Z",
+              "initial_balance": "400004000000000",
+              "balance": "400004000000000"
             }
           ]
         },
@@ -47234,119 +48072,38 @@
           "validator_address": "shareledgervaloper1ml6wjyy6hw0gynuzqvvaw4urhcpegcy9xr8002",
           "entries": [
             {
-              "creation_height": "1869396",
-              "completion_time": "2022-02-15T10:27:22.667168621Z",
-              "initial_balance": "76999000000000",
-              "balance": "76999000000000"
+              "creation_height": "1994075",
+              "completion_time": "2022-03-09T08:36:23.505691502Z",
+              "initial_balance": "2879318000000000",
+              "balance": "2879318000000000"
             }
           ]
         }
       ],
       "redelegations": [
         {
-          "delegator_address": "shareledger1rpwq3amlc3a79k0culzl7yd4vkrp5xhvm5huya",
-          "validator_src_address": "shareledgervaloper1ml6wjyy6hw0gynuzqvvaw4urhcpegcy9xr8002",
-          "validator_dst_address": "shareledgervaloper1pasya6jtvglu9q36nl3tqh5drqzeh0s9098x32",
-          "entries": [
-            {
-              "creation_height": "1850541",
-              "completion_time": "2022-02-12T03:30:51.992005216Z",
-              "initial_balance": "499999000000000",
-              "shares_dst": "514796271186212.475727114000000000"
-            },
-            {
-              "creation_height": "1850566",
-              "completion_time": "2022-02-12T03:37:08.833620589Z",
-              "initial_balance": "200000000000000",
-              "shares_dst": "205918920312325.614942075000000000"
-            },
-            {
-              "creation_height": "1850570",
-              "completion_time": "2022-02-12T03:38:09.189127970Z",
-              "initial_balance": "100000000000000",
-              "shares_dst": "102959460156162.807471037000000000"
-            },
-            {
-              "creation_height": "1850573",
-              "completion_time": "2022-02-12T03:38:54.360034198Z",
-              "initial_balance": "149999000000000",
-              "shares_dst": "154438160639642.649578482000000000"
-            },
-            {
-              "creation_height": "1850577",
-              "completion_time": "2022-02-12T03:39:54.705880553Z",
-              "initial_balance": "249999000000000",
-              "shares_dst": "257397620795805.457049519000000000"
-            },
-            {
-              "creation_height": "1850580",
-              "completion_time": "2022-02-12T03:40:39.843083317Z",
-              "initial_balance": "300000000000000",
-              "shares_dst": "308878380468488.422413113000000000"
-            }
-          ]
-        },
-        {
-          "delegator_address": "shareledger1yntnt854u056q98455czpnrfw8prvrnxmc2cwj",
-          "validator_src_address": "shareledgervaloper1pasya6jtvglu9q36nl3tqh5drqzeh0s9098x32",
-          "validator_dst_address": "shareledgervaloper1ml6wjyy6hw0gynuzqvvaw4urhcpegcy9xr8002",
-          "entries": [
-            {
-              "creation_height": "1874638",
-              "completion_time": "2022-02-16T08:24:17.304047966Z",
-              "initial_balance": "10000000000",
-              "shares_dst": "10217325678.833957318000000000"
-            }
-          ]
-        },
-        {
-          "delegator_address": "shareledger1yntnt854u056q98455czpnrfw8prvrnxmc2cwj",
-          "validator_src_address": "shareledgervaloper1w4l5fchs69d9avlgvdehq9ypvdh4xyeveusq8r",
-          "validator_dst_address": "shareledgervaloper1ml6wjyy6hw0gynuzqvvaw4urhcpegcy9xr8002",
-          "entries": [
-            {
-              "creation_height": "1869382",
-              "completion_time": "2022-02-15T10:23:51.968925512Z",
-              "initial_balance": "144000000000",
-              "shares_dst": "147129492927.928075760000000000"
-            },
-            {
-              "creation_height": "1869416",
-              "completion_time": "2022-02-15T10:32:24.449831010Z",
-              "initial_balance": "20000000000",
-              "shares_dst": "20434651576.606906904000000000"
-            },
-            {
-              "creation_height": "1871413",
-              "completion_time": "2022-02-15T18:54:08.020930333Z",
-              "initial_balance": "980000000000",
-              "shares_dst": "1001297916525.727817251000000000"
-            }
-          ]
-        },
-        {
           "delegator_address": "shareledger1tl03794zkluwkldfcjqe3frphtakl375kuzvsm",
-          "validator_src_address": "shareledgervaloper1ml6wjyy6hw0gynuzqvvaw4urhcpegcy9xr8002",
+          "validator_src_address": "shareledgervaloper1pasya6jtvglu9q36nl3tqh5drqzeh0s9098x32",
           "validator_dst_address": "shareledgervaloper1w4l5fchs69d9avlgvdehq9ypvdh4xyeveusq8r",
           "entries": [
             {
-              "creation_height": "1853208",
-              "completion_time": "2022-02-12T14:40:53.997999305Z",
-              "initial_balance": "9000000000000",
-              "shares_dst": "9000000000000.000000000000000000"
+              "creation_height": "2046282",
+              "completion_time": "2022-03-18T15:38:23.937079319Z",
+              "initial_balance": "1000000000000",
+              "shares_dst": "1000000000000.000000000000000000"
             }
           ]
         },
         {
           "delegator_address": "shareledger10yzqsenp5yestl6wlyq5rmm4tdms44p680v7tl",
-          "validator_src_address": "shareledgervaloper1pasya6jtvglu9q36nl3tqh5drqzeh0s9098x32",
-          "validator_dst_address": "shareledgervaloper1ml6wjyy6hw0gynuzqvvaw4urhcpegcy9xr8002",
+          "validator_src_address": "shareledgervaloper1w4l5fchs69d9avlgvdehq9ypvdh4xyeveusq8r",
+          "validator_dst_address": "shareledgervaloper1pdn82hmc36pqfh5qg8q2vcjc60l7h6w8qzcjqz",
           "entries": [
             {
-              "creation_height": "1922476",
-              "completion_time": "2022-02-24T16:45:19.580783116Z",
-              "initial_balance": "6000000000000",
-              "shares_dst": "6130395407300.374391336000000000"
+              "creation_height": "2005313",
+              "completion_time": "2022-03-11T08:36:46.080349394Z",
+              "initial_balance": "1000000000000000",
+              "shares_dst": "1020011719513883.795344222000000000"
             }
           ]
         }
