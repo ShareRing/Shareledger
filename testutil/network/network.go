@@ -111,6 +111,8 @@ func GetTestingGenesis(t *testing.T, config *network.Config) (keyring.Keyring, s
 		{Key: KeyAccount4, Balance: defaultCoins},
 		{Key: KeyAccount5, Balance: defaultCoins},
 		{Key: KeyAccount6, Balance: defaultCoins},
+		{Key: KeyAccount7, Balance: defaultCoins},
+		{Key: KeyAccount8, Balance: defaultCoins},
 	}
 
 	for _, u := range users {

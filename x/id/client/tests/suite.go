@@ -2,13 +2,13 @@ package tests
 
 import (
 	"github.com/cosmos/cosmos-sdk/testutil/network"
+	sdk "github.com/cosmos/cosmos-sdk/types"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	netutilts "github.com/sharering/shareledger/testutil/network"
+	idtypes "github.com/sharering/shareledger/x/id/types"
+	"github.com/stretchr/testify/suite"
 	"strings"
 
-	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/stretchr/testify/suite"
-
-	"github.com/sharering/shareledger/testutil/sample"
 	"github.com/sharering/shareledger/x/electoral/client/tests"
 )
 
@@ -23,21 +23,7 @@ type IDIntegrationTestSuite struct {
 func NewIDIntegrationTestSuite(cfg network.Config) *IDIntegrationTestSuite {
 	return &IDIntegrationTestSuite{cfg: cfg}
 }
-
-func (s *IDIntegrationTestSuite) SetupSuite() {
-	s.T().Log("setting up integration test suite for booking module")
-
-	kb, dir := netutilts.GetTestingGenesis(s.T(), &s.cfg)
-	s.dir = dir
-
-	s.network = network.New(s.T(), s.cfg)
-	_, err := s.network.WaitForHeight(1)
-	s.Require().NoError(err)
-
-	//override the keyring by our keyring information
-	s.network.Validators[0].ClientCtx.Keyring = kb
-
-	s.T().Log("setting up document data....")
+func (s *IDIntegrationTestSuite) setupTestMaterial() {
 
 	out, _ := tests.ExCmdEnrollAccountOperator(
 		s.network.Validators[0].ClientCtx,
@@ -52,19 +38,97 @@ func (s *IDIntegrationTestSuite) SetupSuite() {
 	res := netutilts.ParseStdOut(s.T(), out.Bytes())
 	s.Equalf(netutilts.ShareLedgerSuccessCode, res.Code, "init operator fail %v", res.String())
 
-	out, _ = tests.ExCmdEnrollIdSigner(
-		s.network.Validators[0].ClientCtx,
-		s.T(),
-		[]string{netutilts.Accounts[netutilts.KeyIDSigner].String()},
-		netutilts.MakeByAccount(netutilts.KeyOperator),
-		netutilts.SkipConfirmation(),
-		netutilts.BlockBroadcast(),
-		netutilts.SHRFee2(),
-	)
-	_ = s.network.WaitForNextBlock()
-	res = netutilts.ParseStdOut(s.T(), out.Bytes())
-	s.Equalf(netutilts.ShareLedgerSuccessCode, res.Code, "init operator fail %v", res.String())
+	initIDSig := []struct {
+		accID    string
+		id       string
+		idOwner  string
+		idBackup string
+		idData   string
+	}{
+		{
+			id:       "[owner_Acc1_Backup_Acc2]existed_replace_owner_id_1",
+			idData:   "existed_replace_owner_id_data_1",
+			idOwner:  netutilts.Accounts[netutilts.KeyAccount1].String(),
+			idBackup: netutilts.Accounts[netutilts.KeyAccount2].String(),
+			accID:    netutilts.KeyAccount1,
+		},
+		{
+			accID: netutilts.KeyIDSigner,
+		},
+		{
+			id:       "[owner_Acc3_Backup_Acc4]existed_replace_owner_id_2",
+			idData:   "existed_replace_owner_id_data_2",
+			idOwner:  netutilts.Accounts[netutilts.KeyAccount3].String(),
+			idBackup: netutilts.Accounts[netutilts.KeyAccount4].String(),
+			accID:    netutilts.KeyAccount3,
+		},
+		{
+			id:       "[owner_Acc5_Backup_Acc6]existed_update_id_1",
+			idData:   "existed_update_id_data_2",
+			accID:    netutilts.KeyAccount5,
+			idOwner:  netutilts.Accounts[netutilts.KeyAccount5].String(),
+			idBackup: netutilts.Accounts[netutilts.KeyAccount6].String(),
+		},
+		{
+			id:       "[owner_Acc6_Backup_Acc6]existed_update_id_1",
+			idData:   "existed_update_id_data_1",
+			accID:    netutilts.KeyAccount5,
+			idOwner:  netutilts.Accounts[netutilts.KeyAccount6].String(),
+			idBackup: netutilts.Accounts[netutilts.KeyAccount6].String(),
+		},
+		{
+			id:       "[owner_Acc7_Backup_Acc8]existed_update_id_2",
+			idData:   "existed_update_id_data_2",
+			accID:    netutilts.KeyAccount7,
+			idOwner:  netutilts.Accounts[netutilts.KeyAccount7].String(),
+			idBackup: netutilts.Accounts[netutilts.KeyAccount8].String(),
+		},
+	}
 
+	for _, id := range initIDSig {
+		if id.accID != "" {
+			out, _ = tests.ExCmdEnrollIdSigner(
+				s.network.Validators[0].ClientCtx,
+				s.T(),
+				[]string{netutilts.Accounts[id.accID].String()},
+				netutilts.MakeByAccount(netutilts.KeyOperator),
+				netutilts.SkipConfirmation(),
+				netutilts.BlockBroadcast(),
+				netutilts.SHRFee2(),
+			)
+			_ = s.network.WaitForNextBlock()
+			res = netutilts.ParseStdOut(s.T(), out.Bytes())
+			s.Equalf(netutilts.ShareLedgerSuccessCode, res.Code, "init id signer fail %v", res.String())
+		}
+		if id.id != "" {
+			out, _ = CmdExNewID(s.network.Validators[0].ClientCtx, id.id, id.idBackup, id.idOwner, id.idData,
+				netutilts.SkipConfirmation(),
+				netutilts.MakeByAccount(id.accID),
+				netutilts.BlockBroadcast(),
+				netutilts.SHRFee2(),
+			)
+			_ = s.network.WaitForNextBlock()
+			res = netutilts.ParseStdOut(s.T(), out.Bytes())
+			s.Equalf(netutilts.ShareLedgerSuccessCode, res.Code, "init id fail %v", res.String())
+		}
+
+	}
+}
+func (s *IDIntegrationTestSuite) SetupSuite() {
+	s.T().Log("setting up integration test suite for booking module")
+
+	kb, dir := netutilts.GetTestingGenesis(s.T(), &s.cfg)
+	s.dir = dir
+
+	s.network = network.New(s.T(), s.cfg)
+	_, err := s.network.WaitForHeight(1)
+	s.Require().NoError(err)
+
+	//override the keyring by our keyring information
+	s.network.Validators[0].ClientCtx.Keyring = kb
+
+	s.T().Log("setting up id data....")
+	s.setupTestMaterial()
 	s.T().Log("setting up integration test suite successfully")
 }
 func (s *IDIntegrationTestSuite) TearDownSuite() {
@@ -73,278 +137,354 @@ func (s *IDIntegrationTestSuite) TearDownSuite() {
 
 func (s *IDIntegrationTestSuite) TestCreateID() {
 
-	_, _, addr := sample.RandomAddr(1)
-
 	validatorCtx := s.network.Validators[0].ClientCtx
-	s.Run("create_the_valid_id_should_be_success", func() {
-		out := CmdExNewID(validatorCtx, s.T(), "Id1", addr[0], addr[0], "this is the new id",
-			netutilts.JSONFlag(),
-			netutilts.SkipConfirmation(),
-			netutilts.MakeByAccount(netutilts.KeyIDSigner),
-			netutilts.BlockBroadcast(),
-			netutilts.SHRFee2(),
-		)
-		txResponse := netutilts.ParseStdOut(s.T(), out.Bytes())
-		s.Equalf(netutilts.ShareLedgerSuccessCode, txResponse.Code, "create ID fail %s", out)
+	type (
+		TestCase struct {
+			d           string
+			iId         string
+			iBackupAddr string
+			iOwnerAddr  string
+			iExData     string
+			txFee       int
+			txCreator   string
+			oErr        error
+			oRes        *sdk.TxResponse
+			oId         *idtypes.Id
+		}
+	)
 
-		out = CmdExGetID(validatorCtx, s.T(), "Id1",
-			netutilts.JSONFlag(),
-		)
+	testSuite := []TestCase{
+		{
+			d:           "create_the_valid_id_should_be_success",
+			iId:         "ID_1",
+			iOwnerAddr:  "shareledger1pclpkwn6vc6lmrmv7407cd7em4cypdekc6kvn4",
+			iBackupAddr: "shareledger1pclpkwn6vc6lmrmv7407cd7em4cypdekc6kvn4",
+			iExData:     "the ex_data",
+			txCreator:   netutilts.KeyIDSigner,
+			txFee:       2,
+			oErr:        nil,
+			oRes:        &sdk.TxResponse{Code: netutilts.ShareLedgerSuccessCode},
+			oId: &idtypes.Id{
+				Id: "ID_1",
+				Data: &idtypes.BaseID{
+					IssuerAddress: netutilts.Accounts[netutilts.KeyIDSigner].String(),
+					BackupAddress: "shareledger1pclpkwn6vc6lmrmv7407cd7em4cypdekc6kvn4",
+					OwnerAddress:  "shareledger1pclpkwn6vc6lmrmv7407cd7em4cypdekc6kvn4",
+					ExtraData:     "the ex_data",
+				},
+			},
+		},
+		{
+			d:           "create_the_valid_id_but_caller_is_not_id_signer",
+			iId:         "ID_1",
+			iOwnerAddr:  "shareledger1pclpkwn6vc6lmrmv7407cd7em4cypdekc6kvn4",
+			iBackupAddr: "shareledger1pclpkwn6vc6lmrmv7407cd7em4cypdekc6kvn4",
+			iExData:     "the ex_data",
+			txCreator:   netutilts.KeyAccount2,
+			txFee:       2,
+			oErr:        nil,
+			oRes:        &sdk.TxResponse{Code: sdkerrors.ErrUnauthorized.ABCICode()},
+		},
+	}
 
-		idData := IDJsonUnmarshal(s.T(), out.Bytes())
-		address, err := sdk.AccAddressFromBech32(addr[0])
-		s.NoError(err)
+	for _, tc := range testSuite {
+		s.Run(tc.d, func() {
+			out, err := CmdExNewID(validatorCtx, tc.iId, tc.iBackupAddr, tc.iOwnerAddr, tc.iExData,
+				netutilts.JSONFlag(),
+				netutilts.SkipConfirmation(),
+				netutilts.MakeByAccount(tc.txCreator),
+				netutilts.BlockBroadcast(),
+				netutilts.SHRFee(tc.txFee),
+			)
+			if tc.oErr != nil {
+				s.NotNilf(err, "this case need return error")
+			}
+			if tc.oRes != nil {
+				txResponse := netutilts.ParseStdOut(s.T(), out.Bytes())
+				s.Equalf(tc.oRes.Code, txResponse.Code, "create ID fail %s", out)
+			}
+			if tc.oId != nil {
+				out = CmdExGetID(validatorCtx, s.T(), tc.iId,
+					netutilts.JSONFlag(),
+				)
+				idData := IDJsonUnmarshal(s.T(), out.Bytes())
 
-		s.Equalf("Id1", idData.Id, "id not equal")
-		s.Equalf("this is the new id", idData.GetData().GetExtraData(), "data not equal")
-		s.Equal(address.String(), idData.ToBaseID().BackupAddress)
-		s.Equal(address.String(), idData.ToBaseID().OwnerAddress)
-		s.Equal(netutilts.Accounts[netutilts.KeyIDSigner].String(), idData.ToBaseID().IssuerAddress)
-		out = CmdExGetIDByAddress(validatorCtx, s.T(), addr[0],
-			netutilts.JSONFlag(),
-		)
+				s.Equalf(tc.oId.Id, idData.Id, "id not equal")
+				s.Equalf(tc.oId.GetData().GetExtraData(), idData.GetData().GetExtraData(), "data not equal")
+				s.Equal(tc.oId.GetData().BackupAddress, idData.ToBaseID().BackupAddress)
+				s.Equal(tc.oId.GetData().OwnerAddress, idData.ToBaseID().OwnerAddress)
+				s.Equal(netutilts.Accounts[netutilts.KeyIDSigner].String(), idData.ToBaseID().IssuerAddress)
+			}
+		})
+	}
 
-		idData = IDJsonUnmarshal(s.T(), out.Bytes())
-		s.Equalf("Id1", idData.Id, "id not equal")
-		s.Equalf("this is the new id", idData.GetData().GetExtraData(), "data not equal")
-		s.Equal(address.String(), idData.ToBaseID().BackupAddress)
-		s.Equal(address.String(), idData.ToBaseID().OwnerAddress)
-		s.Equal(netutilts.Accounts[netutilts.KeyIDSigner].String(), idData.ToBaseID().IssuerAddress)
-	})
-
-	s.Run("create_the_valid_id_but_caller_is_not_id_signer", func() {
-		out := CmdExNewID(validatorCtx, s.T(), "Id12", addr[0], addr[0], "this is the new id",
-			netutilts.JSONFlag(),
-			netutilts.SkipConfirmation(),
-			netutilts.MakeByAccount(netutilts.KeyAccount2),
-			netutilts.BlockBroadcast(),
-			netutilts.SHRFee2(),
-		)
-		txResponse := netutilts.ParseStdOut(s.T(), out.Bytes())
-		s.Equalf(netutilts.ShareLedgerErrorCodeUnauthorized, txResponse.Code, "create ID fail %s", out)
-
-	})
 }
 
 func (s *IDIntegrationTestSuite) TestCreateIDInBatch() {
 
-	_, _, addr := sample.RandomAddr(3)
-
-	validatorCtx := s.network.Validators[0].ClientCtx
-	s.Run("create_the_valid_id_should_be_success", func() {
-
-		extras := []string{"extras-b-1", "extras-b-2", "extras-b-3"}
-		ids := []string{"id-12", "id-13", "id-14"}
-		out := CmdExNewIDInBatch(validatorCtx, s.T(), strings.Join(ids, ","), strings.Join(addr, ","), strings.Join(addr, ","), strings.Join(extras, ","),
-			netutilts.JSONFlag(),
-			netutilts.SkipConfirmation(),
-			netutilts.MakeByAccount(netutilts.KeyIDSigner),
-			netutilts.BlockBroadcast(),
-			netutilts.SHRFee2(),
-		)
-		txResponse := netutilts.ParseStdOut(s.T(), out.Bytes())
-		s.Equalf(netutilts.ShareLedgerSuccessCode, txResponse.Code, "create ID fail %s", out)
-
-		for i := 0; i < 3; i++ {
-
-			out = CmdExGetID(validatorCtx, s.T(), ids[i],
-				netutilts.JSONFlag(),
-			)
-
-			idData := IDJsonUnmarshal(s.T(), out.Bytes())
-			address, err := sdk.AccAddressFromBech32(addr[i])
-			s.NoError(err)
-			s.Equalf(ids[i], idData.Id, "id not equal")
-			s.Equalf(extras[i], idData.GetData().GetExtraData(), "data not equal")
-			s.Equal(address.String(), idData.ToBaseID().BackupAddress)
-			s.Equal(address.String(), idData.ToBaseID().OwnerAddress)
-			s.Equal(netutilts.Accounts[netutilts.KeyIDSigner].String(), idData.ToBaseID().IssuerAddress)
-
-			out = CmdExGetIDByAddress(validatorCtx, s.T(), addr[i],
-				netutilts.JSONFlag(),
-			)
-
-			idData = IDJsonUnmarshal(s.T(), out.Bytes())
-			s.Equalf(ids[i], idData.Id, "id not equal")
-			s.Equalf(extras[i], idData.GetData().GetExtraData(), "data not equal")
-			s.Equal(address.String(), idData.ToBaseID().BackupAddress)
-			s.Equal(address.String(), idData.ToBaseID().OwnerAddress)
-			s.Equal(netutilts.Accounts[netutilts.KeyIDSigner].String(), idData.ToBaseID().IssuerAddress)
+	type (
+		TestCase struct {
+			d            string
+			iIds         []string
+			iBackupAddrs []string
+			iOwnerAddrs  []string
+			iExDatas     []string
+			txFee        int
+			txCreator    string
+			oErr         error
+			oRes         *sdk.TxResponse
+			oId          []idtypes.Id
 		}
+	)
 
-	})
+	testSuite := []TestCase{
+		{
+			d:    "create_the_valid_id_should_be_success",
+			iIds: []string{"batch_ID_1", "batch_ID_2", "batch_ID_3"},
+			iOwnerAddrs: []string{
+				"shareledger1ghrpxfgfy0kdnas8lsr9wjq3q0hg0m3cs3n8n8",
+				"shareledger17papd8h9glkvx0ff0lexn9u42689y63ffrtxs2",
+				"shareledger1hq7wjjgeymvs3q4vmkvac3dghfsjwvjvf8jdaw"},
+			iBackupAddrs: []string{
+				"shareledger1ghrpxfgfy0kdnas8lsr9wjq3q0hg0m3cs3n8n8",
+				"shareledger17papd8h9glkvx0ff0lexn9u42689y63ffrtxs2",
+				"shareledger1hq7wjjgeymvs3q4vmkvac3dghfsjwvjvf8jdaw"},
+			iExDatas:  []string{"ex_data_1", "ex_data_2", "ex_data_3"},
+			txCreator: netutilts.KeyIDSigner,
+			txFee:     2,
+			oErr:      nil,
+			oRes:      &sdk.TxResponse{Code: netutilts.ShareLedgerSuccessCode},
+			oId: []idtypes.Id{
+				{
+					Id: "batch_ID_1",
+					Data: &idtypes.BaseID{
+						IssuerAddress: netutilts.Accounts[netutilts.KeyIDSigner].String(),
+						BackupAddress: "shareledger1ghrpxfgfy0kdnas8lsr9wjq3q0hg0m3cs3n8n8",
+						OwnerAddress:  "shareledger1ghrpxfgfy0kdnas8lsr9wjq3q0hg0m3cs3n8n8",
+						ExtraData:     "ex_data_1",
+					},
+				},
+				{
+					Id: "batch_ID_2",
+					Data: &idtypes.BaseID{
+						IssuerAddress: netutilts.Accounts[netutilts.KeyIDSigner].String(),
+						BackupAddress: "shareledger17papd8h9glkvx0ff0lexn9u42689y63ffrtxs2",
+						OwnerAddress:  "shareledger17papd8h9glkvx0ff0lexn9u42689y63ffrtxs2",
+						ExtraData:     "ex_data_2",
+					},
+				},
+				{
+					Id: "batch_ID_3",
+					Data: &idtypes.BaseID{
+						IssuerAddress: netutilts.Accounts[netutilts.KeyIDSigner].String(),
+						BackupAddress: "shareledger1hq7wjjgeymvs3q4vmkvac3dghfsjwvjvf8jdaw",
+						OwnerAddress:  "shareledger1hq7wjjgeymvs3q4vmkvac3dghfsjwvjvf8jdaw",
+						ExtraData:     "ex_data_3",
+					},
+				},
+			},
+		},
+		{
+			d:            "create_id_but_creator_is_not_authorizer",
+			iIds:         []string{"batch_ID_4"},
+			iOwnerAddrs:  []string{"shareledger1pclpkwn6vc6lmrmv7407cd7em4cypdekc6kvn4"},
+			iBackupAddrs: []string{"shareledger1pclpkwn6vc6lmrmv7407cd7em4cypdekc6kvn4"},
+			iExDatas:     []string{"the ex_data"},
+			txCreator:    netutilts.KeyAccount2,
+			txFee:        2,
+			oErr:         nil,
+			oRes:         &sdk.TxResponse{Code: sdkerrors.ErrUnauthorized.ABCICode()},
+		},
+	}
+	validatorCtx := s.network.Validators[0].ClientCtx
+	for _, tc := range testSuite {
+		s.Run(tc.d, func() {
+			out, err := CmdExNewIDInBatch(validatorCtx,
+				strings.Join(tc.iIds, ","),
+				strings.Join(tc.iBackupAddrs, ","),
+				strings.Join(tc.iOwnerAddrs, ","),
+				strings.Join(tc.iExDatas, ","),
+				netutilts.JSONFlag(),
+				netutilts.SkipConfirmation(),
+				netutilts.MakeByAccount(tc.txCreator),
+				netutilts.BlockBroadcast(),
+				netutilts.SHRFee(tc.txFee),
+			)
+			if tc.oErr != nil {
+				s.NotNilf(err, "this case need return error")
+			}
+			if tc.oRes != nil {
+				txResponse := netutilts.ParseStdOut(s.T(), out.Bytes())
+				s.Equalf(tc.oRes.Code, txResponse.Code, "create ID fail %s", out)
+			}
+			if len(tc.oId) != 0 {
+				for _, i := range tc.oId {
+					out = CmdExGetID(validatorCtx, s.T(), i.GetId(),
+						netutilts.JSONFlag(),
+					)
+					idData := IDJsonUnmarshal(s.T(), out.Bytes())
 
-	s.Run("create_the_valid_id_but_caller_is_not_id_signer", func() {
-		extras := []string{"extras-b-1", "extras-b-2", "extras-b-3"}
-		ids := []string{"id-12", "id-13", "id-14"}
-		out := CmdExNewIDInBatch(validatorCtx, s.T(), strings.Join(ids, ","), strings.Join(addr, ","), strings.Join(addr, ","), strings.Join(extras, ","),
-			netutilts.JSONFlag(),
-			netutilts.SkipConfirmation(),
-			netutilts.MakeByAccount(netutilts.KeyAccount1),
-			netutilts.BlockBroadcast(),
-			netutilts.SHRFee2(),
-		)
-		txResponse := netutilts.ParseStdOut(s.T(), out.Bytes())
-		s.Equalf(netutilts.ShareLedgerErrorCodeUnauthorized, txResponse.Code, "create ID fail %s", out)
+					s.Equalf(i.Id, idData.Id, "id not equal")
+					s.Equalf(i.GetData().GetExtraData(), idData.GetData().GetExtraData(), "data not equal")
+					s.Equal(i.GetData().BackupAddress, idData.ToBaseID().BackupAddress)
+					s.Equal(i.GetData().OwnerAddress, idData.ToBaseID().OwnerAddress)
+					s.Equal(netutilts.Accounts[netutilts.KeyIDSigner].String(), i.ToBaseID().IssuerAddress)
+				}
 
-	})
+			}
+		})
+	}
+
 }
 
 func (s *IDIntegrationTestSuite) TestUpdateID() {
-	s.Run("update_id_data_success", func() {
-		_, _, addr := sample.RandomAddr(1)
+	testSuite := []struct {
+		d         string
+		iID       string
+		iData     string
+		txFee     int
+		txCreator string
+		oErr      error
+		oRes      *sdk.TxResponse
+		oId       *idtypes.Id
+	}{
+		{
+			d:         "update_id_data_success",
+			iID:       "[owner_Acc5_Backup_Acc6]existed_update_id_1",
+			iData:     "update_to_new_1",
+			txFee:     2,
+			txCreator: netutilts.KeyAccount5,
+			oErr:      nil,
+			oRes:      &sdk.TxResponse{Code: netutilts.ShareLedgerSuccessCode},
+			oId: &idtypes.Id{
+				Id: "[owner_Acc5_Backup_Acc6]existed_update_id_1",
+				Data: &idtypes.BaseID{
+					ExtraData: "update_to_new_1",
+				},
+			},
+		}, {
+			d:         "update_id_data_caller_is_not_id_signer",
+			iID:       "[owner_Acc7_Backup_Acc8]existed_update_id_2",
+			iData:     "update_to_new_2",
+			txFee:     2,
+			txCreator: netutilts.KeyAccount2,
+			oErr:      nil,
+			oRes:      &sdk.TxResponse{Code: sdkerrors.ErrUnauthorized.ABCICode()},
+			oId: &idtypes.Id{
+				Id: "[owner_Acc7_Backup_Acc8]existed_update_id_2",
+				Data: &idtypes.BaseID{
+					ExtraData: "existed_update_id_data_2",
+				},
+			},
+		},
+	}
+	validatorCtx := s.network.Validators[0].ClientCtx
+	for _, tc := range testSuite {
+		s.Run(tc.d, func() {
+			out, err := CmdExUpdateID(validatorCtx, tc.iID, tc.iData,
+				netutilts.SkipConfirmation(),
+				netutilts.MakeByAccount(tc.txCreator),
+				netutilts.BlockBroadcast(),
+				netutilts.JSONFlag(),
+				netutilts.SHRFee(tc.txFee))
+			if tc.oErr != nil {
+				s.NotNilf(err, "error is required in this case")
+			}
+			if tc.oRes != nil {
+				txResponse := netutilts.ParseStdOut(s.T(), out.Bytes())
+				s.Equalf(tc.oRes.Code, txResponse.Code, "update ID fail %s", out)
+			}
+			if tc.oId != nil {
+				out = CmdExGetID(validatorCtx, s.T(), tc.iID,
+					netutilts.JSONFlag(),
+				)
+				idData := IDJsonUnmarshal(s.T(), out.Bytes())
+				s.Equalf(tc.oId.GetData().GetExtraData(), idData.GetData().GetExtraData(), "data not equal")
+			}
+		})
+	}
 
-		validatorCtx := s.network.Validators[0].ClientCtx
-		out := CmdExNewID(validatorCtx, s.T(), "ID-forUpdate", addr[0], netutilts.Accounts[netutilts.KeyIDSigner].String(), "thisISBackup",
-			netutilts.JSONFlag(),
-			netutilts.SkipConfirmation(),
-			netutilts.MakeByAccount(netutilts.KeyIDSigner),
-			netutilts.BlockBroadcast(),
-			netutilts.SHRFee2(),
-		)
-		txResponse := netutilts.ParseStdOut(s.T(), out.Bytes())
-		s.Equalf(netutilts.ShareLedgerSuccessCode, txResponse.Code, "create ID fail %s", out)
-		_ = s.network.WaitForNextBlock()
-		out = CmdExUpdateID(validatorCtx, s.T(), "ID-forUpdate", "https://sharering.network/id/1",
-			netutilts.SkipConfirmation(),
-			netutilts.MakeByAccount(netutilts.KeyIDSigner),
-			netutilts.BlockBroadcast(),
-			netutilts.JSONFlag(),
-			netutilts.SHRFee2())
-		txResponse = netutilts.ParseStdOut(s.T(), out.Bytes())
-		s.Equalf(netutilts.ShareLedgerSuccessCode, txResponse.Code, "update ID fail %s", out)
-
-		out = CmdExGetID(validatorCtx, s.T(), "ID-forUpdate",
-			netutilts.JSONFlag(),
-		)
-		idData := IDJsonUnmarshal(s.T(), out.Bytes())
-		s.Equalf("https://sharering.network/id/1", idData.GetData().GetExtraData(), "data not equal")
-	})
-	s.Run("update_id_data_caller_is_not_id_signer", func() {
-		_, _, addr := sample.RandomAddr(1)
-
-		validatorCtx := s.network.Validators[0].ClientCtx
-		out := CmdExNewID(validatorCtx, s.T(), "ID-forUpdate2", addr[0], addr[0], "thisISBackup2",
-			netutilts.JSONFlag(),
-			netutilts.SkipConfirmation(),
-			netutilts.MakeByAccount(netutilts.KeyIDSigner),
-			netutilts.BlockBroadcast(),
-			netutilts.SHRFee2(),
-		)
-		txResponse := netutilts.ParseStdOut(s.T(), out.Bytes())
-		s.Equalf(netutilts.ShareLedgerSuccessCode, txResponse.Code, "create ID fail %s", out)
-		_ = s.network.WaitForNextBlock()
-		out = CmdExUpdateID(validatorCtx, s.T(), "ID-forUpdate2", "https://sharering.network/id/1",
-			netutilts.SkipConfirmation(),
-			netutilts.MakeByAccount(netutilts.KeyAccount3),
-			netutilts.BlockBroadcast(),
-			netutilts.JSONFlag(),
-			netutilts.SHRFee2())
-		txResponse = netutilts.ParseStdOut(s.T(), out.Bytes())
-		s.Equalf(netutilts.ShareLedgerErrorCodeUnauthorized, txResponse.Code, "update ID fail %s", out)
-
-		out = CmdExGetID(validatorCtx, s.T(), "ID-forUpdate2",
-			netutilts.JSONFlag(),
-		)
-		idData := IDJsonUnmarshal(s.T(), out.Bytes())
-		s.Equalf("thisISBackup2", idData.GetData().GetExtraData(), "data was changed by unauthorized user")
-	})
 }
 
 func (s *IDIntegrationTestSuite) TestReplaceOwner() {
-	s.Run("replace_id_owner_data_success", func() {
-		_, _, addr := sample.RandomAddr(1)
 
-		validatorCtx := s.network.Validators[0].ClientCtx
-		out := CmdExNewID(validatorCtx, s.T(), "ID-forReplace", netutilts.Accounts[netutilts.KeyAccount3].String(), addr[0], "thisISID",
-			netutilts.JSONFlag(),
-			netutilts.SkipConfirmation(),
-			netutilts.MakeByAccount(netutilts.KeyIDSigner),
-			netutilts.BlockBroadcast(),
-			netutilts.SHRFee2(),
-		)
-		txResponse := netutilts.ParseStdOut(s.T(), out.Bytes())
-		s.Equalf(netutilts.ShareLedgerSuccessCode, txResponse.Code, "create ID fail %s", out)
-		_ = s.network.WaitForNextBlock()
+	testSuite := []struct {
+		d         string
+		iID       string
+		iNewAddr  string
+		txFee     int
+		txCreator string
+		oErr      error
+		oRes      *sdk.TxResponse
+		oId       *idtypes.Id
+	}{
+		{
+			d:         "replace_id_owner_data_success",
+			iID:       "[owner_Acc1_Backup_Acc2]existed_replace_owner_id_1",
+			iNewAddr:  netutilts.Accounts[netutilts.KeyAccount2].String(),
+			txFee:     2,
+			txCreator: netutilts.KeyAccount2,
+			oErr:      nil,
+			oRes:      &sdk.TxResponse{Code: netutilts.ShareLedgerSuccessCode},
+			oId: &idtypes.Id{
+				Id: "[owner_Acc1_Backup_Acc2]existed_replace_owner_id_1",
+				Data: &idtypes.BaseID{
+					OwnerAddress: netutilts.Accounts[netutilts.KeyAccount2].String(),
+				},
+			},
+		},
+		{
+			d:         "replace_id_owner_data_caller_is_not_backup",
+			iID:       "[owner_Acc3_Backup_Acc4]existed_replace_owner_id_2",
+			iNewAddr:  netutilts.Accounts[netutilts.KeyAccount4].String(),
+			txFee:     2,
+			txCreator: netutilts.KeyAccount5,
+			oErr:      nil,
+			oRes:      &sdk.TxResponse{Code: sdkerrors.ErrUnauthorized.ABCICode()},
+			oId: &idtypes.Id{
+				Id: "[owner_Acc3_Backup_Acc4]existed_replace_owner_id_2",
+				Data: &idtypes.BaseID{
+					OwnerAddress: netutilts.Accounts[netutilts.KeyAccount3].String(),
+				},
+			},
+		},
+		{
+			d:         "replace_id_owner_but_backup_already_hold_another_id",
+			iID:       "[owner_Acc5_Backup_Acc6]existed_update_id_1",
+			iNewAddr:  netutilts.Accounts[netutilts.KeyAccount6].String(),
+			txFee:     2,
+			txCreator: netutilts.KeyAccount6,
+			oErr:      nil,
+			oRes:      &sdk.TxResponse{Code: idtypes.ErrOwnerHasID.ABCICode()},
+			oId: &idtypes.Id{
+				Id: "[owner_Acc5_Backup_Acc6]existed_update_id_1",
+				Data: &idtypes.BaseID{
+					OwnerAddress: netutilts.Accounts[netutilts.KeyAccount5].String(),
+				},
+			},
+		},
+	}
+	validatorCtx := s.network.Validators[0].ClientCtx
+	for _, tc := range testSuite {
+		s.Run(tc.d, func() {
+			out, err := CmdExReplaceIdOwner(validatorCtx, tc.iID, tc.iNewAddr,
+				netutilts.MakeByAccount(tc.txCreator),
+				netutilts.SkipConfirmation(), netutilts.JSONFlag(), netutilts.SHRFee(tc.txFee), netutilts.BlockBroadcast())
+			if tc.oErr != nil {
+				s.NotNilf(err, "require error in this case")
+			}
+			if tc.oRes != nil {
+				txResponse := netutilts.ParseStdOut(s.T(), out.Bytes())
+				s.Equalf(tc.oRes.Code, txResponse.Code, "update ID fail %s", out)
+			}
+			if tc.oId != nil {
+				out = CmdExGetID(validatorCtx, s.T(), tc.iID,
+					netutilts.JSONFlag(),
+				)
+				idData := IDJsonUnmarshal(s.T(), out.Bytes())
+				s.Equalf(tc.oId.GetData().GetOwnerAddress(), idData.GetData().GetOwnerAddress(), "owner not equal")
+			}
+		})
+	}
 
-		out = CmdExReplaceIdOwner(validatorCtx, s.T(), "ID-forReplace", netutilts.Accounts[netutilts.KeyAccount3].String(),
-			netutilts.MakeByAccount(netutilts.KeyAccount3),
-			netutilts.SkipConfirmation(), netutilts.JSONFlag(), netutilts.SHRFee2(), netutilts.BlockBroadcast())
-
-		out = CmdExGetID(validatorCtx, s.T(), "ID-forReplace",
-			netutilts.JSONFlag(),
-		)
-		idData := IDJsonUnmarshal(s.T(), out.Bytes())
-		s.Equalf(netutilts.Accounts[netutilts.KeyAccount3].String(), idData.GetData().GetOwnerAddress(), "owner data didn't change")
-	})
-	s.Run("replace_id_owner_data_caller_is_not_backup", func() {
-		_, _, addr := sample.RandomAddr(1)
-
-		validatorCtx := s.network.Validators[0].ClientCtx
-		out := CmdExNewID(validatorCtx, s.T(), "ID-forReplace2", netutilts.Accounts[netutilts.KeyAccount3].String(), addr[0], "thisISID",
-			netutilts.JSONFlag(),
-			netutilts.SkipConfirmation(),
-			netutilts.MakeByAccount(netutilts.KeyIDSigner),
-			netutilts.BlockBroadcast(),
-			netutilts.SHRFee2(),
-		)
-		txResponse := netutilts.ParseStdOut(s.T(), out.Bytes())
-		s.Equalf(netutilts.ShareLedgerSuccessCode, txResponse.Code, "create ID fail %s", out)
-		_ = s.network.WaitForNextBlock()
-
-		out = CmdExReplaceIdOwner(validatorCtx, s.T(), "ID-forReplace2", netutilts.Accounts[netutilts.KeyAccount3].String(),
-			netutilts.MakeByAccount(netutilts.KeyAccount1),
-			netutilts.SkipConfirmation(), netutilts.JSONFlag(), netutilts.SHRFee2(), netutilts.BlockBroadcast())
-
-		out = CmdExGetID(validatorCtx, s.T(), "ID-forReplace2",
-			netutilts.JSONFlag(),
-		)
-		idData := IDJsonUnmarshal(s.T(), out.Bytes())
-		address, err := sdk.AccAddressFromBech32(addr[0])
-		s.NoError(err)
-		s.Equalf(address.String(), idData.GetData().GetOwnerAddress(), "owner data not equal")
-	})
-
-	s.Run("replace_id_owner_but_backup_already_hold_another_id", func() {
-		_, _, addr := sample.RandomAddr(1)
-
-		validatorCtx := s.network.Validators[0].ClientCtx
-		out := CmdExNewID(validatorCtx, s.T(), "ID-forReplace4", addr[0], netutilts.Accounts[netutilts.KeyAccount4].String(), "thisISID3",
-			netutilts.JSONFlag(),
-			netutilts.SkipConfirmation(),
-			netutilts.MakeByAccount(netutilts.KeyIDSigner),
-			netutilts.BlockBroadcast(),
-			netutilts.SHRFee2(),
-		)
-		txResponse := netutilts.ParseStdOut(s.T(), out.Bytes())
-		s.Equalf(netutilts.ShareLedgerSuccessCode, txResponse.Code, "create ID fail %s", out)
-		_ = s.network.WaitForNextBlock()
-
-		out = CmdExNewID(validatorCtx, s.T(), "ID-forReplace3", netutilts.Accounts[netutilts.KeyAccount4].String(), addr[0], "thisISID3",
-			netutilts.JSONFlag(),
-			netutilts.SkipConfirmation(),
-			netutilts.MakeByAccount(netutilts.KeyIDSigner),
-			netutilts.BlockBroadcast(),
-			netutilts.SHRFee2(),
-		)
-		txResponse = netutilts.ParseStdOut(s.T(), out.Bytes())
-		s.Equalf(netutilts.ShareLedgerSuccessCode, txResponse.Code, "create ID fail %s", out)
-		_ = s.network.WaitForNextBlock()
-
-		out = CmdExReplaceIdOwner(validatorCtx, s.T(), "ID-forReplace3", netutilts.Accounts[netutilts.KeyAccount4].String(),
-			netutilts.MakeByAccount(netutilts.KeyAccount4),
-			netutilts.SkipConfirmation(), netutilts.JSONFlag(), netutilts.SHRFee2(), netutilts.BlockBroadcast())
-
-		txResponse = netutilts.ParseStdOut(s.T(), out.Bytes())
-		s.Equalf(netutilts.ShareLedgerErrorCodeIDAddressOwnerID, txResponse.Code, "check replace response fail %s", out)
-
-		_ = s.network.WaitForNextBlock()
-		out = CmdExGetID(validatorCtx, s.T(), "ID-forReplace3",
-			netutilts.JSONFlag(),
-		)
-		idData := IDJsonUnmarshal(s.T(), out.Bytes())
-		address, err := sdk.AccAddressFromBech32(addr[0])
-		s.NoError(err)
-		s.Equalf(address.String(), idData.GetData().GetOwnerAddress(), "owner data not equal")
-	})
 }

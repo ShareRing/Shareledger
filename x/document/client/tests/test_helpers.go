@@ -13,44 +13,31 @@ import (
 	"github.com/sharering/shareledger/x/document/types"
 )
 
-func CmdExCreateDocument(clientCtx client.Context, t *testing.T, holderID, docProof, extraData string, extraFlags ...string) testutil.BufferWriter {
+func CmdExCreateDocument(clientCtx client.Context, holderID, docProof, extraData string, extraFlags ...string) (testutil.BufferWriter, error) {
 	args := []string{holderID, docProof, extraData}
 	args = append(args, extraFlags...)
-	out, err := clitestutil.ExecTestCLICmd(clientCtx, cli.CmdCreateDocument(), args)
-	if err != nil {
-		t.Errorf("fail create document: %v", err)
-	}
-	return out
+	return clitestutil.ExecTestCLICmd(clientCtx, cli.CmdCreateDocument(), args)
 }
 
-func CmdExCreateDocumentInBatch(clientCtx client.Context, t *testing.T, holderID, docProof, extraData string, extraFlags ...string) testutil.BufferWriter {
+func CmdExCreateDocumentInBatch(clientCtx client.Context, holderID, docProof, extraData string, extraFlags ...string) (testutil.BufferWriter, error) {
 	args := []string{holderID, docProof, extraData}
 	args = append(args, extraFlags...)
-	out, err := clitestutil.ExecTestCLICmd(clientCtx, cli.CmdCreateDocuments(), args)
-	if err != nil {
-		t.Errorf("fail create document: %v", err)
-	}
-	return out
+
+	return clitestutil.ExecTestCLICmd(clientCtx, cli.CmdCreateDocuments(), args)
 }
 
-func CmdExUpdateDocument(clientCtx client.Context, t *testing.T, holderID, docProof, extraData string, extraFlags ...string) testutil.BufferWriter {
+func CmdExUpdateDocument(clientCtx client.Context, holderID, docProof, extraData string, extraFlags ...string) (testutil.BufferWriter, error) {
 	args := []string{holderID, docProof, extraData}
 	args = append(args, extraFlags...)
-	out, err := clitestutil.ExecTestCLICmd(clientCtx, cli.CmdUpdateDocument(), args)
-	if err != nil {
-		t.Errorf("fail update document: %v", err)
-	}
-	return out
+
+	return clitestutil.ExecTestCLICmd(clientCtx, cli.CmdUpdateDocument(), args)
 }
 
-func CmdExRevokeDocument(clientCtx client.Context, t *testing.T, holderID, docProof string, extraFlags ...string) testutil.BufferWriter {
+func CmdExRevokeDocument(clientCtx client.Context, holderID, docProof string, extraFlags ...string) (testutil.BufferWriter, error) {
 	args := []string{holderID, docProof}
 	args = append(args, extraFlags...)
-	out, err := clitestutil.ExecTestCLICmd(clientCtx, cli.CmdRevokeDocument(), args)
-	if err != nil {
-		t.Errorf("fail revoke document: %v", err)
-	}
-	return out
+
+	return clitestutil.ExecTestCLICmd(clientCtx, cli.CmdRevokeDocument(), args)
 }
 
 func CmdExGetDocByHolderID(clientCtx client.Context, t *testing.T, holderID string, extraFlags ...string) types.QueryDocumentByHolderIdResponse {

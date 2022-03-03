@@ -14,26 +14,18 @@ import (
 	"github.com/sharering/shareledger/x/id/types"
 )
 
-func CmdExNewID(clientCtx client.Context, t *testing.T, userID, backupAddress, addressOwner, exData string, extraFlags ...string) testutil.BufferWriter {
+func CmdExNewID(clientCtx client.Context, userID, backupAddress, addressOwner, exData string, extraFlags ...string) (testutil.BufferWriter, error) {
 	args := []string{userID, backupAddress, addressOwner, exData}
 	args = append(args, extraFlags...)
-	out, err := clitestutil.ExecTestCLICmd(clientCtx, cli.CmdCreateId(), args)
-	if err != nil {
-		t.Errorf("fail create id: %v", err)
-	}
 
-	return out
+	return clitestutil.ExecTestCLICmd(clientCtx, cli.CmdCreateId(), args)
 }
 
-func CmdExNewIDInBatch(clientCtx client.Context, t *testing.T, userIDs, backupAddresses, addressOwners, exDatas string, extraFlags ...string) testutil.BufferWriter {
+func CmdExNewIDInBatch(clientCtx client.Context, userIDs, backupAddresses, addressOwners, exDatas string, extraFlags ...string) (testutil.BufferWriter, error) {
 	args := []string{userIDs, backupAddresses, addressOwners, exDatas}
 	args = append(args, extraFlags...)
-	out, err := clitestutil.ExecTestCLICmd(clientCtx, cli.CmdCreateIds(), args)
-	if err != nil {
-		t.Errorf("fail create id: %v", err)
-	}
 
-	return out
+	return clitestutil.ExecTestCLICmd(clientCtx, cli.CmdCreateIds(), args)
 }
 
 func CmdExGetID(clientCtx client.Context, t *testing.T, userID string, extraFlags ...string) testutil.BufferWriter {
@@ -47,26 +39,18 @@ func CmdExGetID(clientCtx client.Context, t *testing.T, userID string, extraFlag
 	return out
 }
 
-func CmdExUpdateID(clientCtx client.Context, t *testing.T, userID, exData string, extraFlags ...string) testutil.BufferWriter {
+func CmdExUpdateID(clientCtx client.Context, userID, exData string, extraFlags ...string) (testutil.BufferWriter, error) {
 	args := []string{userID, exData}
 	args = append(args, extraFlags...)
-	out, err := clitestutil.ExecTestCLICmd(clientCtx, cli.CmdUpdateId(), args)
-	if err != nil {
-		t.Errorf("fail update id: %v", err)
-	}
 
-	return out
+	return clitestutil.ExecTestCLICmd(clientCtx, cli.CmdUpdateId(), args)
 }
 
-func CmdExReplaceIdOwner(clientCtx client.Context, t *testing.T, userID, newAddress string, extraFlags ...string) testutil.BufferWriter {
+func CmdExReplaceIdOwner(clientCtx client.Context, userID, newAddress string, extraFlags ...string) (testutil.BufferWriter, error) {
 	args := []string{userID, newAddress}
 	args = append(args, extraFlags...)
-	out, err := clitestutil.ExecTestCLICmd(clientCtx, cli.CmdReplaceIdOwner(), args)
-	if err != nil {
-		t.Errorf("fail replace id: %v", err)
-	}
 
-	return out
+	return clitestutil.ExecTestCLICmd(clientCtx, cli.CmdReplaceIdOwner(), args)
 }
 
 func CmdExGetIDByAddress(clientCtx client.Context, t *testing.T, addr string, extraFlags ...string) testutil.BufferWriter {

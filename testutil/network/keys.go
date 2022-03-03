@@ -27,6 +27,7 @@ func NewKeyringBuilder(t *testing.T, kr keyring.Keyring) *KeyRingBuilder {
 		genBalances: []banktypes.Balance{},
 	}
 }
+
 func (kb *KeyRingBuilder) BuildGenesis() (keyring.Keyring, []authtypes.GenesisAccount, []banktypes.Balance) {
 	return kb.kb, kb.accGens, kb.genBalances
 }
