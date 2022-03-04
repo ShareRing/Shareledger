@@ -3,14 +3,8 @@ package network
 import (
 	"encoding/json"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 	"github.com/sharering/shareledger/app"
-	assettypes "github.com/sharering/shareledger/x/asset/types"
-	bookingtypes "github.com/sharering/shareledger/x/booking/types"
-	documenttypes "github.com/sharering/shareledger/x/document/types"
-	gentleminttypes "github.com/sharering/shareledger/x/gentlemint/types"
-	idtypes "github.com/sharering/shareledger/x/id/types"
 	denom "github.com/sharering/shareledger/x/utils/demo"
 	"github.com/stretchr/testify/require"
 	"github.com/tendermint/spm/cosmoscmd"
@@ -57,22 +51,6 @@ var (
 	defaultCoins  = sdk.NewCoins(sdk.NewCoin(denom.Base, sdk.NewInt(oneThousandSHR)), sdk.NewCoin(denom.BaseUSD, sdk.NewInt(oneHundredSHRP)))
 	becauseImRich = sdk.NewCoins(sdk.NewCoin(denom.Base, sdk.NewInt(oneMillionSHR)), sdk.NewCoin(denom.BaseUSD, sdk.NewInt(oneMillionSHRP)))
 	poorMen       = sdk.NewCoins(sdk.NewCoin(denom.Base, sdk.NewInt(0)), sdk.NewCoin(denom.BaseUSD, sdk.NewInt(0)))
-
-	ShareLedgerErrorCodeUnauthorized = sdkerrors.ErrUnauthorized.ABCICode()
-	ShareLedgerErrorCodeMaxSupply    = gentleminttypes.ErrBaseSupplyExceeded.ABCICode()
-
-	ShareLedgerErrorCodeAssetNotExisted = assettypes.ErrNameDoesNotExist.ABCICode()
-
-	ShareLedgerErrorCodeDocumentAlreadyExisted = documenttypes.ErrDocExisted.ABCICode()
-	ShareLedgerDocumentNotFound                = documenttypes.ErrDocNotExisted.ABCICode()
-
-	ShareLedgerCoinInsufficient = sdkerrors.ErrInsufficientFunds.ABCICode()
-
-	ShareLedgerErrorCodeIDAddressOwnerID = idtypes.ErrWrongBackupAddr.ABCICode()
-
-	ShareLedgerBookingAssetAlreadyBooked = bookingtypes.ErrAssetAlreadyBooked.ABCICode()
-	ShareLedgerBookingBookerIsNotOwner   = bookingtypes.ErrNotBookerOfAsset.ABCICode()
-	//ShareLedgerInsufficientTXNFee        = sdkerrors.ErrInsufficientFee.ABCICode()
 )
 
 type (

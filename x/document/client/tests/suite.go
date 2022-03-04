@@ -115,7 +115,6 @@ func (s *DocumentIntegrationTestSuite) setupTestingMaterial() {
 
 		out, _ = tests.ExCmdEnrollDocIssuer(
 			s.network.Validators[0].ClientCtx,
-			s.T(),
 			[]string{netutilts.Accounts[iz.accountID].String()},
 			netutilts.SHRFee2(),
 			netutilts.MakeByAccount(netutilts.KeyOperator),
@@ -150,7 +149,6 @@ func (s *DocumentIntegrationTestSuite) setupTestingMaterial() {
 			_ = s.network.WaitForNextBlock()
 			res = netutilts.ParseStdOut(s.T(), out.Bytes())
 			s.Equalf(netutilts.ShareLedgerSuccessCode, res.Code, "init doc %s fail %v", iz.docProof, res.String())
-			s.T().Logf("create doc successfully id:%s proof:%s data:%s", iz.id, iz.docProof, iz.docData)
 		}
 
 	}

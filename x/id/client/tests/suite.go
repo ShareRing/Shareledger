@@ -28,7 +28,6 @@ func (s *IDIntegrationTestSuite) setupTestMaterial() {
 
 	out, _ := tests.ExCmdEnrollAccountOperator(
 		s.network.Validators[0].ClientCtx,
-		s.T(),
 		[]string{netutilts.Accounts[netutilts.KeyOperator].String()},
 		netutilts.MakeByAccount(netutilts.KeyAuthority),
 		netutilts.SkipConfirmation(),
@@ -90,7 +89,6 @@ func (s *IDIntegrationTestSuite) setupTestMaterial() {
 		if id.accID != "" {
 			out, _ = tests.ExCmdEnrollIdSigner(
 				s.network.Validators[0].ClientCtx,
-				s.T(),
 				[]string{netutilts.Accounts[id.accID].String()},
 				netutilts.MakeByAccount(netutilts.KeyOperator),
 				netutilts.SkipConfirmation(),
