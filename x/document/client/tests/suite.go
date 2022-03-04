@@ -90,7 +90,6 @@ func (s *DocumentIntegrationTestSuite) setupTestingMaterial() {
 	//Enroll ACCOUNT_OPERATOR
 	out, _ := tests.ExCmdEnrollAccountOperator(
 		s.network.Validators[0].ClientCtx,
-		s.T(),
 		[]string{netutilts.Accounts[netutilts.KeyOperator].String()},
 		netutilts.MakeByAccount(netutilts.KeyAuthority),
 		netutilts.SkipConfirmation(),
@@ -105,7 +104,6 @@ func (s *DocumentIntegrationTestSuite) setupTestingMaterial() {
 		//Enroll ID_SIGNER
 		out, _ = tests.ExCmdEnrollIdSigner(
 			s.network.Validators[0].ClientCtx,
-			s.T(),
 			[]string{netutilts.Accounts[iz.accountID].String()},
 			netutilts.SHRFee2(),
 			netutilts.MakeByAccount(netutilts.KeyOperator),

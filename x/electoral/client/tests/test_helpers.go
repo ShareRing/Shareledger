@@ -14,11 +14,11 @@ import (
 	"github.com/sharering/shareledger/x/electoral/types"
 )
 
-func ExCmdEnrollDocIssuer(clientCtx client.Context, t *testing.T, address []string, additionalFlags ...string) (testutil.BufferWriter, error) {
+func ExCmdEnrollDocIssuer(clientCtx client.Context, address []string, additionalFlags ...string) (testutil.BufferWriter, error) {
 	args := append(address, additionalFlags...)
 	return clitestutil.ExecTestCLICmd(clientCtx, cli.CmdEnrollDocIssuers(), args)
 }
-func ExCmdRevokeDocIssuer(clientCtx client.Context, t *testing.T, address []string, additionalFlags ...string) (testutil.BufferWriter, error) {
+func ExCmdRevokeDocIssuer(clientCtx client.Context, address []string, additionalFlags ...string) (testutil.BufferWriter, error) {
 	args := append(address, additionalFlags...)
 	return clitestutil.ExecTestCLICmd(clientCtx, cli.CmdRevokeDocIssuers(), args)
 
@@ -31,45 +31,45 @@ func ExCmdGetDocIssuers(clientCtx client.Context, t *testing.T, additionalFlags 
 	return clitestutil.ExecTestCLICmd(clientCtx, cli.CmdDocumentIssuers(), args)
 }
 
-func ExCmdGetDocIssuer(clientCtx client.Context, t *testing.T, address string, additionalFlags ...string) (testutil.BufferWriter, error) {
+func ExCmdGetDocIssuer(clientCtx client.Context, address string, additionalFlags ...string) (testutil.BufferWriter, error) {
 	args := []string{address}
 	args = append(args, additionalFlags...)
 	return clitestutil.ExecTestCLICmd(clientCtx, cli.CmdDocumentIssuer(), args)
 }
 
-func ExCmdEnrollAccountOperator(clientCtx client.Context, t *testing.T, address []string, additionalFlags ...string) (testutil.BufferWriter, error) {
+func ExCmdEnrollAccountOperator(clientCtx client.Context, address []string, additionalFlags ...string) (testutil.BufferWriter, error) {
 
 	args := append(address, additionalFlags...)
 
 	return clitestutil.ExecTestCLICmd(clientCtx, cli.CmdEnrollAccountOperators(), args)
 }
-func ExCmdQueryAccountOperator(clientCtx client.Context, t *testing.T, address string, additionalFlags ...string) (testutil.BufferWriter, error) {
+func ExCmdQueryAccountOperator(clientCtx client.Context, address string, additionalFlags ...string) (testutil.BufferWriter, error) {
 	args := []string{address}
 	args = append(args, additionalFlags...)
 	return clitestutil.ExecTestCLICmd(clientCtx, cli.CmdAccountOperator(), args)
 }
-func ExCmdRevokeAccountOperator(clientCtx client.Context, t *testing.T, address []string, additionalFlags ...string) (testutil.BufferWriter, error) {
+func ExCmdRevokeAccountOperator(clientCtx client.Context, address []string, additionalFlags ...string) (testutil.BufferWriter, error) {
 
 	args := append(address, additionalFlags...)
 
 	return clitestutil.ExecTestCLICmd(clientCtx, cli.CmdRevokeAccountOperators(), args)
 }
 
-func ExCmdEnrollIdSigner(clientCtx client.Context, t *testing.T, address []string, additionalFlags ...string) (testutil.BufferWriter, error) {
+func ExCmdEnrollIdSigner(clientCtx client.Context, address []string, additionalFlags ...string) (testutil.BufferWriter, error) {
 	args := append(address, additionalFlags...)
 
 	args = append(args, additionalFlags...)
 
 	return clitestutil.ExecTestCLICmd(clientCtx, cli.CmdEnrollIdSigners(), args)
 }
-func ExCmdRevokeIdSigner(clientCtx client.Context, t *testing.T, address []string, additionalFlags ...string) (testutil.BufferWriter, error) {
+func ExCmdRevokeIdSigner(clientCtx client.Context, address []string, additionalFlags ...string) (testutil.BufferWriter, error) {
 	args := append(address, additionalFlags...)
 
 	args = append(args, additionalFlags...)
 
 	return clitestutil.ExecTestCLICmd(clientCtx, cli.CmdRevokeIdSigners(), args)
 }
-func ExCmdGetIdSigner(clientCtx client.Context, t *testing.T, address string, additionalFlags ...string) (testutil.BufferWriter, error) {
+func ExCmdGetIdSigner(clientCtx client.Context, address string, additionalFlags ...string) (testutil.BufferWriter, error) {
 	args := []string{address}
 	args = append(args, additionalFlags...)
 

@@ -7,6 +7,7 @@ import (
 	netutilts "github.com/sharering/shareledger/testutil/network"
 	idtypes "github.com/sharering/shareledger/x/id/types"
 	"github.com/stretchr/testify/suite"
+	"os"
 	"strings"
 
 	"github.com/sharering/shareledger/x/electoral/client/tests"
@@ -132,6 +133,8 @@ func (s *IDIntegrationTestSuite) SetupSuite() {
 	s.T().Log("setting up integration test suite successfully")
 }
 func (s *IDIntegrationTestSuite) TearDownSuite() {
+	s.NoError(os.RemoveAll(s.dir), "tearing down fail")
+	s.network.Cleanup()
 	s.T().Log("tearing down integration test suite")
 }
 

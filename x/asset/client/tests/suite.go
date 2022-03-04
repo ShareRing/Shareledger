@@ -56,6 +56,7 @@ func (s *AssetIntegrationTestSuite) SetupSuite() {
 }
 func (s *AssetIntegrationTestSuite) TearDownSuite() {
 	s.NoError(os.RemoveAll(s.dir), "cleanup test case fails")
+	s.network.Cleanup()
 	s.T().Log("tearing down integration test suite")
 }
 

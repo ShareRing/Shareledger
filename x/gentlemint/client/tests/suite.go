@@ -5,13 +5,13 @@ import (
 	testutil2 "github.com/cosmos/cosmos-sdk/testutil"
 	"github.com/cosmos/cosmos-sdk/testutil/network"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/cosmos/cosmos-sdk/x/bank/client/testutil"
-	"github.com/cosmos/cosmos-sdk/x/bank/types"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	netutilts "github.com/sharering/shareledger/testutil/network"
-	types2 "github.com/sharering/shareledger/x/gentlemint/types"
+	gentleminttypes "github.com/sharering/shareledger/x/gentlemint/types"
 	denom "github.com/sharering/shareledger/x/utils/demo"
 	"github.com/stretchr/testify/suite"
 	"os"
+	"strings"
 
 	"github.com/sharering/shareledger/x/electoral/client/tests"
 )
@@ -72,189 +72,324 @@ func (s *GentlemintIntegrationTestSuite) TearDownSuite() {
 
 func (s *GentlemintIntegrationTestSuite) TestLoadSHR() {
 	validatorCtx := s.network.Validators[0].ClientCtx
+	type (
+		Num struct {
+			D int
+		}
+	)
+	testSuite := []struct {
+		d                    string
+		iLoadTarget          string
+		iAmount              string
+		txCreator            string
+		txFee                int
+		oErr                 error
+		oRes                 *sdk.TxResponse
+		expectTargetBalance  *Num
+		expectCreatorBalance *Num
+	}{
+		{
+			d:                    "load_shr_success",
+			iLoadTarget:          netutilts.Accounts[netutilts.KeyEmpty1].String(),
+			iAmount:              "100shr",
+			txCreator:            netutilts.KeyAuthority,
+			txFee:                2,
+			oErr:                 nil,
+			oRes:                 &sdk.TxResponse{Code: netutilts.ShareLedgerSuccessCode},
+			expectTargetBalance:  &Num{98},
+			expectCreatorBalance: &Num{9998},
+		},
+		{
+			d:           "load_shr_but_supply_reach_to_limit",
+			iLoadTarget: netutilts.Accounts[netutilts.KeyEmpty1].String(),
+			iAmount:     "4396000043shr",
+			txCreator:   netutilts.KeyAuthority,
+			txFee:       2,
+			oErr:        nil,
+			oRes:        &sdk.TxResponse{Code: gentleminttypes.ErrBaseSupplyExceeded.ABCICode()},
+		},
+		{
+			d:           "load_shr_loader_isn't_authority",
+			iLoadTarget: netutilts.Accounts[netutilts.KeyEmpty1].String(),
+			iAmount:     "100shr",
+			txCreator:   netutilts.KeyAccount1,
+			txFee:       2,
+			oErr:        nil,
+			oRes:        &sdk.TxResponse{Code: sdkerrors.ErrUnauthorized.ABCICode()},
+		},
+	}
 
-	s.Run("load_shr_success", func() {
-		balResBeforeLoad := CmdQueryBalance(s.T(), validatorCtx, netutilts.Accounts[netutilts.KeyEmpty1])
-		fee := 2
-		stdOut, err := CmdLoadSHR(validatorCtx, netutilts.Accounts[netutilts.KeyEmpty1].String(),
-			"100shr",
-			netutilts.MakeByAccount(netutilts.KeyAuthority),
-			netutilts.SkipConfirmation(),
-			netutilts.BlockBroadcast(),
-			netutilts.SHRFee(fee),
-		)
-		_ = s.network.WaitForNextBlock()
-		balRes := types.QueryAllBalancesResponse{}
-
-		s.NoErrorf(err, "load shr should not error %v", err)
-		txResponse := netutilts.ParseStdOut(s.T(), stdOut.Bytes())
-		s.Equalf(netutilts.ShareLedgerSuccessCode, txResponse.Code, "load shr must success %v", txResponse)
-		balRes = CmdQueryBalance(s.T(), validatorCtx, netutilts.Accounts[netutilts.KeyEmpty1])
-		s.NoErrorf(err, "query balance should not error %v", err)
-		expectSHR := (100 - int64(fee)) * denom.ShrExponent
-		s.T().Logf("the balance before load and after load %s, %s", balResBeforeLoad, balRes)
-		s.Equalf(fmt.Sprintf("%d", expectSHR), balRes.GetBalances().AmountOf(denom.Base).String(), "balance of user is not equal after load shr %s", balRes.GetBalances().String())
-
-		balRes = CmdQueryBalance(s.T(), validatorCtx, netutilts.Accounts[netutilts.KeyAuthority])
-		s.NoErrorf(err, "query balance should not error %v", err)
-		expectSHR = 9998 * denom.ShrExponent
-		s.Require().Equalf(fmt.Sprintf("%d", expectSHR), balRes.GetBalances().AmountOf(denom.Base).String(), "authority balance after make transaction is not equal")
-
-	})
-
-	s.Run("load_shr_loader_isn't_authority", func() {
-		stdOut, err := CmdLoadSHR(validatorCtx, netutilts.Accounts[netutilts.KeyEmpty1].String(), "100shr",
-			netutilts.MakeByAccount(netutilts.KeyAccount1),
-			netutilts.SkipConfirmation(),
-			netutilts.BlockBroadcast(),
-			netutilts.SHRFee2(),
-		)
-		s.NoErrorf(err, "load shr should not error %v", err)
-		txResponse := netutilts.ParseStdOut(s.T(), stdOut.Bytes())
-		s.Equalf(netutilts.ShareLedgerErrorCodeUnauthorized, txResponse.Code, "load shr mustn't success %v", txResponse)
-	})
-
-	s.Run("load_shr_but_supply_reach_to_limit", func() {
-		stdOut, err := CmdLoadSHR(validatorCtx, netutilts.Accounts[netutilts.KeyEmpty1].String(), "4396000043shr",
-			netutilts.MakeByAccount(netutilts.KeyAuthority),
-			netutilts.SkipConfirmation(),
-			netutilts.BlockBroadcast(),
-			netutilts.SHRFee2(),
-			netutilts.JSONFlag(),
-		)
-		_ = s.network.WaitForNextBlock()
-		s.NoErrorf(err, "load shr should not error %v", err)
-		txResponse := netutilts.ParseStdOut(s.T(), stdOut.Bytes())
-		s.Equalf(netutilts.ShareLedgerErrorCodeMaxSupply, txResponse.Code, "load shr must not success %v", txResponse)
-
-	})
+	for _, tc := range testSuite {
+		s.Run(tc.d, func() {
+			stdOut, err := CmdLoadSHR(validatorCtx, tc.iLoadTarget,
+				tc.iAmount,
+				netutilts.MakeByAccount(tc.txCreator),
+				netutilts.SkipConfirmation(),
+				netutilts.BlockBroadcast(),
+				netutilts.SHRFee(tc.txFee),
+			)
+			if tc.oErr != nil {
+				s.Require().NotNilf(err, "this case require err")
+			}
+			if tc.oRes != nil {
+				txResponse := netutilts.ParseStdOut(s.T(), stdOut.Bytes())
+				s.Equalf(tc.oRes.Code, txResponse.Code, "load shr must success %v", txResponse)
+			}
+			if tc.expectTargetBalance != nil {
+				a, _ := sdk.AccAddressFromBech32(tc.iLoadTarget)
+				balRes := CmdQueryBalance(s.T(), validatorCtx, a)
+				s.Equalf(fmt.Sprintf("%d", int64(tc.expectTargetBalance.D)*denom.ShrExponent), balRes.GetBalances().AmountOf(denom.Base).String(), "balance of user is not equal after load shr %s", balRes.GetBalances().String())
+			}
+			if tc.expectCreatorBalance != nil {
+				balRes := CmdQueryBalance(s.T(), validatorCtx, netutilts.Accounts[tc.txCreator])
+				s.Require().Equalf(fmt.Sprintf("%d", int64(tc.expectCreatorBalance.D)*denom.ShrExponent), balRes.GetBalances().AmountOf(denom.Base).String(), "authority balance after make transaction is not equal")
+			}
+		})
+	}
 }
 
 func (s *GentlemintIntegrationTestSuite) TestBurnSHR() {
 	validatorCtx := s.network.Validators[0].ClientCtx
 
-	s.Run("burn_shr_success", func() {
+	type (
+		Num struct {
+			D int
+		}
+	)
+	testSuite := []struct {
+		d                 string
+		iAmount           string
+		txCreator         string
+		txFee             int
+		oErr              error
+		oRes              *sdk.TxResponse
+		expectSubtractNum *Num
+	}{
+		{
+			d:                 "burn_shr_success",
+			iAmount:           "11shr",
+			txCreator:         netutilts.KeyTreasurer,
+			txFee:             2,
+			oErr:              nil,
+			oRes:              &sdk.TxResponse{Code: netutilts.ShareLedgerSuccessCode},
+			expectSubtractNum: &Num{D: -13},
+		},
+	}
 
-		balRes := CmdQueryBalance(s.T(), validatorCtx, netutilts.Accounts[netutilts.KeyTreasurer], netutilts.JSONFlag())
+	for _, tc := range testSuite {
+		s.Run(tc.d, func() {
+			balResBeforeBurn := CmdQueryBalance(s.T(), validatorCtx, netutilts.Accounts[tc.txCreator], netutilts.JSONFlag())
+			stdOut, err := CmdBurnSHR(validatorCtx,
+				tc.iAmount,
+				netutilts.MakeByAccount(tc.txCreator),
+				netutilts.SkipConfirmation(),
+				netutilts.BlockBroadcast(),
+				netutilts.SHRFee(tc.txFee),
+			)
+			if tc.oErr != nil {
+				s.Require().NotNilf(err, "this case require err")
+			}
+			if tc.oRes != nil {
+				txResponse := netutilts.ParseStdOut(s.T(), stdOut.Bytes())
+				s.Equalf(tc.oRes.Code, txResponse.Code, "load shr must success %v", txResponse)
+			}
 
-		beforeBurnSHR := balRes.GetBalances().AmountOf(denom.Base)
-		stdOut, err := CmdBurnSHR(validatorCtx, "11shr", netutilts.SHRFee2(), netutilts.MakeByAccount(netutilts.KeyTreasurer), netutilts.BlockBroadcast(), netutilts.SkipConfirmation())
-		s.NoErrorf(err, "should not error %v", err)
-		txResponse := netutilts.ParseStdOut(s.T(), stdOut.Bytes())
-		s.Equalf(netutilts.ShareLedgerSuccessCode, txResponse.Code, "the response code should success %v", txResponse)
-		_ = s.network.WaitForNextBlock()
-
-		balRes = CmdQueryBalance(s.T(), validatorCtx, netutilts.Accounts[netutilts.KeyTreasurer])
-		afterBurnSHR := balRes.GetBalances().AmountOf(denom.Base)
-		s.Require().NoError(err)
-
-		expectAmount := beforeBurnSHR.Sub(sdk.NewInt((11 + 2) * denom.ShrExponent))
-
-		//s.Equal(sdk.NewCoin(denom.BaseUSD, sdk.NewInt(expectAmount*denom.USDExponent)), sdk.NewCoin(denom.BaseUSD, accBalance.Balances.AmountOf(denom.BaseUSD)), accBalance.Balances)
-
-		s.Equalf(expectAmount.String(), afterBurnSHR.String(), "the expect shr should be equal")
-	})
+			if tc.expectSubtractNum != nil {
+				balRes := CmdQueryBalance(s.T(), validatorCtx, netutilts.Accounts[tc.txCreator])
+				expectAmount := balResBeforeBurn.
+					GetBalances().
+					AmountOf(denom.Base).
+					Add(sdk.NewInt(int64(tc.expectSubtractNum.D) * denom.ShrExponent))
+				s.Equalf(expectAmount.String(), balRes.GetBalances().AmountOf(denom.Base).String(), "the expect shr should be equal")
+			}
+		})
+	}
 }
 
 func (s *GentlemintIntegrationTestSuite) TestBurnSHRP() {
 	validatorCtx := s.network.Validators[0].ClientCtx
 
-	s.Run("burn_shrp_success", func() {
+	type (
+		Num struct {
+			D int
+		}
+	)
+	testSuite := []struct {
+		d                 string
+		iAmount           string
+		txCreator         string
+		txFee             int
+		oErr              error
+		oRes              *sdk.TxResponse
+		expectSubtractNum *Num
+	}{
+		{
+			d:                 "burn_shrp_success",
+			iAmount:           "11shrp",
+			txCreator:         netutilts.KeyTreasurer,
+			txFee:             2,
+			oErr:              nil,
+			oRes:              &sdk.TxResponse{Code: netutilts.ShareLedgerSuccessCode},
+			expectSubtractNum: &Num{D: -11},
+		},
+	}
 
-		balRes := types.QueryAllBalancesResponse{}
-		balRes = CmdQueryBalance(s.T(), validatorCtx, netutilts.Accounts[netutilts.KeyTreasurer])
+	for _, tc := range testSuite {
+		s.Run(tc.d, func() {
+			balResBeforeBurn := CmdQueryBalance(s.T(), validatorCtx, netutilts.Accounts[tc.txCreator], netutilts.JSONFlag())
+			stdOut, err := CmdBurnSHR(validatorCtx,
+				tc.iAmount,
+				netutilts.MakeByAccount(tc.txCreator),
+				netutilts.SkipConfirmation(),
+				netutilts.BlockBroadcast(),
+				netutilts.SHRFee(tc.txFee),
+			)
+			if tc.oErr != nil {
+				s.Require().NotNilf(err, "this case require err")
+			}
+			if tc.oRes != nil {
+				txResponse := netutilts.ParseStdOut(s.T(), stdOut.Bytes())
+				s.Equalf(tc.oRes.Code, txResponse.Code, "load shr must success %v", txResponse)
+			}
 
-		beforeBurnSHRP := balRes.GetBalances().AmountOf(denom.BaseUSD)
-		stdOut, err := CmdBurnSHRP(validatorCtx, "11shrp", netutilts.SHRFee2(), netutilts.MakeByAccount(netutilts.KeyTreasurer), netutilts.BlockBroadcast(), netutilts.SkipConfirmation())
-		s.NoErrorf(err, "should not error %v", err)
-		txResponse := netutilts.ParseStdOut(s.T(), stdOut.Bytes())
-		s.Equalf(netutilts.ShareLedgerSuccessCode, txResponse.Code, "the response code should success %v", txResponse)
-		_ = s.network.WaitForNextBlock()
+			if tc.expectSubtractNum != nil {
+				balRes := CmdQueryBalance(s.T(), validatorCtx, netutilts.Accounts[tc.txCreator])
+				expectAmount := balResBeforeBurn.
+					GetBalances().
+					AmountOf(denom.BaseUSD).
+					Add(sdk.NewInt(int64(tc.expectSubtractNum.D) * denom.USDExponent))
+				s.Equalf(expectAmount.String(), balRes.GetBalances().AmountOf(denom.BaseUSD).String(), "the expect shr should be equal")
+			}
+		})
+	}
 
-		balRes = types.QueryAllBalancesResponse{}
-		balRes = CmdQueryBalance(s.T(), validatorCtx, netutilts.Accounts[netutilts.KeyTreasurer])
-		s.NoErrorf(err, "query balance should not error %v", err)
-
-		afterBurnSHR := balRes.GetBalances().AmountOf(denom.BaseUSD)
-		s.Require().NoError(err)
-
-		expectAmount := beforeBurnSHRP.Sub(sdk.NewInt(11 * denom.USDExponent))
-
-		s.Equalf(expectAmount.String(), afterBurnSHR.String(), "the expect shrp should be equal")
-	})
 }
 
 func (s *GentlemintIntegrationTestSuite) TestBuySHR() {
 	validatorCtx := s.network.Validators[0].ClientCtx
 
-	s.Run("buy_shr_success", func() {
-		stdOut, err := CmdBuySHR(validatorCtx, "211",
-			netutilts.SkipConfirmation(),
-			netutilts.BlockBroadcast(), netutilts.SHRFee2(),
-			netutilts.MakeByAccount(netutilts.KeyAccount4))
+	type (
+		Num struct {
+			D float64
+		}
+	)
+	testSuite := []struct {
+		d                   string
+		iAmount             string
+		txCreator           string
+		txFee               int
+		oErr                error
+		oRes                *sdk.TxResponse
+		expectChangeNumSHR  *Num
+		expectChangeNumSHRP *Num
+	}{
+		{
+			d:                   "buy_shr_success",
+			iAmount:             "211",
+			txCreator:           netutilts.KeyAccount4,
+			txFee:               2,
+			oErr:                nil,
+			oRes:                &sdk.TxResponse{Code: netutilts.ShareLedgerSuccessCode},
+			expectChangeNumSHR:  &Num{D: 209},
+			expectChangeNumSHRP: &Num{D: -1.06},
+		},
+	}
 
-		s.NoErrorf(err, "should no error %v", err)
-		txRes := netutilts.ParseStdOut(s.T(), stdOut.Bytes())
-		s.Equalf(netutilts.ShareLedgerSuccessCode, txRes.Code, "should no error %v", txRes.String())
-		_ = s.network.WaitForNextBlock()
-		balRes := types.QueryAllBalancesResponse{}
-		out, err := testutil.QueryBalancesExec(validatorCtx, netutilts.Accounts[netutilts.KeyAccount4])
-		s.NoErrorf(err, "query balance should not error %v", err)
-		err = validatorCtx.Codec.UnmarshalJSON(out.Bytes(), &balRes)
-		s.Require().NoError(err)
+	for _, tc := range testSuite {
+		s.Run(tc.d, func() {
+			balResBeforeBuy := CmdQueryBalance(s.T(), validatorCtx, netutilts.Accounts[tc.txCreator], netutilts.JSONFlag())
+			stdOut, err := CmdBuySHR(validatorCtx,
+				tc.iAmount,
+				netutilts.MakeByAccount(tc.txCreator),
+				netutilts.SkipConfirmation(),
+				netutilts.BlockBroadcast(),
+				netutilts.SHRFee(tc.txFee),
+			)
+			if tc.oErr != nil {
+				s.Require().NotNilf(err, "this case require err")
+			}
+			if tc.oRes != nil {
+				txResponse := netutilts.ParseStdOut(s.T(), stdOut.Bytes())
+				s.Equalf(tc.oRes.Code, txResponse.Code, "load shr must success %v", txResponse)
+			}
+			balResAfterBuy := CmdQueryBalance(s.T(), validatorCtx, netutilts.Accounts[tc.txCreator])
+			if tc.expectChangeNumSHR != nil {
+				expectSHR := balResBeforeBuy.GetBalances().AmountOf(denom.Base).Add(sdk.NewInt(int64(tc.expectChangeNumSHR.D) * denom.ShrExponent))
+				s.Equalf(expectSHR.String(), balResAfterBuy.GetBalances().AmountOf(denom.Base).String(), "shr amount must be equal")
+			}
+			if tc.expectChangeNumSHRP != nil {
+				shrpSub := tc.expectChangeNumSHRP.D * float64(denom.USDExponent)
+				expectSHRP := balResBeforeBuy.GetBalances().AmountOf(denom.BaseUSD).Add(sdk.NewInt(int64(shrpSub)))
+				s.Equalf(expectSHRP.String(), balResAfterBuy.GetBalances().AmountOf(denom.BaseUSD).String(), "shrp amount must be equal")
+			}
+		})
+	}
 
-		expectSHR := 10209 * denom.ShrExponent
-
-		s.Equalf(fmt.Sprintf("%d", expectSHR), balRes.GetBalances().AmountOf(denom.Base).String(), "shr amount must be equal")
-		s.Equalf(fmt.Sprintf("%d", 9894), balRes.GetBalances().AmountOf(denom.BaseUSD).String(), "shrp must be equal")
-
-	})
-
-	s.Run("buy_shr_not_insufficient_shrp", func() {
-		stdOut, err := CmdBuySHR(validatorCtx, "2223",
-			netutilts.SkipConfirmation(),
-			netutilts.BlockBroadcast(),
-			netutilts.SHRFee2(),
-			netutilts.MakeByAccount(netutilts.KeyEmpty1))
-		s.NoErrorf(err, "should no error %v", err)
-		txRes := netutilts.ParseStdOut(s.T(), stdOut.Bytes())
-		s.Equalf(netutilts.ShareLedgerCoinInsufficient, txRes.Code, "should got error %v", stdOut.String())
-
-	})
 }
 
 func (s *GentlemintIntegrationTestSuite) TestLoadSHRP() {
 	validatorCtx := s.network.Validators[0].ClientCtx
-	s.Run("load_shrp_success", func() {
-		balRes := types.QueryAllBalancesResponse{}
-		out, err := testutil.QueryBalancesExec(validatorCtx, netutilts.Accounts[netutilts.KeyAccount1])
-		s.NoErrorf(err, "query balance should not error %v", err)
-		err = validatorCtx.Codec.UnmarshalJSON(out.Bytes(), &balRes)
-		s.Require().NoError(err)
-		s.T().Logf("before load %s", balRes.GetBalances())
-		out, err = CmdLoadSHRP(validatorCtx, netutilts.Accounts[netutilts.KeyAccount1].String(), "129shrp",
-			netutilts.SkipConfirmation(),
-			netutilts.BlockBroadcast(),
-			netutilts.MakeByAccount(netutilts.KeyLoader),
-			netutilts.SHRFee2())
-		s.NoErrorf(err, "should not error %v", err)
-		txnResponse := netutilts.ParseStdOut(s.T(), out.Bytes())
-		s.Equalf(netutilts.ShareLedgerSuccessCode, txnResponse.Code, "the txn must be success %v", txnResponse.String())
 
-		s.T().Logf("make txn address %v", netutilts.Accounts[netutilts.KeyLoader].String())
-		s.T().Logf("make account1 address %v", netutilts.Accounts[netutilts.KeyAccount1].String())
+	type (
+		Num struct {
+			D int
+		}
+	)
+	testSuite := []struct {
+		d                       string
+		iLoadTarget             string
+		iAmount                 string
+		txCreator               string
+		txFee                   int
+		oErr                    error
+		oRes                    *sdk.TxResponse
+		expectBalanceSHRChange  *Num
+		expectBalanceSHRPChange *Num
+	}{
+		{
+			d:                       "load_shrp_success",
+			iLoadTarget:             netutilts.Accounts[netutilts.KeyAccount3].String(),
+			iAmount:                 "129shrp",
+			txCreator:               netutilts.KeyLoader,
+			txFee:                   2,
+			oErr:                    nil,
+			oRes:                    &sdk.TxResponse{Code: netutilts.ShareLedgerSuccessCode},
+			expectBalanceSHRChange:  &Num{-2},
+			expectBalanceSHRPChange: &Num{129},
+		},
+	}
+	for _, tc := range testSuite {
+		s.Run(tc.d, func() {
+			a, _ := sdk.AccAddressFromBech32(tc.iLoadTarget)
+			balResBeforeLoad := CmdQueryBalance(s.T(), validatorCtx, a)
+			stdOut, err := CmdLoadSHRP(validatorCtx, tc.iLoadTarget,
+				tc.iAmount,
+				netutilts.MakeByAccount(tc.txCreator),
+				netutilts.SkipConfirmation(),
+				netutilts.BlockBroadcast(),
+				netutilts.SHRFee(tc.txFee),
+			)
+			if tc.oErr != nil {
+				s.Require().NotNilf(err, "this case require err")
+			}
+			if tc.oRes != nil {
+				txResponse := netutilts.ParseStdOut(s.T(), stdOut.Bytes())
+				s.Equalf(tc.oRes.Code, txResponse.Code, "load shr must success %v", txResponse)
+			}
+			a, _ = sdk.AccAddressFromBech32(tc.iLoadTarget)
+			balResAfterLoad := CmdQueryBalance(s.T(), validatorCtx, a)
+			if tc.expectBalanceSHRPChange != nil {
+				shrEx := balResBeforeLoad.GetBalances().AmountOf(denom.BaseUSD).Add(sdk.NewInt(int64(tc.expectBalanceSHRPChange.D) * denom.USDExponent))
+				s.Equalf(shrEx.String(), balResAfterLoad.GetBalances().AmountOf(denom.BaseUSD).String(), "shrp should equal")
 
-		_ = s.network.WaitForNextBlock()
-		balRes = types.QueryAllBalancesResponse{}
-		out, err = testutil.QueryBalancesExec(validatorCtx, netutilts.Accounts[netutilts.KeyAccount1])
-		s.NoErrorf(err, "query balance should not error %v", err)
-		err = validatorCtx.Codec.UnmarshalJSON(out.Bytes(), &balRes)
-		s.Require().NoError(err)
-		shrpExpect := 229 * denom.USDExponent
-		shrExpect := 9998 * denom.ShrExponent
-		s.Equalf(fmt.Sprintf("%d", shrpExpect), balRes.GetBalances().AmountOf(denom.BaseUSD).String(), "shrp should equal")
-		s.Equalf(fmt.Sprintf("%d", shrExpect), balRes.GetBalances().AmountOf(denom.Base).String(), "shr should equal")
-	})
+			}
+			if tc.expectBalanceSHRChange != nil {
+				shrEx := balResBeforeLoad.GetBalances().AmountOf(denom.Base).Add(sdk.NewInt(int64(tc.expectBalanceSHRChange.D) * denom.ShrExponent))
+				s.Equalf(shrEx.String(), balResAfterLoad.GetBalances().AmountOf(denom.Base).String(), "shr should equal")
+			}
+		})
+	}
+
 }
 
 func (s *GentlemintIntegrationTestSuite) TestSendSHR() {
@@ -265,59 +400,85 @@ func (s *GentlemintIntegrationTestSuite) TestSendSHR() {
 		err         error
 		txnResponse sdk.TxResponse
 	)
-
-	stdOut, err = CmdLoadSHR(validatorCtx, netutilts.Accounts[netutilts.KeyEmpty4].String(), "100shr",
-		netutilts.SkipConfirmation(),
-		netutilts.MakeByAccount(netutilts.KeyAuthority),
-		netutilts.BlockBroadcast(),
-		netutilts.SHRFee2(),
+	type (
+		Num struct {
+			D int64
+		}
 	)
-	s.NoErrorf(err, "load shr error %v", err)
-	txnResponse = netutilts.ParseStdOut(s.T(), stdOut.Bytes())
-	s.Equalf(netutilts.ShareLedgerSuccessCode, txnResponse.Code, "txn response got error %v", txnResponse.String())
-	_ = s.network.WaitForNextBlock()
+	testSuite := []struct {
+		d                       string
+		iSender                 string
+		iReceiver               string
+		iAmount                 string
+		txFee                   int
+		txCreator               string
+		oErr                    error
+		oRes                    *sdk.TxResponse
+		expectSenderSHRChange   *Num
+		expectReceiverSHRChange *Num
+	}{
+		{
+			d:                       "send_shr_success",
+			iSender:                 netutilts.Accounts[netutilts.KeyMillionaire].String(),
+			iReceiver:               netutilts.Accounts[netutilts.KeyEmpty3].String(),
+			iAmount:                 "1220shr",
+			txFee:                   4,
+			txCreator:               netutilts.KeyMillionaire,
+			oErr:                    nil,
+			oRes:                    &sdk.TxResponse{Code: netutilts.ShareLedgerSuccessCode},
+			expectSenderSHRChange:   &Num{D: -1224},
+			expectReceiverSHRChange: &Num{D: 1220},
+		},
+		{
+			d:                       "send_shr_fail_insufficient_shr",
+			iSender:                 netutilts.Accounts[netutilts.KeyAccount2].String(),
+			iReceiver:               netutilts.Accounts[netutilts.KeyEmpty3].String(),
+			iAmount:                 "10022000shr",
+			txFee:                   4,
+			txCreator:               netutilts.KeyAccount2,
+			oErr:                    nil,
+			oRes:                    &sdk.TxResponse{Code: sdkerrors.ErrInsufficientFunds.ABCICode()},
+			expectSenderSHRChange:   &Num{D: -4},
+			expectReceiverSHRChange: &Num{D: 0},
+		},
+	}
 
-	s.Run("send_shr_success", func() {
-		stdOut, err = CmdSendSHR(validatorCtx, netutilts.Accounts[netutilts.KeyEmpty3].String(), "1220shr",
+	for _, tc := range testSuite {
+		senderAddr, _ := sdk.AccAddressFromBech32(tc.iSender)
+		senderBalanceBeforeSend := CmdQueryBalance(s.T(), validatorCtx, senderAddr)
+		receiverAddr, _ := sdk.AccAddressFromBech32(tc.iReceiver)
+		receiverBalanceBeforeSend := CmdQueryBalance(s.T(), validatorCtx, receiverAddr)
+
+		stdOut, err = CmdSendSHR(validatorCtx, tc.iReceiver, tc.iAmount,
 			netutilts.JSONFlag(),
-			netutilts.SHRFee4(),
+			netutilts.SHRFee(tc.txFee),
 			netutilts.BlockBroadcast(),
 			netutilts.SkipConfirmation(),
-			netutilts.MakeByAccount(netutilts.KeyMillionaire))
-		s.NoErrorf(err, "send shr error %v", err)
-		txnResponse = netutilts.ParseStdOut(s.T(), stdOut.Bytes())
-		s.Equalf(netutilts.ShareLedgerSuccessCode, txnResponse.Code, "txn response got error %v", txnResponse.String())
-		_ = s.network.WaitForNextBlock()
-		balanceKeyEmpty1 := CmdQueryBalance(s.T(), validatorCtx, netutilts.Accounts[netutilts.KeyEmpty3])
-		balanceKeyMillionaire := CmdQueryBalance(s.T(), validatorCtx, netutilts.Accounts[netutilts.KeyMillionaire])
+			netutilts.MakeByAccount(tc.txCreator))
 
-		emptyExpect := 1220 * denom.ShrExponent
-		millionExpect := 998776 * denom.ShrExponent
+		if tc.oErr != nil {
+			s.Require().NotNilf(err, "this case require error")
+		}
 
-		s.Equalf(fmt.Sprintf("%d", emptyExpect), balanceKeyEmpty1.GetBalances().AmountOf(denom.Base).String(), "balance of receiver no equal")
-		s.Equalf(fmt.Sprintf("%d", millionExpect), balanceKeyMillionaire.GetBalances().AmountOf(denom.Base).String(), "balance of sender no equal")
+		if tc.oRes != nil {
+			txnResponse = netutilts.ParseStdOut(s.T(), stdOut.Bytes())
+			s.Equalf(tc.oRes.Code, txnResponse.Code, "txn response got error %v", txnResponse.String())
+		}
+		senderAddr, _ = sdk.AccAddressFromBech32(tc.iSender)
+		senderBalanceAfterSend := CmdQueryBalance(s.T(), validatorCtx, senderAddr)
+		receiverAddr, _ = sdk.AccAddressFromBech32(tc.iReceiver)
+		receiverBalanceAfterSend := CmdQueryBalance(s.T(), validatorCtx, receiverAddr)
+		if tc.expectReceiverSHRChange != nil {
+			expect := receiverBalanceBeforeSend.GetBalances().AmountOf(denom.Base).Add(sdk.NewInt(tc.expectReceiverSHRChange.D * denom.ShrExponent))
+			s.Require().Equalf(expect.String(), receiverBalanceAfterSend.GetBalances().AmountOf(denom.Base).String(), "receiver shr balance isn't equal")
+		}
 
-	})
-	s.Run("send_shr_fail_insufficient_shr", func() {
+		if tc.expectSenderSHRChange != nil {
+			expect := senderBalanceBeforeSend.GetBalances().AmountOf(denom.Base).Add(sdk.NewInt(tc.expectSenderSHRChange.D * denom.ShrExponent))
+			s.Require().Equalf(expect.String(), senderBalanceAfterSend.GetBalances().AmountOf(denom.Base).String(), "sender shr balance isn't equal")
+		}
 
-		stdOut, err = CmdSendSHR(validatorCtx, netutilts.Accounts[netutilts.KeyEmpty2].String(), "900997shr",
-			netutilts.JSONFlag(),
-			netutilts.SHRFee4(),
-			netutilts.BlockBroadcast(),
-			netutilts.SkipConfirmation(),
-			netutilts.MakeByAccount(netutilts.KeyEmpty4))
-		s.NoErrorf(err, "send shr error %v", err)
-		txnResponse = netutilts.ParseStdOut(s.T(), stdOut.Bytes())
-		s.Equalf(netutilts.ShareLedgerCoinInsufficient, txnResponse.Code, "txn response got error %v", txnResponse.String())
-		_ = s.network.WaitForNextBlock()
-		balanceKeyEmpty2 := CmdQueryBalance(s.T(), validatorCtx, netutilts.Accounts[netutilts.KeyEmpty2])
-		balanceKeyEmpty4 := CmdQueryBalance(s.T(), validatorCtx, netutilts.Accounts[netutilts.KeyEmpty4])
-
-		empty4Expect := 94 * denom.ShrExponent
-		s.Equalf("0", balanceKeyEmpty2.GetBalances().AmountOf(denom.Base).String(), "balance of receiver no equal")
-		s.Equalf(fmt.Sprintf("%d", empty4Expect), balanceKeyEmpty4.GetBalances().AmountOf(denom.Base).String(), "balance of sender no equal")
-
-	})
+	}
 
 }
 
@@ -329,26 +490,74 @@ func (s *GentlemintIntegrationTestSuite) TestSendSHRP() {
 	)
 	validatorCtx := s.network.Validators[0].ClientCtx
 
-	s.Run("send_shrp_success", func() {
-		stdOut, err = CmdSendSHRP(validatorCtx, netutilts.Accounts[netutilts.KeyEmpty5].String(), "123shrp",
-			netutilts.SkipConfirmation(),
-			netutilts.SHRFee4(),
+	type (
+		Num struct {
+			D int64
+		}
+	)
+	testSuite := []struct {
+		d                        string
+		iSender                  string
+		iReceiver                string
+		iAmount                  string
+		txFee                    int
+		txCreator                string
+		oErr                     error
+		oRes                     *sdk.TxResponse
+		expectSenderSHRPChange   *Num
+		expectReceiverSHRPChange *Num
+	}{
+		{
+			d:                        "send_shrp_success",
+			iSender:                  netutilts.Accounts[netutilts.KeyMillionaire].String(),
+			iReceiver:                netutilts.Accounts[netutilts.KeyEmpty5].String(),
+			iAmount:                  "123shrp",
+			txFee:                    4,
+			txCreator:                netutilts.KeyMillionaire,
+			oErr:                     nil,
+			oRes:                     &sdk.TxResponse{Code: netutilts.ShareLedgerSuccessCode},
+			expectSenderSHRPChange:   &Num{D: -123},
+			expectReceiverSHRPChange: &Num{D: 123},
+		},
+	}
+
+	for _, tc := range testSuite {
+		senderAddr, _ := sdk.AccAddressFromBech32(tc.iSender)
+		senderBalanceBeforeSend := CmdQueryBalance(s.T(), validatorCtx, senderAddr)
+		receiverAddr, _ := sdk.AccAddressFromBech32(tc.iReceiver)
+		receiverBalanceBeforeSend := CmdQueryBalance(s.T(), validatorCtx, receiverAddr)
+
+		stdOut, err = CmdSendSHRP(validatorCtx, tc.iReceiver, tc.iAmount,
+			netutilts.JSONFlag(),
+			netutilts.SHRFee(tc.txFee),
 			netutilts.BlockBroadcast(),
-			netutilts.MakeByAccount(netutilts.KeyMillionaire))
+			netutilts.SkipConfirmation(),
+			netutilts.MakeByAccount(tc.txCreator))
 
-		s.NoErrorf(err, "send shrp error %v", err)
-		txnResponse = netutilts.ParseStdOut(s.T(), stdOut.Bytes())
-		s.Equalf(netutilts.ShareLedgerSuccessCode, txnResponse.Code, "txn response got error %v", txnResponse.String())
-		_ = s.network.WaitForNextBlock()
+		if tc.oErr != nil {
+			s.Require().NotNilf(err, "this case require error")
+		}
 
-		balanceKeyEmpty5 := CmdQueryBalance(s.T(), validatorCtx, netutilts.Accounts[netutilts.KeyEmpty5])
-		balanceKeyMillionaire := CmdQueryBalance(s.T(), validatorCtx, netutilts.Accounts[netutilts.KeyMillionaire])
+		if tc.oRes != nil {
+			txnResponse = netutilts.ParseStdOut(s.T(), stdOut.Bytes())
+			s.Equalf(tc.oRes.Code, txnResponse.Code, "txn response got error %v", txnResponse.String())
+		}
+		senderAddr, _ = sdk.AccAddressFromBech32(tc.iSender)
+		senderBalanceAfterSend := CmdQueryBalance(s.T(), validatorCtx, senderAddr)
+		receiverAddr, _ = sdk.AccAddressFromBech32(tc.iReceiver)
+		receiverBalanceAfterSend := CmdQueryBalance(s.T(), validatorCtx, receiverAddr)
+		if tc.expectReceiverSHRPChange != nil {
+			expect := receiverBalanceBeforeSend.GetBalances().AmountOf(denom.BaseUSD).Add(sdk.NewInt(tc.expectReceiverSHRPChange.D * denom.USDExponent))
+			s.Require().Equalf(expect.String(), receiverBalanceAfterSend.GetBalances().AmountOf(denom.BaseUSD).String(), "receiver shrp balance isn't equal")
+		}
 
-		expectCoinEmpty := 123 * denom.USDExponent
-		expectSHR := 999877 * denom.USDExponent
-		s.Equalf(fmt.Sprintf("%d", expectCoinEmpty), balanceKeyEmpty5.GetBalances().AmountOf(denom.BaseUSD).String(), "balance of receiver no equal")
-		s.Equalf(fmt.Sprintf("%d", expectSHR), balanceKeyMillionaire.GetBalances().AmountOf(denom.BaseUSD).String(), "balance of sender no equal")
-	})
+		if tc.expectSenderSHRPChange != nil {
+			expect := senderBalanceBeforeSend.GetBalances().AmountOf(denom.BaseUSD).Add(sdk.NewInt(tc.expectSenderSHRPChange.D * denom.USDExponent))
+			s.Require().Equalf(expect.String(), senderBalanceAfterSend.GetBalances().AmountOf(denom.BaseUSD).String(), "sender shrp balance isn't equal")
+		}
+
+	}
+
 }
 
 func (s *GentlemintIntegrationTestSuite) TestSetExchangeRate() {
@@ -360,20 +569,47 @@ func (s *GentlemintIntegrationTestSuite) TestSetExchangeRate() {
 	)
 	validatorCtx := s.network.Validators[0].ClientCtx
 
-	s.Run("set_exchange_rate", func() {
-		stdOut, err = CmdSetExchangeRate(validatorCtx, "12", netutilts.SHRFee2(), netutilts.MakeByAccount(netutilts.KeyTreasurer), netutilts.SkipConfirmation(), netutilts.BlockBroadcast())
-		s.NoErrorf(err, "set exchange rate error %v", err)
-		txnResponse = netutilts.ParseStdOut(s.T(), stdOut.Bytes())
-		s.Equalf(netutilts.ShareLedgerSuccessCode, txnResponse.Code, "txn response got error %v", txnResponse.String())
-		_ = s.network.WaitForNextBlock()
-		_ = s.network.WaitForNextBlock()
-		stdOut, err = CmdGetExchangeRate(validatorCtx, netutilts.JSONFlag())
-		s.NoErrorf(err, "get exchange rate error %v", err)
+	testSuite := []struct {
+		d         string
+		iRate     string
+		txFee     int
+		txCreator string
+		oErr      error
+		oRes      *sdk.TxResponse
+		oRate     string
+	}{
+		{
+			d:         "set_exchange_rate",
+			iRate:     "12",
+			txFee:     2,
+			txCreator: netutilts.KeyTreasurer,
+			oErr:      nil,
+			oRes:      &sdk.TxResponse{Code: netutilts.ShareLedgerSuccessCode},
+			oRate:     "12",
+		},
+	}
 
-		exchangeRate := types2.QueryExchangeRateResponse{}
-		err = validatorCtx.Codec.UnmarshalJSON(stdOut.Bytes(), &exchangeRate)
-		s.NoErrorf(err, "should no error %v", err)
-		s.Equalf(fmt.Sprintf("%d", 12), exchangeRate.GetRate(), "the rate is not equal")
-
-	})
+	for _, tc := range testSuite {
+		s.Run(tc.d, func() {
+			stdOut, err = CmdSetExchangeRate(validatorCtx,
+				tc.iRate, netutilts.SHRFee(tc.txFee),
+				netutilts.MakeByAccount(tc.txCreator),
+				netutilts.SkipConfirmation(),
+				netutilts.BlockBroadcast())
+			if tc.oErr != nil {
+				s.Require().NotNilf(err, "error is required in this case")
+			}
+			if tc.oRes != nil {
+				txnResponse = netutilts.ParseStdOut(s.T(), stdOut.Bytes())
+				s.Equalf(tc.oRes.Code, txnResponse.Code, "txn response got error %v", txnResponse.String())
+			}
+			if strings.TrimSpace(tc.oRate) != "" {
+				stdOut, err = CmdGetExchangeRate(validatorCtx, netutilts.JSONFlag())
+				exchangeRate := gentleminttypes.QueryExchangeRateResponse{}
+				err = validatorCtx.Codec.UnmarshalJSON(stdOut.Bytes(), &exchangeRate)
+				s.NoErrorf(err, "should no error %v", err)
+				s.Equalf(tc.oRate, exchangeRate.GetRate(), "the rate is not equal")
+			}
+		})
+	}
 }
