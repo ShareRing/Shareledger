@@ -1,9 +1,9 @@
 package simapp
 
 import (
+	servertypes "github.com/cosmos/cosmos-sdk/server/types"
 	"time"
 
-	"github.com/cosmos/cosmos-sdk/simapp"
 	"github.com/tendermint/spm/cosmoscmd"
 	abci "github.com/tendermint/tendermint/abci/types"
 	"github.com/tendermint/tendermint/libs/log"
@@ -15,14 +15,14 @@ import (
 )
 
 // New creates application instance with in-memory database and disabled logging.
-func New(dir string) cosmoscmd.App {
+func New(dir string, appOpts servertypes.AppOptions) cosmoscmd.App {
 	db := tmdb.NewMemDB()
 	logger := log.NewNopLogger()
 
 	encoding := cosmoscmd.MakeEncodingConfig(app.ModuleBasics)
 
 	a := app.New(logger, db, nil, true, map[int64]bool{}, dir, 0, encoding,
-		simapp.EmptyAppOptions{})
+		appOpts)
 	// InitChain updates deliverState which is required when app.NewContext is called
 	a.InitChain(abci.RequestInitChain{
 		ConsensusParams: defaultConsensusParams,

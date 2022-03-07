@@ -4,3 +4,4 @@ release/
 /.idea/
 /build/
 /deploy/testnet/
+.vscode
