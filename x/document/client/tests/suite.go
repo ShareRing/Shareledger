@@ -164,7 +164,7 @@ func (s *DocumentIntegrationTestSuite) SetupSuite() {
 	_, err := s.network.WaitForHeight(1)
 	s.Require().NoError(err)
 
-	//override the keyring by our keyring information
+	//override the keyring by our keyring informatirevoke_the_document_successfullyon
 	s.network.Validators[0].ClientCtx.Keyring = kb
 
 	s.setupTestingMaterial()
@@ -505,9 +505,9 @@ func (s *DocumentIntegrationTestSuite) TestRevokeDocument() {
 			},
 		},
 		{
-			d:          "revoke the document successfully",
+			d:          "revoke the document fail",
 			iHolderID:  "id_33424",
-			iDocProof:  "c89efdaa54c0f20c7adf612882df0950f5a951637e0307cdcb4c672f298b8+not found",
+			iDocProof:  "c89efdaa54c0f20c7adf612882df0950f5a958+not found",
 			txnCreator: netutilts.KeyAccount1,
 			txnFee:     2,
 			oErr:       nil,
