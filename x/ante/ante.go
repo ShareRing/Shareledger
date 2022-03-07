@@ -32,3 +32,11 @@ func NewHandler(
 		sdk.Terminator{},
 	)
 }
+
+type RoleKeeperWithoutVoter struct {
+	RoleKeeper
+}
+
+func (r RoleKeeperWithoutVoter) IsVoter(ctx sdk.Context, address sdk.AccAddress) bool {
+	return true
+}

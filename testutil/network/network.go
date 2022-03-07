@@ -10,6 +10,7 @@ import (
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	"github.com/cosmos/cosmos-sdk/x/bank/types"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
+	"github.com/sharering/shareledger/app"
 	"github.com/sharering/shareledger/testutil/simapp"
 	electoraltypes "github.com/sharering/shareledger/x/electoral/types"
 	"io/ioutil"
@@ -139,6 +140,16 @@ func GetTestingGenesis(t *testing.T, config *network.Config) (keyring.Keyring, s
 // ShareLedgerChainConstructor returns a new shareLedger AppConstructor
 func ShareLedgerChainConstructor() AppConstructor {
 	return func(val network.Validator) servertypes.Application {
-		return simapp.New(val.Ctx.Config.RootDir)
+		return simapp.New(val.Ctx.Config.RootDir, TestAppOptions{})
 	}
+}
+
+type TestAppOptions struct{}
+
+// Get implements TestAppOptions
+func (ao TestAppOptions) Get(o string) interface{} {
+	if o == app.FlagAppOptionSkipCheckVoter {
+		return true
+	}
+	return nil
 }
