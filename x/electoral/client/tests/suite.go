@@ -30,12 +30,12 @@ func (s *ElectoralIntegrationTestSuite) setupTestMaterial() {
 
 	out, _ := ExCmdEnrollAccountOperator(s.network.Validators[0].ClientCtx,
 		[]string{netutilts.Accounts[netutilts.KeyOperator].String()},
-		netutilts.SHRFee2(),
+		netutilts.SHRFee2,
 		netutilts.MakeByAccount(netutilts.KeyAuthority),
-		netutilts.SkipConfirmation(),
-		netutilts.BlockBroadcast(),
+		netutilts.SkipConfirmation,
+		netutilts.BlockBroadcast,
 	)
-	_ = s.network.WaitForNextBlock()
+	s.Require().NoError(s.network.WaitForNextBlock())
 
 	txResponse := netutilts.ParseStdOut(s.T(), out.Bytes())
 	s.Equal(netutilts.ShareLedgerSuccessCode, txResponse.Code, "%s", out.String())
@@ -62,30 +62,30 @@ func (s *ElectoralIntegrationTestSuite) setupTestMaterial() {
 	if len(intData.IdSigner) != 0 {
 		out, err := ExCmdEnrollIdSigner(s.network.Validators[0].ClientCtx,
 			intData.IdSigner,
-			netutilts.SHRFee2(),
+			netutilts.SHRFee2,
 			netutilts.MakeByAccount(netutilts.KeyOperator),
-			netutilts.SkipConfirmation(),
-			netutilts.BlockBroadcast(),
+			netutilts.SkipConfirmation,
+			netutilts.BlockBroadcast,
 		)
 		if err != nil {
 			s.Require().NoError(err, "init id signer fail")
 		}
-		_ = s.network.WaitForNextBlock()
+		s.Require().NoError(s.network.WaitForNextBlock())
 		txResponse := netutilts.ParseStdOut(s.T(), out.Bytes())
 		s.Equal(netutilts.ShareLedgerSuccessCode, txResponse.Code, "%s", out.String())
 	}
 	if len(intData.Operator) != 0 {
 		out, err := ExCmdEnrollAccountOperator(s.network.Validators[0].ClientCtx,
 			intData.Operator,
-			netutilts.SHRFee2(),
+			netutilts.SHRFee2,
 			netutilts.MakeByAccount(netutilts.KeyAuthority),
-			netutilts.SkipConfirmation(),
-			netutilts.BlockBroadcast(),
+			netutilts.SkipConfirmation,
+			netutilts.BlockBroadcast,
 		)
 		if err != nil {
 			s.Require().NoError(err, "init operator fail")
 		}
-		_ = s.network.WaitForNextBlock()
+		s.Require().NoError(s.network.WaitForNextBlock())
 		txResponse := netutilts.ParseStdOut(s.T(), out.Bytes())
 		s.Equal(netutilts.ShareLedgerSuccessCode, txResponse.Code, "%s", out.String())
 	}
@@ -93,15 +93,15 @@ func (s *ElectoralIntegrationTestSuite) setupTestMaterial() {
 	if len(intData.DocIssuer) != 0 {
 		out, err := ExCmdEnrollDocIssuer(s.network.Validators[0].ClientCtx,
 			intData.DocIssuer,
-			netutilts.SHRFee2(),
+			netutilts.SHRFee2,
 			netutilts.MakeByAccount(netutilts.KeyOperator),
-			netutilts.SkipConfirmation(),
-			netutilts.BlockBroadcast(),
+			netutilts.SkipConfirmation,
+			netutilts.BlockBroadcast,
 		)
 		if err != nil {
 			s.Require().NoError(err, "init doc issuer fail")
 		}
-		_ = s.network.WaitForNextBlock()
+		s.Require().NoError(s.network.WaitForNextBlock())
 		txResponse := netutilts.ParseStdOut(s.T(), out.Bytes())
 		s.Equal(netutilts.ShareLedgerSuccessCode, txResponse.Code, "%s", out.String())
 	}
@@ -168,22 +168,22 @@ func (s *ElectoralIntegrationTestSuite) TestEnrollAccountOperator() {
 		s.Run(tc.d, func() {
 			stdOut, err := ExCmdEnrollAccountOperator(validatorCtx, tc.iAddress,
 				netutilts.SHRFee(tc.txFee),
-				netutilts.JSONFlag(),
-				netutilts.SkipConfirmation(),
+				netutilts.JSONFlag,
+				netutilts.SkipConfirmation,
 				netutilts.MakeByAccount(tc.txCreator))
 			if tc.oErr != nil {
 				s.NotNilf(err, "case %s require error this step", tc.d)
 			}
 
 			txnResponse := netutilts.ParseStdOut(s.T(), stdOut.Bytes())
-			_ = s.network.WaitForNextBlock()
+			s.Require().NoError(s.network.WaitForNextBlock())
 			if tc.oRes != nil {
 				s.Equal(tc.oRes.Code, txnResponse.Code, fmt.Sprintf("the case %s: raw log :%s", tc.d, txnResponse.String()))
 			}
 
 			if len(tc.oAccState) != 0 {
 				for _, a := range tc.oAccState {
-					accOut, err := ExCmdQueryAccountOperator(validatorCtx, a.Address, netutilts.JSONFlag())
+					accOut, err := ExCmdQueryAccountOperator(validatorCtx, a.Address, netutilts.JSONFlag)
 					s.Require().NoError(err, "fail to get account operator")
 					acc := JsonAccountOperatorUnmarshal(s.T(), accOut.Bytes())
 					s.Equal(a.GetKey(), acc.GetAccState().Key, "account operator key no equal")
@@ -236,22 +236,22 @@ func (s *ElectoralIntegrationTestSuite) TestRevokeAccountOperator() {
 		s.Run(tc.d, func() {
 			stdOut, err := ExCmdRevokeAccountOperator(validatorCtx, tc.iAddress,
 				netutilts.SHRFee(tc.txFee),
-				netutilts.JSONFlag(),
-				netutilts.SkipConfirmation(),
+				netutilts.JSONFlag,
+				netutilts.SkipConfirmation,
 				netutilts.MakeByAccount(tc.txCreator))
 			if tc.oErr != nil {
 				s.NotNilf(err, "case %s require error this step", tc.d)
 			}
 
 			txnResponse := netutilts.ParseStdOut(s.T(), stdOut.Bytes())
-			_ = s.network.WaitForNextBlock()
+			s.Require().NoError(s.network.WaitForNextBlock())
 			if tc.oRes != nil {
 				s.Equal(tc.oRes.Code, txnResponse.Code, fmt.Sprintf("the case %s: raw log :%s", tc.d, txnResponse.String()))
 			}
 
 			if len(tc.oAccState) != 0 {
 				for _, a := range tc.oAccState {
-					accOut, err := ExCmdQueryAccountOperator(validatorCtx, a.Address, netutilts.JSONFlag())
+					accOut, err := ExCmdQueryAccountOperator(validatorCtx, a.Address, netutilts.JSONFlag)
 					s.Require().NoErrorf(err, "fail to get account operator %s", a.Address)
 					acc := JsonAccountOperatorUnmarshal(s.T(), accOut.Bytes())
 					s.Equal(a.GetStatus(), acc.GetAccState().Status, "account operator status no equal")
@@ -302,22 +302,22 @@ func (s *ElectoralIntegrationTestSuite) TestEnrollDocIssuer() {
 		s.Run(tc.d, func() {
 			stdOut, err := ExCmdEnrollDocIssuer(validatorCtx, tc.iAddress,
 				netutilts.SHRFee(tc.txFee),
-				netutilts.JSONFlag(),
-				netutilts.SkipConfirmation(),
+				netutilts.JSONFlag,
+				netutilts.SkipConfirmation,
 				netutilts.MakeByAccount(tc.txCreator))
 			if tc.oErr != nil {
 				s.NotNilf(err, "case %s require error this step", tc.d)
 			}
 
 			txnResponse := netutilts.ParseStdOut(s.T(), stdOut.Bytes())
-			_ = s.network.WaitForNextBlock()
+			s.Require().NoError(s.network.WaitForNextBlock())
 			if tc.oRes != nil {
 				s.Equal(tc.oRes.Code, txnResponse.Code, fmt.Sprintf("the case %s: raw log :%s", tc.d, txnResponse.String()))
 			}
 
 			if len(tc.oAccState) != 0 {
 				for _, a := range tc.oAccState {
-					accOut, err := ExCmdGetDocIssuer(validatorCtx, a.Address, netutilts.JSONFlag())
+					accOut, err := ExCmdGetDocIssuer(validatorCtx, a.Address, netutilts.JSONFlag)
 					s.Require().NoError(err, "fail to get doc issuer")
 					acc := JsonIDSignerUnmarshal(s.T(), accOut.Bytes())
 					s.Equal(a.GetKey(), acc.GetAccState().Key, "doc issuer key no equal")
@@ -369,22 +369,22 @@ func (s *ElectoralIntegrationTestSuite) TestRevokeDocIssuer() {
 		s.Run(tc.d, func() {
 			stdOut, err := ExCmdRevokeDocIssuer(validatorCtx, tc.iAddress,
 				netutilts.SHRFee(tc.txFee),
-				netutilts.JSONFlag(),
-				netutilts.SkipConfirmation(),
+				netutilts.JSONFlag,
+				netutilts.SkipConfirmation,
 				netutilts.MakeByAccount(tc.txCreator))
 			if tc.oErr != nil {
 				s.NotNilf(err, "case %s require error this step", tc.d)
 			}
 
 			txnResponse := netutilts.ParseStdOut(s.T(), stdOut.Bytes())
-			_ = s.network.WaitForNextBlock()
+			s.Require().NoError(s.network.WaitForNextBlock())
 			if tc.oRes != nil {
 				s.Equal(tc.oRes.Code, txnResponse.Code, fmt.Sprintf("the case %s: raw log :%s", tc.d, txnResponse.String()))
 			}
 
 			if len(tc.oAccState) != 0 {
 				for _, a := range tc.oAccState {
-					accOut, err := ExCmdGetDocIssuer(validatorCtx, a.Address, netutilts.JSONFlag())
+					accOut, err := ExCmdGetDocIssuer(validatorCtx, a.Address, netutilts.JSONFlag)
 					s.Require().NoError(err, "fail to get doc issuer")
 					acc := JsonIDSignerUnmarshal(s.T(), accOut.Bytes())
 					s.Equal(a.GetKey(), acc.GetAccState().Key, "doc issuer key no equal")
@@ -436,22 +436,22 @@ func (s *ElectoralIntegrationTestSuite) TestEnrollIDSigner() {
 		s.Run(tc.d, func() {
 			stdOut, err := ExCmdEnrollIdSigner(validatorCtx, tc.iAddress,
 				netutilts.SHRFee(tc.txFee),
-				netutilts.JSONFlag(),
-				netutilts.SkipConfirmation(),
+				netutilts.JSONFlag,
+				netutilts.SkipConfirmation,
 				netutilts.MakeByAccount(tc.txCreator))
 			if tc.oErr != nil {
 				s.NotNilf(err, "case %s require error this step", tc.d)
 			}
 
 			txnResponse := netutilts.ParseStdOut(s.T(), stdOut.Bytes())
-			_ = s.network.WaitForNextBlock()
+			s.Require().NoError(s.network.WaitForNextBlock())
 			if tc.oRes != nil {
 				s.Equal(tc.oRes.Code, txnResponse.Code, fmt.Sprintf("the case %s: raw log :%s", tc.d, txnResponse.String()))
 			}
 
 			if len(tc.oAccState) != 0 {
 				for _, a := range tc.oAccState {
-					accOut, err := ExCmdGetIdSigner(validatorCtx, a.Address, netutilts.JSONFlag())
+					accOut, err := ExCmdGetIdSigner(validatorCtx, a.Address, netutilts.JSONFlag)
 					s.Require().NoError(err, "fail to get doc issuer")
 					acc := JsonIDSignerUnmarshal(s.T(), accOut.Bytes())
 					s.Equal(a.GetKey(), acc.GetAccState().Key, "doc issuer key no equal")
@@ -503,22 +503,22 @@ func (s *ElectoralIntegrationTestSuite) TestRevokeIDSigner() {
 		s.Run(tc.d, func() {
 			stdOut, err := ExCmdRevokeIdSigner(validatorCtx, tc.iAddress,
 				netutilts.SHRFee(tc.txFee),
-				netutilts.JSONFlag(),
-				netutilts.SkipConfirmation(),
+				netutilts.JSONFlag,
+				netutilts.SkipConfirmation,
 				netutilts.MakeByAccount(tc.txCreator))
 			if tc.oErr != nil {
 				s.NotNilf(err, "case %s require error this step", tc.d)
 			}
 
 			txnResponse := netutilts.ParseStdOut(s.T(), stdOut.Bytes())
-			_ = s.network.WaitForNextBlock()
+			s.Require().NoError(s.network.WaitForNextBlock())
 			if tc.oRes != nil {
 				s.Equal(tc.oRes.Code, txnResponse.Code, fmt.Sprintf("the case %s: raw log :%s", tc.d, txnResponse.String()))
 			}
 
 			if len(tc.oAccState) != 0 {
 				for _, a := range tc.oAccState {
-					accOut, err := ExCmdGetIdSigner(validatorCtx, a.Address, netutilts.JSONFlag())
+					accOut, err := ExCmdGetIdSigner(validatorCtx, a.Address, netutilts.JSONFlag)
 					s.Require().NoError(err, "fail to get doc issuer")
 					acc := JsonIDSignerUnmarshal(s.T(), accOut.Bytes())
 					s.Equal(a.GetKey(), acc.GetAccState().Key, "doc issuer key no equal")

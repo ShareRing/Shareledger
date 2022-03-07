@@ -53,11 +53,11 @@ func (s *GentlemintIntegrationTestSuite) SetupSuite() {
 		s.T(),
 		netutilts.Accounts[netutilts.KeyLoader].String(),
 		netutilts.MakeByAccount(netutilts.KeyAuthority),
-		netutilts.SkipConfirmation(),
-		netutilts.BlockBroadcast(),
-		netutilts.SHRFee2(),
+		netutilts.SkipConfirmation,
+		netutilts.BlockBroadcast,
+		netutilts.SHRFee2,
 	)
-	_ = s.network.WaitForNextBlock()
+	s.Require().NoError(s.network.WaitForNextBlock())
 	res := netutilts.ParseStdOut(s.T(), out.Bytes())
 	s.Equalf(netutilts.ShareLedgerSuccessCode, res.Code, "init operator fail %v", res.String())
 
@@ -124,8 +124,8 @@ func (s *GentlemintIntegrationTestSuite) TestLoadSHR() {
 			stdOut, err := CmdLoadSHR(validatorCtx, tc.iLoadTarget,
 				tc.iAmount,
 				netutilts.MakeByAccount(tc.txCreator),
-				netutilts.SkipConfirmation(),
-				netutilts.BlockBroadcast(),
+				netutilts.SkipConfirmation,
+				netutilts.BlockBroadcast,
 				netutilts.SHRFee(tc.txFee),
 			)
 			if tc.oErr != nil {
@@ -178,12 +178,12 @@ func (s *GentlemintIntegrationTestSuite) TestBurnSHR() {
 
 	for _, tc := range testSuite {
 		s.Run(tc.d, func() {
-			balResBeforeBurn := CmdQueryBalance(s.T(), validatorCtx, netutilts.Accounts[tc.txCreator], netutilts.JSONFlag())
+			balResBeforeBurn := CmdQueryBalance(s.T(), validatorCtx, netutilts.Accounts[tc.txCreator], netutilts.JSONFlag)
 			stdOut, err := CmdBurnSHR(validatorCtx,
 				tc.iAmount,
 				netutilts.MakeByAccount(tc.txCreator),
-				netutilts.SkipConfirmation(),
-				netutilts.BlockBroadcast(),
+				netutilts.SkipConfirmation,
+				netutilts.BlockBroadcast,
 				netutilts.SHRFee(tc.txFee),
 			)
 			if tc.oErr != nil {
@@ -236,12 +236,12 @@ func (s *GentlemintIntegrationTestSuite) TestBurnSHRP() {
 
 	for _, tc := range testSuite {
 		s.Run(tc.d, func() {
-			balResBeforeBurn := CmdQueryBalance(s.T(), validatorCtx, netutilts.Accounts[tc.txCreator], netutilts.JSONFlag())
+			balResBeforeBurn := CmdQueryBalance(s.T(), validatorCtx, netutilts.Accounts[tc.txCreator], netutilts.JSONFlag)
 			stdOut, err := CmdBurnSHR(validatorCtx,
 				tc.iAmount,
 				netutilts.MakeByAccount(tc.txCreator),
-				netutilts.SkipConfirmation(),
-				netutilts.BlockBroadcast(),
+				netutilts.SkipConfirmation,
+				netutilts.BlockBroadcast,
 				netutilts.SHRFee(tc.txFee),
 			)
 			if tc.oErr != nil {
@@ -297,12 +297,12 @@ func (s *GentlemintIntegrationTestSuite) TestBuySHR() {
 
 	for _, tc := range testSuite {
 		s.Run(tc.d, func() {
-			balResBeforeBuy := CmdQueryBalance(s.T(), validatorCtx, netutilts.Accounts[tc.txCreator], netutilts.JSONFlag())
+			balResBeforeBuy := CmdQueryBalance(s.T(), validatorCtx, netutilts.Accounts[tc.txCreator], netutilts.JSONFlag)
 			stdOut, err := CmdBuySHR(validatorCtx,
 				tc.iAmount,
 				netutilts.MakeByAccount(tc.txCreator),
-				netutilts.SkipConfirmation(),
-				netutilts.BlockBroadcast(),
+				netutilts.SkipConfirmation,
+				netutilts.BlockBroadcast,
 				netutilts.SHRFee(tc.txFee),
 			)
 			if tc.oErr != nil {
@@ -365,8 +365,8 @@ func (s *GentlemintIntegrationTestSuite) TestLoadSHRP() {
 			stdOut, err := CmdLoadSHRP(validatorCtx, tc.iLoadTarget,
 				tc.iAmount,
 				netutilts.MakeByAccount(tc.txCreator),
-				netutilts.SkipConfirmation(),
-				netutilts.BlockBroadcast(),
+				netutilts.SkipConfirmation,
+				netutilts.BlockBroadcast,
 				netutilts.SHRFee(tc.txFee),
 			)
 			if tc.oErr != nil {
@@ -450,10 +450,10 @@ func (s *GentlemintIntegrationTestSuite) TestSendSHR() {
 		receiverBalanceBeforeSend := CmdQueryBalance(s.T(), validatorCtx, receiverAddr)
 
 		stdOut, err = CmdSendSHR(validatorCtx, tc.iReceiver, tc.iAmount,
-			netutilts.JSONFlag(),
+			netutilts.JSONFlag,
 			netutilts.SHRFee(tc.txFee),
-			netutilts.BlockBroadcast(),
-			netutilts.SkipConfirmation(),
+			netutilts.BlockBroadcast,
+			netutilts.SkipConfirmation,
 			netutilts.MakeByAccount(tc.txCreator))
 
 		if tc.oErr != nil {
@@ -528,10 +528,10 @@ func (s *GentlemintIntegrationTestSuite) TestSendSHRP() {
 		receiverBalanceBeforeSend := CmdQueryBalance(s.T(), validatorCtx, receiverAddr)
 
 		stdOut, err = CmdSendSHRP(validatorCtx, tc.iReceiver, tc.iAmount,
-			netutilts.JSONFlag(),
+			netutilts.JSONFlag,
 			netutilts.SHRFee(tc.txFee),
-			netutilts.BlockBroadcast(),
-			netutilts.SkipConfirmation(),
+			netutilts.BlockBroadcast,
+			netutilts.SkipConfirmation,
 			netutilts.MakeByAccount(tc.txCreator))
 
 		if tc.oErr != nil {
@@ -594,8 +594,8 @@ func (s *GentlemintIntegrationTestSuite) TestSetExchangeRate() {
 			stdOut, err = CmdSetExchangeRate(validatorCtx,
 				tc.iRate, netutilts.SHRFee(tc.txFee),
 				netutilts.MakeByAccount(tc.txCreator),
-				netutilts.SkipConfirmation(),
-				netutilts.BlockBroadcast())
+				netutilts.SkipConfirmation,
+				netutilts.BlockBroadcast)
 			if tc.oErr != nil {
 				s.Require().NotNilf(err, "error is required in this case")
 			}
@@ -604,7 +604,7 @@ func (s *GentlemintIntegrationTestSuite) TestSetExchangeRate() {
 				s.Equalf(tc.oRes.Code, txnResponse.Code, "txn response got error %v", txnResponse.String())
 			}
 			if strings.TrimSpace(tc.oRate) != "" {
-				stdOut, err = CmdGetExchangeRate(validatorCtx, netutilts.JSONFlag())
+				stdOut, err = CmdGetExchangeRate(validatorCtx, netutilts.JSONFlag)
 				exchangeRate := gentleminttypes.QueryExchangeRateResponse{}
 				err = validatorCtx.Codec.UnmarshalJSON(stdOut.Bytes(), &exchangeRate)
 				s.NoErrorf(err, "should no error %v", err)

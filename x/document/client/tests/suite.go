@@ -92,11 +92,11 @@ func (s *DocumentIntegrationTestSuite) setupTestingMaterial() {
 		s.network.Validators[0].ClientCtx,
 		[]string{netutilts.Accounts[netutilts.KeyOperator].String()},
 		netutilts.MakeByAccount(netutilts.KeyAuthority),
-		netutilts.SkipConfirmation(),
-		netutilts.BlockBroadcast(),
-		netutilts.SHRFee2(),
+		netutilts.SkipConfirmation,
+		netutilts.BlockBroadcast,
+		netutilts.SHRFee2,
 	)
-	_ = s.network.WaitForNextBlock()
+	s.Require().NoError(s.network.WaitForNextBlock())
 	res := netutilts.ParseStdOut(s.T(), out.Bytes())
 	s.Equalf(netutilts.ShareLedgerSuccessCode, res.Code, "init operator fail %v", res.String())
 
@@ -105,22 +105,22 @@ func (s *DocumentIntegrationTestSuite) setupTestingMaterial() {
 		out, _ = tests.ExCmdEnrollIdSigner(
 			s.network.Validators[0].ClientCtx,
 			[]string{netutilts.Accounts[iz.accountID].String()},
-			netutilts.SHRFee2(),
+			netutilts.SHRFee2,
 			netutilts.MakeByAccount(netutilts.KeyOperator),
-			netutilts.SkipConfirmation(),
+			netutilts.SkipConfirmation,
 		)
-		_ = s.network.WaitForNextBlock()
+		s.Require().NoError(s.network.WaitForNextBlock())
 		res = netutilts.ParseStdOut(s.T(), out.Bytes())
 		s.Equalf(netutilts.ShareLedgerSuccessCode, res.Code, "init doc issuer fail %v", res.String())
 
 		out, _ = tests.ExCmdEnrollDocIssuer(
 			s.network.Validators[0].ClientCtx,
 			[]string{netutilts.Accounts[iz.accountID].String()},
-			netutilts.SHRFee2(),
+			netutilts.SHRFee2,
 			netutilts.MakeByAccount(netutilts.KeyOperator),
-			netutilts.SkipConfirmation(),
+			netutilts.SkipConfirmation,
 		)
-		_ = s.network.WaitForNextBlock()
+		s.Require().NoError(s.network.WaitForNextBlock())
 		res = netutilts.ParseStdOut(s.T(), out.Bytes())
 		s.Equalf(netutilts.ShareLedgerSuccessCode, res.Code, "init doc issuer fail %v", res.String())
 
@@ -130,11 +130,11 @@ func (s *DocumentIntegrationTestSuite) setupTestingMaterial() {
 			netutilts.Accounts[iz.accountID].String(),
 			iz.idData,
 			netutilts.MakeByAccount(iz.accountID),
-			netutilts.SkipConfirmation(),
-			netutilts.BlockBroadcast(),
-			netutilts.SHRFee2())
+			netutilts.SkipConfirmation,
+			netutilts.BlockBroadcast,
+			netutilts.SHRFee2)
 
-		_ = s.network.WaitForNextBlock()
+		s.Require().NoError(s.network.WaitForNextBlock())
 		res = netutilts.ParseStdOut(s.T(), out.Bytes())
 		s.Equalf(netutilts.ShareLedgerSuccessCode, res.Code, "init id fail %v for id %s", res.String(), iz.id)
 
@@ -142,11 +142,11 @@ func (s *DocumentIntegrationTestSuite) setupTestingMaterial() {
 			out, _ := CmdExCreateDocument(s.network.Validators[0].ClientCtx,
 				iz.id, iz.docProof, iz.docData,
 				netutilts.MakeByAccount(iz.accountID),
-				netutilts.BlockBroadcast(),
-				netutilts.SHRFee2(),
-				netutilts.SkipConfirmation(),
+				netutilts.BlockBroadcast,
+				netutilts.SHRFee2,
+				netutilts.SkipConfirmation,
 			)
-			_ = s.network.WaitForNextBlock()
+			s.Require().NoError(s.network.WaitForNextBlock())
 			res = netutilts.ParseStdOut(s.T(), out.Bytes())
 			s.Equalf(netutilts.ShareLedgerSuccessCode, res.Code, "init doc %s fail %v", iz.docProof, res.String())
 		}
@@ -231,9 +231,9 @@ func (s *DocumentIntegrationTestSuite) TestCreateDocument() {
 			out, err := CmdExCreateDocument(validationCtx,
 				tc.iHolderID, tc.iDocProof, tc.iDocData,
 				netutilts.MakeByAccount(tc.txnCreator),
-				netutilts.BlockBroadcast(),
+				netutilts.BlockBroadcast,
 				netutilts.SHRFee(tc.txnFee),
-				netutilts.SkipConfirmation(),
+				netutilts.SkipConfirmation,
 			)
 			if tc.oErr != nil {
 				s.NotNilf(err, "this case need got error")
@@ -243,7 +243,7 @@ func (s *DocumentIntegrationTestSuite) TestCreateDocument() {
 				s.Equalf(tc.oRes.Code, txnResponse.Code, "create document fail %s", txnResponse.String())
 			}
 			if tc.oDoc != nil {
-				queryDocResponse := CmdExGetDocByProof(validationCtx, s.T(), tc.iDocProof, netutilts.JSONFlag())
+				queryDocResponse := CmdExGetDocByProof(validationCtx, s.T(), tc.iDocProof, netutilts.JSONFlag)
 				docResponse := queryDocResponse.GetDocument()
 				s.Equalf(tc.oDoc.Holder, docResponse.GetHolder(), "holder ID isn't equal")
 				s.Equalf(tc.oDoc.Proof, docResponse.GetProof(), "proof isn't equal")
@@ -324,9 +324,9 @@ func (s *DocumentIntegrationTestSuite) TestCreateBatchDocument() {
 				strings.Join(tc.iDocProofs, ","),
 				strings.Join(tc.iDocDatas, ","),
 				netutilts.MakeByAccount(tc.txnCreator),
-				netutilts.BlockBroadcast(),
+				netutilts.BlockBroadcast,
 				netutilts.SHRFee(tc.txnFee),
-				netutilts.SkipConfirmation(),
+				netutilts.SkipConfirmation,
 			)
 			if tc.oErr != nil {
 				s.NotNilf(err, "this case need got error")
@@ -337,7 +337,7 @@ func (s *DocumentIntegrationTestSuite) TestCreateBatchDocument() {
 			}
 			if len(tc.oDocs) != 0 {
 				for _, d := range tc.oDocs {
-					queryDocResponse := CmdExGetDocByProof(validationCtx, s.T(), d.Proof, netutilts.JSONFlag())
+					queryDocResponse := CmdExGetDocByProof(validationCtx, s.T(), d.Proof, netutilts.JSONFlag)
 					docResponse := queryDocResponse.GetDocument()
 					s.Equalf(d.Holder, docResponse.GetHolder(), "holder ID isn't equal")
 					s.Equalf(d.Proof, docResponse.GetProof(), "proof isn't equal")
@@ -348,37 +348,6 @@ func (s *DocumentIntegrationTestSuite) TestCreateBatchDocument() {
 
 		})
 	}
-
-	//s.Run("create_document_in_batch_but_duplicated_the_tx_must_be_fail", func() {
-	//	holderId1 := "id-1"
-	//	holderId2 := "id-2"
-	//	holderId3 := "id-2"
-	//
-	//	proof1 := "c89efdaa54c0f20c7adf612882df0950f5a951637e0307cdcb4c672f298b8bc6"
-	//	proof2 := "c89efdaa54c0f20c7adf612882df0950f5a951637e0307cdcb4c672f298b8bc6"
-	//	proof3 := "c89efdaa54c0f20c7adf612882df0950f5a951637e0307cdcb4c672f298b8bgg"
-	//
-	//	data1 := "data-1"
-	//	data2 := "data-2"
-	//	data3 := "data-3"
-	//
-	//	holderId := strings.Join([]string{holderId1, holderId2, holderId3}, ",")
-	//	proof := strings.Join([]string{proof1, proof2, proof3}, ",")
-	//	data := strings.Join([]string{data1, data2, data3}, ",")
-	//
-	//	out := CmdExCreateDocumentInBatch(validationCtx,
-	//		s.T(), holderId, proof, data,
-	//		netutilts.MakeByAccount(netutilts.KeyAccount1),
-	//		netutilts.BlockBroadcast(),
-	//		netutilts.SHRFee2(),
-	//		netutilts.SkipConfirmation(),
-	//	)
-	//
-	//	txnResponse := netutilts.ParseStdOut(s.T(), out.Bytes())
-	//	s.NotEqual(netutilts.ShareLedgerSuccessCode, txnResponse.Code, "create document fail %v", out.String())
-	//	_ = s.network.WaitForNextBlock()
-	//})
-
 }
 
 func (s *DocumentIntegrationTestSuite) TestUpdateDocument() {
@@ -451,9 +420,9 @@ func (s *DocumentIntegrationTestSuite) TestUpdateDocument() {
 			out, err := CmdExUpdateDocument(validationCtx,
 				tc.iHolderID, tc.iDocProof, tc.iDocData,
 				netutilts.MakeByAccount(tc.txnCreator),
-				netutilts.BlockBroadcast(),
+				netutilts.BlockBroadcast,
 				netutilts.SHRFee(tc.txnFee),
-				netutilts.SkipConfirmation(),
+				netutilts.SkipConfirmation,
 			)
 			if tc.oErr != nil {
 				s.NotNilf(err, "this case need got error")
@@ -463,7 +432,7 @@ func (s *DocumentIntegrationTestSuite) TestUpdateDocument() {
 				s.Equalf(tc.oRes.Code, txnResponse.Code, "update document fail %s", txnResponse.String())
 			}
 			if tc.oDoc != nil {
-				queryDocResponse := CmdExGetDocByProof(validationCtx, s.T(), tc.iDocProof, netutilts.JSONFlag())
+				queryDocResponse := CmdExGetDocByProof(validationCtx, s.T(), tc.iDocProof, netutilts.JSONFlag)
 				docResponse := queryDocResponse.GetDocument()
 				s.Equalf(tc.oDoc.Holder, docResponse.GetHolder(), "holder ID isn't equal")
 				s.Equalf(tc.oDoc.Proof, docResponse.GetProof(), "proof isn't equal")
@@ -520,9 +489,9 @@ func (s *DocumentIntegrationTestSuite) TestRevokeDocument() {
 			out, err := CmdExRevokeDocument(validationCtx,
 				tc.iHolderID, tc.iDocProof,
 				netutilts.MakeByAccount(tc.txnCreator),
-				netutilts.BlockBroadcast(),
+				netutilts.BlockBroadcast,
 				netutilts.SHRFee(tc.txnFee),
-				netutilts.SkipConfirmation(),
+				netutilts.SkipConfirmation,
 			)
 			if tc.oErr != nil {
 				s.NotNilf(err, "this case need got error")
@@ -532,7 +501,7 @@ func (s *DocumentIntegrationTestSuite) TestRevokeDocument() {
 				s.Equalf(tc.oRes.Code, txnResponse.Code, "revoke document fail %s", txnResponse.String())
 			}
 			if tc.oDoc != nil {
-				queryDocResponse := CmdExGetDocByProof(validationCtx, s.T(), tc.iDocProof, netutilts.JSONFlag())
+				queryDocResponse := CmdExGetDocByProof(validationCtx, s.T(), tc.iDocProof, netutilts.JSONFlag)
 				docResponse := queryDocResponse.GetDocument()
 				s.Equalf(tc.oDoc.Version, docResponse.GetVersion(), "version isn't equal")
 			}

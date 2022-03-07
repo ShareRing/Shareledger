@@ -30,11 +30,11 @@ func (s *IDIntegrationTestSuite) setupTestMaterial() {
 		s.network.Validators[0].ClientCtx,
 		[]string{netutilts.Accounts[netutilts.KeyOperator].String()},
 		netutilts.MakeByAccount(netutilts.KeyAuthority),
-		netutilts.SkipConfirmation(),
-		netutilts.BlockBroadcast(),
-		netutilts.SHRFee2(),
+		netutilts.SkipConfirmation,
+		netutilts.BlockBroadcast,
+		netutilts.SHRFee2,
 	)
-	_ = s.network.WaitForNextBlock()
+	s.Require().NoError(s.network.WaitForNextBlock())
 	res := netutilts.ParseStdOut(s.T(), out.Bytes())
 	s.Equalf(netutilts.ShareLedgerSuccessCode, res.Code, "init operator fail %v", res.String())
 
@@ -91,22 +91,22 @@ func (s *IDIntegrationTestSuite) setupTestMaterial() {
 				s.network.Validators[0].ClientCtx,
 				[]string{netutilts.Accounts[id.accID].String()},
 				netutilts.MakeByAccount(netutilts.KeyOperator),
-				netutilts.SkipConfirmation(),
-				netutilts.BlockBroadcast(),
-				netutilts.SHRFee2(),
+				netutilts.SkipConfirmation,
+				netutilts.BlockBroadcast,
+				netutilts.SHRFee2,
 			)
-			_ = s.network.WaitForNextBlock()
+			s.Require().NoError(s.network.WaitForNextBlock())
 			res = netutilts.ParseStdOut(s.T(), out.Bytes())
 			s.Equalf(netutilts.ShareLedgerSuccessCode, res.Code, "init id signer fail %v", res.String())
 		}
 		if id.id != "" {
 			out, _ = CmdExNewID(s.network.Validators[0].ClientCtx, id.id, id.idBackup, id.idOwner, id.idData,
-				netutilts.SkipConfirmation(),
+				netutilts.SkipConfirmation,
 				netutilts.MakeByAccount(id.accID),
-				netutilts.BlockBroadcast(),
-				netutilts.SHRFee2(),
+				netutilts.BlockBroadcast,
+				netutilts.SHRFee2,
 			)
-			_ = s.network.WaitForNextBlock()
+			s.Require().NoError(s.network.WaitForNextBlock())
 			res = netutilts.ParseStdOut(s.T(), out.Bytes())
 			s.Equalf(netutilts.ShareLedgerSuccessCode, res.Code, "init id fail %v", res.String())
 		}
@@ -191,10 +191,10 @@ func (s *IDIntegrationTestSuite) TestCreateID() {
 	for _, tc := range testSuite {
 		s.Run(tc.d, func() {
 			out, err := CmdExNewID(validatorCtx, tc.iId, tc.iBackupAddr, tc.iOwnerAddr, tc.iExData,
-				netutilts.JSONFlag(),
-				netutilts.SkipConfirmation(),
+				netutilts.JSONFlag,
+				netutilts.SkipConfirmation,
 				netutilts.MakeByAccount(tc.txCreator),
-				netutilts.BlockBroadcast(),
+				netutilts.BlockBroadcast,
 				netutilts.SHRFee(tc.txFee),
 			)
 			if tc.oErr != nil {
@@ -206,7 +206,7 @@ func (s *IDIntegrationTestSuite) TestCreateID() {
 			}
 			if tc.oId != nil {
 				out = CmdExGetID(validatorCtx, s.T(), tc.iId,
-					netutilts.JSONFlag(),
+					netutilts.JSONFlag,
 				)
 				idData := IDJsonUnmarshal(s.T(), out.Bytes())
 
@@ -305,10 +305,10 @@ func (s *IDIntegrationTestSuite) TestCreateIDInBatch() {
 				strings.Join(tc.iBackupAddrs, ","),
 				strings.Join(tc.iOwnerAddrs, ","),
 				strings.Join(tc.iExDatas, ","),
-				netutilts.JSONFlag(),
-				netutilts.SkipConfirmation(),
+				netutilts.JSONFlag,
+				netutilts.SkipConfirmation,
 				netutilts.MakeByAccount(tc.txCreator),
-				netutilts.BlockBroadcast(),
+				netutilts.BlockBroadcast,
 				netutilts.SHRFee(tc.txFee),
 			)
 			if tc.oErr != nil {
@@ -321,7 +321,7 @@ func (s *IDIntegrationTestSuite) TestCreateIDInBatch() {
 			if len(tc.oId) != 0 {
 				for _, i := range tc.oId {
 					out = CmdExGetID(validatorCtx, s.T(), i.GetId(),
-						netutilts.JSONFlag(),
+						netutilts.JSONFlag,
 					)
 					idData := IDJsonUnmarshal(s.T(), out.Bytes())
 
@@ -383,10 +383,10 @@ func (s *IDIntegrationTestSuite) TestUpdateID() {
 	for _, tc := range testSuite {
 		s.Run(tc.d, func() {
 			out, err := CmdExUpdateID(validatorCtx, tc.iID, tc.iData,
-				netutilts.SkipConfirmation(),
+				netutilts.SkipConfirmation,
 				netutilts.MakeByAccount(tc.txCreator),
-				netutilts.BlockBroadcast(),
-				netutilts.JSONFlag(),
+				netutilts.BlockBroadcast,
+				netutilts.JSONFlag,
 				netutilts.SHRFee(tc.txFee))
 			if tc.oErr != nil {
 				s.NotNilf(err, "error is required in this case")
@@ -397,7 +397,7 @@ func (s *IDIntegrationTestSuite) TestUpdateID() {
 			}
 			if tc.oId != nil {
 				out = CmdExGetID(validatorCtx, s.T(), tc.iID,
-					netutilts.JSONFlag(),
+					netutilts.JSONFlag,
 				)
 				idData := IDJsonUnmarshal(s.T(), out.Bytes())
 				s.Equalf(tc.oId.GetData().GetExtraData(), idData.GetData().GetExtraData(), "data not equal")
@@ -470,7 +470,7 @@ func (s *IDIntegrationTestSuite) TestReplaceOwner() {
 		s.Run(tc.d, func() {
 			out, err := CmdExReplaceIdOwner(validatorCtx, tc.iID, tc.iNewAddr,
 				netutilts.MakeByAccount(tc.txCreator),
-				netutilts.SkipConfirmation(), netutilts.JSONFlag(), netutilts.SHRFee(tc.txFee), netutilts.BlockBroadcast())
+				netutilts.SkipConfirmation, netutilts.JSONFlag, netutilts.SHRFee(tc.txFee), netutilts.BlockBroadcast)
 			if tc.oErr != nil {
 				s.NotNilf(err, "require error in this case")
 			}
@@ -480,7 +480,7 @@ func (s *IDIntegrationTestSuite) TestReplaceOwner() {
 			}
 			if tc.oId != nil {
 				out = CmdExGetID(validatorCtx, s.T(), tc.iID,
-					netutilts.JSONFlag(),
+					netutilts.JSONFlag,
 				)
 				idData := IDJsonUnmarshal(s.T(), out.Bytes())
 				s.Equalf(tc.oId.GetData().GetOwnerAddress(), idData.GetData().GetOwnerAddress(), "owner not equal")

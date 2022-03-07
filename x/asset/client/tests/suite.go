@@ -138,7 +138,7 @@ func (s *AssetIntegrationTestSuite) TestCreateAsset() {
 		s.Run(tc.d, func() {
 			out, err := ExCmdCreateAsset(s.network.Validators[0].ClientCtx, tc.iAssetID, tc.iAssetHash, tc.iAssetStatus, tc.iShrPFee,
 				netutilts.SHRFee(tc.iTxFee),
-				netutilts.JSONFlag(),
+				netutilts.JSONFlag,
 				netutilts.MakeByAccount(tc.iAcc),
 			)
 
@@ -225,7 +225,7 @@ func (s *AssetIntegrationTestSuite) TestUpdateAsset() {
 			out, err := ExCmdUpdateAsset(s.network.Validators[0].ClientCtx,
 				tc.iAssetID, tc.iAssetHash, tc.iAssetStatus, tc.iShrPFee,
 				netutilts.SHRFee(tc.iTxFee),
-				netutilts.JSONFlag(),
+				netutilts.JSONFlag,
 				netutilts.MakeByAccount(tc.iAcc),
 			)
 			// expect test case co error
@@ -292,7 +292,7 @@ func (s *AssetIntegrationTestSuite) TestDeleteAsset() {
 		s.Run(tc.d, func() {
 			out, err := ExCmdDeleteAsset(s.network.Validators[0].ClientCtx, tc.iAssetID,
 				netutilts.SHRFee(tc.iTxFee),
-				netutilts.JSONFlag(),
+				netutilts.JSONFlag,
 				netutilts.MakeByAccount(tc.iAcc),
 			)
 			// expect test case co error
@@ -337,7 +337,7 @@ func (s *AssetIntegrationTestSuite) setupTestMaterial() {
 		out, err := ExCmdCreateAsset(s.network.Validators[0].ClientCtx,
 			ex.AssetID, ex.AssetHash, ex.AssetStatus, ex.AssetRate,
 			netutilts.SHRFee(6),
-			netutilts.JSONFlag(),
+			netutilts.JSONFlag,
 			netutilts.MakeByAccount(ex.AssetCreator),
 		)
 		s.NoError(err, "starting create asset fail")

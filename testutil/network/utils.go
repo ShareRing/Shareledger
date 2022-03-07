@@ -34,10 +34,10 @@ const (
 	KeyAccount3 string = "acc3"
 	KeyAccount4 string = "acc4"
 
-	KeyAccount5 string = "acc5" //Use this account if you want more
-	KeyAccount6 string = "acc6" //Use this account if you want more
-	KeyAccount7 string = "acc7" //Use this account if you want more
-	KeyAccount8 string = "acc8" //Use this account if you want more
+	KeyAccount5 string = "acc5"
+	KeyAccount6 string = "acc6"
+	KeyAccount7 string = "acc7"
+	KeyAccount8 string = "acc8"
 
 	ShareLedgerSuccessCode = uint32(0)
 )

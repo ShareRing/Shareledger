@@ -43,7 +43,7 @@ func CmdExRevokeDocument(clientCtx client.Context, holderID, docProof string, ex
 func CmdExGetDocByHolderID(clientCtx client.Context, t *testing.T, holderID string, extraFlags ...string) types.QueryDocumentByHolderIdResponse {
 	args := []string{holderID}
 	args = append(args, extraFlags...)
-	args = append(args, network.JSONFlag())
+	args = append(args, network.JSONFlag)
 	out, err := clitestutil.ExecTestCLICmd(clientCtx, cli.CmdDocumentByHolderId(), args)
 	if err != nil {
 		t.Errorf("fail get document by holderID: %v", err)
@@ -54,7 +54,7 @@ func CmdExGetDocByHolderID(clientCtx client.Context, t *testing.T, holderID stri
 func CmdExGetDocByProof(clientCtx client.Context, t *testing.T, proof string, extraFlags ...string) types.QueryDocumentByProofResponse {
 	args := []string{proof}
 	args = append(args, extraFlags...)
-	args = append(args, network.JSONFlag())
+	args = append(args, network.JSONFlag)
 	out, err := clitestutil.ExecTestCLICmd(clientCtx, cli.CmdDocumentByProof(), args)
 	if err != nil {
 		t.Errorf("fail get document by proof: %v", err)

@@ -52,7 +52,7 @@ func (s *BookingIntegrationTestSuite) SetupSuite() {
 	s.T().Log("setting up asset data..")
 	s.setupTestMaterial()
 	s.T().Log("setting up integration test suite successfully")
-	_ = s.network.WaitForNextBlock()
+	s.Require().NoError(s.network.WaitForNextBlock())
 
 }
 func (s *BookingIntegrationTestSuite) TearDownSuite() {
@@ -120,7 +120,7 @@ func (s *BookingIntegrationTestSuite) TestCreateBooking() {
 		s.Run(tc.description, func() {
 			stdOut, err := ExCmdCreateBooking(validatorCtx, tc.iAssetID, tc.iDuration,
 				netutilts.SHRFee(tc.iTxnFee),
-				netutilts.JSONFlag(),
+				netutilts.JSONFlag,
 				netutilts.MakeByAccount(tc.iTxnCreator))
 			if tc.oErr != nil {
 				s.NotNilf(err, "case %s require error this step", tc.description)
@@ -182,7 +182,6 @@ func (s *BookingIntegrationTestSuite) TestCompleteBooking() {
 		oBooking    *bookingtypes.Booking
 	}
 
-	//todo add to recheck balance of asset owner
 	testSuite := []TestCase{
 		{
 			description: "complete the booking success",
@@ -217,7 +216,7 @@ func (s *BookingIntegrationTestSuite) TestCompleteBooking() {
 	for _, tc := range testSuite {
 		stdOut, err := ExCmdCCompleteBooking(validatorCtx, tc.iBookingID,
 			netutilts.SHRFee(tc.iTxnFee),
-			netutilts.JSONFlag(),
+			netutilts.JSONFlag,
 			netutilts.MakeByAccount(tc.iTxnCreator))
 		if tc.oErr != nil {
 			s.NotNilf(err, "case %s require error this step", tc.description)
@@ -310,17 +309,17 @@ func (s *BookingIntegrationTestSuite) setupTestMaterial() {
 
 	for _, la := range listAsset {
 		_, err := tests.ExCmdCreateAsset(s.network.Validators[0].ClientCtx, la.AssetID, la.AssetHash, la.AssetStatus, la.SHRPFee,
-			netutilts.SHRFee10(),
-			netutilts.JSONFlag(),
+			netutilts.SHRFee10,
+			netutilts.JSONFlag,
 			netutilts.MakeByAccount(la.MakeBy),
 		)
 		s.NoError(err)
-		_ = s.network.WaitForNextBlock()
+		s.Require().NoError(s.network.WaitForNextBlock())
 	}
 	for _, lb := range listBooking {
 		stdOut, err := ExCmdCreateBooking(s.network.Validators[0].ClientCtx, lb.AssetID, lb.Duration,
 			netutilts.SHRFee(10),
-			netutilts.JSONFlag(),
+			netutilts.JSONFlag,
 			netutilts.MakeByAccount(lb.MakeBy))
 
 		s.NoError(err)
@@ -332,7 +331,7 @@ func (s *BookingIntegrationTestSuite) setupTestMaterial() {
 		bookingID := attr.Get(s.T(), "BookingId")
 
 		s.eBooking[lb.BookingName] = bookingID.Value
-		_ = s.network.WaitForNextBlock()
+		s.Require().NoError(s.network.WaitForNextBlock())
 
 	}
 
