@@ -58,7 +58,6 @@ genesis:
           display: "shr"
           name: "nshr"
           symbol: "nshr"
-
     mint:
       minter:
         inflation: "0"
@@ -70,6 +69,9 @@ genesis:
       accStateList:
         - key: shrploadershareledger1lq9svs76xwekrrzw7uprekyqydf7fp02p8zp8e
           address: shareledger1lq9svs76xwekrrzw7uprekyqydf7fp02p8zp8e
+          status: active
+        - key: votershareledger18pf3zdwqjntd9wkvfcjvmdc7hua6c0q2eck5h5
+          address: shareledger18pf3zdwqjntd9wkvfcjvmdc7hua6c0q2eck5h5
           status: active
       authority:
         address: shareledger1lq9svs76xwekrrzw7uprekyqydf7fp02p8zp8e
