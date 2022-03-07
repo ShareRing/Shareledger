@@ -48,9 +48,9 @@ var (
 	oneMillionSHR  = 1000000 * denom.ShrExponent //1 million shr and shrp
 	oneMillionSHRP = 1000000 * denom.USDExponent //1 million shr and shrp
 
-	defaultCoins  = sdk.NewCoins(sdk.NewCoin(denom.Base, sdk.NewInt(oneThousandSHR)), sdk.NewCoin(denom.BaseUSD, sdk.NewInt(oneHundredSHRP)))
-	becauseImRich = sdk.NewCoins(sdk.NewCoin(denom.Base, sdk.NewInt(oneMillionSHR)), sdk.NewCoin(denom.BaseUSD, sdk.NewInt(oneMillionSHRP)))
-	poorMen       = sdk.NewCoins(sdk.NewCoin(denom.Base, sdk.NewInt(0)), sdk.NewCoin(denom.BaseUSD, sdk.NewInt(0)))
+	OneThousandSHROneHundredSHRPCoins = sdk.NewCoins(sdk.NewCoin(denom.Base, sdk.NewInt(oneThousandSHR)), sdk.NewCoin(denom.BaseUSD, sdk.NewInt(oneHundredSHRP)))
+	OneMillionSHRSHRPCoins            = sdk.NewCoins(sdk.NewCoin(denom.Base, sdk.NewInt(oneMillionSHR)), sdk.NewCoin(denom.BaseUSD, sdk.NewInt(oneMillionSHRP)))
+	ZeroSHRSHRP                       = sdk.NewCoins(sdk.NewCoin(denom.Base, sdk.NewInt(0)), sdk.NewCoin(denom.BaseUSD, sdk.NewInt(0)))
 )
 
 type (

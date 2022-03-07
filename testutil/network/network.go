@@ -91,28 +91,28 @@ func GetTestingGenesis(t *testing.T, config *network.Config) (keyring.Keyring, s
 	accountBuilder := NewKeyringBuilder(t, kb)
 
 	users := []AccountInfo{
-		{Key: KeyAuthority, Balance: defaultCoins},
-		{Key: KeyTreasurer, Balance: defaultCoins},
-		{Key: KeyOperator, Balance: defaultCoins},
-		{Key: KeyIDSigner, Balance: defaultCoins},
-		{Key: KeyDocIssuer, Balance: defaultCoins},
-		{Key: KeyMillionaire, Balance: becauseImRich},
-		{Key: KeyLoader, Balance: becauseImRich},
+		{Key: KeyAuthority, Balance: OneThousandSHROneHundredSHRPCoins},
+		{Key: KeyTreasurer, Balance: OneThousandSHROneHundredSHRPCoins},
+		{Key: KeyOperator, Balance: OneThousandSHROneHundredSHRPCoins},
+		{Key: KeyIDSigner, Balance: OneThousandSHROneHundredSHRPCoins},
+		{Key: KeyDocIssuer, Balance: OneThousandSHROneHundredSHRPCoins},
+		{Key: KeyMillionaire, Balance: OneMillionSHRSHRPCoins},
+		{Key: KeyLoader, Balance: OneMillionSHRSHRPCoins},
 
-		{Key: KeyEmpty1, Balance: poorMen},
-		{Key: KeyEmpty2, Balance: poorMen},
-		{Key: KeyEmpty3, Balance: poorMen},
-		{Key: KeyEmpty4, Balance: poorMen},
-		{Key: KeyEmpty5, Balance: poorMen},
+		{Key: KeyEmpty1, Balance: ZeroSHRSHRP},
+		{Key: KeyEmpty2, Balance: ZeroSHRSHRP},
+		{Key: KeyEmpty3, Balance: ZeroSHRSHRP},
+		{Key: KeyEmpty4, Balance: ZeroSHRSHRP},
+		{Key: KeyEmpty5, Balance: ZeroSHRSHRP},
 
-		{Key: KeyAccount1, Balance: defaultCoins},
-		{Key: KeyAccount2, Balance: defaultCoins},
-		{Key: KeyAccount3, Balance: defaultCoins},
-		{Key: KeyAccount4, Balance: defaultCoins},
-		{Key: KeyAccount5, Balance: defaultCoins},
-		{Key: KeyAccount6, Balance: defaultCoins},
-		{Key: KeyAccount7, Balance: defaultCoins},
-		{Key: KeyAccount8, Balance: defaultCoins},
+		{Key: KeyAccount1, Balance: OneThousandSHROneHundredSHRPCoins},
+		{Key: KeyAccount2, Balance: OneThousandSHROneHundredSHRPCoins},
+		{Key: KeyAccount3, Balance: OneThousandSHROneHundredSHRPCoins},
+		{Key: KeyAccount4, Balance: OneThousandSHROneHundredSHRPCoins},
+		{Key: KeyAccount5, Balance: OneThousandSHROneHundredSHRPCoins},
+		{Key: KeyAccount6, Balance: OneThousandSHROneHundredSHRPCoins},
+		{Key: KeyAccount7, Balance: OneThousandSHROneHundredSHRPCoins},
+		{Key: KeyAccount8, Balance: OneThousandSHROneHundredSHRPCoins},
 	}
 
 	for _, u := range users {
