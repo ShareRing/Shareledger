@@ -195,6 +195,10 @@ func init() {
 	DefaultNodeHome = filepath.Join(userHomeDir, "."+Name)
 }
 
+var (
+	FlagAppOptionSkipCheckVoter = "skip-checking-voter-role"
+)
+
 // App extends an ABCI application, but with most of its parameters exported.
 // They are exported for convenience in creating helper functions, as object
 // capabilities aren't needed for testing.
@@ -532,7 +536,16 @@ func New(
 	// initialize BaseApp
 	app.SetInitChainer(app.InitChainer)
 	app.SetBeginBlocker(app.BeginBlocker)
+	var roleKeeper ante.RoleKeeper
+	roleKeeper = app.ElectoralKeeper
 
+	var isSkipCheckVoter = cast.ToBool(appOpts.Get(FlagAppOptionSkipCheckVoter))
+	if isSkipCheckVoter {
+		or := ante.RoleKeeperWithoutVoter{
+			RoleKeeper: roleKeeper,
+		}
+		roleKeeper = or
+	}
 	anteHandler := ante.NewHandler(
 		app.GentleMintKeeper,
 		app.AccountKeeper,
@@ -540,7 +553,7 @@ func New(
 		encodingConfig.TxConfig.SignModeHandler(),
 		app.FeeGrantKeeper,
 		authante.DefaultSigVerificationGasConsumer,
-		app.ElectoralKeeper,
+		roleKeeper,
 		app.IdKeeper,
 	)
 
