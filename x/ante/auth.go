@@ -3,6 +3,7 @@ package ante
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 	documenttypes "github.com/sharering/shareledger/x/document/types"
 	electoraltypes "github.com/sharering/shareledger/x/electoral/types"
 	gentleminttypes "github.com/sharering/shareledger/x/gentlemint/types"
@@ -100,12 +101,12 @@ func (a Auth) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate bool, next sdk.Ant
 			if !a.rk.IsAccountOperator(ctx, signer) {
 				return ctx, sdkerrors.Wrapf(sdkerrors.ErrUnauthorized, ErrMsgNotOperatorAccount)
 			}
-			// case
-			// 	*stakingtypes.MsgCreateValidator,
-			// 	*stakingtypes.MsgEditValidator:
-			// 	if !a.rk.IsVoter(ctx, signer) {
-			// 		return ctx, sdkerrors.Wrapf(sdkerrors.ErrUnauthorized, ErrMsgNotVoterAccount)
-			// 	}
+		case
+			*stakingtypes.MsgCreateValidator,
+			*stakingtypes.MsgEditValidator:
+			if !a.rk.IsVoter(ctx, signer) {
+				return ctx, sdkerrors.Wrapf(sdkerrors.ErrUnauthorized, ErrMsgNotVoterAccount)
+			}
 		}
 	}
 
