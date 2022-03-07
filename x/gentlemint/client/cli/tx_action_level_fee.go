@@ -12,7 +12,7 @@ import (
 func CmdSetActionLevelFee() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "set-action-level-fee [action] [level]",
-		Short: "Create a new action-level-fee",
+		Short: "Set action-level-fee",
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			// Get indexes
