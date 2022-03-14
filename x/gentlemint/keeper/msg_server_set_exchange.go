@@ -9,10 +9,6 @@ import (
 func (k msgServer) SetExchange(goCtx context.Context, msg *types.MsgSetExchange) (*types.MsgSetExchangeResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	if err := msg.ValidateBasic(); err != nil {
-		return nil, err
-	}
-
 	k.SetExchangeRate(ctx, types.ExchangeRate{Rate: msg.Rate})
 	return &types.MsgSetExchangeResponse{}, nil
 }
