@@ -27,7 +27,7 @@ $ %s query %s info-by-id 123e4567-e89b-12d3-a456-426655440000`, version.Name, ty
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			reqId := args[0]
 
-			clientCtx, err := client.GetClientTxContext(cmd)
+			clientCtx, err := client.GetClientQueryContext(cmd)
 			if err != nil {
 				return err
 			}

@@ -18,7 +18,7 @@ func CmdCheckFees() *cobra.Command {
 		Short: "Query check-fees of actions and status of current [address]'s balances with that fees",
 		Args:  cobra.MinimumNArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			clientCtx, err := client.GetClientTxContext(cmd)
+			clientCtx, err := client.GetClientQueryContext(cmd)
 			if err != nil {
 				return err
 			}

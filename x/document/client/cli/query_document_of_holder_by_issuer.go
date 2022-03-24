@@ -27,7 +27,7 @@ $ %s query %s document-by-issuer uuid-5312 shareledger1z8h2ymcpr7w75l4pwxkgr3fmg
 			reqHolder := args[0]
 			reqIssuer := args[1]
 
-			clientCtx, err := client.GetClientTxContext(cmd)
+			clientCtx, err := client.GetClientQueryContext(cmd)
 			if err != nil {
 				return err
 			}

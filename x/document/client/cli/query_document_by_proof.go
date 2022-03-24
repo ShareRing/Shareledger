@@ -27,7 +27,7 @@ $ %s query %s proof 5wpluxhf4qru2ewy58kc3w4tkzm3v`, version.Name, types.ModuleNa
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			reqProof := args[0]
 
-			clientCtx, err := client.GetClientTxContext(cmd)
+			clientCtx, err := client.GetClientQueryContext(cmd)
 			if err != nil {
 				return err
 			}

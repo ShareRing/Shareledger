@@ -15,7 +15,10 @@ func CmdListActionLevelFee() *cobra.Command {
 		Use:   "action-level-fees",
 		Short: "List all action-level-fee",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			clientCtx := client.GetClientContextFromCmd(cmd)
+			clientCtx, err := client.GetClientQueryContext(cmd)
+			if err != nil {
+				return err
+			}
 
 			queryClient := types.NewQueryClient(clientCtx)
 

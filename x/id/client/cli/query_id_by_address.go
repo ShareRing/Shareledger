@@ -27,7 +27,7 @@ $ %s query %s info-by-address shareledger1s432u6zv95wpluxhf4qru2ewy58kc3w4tkzm3v
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			reqAddress := args[0]
 
-			clientCtx, err := client.GetClientTxContext(cmd)
+			clientCtx, err := client.GetClientQueryContext(cmd)
 			if err != nil {
 				return err
 			}
