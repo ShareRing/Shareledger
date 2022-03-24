@@ -10,7 +10,7 @@ build:
 	go build -o build/shareledger ./cmd/Shareledgerd
 
 dbuild:
-	docker build -t sharering/shareledger -f ./deploy/docker/Dockerfile.yaml .
+	docker build -t sharering/shareledger -f ./deploy/docker/Dockerfile .
 
 dinit:
 	rm -rf ./deploy/testnet && \
