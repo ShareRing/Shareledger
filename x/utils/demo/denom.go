@@ -1,7 +1,6 @@
 package denom
 
 import (
-	"fmt"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"math"
@@ -59,24 +58,12 @@ var supportedDenoms = map[string]struct{}{
 	ShrP:    {},
 }
 
-func buildDenomUnits(baseName string, usdRate sdk.Dec) (map[string]sdk.Dec, error) {
-	switch baseName {
-	case Base: // Base
-		return map[string]sdk.Dec{
-			Base:    sdk.NewDec(1),
-			Shr:     sdk.NewDec(ShrExponent),
-			BaseUSD: usdRate.Mul(sdk.NewDec(ShrExponent)).Quo(sdk.NewDec(USDExponent)),
-			ShrP:    usdRate.Mul(sdk.NewDec(ShrExponent)),
-		}, nil
-	case BaseUSD: // BaseUSD
-		return map[string]sdk.Dec{
-			BaseUSD: sdk.NewDec(1),
-			ShrP:    sdk.NewDec(USDExponent),
-			Base:    sdk.NewDec(USDExponent).Quo(sdk.NewDec(ShrExponent).Mul(usdRate)),
-			Shr:     sdk.NewDec(USDExponent).Quo(usdRate),
-		}, nil
-	default:
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "provided %v base denom is not supported. Supported Denoms: %v, %v", baseName, Base, BaseUSD)
+func getBaseDenomUnits(usdRate sdk.Dec) map[string]sdk.Dec {
+	return map[string]sdk.Dec{
+		Base:    sdk.NewDec(1),
+		Shr:     sdk.NewDec(ShrExponent),
+		BaseUSD: usdRate.Mul(sdk.NewDec(ShrExponent)).Quo(sdk.NewDec(USDExponent)),
+		ShrP:    usdRate.Mul(sdk.NewDec(ShrExponent)),
 	}
 }
 
@@ -91,6 +78,7 @@ func NormalizeToBaseCoins(dcoins sdk.DecCoins, roundUp bool) (sdk.Coins, error) 
 	base, err := NormalizeToBaseCoin(Base, sdk.NewDecCoins(
 		sdk.NewDecCoinFromDec(Shr, dcoins.AmountOf(Shr)),
 		sdk.NewDecCoinFromDec(Base, dcoins.AmountOf(Base))), sdk.NewDec(1), roundUp)
+
 	if err != nil {
 		return nil, err
 	}
@@ -107,43 +95,32 @@ func NormalizeToBaseCoins(dcoins sdk.DecCoins, roundUp bool) (sdk.Coins, error) 
 }
 
 func NormalizeToBaseCoin(baseName string, dcoins sdk.DecCoins, usdRate sdk.Dec, roundUp bool) (coin sdk.Coin, err error) {
-	coin = sdk.NewCoin(baseName, sdk.NewInt(0))
-	if err = dcoins.Validate(); err != nil {
-		return
-	}
-	baseUnits, err := buildDenomUnits(baseName, usdRate)
+	baseDecCoins, err := To(dcoins, baseName, usdRate)
 	if err != nil {
 		return
 	}
-	destUnit, found := baseUnits[baseName]
-	if !found {
-		err = fmt.Errorf("%v not found in base units map", baseName)
-		return
-	}
-	dValue := sdk.NewDec(0)
-	for _, c := range dcoins {
-		srcUnit, found := baseUnits[c.Denom]
-		if !found {
-			err = fmt.Errorf("%v not found in base units map", srcUnit)
-			return
-		}
-		dValue = dValue.Add(c.Amount.Mul(srcUnit).Quo(destUnit))
-	}
-	iv := dValue.TruncateInt()
+	coin = sdk.NewCoin(baseName, baseDecCoins.Amount.TruncateInt())
 	if roundUp {
-		iv = dValue.Ceil().TruncateInt()
+		coin = sdk.NewCoin(baseName, baseDecCoins.Amount.Ceil().TruncateInt())
 	}
-	coin = sdk.NewCoin(baseName, iv)
 	return
 }
 
 // ToDisplayCoins convert coins to display coins which are Shr and ShrP
 func ToDisplayCoins(coins sdk.Coins) sdk.DecCoins {
-	shr := sdk.NewDecCoinFromDec(Shr,
-		coins.AmountOf(Base).ToDec().Quo(sdk.NewDec(ShrExponent)).Add(coins.AmountOf(Shr).ToDec()))
-	shrP := sdk.NewDecCoinFromDec(ShrP,
-		coins.AmountOf(BaseUSD).ToDec().Quo(sdk.NewDec(USDExponent)).Add(coins.AmountOf(ShrP).ToDec()))
-	return sdk.NewDecCoins(shr, shrP)
+	shr := sdk.NewDecCoins(
+		sdk.NewDecCoin(Base, coins.AmountOf(Base)),
+		sdk.NewDecCoin(Shr, coins.AmountOf(Shr)),
+	)
+	dShr, _ := To(shr, Shr, sdk.NewDec(1))
+
+	shrp := sdk.NewDecCoins(
+		sdk.NewDecCoin(BaseUSD, coins.AmountOf(BaseUSD)),
+		sdk.NewDecCoin(ShrP, coins.AmountOf(ShrP)),
+	)
+	dShrP, _ := To(shrp, ShrP, sdk.NewDec(1))
+
+	return sdk.NewDecCoins(dShr, dShrP)
 }
 
 func To(coins sdk.DecCoins, dest string, usdRate sdk.Dec) (coin sdk.DecCoin, err error) {
@@ -153,7 +130,7 @@ func To(coins sdk.DecCoins, dest string, usdRate sdk.Dec) (coin sdk.DecCoin, err
 	if err = CheckSupport(dest); err != nil {
 		return
 	}
-	baseUnits, err := buildDenomUnits(Base, usdRate)
+	baseUnits := getBaseDenomUnits(usdRate)
 	if err != nil {
 		return
 	}
@@ -171,7 +148,7 @@ func To(coins sdk.DecCoins, dest string, usdRate sdk.Dec) (coin sdk.DecCoin, err
 			err = sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "%v is not supporter", c.Denom)
 			return
 		}
-		vd = vd.Add(c.Amount.Quo(srcUnit).Mul(destUnit))
+		vd = vd.Add(c.Amount.Mul(srcUnit).Quo(destUnit))
 	}
 	coin = sdk.NewDecCoinFromDec(dest, vd)
 	return

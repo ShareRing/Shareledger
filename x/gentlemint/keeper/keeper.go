@@ -81,31 +81,6 @@ func (k Keeper) LoadAllowanceLoader(ctx sdk.Context, addr sdk.AccAddress) error 
 	return k.loadCoins(ctx, addr, types.AllowanceLoader)
 }
 
-func (k Keeper) buyBaseDenomByBaseUSD(ctx sdk.Context, bUSD sdk.Coin, buyer sdk.AccAddress) error {
-	if bUSD.Denom != denom.BaseUSD || bUSD.IsValid() {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "%v", bUSD)
-	}
-	rate := k.GetExchangeRateD(ctx)
-	bought, err := denom.NormalizeToBaseCoin(denom.Base, sdk.NewDecCoinsFromCoins(bUSD), rate, false)
-	if err != nil {
-		return sdkerrors.Wrapf(sdkerrors.ErrLogic, "+%v", err)
-	}
-	if !k.BaseMintPossible(ctx, bought.Amount) {
-		return sdkerrors.Wrap(types.ErrBaseSupplyExceeded, bought.String())
-	}
-	currentBalance := k.bankKeeper.GetAllBalances(ctx, buyer)
-	if !currentBalance.IsAllGTE(sdk.NewCoins(bUSD)) {
-		return sdkerrors.Wrapf(sdkerrors.ErrInsufficientFunds, "current balances %v, Cost: %v", currentBalance, bUSD)
-	}
-	if err := k.burnCoins(ctx, buyer, sdk.NewCoins(bUSD)); err != nil {
-		return sdkerrors.Wrapf(err, "charge %v coins", bUSD)
-	}
-	if err := k.loadCoins(ctx, buyer, sdk.NewCoins(bought)); err != nil {
-		return sdkerrors.Wrapf(err, "load %v coins", bought)
-	}
-	return nil
-}
-
 func (k Keeper) buyBaseDenom(ctx sdk.Context, base sdk.Coin, buyer sdk.AccAddress) error {
 	if base.Denom != denom.Base || !base.IsValid() {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "%v", base)

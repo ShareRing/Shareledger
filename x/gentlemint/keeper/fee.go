@@ -30,8 +30,8 @@ func (k Keeper) LoadFeeFundFromShrp(ctx sdk.Context, msg *types.MsgLoadFee) erro
 	if err != nil {
 		return err
 	}
-	if err := k.buyBaseDenomByBaseUSD(ctx, boughtBase, msg.GetSigners()[0]); err != nil {
-		return sdkerrors.Wrapf(err, "buy shr by usd")
+	if err := k.buyBaseDenom(ctx, boughtBase, msg.GetSigners()[0]); err != nil {
+		return sdkerrors.Wrapf(err, "buy shr, %v, by usd, %v", boughtBase.String(), msg.Shrp.String())
 	}
 	return nil
 }

@@ -17,12 +17,6 @@ func TestNormalizeCoins(t *testing.T) {
 	rate := sdk.NewDec(200)
 	tcs := []testCase{
 		{
-			i:  sdk.NewDecCoinsFromCoins(sdk.NewCoin(ShrP, sdk.NewInt(0)), sdk.NewCoin(BaseUSD, sdk.NewInt(0))),
-			ib: Base,
-			o:  sdk.NewCoin(Base, sdk.NewInt(0*ShrExponent)),
-			d:  "0.0 shrp -> 0 ushr",
-		},
-		{
 			i:  sdk.NewDecCoinsFromCoins(sdk.NewCoin(ShrP, sdk.NewInt(1)), sdk.NewCoin(BaseUSD, sdk.NewInt(99))),
 			ib: Base,
 			o:  sdk.NewCoin(Base, sdk.NewInt(398*ShrExponent)),
