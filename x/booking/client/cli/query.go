@@ -2,48 +2,31 @@ package cli
 
 import (
 	"fmt"
+	// "strings"
+
+	"github.com/spf13/cobra"
 
 	"github.com/cosmos/cosmos-sdk/client"
-	"github.com/cosmos/cosmos-sdk/client/context"
-	"github.com/cosmos/cosmos-sdk/client/flags"
-	"github.com/cosmos/cosmos-sdk/codec"
+	// "github.com/cosmos/cosmos-sdk/client/flags"
+	// sdk "github.com/cosmos/cosmos-sdk/types"
+
 	"github.com/sharering/shareledger/x/booking/types"
-	"github.com/spf13/cobra"
 )
 
-func QueryCmd(storeKey string, cdc *codec.Codec) *cobra.Command {
-	bookingQueryCmd := &cobra.Command{
+// GetQueryCmd returns the cli query commands for this module
+func GetQueryCmd(queryRoute string) *cobra.Command {
+	// Group booking queries under a subcommand
+	cmd := &cobra.Command{
 		Use:                        types.ModuleName,
-		Short:                      "Querying commands for the booking module",
+		Short:                      fmt.Sprintf("Querying commands for the %s module", types.ModuleName),
 		DisableFlagParsing:         true,
 		SuggestionsMinimumDistance: 2,
 		RunE:                       client.ValidateCmd,
 	}
-	bookingQueryCmd.AddCommand(flags.GetCommands(
-		CmdGetBooking(storeKey, cdc),
-	)...)
 
-	return bookingQueryCmd
-}
+	cmd.AddCommand(CmdBooking())
 
-func CmdGetBooking(queryRoute string, cdc *codec.Codec) *cobra.Command {
-	return &cobra.Command{
-		Use:   "get [bookID]",
-		Short: "get booking info from bookID",
-		Args:  cobra.ExactArgs(1),
-		RunE: func(cmd *cobra.Command, args []string) error {
-			cliCtx := context.NewCLIContext().WithCodec(cdc)
-			bookID := args[0]
+	// this line is used by starport scaffolding # 1
 
-			res, _, err := cliCtx.QueryWithData(fmt.Sprintf("custom/%s/booking/%s", queryRoute, bookID), nil)
-			if err != nil {
-				fmt.Printf("could not get asset - %s \n", bookID)
-				return nil
-			}
-
-			var out types.Booking
-			cdc.MustUnmarshalJSON(res, &out)
-			return cliCtx.PrintOutput(out)
-		},
-	}
+	return cmd
 }

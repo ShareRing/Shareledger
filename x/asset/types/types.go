@@ -1,25 +1,9 @@
 package types
 
-import (
-	"encoding/json"
+import "encoding/json"
 
-	sdk "github.com/cosmos/cosmos-sdk/types"
-)
-
-type Asset struct {
-	UUID    string         `json:"uuid"`
-	Hash    []byte         `json:"hash"`
-	Creator sdk.AccAddress `json:"creator"`
-	Status  bool           `json:"status"`
-	Rate    int64          `json:""`
-}
-
-func NewAsset() Asset {
-	return Asset{}
-}
-
-func NewAssetFromMsgCreate(msg MsgCreate) Asset {
-	asset := NewAsset()
+func NewAssetFromMsgCreate(msg MsgCreateAsset) Asset {
+	asset := Asset{}
 	asset.Creator = msg.Creator
 	asset.Rate = msg.Rate
 	asset.Hash = msg.Hash
@@ -28,8 +12,8 @@ func NewAssetFromMsgCreate(msg MsgCreate) Asset {
 	return asset
 }
 
-func NewAssetFromMsgUpdate(msg MsgUpdate) Asset {
-	asset := NewAsset()
+func NewAssetFromMsgUpdate(msg MsgUpdateAsset) Asset {
+	asset := Asset{}
 	asset.Creator = msg.Creator
 	asset.Rate = msg.Rate
 	asset.Hash = msg.Hash

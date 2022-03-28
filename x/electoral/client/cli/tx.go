@@ -1,126 +1,48 @@
 package cli
 
 import (
-	"bufio"
+	"fmt"
+	"time"
 
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
-
-	shareringUtils "github.com/ShareRing/modules/utils"
 
 	"github.com/cosmos/cosmos-sdk/client"
-	"github.com/cosmos/cosmos-sdk/client/context"
-	"github.com/cosmos/cosmos-sdk/client/flags"
-	"github.com/cosmos/cosmos-sdk/codec"
-	sdk "github.com/cosmos/cosmos-sdk/types"
+	// "github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/sharering/shareledger/x/electoral/types"
-
-	"github.com/cosmos/cosmos-sdk/x/auth"
-	"github.com/cosmos/cosmos-sdk/x/auth/client/utils"
 )
 
 var (
-	minFeeShr = shareringUtils.MINFEE.String() + "shr"
+	DefaultRelativePacketTimeoutTimestamp = uint64((time.Duration(10) * time.Minute).Nanoseconds())
 )
 
-func GetTxCmd(storeKey string, cdc *codec.Codec) *cobra.Command {
-	bookCmd := &cobra.Command{
+const (
+	flagPacketTimeoutTimestamp = "packet-timeout-timestamp"
+)
+
+// GetTxCmd returns the transaction commands for this module
+func GetTxCmd() *cobra.Command {
+	cmd := &cobra.Command{
 		Use:                        types.ModuleName,
-		Short:                      "booking transaction subcommands",
+		Short:                      fmt.Sprintf("%s transactions subcommands", types.ModuleName),
 		DisableFlagParsing:         true,
 		SuggestionsMinimumDistance: 2,
 		RunE:                       client.ValidateCmd,
 	}
 
-	bookCmd.AddCommand(flags.PostCommands(
-		GetCmdEnroll(cdc),
-		GetCmdRevoke(cdc),
-	)...)
+	cmd.AddCommand(CmdEnrollVoter())
+	cmd.AddCommand(CmdRevokeVoter())
+	cmd.AddCommand(CmdEnrollLoaders())
+	cmd.AddCommand(CmdEnrollLoadersFromFile())
+	cmd.AddCommand(CmdRevokeLoaders())
+	cmd.AddCommand(CmdRevokeLoadersFromFile())
+	cmd.AddCommand(CmdEnrollIdSigners())
+	cmd.AddCommand(CmdEnrollIdSignerFromFile())
+	cmd.AddCommand(CmdRevokeIdSigners())
+	cmd.AddCommand(CmdEnrollDocIssuers())
+	cmd.AddCommand(CmdRevokeDocIssuers())
+	cmd.AddCommand(CmdEnrollAccountOperators())
+	cmd.AddCommand(CmdRevokeAccountOperators())
+	// this line is used by starport scaffolding # 1
 
-	return bookCmd
-}
-
-func GetCmdEnroll(cdc *codec.Codec) *cobra.Command {
-	cmd := &cobra.Command{
-		Use:   "enroll [address]",
-		Short: "enroll a voter",
-		Args:  cobra.ExactArgs(1),
-		RunE: func(cmd *cobra.Command, args []string) error {
-			inBuf := bufio.NewReader(cmd.InOrStdin())
-
-			var cliCtx context.CLIContext
-			var txBldr auth.TxBuilder
-
-			// Get key from key seed
-			keySeed := viper.GetString(shareringUtils.FlagKeySeed)
-			if len(keySeed) > 0 {
-				seed, err := shareringUtils.GetKeeySeedFromFile(keySeed)
-				if err != nil {
-					return err
-				}
-
-				cliCtx, txBldr, err = shareringUtils.GetTxBldrAndCtxFromSeed(inBuf, cdc, seed)
-				if err != nil {
-					return err
-				}
-			} else {
-				// Get key from keychain
-				txBldr = auth.NewTxBuilderFromCLI(inBuf).WithTxEncoder(utils.GetTxEncoder(cdc))
-				cliCtx = context.NewCLIContextWithInput(inBuf).WithCodec(cdc)
-			}
-
-			txBldr = txBldr.WithFees(minFeeShr)
-
-			voter, err := sdk.AccAddressFromBech32(args[0])
-			if err != nil {
-				return err
-			}
-			msg := types.NewMsgEnrollVoter(cliCtx.GetFromAddress(), voter)
-			err = msg.ValidateBasic()
-
-			if err != nil {
-				return err
-			}
-			return utils.GenerateOrBroadcastMsgs(cliCtx, txBldr, []sdk.Msg{msg})
-		},
-	}
-	cmd.Flags().String(shareringUtils.FlagKeySeed, "", "path to key_seed.json")
-	return cmd
-}
-
-func GetCmdRevoke(cdc *codec.Codec) *cobra.Command {
-	cmd := &cobra.Command{
-		Use:   "revoke [address]",
-		Short: "revoke a voter",
-		Args:  cobra.ExactArgs(1),
-		RunE: func(cmd *cobra.Command, args []string) error {
-			inBuf := bufio.NewReader(cmd.InOrStdin())
-
-			keySeed := viper.GetString(shareringUtils.FlagKeySeed)
-			seed, err := shareringUtils.GetKeeySeedFromFile(keySeed)
-			if err != nil {
-				return err
-			}
-
-			cliCtx, txBldr, err := shareringUtils.GetTxBldrAndCtxFromSeed(inBuf, cdc, seed)
-			if err != nil {
-				return err
-			}
-
-			txBldr = txBldr.WithFees(minFeeShr)
-
-			voter, err := sdk.AccAddressFromBech32(args[0])
-			if err != nil {
-				return err
-			}
-			msg := types.NewMsgRevokeVoter(cliCtx.GetFromAddress(), voter)
-			err = msg.ValidateBasic()
-			if err != nil {
-				return err
-			}
-			return utils.GenerateOrBroadcastMsgs(cliCtx, txBldr, []sdk.Msg{msg})
-		},
-	}
-	cmd.Flags().String(shareringUtils.FlagKeySeed, "", "path to key_seed.json")
 	return cmd
 }

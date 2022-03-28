@@ -1,0 +1,66 @@
+syntax = "proto3";
+package shareledger.document;
+
+import "google/api/annotations.proto";
+import "cosmos/base/query/v1beta1/pagination.proto";
+import "gogoproto/gogo.proto";
+import "document/document.proto";
+// this line is used by starport scaffolding # 1
+
+option go_package = "github.com/sharering/shareledger/x/document/types";
+
+// Query defines the gRPC querier service.
+service Query {
+    // Queries a list of documentByProof items.
+	rpc DocumentByProof(QueryDocumentByProofRequest) returns (QueryDocumentByProofResponse) {
+		option (google.api.http).get = "/shareledger/document/proof/{proof}";
+	}
+
+// Queries a list of documentByHolderId items.
+	rpc DocumentByHolderId(QueryDocumentByHolderIdRequest) returns (QueryDocumentByHolderIdResponse) {
+		option (google.api.http).get = "/shareledger/document/{id}";
+	}
+
+// Queries a list of documentOfHolderByIssuer items.
+	rpc DocumentOfHolderByIssuer(QueryDocumentOfHolderByIssuerRequest) returns (QueryDocumentOfHolderByIssuerResponse) {
+		option (google.api.http).get = "/shareledger/document/{holder}/{issuer}";
+	}
+
+// this line is used by starport scaffolding # 2
+}
+
+message QueryDocumentByProofRequest {
+  option (gogoproto.equal)           = false;
+  option (gogoproto.goproto_getters) = false;
+
+  string proof = 1;
+}
+
+message QueryDocumentByProofResponse {
+  Document document = 1;
+}
+
+message QueryDocumentByHolderIdRequest {
+  option (gogoproto.equal)           = false;
+  option (gogoproto.goproto_getters) = false;
+
+  string id = 1;
+}
+
+message QueryDocumentByHolderIdResponse {
+  repeated Document documents = 1;
+}
+
+message QueryDocumentOfHolderByIssuerRequest {
+  option (gogoproto.equal)           = false;
+  option (gogoproto.goproto_getters) = false;
+
+  string holder = 1;
+  string issuer = 2;
+}
+
+message QueryDocumentOfHolderByIssuerResponse {
+  repeated Document documents = 1;
+}
+
+// this line is used by starport scaffolding # 3

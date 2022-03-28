@@ -2,39 +2,30 @@ package booking
 
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/sharering/shareledger/x/booking/keeper"
 	"github.com/sharering/shareledger/x/booking/types"
 )
 
-type GenesisState struct {
-	Bookings []types.Booking
-}
-
-func NewGenesisState() GenesisState {
-	return GenesisState{}
-}
-
-func ValidateGenesis(data GenesisState) error {
-	return nil
-}
-
-func DefaultGenesisState() GenesisState {
-	return GenesisState{}
-}
-
-func InitGenesis(ctx sdk.Context, keeper Keeper, data GenesisState) {
-	for _, b := range data.Bookings {
-		keeper.SetBooking(ctx, b.BookID, b)
+// InitGenesis initializes the capability module's state from a provided genesis
+// state.
+func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) {
+	// this line is used by starport scaffolding # genesis/module/init
+	for _, b := range genState.Bookings {
+		k.SetBooking(ctx, b.GetBookID(), *b)
 	}
 }
 
-func ExportGenesis(ctx sdk.Context, k Keeper) GenesisState {
-	var bookings []types.Booking
+// ExportGenesis returns the capability module's exported genesis.
+func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
+	genesis := types.DefaultGenesis()
+
+	// this line is used by starport scaffolding # genesis/module/export
 	cb := func(b types.Booking) bool {
-		bookings = append(bookings, b)
+		genesis.Bookings = append(genesis.Bookings, &b)
 		return false
 	}
+
 	k.IterateBookings(ctx, cb)
-	return GenesisState{
-		Bookings: bookings,
-	}
+
+	return genesis
 }

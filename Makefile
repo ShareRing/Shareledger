@@ -1,43 +1,32 @@
-# build_linux_arm64:
-# 	env GOOS=linux GOARCH=arm64 go build -o build/shareledger_linux_arm64 -mod=readonly cmd/shareledger/main.go
+.PHONY: build_linux_amd64 build dbuild dinit dup ddown duprefresh run
 
-# build_linux_amd64:
-# 	env GOOS=linux GOARCH=amd64 go build -o build/shareledger_linux_amd64 -mod=readonly cmd/shareledger/main.go
+run:
+	go run ./cmd/Shareledgerd/main.go start
 
-# build_windows_amd64:
-# 	env GOOS=windows GOARCH=amd64 go build -o build/shareledger_windows_amd64.exe -mod=readonly cmd/shareledger/main.go
-
-# build_darwin_amd64:
-# 	env GOOS=darwin GOARCH=amd64 go build -o build/shareledger_darwin_amd64 -mod=readonly cmd/shareledger/main.go
-
-# build_all: build_linux_arm64 build_linux_amd64 build_windows_amd64 build_darwin_amd64
-
-# .PHONY: build build_linux_arm64 build_linux_amd64 build_windows_amd64 build_all
-
-# ------------------------------
-
-
-VERSION := $(shell echo $(shell git describe --tags) | sed 's/^v//')
-COMMIT := $(shell git log -1 --format='%H')
-
-build_tags= cleveldb
-
-ldflags = -X github.com/cosmos/cosmos-sdk/version.Name=shareledger \
-		  -X github.com/cosmos/cosmos-sdk/version.ServerName=shareledger \
-		  -X github.com/cosmos/cosmos-sdk/version.ClientName=slcli \
-		  -X github.com/cosmos/cosmos-sdk/version.Version=$(VERSION) \
-		  -X github.com/cosmos/cosmos-sdk/version.Commit=$(COMMIT) \
-		  -X "github.com/cosmos/cosmos-sdk/version.BuildTags=$(build_tags)"
+build_linux_amd64:
+	env GOOS=linux GOARCH=amd64 go build -o build/shareledger_linux_amd64 ./cmd/Shareledgerd
 
 build:
-	go build -tags cleveldb -ldflags '$(ldflags)' -mod=readonly -o build/shareledger ./cmd/shareledger
-	go build -tags cleveldb -ldflags '$(ldflags)' -mod=readonly -o build/slcli ./cmd/slcli
-	go build -mod=readonly -o build/debug ./cmd/debug
+	go build -o build/shareledger ./cmd/Shareledgerd
 
-build-docker:
-	$(MAKE) -C testnet/docker/ all
+dbuild:
+	docker build -t sharering/shareledger -f ./deploy/docker/Dockerfile .
 
-clean:
-	sudo rm -rf ./build
+dinit:
+	rm -rf ./deploy/testnet && \
+	cp -r ./deploy/testnet_config ./deploy/testnet && \
+	cp ./deploy/testnet/genesis.json ./deploy/testnet/node0/config && \
+	cp ./deploy/testnet/genesis.json ./deploy/testnet/node1/config && \
+	cp ./deploy/testnet/genesis.json ./deploy/testnet/node2/config && \
+	cp ./deploy/testnet/genesis.json ./deploy/testnet/node3/config
+dup:
+	cd ./deploy && \
+    docker-compose up -d --remove-orphans
+ddown:
+	cd ./deploy && \
+    docker-compose down
 
-.PHONY: build clean
+duprefresh: dinit dup
+
+test:
+	go test ./... -v

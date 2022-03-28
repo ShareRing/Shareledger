@@ -1,58 +1,45 @@
 package electoral
 
 import (
-	"encoding/json"
-
-	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/sharering/shareledger/x/electoral/keeper"
 	"github.com/sharering/shareledger/x/electoral/types"
 )
 
-type GenesisState struct {
-	Addresses []sdk.AccAddress `json:"Addresses"`
-}
-
-func NewGenesisState(addrs []sdk.AccAddress) GenesisState {
-	return GenesisState{
-		Addresses: addrs,
+// InitGenesis initializes the capability module's state from a provided genesis
+// state.
+func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) {
+	// Set all the accState
+	for _, elem := range genState.AccStateList {
+		k.SetAccState(ctx, elem)
 	}
-}
-
-func ValidateGenesis(data GenesisState) error {
-	return nil
-}
-
-func DefaultGenesisState() GenesisState {
-	return GenesisState{}
-}
-
-func InitGenesis(ctx sdk.Context, keeper Keeper, data GenesisState) {
-	for _, addr := range data.Addresses {
-		voterID := VoterPrefix + addr.String()
-		keeper.SetVoterAddress(ctx, voterID, addr)
-		keeper.SetVoterStatus(ctx, voterID, types.StatusVoterEnrolled)
+	// Set if defined
+	if genState.Authority != nil {
+		k.SetAuthority(ctx, *genState.Authority)
 	}
+	// Set if defined
+	if genState.Treasurer != nil {
+		k.SetTreasurer(ctx, *genState.Treasurer)
+	}
+	// this line is used by starport scaffolding # genesis/module/init
 }
 
-func ExportGenesis(ctx sdk.Context, k Keeper) GenesisState {
-	var voterAddresses []sdk.AccAddress
-	cb := func(voter types.Voter) bool {
-		if voter.Status == types.StatusVoterEnrolled {
-			voterAddresses = append(voterAddresses, voter.Address)
-		}
-		return false
-	}
-	k.IterateVoters(ctx, cb)
-	return GenesisState{
-		Addresses: voterAddresses,
-	}
-}
+// ExportGenesis returns the capability module's exported genesis.
+func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
+	genesis := types.DefaultGenesis()
 
-func GetGenesisStateFromAppState(cdc *codec.Codec, appState map[string]json.RawMessage) GenesisState {
-	var genesisState GenesisState
-	if appState[ModuleName] != nil {
-		cdc.MustUnmarshalJSON(appState[ModuleName], &genesisState)
+	genesis.AccStateList = k.GetAllAccState(ctx)
+	// Get all authority
+	authority, found := k.GetAuthority(ctx)
+	if found {
+		genesis.Authority = &authority
 	}
+	// Get all treasurer
+	treasurer, found := k.GetTreasurer(ctx)
+	if found {
+		genesis.Treasurer = &treasurer
+	}
+	// this line is used by starport scaffolding # genesis/module/export
 
-	return genesisState
+	return genesis
 }

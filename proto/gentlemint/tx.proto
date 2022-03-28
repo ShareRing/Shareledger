@@ -1,0 +1,111 @@
+syntax = "proto3";
+package shareledger.gentlemint;
+
+import "gentlemint/level_fee.proto";
+import "gentlemint/action_level_fee.proto";
+import "gogoproto/gogo.proto";
+// this line is used by starport scaffolding # proto/tx/import
+import "cosmos/base/v1beta1/coin.proto";
+
+option go_package = "github.com/sharering/shareledger/x/gentlemint/types";
+
+// Msg defines the Msg service.
+service Msg {
+  rpc BuyShr(MsgBuyShr) returns (MsgBuyShrResponse);
+  rpc SetExchange(MsgSetExchange) returns (MsgSetExchangeResponse);
+  rpc SetLevelFee(MsgSetLevelFee) returns (MsgSetLevelFeeResponse);
+  rpc DeleteLevelFee(MsgDeleteLevelFee) returns (MsgDeleteLevelFeeResponse);
+  rpc SetActionLevelFee(MsgSetActionLevelFee) returns (MsgSetActionLevelFeeResponse);
+  rpc DeleteActionLevelFee(MsgDeleteActionLevelFee) returns (MsgDeleteActionLevelFeeResponse);
+  rpc LoadFee(MsgLoadFee) returns (MsgLoadFeeResponse);
+  rpc Load(MsgLoad) returns (MsgLoadResponse);
+  rpc Send(MsgSend) returns (MsgSendResponse);
+  rpc Burn(MsgBurn) returns (MsgBurnResponse);
+// this line is used by starport scaffolding # proto/tx/rpc
+}
+
+message MsgBuyShr {
+  string creator = 1;
+  string amount = 2;
+}
+
+message MsgBuyShrResponse {
+  string log = 1;
+}
+
+
+message MsgSetExchange {
+  string creator = 1;
+  string rate = 2;
+}
+
+message MsgSetExchangeResponse {
+}
+
+message MsgSetLevelFee {
+  string creator = 1;
+  string level = 2;
+
+  cosmos.base.v1beta1.DecCoin fee = 3
+  [(gogoproto.nullable) = false];
+}
+message MsgSetLevelFeeResponse {}
+
+message MsgDeleteLevelFee {
+  string creator = 1;
+  string level = 2;
+}
+message MsgDeleteLevelFeeResponse {}
+
+message MsgSetActionLevelFee {
+  string creator = 1;
+  string action = 2;
+
+  string level = 3;
+}
+message MsgSetActionLevelFeeResponse {}
+
+message MsgDeleteActionLevelFee {
+  string creator = 1;
+  string action = 2;
+}
+message MsgDeleteActionLevelFeeResponse {}
+
+message MsgLoadFee {
+  string creator = 1;
+  cosmos.base.v1beta1.DecCoin shrp = 2;
+}
+
+message MsgLoadFeeResponse {
+}
+
+message MsgLoad {
+  string creator = 1;
+  string address = 2;
+  repeated cosmos.base.v1beta1.DecCoin coins = 3
+  [(gogoproto.nullable) = false, (gogoproto.castrepeated) = "github.com/cosmos/cosmos-sdk/types.DecCoins"];
+}
+
+message MsgLoadResponse {
+}
+
+message MsgSend {
+  string creator = 1;
+  string address = 2;
+  repeated cosmos.base.v1beta1.DecCoin coins = 3
+  [(gogoproto.nullable) = false, (gogoproto.castrepeated) = "github.com/cosmos/cosmos-sdk/types.DecCoins"];
+}
+
+message MsgSendResponse {
+}
+
+message MsgBurn {
+  string creator = 1;
+  repeated cosmos.base.v1beta1.DecCoin coins = 2
+  [(gogoproto.nullable) = false, (gogoproto.castrepeated) = "github.com/cosmos/cosmos-sdk/types.DecCoins"];
+}
+
+message MsgBurnResponse {
+}
+
+// this line is used by starport scaffolding # proto/tx/message

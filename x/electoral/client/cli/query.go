@@ -2,48 +2,44 @@ package cli
 
 import (
 	"fmt"
+	// "strings"
+
+	"github.com/spf13/cobra"
 
 	"github.com/cosmos/cosmos-sdk/client"
-	"github.com/cosmos/cosmos-sdk/client/context"
-	"github.com/cosmos/cosmos-sdk/client/flags"
-	"github.com/cosmos/cosmos-sdk/codec"
+	// "github.com/cosmos/cosmos-sdk/client/flags"
+	// sdk "github.com/cosmos/cosmos-sdk/types"
+
 	"github.com/sharering/shareledger/x/electoral/types"
-	"github.com/spf13/cobra"
 )
 
-func QueryCmd(storeKey string, cdc *codec.Codec) *cobra.Command {
-	bookingQueryCmd := &cobra.Command{
+// GetQueryCmd returns the cli query commands for this module
+func GetQueryCmd(queryRoute string) *cobra.Command {
+	// Group electoral queries under a subcommand
+	cmd := &cobra.Command{
 		Use:                        types.ModuleName,
-		Short:                      "Querying commands for the electoral module",
+		Short:                      fmt.Sprintf("Querying commands for the %s module", types.ModuleName),
 		DisableFlagParsing:         true,
 		SuggestionsMinimumDistance: 2,
 		RunE:                       client.ValidateCmd,
 	}
-	bookingQueryCmd.AddCommand(flags.GetCommands(
-		CmdGetVoter(storeKey, cdc),
-	)...)
 
-	return bookingQueryCmd
-}
+	cmd.AddCommand(CmdGetVoter())
 
-func CmdGetVoter(queryRoute string, cdc *codec.Codec) *cobra.Command {
-	return &cobra.Command{
-		Use:   "get [address]",
-		Short: "return status of voter",
-		Args:  cobra.ExactArgs(1),
-		RunE: func(cmd *cobra.Command, args []string) error {
-			cliCtx := context.NewCLIContext().WithCodec(cdc)
-			voter := args[0]
-			voterID := "voter" + voter
-			res, _, err := cliCtx.QueryWithData(fmt.Sprintf("custom/%s/voter/%s", queryRoute, voterID), nil)
-			if err != nil {
-				fmt.Printf("could not get voter - %s \n", voterID)
-				return nil
-			}
+	cmd.AddCommand(CmdGetLoader())
+	cmd.AddCommand(CmdGetLoadersFromFile())
+	cmd.AddCommand(CmdIdSigner())
+	cmd.AddCommand(CmdIdSigners())
+	cmd.AddCommand(CmdAccountOperator())
+	cmd.AddCommand(CmdAccountOperators())
+	cmd.AddCommand(CmdDocumentIssuer())
+	cmd.AddCommand(CmdDocumentIssuers())
 
-			var out types.Voter
-			cdc.MustUnmarshalJSON(res, &out)
-			return cliCtx.PrintOutput(out)
-		},
-	}
+	cmd.AddCommand(CmdGetVoters())
+
+	cmd.AddCommand(CmdGetLoaders())
+
+	// this line is used by starport scaffolding # 1
+
+	return cmd
 }

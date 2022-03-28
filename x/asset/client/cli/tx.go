@@ -1,172 +1,38 @@
 package cli
 
 import (
-	"bufio"
-	"strconv"
+	"fmt"
+	"time"
 
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 
-	shareringUtils "github.com/ShareRing/modules/utils"
 	"github.com/cosmos/cosmos-sdk/client"
-	"github.com/cosmos/cosmos-sdk/client/flags"
-	"github.com/cosmos/cosmos-sdk/codec"
-	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/cosmos/cosmos-sdk/x/auth/client/utils"
+	// "github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/sharering/shareledger/x/asset/types"
 )
 
 var (
-	creationFee = shareringUtils.HIGHFEE
-	updateFee   = shareringUtils.MEDIUMFEE
-	deleteFee   = shareringUtils.LOWFEE
+	DefaultRelativePacketTimeoutTimestamp = uint64((time.Duration(10) * time.Minute).Nanoseconds())
 )
 
-func GetTxCmd(storeKey string, cdc *codec.Codec) *cobra.Command {
-	assetCmd := &cobra.Command{
+const (
+	flagPacketTimeoutTimestamp = "packet-timeout-timestamp"
+)
+
+// GetTxCmd returns the transaction commands for this module
+func GetTxCmd() *cobra.Command {
+	cmd := &cobra.Command{
 		Use:                        types.ModuleName,
-		Short:                      "asset transaction subcommands",
+		Short:                      fmt.Sprintf("%s transactions subcommands", types.ModuleName),
 		DisableFlagParsing:         true,
 		SuggestionsMinimumDistance: 2,
 		RunE:                       client.ValidateCmd,
 	}
 
-	assetCmd.AddCommand(flags.PostCommands(
-		GetCmdCreateAsset(cdc),
-		GetCmdUpdateAsset(cdc),
-		GetCmdDeleteAsset(cdc),
-	)...)
+	cmd.AddCommand(CmdCreate())
+	cmd.AddCommand(CmdUpdate())
+	cmd.AddCommand(CmdDelete())
+	// this line is used by starport scaffolding # 1
 
-	return assetCmd
-}
-
-func GetCmdCreateAsset(cdc *codec.Codec) *cobra.Command {
-	cmd := &cobra.Command{
-		Use:  "create [hash] [uuid] [status] [fee]",
-		Args: cobra.ExactArgs(4),
-		RunE: func(cmd *cobra.Command, args []string) error {
-			inBuf := bufio.NewReader(cmd.InOrStdin())
-
-			keySeed := viper.GetString(shareringUtils.FlagKeySeed)
-			seed, err := shareringUtils.GetKeeySeedFromFile(keySeed)
-			if err != nil {
-				return err
-			}
-
-			cliCtx, txBldr, err := shareringUtils.GetTxBldrAndCtxFromSeed(inBuf, cdc, seed)
-			if err != nil {
-				return err
-			}
-
-			txFee, err := shareringUtils.GetFeeFromShrp(cdc, cliCtx, creationFee)
-			if err != nil {
-				return err
-			}
-			txBldr = txBldr.WithFees(txFee)
-			hash := []byte(args[0])
-			uuid := args[1]
-			status, err := strconv.ParseBool(args[2])
-			if err != nil {
-				return err
-			}
-			fee, err := strconv.Atoi(args[3])
-			if err != nil {
-				return err
-			}
-			msg := types.NewMsgCreate(cliCtx.GetFromAddress(), hash, uuid, status, int64(fee))
-			err = msg.ValidateBasic()
-			if err != nil {
-				return err
-			}
-
-			return utils.GenerateOrBroadcastMsgs(cliCtx, txBldr, []sdk.Msg{msg})
-		},
-	}
-	cmd.Flags().String(shareringUtils.FlagKeySeed, "", "path to key_seed.json")
-	return cmd
-}
-
-func GetCmdUpdateAsset(cdc *codec.Codec) *cobra.Command {
-	cmd := &cobra.Command{
-		Use:  "update [hash] [uuid] [status] [fee]",
-		Args: cobra.ExactArgs(4),
-		RunE: func(cmd *cobra.Command, args []string) error {
-			inBuf := bufio.NewReader(cmd.InOrStdin())
-
-			keySeed := viper.GetString(shareringUtils.FlagKeySeed)
-			seed, err := shareringUtils.GetKeeySeedFromFile(keySeed)
-			if err != nil {
-				return err
-			}
-
-			cliCtx, txBldr, err := shareringUtils.GetTxBldrAndCtxFromSeed(inBuf, cdc, seed)
-			if err != nil {
-				return err
-			}
-
-			txFee, err := shareringUtils.GetFeeFromShrp(cdc, cliCtx, updateFee)
-
-			if err != nil {
-				return err
-			}
-
-			txBldr = txBldr.WithFees(txFee)
-
-			hash := []byte(args[0])
-			uuid := args[1]
-			status, err := strconv.ParseBool(args[2])
-			if err != nil {
-				return err
-			}
-			fee, err := strconv.Atoi(args[3])
-			if err != nil {
-				return err
-			}
-			msg := types.NewMsgUpdate(cliCtx.GetFromAddress(), hash, uuid, status, int64(fee))
-			err = msg.ValidateBasic()
-			if err != nil {
-				return err
-			}
-
-			return utils.GenerateOrBroadcastMsgs(cliCtx, txBldr, []sdk.Msg{msg})
-		},
-	}
-	cmd.Flags().String(shareringUtils.FlagKeySeed, "", "path to key_seed.json")
-	return cmd
-}
-
-func GetCmdDeleteAsset(cdc *codec.Codec) *cobra.Command {
-	cmd := &cobra.Command{
-		Use:  "delete [hash] [uuid] [status] [fee]",
-		Args: cobra.ExactArgs(1),
-		RunE: func(cmd *cobra.Command, args []string) error {
-			inBuf := bufio.NewReader(cmd.InOrStdin())
-
-			keySeed := viper.GetString(shareringUtils.FlagKeySeed)
-			seed, err := shareringUtils.GetKeeySeedFromFile(keySeed)
-			if err != nil {
-				return err
-			}
-
-			cliCtx, txBldr, err := shareringUtils.GetTxBldrAndCtxFromSeed(inBuf, cdc, seed)
-			if err != nil {
-				return err
-			}
-
-			txFee, err := shareringUtils.GetFeeFromShrp(cdc, cliCtx, deleteFee)
-			if err != nil {
-				return err
-			}
-			txBldr = txBldr.WithFees(txFee)
-			uuid := args[0]
-			msg := types.NewMsgDelete(cliCtx.GetFromAddress(), uuid)
-			err = msg.ValidateBasic()
-			if err != nil {
-				return err
-			}
-			return utils.GenerateOrBroadcastMsgs(cliCtx, txBldr, []sdk.Msg{msg})
-		},
-	}
-	cmd.Flags().String(shareringUtils.FlagKeySeed, "", "path to key_seed.json")
 	return cmd
 }

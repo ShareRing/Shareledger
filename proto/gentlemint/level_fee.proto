@@ -1,0 +1,22 @@
+syntax = "proto3";
+package shareledger.gentlemint;
+
+import "cosmos/base/v1beta1/coin.proto";
+import "gogoproto/gogo.proto";
+
+option go_package = "github.com/sharering/shareledger/x/gentlemint/types";
+
+
+
+message LevelFee {
+  string level = 1;
+  cosmos.base.v1beta1.DecCoin fee = 2 [(gogoproto.nullable) = false];
+  string creator = 3;
+}
+
+message LevelFeeDetail {
+  string level = 1;
+  string creator = 3;
+  cosmos.base.v1beta1.DecCoin originalFee = 2 [(gogoproto.nullable) = false];
+  cosmos.base.v1beta1.Coin convertedFee = 4;
+}

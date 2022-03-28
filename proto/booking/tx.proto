@@ -1,0 +1,32 @@
+syntax = "proto3";
+package shareledger.booking;
+
+// this line is used by starport scaffolding # proto/tx/import
+
+option go_package = "github.com/sharering/shareledger/x/booking/types";
+
+// Msg defines the Msg service.
+service Msg {
+  rpc CreateBooking(MsgCreateBooking) returns (MsgCreateBookingResponse);
+  rpc CompleteBooking(MsgCompleteBooking) returns (MsgCompleteBookingResponse);
+// this line is used by starport scaffolding # proto/tx/rpc
+}
+
+message MsgCreateBooking {
+  string booker = 1;
+  string UUID = 2;
+  int64 duration = 3;
+}
+
+message MsgCreateBookingResponse {
+}
+
+message MsgCompleteBooking {
+  string booker = 1;
+  string bookID = 2;
+}
+
+message MsgCompleteBookingResponse {
+}
+
+// this line is used by starport scaffolding # proto/tx/message

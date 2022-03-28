@@ -1,0 +1,33 @@
+syntax = "proto3";
+package shareledger.booking;
+
+import "booking/booking.proto";
+import "google/api/annotations.proto";
+import "cosmos/base/query/v1beta1/pagination.proto";
+import "gogoproto/gogo.proto";
+// this line is used by starport scaffolding # 1
+
+option go_package = "github.com/sharering/shareledger/x/booking/types";
+
+// Query defines the gRPC querier service.
+service Query {
+    // Queries a list of booking items.
+	rpc Booking(QueryBookingRequest) returns (QueryBookingResponse) {
+		option (google.api.http).get = "/shareledger/booking/{bookID}";
+	}
+
+// this line is used by starport scaffolding # 2
+}
+
+message QueryBookingRequest {
+  option (gogoproto.equal)           = false;
+  option (gogoproto.goproto_getters) = false;
+
+  string bookID = 1;
+}
+
+message QueryBookingResponse {
+  Booking booking = 1;
+}
+
+// this line is used by starport scaffolding # 3

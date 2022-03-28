@@ -5,62 +5,52 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	"github.com/sharering/shareledger/x/electoral/keeper"
 	"github.com/sharering/shareledger/x/electoral/types"
 )
 
-const (
-	VoterPrefix = "voter"
-)
+// NewHandler ...
+func NewHandler(k keeper.Keeper) sdk.Handler {
+	msgServer := keeper.NewMsgServerImpl(k)
 
-func NewHandler(keeper Keeper) sdk.Handler {
 	return func(ctx sdk.Context, msg sdk.Msg) (*sdk.Result, error) {
+		ctx = ctx.WithEventManager(sdk.NewEventManager())
+
 		switch msg := msg.(type) {
-		case MsgEnrollVoter:
-			return handleMsgEnrollVoter(ctx, keeper, msg)
-		case MsgRevokeVoter:
-			return handleMsgRevokeVoter(ctx, keeper, msg)
+		case *types.MsgEnrollVoter:
+			res, err := msgServer.EnrollVoter(sdk.WrapSDKContext(ctx), msg)
+			return sdk.WrapServiceResult(ctx, res, err)
+		case *types.MsgRevokeVoter:
+			res, err := msgServer.RevokeVoter(sdk.WrapSDKContext(ctx), msg)
+			return sdk.WrapServiceResult(ctx, res, err)
+		case *types.MsgEnrollLoaders:
+			res, err := msgServer.EnrollLoaders(sdk.WrapSDKContext(ctx), msg)
+			return sdk.WrapServiceResult(ctx, res, err)
+		case *types.MsgRevokeLoaders:
+			res, err := msgServer.RevokeLoaders(sdk.WrapSDKContext(ctx), msg)
+			return sdk.WrapServiceResult(ctx, res, err)
+		case *types.MsgEnrollIdSigners:
+			res, err := msgServer.EnrollIdSigners(sdk.WrapSDKContext(ctx), msg)
+			return sdk.WrapServiceResult(ctx, res, err)
+		case *types.MsgRevokeIdSigners:
+			res, err := msgServer.RevokeIdSigners(sdk.WrapSDKContext(ctx), msg)
+			return sdk.WrapServiceResult(ctx, res, err)
+		case *types.MsgEnrollDocIssuers:
+			res, err := msgServer.EnrollDocIssuers(sdk.WrapSDKContext(ctx), msg)
+			return sdk.WrapServiceResult(ctx, res, err)
+		case *types.MsgRevokeDocIssuers:
+			res, err := msgServer.RevokeDocIssuers(sdk.WrapSDKContext(ctx), msg)
+			return sdk.WrapServiceResult(ctx, res, err)
+		case *types.MsgEnrollAccountOperators:
+			res, err := msgServer.EnrollAccountOperators(sdk.WrapSDKContext(ctx), msg)
+			return sdk.WrapServiceResult(ctx, res, err)
+		case *types.MsgRevokeAccountOperators:
+			res, err := msgServer.RevokeAccountOperators(sdk.WrapSDKContext(ctx), msg)
+			return sdk.WrapServiceResult(ctx, res, err)
+			// this line is used by starport scaffolding # 1
 		default:
-			return nil, sdkerrors.Wrap(sdkerrors.ErrUnknownRequest, fmt.Sprintf("Unrecognized booking Msg type: %v", msg.Type()))
+			errMsg := fmt.Sprintf("unrecognized %s message type: %T", types.ModuleName, msg)
+			return nil, sdkerrors.Wrap(sdkerrors.ErrUnknownRequest, errMsg)
 		}
 	}
-}
-
-func handleMsgEnrollVoter(ctx sdk.Context, keeper Keeper, msg MsgEnrollVoter) (*sdk.Result, error) {
-	if !keeper.IsAuthority(ctx, msg.GetSigners()[0]) {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "Approver's Address is not authority")
-	}
-	if err := msg.ValidateBasic(); err != nil {
-		return nil, err
-	}
-	voterKey := VoterPrefix + msg.Voter.String()
-	keeper.SetVoterAddress(ctx, voterKey, msg.Voter)
-	keeper.SetVoterStatus(ctx, voterKey, types.StatusVoterEnrolled)
-	log := fmt.Sprintf("Successfully enroll voter % s", msg.Voter.String())
-	return &sdk.Result{
-		Log: log,
-	}, nil
-}
-
-func handleMsgRevokeVoter(ctx sdk.Context, keeper Keeper, msg MsgRevokeVoter) (*sdk.Result, error) {
-	if !keeper.IsAuthority(ctx, msg.GetSigners()[0]) {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "Approver's Address is not authority")
-	}
-	if err := msg.ValidateBasic(); err != nil {
-		return nil, err
-	}
-	voterKey := VoterPrefix + msg.Voter.String()
-	if !keeper.IsVoterPresent(ctx, voterKey) {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "Voter is not enrolled")
-	}
-	keeper.DeleteVoter(ctx, voterKey)
-	log := fmt.Sprintf("Successfully delete voter %s", msg.Voter.String())
-	return &sdk.Result{
-		Log: log,
-	}, nil
-}
-
-func IsEnrolledVoter(ctx sdk.Context, address sdk.AccAddress, k Keeper) bool {
-	addr := VoterPrefix + address.String()
-	status := k.GetVoterStatus(ctx, addr)
-	return status == types.StatusVoterEnrolled
 }

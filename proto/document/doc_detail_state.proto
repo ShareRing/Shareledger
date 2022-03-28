@@ -1,0 +1,11 @@
+syntax = "proto3";
+package shareledger.document;
+
+option go_package = "github.com/sharering/shareledger/x/document/types";
+
+
+message DocDetailState {
+  
+  string data = 1; 
+  int32 version = 2; 
+}

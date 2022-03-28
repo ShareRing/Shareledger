@@ -1,0 +1,14 @@
+syntax = "proto3";
+package shareledger.document;
+
+import "gogoproto/gogo.proto";
+import "document/document.proto";
+// this line is used by starport scaffolding # genesis/proto/import
+
+option go_package = "github.com/sharering/shareledger/x/document/types";
+
+// GenesisState defines the document module's genesis state.
+message GenesisState {
+  // this line is used by starport scaffolding # genesis/proto/state
+    repeated Document documents = 1 [(gogoproto.nullable) = true];
+}

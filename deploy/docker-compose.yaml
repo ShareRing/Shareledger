@@ -1,0 +1,106 @@
+version: '3'
+
+services:
+  nginx:
+    container_name: snginx
+    image: nginx:alpine
+    restart: always
+    depends_on:
+      - snode0
+      - snode2
+    ports:
+      - "1317-1318:1317-1318"
+      - "26657-26658:26657-26658"
+      - "9090-9091:9090-9091"
+    volumes:
+      - ./testnet/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./testnet/nginx/certs:/etc/nginx/certs
+  snode0:
+    container_name: snode0
+    image: "sharering/shareledger:latest"
+    restart: always
+    hostname: snode0
+    expose:
+      - 26656
+      - 26657
+      - 9090
+      - 9091
+      - 1317
+      - 26658
+      - 26660
+    volumes:
+      - ./testnet/node0:/root/.Shareledger
+      - ./testnet/script:/app/script:ro
+    command:
+      - shareledger
+      - start
+      - --p2p.persistent_peers
+      - ${NODE1ID}@${NODE1IP}:26656,${NODE2ID}@${NODE2IP}:26656,${NODE3ID}@${NODE3IP}:26656
+      - --rpc.laddr
+      - tcp://0.0.0.0:26657
+  snode1:
+    container_name: snode1
+    restart: always
+    hostname: snode1
+    image: "sharering/shareledger:latest"
+    expose:
+      - 26656
+      - 26657
+      - 9090
+      - 9091
+      - 1317
+      - 26658
+      - 26660
+    volumes:
+      - ./testnet/node1:/root/.Shareledger
+    command:
+      - shareledger
+      - start
+      - --p2p.persistent_peers
+      - ${NODE0ID}@${NODE0IP}:26656,${NODE2ID}@${NODE2IP}:26656,${NODE3ID}@${NODE3IP}:26656
+      - --rpc.laddr
+      - tcp://0.0.0.0:26657
+  snode2:
+    container_name: snode2
+    restart: always
+    hostname: snode2
+    image: "sharering/shareledger:latest"
+    expose:
+      - 26656
+      - 26657
+      - 9090
+      - 9091
+      - 1317
+      - 26658
+      - 26660
+    volumes:
+      - ./testnet/node2:/root/.Shareledger
+    command:
+      - shareledger
+      - start
+      - --p2p.persistent_peers
+      - ${NODE1ID}@${NODE1IP}:26656,${NODE0ID}@${NODE0IP}:26656,${NODE3ID}@${NODE3IP}:26656
+      - --rpc.laddr
+      - tcp://0.0.0.0:26657
+  snode3:
+    container_name: snode3
+    image: "sharering/shareledger:latest"
+    restart: always
+    hostname: snode3
+    expose:
+      - 26656
+      - 26657
+      - 9090
+      - 9091
+      - 1317
+      - 26658
+      - 26660
+    volumes:
+      - ./testnet/node3:/root/.Shareledger
+    command:
+      - shareledger
+      - start
+      - --p2p.persistent_peers
+      - ${NODE1ID}@${NODE1IP}:26656,${NODE2ID}@${NODE2IP}:26656,${NODE0ID}@${NODE0IP}:26656
+      - --rpc.laddr
+      - tcp://0.0.0.0:26657

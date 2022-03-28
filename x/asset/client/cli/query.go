@@ -2,48 +2,31 @@ package cli
 
 import (
 	"fmt"
+	// "strings"
+
+	"github.com/spf13/cobra"
 
 	"github.com/cosmos/cosmos-sdk/client"
-	"github.com/cosmos/cosmos-sdk/client/context"
-	"github.com/cosmos/cosmos-sdk/client/flags"
-	"github.com/cosmos/cosmos-sdk/codec"
+	// "github.com/cosmos/cosmos-sdk/client/flags"
+	// sdk "github.com/cosmos/cosmos-sdk/types"
+
 	"github.com/sharering/shareledger/x/asset/types"
-	"github.com/spf13/cobra"
 )
 
-func QueryCmd(storeKey string, cdc *codec.Codec) *cobra.Command {
-	assetQueryCmd := &cobra.Command{
+// GetQueryCmd returns the cli query commands for this module
+func GetQueryCmd(queryRoute string) *cobra.Command {
+	// Group asset queries under a subcommand
+	cmd := &cobra.Command{
 		Use:                        types.ModuleName,
-		Short:                      "Querying commands for the identity module",
+		Short:                      fmt.Sprintf("Querying commands for the %s module", types.ModuleName),
 		DisableFlagParsing:         true,
 		SuggestionsMinimumDistance: 2,
 		RunE:                       client.ValidateCmd,
 	}
-	assetQueryCmd.AddCommand(flags.GetCommands(
-		CmdGetAsset(storeKey, cdc),
-	)...)
 
-	return assetQueryCmd
-}
+	cmd.AddCommand(CmdAssetByUUID())
 
-func CmdGetAsset(queryRoute string, cdc *codec.Codec) *cobra.Command {
-	return &cobra.Command{
-		Use:   "get [uuid]",
-		Short: "resolve name",
-		Args:  cobra.ExactArgs(1),
-		RunE: func(cmd *cobra.Command, args []string) error {
-			cliCtx := context.NewCLIContext().WithCodec(cdc)
-			uuid := args[0]
+	// this line is used by starport scaffolding # 1
 
-			res, _, err := cliCtx.QueryWithData(fmt.Sprintf("custom/%s/asset/%s", queryRoute, uuid), nil)
-			if err != nil {
-				fmt.Printf("could not get asset - %s \n", uuid)
-				return nil
-			}
-
-			var out types.Asset
-			cdc.MustUnmarshalJSON(res, &out)
-			return cliCtx.PrintOutput(out)
-		},
-	}
+	return cmd
 }

@@ -1,0 +1,13 @@
+syntax = "proto3";
+package shareledger.electoral;
+
+option go_package = "github.com/sharering/shareledger/x/electoral/types";
+
+
+
+message AccState {
+  string key = 1; 
+  string address = 2; 
+  string status = 3;
+}
+

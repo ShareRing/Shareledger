@@ -1,0 +1,33 @@
+syntax = "proto3";
+package shareledger.asset;
+
+import "gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+import "cosmos/base/query/v1beta1/pagination.proto";
+import "asset/asset.proto";
+// this line is used by starport scaffolding # 1
+
+option go_package = "github.com/sharering/shareledger/x/asset/types";
+
+// Query defines the gRPC querier service.
+service Query {
+    // Queries a list of assetByUUID items.
+	rpc AssetByUUID(QueryAssetByUUIDRequest) returns (QueryAssetByUUIDResponse) {
+		option (google.api.http).get = "/shareledger/asset/{uuid}";
+	}
+
+// this line is used by starport scaffolding # 2
+}
+
+message QueryAssetByUUIDRequest {
+  option (gogoproto.equal)           = false;
+	option (gogoproto.goproto_getters) = false;
+
+  string uuid = 1;
+}
+
+message QueryAssetByUUIDResponse {
+  Asset asset = 1;
+}
+
+// this line is used by starport scaffolding # 3

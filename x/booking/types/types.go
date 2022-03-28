@@ -1,18 +1,6 @@
 package types
 
-import (
-	"encoding/json"
-
-	sdk "github.com/cosmos/cosmos-sdk/types"
-)
-
-type Booking struct {
-	BookID      string         `json:"bookingId"`
-	Booker      sdk.AccAddress `json:"renter"`
-	UUID        string         `json:"uuid"`
-	Duration    int64          `json:"duration"`
-	IsCompleted bool           `json:"isCompleted`
-}
+import "encoding/json"
 
 func (b Booking) GetString() (string, error) {
 	js, err := json.Marshal(b)
@@ -22,11 +10,7 @@ func (b Booking) GetString() (string, error) {
 	return string(js), nil
 }
 
-func NewBooking() Booking {
-	return Booking{}
-}
-
-func NewBookingFromMsgBook(msg MsgBook) Booking {
+func NewBookingFromMsgBook(msg MsgCreateBooking) Booking {
 	return Booking{
 		UUID:     msg.UUID,
 		Booker:   msg.Booker,

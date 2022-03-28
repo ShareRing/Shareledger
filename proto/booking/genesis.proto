@@ -1,0 +1,14 @@
+syntax = "proto3";
+package shareledger.booking;
+
+// this line is used by starport scaffolding # genesis/proto/import
+import "gogoproto/gogo.proto";
+import "booking/booking.proto";
+
+option go_package = "github.com/sharering/shareledger/x/booking/types";
+
+// GenesisState defines the booking module's genesis state.
+message GenesisState {
+    // this line is used by starport scaffolding # genesis/proto/state
+    repeated Booking bookings = 1 [(gogoproto.nullable) = true];
+}

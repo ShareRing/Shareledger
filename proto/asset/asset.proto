@@ -1,0 +1,12 @@
+syntax = "proto3";
+package shareledger.asset;
+
+option go_package = "github.com/sharering/shareledger/x/asset/types";
+
+message Asset {
+	string creator = 1;
+	bytes hash = 2;
+	string UUID = 3;
+	bool status = 4;
+	int64 rate = 5;
+}

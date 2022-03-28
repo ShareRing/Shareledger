@@ -1,0 +1,12 @@
+syntax = "proto3";
+package shareledger.electoral;
+
+option go_package = "github.com/sharering/shareledger/x/electoral/types";
+
+import "gogoproto/gogo.proto";
+
+
+message Treasurer {
+  string address = 1; 
+  
+}

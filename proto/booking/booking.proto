@@ -1,0 +1,12 @@
+syntax = "proto3";
+package shareledger.booking;
+
+option go_package = "github.com/sharering/shareledger/x/booking/types";
+
+message Booking {
+  string bookID = 1;
+	string booker = 2;
+	string UUID = 3;
+	int64 duration = 4;
+	bool isCompleted = 5;
+}

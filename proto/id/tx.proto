@@ -1,0 +1,57 @@
+syntax = "proto3";
+package shareledger.id;
+
+// this line is used by starport scaffolding # proto/tx/import
+
+option go_package = "github.com/sharering/shareledger/x/id/types";
+
+// Msg defines the Msg service.
+service Msg {
+  rpc CreateId(MsgCreateId) returns (MsgCreateIdResponse);
+  rpc CreateIds(MsgCreateIds) returns (MsgCreateIdsResponse);
+  rpc UpdateId(MsgUpdateId) returns (MsgUpdateIdResponse);
+  rpc ReplaceIdOwner(MsgReplaceIdOwner) returns (MsgReplaceIdOwnerResponse);
+// this line is used by starport scaffolding # proto/tx/rpc
+}
+
+message MsgCreateId {
+  string issuerAddress = 1;
+  string backupAddress = 2;
+  string extraData = 3;
+  string id = 4;
+  string ownerAddress = 5;
+}
+
+message MsgCreateIdResponse {
+}
+
+message MsgCreateIds {
+  string issuerAddress = 1;
+  repeated string backupAddress = 2;
+  repeated string extraData = 3;
+  repeated string id = 4;
+  repeated string ownerAddress = 5;
+}
+
+message MsgCreateIdsResponse {
+}
+
+message MsgUpdateId {
+  string issuerAddress = 1;
+  string id = 2;
+  string extraData = 3;
+}
+
+message MsgUpdateIdResponse {
+}
+
+message MsgReplaceIdOwner {
+  string backupAddress = 1;
+  string id = 2;
+  string ownerAddress = 3;
+}
+
+message MsgReplaceIdOwnerResponse {
+}
+
+// this line is used by starport scaffolding # proto/tx/message

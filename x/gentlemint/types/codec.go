@@ -2,35 +2,64 @@ package types
 
 import (
 	"github.com/cosmos/cosmos-sdk/codec"
+	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
+	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/cosmos/cosmos-sdk/types/msgservice"
 )
 
-// ModuleCdc is the codec for the module
-var ModuleCdc = codec.New()
-
-func init() {
-	RegisterCodec(ModuleCdc)
+func RegisterCodec(cdc *codec.LegacyAmino) {
+	cdc.RegisterConcrete(&MsgBuyShr{}, "gentlemint/BuyShr", nil)
+	cdc.RegisterConcrete(&MsgSetExchange{}, "gentlemint/SetExchange", nil)
+	cdc.RegisterConcrete(&MsgSetLevelFee{}, "gentlemint/SetLevelFee", nil)
+	cdc.RegisterConcrete(&MsgDeleteLevelFee{}, "gentlemint/DeleteLevelFee", nil)
+	cdc.RegisterConcrete(&MsgSetActionLevelFee{}, "gentlemint/SetActionLevelFee", nil)
+	cdc.RegisterConcrete(&MsgDeleteActionLevelFee{}, "gentlemint/DeleteActionLevelFee", nil)
+	cdc.RegisterConcrete(&MsgLoadFee{}, "gentlemint/LoadFee", nil)
+	cdc.RegisterConcrete(&MsgLoad{}, "gentlemint/Load", nil)
+	cdc.RegisterConcrete(&MsgSend{}, "gentlemint/Send", nil)
+	cdc.RegisterConcrete(&MsgBurn{}, "gentlemint/Burn", nil)
+	// this line is used by starport scaffolding # 2
 }
 
-// RegisterCodec registers concrete types on the Amino codec
-func RegisterCodec(cdc *codec.Codec) {
-	cdc.RegisterConcrete(MsgLoadSHR{}, "gentlemint/LoadSHR", nil)
-	cdc.RegisterConcrete(MsgBurnSHRP{}, "gentlemint/BurnSHRP", nil)
-	cdc.RegisterConcrete(MsgBurnSHR{}, "gentlemint/BurnSHR", nil)
-	cdc.RegisterConcrete(MsgLoadSHRP{}, "gentlemint/LoadSHRP", nil)
-	cdc.RegisterConcrete(MsgBuyCent{}, "gentlemint/BuyCent", nil)
-	cdc.RegisterConcrete(MsgEnrollSHRPLoaders{}, "gentlemint/EnrollSHRPLoaders", nil)
-	cdc.RegisterConcrete(MsgRevokeSHRPLoaders{}, "gentlemint/RevokeSHRPLoaders", nil)
-	cdc.RegisterConcrete(MsgBuySHR{}, "gentlemint/BuySHR", nil)
-	cdc.RegisterConcrete(MsgSetExchange{}, "gentlemint/SetExchange", nil)
-	cdc.RegisterConcrete(MsgSendSHRP{}, "gentlemint/SendSHRP", nil)
-	cdc.RegisterConcrete(MsgSendSHR{}, "gentlemint/SendSHR", nil)
+func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgBuyShr{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgBuyShr{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgBuyShr{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgSetExchange{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgSetLevelFee{},
+		&MsgDeleteLevelFee{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgSetActionLevelFee{},
+		&MsgDeleteActionLevelFee{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgLoadFee{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgLoad{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgSend{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgBurn{},
+	)
+	// this line is used by starport scaffolding # 3
 
-	cdc.RegisterConcrete(MsgEnrollIDSigners{}, "gentlemint/MsgEnrollIDSigners", nil)
-	cdc.RegisterConcrete(MsgRevokeIDSigners{}, "gentlemint/MsgRevokeIDSigners", nil)
-
-	cdc.RegisterConcrete(MsgEnrollDocIssuers{}, "gentlemint/MsgEnrollDocIssuers", nil)
-	cdc.RegisterConcrete(MsgRevokeDocIssuers{}, "gentlemint/MsgRevokeDocIssuers", nil)
-
-	cdc.RegisterConcrete(MsgEnrollAccOperators{}, "gentlemint/MsgEnrollAccOperators", nil)
-	cdc.RegisterConcrete(MsgRevokeAccOperators{}, "gentlemint/MsgRevokeAccOperators", nil)
+	msgservice.RegisterMsgServiceDesc(registry, &_Msg_serviceDesc)
 }
+
+var (
+	amino     = codec.NewLegacyAmino()
+	ModuleCdc = codec.NewProtoCodec(cdctypes.NewInterfaceRegistry())
+)

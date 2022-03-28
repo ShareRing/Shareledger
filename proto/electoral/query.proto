@@ -1,0 +1,172 @@
+syntax = "proto3";
+package shareledger.electoral;
+
+import "google/api/annotations.proto";
+import "cosmos/base/query/v1beta1/pagination.proto";
+import "electoral/acc_state.proto";
+import "electoral/authority.proto";
+import "electoral/treasurer.proto";
+// this line is used by starport scaffolding # 1
+import "gogoproto/gogo.proto";
+
+option go_package = "github.com/sharering/shareledger/x/electoral/types";
+
+// Query defines the gRPC querier service.
+service Query {
+    // Queries a accState by index.
+	rpc AccState(QueryAccStateRequest) returns (QueryAccStateResponse) {
+		option (google.api.http).get = "/shareledger/electoral/accStates/{key}";
+	}
+
+	// Queries a list of accState items.
+	rpc AccStates(QueryAccStatesRequest) returns (QueryAccStatesResponse) {
+		option (google.api.http).get = "/shareledger/electoral/accStates";
+	}
+
+// Queries a list of Voter items.
+	rpc Voter(QueryVoterRequest) returns (QueryVoterResponse) {
+		option (google.api.http).get = "/shareledger/electoral/voters/{address}";
+	}
+
+// Queries a list of Loader items.
+	rpc Loader(QueryLoaderRequest) returns (QueryLoaderResponse) {
+		option (google.api.http).get = "/shareledger/electoral/loaders/{address}";
+	}
+
+	// Queries a list of idSigner items.
+	rpc IdSigner(QueryIdSignerRequest) returns (QueryIdSignerResponse) {
+		option (google.api.http).get = "/shareledger/electoral/idSigners/{address}";
+	}
+
+	// Queries a list of idSigners items.
+	rpc IdSigners(QueryIdSignersRequest) returns (QueryIdSignersResponse) {
+		option (google.api.http).get = "/shareledger/electoral/idSigners";
+	}
+
+	// Queries a list of accountOperator items.
+	rpc AccountOperator(QueryAccountOperatorRequest) returns (QueryAccountOperatorResponse) {
+		option (google.api.http).get = "/shareledger/electoral/accountOperators/{address}";
+	}
+
+	// Queries a list of accountOperators items.
+	rpc AccountOperators(QueryAccountOperatorsRequest) returns (QueryAccountOperatorsResponse) {
+		option (google.api.http).get = "/shareledger/electoral/accountOperators";
+	}
+
+	// Queries a list of documentIssuer items.
+	rpc DocumentIssuer(QueryDocumentIssuerRequest) returns (QueryDocumentIssuerResponse) {
+		option (google.api.http).get = "/shareledger/electoral/documentIssuers/{address}";
+	}
+
+	// Queries a list of documentIssuers items.
+	rpc DocumentIssuers(QueryDocumentIssuersRequest) returns (QueryDocumentIssuersResponse) {
+		option (google.api.http).get = "/shareledger/electoral/documentIssuers";
+	}
+
+// Queries a list of Voters items.
+	rpc Voters(QueryVotersRequest) returns (QueryVotersResponse) {
+		option (google.api.http).get = "/shareledger/electoral/voters";
+	}
+
+// Queries a list of Loaders items.
+	rpc Loaders(QueryLoadersRequest) returns (QueryLoadersResponse) {
+		option (google.api.http).get = "/shareledger/electoral/loaders";
+	}
+
+// this line is used by starport scaffolding # 2
+}
+
+message QueryAccStateRequest {
+	  string key = 1;
+
+}
+
+message QueryAccStateResponse {
+	AccState accState = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAccStatesRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAccStatesResponse {
+	repeated AccState accState = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryVoterRequest {
+  string address = 1;
+}
+
+message QueryVoterResponse {
+		AccState voter = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryLoaderRequest {
+	string address = 1;
+}
+
+message QueryLoaderResponse {
+	AccState accState = 1;
+}
+
+message QueryIdSignerRequest {
+	string address = 1;
+}
+
+message QueryIdSignerResponse {
+	AccState accState = 1;
+}
+
+message QueryIdSignersRequest {
+}
+
+message QueryIdSignersResponse {
+	repeated AccState accStates = 1;
+}
+
+message QueryAccountOperatorRequest {
+	string address = 1;
+}
+
+message QueryAccountOperatorResponse {
+	AccState accState = 1;
+}
+
+message QueryAccountOperatorsRequest {
+}
+
+message QueryAccountOperatorsResponse {
+	repeated AccState accStates = 1;
+}
+
+message QueryDocumentIssuerRequest {
+	string address = 1;
+}
+
+message QueryDocumentIssuerResponse {
+	AccState accState = 1;
+}
+
+message QueryDocumentIssuersRequest {
+}
+
+message QueryDocumentIssuersResponse {
+	repeated AccState accStates = 1;
+}
+
+message QueryVotersRequest {
+}
+
+message QueryVotersResponse {
+	repeated AccState voters = 1;
+}
+
+message QueryLoadersRequest {
+}
+
+message QueryLoadersResponse {
+	repeated AccState loaders = 1;
+}
+
+// this line is used by starport scaffolding # 3

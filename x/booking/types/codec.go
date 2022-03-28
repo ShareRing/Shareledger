@@ -2,17 +2,30 @@ package types
 
 import (
 	"github.com/cosmos/cosmos-sdk/codec"
+	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
+	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/cosmos/cosmos-sdk/types/msgservice"
 )
 
-// ModuleCdc is the codec for the module
-var ModuleCdc = codec.New()
-
-func init() {
-	RegisterCodec(ModuleCdc)
+func RegisterCodec(cdc *codec.LegacyAmino) {
+	cdc.RegisterConcrete(&MsgCreateBooking{}, "booking/CreateBooking", nil)
+	cdc.RegisterConcrete(&MsgCompleteBooking{}, "booking/CompleteBooking", nil)
+	// this line is used by starport scaffolding # 2
 }
 
-// RegisterCodec registers concrete types on the Amino codec
-func RegisterCodec(cdc *codec.Codec) {
-	cdc.RegisterConcrete(MsgBook{}, "book/Book", nil)
-	cdc.RegisterConcrete(MsgComplete{}, "book/Complete", nil)
+func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgCreateBooking{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgCompleteBooking{},
+	)
+	// this line is used by starport scaffolding # 3
+
+	msgservice.RegisterMsgServiceDesc(registry, &_Msg_serviceDesc)
 }
+
+var (
+	amino     = codec.NewLegacyAmino()
+	ModuleCdc = codec.NewProtoCodec(cdctypes.NewInterfaceRegistry())
+)

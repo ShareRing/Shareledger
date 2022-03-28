@@ -1,54 +1,56 @@
-# Shareledger #
+# shareledger
+**shareledger** is a blockchain built using Cosmos SDK and Tendermint and created with [Starport](https://github.com/tendermint/starport).
 
-Shareledger is a custom-designed distributed blockchain with [Tendermint](https://github.com/tendermint/tendermint) as a Byzantine-Fault Tolerant State Machine. ShareLedger provides essential building blocks for any rental/sharing services on top of it.
-
-ShareLedger currently ultilizes a dual-token mechanism, SharePay (SHRP) and ShareToken (SHR). The former provides a stable currency for any additional services running on top of ShareLedger while the latter acts as an ultility token.
-
-
-## Install Shareledger ##
-
-The fatest and easiest way to install `Shareledger` is to run our os-specfic application which guides you through four steps to setup and run a MasterNode. [TO BE RELEASED](https://sharering.network)
-
-
-### From Binary
-To download pre-built binaries, see the [releases page](https://github.com/sharering/shareledger/releases).
-
-### From Source
-
-#### Requirements ##
-
-* [`go`](https://golang.org/doc/install) - compile tool. Version >=1.15
-* [`make`](https://www.gnu.org/software/make/) -  compile tool
-
-
-#### Get Source Code
+## Get started
 
 ```
-git clone https://github.com/sharering/shareledger.git
-cd shareledger
+starport chain serve
 ```
 
-#### Compile (_Work on Linux only_)
+`serve` command installs dependencies, builds, initializes, and starts your blockchain in development.
+
+### Configure
+
+Your blockchain in development can be configured with `config.yml`. To learn more, see the [Starport docs](https://docs.starport.network).
+
+### Launch
+
+To launch your blockchain live on multiple nodes, use `starport network` commands. Learn more about [Starport Network](https://github.com/tendermint/spn).
+
+### Web Frontend
+
+Starport has scaffolded a Vue.js-based web app in the `vue` directory. Run the following commands to install dependencies and start the app:
+
 ```
-make build
+cd vue
+npm install
+npm run serve
 ```
 
-This will compile ShareLedger and put the binary in `./build`
+The frontend app is built using the `@starport/vue` and `@starport/vuex` packages. For details, see the [monorepo for Starport front-end development](https://github.com/tendermint/vue).
 
+## Release
+To release a new version of your blockchain, create and push a new tag with `v` prefix. A new draft release with the configured targets will be created.
 
-# Run
-
-* To start a ShareLedger node
 ```
-./shareledger init
-./shareledger start
+git tag v0.1
+git push origin v0.1
 ```
-* Start single node for testing purpose: [start single node](./docs/start-single-node.md)
 
+After a draft release is created, make your final changes from the release page and publish it.
 
-    Run `./build/shareledger -h` _to get more detailed information on how to execute ShareLedger_
+### Install
+To install the latest version of your blockchain node's binary, execute the following command on your machine:
 
+```
+curl https://get.starport.network/ShareRing/Shareledger@latest! | sudo bash
+```
+`ShareRing/Shareledger` should match the `username` and `repo_name` of the Github repository to which the source code was pushed. Learn more about [the install process](https://github.com/allinbits/starport-installer).
 
----
-## Notes
-* Get code from branch feature/upgrade-2019-10-22
+## Learn more
+
+- [Starport](https://github.com/tendermint/starport)
+- [Starport Docs](https://docs.starport.network)
+- [Cosmos SDK documentation](https://docs.cosmos.network)
+- [Cosmos SDK Tutorials](https://tutorials.cosmos.network)
+- [Discord](https://discord.gg/cosmosnetwork)

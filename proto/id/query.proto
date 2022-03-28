@@ -1,0 +1,49 @@
+syntax = "proto3";
+package shareledger.id;
+
+import "google/api/annotations.proto";
+import "cosmos/base/query/v1beta1/pagination.proto";
+import "gogoproto/gogo.proto";
+import "id/id.proto";
+// this line is used by starport scaffolding # 1
+
+option go_package = "github.com/sharering/shareledger/x/id/types";
+
+// Query defines the gRPC querier service.
+service Query {
+    // Queries a list of idByAddress items.
+	rpc IdByAddress(QueryIdByAddressRequest) returns (QueryIdByAddressResponse) {
+		option (google.api.http).get = "/shareledger/id/address/{address}";
+	}
+
+// Queries a list of idById items.
+	rpc IdById(QueryIdByIdRequest) returns (QueryIdByIdResponse) {
+		option (google.api.http).get = "/shareledger/id/id/{id}";
+	}
+
+// this line is used by starport scaffolding # 2
+}
+
+message QueryIdByAddressRequest {
+  option (gogoproto.equal)           = false;
+  option (gogoproto.goproto_getters) = false;
+
+  string address = 1;
+}
+
+message QueryIdByAddressResponse {
+  Id id = 1;
+}
+
+message QueryIdByIdRequest {
+  option (gogoproto.equal)           = false;
+  option (gogoproto.goproto_getters) = false;
+
+  string id = 1;
+}
+
+message QueryIdByIdResponse {
+  Id id = 1;
+}
+
+// this line is used by starport scaffolding # 3

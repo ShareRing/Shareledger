@@ -1,0 +1,117 @@
+syntax = "proto3";
+package shareledger.gentlemint;
+
+import "google/api/annotations.proto";
+import "cosmos/base/query/v1beta1/pagination.proto";
+import "gentlemint/exchange_rate.proto";
+import "gentlemint/level_fee.proto";
+import "gentlemint/action_level_fee.proto";
+import "cosmos/base/v1beta1/coin.proto";
+// this line is used by starport scaffolding # 1
+import "gogoproto/gogo.proto";
+
+
+option go_package = "github.com/sharering/shareledger/x/gentlemint/types";
+
+// Query defines the gRPC querier service.
+service Query {
+// Queries a exchangeRate by index.
+	rpc ExchangeRate(QueryExchangeRateRequest) returns (QueryExchangeRateResponse) {
+		option (google.api.http).get = "/shareledger/gentlemint/exchangeRate";
+	}
+
+// Queries a levelFee by index.
+	rpc LevelFee(QueryLevelFeeRequest) returns (QueryLevelFeeResponse) {
+		option (google.api.http).get = "/shareledger/gentlemint/levelFee/{level}";
+	}
+
+	// Queries a list of levelFee items.
+	rpc LevelFees(QueryLevelFeesRequest) returns (QueryLevelFeesResponse) {
+		option (google.api.http).get = "/shareledger/gentlemint/levelFee";
+	}
+
+// Queries a actionLevelFee by index.
+	rpc ActionLevelFee(QueryActionLevelFeeRequest) returns (QueryActionLevelFeeResponse) {
+		option (google.api.http).get = "/shareledger/gentlemint/actionLevelFee/{action}";
+	}
+
+	// Queries a list of actionLevelFee items.
+	rpc ActionLevelFees(QueryActionLevelFeesRequest) returns (QueryActionLevelFeesResponse) {
+		option (google.api.http).get = "/shareledger/gentlemint/actionLevelFee";
+	}
+
+// Queries a list of checkFees items.
+	rpc CheckFees(QueryCheckFeesRequest) returns (QueryCheckFeesResponse) {
+		option (google.api.http).get = "/shareledger/gentlemint/checkFees";
+	}
+
+// Queries a list of balances items.
+	rpc Balances(QueryBalancesRequest) returns (QueryBalancesResponse) {
+		option (google.api.http).get = "/shareledger/gentlemint/balances";
+	}
+
+// this line is used by starport scaffolding # 2
+}
+
+message QueryExchangeRateRequest {}
+
+message QueryExchangeRateResponse {
+	string rate = 1;
+}
+
+message QueryLevelFeeRequest {
+	  string level = 1;
+
+}
+
+message QueryLevelFeeResponse {
+	LevelFeeDetail levelFee = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryLevelFeesRequest {
+}
+
+message QueryLevelFeesResponse {
+	repeated LevelFeeDetail levelFees = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryActionLevelFeeRequest {
+	  string action = 1;
+
+}
+
+message QueryActionLevelFeeResponse {
+	string action = 1;
+	string level = 2;
+	string fee = 3;
+}
+
+message QueryActionLevelFeesRequest {
+
+}
+
+message QueryActionLevelFeesResponse {
+	repeated ActionLevelFee actionLevelFee = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryCheckFeesRequest {
+	string address = 1;
+  repeated string actions = 2;
+}
+
+message QueryCheckFeesResponse {
+	cosmos.base.v1beta1.Coin convertedFee = 1;
+	bool sufficientFee = 2;
+	bool sufficientFundForFee = 3;
+	cosmos.base.v1beta1.DecCoin costLoadingFee = 4;
+}
+
+message QueryBalancesRequest {
+	string address = 1;
+}
+
+message QueryBalancesResponse {
+	repeated cosmos.base.v1beta1.DecCoin coins = 1;
+}
+
+// this line is used by starport scaffolding # 3

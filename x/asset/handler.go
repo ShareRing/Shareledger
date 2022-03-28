@@ -2,104 +2,34 @@ package asset
 
 import (
 	"fmt"
-	"strconv"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	"github.com/sharering/shareledger/x/asset/keeper"
 	"github.com/sharering/shareledger/x/asset/types"
 )
 
-func NewHandler(keeper Keeper) sdk.Handler {
+// NewHandler ...
+func NewHandler(k keeper.Keeper) sdk.Handler {
+	msgServer := keeper.NewMsgServerImpl(k)
+
 	return func(ctx sdk.Context, msg sdk.Msg) (*sdk.Result, error) {
+		ctx = ctx.WithEventManager(sdk.NewEventManager())
+
 		switch msg := msg.(type) {
-		case MsgCreate:
-			return handleCreateAsset(ctx, keeper, msg)
-		case MsgUpdate:
-			return handleUpdateAsset(ctx, keeper, msg)
-		case MsgDelete:
-			return handleDeleteAsset(ctx, keeper, msg)
+		case *types.MsgCreateAsset:
+			res, err := msgServer.CreateAsset(sdk.WrapSDKContext(ctx), msg)
+			return sdk.WrapServiceResult(ctx, res, err)
+		case *types.MsgUpdateAsset:
+			res, err := msgServer.UpdateAsset(sdk.WrapSDKContext(ctx), msg)
+			return sdk.WrapServiceResult(ctx, res, err)
+		case *types.MsgDeleteAsset:
+			res, err := msgServer.DeleteAsset(sdk.WrapSDKContext(ctx), msg)
+			return sdk.WrapServiceResult(ctx, res, err)
+			// this line is used by starport scaffolding # 1
 		default:
-			return nil, sdkerrors.Wrap(sdkerrors.ErrUnknownRequest, fmt.Sprintf("Unrecognized asset Msg type: %v", msg.Type()))
+			errMsg := fmt.Sprintf("unrecognized %s message type: %T", types.ModuleName, msg)
+			return nil, sdkerrors.Wrap(sdkerrors.ErrUnknownRequest, errMsg)
 		}
 	}
-}
-
-func handleCreateAsset(ctx sdk.Context, keeper Keeper, msg MsgCreate) (*sdk.Result, error) {
-	oldAsset := keeper.GetAsset(ctx, msg.UUID)
-	if !oldAsset.Creator.Empty() {
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "Asset already exists")
-	}
-	asset := types.NewAssetFromMsgCreate(msg)
-	keeper.SetAsset(ctx, msg.UUID, asset)
-	log, err := asset.GetString()
-	if err != nil {
-		return nil, err
-	}
-	event := sdk.NewEvent(
-		EventTypeCreateAsset,
-		sdk.NewAttribute(AttributeMsgModule, "asset"),
-		sdk.NewAttribute(AttributeMsgAction, "create"),
-		sdk.NewAttribute(AttributeAssetCreator, msg.Creator.String()),
-		sdk.NewAttribute(AttributeAssetUUID, msg.UUID),
-		sdk.NewAttribute(AttributeAssetHash, fmt.Sprintf("%X", msg.Hash)),
-		sdk.NewAttribute(AttributeAssetStatus, strconv.FormatBool(msg.Status)),
-		sdk.NewAttribute(AttributeAssetFee, strconv.Itoa(int(msg.Rate))),
-	)
-	ctx.EventManager().EmitEvent(event)
-	return &sdk.Result{
-		Log:    log,
-		Events: ctx.EventManager().Events(),
-	}, nil
-}
-
-func handleUpdateAsset(ctx sdk.Context, keeper Keeper, msg MsgUpdate) (*sdk.Result, error) {
-	oldAsset := keeper.GetAsset(ctx, msg.UUID)
-	if !oldAsset.Creator.Equals(msg.Creator) {
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrUnauthorized, "Only creator can update asset")
-	}
-	asset := types.NewAssetFromMsgUpdate(msg)
-	keeper.SetAsset(ctx, msg.UUID, asset)
-	log, err := asset.GetString()
-	if err != nil {
-		return nil, err
-	}
-	event := sdk.NewEvent(
-		EventTypeUpdateAsset,
-		sdk.NewAttribute(AttributeMsgModule, "asset"),
-		sdk.NewAttribute(AttributeMsgAction, "update"),
-		sdk.NewAttribute(AttributeAssetCreator, msg.Creator.String()),
-		sdk.NewAttribute(AttributeAssetUUID, msg.UUID),
-		sdk.NewAttribute(AttributeAssetHash, fmt.Sprintf("%X", msg.Hash)),
-		sdk.NewAttribute(AttributeAssetStatus, strconv.FormatBool(msg.Status)),
-		sdk.NewAttribute(AttributeAssetFee, strconv.Itoa(int(msg.Rate))),
-	)
-
-	ctx.EventManager().EmitEvent(event)
-	return &sdk.Result{
-		Log:    log,
-		Events: ctx.EventManager().Events(),
-	}, nil
-}
-
-func handleDeleteAsset(ctx sdk.Context, keeper Keeper, msg MsgDelete) (*sdk.Result, error) {
-	oldAsset := keeper.GetAsset(ctx, msg.UUID)
-	if !oldAsset.Creator.Equals(msg.Owner) {
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrUnauthorized, "Only Owner can update asset")
-	}
-	log, err := oldAsset.GetString()
-	if err != nil {
-		return nil, err
-	}
-	event := sdk.NewEvent(
-		EventTypeDeleteAsset,
-		sdk.NewAttribute(AttributeMsgModule, "asset"),
-		sdk.NewAttribute(AttributeMsgAction, "delete"),
-		sdk.NewAttribute(AttributeAssetUUID, msg.UUID),
-	)
-	ctx.EventManager().EmitEvent(event)
-	keeper.DeleteAsset(ctx, msg.UUID)
-	return &sdk.Result{
-		Log:    log,
-		Events: ctx.EventManager().Events(),
-	}, nil
 }

@@ -1,0 +1,14 @@
+syntax = "proto3";
+package shareledger.id;
+
+// this line is used by starport scaffolding # genesis/proto/import
+import "gogoproto/gogo.proto";
+import "id/id.proto";
+
+option go_package = "github.com/sharering/shareledger/x/id/types";
+
+// GenesisState defines the id module's genesis state.
+message GenesisState {
+    // this line is used by starport scaffolding # genesis/proto/state
+    repeated Id IDs = 1 [(gogoproto.nullable) = true];
+}
