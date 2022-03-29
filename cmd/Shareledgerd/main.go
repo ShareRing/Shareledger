@@ -36,6 +36,7 @@ func main() {
 		),
 	)
 
+	rootCmd.Short = "ShareRing-VoyagerNet"
 	if err := svrcmd.Execute(rootCmd, app.DefaultNodeHome); err != nil {
 		os.Exit(1)
 	}
