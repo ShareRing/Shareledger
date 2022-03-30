@@ -2,12 +2,16 @@ package utils
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
+	"path/filepath"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/crypto/hd"
 	"github.com/cosmos/cosmos-sdk/crypto/keyring"
+	"github.com/cosmos/cosmos-sdk/server"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	tmos "github.com/tendermint/tendermint/libs/os"
 )
 
 const (
@@ -62,4 +66,42 @@ func CreateContextFromSeed(seedFile string, clientCtx client.Context) (client.Co
 	}
 
 	return clientCtx, nil
+}
+
+func CreateKeySeed(home, keyName string) (sdk.AccAddress, error) {
+	addr, secret, err := server.GenerateCoinKey(hd.Secp256k1)
+
+	if err != nil {
+		return nil, err
+	}
+
+	info := map[string]string{"secret": secret}
+
+	cliPrint, err := json.Marshal(info)
+	if err != nil {
+		return nil, err
+	}
+
+	if err := WriteFile(fmt.Sprintf("%s_key_seed.json", keyName), home, cliPrint); err != nil {
+		return nil, err
+	}
+
+	return addr, nil
+}
+
+func WriteFile(name string, dir string, contents []byte) error {
+	writePath := filepath.Join(dir)
+	file := filepath.Join(writePath, name)
+
+	err := tmos.EnsureDir(writePath, 0700)
+	if err != nil {
+		return err
+	}
+
+	err = tmos.WriteFile(file, contents, 0600)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

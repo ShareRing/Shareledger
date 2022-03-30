@@ -1,9 +1,10 @@
 package main
 
 import (
-	"github.com/sharering/shareledger/cmd/Shareledgerd/cli"
 	"os"
 	"sync"
+
+	"github.com/sharering/shareledger/cmd/Shareledgerd/cli"
 
 	"github.com/sharering/shareledger/cmd/Shareledgerd/sub"
 	"github.com/sharering/shareledger/cmd/Shareledgerd/tools"
@@ -32,6 +33,9 @@ func main() {
 		app.New,
 		cosmoscmd.AddSubCmd(
 			sub.NewImportKeyCmd(),
+			sub.CreateKeyInMemCmd(),
+			sub.ShowAddressCmd(),
+			sub.AddrCmd(),
 			getGenesisCmd(app.DefaultNodeHome),
 		),
 	)
