@@ -4,10 +4,16 @@ import (
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/sharering/shareledger/x/swap/types"
+	"sync"
 )
+
+var nextIDMutex sync.Mutex
 
 // NextId return next id and update store for that new id
 func (k Keeper) NextId(ctx sdk.Context, iDType string) (id uint64) {
+	nextIDMutex.Lock()
+	defer nextIDMutex.Unlock()
+
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.IdKeyPrefix))
 	val := types.Id{
 		IDType: iDType,
