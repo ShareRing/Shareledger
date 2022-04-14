@@ -5,6 +5,7 @@ import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "swap/params.proto";
+import "swap/id.proto";
 // this line is used by starport scaffolding # 1
 
 option go_package = "github.com/sharering/shareledger/x/swap/types";
@@ -15,7 +16,17 @@ service Query {
   rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
     option (google.api.http).get = "/sharering/shareledger/swap/params";
   }
-  // this line is used by starport scaffolding # 2
+  // Queries a Id by index.
+	rpc Id(QueryGetIdRequest) returns (QueryGetIdResponse) {
+		option (google.api.http).get = "/sharering/shareledger/swap/id/{iDType}";
+	}
+
+	// Queries a list of Id items.
+	rpc IdAll(QueryAllIdRequest) returns (QueryAllIdResponse) {
+		option (google.api.http).get = "/sharering/shareledger/swap/id";
+	}
+
+// this line is used by starport scaffolding # 2
 }
 
 // QueryParamsRequest is request type for the Query/Params RPC method.
@@ -25,6 +36,24 @@ message QueryParamsRequest {}
 message QueryParamsResponse {
   // params holds all the parameters of this module.
   Params params = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryGetIdRequest {
+	  string iDType = 1;
+
+}
+
+message QueryGetIdResponse {
+	Id id = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllIdRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllIdResponse {
+	repeated Id id = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 
 // this line is used by starport scaffolding # 3

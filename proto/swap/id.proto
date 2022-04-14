@@ -1,0 +1,10 @@
+syntax = "proto3";
+package sharering.shareledger.swap;
+
+option go_package = "github.com/sharering/shareledger/x/swap/types";
+
+message Id {
+  string IDType = 1;
+  uint64 value = 2;
+}
+
