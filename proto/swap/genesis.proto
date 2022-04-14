@@ -1,0 +1,14 @@
+syntax = "proto3";
+package sharering.shareledger.swap;
+
+import "gogoproto/gogo.proto";
+import "swap/params.proto";
+// this line is used by starport scaffolding # genesis/proto/import
+
+option go_package = "github.com/sharering/shareledger/x/swap/types";
+
+// GenesisState defines the swap module's genesis state.
+message GenesisState {
+  Params params = 1 [(gogoproto.nullable) = false];
+  // this line is used by starport scaffolding # genesis/proto/state
+}
