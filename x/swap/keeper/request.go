@@ -2,9 +2,9 @@ package keeper
 
 import (
 	"encoding/binary"
-
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/sharering/shareledger/x/swap/types"
 )
 
@@ -32,37 +32,66 @@ func (k Keeper) SetRequestCount(ctx sdk.Context, count uint64) {
 	store.Set(byteKey, bz)
 }
 
-// AppendRequest appends a request in the store with a new id and update the count
-func (k Keeper) AppendRequest(
+// AppendPendingRequest appends a request in the store with a new id and update the count.
+// NewID will be generated
+// Return new data
+func (k Keeper) AppendPendingRequest(
 	ctx sdk.Context,
 	request types.Request,
-) uint64 {
+) (types.Request, error) {
+
+	if request.Status != types.SwapStatusPending {
+		return request, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "request should have status pending")
+	}
 	// Create the request
 	count := k.GetRequestCount(ctx)
-
 	// Set the ID of the appended value
-	request.Id = count
+	// We are using 0 as zero value for id.
+	request.Id = count + 1
+	k.SetRequestCount(ctx, count+1)
 
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.RequestKey))
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.RequestKey(request.Status)))
 	appendedValue := k.cdc.MustMarshal(&request)
 	store.Set(GetRequestIDBytes(request.Id), appendedValue)
 
-	// Update request count
-	k.SetRequestCount(ctx, count+1)
-
-	return count
+	return request, nil
 }
 
-// SetRequest set a specific request in the store
-func (k Keeper) SetRequest(ctx sdk.Context, request types.Request) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.RequestKey))
-	b := k.cdc.MustMarshal(&request)
-	store.Set(GetRequestIDBytes(request.Id), b)
+// ChangeStatusRequest change status of request and move it into respective store
+// The status flow should be: pending -> approved|rejected -> processing -> done.
+// return error if new status is pending or unsupported status
+func (k Keeper) ChangeStatusRequest(ctx sdk.Context, id uint64, status string) (req types.Request, err error) {
+	var found bool
+	var selectedStatus string
+	var currentStatusStore prefix.Store
+	switch status {
+	case types.SwapStatusApproved, types.SwapStatusReject:
+		selectedStatus = types.SwapStatusPending
+	case types.SwapStatusProcessing:
+		selectedStatus = types.SwapStatusApproved
+	case types.SwapStatusDone:
+		selectedStatus = types.SwapStatusProcessing
+	default:
+		return req, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "%s is not support for this function", status)
+	}
+	currentStatusStore = prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.RequestKey(types.SwapStatusPending)))
+	req, found = k.GetRequestFromStore(ctx, currentStatusStore, id)
+	if !found {
+		return req, sdkerrors.Wrapf(sdkerrors.ErrKeyNotFound, "there is no request with id, %v, and status, %s", id, selectedStatus)
+	}
+	currentStatusStore.Delete(GetRequestIDBytes(id))
+	req.Status = status
+	newStore := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.RequestKey(req.Status)))
+	newStore.Set(GetRequestIDBytes(req.Id), k.cdc.MustMarshal(&req))
+	return req, nil
 }
 
-// GetRequest returns a request from its id
-func (k Keeper) GetRequest(ctx sdk.Context, id uint64) (val types.Request, found bool) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.RequestKey))
+func (k Keeper) RemoveRequest(ctx sdk.Context, id uint64, status string) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.RequestKey(status)))
+	store.Delete(GetRequestIDBytes(id))
+}
+
+func (k Keeper) GetRequestFromStore(ctx sdk.Context, store sdk.KVStore, id uint64) (val types.Request, found bool) {
 	b := store.Get(GetRequestIDBytes(id))
 	if b == nil {
 		return val, false
@@ -71,15 +100,20 @@ func (k Keeper) GetRequest(ctx sdk.Context, id uint64) (val types.Request, found
 	return val, true
 }
 
-// RemoveRequest removes a request from the store
-func (k Keeper) RemoveRequest(ctx sdk.Context, id uint64) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.RequestKey))
-	store.Delete(GetRequestIDBytes(id))
+// GetRequest returns a request from its id
+func (k Keeper) GetRequest(ctx sdk.Context, id uint64, status string) (val types.Request, found bool) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.RequestKey(status)))
+	b := store.Get(GetRequestIDBytes(id))
+	if b == nil {
+		return val, false
+	}
+	k.cdc.MustUnmarshal(b, &val)
+	return val, true
 }
 
 // GetAllRequest returns all request
-func (k Keeper) GetAllRequest(ctx sdk.Context) (list []types.Request) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.RequestKey))
+func (k Keeper) GetAllRequest(ctx sdk.Context, status string) (list []types.Request) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.RequestKey(status)))
 	iterator := sdk.KVStorePrefixIterator(store, []byte{})
 
 	defer iterator.Close()

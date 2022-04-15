@@ -1,5 +1,7 @@
 package types
 
+import "fmt"
+
 const (
 	// ModuleName defines the module name
 	ModuleName = "swap"
@@ -22,6 +24,9 @@ func KeyPrefix(p string) []byte {
 }
 
 const (
-	RequestKey      = "Request-value-"
 	RequestCountKey = "Request-count-"
 )
+
+func RequestKey(status string) string {
+	return fmt.Sprintf("Request-%s-value-", status)
+}

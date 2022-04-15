@@ -1,13 +1,28 @@
 syntax = "proto3";
 package shareledger.swap;
 
+import "cosmos/base/v1beta1/coin.proto";
+
 // this line is used by starport scaffolding # proto/tx/import
 
 option go_package = "github.com/sharering/shareledger/x/swap/types";
 
 // Msg defines the Msg service.
 service Msg {
-    // this line is used by starport scaffolding # proto/tx/rpc
+      rpc Out(MsgOut) returns (MsgOutResponse);
+// this line is used by starport scaffolding # proto/tx/rpc
+}
+
+message MsgOut {
+  string creator = 1;
+  string destAddr = 2;
+  string network = 3;
+  cosmos.base.v1beta1.DecCoin amount = 4;
+  cosmos.base.v1beta1.DecCoin fee = 5;
+}
+
+message MsgOutResponse {
+  uint64 rid = 1;
 }
 
 // this line is used by starport scaffolding # proto/tx/message

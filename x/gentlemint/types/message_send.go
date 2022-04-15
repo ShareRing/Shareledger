@@ -48,10 +48,6 @@ func (msg *MsgSend) ValidateBasic() error {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid destination address (%s)", err)
 	}
 
-	//coins, err := sdk.ParseDecCoins(msg.Coins)
-	//if err != nil {
-	//	return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "coins string was not supported. Format should be {amount0}{denomination},...,{amountN}{denominationN}")
-	//}
 	if err := denom.CheckSupportedCoins(msg.Coins, nil); err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, err.Error())
 	}

@@ -21,6 +21,22 @@ func CheckFeeSupportedCoin(dCoin sdk.DecCoin) error {
 }
 
 func CheckSupportedCoins(dCoins sdk.DecCoins, coins sdk.Coins) error {
+	if len(dCoins) == 0 && len(coins) == 0 {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "no coins")
+	}
+	var err error
+	if len(dCoins) > 0 {
+		err = dCoins.Validate()
+	}
+	if err != nil {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "coins string was not supported. Format should be {amount0}{denomination},...,{amountN}{denominationN}")
+	}
+	if len(coins) > 0 {
+		err = coins.Validate()
+	}
+	if err != nil {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "coins string was not supported. Format should be {amount0}{denomination},...,{amountN}{denominationN}")
+	}
 	for _, c := range dCoins {
 		if _, found := supportedDenoms[c.Denom]; !found {
 			return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "%v is not supported", c)
