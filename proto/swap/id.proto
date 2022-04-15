@@ -1,5 +1,5 @@
 syntax = "proto3";
-package sharering.shareledger.swap;
+package shareledger.swap;
 
 option go_package = "github.com/sharering/shareledger/x/swap/types";
 

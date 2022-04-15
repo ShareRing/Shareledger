@@ -1,11 +1,12 @@
 syntax = "proto3";
-package sharering.shareledger.swap;
+package shareledger.swap;
 
 import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "swap/params.proto";
 import "swap/id.proto";
+import "swap/request.proto";
 // this line is used by starport scaffolding # 1
 
 option go_package = "github.com/sharering/shareledger/x/swap/types";
@@ -24,6 +25,16 @@ service Query {
 	// Queries a list of Id items.
 	rpc IdAll(QueryAllIdRequest) returns (QueryAllIdResponse) {
 		option (google.api.http).get = "/sharering/shareledger/swap/id";
+	}
+
+// Queries a Request by id.
+	rpc Request(QueryGetRequestRequest) returns (QueryGetRequestResponse) {
+		option (google.api.http).get = "/sharering/shareledger/swap/request/{id}";
+	}
+
+	// Queries a list of Request items.
+	rpc RequestAll(QueryAllRequestRequest) returns (QueryAllRequestResponse) {
+		option (google.api.http).get = "/sharering/shareledger/swap/request";
 	}
 
 // this line is used by starport scaffolding # 2
@@ -53,6 +64,23 @@ message QueryAllIdRequest {
 
 message QueryAllIdResponse {
 	repeated Id id = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryGetRequestRequest {
+	uint64 id = 1;
+}
+
+message QueryGetRequestResponse {
+	Request Request = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllRequestRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllRequestResponse {
+	repeated Request Request = 1 [(gogoproto.nullable) = false];
 	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 

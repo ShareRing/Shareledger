@@ -9,10 +9,13 @@ import (
 // InitGenesis initializes the capability module's state from a provided genesis
 // state.
 func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) {
-	// Set all the id
-	for _, elem := range genState.IdList {
-		k.SetId(ctx, elem)
+	// Set all the request
+	for _, elem := range genState.RequestList {
+		k.SetRequest(ctx, elem)
 	}
+
+	// Set request count
+	k.SetRequestCount(ctx, genState.RequestCount)
 	// this line is used by starport scaffolding # genesis/module/init
 	k.SetParams(ctx, genState.Params)
 }
@@ -23,6 +26,8 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 	genesis.Params = k.GetParams(ctx)
 
 	genesis.IdList = k.GetAllId(ctx)
+	genesis.RequestList = k.GetAllRequest(ctx)
+	genesis.RequestCount = k.GetRequestCount(ctx)
 	// this line is used by starport scaffolding # genesis/module/export
 
 	return genesis

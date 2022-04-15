@@ -1,9 +1,10 @@
 syntax = "proto3";
-package sharering.shareledger.swap;
+package shareledger.swap;
 
 import "gogoproto/gogo.proto";
 import "swap/params.proto";
 import "swap/id.proto";
+import "swap/request.proto";
 // this line is used by starport scaffolding # genesis/proto/import
 
 option go_package = "github.com/sharering/shareledger/x/swap/types";
@@ -12,5 +13,7 @@ option go_package = "github.com/sharering/shareledger/x/swap/types";
 message GenesisState {
   Params params = 1 [(gogoproto.nullable) = false];
   repeated Id idList = 2 [(gogoproto.nullable) = false];
+  repeated Request requestList = 3 [(gogoproto.nullable) = false];
+  uint64 requestCount = 4;
   // this line is used by starport scaffolding # genesis/proto/state
 }

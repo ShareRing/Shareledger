@@ -22,6 +22,15 @@ func TestGenesis(t *testing.T) {
 				IDType: "1",
 			},
 		},
+		RequestList: []types.Request{
+			{
+				Id: 0,
+			},
+			{
+				Id: 1,
+			},
+		},
+		RequestCount: 2,
 		// this line is used by starport scaffolding # genesis/test/state
 	}
 
@@ -34,5 +43,7 @@ func TestGenesis(t *testing.T) {
 	nullify.Fill(got)
 
 	require.ElementsMatch(t, genesisState.IdList, got.IdList)
+	require.ElementsMatch(t, genesisState.RequestList, got.RequestList)
+	require.Equal(t, genesisState.RequestCount, got.RequestCount)
 	// this line is used by starport scaffolding # genesis/test/assert
 }
