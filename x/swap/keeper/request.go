@@ -50,7 +50,7 @@ func (k Keeper) AppendPendingRequest(
 	request.Id = count + 1
 	k.SetRequestCount(ctx, count+1)
 
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.RequestKey(request.Status)))
+	store := k.GetStoreRequestMap(ctx)[request.Status]
 	appendedValue := k.cdc.MustMarshal(&request)
 	store.Set(GetRequestIDBytes(request.Id), appendedValue)
 
@@ -112,18 +112,20 @@ func (k Keeper) GetRequest(ctx sdk.Context, id uint64, status string) (val types
 }
 
 // GetAllRequest returns all request
-func (k Keeper) GetAllRequest(ctx sdk.Context, status string) (list []types.Request) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.RequestKey(status)))
-	iterator := sdk.KVStorePrefixIterator(store, []byte{})
+func (k Keeper) GetAllRequest(ctx sdk.Context) (list []types.Request) {
+	stores := k.GetStoreRequestMap(ctx)
+	for _, store := range stores {
+		func(store prefix.Store) {
+			iterator := sdk.KVStorePrefixIterator(store, []byte{})
+			defer iterator.Close()
 
-	defer iterator.Close()
-
-	for ; iterator.Valid(); iterator.Next() {
-		var val types.Request
-		k.cdc.MustUnmarshal(iterator.Value(), &val)
-		list = append(list, val)
+			for ; iterator.Valid(); iterator.Next() {
+				var val types.Request
+				k.cdc.MustUnmarshal(iterator.Value(), &val)
+				list = append(list, val)
+			}
+		}(store)
 	}
-
 	return
 }
 

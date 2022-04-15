@@ -10,9 +10,7 @@ import (
 // state.
 func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) {
 	// Set all the request
-	for _, elem := range genState.RequestList {
-		k.SetRequest(ctx, elem)
-	}
+	k.ImportRequest(ctx, genState.RequestList)
 
 	// Set request count
 	k.SetRequestCount(ctx, genState.RequestCount)

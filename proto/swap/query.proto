@@ -17,24 +17,10 @@ service Query {
   rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
     option (google.api.http).get = "/sharering/shareledger/swap/params";
   }
-  // Queries a Id by index.
-	rpc Id(QueryGetIdRequest) returns (QueryGetIdResponse) {
-		option (google.api.http).get = "/sharering/shareledger/swap/id/{iDType}";
-	}
 
-	// Queries a list of Id items.
-	rpc IdAll(QueryAllIdRequest) returns (QueryAllIdResponse) {
-		option (google.api.http).get = "/sharering/shareledger/swap/id";
-	}
-
-// Queries a Request by id.
-	rpc Request(QueryGetRequestRequest) returns (QueryGetRequestResponse) {
-		option (google.api.http).get = "/sharering/shareledger/swap/request/{id}";
-	}
-
-	// Queries a list of Request items.
-	rpc RequestAll(QueryAllRequestRequest) returns (QueryAllRequestResponse) {
-		option (google.api.http).get = "/sharering/shareledger/swap/request";
+	// Queries a list of Search items.
+	rpc Search(QuerySearchRequest) returns (QuerySearchResponse) {
+		option (google.api.http).get = "/sharering/shareledger/swap/search/{status}/{id}/{srcAddr}/{destAddr}/{srcNetwork}/{destNetwork}";
 	}
 
 // this line is used by starport scaffolding # 2
@@ -49,37 +35,17 @@ message QueryParamsResponse {
   Params params = 1 [(gogoproto.nullable) = false];
 }
 
-message QueryGetIdRequest {
-	  string iDType = 1;
-
+message QuerySearchRequest {
+  string status = 1;
+  uint64 id = 2;
+  string srcAddr = 3;
+  string destAddr = 4;
+  string srcNetwork = 5;
+  string destNetwork = 6;
+cosmos.base.query.v1beta1.PageRequest pagination = 7;
 }
 
-message QueryGetIdResponse {
-	Id id = 1 [(gogoproto.nullable) = false];
-}
-
-message QueryAllIdRequest {
-	cosmos.base.query.v1beta1.PageRequest pagination = 1;
-}
-
-message QueryAllIdResponse {
-	repeated Id id = 1 [(gogoproto.nullable) = false];
-	cosmos.base.query.v1beta1.PageResponse pagination = 2;
-}
-
-message QueryGetRequestRequest {
-	uint64 id = 1;
-}
-
-message QueryGetRequestResponse {
-	Request Request = 1 [(gogoproto.nullable) = false];
-}
-
-message QueryAllRequestRequest {
-	cosmos.base.query.v1beta1.PageRequest pagination = 1;
-}
-
-message QueryAllRequestResponse {
+message QuerySearchResponse {
 	repeated Request Request = 1 [(gogoproto.nullable) = false];
 	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }

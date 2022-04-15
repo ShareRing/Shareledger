@@ -1,6 +1,7 @@
 package cli
 
 import (
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	"strconv"
 
 	"github.com/cosmos/cosmos-sdk/client"
@@ -28,12 +29,21 @@ func CmdOut() *cobra.Command {
 				return err
 			}
 
+			amount, err := sdk.ParseDecCoin(argAmount)
+			if err != nil {
+				return err
+			}
+			fee, err := sdk.ParseDecCoin(argFee)
+			if err != nil {
+				return err
+			}
+
 			msg := types.NewMsgOut(
 				clientCtx.GetFromAddress().String(),
 				argDestAddr,
 				argNetwork,
-				argAmount,
-				argFee,
+				amount,
+				fee,
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err

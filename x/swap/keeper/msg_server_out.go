@@ -11,8 +11,9 @@ import (
 
 func (k msgServer) Out(goCtx context.Context, msg *types.MsgOut) (*types.MsgOutResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
+	sumCoins := sdk.NewDecCoins().Add(*msg.Amount).Add(*msg.Fee)
 
-	baseCoins, err := denom.NormalizeToBaseCoins(sdk.NewDecCoins(*msg.Amount, *msg.Fee), true)
+	baseCoins, err := denom.NormalizeToBaseCoins(sumCoins, true)
 	if err != nil {
 		return nil, err
 	}
@@ -26,7 +27,7 @@ func (k msgServer) Out(goCtx context.Context, msg *types.MsgOut) (*types.MsgOutR
 		SrcNetwork:  types.NetworkNameShareLedger,
 		DestNetwork: msg.Network,
 		Amount:      msg.Amount,
-		Fee:         msg.Amount,
+		Fee:         msg.Fee,
 		Status:      types.SwapStatusPending,
 	})
 

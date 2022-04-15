@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"fmt"
+	"github.com/cosmos/cosmos-sdk/store/prefix"
 
 	"github.com/tendermint/tendermint/libs/log"
 
@@ -47,4 +48,12 @@ func NewKeeper(
 
 func (k Keeper) Logger(ctx sdk.Context) log.Logger {
 	return ctx.Logger().With("module", fmt.Sprintf("x/%s", types.ModuleName))
+}
+
+func (k Keeper) GetStoreRequestMap(ctx sdk.Context) map[string]prefix.Store {
+	stores := make(map[string]prefix.Store)
+	for kt := range types.SupportedSwapStatuses {
+		stores[kt] = prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.RequestKey(kt)))
+	}
+	return stores
 }

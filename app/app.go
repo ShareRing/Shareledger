@@ -5,6 +5,9 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/authz"
 	authzkeeper "github.com/cosmos/cosmos-sdk/x/authz/keeper"
 	authzmodule "github.com/cosmos/cosmos-sdk/x/authz/module"
+	swapmodule "github.com/sharering/shareledger/x/swap"
+	swapmodulekeeper "github.com/sharering/shareledger/x/swap/keeper"
+	swapmoduletypes "github.com/sharering/shareledger/x/swap/types"
 	"io"
 	"net/http"
 	"os"
@@ -167,6 +170,7 @@ var (
 		bookingmodule.AppModuleBasic{},
 		gentlemintmodule.AppModuleBasic{},
 		electoralmodule.AppModuleBasic{},
+		swapmodule.AppModuleBasic{},
 		// this line is used by starport scaffolding # stargate/app/moduleBasic
 	)
 
@@ -182,6 +186,7 @@ var (
 		bookingmoduletypes.ModuleName:    nil,
 		gentlemintmoduletypes.ModuleName: {authtypes.Minter, authtypes.Burner},
 		electoralmoduletypes.ModuleName:  nil,
+		swapmoduletypes.ModuleName:       nil,
 		// this line is used by starport scaffolding # stargate/app/maccPerms
 	}
 )
@@ -254,6 +259,8 @@ type App struct {
 	GentleMintKeeper gentlemintmodulekeeper.Keeper
 
 	ElectoralKeeper electoralmodulekeeper.Keeper
+
+	SwapKeeper swapmodulekeeper.Keeper
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
 	// the module manager
@@ -293,6 +300,8 @@ func New(
 		bookingmoduletypes.StoreKey,
 		gentlemintmoduletypes.StoreKey,
 		electoralmoduletypes.StoreKey,
+		swapmoduletypes.StoreKey,
+		authzkeeper.StoreKey,
 		// this line is used by starport scaffolding # stargate/app/storeKey
 	)
 	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey)
@@ -444,6 +453,13 @@ func New(
 	)
 	documentModule := documentmodule.NewAppModule(appCodec, app.DocumentKeeper)
 
+	app.SwapKeeper = *swapmodulekeeper.NewKeeper(appCodec,
+		keys[documentmoduletypes.StoreKey],
+		keys[documentmoduletypes.MemStoreKey],
+		app.GetSubspace(swapmoduletypes.ModuleName),
+		app.BankKeeper)
+
+	swapModule := swapmodule.NewAppModule(appCodec, app.SwapKeeper, app.AccountKeeper, app.BankKeeper)
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
 
 	// CreateAsset static IBC router, add transfer route, then set and seal it
@@ -489,6 +505,7 @@ func New(
 		bookingModule,
 		gentlemintModule,
 		electoralModule,
+		swapModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
 
 	)
@@ -523,6 +540,7 @@ func New(
 		idmoduletypes.ModuleName,
 		genutiltypes.ModuleName,
 		documentmoduletypes.ModuleName,
+		swapmoduletypes.ModuleName,
 	)
 
 	app.mm.SetOrderEndBlockers(
@@ -551,6 +569,7 @@ func New(
 		idmoduletypes.ModuleName,
 		genutiltypes.ModuleName,
 		documentmoduletypes.ModuleName,
+		swapmoduletypes.ModuleName,
 	)
 
 	// NOTE: The genutils module must occur after staking so that pools are
@@ -583,6 +602,7 @@ func New(
 		idmoduletypes.ModuleName,
 		assetmoduletypes.ModuleName,
 		bookingmoduletypes.ModuleName,
+		swapmoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/initGenesis
 
 	)
@@ -783,6 +803,7 @@ func initParamsKeeper(appCodec codec.BinaryCodec, legacyAmino *codec.LegacyAmino
 	paramsKeeper.Subspace(assetmoduletypes.ModuleName)
 	paramsKeeper.Subspace(bookingmoduletypes.ModuleName)
 	paramsKeeper.Subspace(gentlemintmoduletypes.ModuleName)
+	paramsKeeper.Subspace(swapmoduletypes.ModuleName)
 	// this line is used by starport scaffolding # stargate/app/paramSubspace
 
 	return paramsKeeper

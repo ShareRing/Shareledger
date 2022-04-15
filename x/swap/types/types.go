@@ -10,6 +10,7 @@ const (
 )
 
 // pending -> approved|rejected -> processing -> done
+// this value should be synced with the map below
 const (
 	SwapStatusPending    = "pending"
 	SwapStatusApproved   = "approved"
@@ -17,6 +18,19 @@ const (
 	SwapStatusProcessing = "processing"
 	SwapStatusDone       = "done"
 )
+
+var SupportedSwapStatuses = map[string]struct{}{
+	SwapStatusPending:    {},
+	SwapStatusApproved:   {},
+	SwapStatusReject:     {},
+	SwapStatusProcessing: {},
+	SwapStatusDone:       {},
+}
+
+func SwapStatusSupported(status string) bool {
+	_, found := SupportedSwapStatuses[status]
+	return found
+}
 
 const (
 	AttributeValueCategory   = ModuleName
