@@ -31,7 +31,16 @@ func TestGenesis(t *testing.T) {
 			},
 		},
 		RequestCount: 2,
-		// this line is used by starport scaffolding # genesis/test/state
+		BatchList: []types.Batch{
+		{
+			Id: 0,
+		},
+		{
+			Id: 1,
+		},
+	},
+	BatchCount: 2,
+	// this line is used by starport scaffolding # genesis/test/state
 	}
 
 	k, ctx := keepertest.SwapKeeper(t)
@@ -45,5 +54,7 @@ func TestGenesis(t *testing.T) {
 	require.ElementsMatch(t, genesisState.IdList, got.IdList)
 	require.ElementsMatch(t, genesisState.RequestList, got.RequestList)
 	require.Equal(t, genesisState.RequestCount, got.RequestCount)
-	// this line is used by starport scaffolding # genesis/test/assert
+	require.ElementsMatch(t, genesisState.BatchList, got.BatchList)
+require.Equal(t, genesisState.BatchCount, got.BatchCount)
+// this line is used by starport scaffolding # genesis/test/assert
 }

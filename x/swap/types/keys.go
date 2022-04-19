@@ -30,3 +30,8 @@ const (
 func RequestKey(status string) string {
 	return fmt.Sprintf("Request-%s-value-", status)
 }
+
+const (
+	BatchKey= "Batch-value-"
+	BatchCountKey= "Batch-count-"
+)

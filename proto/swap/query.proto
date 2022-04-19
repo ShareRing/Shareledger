@@ -7,6 +7,7 @@ import "cosmos/base/query/v1beta1/pagination.proto";
 import "swap/params.proto";
 import "swap/id.proto";
 import "swap/request.proto";
+import "swap/batch.proto";
 // this line is used by starport scaffolding # 1
 
 option go_package = "github.com/sharering/shareledger/x/swap/types";
@@ -21,6 +22,11 @@ service Query {
 	// Queries a list of Search items.
 	rpc Search(QuerySearchRequest) returns (QuerySearchResponse) {
 		option (google.api.http).get = "/sharering/shareledger/swap/search/{status}/{id}/{srcAddr}/{destAddr}/{srcNetwork}/{destNetwork}";
+	}
+
+// Queries a Batch by id.
+	rpc Batch(QueryGetBatchRequest) returns (QueryGetBatchResponse) {
+		option (google.api.http).get = "/sharering/shareledger/swap/batch/{id}";
 	}
 
 // this line is used by starport scaffolding # 2
@@ -50,4 +56,11 @@ message QuerySearchResponse {
 	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 
+message QueryGetBatchRequest {
+	uint64 id = 1;
+}
+
+message QueryGetBatchResponse {
+	Batch Batch = 1 [(gogoproto.nullable) = false];
+}
 // this line is used by starport scaffolding # 3
