@@ -18,7 +18,7 @@ func init() {
 }
 
 func TestGentlemintIntegrationTestSuite(t *testing.T) {
-	networkConfig := network.ShareLedgerTestingConfig()
+	networkConfig := network.DefaultConfig()
 	networkConfig.NumValidators = 1
 	suite.Run(t, NewGentlemintIntegrationTestSuite(networkConfig))
 }

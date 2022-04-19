@@ -18,7 +18,7 @@ func init() {
 	})
 }
 func TestIntegrationBookingTestSuite(t *testing.T) {
-	cfg := network.ShareLedgerTestingConfig()
+	cfg := network.DefaultConfig()
 	cfg.NumValidators = 2
 	suite.Run(t, NewBookingIntegrationTestSuite(cfg))
 }

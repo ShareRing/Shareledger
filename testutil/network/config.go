@@ -8,7 +8,7 @@ import (
 	"github.com/tendermint/spm/cosmoscmd"
 )
 
-func ShareLedgerTestingConfig() network.Config {
+func DefaultConfig() network.Config {
 	shareRingEncCfg := cosmoscmd.MakeEncodingConfig(app.ModuleBasics)
 
 	cosmoscmd.SetPrefixes(Bech32MainPrefix)

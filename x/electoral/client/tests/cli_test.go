@@ -18,7 +18,7 @@ func init() {
 	})
 }
 func TestElectoralModule(t *testing.T) {
-	cf := network.ShareLedgerTestingConfig()
+	cf := network.DefaultConfig()
 	cf.NumValidators = 2
 	suite.Run(t, NewElectoralIntegrationTestSuite(cf))
 }
