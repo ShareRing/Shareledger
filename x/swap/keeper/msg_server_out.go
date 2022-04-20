@@ -34,7 +34,7 @@ func (k msgServer) Out(goCtx context.Context, msg *types.MsgOut) (*types.MsgOutR
 	if err == nil {
 		ctx.EventManager().EmitEvent(
 			sdk.NewEvent(
-				sdk.EventTypeMessage,
+				types.EventTypeSwapOut,
 				sdk.NewAttribute(sdk.AttributeKeyModule, types.AttributeValueCategory),
 				sdk.NewAttribute(types.EventTypeSwapAmount, req.Amount.String()),
 				sdk.NewAttribute(types.EventTypeSwapFee, req.Fee.String()),

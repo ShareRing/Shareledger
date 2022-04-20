@@ -6,7 +6,7 @@ const (
 )
 
 const (
-	NetworkNameShareLedger = "SLP3"
+	NetworkNameShareLedger = "slp3"
 )
 
 // pending -> approved|rejected
@@ -33,6 +33,11 @@ func SwapStatusSupported(status string) bool {
 	_, found := SupportedSwapStatuses[status]
 	return found
 }
+
+const (
+	EventTypeSwapApprove = "swap_approve"
+	EventTypeSwapOut     = "swap_out"
+)
 
 const (
 	AttributeValueCategory   = ModuleName

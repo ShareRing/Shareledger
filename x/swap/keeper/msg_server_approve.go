@@ -27,7 +27,7 @@ func (k msgServer) Approve(goCtx context.Context, msg *types.MsgApprove) (*types
 		reqIds = append(reqIds, fmt.Sprintf("%v", r.Id))
 	}
 
-	events := sdk.NewEvent(sdk.EventTypeMessage,
+	events := sdk.NewEvent(types.EventTypeSwapApprove,
 		sdk.NewAttribute(sdk.AttributeKeyModule, types.AttributeValueCategory),
 		sdk.NewAttribute(types.EventTypeBatchId, fmt.Sprintf("%v", batchId)),
 		sdk.NewAttribute(types.EventTypeApproverAction, types.SwapStatusApproved),

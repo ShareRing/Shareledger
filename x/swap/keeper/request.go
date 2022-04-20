@@ -69,6 +69,7 @@ func (k Keeper) ChangeStatusRequests(ctx sdk.Context, ids []uint64, status strin
 	if status == types.SwapStatusApproved && (batchId == nil || *batchId == 0) {
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "%s status requires batch Id", status)
 	}
+
 	var requiredStatus string
 	var currentStatusStore prefix.Store
 	switch status {
@@ -77,28 +78,52 @@ func (k Keeper) ChangeStatusRequests(ctx sdk.Context, ids []uint64, status strin
 	default:
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "%s is not supported", status)
 	}
-
 	currentStatusStore = k.GetStoreRequestMap(ctx)[requiredStatus]
+	// Check type swap in out
+	req, found := k.GetRequestFromStore(ctx, currentStatusStore, ids[0])
+	if !found {
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "swap request was not found with status, %s, and id, %v", requiredStatus, ids[0])
+	}
+	srcNetwork := req.SrcNetwork
 	requests := k.GetRequestsByIdsFromStore(ctx, currentStatusStore, ids)
 	if len(requests) != len(ids) {
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, fmt.Sprintf("transactions don't have same status or not found, with required current status, %s", requiredStatus))
 	}
-
-	newStore := k.GetStoreRequestMap(ctx)[status]
 	var bid uint64
 	if batchId != nil {
 		bid = *batchId
 	}
 
-	refunds := make(map[string]sdk.DecCoins)
+	switch srcNetwork {
+	case types.NetworkNameShareLedger: //cover case swap out request
+		return k.changeStatusSwapOut(ctx, requiredStatus, status, ids, bid)
+	}
 
+	return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "not supported yet")
+}
+
+func (k Keeper) changeStatusSwapOut(ctx sdk.Context, fromStatus string, toStatus string, ids []uint64, batchId uint64) ([]types.Request, error) {
+	if batchId == 0 {
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrLogic, "batch id is required")
+	}
+	fromStatusStore := k.GetStoreRequestMap(ctx)[fromStatus]
+	toStatusStore := k.GetStoreRequestMap(ctx)[toStatus]
+	requests := k.GetRequestsByIdsFromStore(ctx, fromStatusStore, ids)
+	if len(requests) != len(ids) {
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, fmt.Sprintf("transactions don't have same status or not found, with required current status, %s", fromStatus))
+	}
+
+	refunds := make(map[string]sdk.DecCoins)
 	for i := range requests {
 		req := &requests[i]
-		currentStatusStore.Delete(GetRequestIDBytes(req.Id))
-		req.Status = status
-		req.BatchId = bid
-		newStore.Set(GetRequestIDBytes(req.Id), k.cdc.MustMarshal(req))
-		if status == types.SwapStatusRejected {
+		if req.SrcNetwork != types.NetworkNameShareLedger {
+			return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "swap transaction with %v does not have same source network %v", req.Id, types.NetworkNameShareLedger)
+		}
+		fromStatusStore.Delete(GetRequestIDBytes(req.Id))
+		req.Status = toStatus
+		req.BatchId = batchId
+		toStatusStore.Set(GetRequestIDBytes(req.Id), k.cdc.MustMarshal(req))
+		if toStatus == types.SwapStatusRejected {
 			total, found := refunds[req.DestAddr]
 			if !found {
 				total = sdk.NewDecCoins()
@@ -117,9 +142,10 @@ func (k Keeper) ChangeStatusRequests(ctx sdk.Context, ids []uint64, status strin
 		if err != nil {
 			return nil, sdkerrors.Wrapf(sdkerrors.ErrLogic, "%v", err)
 		}
-		k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, add, bc)
+		if err = k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, add, bc); err != nil {
+			return nil, err
+		}
 	}
-
 	return requests, nil
 }
 
