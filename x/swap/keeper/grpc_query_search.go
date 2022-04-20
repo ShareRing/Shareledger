@@ -2,6 +2,8 @@ package keeper
 
 import (
 	"context"
+	"fmt"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/cosmos/cosmos-sdk/types/query"
 	"strings"
 
@@ -10,6 +12,17 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
+
+func (k Keeper) SearchIds(ctx sdk.Context, status string, ids []uint64) ([]types.Request, error) {
+	if len(ids) == 0 {
+		return nil, nil
+	}
+	store, found := k.GetStoreRequestMap(ctx)[status]
+	if !found {
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, fmt.Sprintf("request status, %s, is not supported", status))
+	}
+	return k.GetRequestsByIdsFromStore(ctx, store, ids), nil
+}
 
 func (k Keeper) Search(goCtx context.Context, req *types.QuerySearchRequest) (*types.QuerySearchResponse, error) {
 	if req == nil {

@@ -40,15 +40,15 @@ func TestGenesisState_Validate(t *testing.T) {
 				},
 				RequestCount: 2,
 				BatchList: []types.Batch{
-	{
-		Id: 0,
-	},
-	{
-		Id: 1,
-	},
-},
-BatchCount: 2,
-// this line is used by starport scaffolding # types/genesis/validField
+					{
+						Id: 0,
+					},
+					{
+						Id: 1,
+					},
+				},
+				BatchCount: 2,
+				// this line is used by starport scaffolding # types/genesis/validField
 			},
 			valid: true,
 		},
@@ -93,32 +93,32 @@ BatchCount: 2,
 			valid: false,
 		},
 		{
-	desc:     "duplicated batch",
-	genState: &types.GenesisState{
-		BatchList: []types.Batch{
-			{
-				Id: 0,
+			desc: "duplicated batch",
+			genState: &types.GenesisState{
+				BatchList: []types.Batch{
+					{
+						Id: 0,
+					},
+					{
+						Id: 0,
+					},
+				},
 			},
-			{
-				Id: 0,
-			},
+			valid: false,
 		},
-	},
-	valid:    false,
-},
-{
-	desc:     "invalid batch count",
-	genState: &types.GenesisState{
-		BatchList: []types.Batch{
-			{
-				Id: 1,
+		{
+			desc: "invalid batch count",
+			genState: &types.GenesisState{
+				BatchList: []types.Batch{
+					{
+						Id: 1,
+					},
+				},
+				BatchCount: 0,
 			},
+			valid: false,
 		},
-		BatchCount: 0,
-	},
-	valid:    false,
-},
-// this line is used by starport scaffolding # types/genesis/testcase
+		// this line is used by starport scaffolding # types/genesis/testcase
 	} {
 		t.Run(tc.desc, func(t *testing.T) {
 			err := tc.genState.Validate()

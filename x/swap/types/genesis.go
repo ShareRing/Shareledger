@@ -12,8 +12,8 @@ func DefaultGenesis() *GenesisState {
 	return &GenesisState{
 		IdList:      []Id{},
 		RequestList: []Request{},
-		BatchList: []Batch{},
-// this line is used by starport scaffolding # genesis/types/default
+		BatchList:   []Batch{},
+		// this line is used by starport scaffolding # genesis/types/default
 		Params: DefaultParams(),
 	}
 }
@@ -44,18 +44,18 @@ func (gs GenesisState) Validate() error {
 		requestIdMap[elem.Id] = true
 	}
 	// Check for duplicated ID in batch
-batchIdMap := make(map[uint64]bool)
-batchCount := gs.GetBatchCount()
-for _, elem := range gs.BatchList {
-	if _, ok := batchIdMap[elem.Id]; ok {
-		return fmt.Errorf("duplicated id for batch")
+	batchIdMap := make(map[uint64]bool)
+	batchCount := gs.GetBatchCount()
+	for _, elem := range gs.BatchList {
+		if _, ok := batchIdMap[elem.Id]; ok {
+			return fmt.Errorf("duplicated id for batch")
+		}
+		if elem.Id >= batchCount {
+			return fmt.Errorf("batch id should be lower or equal than the last id")
+		}
+		batchIdMap[elem.Id] = true
 	}
-	if elem.Id >= batchCount {
-		return fmt.Errorf("batch id should be lower or equal than the last id")
-	}
-	batchIdMap[elem.Id] = true
-}
-// this line is used by starport scaffolding # genesis/types/validate
+	// this line is used by starport scaffolding # genesis/types/validate
 
 	return gs.Params.Validate()
 }

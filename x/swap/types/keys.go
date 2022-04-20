@@ -32,6 +32,6 @@ func RequestKey(status string) string {
 }
 
 const (
-	BatchKey= "Batch-value-"
-	BatchCountKey= "Batch-count-"
+	BatchKey      = "Batch-value-"
+	BatchCountKey = "Batch-count-"
 )

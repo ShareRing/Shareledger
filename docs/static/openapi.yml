@@ -31288,6 +31288,9 @@ paths:
                         signatures required by gogoproto.
                     status:
                       type: string
+                    batchId:
+                      type: string
+                      format: uint64
               pagination:
                 type: object
                 properties:
@@ -53171,6 +53174,12 @@ definitions:
           format: uint64
       status:
         type: string
+  shareledger.swap.MsgApproveResponse:
+    type: object
+    properties:
+      batchID:
+        type: string
+        format: uint64
   shareledger.swap.MsgOutResponse:
     type: object
     properties:
@@ -53264,6 +53273,9 @@ definitions:
                 signatures required by gogoproto.
             status:
               type: string
+            batchId:
+              type: string
+              format: uint64
       pagination:
         type: object
         properties:
@@ -53329,3 +53341,6 @@ definitions:
           signatures required by gogoproto.
       status:
         type: string
+      batchId:
+        type: string
+        format: uint64

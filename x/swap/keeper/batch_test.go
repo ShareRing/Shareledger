@@ -3,11 +3,11 @@ package keeper_test
 import (
 	"testing"
 
-    "github.com/sharering/shareledger/x/swap/keeper"
-    "github.com/sharering/shareledger/x/swap/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	keepertest "github.com/sharering/shareledger/testutil/keeper"
 	"github.com/sharering/shareledger/testutil/nullify"
+	"github.com/sharering/shareledger/x/swap/keeper"
+	"github.com/sharering/shareledger/x/swap/types"
 	"github.com/stretchr/testify/require"
 )
 

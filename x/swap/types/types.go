@@ -9,23 +9,25 @@ const (
 	NetworkNameShareLedger = "SLP3"
 )
 
-// pending -> approved|rejected -> processing -> done
+// pending -> approved|rejected
 // this value should be synced with the map below
 const (
-	SwapStatusPending    = "pending"
-	SwapStatusApproved   = "approved"
-	SwapStatusReject     = "rejected"
-	SwapStatusProcessing = "processing"
-	SwapStatusDone       = "done"
+	SwapStatusPending  = "pending"
+	SwapStatusApproved = "approved"
+	SwapStatusRejected = "rejected"
 )
 
 var SupportedSwapStatuses = map[string]struct{}{
-	SwapStatusPending:    {},
-	SwapStatusApproved:   {},
-	SwapStatusReject:     {},
-	SwapStatusProcessing: {},
-	SwapStatusDone:       {},
+	SwapStatusPending:  {},
+	SwapStatusApproved: {},
+	SwapStatusRejected: {},
 }
+
+const (
+	BatchStatusPending    = "pending"
+	BatchStatusProcessing = "processing"
+	BatchStatusDone       = "done"
+)
 
 func SwapStatusSupported(status string) bool {
 	_, found := SupportedSwapStatuses[status]
@@ -36,9 +38,13 @@ const (
 	AttributeValueCategory   = ModuleName
 	EventTypeSwapAmount      = "amount"
 	EventTypeSwapFee         = "fee"
-	EventTypeSwapId          = "id"
 	EventTypeSwapDestAddr    = "dest_addr"
 	EventTypeSwapSrcAddr     = "src_addr"
 	EventTypeSwapDestNetwork = "dest_network"
 	EventTypeSwapSrcNetwork  = "src_network"
+	EventTypeSwapId          = "swap_id"
+	EventTypeBatchId         = "batch_id"
+	EventTypeBatchTotal      = "batch_total"
+	EventTypeApproverAction  = "approver_action"
+	EventTypeApproverAddr    = "approver_addr"
 )

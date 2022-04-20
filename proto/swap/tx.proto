@@ -10,6 +10,7 @@ option go_package = "github.com/sharering/shareledger/x/swap/types";
 // Msg defines the Msg service.
 service Msg {
       rpc Out(MsgOut) returns (MsgOutResponse);
+  rpc Approve(MsgApprove) returns (MsgApproveResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -23,6 +24,16 @@ message MsgOut {
 
 message MsgOutResponse {
   uint64 rid = 1;
+}
+
+message MsgApprove {
+  string creator = 1;
+  string signedHash = 2;
+  repeated uint64 txs = 3;
+}
+
+message MsgApproveResponse {
+  uint64 batchID = 1;
 }
 
 // this line is used by starport scaffolding # proto/tx/message

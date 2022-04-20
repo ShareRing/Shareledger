@@ -2,10 +2,12 @@ package keeper
 
 import (
 	"encoding/binary"
+	"fmt"
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/sharering/shareledger/x/swap/types"
+	denom "github.com/sharering/shareledger/x/utils/demo"
 )
 
 // GetRequestCount get the total number of request
@@ -57,39 +59,74 @@ func (k Keeper) AppendPendingRequest(
 	return request, nil
 }
 
-// ChangeStatusRequest change status of request and move it into respective store
+// ChangeStatusRequests change status of requests and move it into respective store
 // The status flow should be: pending -> approved|rejected -> processing -> done.
 // return error if new status is pending or unsupported status
-func (k Keeper) ChangeStatusRequest(ctx sdk.Context, id uint64, status string) (req types.Request, err error) {
-	var found bool
-	var selectedStatus string
+func (k Keeper) ChangeStatusRequests(ctx sdk.Context, ids []uint64, status string, batchId *uint64) ([]types.Request, error) {
+	if len(ids) == 0 {
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "swap request transactions' id is empty")
+	}
+	if status == types.SwapStatusApproved && (batchId == nil || *batchId == 0) {
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "%s status requires batch Id", status)
+	}
+	var requiredStatus string
 	var currentStatusStore prefix.Store
 	switch status {
-	case types.SwapStatusApproved, types.SwapStatusReject:
-		selectedStatus = types.SwapStatusPending
-	case types.SwapStatusProcessing:
-		selectedStatus = types.SwapStatusApproved
-	case types.SwapStatusDone:
-		selectedStatus = types.SwapStatusProcessing
+	case types.SwapStatusApproved, types.SwapStatusRejected:
+		requiredStatus = types.SwapStatusPending
 	default:
-		return req, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "%s is not support for this function", status)
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "%s is not supported", status)
 	}
-	currentStatusStore = prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.RequestKey(types.SwapStatusPending)))
-	req, found = k.GetRequestFromStore(ctx, currentStatusStore, id)
-	if !found {
-		return req, sdkerrors.Wrapf(sdkerrors.ErrKeyNotFound, "there is no request with id, %v, and status, %s", id, selectedStatus)
+
+	currentStatusStore = k.GetStoreRequestMap(ctx)[requiredStatus]
+	requests := k.GetRequestsByIdsFromStore(ctx, currentStatusStore, ids)
+	if len(requests) != len(ids) {
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, fmt.Sprintf("transactions don't have same status or not found, with required current status, %s", requiredStatus))
 	}
-	currentStatusStore.Delete(GetRequestIDBytes(id))
-	req.Status = status
-	newStore := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.RequestKey(req.Status)))
-	newStore.Set(GetRequestIDBytes(req.Id), k.cdc.MustMarshal(&req))
-	return req, nil
+
+	newStore := k.GetStoreRequestMap(ctx)[status]
+	var bid uint64
+	if batchId != nil {
+		bid = *batchId
+	}
+
+	refunds := make(map[string]sdk.DecCoins)
+
+	for i := range requests {
+		req := &requests[i]
+		currentStatusStore.Delete(GetRequestIDBytes(req.Id))
+		req.Status = status
+		req.BatchId = bid
+		newStore.Set(GetRequestIDBytes(req.Id), k.cdc.MustMarshal(req))
+		if status == types.SwapStatusRejected {
+			total, found := refunds[req.DestAddr]
+			if !found {
+				total = sdk.NewDecCoins()
+			}
+			total = total.Add(*req.Amount).Add(*req.Fee)
+			refunds[req.DestAddr] = total
+		}
+	}
+
+	for a, c := range refunds {
+		add, err := sdk.AccAddressFromBech32(a)
+		if err != nil {
+			return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "%+v", err)
+		}
+		bc, err := denom.NormalizeToBaseCoins(c, false)
+		if err != nil {
+			return nil, sdkerrors.Wrapf(sdkerrors.ErrLogic, "%v", err)
+		}
+		k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, add, bc)
+	}
+
+	return requests, nil
 }
 
-func (k Keeper) RemoveRequest(ctx sdk.Context, id uint64, status string) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.RequestKey(status)))
-	store.Delete(GetRequestIDBytes(id))
-}
+//func (k Keeper) RemoveRequest(ctx sdk.Context, id uint64, status string) {
+//	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.RequestKey(status)))
+//	store.Delete(GetRequestIDBytes(id))
+//}
 
 func (k Keeper) GetRequestFromStore(ctx sdk.Context, store sdk.KVStore, id uint64) (val types.Request, found bool) {
 	b := store.Get(GetRequestIDBytes(id))
@@ -100,15 +137,38 @@ func (k Keeper) GetRequestFromStore(ctx sdk.Context, store sdk.KVStore, id uint6
 	return val, true
 }
 
-// GetRequest returns a request from its id
-func (k Keeper) GetRequest(ctx sdk.Context, id uint64, status string) (val types.Request, found bool) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.RequestKey(status)))
-	b := store.Get(GetRequestIDBytes(id))
-	if b == nil {
-		return val, false
+// GetRequestsByIdsFromStore get al requests by ids
+func (k Keeper) GetRequestsByIdsFromStore(ctx sdk.Context, store sdk.KVStore, ids []uint64) []types.Request {
+	requests := make([]types.Request, 0, len(ids))
+	mapIds := make(map[uint64]struct{})
+	for _, id := range ids {
+		mapIds[id] = struct{}{}
 	}
-	k.cdc.MustUnmarshal(b, &val)
-	return val, true
+	iterator := sdk.KVStorePrefixIterator(store, []byte{})
+	defer iterator.Close()
+	for ; iterator.Valid(); iterator.Next() {
+		var val types.Request
+		k.cdc.MustUnmarshal(iterator.Value(), &val)
+		if _, found := mapIds[val.Id]; found {
+			requests = append(requests, val)
+		}
+	}
+	return requests
+}
+
+// GetRequest returns a request from its id
+func (k Keeper) GetRequest(ctx sdk.Context, id uint64) (val types.Request, found bool) {
+	stores := k.GetStoreRequestMap(ctx)
+	for _, store := range stores {
+		b := store.Get(GetRequestIDBytes(id))
+		if b == nil {
+			continue
+		}
+		k.cdc.MustUnmarshal(b, &val)
+		found = true
+		break
+	}
+	return
 }
 
 // GetAllRequest returns all request
