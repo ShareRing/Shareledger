@@ -2,6 +2,7 @@ package cli
 
 import (
 	"strconv"
+	"strings"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
@@ -14,12 +15,20 @@ var _ = strconv.Itoa(0)
 
 func CmdApprove() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "approve [signed-hash]",
-		Short: "approve batch of swap out transactions",
-		Args:  cobra.ExactArgs(1),
+		Use:   "approve [signed-hash] [txIDs]",
+		Short: "Approve batch of swap out transactions. \n [txIDs] format ID1,ID2,ID3",
+		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argSignedHash := args[0]
-
+			argIDS := strings.Split(args[1], ",")
+			txIds := make([]uint64, 0, len(argIDS))
+			for _, str := range argIDS {
+				id, err := strconv.ParseUint(str, 10, 64)
+				if err != nil {
+					return err
+				}
+				txIds = append(txIds, id)
+			}
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
@@ -28,6 +37,7 @@ func CmdApprove() *cobra.Command {
 			msg := types.NewMsgApprove(
 				clientCtx.GetFromAddress().String(),
 				argSignedHash,
+				txIds,
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err
