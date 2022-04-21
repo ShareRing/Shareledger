@@ -531,7 +531,7 @@ func New(
 		keys[documentmoduletypes.StoreKey],
 		keys[documentmoduletypes.MemStoreKey],
 		app.GetSubspace(swapmoduletypes.ModuleName),
-		app.BankKeeper)
+		app.BankKeeper, app.AccountKeeper)
 
 	swapModule := swapmodule.NewAppModule(appCodec, app.SwapKeeper, app.AccountKeeper, app.BankKeeper)
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
