@@ -10,7 +10,7 @@ import (
 	"github.com/sharering/shareledger/x/swap/types"
 )
 
-func setupMsgServer(t testing.TB) (types.MsgServer, context.Context) {
+func SetupMsgServer(t testing.TB) (types.MsgServer, context.Context) {
 	k, ctx := keepertest.SwapKeeper(t)
 	return keeper.NewMsgServerImpl(*k), sdk.WrapSDKContext(ctx)
 }

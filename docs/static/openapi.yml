@@ -53180,6 +53180,11 @@ definitions:
       batchID:
         type: string
         format: uint64
+  shareledger.swap.MsgDepositResponse:
+    type: object
+    properties:
+      status:
+        type: string
   shareledger.swap.MsgOutResponse:
     type: object
     properties:

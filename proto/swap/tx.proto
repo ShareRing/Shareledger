@@ -11,6 +11,7 @@ option go_package = "github.com/sharering/shareledger/x/swap/types";
 service Msg {
       rpc Out(MsgOut) returns (MsgOutResponse);
   rpc Approve(MsgApprove) returns (MsgApproveResponse);
+  rpc Deposit(MsgDeposit) returns (MsgDepositResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -34,6 +35,15 @@ message MsgApprove {
 
 message MsgApproveResponse {
   uint64 batchID = 1;
+}
+
+message MsgDeposit {
+  string creator = 1;
+  cosmos.base.v1beta1.DecCoin amount = 2;
+}
+
+message MsgDepositResponse {
+  string status = 1;
 }
 
 // this line is used by starport scaffolding # proto/tx/message

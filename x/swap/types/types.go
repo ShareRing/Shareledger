@@ -37,6 +37,7 @@ func SwapStatusSupported(status string) bool {
 const (
 	EventTypeSwapApprove = "swap_approve"
 	EventTypeSwapOut     = "swap_out"
+	EventTypeDeposit     = "swap_deposit"
 )
 
 const (
@@ -52,4 +53,11 @@ const (
 	EventTypeBatchTotal      = "batch_total"
 	EventTypeApproverAction  = "approver_action"
 	EventTypeApproverAddr    = "approver_addr"
+	EventTypeDepositAmount   = EventTypeSwapAmount
+	EventTypeDepositAddr     = "sender"
+)
+
+const (
+	TxnStatusSuccess = "SUCCESS"
+	TxnStatusFail    = "FAIL"
 )
