@@ -93,3 +93,68 @@ func (s *SwapIntegrationTestSuite) TestDeposit() {
 		})
 	}
 }
+
+func (s *SwapIntegrationTestSuite) TestWithDraw() {
+	type (
+		TestCase struct {
+			d         string
+			iAmount   string
+			iReceiver string
+			txFee     int
+			txCreator string
+			oErr      error
+			oRes      *sdk.TxResponse
+		}
+	)
+
+	testSuite := []TestCase{
+		{
+			d:         "withdraw success",
+			iAmount:   "10shr",
+			txCreator: netutilts.KeyTreasurer,
+			iReceiver: "shareledger1l5hkf2epa5xmvngnjaasj5dp9jp7ut6s9mrqve",
+			txFee:     10,
+			oErr:      nil,
+			oRes:      &sdk.TxResponse{Code: sdkerrors.SuccessABCICode},
+		},
+		{
+			d:         "deposit fail InsufficientFunds",
+			iAmount:   "100000000000shr",
+			iReceiver: "shareledger1l5hkf2epa5xmvngnjaasj5dp9jp7ut6s9mrqve",
+			txCreator: netutilts.KeyTreasurer,
+			txFee:     10,
+			oErr:      nil,
+			oRes:      &sdk.TxResponse{Code: sdkerrors.ErrInsufficientFunds.ABCICode()},
+		},
+		{
+			d:         "deposit fail creator isn't authority or treasure",
+			iAmount:   "100000000000shr",
+			iReceiver: "shareledger1l5hkf2epa5xmvngnjaasj5dp9jp7ut6s9mrqve",
+			txCreator: netutilts.KeyAccount3,
+			txFee:     10,
+			oErr:      nil,
+			oRes:      &sdk.TxResponse{Code: sdkerrors.ErrUnauthorized.ABCICode()},
+		},
+	}
+	validatorCtx := s.network.Validators[0].ClientCtx
+	for _, tc := range testSuite {
+		s.Run(tc.d, func() {
+			out, err := CmdWithdraw(validatorCtx,
+				tc.iReceiver,
+				tc.iAmount,
+				netutilts.JSONFlag,
+				netutilts.SkipConfirmation,
+				netutilts.MakeByAccount(tc.txCreator),
+				netutilts.BlockBroadcast,
+				netutilts.SHRFee(tc.txFee),
+			)
+			if tc.oErr != nil {
+				s.NotNilf(err, "this case need return error")
+			}
+			if tc.oRes != nil {
+				txResponse := netutilts.ParseStdOut(s.T(), out.Bytes())
+				s.Equalf(tc.oRes.Code, txResponse.Code, "deposit fail %s", out)
+			}
+		})
+	}
+}

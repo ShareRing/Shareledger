@@ -13,3 +13,10 @@ func CmdDeposit(clientCtx client.Context, amount string, extraFlags ...string) (
 
 	return clitestutil.ExecTestCLICmd(clientCtx, cli.CmdDeposit(), args)
 }
+
+func CmdWithdraw(clientCtx client.Context, receiver, amount string, extraFlags ...string) (testutil.BufferWriter, error) {
+	args := []string{receiver, amount}
+	args = append(args, extraFlags...)
+
+	return clitestutil.ExecTestCLICmd(clientCtx, cli.CmdWithdraw(), args)
+}

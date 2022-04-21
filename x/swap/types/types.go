@@ -38,23 +38,26 @@ const (
 	EventTypeSwapApprove = "swap_approve"
 	EventTypeSwapOut     = "swap_out"
 	EventTypeDeposit     = "swap_deposit"
+	EventTypeWithDraw    = "swap_withdraw"
 )
 
 const (
-	AttributeValueCategory   = ModuleName
-	EventTypeSwapAmount      = "amount"
-	EventTypeSwapFee         = "fee"
-	EventTypeSwapDestAddr    = "dest_addr"
-	EventTypeSwapSrcAddr     = "src_addr"
-	EventTypeSwapDestNetwork = "dest_network"
-	EventTypeSwapSrcNetwork  = "src_network"
-	EventTypeSwapId          = "swap_id"
-	EventTypeBatchId         = "batch_id"
-	EventTypeBatchTotal      = "batch_total"
-	EventTypeApproverAction  = "approver_action"
-	EventTypeApproverAddr    = "approver_addr"
-	EventTypeDepositAmount   = EventTypeSwapAmount
-	EventTypeDepositAddr     = "sender"
+	AttributeValueCategory    = ModuleName
+	EventTypeSwapAmount       = "amount"
+	EventTypeSwapFee          = "fee"
+	EventTypeSwapDestAddr     = "dest_addr"
+	EventTypeSwapSrcAddr      = "src_addr"
+	EventTypeSwapDestNetwork  = "dest_network"
+	EventTypeSwapSrcNetwork   = "src_network"
+	EventTypeSwapId           = "swap_id"
+	EventTypeBatchId          = "batch_id"
+	EventTypeBatchTotal       = "batch_total"
+	EventTypeApproverAction   = "approver_action"
+	EventTypeApproverAddr     = "approver_addr"
+	EventTypeDepositAmount    = EventTypeSwapAmount
+	EventTypeDepositAddr      = "sender"
+	EventTypeWithdrawReceiver = "receiver"
+	EventTypeWithdrawAmount   = EventTypeSwapAmount
 )
 
 const (

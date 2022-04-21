@@ -53239,6 +53239,11 @@ definitions:
       rid:
         type: string
         format: uint64
+  shareledger.swap.MsgWithdrawResponse:
+    type: object
+    properties:
+      status:
+        type: string
   shareledger.swap.Params:
     type: object
     properties:
