@@ -97,7 +97,7 @@ func (k Keeper) ChangeStatusRequests(ctx sdk.Context, ids []uint64, status strin
 	switch srcNetwork {
 	case types.NetworkNameShareLedger: //cover case swap out request
 		return k.changeStatusSwapOut(ctx, requiredStatus, status, ids, bid)
-	default: //swap out
+	default: //swap in
 		return k.changeStatusSwapIn(ctx, requiredStatus, status, ids)
 	}
 
