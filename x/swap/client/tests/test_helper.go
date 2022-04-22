@@ -20,3 +20,8 @@ func CmdWithdraw(clientCtx client.Context, receiver, amount string, extraFlags .
 
 	return clitestutil.ExecTestCLICmd(clientCtx, cli.CmdWithdraw(), args)
 }
+
+func CmdFund(clientCtx client.Context, extraFlags ...string) (testutil.BufferWriter, error) {
+
+	return clitestutil.ExecTestCLICmd(clientCtx, cli.CmdFund(), extraFlags)
+}
