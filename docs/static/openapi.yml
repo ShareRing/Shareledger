@@ -31189,6 +31189,38 @@ paths:
           format: uint64
       tags:
         - Query
+  /sharering/shareledger/swap/fund:
+    get:
+      summary: Queries a list of Fund items.
+      operationId: ShareledgerSwapFund
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              availiable:
+                type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
   /sharering/shareledger/swap/funding:
     get:
       summary: Queries a list of Funding items.
@@ -53250,6 +53282,11 @@ definitions:
       outFee:
         type: string
     description: Params defines the parameters for the module.
+  shareledger.swap.QueryFundResponse:
+    type: object
+    properties:
+      availiable:
+        type: string
   shareledger.swap.QueryFundingResponse:
     type: object
     properties:
