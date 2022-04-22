@@ -26,7 +26,7 @@ const (
 	ErrMsgNotTreasureAccount      = "Transaction's Signer is not treasure account"
 	ErrMsgNotOperatorAccount      = "Transaction's Signer is not operator account"
 	ErrMsgNotVoterAccount         = "Transaction's Signer is not voter account"
-	ErrMsgNotAuthorityAndTreasure = "Transaction's Signer is not authority and treasure account"
+	ErrMsgNotAuthorityAndTreasure = "Transaction's Signer is not authority OR treasure account"
 )
 
 func NewAuthDecorator(rk RoleKeeper, ik IDKeeper) Auth {

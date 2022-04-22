@@ -3,6 +3,7 @@ package keeper
 import (
 	"context"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/sharering/shareledger/x/swap/types"
 	denom "github.com/sharering/shareledger/x/utils/demo"
 )
@@ -13,11 +14,8 @@ func (k msgServer) Deposit(goCtx context.Context, msg *types.MsgDeposit) (*types
 	baseCoins, err := denom.NormalizeToBaseCoins(sdk.NewDecCoins(*msg.Amount), true)
 	if err != nil {
 		k.Logger(ctx).Error("normalizer the base_coins fail", "error", err.Error())
-		return &types.MsgDepositResponse{Status: types.TxnStatusFail}, err
+		return &types.MsgDepositResponse{Status: types.TxnStatusFail}, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "%+v", err)
 	}
-
-	k.Logger(ctx).Debug("funding coin => swapping module", "coin", baseCoins.String())
-
 	err = k.bankKeeper.SendCoinsFromAccountToModule(ctx, msg.GetSigners()[0], types.ModuleName, baseCoins)
 	if err != nil {
 		k.Logger(ctx).Error("sending coin to swapping module fail", "error", err.Error())

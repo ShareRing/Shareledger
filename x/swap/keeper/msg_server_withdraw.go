@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	denom "github.com/sharering/shareledger/x/utils/demo"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -13,15 +14,13 @@ func (k msgServer) Withdraw(goCtx context.Context, msg *types.MsgWithdraw) (*typ
 	baseCoins, err := denom.NormalizeToBaseCoins(sdk.NewDecCoins(*msg.Amount), true)
 	if err != nil {
 		k.Logger(ctx).Error("normalizer the base_coins fail", "error", err.Error())
-		return &types.MsgWithdrawResponse{Status: types.TxnStatusFail}, err
+		return &types.MsgWithdrawResponse{Status: types.TxnStatusFail}, sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "input coin for withdraw is invalid %s", err)
 	}
-
-	k.Logger(ctx).Debug("withdraw shr  => address", "coin", baseCoins.String())
 
 	recAddr, err := sdk.AccAddressFromBech32(msg.GetReceiver())
 	if err != nil {
 		k.Logger(ctx).Error("getting receiver address fail", "error", err)
-		return &types.MsgWithdrawResponse{Status: types.TxnStatusFail}, err
+		return &types.MsgWithdrawResponse{Status: types.TxnStatusFail}, sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "receiver address is invalid %s", err)
 	}
 
 	err = k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, recAddr, baseCoins)

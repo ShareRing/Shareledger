@@ -3,6 +3,8 @@ package types
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	denom "github.com/sharering/shareledger/x/utils/demo"
+	"strings"
 )
 
 const TypeMsgDeposit = "deposit"
@@ -41,6 +43,13 @@ func (msg *MsgDeposit) ValidateBasic() error {
 	_, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
+	}
+
+	if strings.ToLower(msg.Amount.GetDenom()) != denom.Shr {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "the deposit must be shr (%s)", err)
+	}
+	if msg.GetAmount().Amount.IsZero() || msg.GetAmount().Amount.IsNegative() {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "the deposit must be greater than 0", err)
 	}
 	return nil
 }

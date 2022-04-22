@@ -29,10 +29,11 @@ service Query {
 	rpc Batch(QueryGetBatchRequest) returns (QueryGetBatchResponse) {
 		option (google.api.http).get = "/sharering/shareledger/swap/batch/{id}";
 	}
+	
 
-// Queries a list of Funding items.
-	rpc Funding(QueryFundingRequest) returns (QueryFundingResponse) {
-		option (google.api.http).get = "/sharering/shareledger/swap/funding";
+// Queries a list of Fund items.
+	rpc Fund(QueryFundRequest) returns (QueryFundResponse) {
+		option (google.api.http).get = "/sharering/shareledger/swap/fund";
 	}
 
 // this line is used by starport scaffolding # 2
@@ -69,11 +70,12 @@ message QueryGetBatchRequest {
 message QueryGetBatchResponse {
 	Batch Batch = 1 [(gogoproto.nullable) = false];
 }
-message QueryFundingRequest {
+
+message QueryFundRequest {
 }
 
-message QueryFundingResponse {
-	repeated	cosmos.base.v1beta1.DecCoin availiable = 1;
+message QueryFundResponse {
+	repeated	cosmos.base.v1beta1.DecCoin available = 1;
 }
 
 // this line is used by starport scaffolding # 3

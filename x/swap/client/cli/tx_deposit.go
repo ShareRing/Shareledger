@@ -16,7 +16,7 @@ var _ = strconv.Itoa(0)
 func CmdDeposit() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "deposit [amount]",
-		Short: "Broadcast funding SHR deposit to swapping module, Note just accept shr for now",
+		Short: "Broadcast deposit SHR to swapping module, Note: just accept shr for now",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argAmount := args[0]
