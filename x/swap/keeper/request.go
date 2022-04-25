@@ -15,14 +15,15 @@ func (k Keeper) GetRequestCount(ctx sdk.Context) uint64 {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), []byte{})
 	byteKey := types.KeyPrefix(types.RequestCountKey)
 	bz := store.Get(byteKey)
+	var requestCount uint64
 
-	// Count doesn't exist: no element
-	if bz == nil {
-		return 0
+	if bz != nil {
+		requestCount = binary.BigEndian.Uint64(bz)
 	}
-
-	// Parse bytes
-	return binary.BigEndian.Uint64(bz)
+	if requestCount == 0 {
+		requestCount = 1
+	}
+	return requestCount
 }
 
 // SetRequestCount set the total number of request
@@ -85,10 +86,7 @@ func (k Keeper) ChangeStatusRequests(ctx sdk.Context, ids []uint64, status strin
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "swap request was not found with status, %s, and id, %v", requiredStatus, ids[0])
 	}
 	srcNetwork := req.SrcNetwork
-	requests := k.GetRequestsByIdsFromStore(ctx, currentStatusStore, ids)
-	if len(requests) != len(ids) {
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, fmt.Sprintf("transactions don't have same status or not found, with required current status, %s", requiredStatus))
-	}
+
 	var bid uint64
 	if batchId != nil {
 		bid = *batchId
@@ -98,7 +96,9 @@ func (k Keeper) ChangeStatusRequests(ctx sdk.Context, ids []uint64, status strin
 	case types.NetworkNameShareLedger: //cover case swap out request
 		return k.changeStatusSwapOut(ctx, requiredStatus, status, ids, bid)
 	default: //swap out
-		return k.changeStatusSwapIn(ctx, requiredStatus, status, ids)
+		if req.DestNetwork == types.NetworkNameShareLedger {
+			return k.changeStatusSwapIn(ctx, requiredStatus, status, ids)
+		}
 	}
 
 	return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "not supported yet")
@@ -156,11 +156,15 @@ func (k Keeper) changeStatusSwapOut(ctx sdk.Context, fromStatus string, toStatus
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, fmt.Sprintf("transactions don't have same status or not found, with required current status, %s", fromStatus))
 	}
 
+	destNetwork := requests[0].DestNetwork
 	refunds := make(map[string]sdk.DecCoins)
 	for i := range requests {
 		req := &requests[i]
 		if req.SrcNetwork != types.NetworkNameShareLedger {
 			return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "swap transaction with %v does not have same source network %v", req.Id, types.NetworkNameShareLedger)
+		}
+		if req.DestNetwork != destNetwork {
+			return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "swap transaction with %v does not have same destination network %v", req.Id, destNetwork)
 		}
 		fromStatusStore.Delete(GetRequestIDBytes(req.Id))
 		req.Status = toStatus

@@ -46,10 +46,7 @@ func (msg *MsgOut) ValidateBasic() error {
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
 	}
-	_, err = sdk.AccAddressFromBech32(msg.DestAddr)
-	if err != nil {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
-	}
+
 	if msg.Amount == nil || msg.Fee == nil || len(msg.Network) == 0 {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid valid amount,%s, or fee, %s, or network, %s", msg.Amount, msg.Fee, msg.Network)
 	}

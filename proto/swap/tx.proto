@@ -11,6 +11,7 @@ option go_package = "github.com/sharering/shareledger/x/swap/types";
 service Msg {
       rpc Out(MsgOut) returns (MsgOutResponse);
   rpc Approve(MsgApprove) returns (MsgApproveResponse);
+  rpc Cancel(MsgCancel) returns (MsgCancelResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -34,6 +35,15 @@ message MsgApprove {
 
 message MsgApproveResponse {
   uint64 batchID = 1;
+}
+
+message MsgCancel {
+  string creator = 1;
+  repeated uint64 ids = 2;
+}
+
+message MsgCancelResponse {
+  string status = 1;
 }
 
 // this line is used by starport scaffolding # proto/tx/message
