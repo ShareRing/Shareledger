@@ -4,6 +4,7 @@ package shareledger.swap;
 import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
+import "cosmos/base/v1beta1/coin.proto";
 import "swap/params.proto";
 import "swap/id.proto";
 import "swap/request.proto";
@@ -27,6 +28,12 @@ service Query {
 // Queries a Batch by id.
 	rpc Batch(QueryGetBatchRequest) returns (QueryGetBatchResponse) {
 		option (google.api.http).get = "/sharering/shareledger/swap/batch/{id}";
+	}
+	
+
+// Queries a list of Fund items.
+	rpc Fund(QueryFundRequest) returns (QueryFundResponse) {
+		option (google.api.http).get = "/sharering/shareledger/swap/fund";
 	}
 
 // this line is used by starport scaffolding # 2
@@ -63,4 +70,12 @@ message QueryGetBatchRequest {
 message QueryGetBatchResponse {
 	Batch Batch = 1 [(gogoproto.nullable) = false];
 }
+
+message QueryFundRequest {
+}
+
+message QueryFundResponse {
+	repeated	cosmos.base.v1beta1.DecCoin available = 1;
+}
+
 // this line is used by starport scaffolding # 3
