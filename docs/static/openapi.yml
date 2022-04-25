@@ -31199,39 +31199,7 @@ paths:
           schema:
             type: object
             properties:
-              availiable:
-                type: string
-        default:
-          description: An unexpected error response.
-          schema:
-            type: object
-            properties:
-              code:
-                type: integer
-                format: int32
-              message:
-                type: string
-              details:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    '@type':
-                      type: string
-                  additionalProperties: {}
-      tags:
-        - Query
-  /sharering/shareledger/swap/funding:
-    get:
-      summary: Queries a list of Funding items.
-      operationId: ShareledgerSwapFunding
-      responses:
-        '200':
-          description: A successful response.
-          schema:
-            type: object
-            properties:
-              availiable:
+              available:
                 type: array
                 items:
                   type: object
@@ -53260,6 +53228,11 @@ definitions:
       batchID:
         type: string
         format: uint64
+  shareledger.swap.MsgCancelResponse:
+    type: object
+    properties:
+      status:
+        type: string
   shareledger.swap.MsgDepositResponse:
     type: object
     properties:
@@ -53285,12 +53258,7 @@ definitions:
   shareledger.swap.QueryFundResponse:
     type: object
     properties:
-      availiable:
-        type: string
-  shareledger.swap.QueryFundingResponse:
-    type: object
-    properties:
-      availiable:
+      available:
         type: array
         items:
           type: object
