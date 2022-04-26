@@ -31,26 +31,26 @@ func CmdCancel(clientCtx client.Context, ids string, extraFlags ...string) (test
 	args := []string{ids}
 	args = append(args, extraFlags...)
 
-	return clitestutil.ExecTestCLICmd(clientCtx, cli.CmdCancel(), extraFlags)
+	return clitestutil.ExecTestCLICmd(clientCtx, cli.CmdCancel(), args)
 }
 func CmdOut(clientCtx client.Context, dest, network, amount, fee string, extraFlags ...string) (testutil.BufferWriter, error) {
 	args := []string{dest, network, amount, fee}
 	args = append(args, extraFlags...)
 
-	return clitestutil.ExecTestCLICmd(clientCtx, cli.CmdOut(), extraFlags)
+	return clitestutil.ExecTestCLICmd(clientCtx, cli.CmdOut(), args)
 }
 
 func CmdApprove(clientCtx client.Context, sign, reqIds string, extraFlags ...string) (testutil.BufferWriter, error) {
 	args := []string{sign, reqIds}
 	args = append(args, extraFlags...)
 
-	return clitestutil.ExecTestCLICmd(clientCtx, cli.CmdApprove(), extraFlags)
+	return clitestutil.ExecTestCLICmd(clientCtx, cli.CmdApprove(), args)
 }
 
 func CmdSearch(clientCtx client.Context, status string, extraFlags ...string) (testutil.BufferWriter, error) {
 	args := []string{status}
 	args = append(args, extraFlags...)
-	return clitestutil.ExecTestCLICmd(clientCtx, cli.CmdSearch(), extraFlags)
+	return clitestutil.ExecTestCLICmd(clientCtx, cli.CmdSearch(), args)
 }
 
 func ParseSearchResponse(cdc codec.Codec, sRes []byte) (types.QuerySearchResponse, error) {

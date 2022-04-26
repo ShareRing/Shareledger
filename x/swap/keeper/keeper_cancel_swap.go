@@ -20,7 +20,7 @@ func (k Keeper) CancelSwap(ctx sdk.Context, msg *types.MsgCancel) error {
 	for i := range requests {
 		reqSrcAddr := requests[i].GetSrcAddr()
 		if reqSrcAddr != txCreator {
-			return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "your address %s isn't owner of swap request id=%s", txCreator, reqSrcAddr)
+			return sdkerrors.Wrapf(sdkerrors.ErrUnauthorized, "your address %s isn't owner of swap request id=%s", txCreator, reqSrcAddr)
 		}
 	}
 
