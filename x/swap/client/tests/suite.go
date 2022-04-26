@@ -26,7 +26,7 @@ func NewSwapIntegrationTestSuite(cfg network.Config) *SwapIntegrationTestSuite {
 }
 
 func (s *SwapIntegrationTestSuite) SetupSuite() {
-	s.T().Log("setting up integration test suite for booking module")
+	s.T().Log("setting up integration test suite for swap module")
 
 	kb, dir := netutilts.GetTestingGenesis(s.T(), &s.cfg)
 	s.dir = dir
@@ -558,6 +558,240 @@ func (s *SwapIntegrationTestSuite) TestCancel() {
 			if ts.expectCreatorChange != nil {
 				out := tests.CmdQueryBalance(s.T(), cliCtx, netutilts.Accounts[ts.iTxCreatorSwap])
 
+				s.Require().Equalf(
+					balanceCreatorBefore.AmountOf(denom.Base).Add(sdk.NewDec(ts.expectCreatorChange.D*denom.ShrExponent)),
+					sdk.NewDecFromInt(out.GetBalances().AmountOf(denom.Base)), "creator expect not equal")
+			}
+
+		})
+
+	}
+}
+
+func (s *SwapIntegrationTestSuite) TestReject() {
+	type (
+		swapArg struct {
+			wAmount string
+			wFee    string
+			id      string
+		}
+		Num struct {
+			D int64
+		}
+
+		// cancelArgs mean we will take the element from list of swap request id [f:t]
+		rejectArgs struct {
+			f int //from
+			t int // to
+		}
+
+		cancelSuite struct {
+			description string
+			initSwapOut []swapArg
+			approve     int // we will approve first approve number request ID result of initSwapOut func
+			rejectArg   rejectArgs
+
+			iTxCreatorSwap   string
+			iTxCreatorReject string
+
+			iTxFee string
+			oErr   error
+			oRes   *sdk.TxResponse
+
+			expectCreatorChange *Num
+			expectModuleChange  *Num
+		}
+	)
+	cliCtx := s.network.Validators[0].ClientCtx
+	cancelCase := []cancelSuite{
+		{
+			description: "In case reject success",
+			initSwapOut: []swapArg{
+				{
+					wAmount: "20shr",
+					wFee:    "5shr",
+				},
+			},
+			approve: 0,
+			rejectArg: rejectArgs{
+				f: 0,
+				t: 1,
+			},
+			iTxCreatorSwap:      netutilts.KeyAccount1,
+			iTxCreatorReject:    netutilts.KeyTreasurer,
+			iTxFee:              netutilts.SHRFee2,
+			oRes:                &sdk.TxResponse{Code: netutilts.ShareLedgerSuccessCode},
+			expectCreatorChange: &Num{D: -2},
+			expectModuleChange:  &Num{D: 0},
+		},
+		{
+			description: "In case can not reject cause there are some swap request was approved",
+			initSwapOut: []swapArg{
+				{
+					wAmount: "20shr",
+					wFee:    "5shr",
+				},
+				{
+					wAmount: "30shr",
+					wFee:    "2shr",
+				},
+				{
+					wAmount: "10shr",
+					wFee:    "5shr",
+				},
+			},
+			approve: 2,
+			rejectArg: rejectArgs{
+				f: 0,
+				t: 2,
+			},
+			iTxCreatorSwap:      netutilts.KeyAccount1,
+			iTxCreatorReject:    netutilts.KeyAuthority,
+			iTxFee:              netutilts.SHRFee2,
+			oRes:                &sdk.TxResponse{Code: sdkerrors.ErrInvalidRequest.ABCICode()},
+			expectCreatorChange: &Num{D: -78},
+			expectModuleChange:  &Num{D: 72}, // expect module amount doest change cause
+		},
+		//{ //TODO test it later
+		//	description: "In case can not reject cause the tx creator isn't authorizer",
+		//	initSwapOut: []swapArg{
+		//		{
+		//			wAmount: "20shr",
+		//			wFee:    "5shr",
+		//		},
+		//		{
+		//			wAmount: "30shr",
+		//			wFee:    "2shr",
+		//		},
+		//		{
+		//			wAmount: "10shr",
+		//			wFee:    "5shr",
+		//		},
+		//	},
+		//	approve: 0,
+		//	rejectArg: rejectArgs{
+		//		f: 0,
+		//		t: 2,
+		//	},
+		//	iTxCreatorSwap:      netutilts.KeyAccount1,
+		//	iTxCreatorReject:    netutilts.KeyAccount2,
+		//	iTxFee:              netutilts.SHRFee2,
+		//	oRes:                &sdk.TxResponse{Code: sdkerrors.ErrUnauthorized.ABCICode()},
+		//	expectCreatorChange: &Num{D: -78}, //expect the creator just must pay 4shr for txn fee
+		//	expectModuleChange:  &Num{D: 72},  // expect module amount doest change cause
+		//},
+	}
+
+	for _, ts := range cancelCase {
+		s.Run(ts.description, func() {
+			_ = s.network.WaitForNextBlock()
+			var swapIDs []string
+
+			var balanceCreatorBefore sdk.DecCoins
+			var balanceModuleBefore sdk.DecCoins
+			if ts.expectModuleChange != nil {
+				out, err := CmdFund(cliCtx, netutilts.JSONFlag)
+				if err != nil {
+					s.Failf("query swap fund fail %s out %s", err.Error(), string(out.Bytes()))
+				}
+				fundRes := swapTypes.QueryFundResponse{}
+				err = cliCtx.Codec.UnmarshalJSON(out.Bytes(), &fundRes)
+
+				for _, c := range fundRes.Available {
+					if c.Denom == denom.Shr {
+						balanceModuleBefore = sdk.NewDecCoins(*c)
+					}
+				}
+			}
+			if ts.expectCreatorChange != nil {
+				out := tests.CmdQueryBalance(s.T(), cliCtx, netutilts.Accounts[ts.iTxCreatorSwap])
+				balanceCreatorBefore = sdk.NewDecCoinsFromCoins(out.Balances...)
+
+			}
+			for _, sw := range ts.initSwapOut {
+				out, err := CmdOut(cliCtx,
+					"0x7b9039bd633411b48a5a5c4262b5b1a16546d209",
+					"etherium",
+					sw.wAmount,
+					sw.wFee,
+					ts.iTxFee,
+					netutilts.SkipConfirmation,
+					netutilts.BlockBroadcast,
+					netutilts.MakeByAccount(ts.iTxCreatorSwap))
+				if err != nil {
+					s.Fail("fail when init the swap out request", err)
+				}
+				txRes := netutilts.ParseStdOut(s.T(), out.Bytes())
+				if txRes.Code != netutilts.ShareLedgerSuccessCode {
+					s.Fail("fail when init the swap out request %s", txRes.String())
+				}
+				log := netutilts.ParseRawLogGetEvent(s.T(), txRes.RawLog)[0]
+				attr := log.Events.GetEventByType(s.T(), "swap_out")
+				swapIDs = append(swapIDs, attr.Get(s.T(), "swap_id").Value)
+			}
+			if ts.approve > 0 {
+				appIDs := strings.Join(swapIDs[0:ts.approve], ",")
+				out, err := CmdApprove(
+					cliCtx,
+					"some_random_hash",
+					appIDs,
+					netutilts.SHRFee2,
+					netutilts.SkipConfirmation,
+					netutilts.BlockBroadcast,
+					netutilts.MakeByAccount(netutilts.KeyTreasurer))
+				if err != nil {
+					s.Fail("fail when init the swap out request", err)
+				}
+				txRes := netutilts.ParseStdOut(s.T(), out.Bytes())
+				if txRes.Code != netutilts.ShareLedgerSuccessCode {
+					s.Fail("fail when init the swap out request %s", txRes.String())
+				}
+
+			}
+
+			var cancelIDs string
+			cancelIDs = strings.Join(swapIDs[ts.rejectArg.f:ts.rejectArg.t], ",")
+			out, err := CmdReject(cliCtx,
+				cancelIDs,
+				ts.iTxFee,
+				netutilts.MakeByAccount(ts.iTxCreatorReject),
+				netutilts.SkipConfirmation,
+				netutilts.BlockBroadcast)
+
+			if ts.oErr != nil {
+				s.Require().NotNilf(err, "this case require err")
+			}
+			txRes := netutilts.ParseStdOut(s.T(), out.Bytes())
+
+			if ts.oRes != nil {
+				if txRes.Code != ts.oRes.Code {
+					s.Fail("fail when cancel request", "require cancel code must equal with test case", txRes.String())
+				}
+			}
+
+			_ = s.network.WaitForNextBlock()
+			if ts.expectModuleChange != nil {
+				var balanceModuleAfterCancel sdk.DecCoins
+				out, err = CmdFund(cliCtx, netutilts.JSONFlag)
+				if err != nil {
+					s.Fail("query swap fund fail", err.Error())
+				}
+
+				fundRes := swapTypes.QueryFundResponse{}
+				err = cliCtx.Codec.UnmarshalJSON(out.Bytes(), &fundRes)
+				if err != nil {
+					s.T().Fatalf("can't unmarshal json %s", err)
+				}
+				for _, c := range fundRes.Available {
+					if c.Denom == denom.Shr {
+						balanceModuleAfterCancel = sdk.NewDecCoins(*c)
+					}
+				}
+
+				s.Require().Equalf(balanceModuleBefore.AmountOf(denom.Shr).Add(sdk.NewDec(ts.expectModuleChange.D)).String(), balanceModuleAfterCancel.AmountOf(denom.Shr).String(), "module balance isn't equal")
+			}
+			if ts.expectCreatorChange != nil {
+				out := tests.CmdQueryBalance(s.T(), cliCtx, netutilts.Accounts[ts.iTxCreatorSwap])
 				s.Require().Equalf(
 					balanceCreatorBefore.AmountOf(denom.Base).Add(sdk.NewDec(ts.expectCreatorChange.D*denom.ShrExponent)),
 					sdk.NewDecFromInt(out.GetBalances().AmountOf(denom.Base)), "creator expect not equal")

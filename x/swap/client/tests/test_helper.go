@@ -61,3 +61,9 @@ func ParseSearchResponse(cdc codec.Codec, sRes []byte) (types.QuerySearchRespons
 	}
 	return res, nil
 }
+func CmdReject(clientCtx client.Context, sign, reqIds string, extraFlags ...string) (testutil.BufferWriter, error) {
+	args := []string{sign, reqIds}
+	args = append(args, extraFlags...)
+
+	return clitestutil.ExecTestCLICmd(clientCtx, cli.CmdReject(), args)
+}

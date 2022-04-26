@@ -146,9 +146,11 @@ func (k Keeper) changeStatusSwapIn(ctx sdk.Context, fromStatus string, toStatus 
 }
 
 func (k Keeper) changeStatusSwapOut(ctx sdk.Context, fromStatus string, toStatus string, ids []uint64, batchId uint64) ([]types.Request, error) {
-	if batchId == 0 {
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrLogic, "batch id is required")
+
+	if toStatus == types.SwapStatusApproved && (batchId == 0) {
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "%s status requires batch Id", toStatus)
 	}
+
 	fromStatusStore := k.GetStoreRequestMap(ctx)[fromStatus]
 	toStatusStore := k.GetStoreRequestMap(ctx)[toStatus]
 	requests := k.GetRequestsByIdsFromStore(ctx, fromStatusStore, ids)
