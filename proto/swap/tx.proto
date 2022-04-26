@@ -14,6 +14,7 @@ service Msg {
   rpc Deposit(MsgDeposit) returns (MsgDepositResponse);
   rpc Withdraw(MsgWithdraw) returns (MsgWithdrawResponse);
   rpc Cancel(MsgCancel) returns (MsgCancelResponse);
+  rpc Reject(MsgReject) returns (MsgRejectResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -65,6 +66,14 @@ message MsgCancel {
 
 message MsgCancelResponse {
   string status = 1;
+}
+
+message MsgReject {
+  string creator = 1;
+  repeated uint64  txnIDs = 2;
+}
+
+message MsgRejectResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message
