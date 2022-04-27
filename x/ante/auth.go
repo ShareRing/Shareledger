@@ -8,6 +8,7 @@ import (
 	electoraltypes "github.com/sharering/shareledger/x/electoral/types"
 	gentleminttypes "github.com/sharering/shareledger/x/gentlemint/types"
 	idtypes "github.com/sharering/shareledger/x/id/types"
+	swapmoduletypes "github.com/sharering/shareledger/x/swap/types"
 	denom "github.com/sharering/shareledger/x/utils/demo"
 )
 
@@ -17,14 +18,15 @@ type Auth struct {
 }
 
 const (
-	ErrMsgNotIdSigner        = "Transaction's Signer is not ID signer"
-	ErrMsgNotSHRPLoader      = "Transaction's Signer is not SHRP loader"
-	ErrMsgNotDocIssuer       = "Transaction's Signer is not document issuer"
-	ErrMsgNotAuthority       = "Transaction's Signer is not authority"
-	ErrMsgNotBackupAccount   = "Transaction's Signer is not the backup account"
-	ErrMsgNotTreasureAccount = "Transaction's Signer is not treasure account"
-	ErrMsgNotOperatorAccount = "Transaction's Signer is not operator account"
-	ErrMsgNotVoterAccount    = "Transaction's Signer is not voter account"
+	ErrMsgNotIdSigner             = "Transaction's Signer is not ID signer"
+	ErrMsgNotSHRPLoader           = "Transaction's Signer is not SHRP loader"
+	ErrMsgNotDocIssuer            = "Transaction's Signer is not document issuer"
+	ErrMsgNotAuthority            = "Transaction's Signer is not authority"
+	ErrMsgNotBackupAccount        = "Transaction's Signer is not the backup account"
+	ErrMsgNotTreasureAccount      = "Transaction's Signer is not treasure account"
+	ErrMsgNotOperatorAccount      = "Transaction's Signer is not operator account"
+	ErrMsgNotVoterAccount         = "Transaction's Signer is not voter account"
+	ErrMsgNotAuthorityAndTreasure = "Transaction's Signer is not authority OR treasure account"
 )
 
 func NewAuthDecorator(rk RoleKeeper, ik IDKeeper) Auth {
@@ -106,6 +108,10 @@ func (a Auth) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate bool, next sdk.Ant
 			*stakingtypes.MsgEditValidator:
 			if !a.rk.IsVoter(ctx, signer) {
 				return ctx, sdkerrors.Wrapf(sdkerrors.ErrUnauthorized, ErrMsgNotVoterAccount)
+			}
+		case *swapmoduletypes.MsgWithdraw:
+			if !a.rk.IsAuthority(ctx, signer) && !a.rk.IsTreasurer(ctx, signer) {
+				return ctx, sdkerrors.Wrapf(sdkerrors.ErrUnauthorized, ErrMsgNotAuthorityAndTreasure)
 			}
 		}
 	}
