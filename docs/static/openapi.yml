@@ -31163,6 +31163,8 @@ paths:
                       format: uint64
                   status:
                     type: string
+                  digest:
+                    type: string
         default:
           description: An unexpected error response.
           schema:
@@ -53222,6 +53224,8 @@ definitions:
           format: uint64
       status:
         type: string
+      digest:
+        type: string
   shareledger.swap.MsgApproveInResponse:
     type: object
   shareledger.swap.MsgApproveResponse:
@@ -53299,6 +53303,8 @@ definitions:
               type: string
               format: uint64
           status:
+            type: string
+          digest:
             type: string
   shareledger.swap.QueryParamsResponse:
     type: object
