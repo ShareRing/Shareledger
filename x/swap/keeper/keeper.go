@@ -55,6 +55,7 @@ func (k Keeper) Logger(ctx sdk.Context) log.Logger {
 
 func (k Keeper) GetStoreRequestMap(ctx sdk.Context) map[string]prefix.Store {
 	stores := make(map[string]prefix.Store)
+	k.Logger(ctx).Error("panic in here GetStoreRequestMap:59 ")
 	for kt := range types.SupportedSwapStatuses {
 		stores[kt] = prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.RequestKey(kt)))
 	}

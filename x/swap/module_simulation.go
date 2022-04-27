@@ -48,6 +48,14 @@ const (
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgReject int = 100
 
+	opWeightMsgIn = "op_weight_msg_in"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgIn int = 100
+
+	opWeightMsgApproveIn = "op_weight_msg_approve_in"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgApproveIn int = 100
+
 	// this line is used by starport scaffolding # simapp/module/const
 )
 
@@ -150,6 +158,28 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	operations = append(operations, simulation.NewWeightedOperation(
 		weightMsgReject,
 		swapsimulation.SimulateMsgReject(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgIn int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgIn, &weightMsgIn, nil,
+		func(_ *rand.Rand) {
+			weightMsgIn = defaultWeightMsgIn
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgIn,
+		swapsimulation.SimulateMsgIn(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgApproveIn int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgApproveIn, &weightMsgApproveIn, nil,
+		func(_ *rand.Rand) {
+			weightMsgApproveIn = defaultWeightMsgApproveIn
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgApproveIn,
+		swapsimulation.SimulateMsgApproveIn(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
 	// this line is used by starport scaffolding # simapp/module/operation

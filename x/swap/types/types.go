@@ -15,12 +15,14 @@ const (
 	SwapStatusPending  = "pending"
 	SwapStatusApproved = "approved"
 	SwapStatusRejected = "rejected"
+	SwapStatusDone     = "done"
 )
 
 var SupportedSwapStatuses = map[string]struct{}{
 	SwapStatusPending:  {},
 	SwapStatusApproved: {},
 	SwapStatusRejected: {},
+	SwapStatusDone:     {},
 }
 
 const (
@@ -59,7 +61,6 @@ const (
 	EventTypeDepositAmount    = EventTypeSwapAmount
 	EventTypeDepositAddr      = "sender"
 	EventTypeWithdrawReceiver = "receiver"
-	EventTypeWithdrawAmount   = EventTypeSwapAmount
 )
 
 const (

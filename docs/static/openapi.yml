@@ -53222,6 +53222,8 @@ definitions:
           format: uint64
       status:
         type: string
+  shareledger.swap.MsgApproveInResponse:
+    type: object
   shareledger.swap.MsgApproveResponse:
     type: object
     properties:
@@ -53238,6 +53240,12 @@ definitions:
     properties:
       status:
         type: string
+  shareledger.swap.MsgInResponse:
+    type: object
+    properties:
+      rId:
+        type: string
+        format: uint64
   shareledger.swap.MsgOutResponse:
     type: object
     properties:
