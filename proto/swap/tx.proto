@@ -17,6 +17,7 @@ service Msg {
   rpc Reject(MsgReject) returns (MsgRejectResponse);
   rpc In(MsgIn) returns (MsgInResponse);
   rpc ApproveIn(MsgApproveIn) returns (MsgApproveInResponse);
+  rpc UpdateBatch(MsgUpdateBatch) returns (MsgUpdateBatchResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -98,6 +99,15 @@ message MsgApproveIn {
 }
 
 message MsgApproveInResponse {
+}
+
+message MsgUpdateBatch {
+  string creator = 1;
+  string batchId = 2;
+  string status = 3;
+}
+
+message MsgUpdateBatchResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message
