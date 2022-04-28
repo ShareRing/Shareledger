@@ -25,6 +25,7 @@ client:
     path: "docs/static/openapi.yml"
 build:
   binary: "shareledger"
+  main: "./cmd/Shareledgerd"
 # faucet:
 #   name: bob
 #   coins: ["5token", "100000stake"]

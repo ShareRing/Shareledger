@@ -31199,39 +31199,7 @@ paths:
           schema:
             type: object
             properties:
-              availiable:
-                type: string
-        default:
-          description: An unexpected error response.
-          schema:
-            type: object
-            properties:
-              code:
-                type: integer
-                format: int32
-              message:
-                type: string
-              details:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    '@type':
-                      type: string
-                  additionalProperties: {}
-      tags:
-        - Query
-  /sharering/shareledger/swap/funding:
-    get:
-      summary: Queries a list of Funding items.
-      operationId: ShareledgerSwapFunding
-      responses:
-        '200':
-          description: A successful response.
-          schema:
-            type: object
-            properties:
-              availiable:
+              available:
                 type: array
                 items:
                   type: object
@@ -31308,7 +31276,7 @@ paths:
                   additionalProperties: {}
       tags:
         - Query
-  '/sharering/shareledger/swap/search/{status}/{id}/{srcAddr}/{destAddr}/{srcNetwork}/{destNetwork}':
+  '/sharering/shareledger/swap/search/{status}/{ids}/{srcAddr}/{destAddr}/{srcNetwork}/{destNetwork}':
     get:
       summary: Queries a list of Search items.
       operationId: ShareledgerSwapSearch
@@ -31421,11 +31389,15 @@ paths:
           in: path
           required: true
           type: string
-        - name: id
+        - name: ids
           in: path
           required: true
-          type: string
-          format: uint64
+          type: array
+          items:
+            type: string
+            format: uint64
+          collectionFormat: csv
+          minItems: 1
         - name: srcAddr
           in: path
           required: true
@@ -53285,12 +53257,7 @@ definitions:
   shareledger.swap.QueryFundResponse:
     type: object
     properties:
-      availiable:
-        type: string
-  shareledger.swap.QueryFundingResponse:
-    type: object
-    properties:
-      availiable:
+      available:
         type: array
         items:
           type: object
