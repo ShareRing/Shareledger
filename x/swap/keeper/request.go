@@ -15,14 +15,15 @@ func (k Keeper) GetRequestCount(ctx sdk.Context) uint64 {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), []byte{})
 	byteKey := types.KeyPrefix(types.RequestCountKey)
 	bz := store.Get(byteKey)
+	var requestCount uint64
 
-	// Count doesn't exist: no element
-	if bz == nil {
-		return 0
+	if bz != nil {
+		requestCount = binary.BigEndian.Uint64(bz)
 	}
-
-	// Parse bytes
-	return binary.BigEndian.Uint64(bz)
+	if requestCount == 0 {
+		requestCount = 1
+	}
+	return requestCount
 }
 
 // SetRequestCount set the total number of request

@@ -13,14 +13,15 @@ func (k Keeper) GetBatchCount(ctx sdk.Context) uint64 {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), []byte{})
 	byteKey := types.KeyPrefix(types.BatchCountKey)
 	bz := store.Get(byteKey)
+	var batchID uint64
 
-	// Count doesn't exist: no element. Default should be 1 since 0 is zero value of Id.
-	if bz == nil {
-		return 1
+	if bz != nil {
+		batchID = binary.BigEndian.Uint64(bz)
 	}
-
-	// Parse bytes
-	return binary.BigEndian.Uint64(bz)
+	if batchID == 0 {
+		batchID = 1
+	}
+	return batchID
 }
 
 // SetBatchCount set the total number of batch
