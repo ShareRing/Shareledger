@@ -48,7 +48,15 @@ func TestGenesisState_Validate(t *testing.T) {
 					},
 				},
 				BatchCount: 2,
-				// this line is used by starport scaffolding # types/genesis/validField
+				FormatList: []types.Format{
+	{
+		Network: "0",
+},
+	{
+		Network: "1",
+},
+},
+// this line is used by starport scaffolding # types/genesis/validField
 			},
 			valid: true,
 		},
@@ -118,7 +126,21 @@ func TestGenesisState_Validate(t *testing.T) {
 			},
 			valid: false,
 		},
-		// this line is used by starport scaffolding # types/genesis/testcase
+		{
+	desc:     "duplicated format",
+	genState: &types.GenesisState{
+		FormatList: []types.Format{
+			{
+				Network: "0",
+},
+			{
+				Network: "0",
+},
+		},
+	},
+	valid:    false,
+},
+// this line is used by starport scaffolding # types/genesis/testcase
 	} {
 		t.Run(tc.desc, func(t *testing.T) {
 			err := tc.genState.Validate()

@@ -1,6 +1,7 @@
 package cli
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
@@ -114,6 +115,8 @@ func signApprovedSwap(ctx client.Context, signer string, requests []types.Reques
 		},
 		PrimaryType: "Swap",
 	}
+	fmt.Println(json.Marshal(signer))
+
 	txIds := make([]interface{}, 0, len(requests))
 	destinations := make([]interface{}, 0, len(requests))
 	amounts := make([]interface{}, 0, len(requests))

@@ -8,6 +8,7 @@ import "cosmos/base/v1beta1/coin.proto";
 import "swap/params.proto";
 import "swap/request.proto";
 import "swap/batch.proto";
+import "swap/format.proto";
 // this line is used by starport scaffolding # 1
 
 option go_package = "github.com/sharering/shareledger/x/swap/types";
@@ -33,6 +34,16 @@ service Query {
 // Queries a list of Fund items.
 	rpc Fund(QueryFundRequest) returns (QueryFundResponse) {
 		option (google.api.http).get = "/sharering/shareledger/swap/fund";
+	}
+
+// Queries a Format by index.
+	rpc Format(QueryGetFormatRequest) returns (QueryGetFormatResponse) {
+		option (google.api.http).get = "/sharering/shareledger/swap/format/{network}";
+	}
+
+	// Queries a list of Format items.
+	rpc FormatAll(QueryAllFormatRequest) returns (QueryAllFormatResponse) {
+		option (google.api.http).get = "/sharering/shareledger/swap/format";
 	}
 
 // this line is used by starport scaffolding # 2
@@ -75,6 +86,24 @@ message QueryFundRequest {
 
 message QueryFundResponse {
 	repeated	cosmos.base.v1beta1.DecCoin available = 1;
+}
+
+message QueryGetFormatRequest {
+	  string network = 1;
+
+}
+
+message QueryGetFormatResponse {
+	Format format = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllFormatRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllFormatResponse {
+	repeated Format format = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 
 // this line is used by starport scaffolding # 3
