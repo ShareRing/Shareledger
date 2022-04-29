@@ -1,6 +1,5 @@
 syntax = "proto3";
 package shareledger.swap;
-
 import "cosmos/base/v1beta1/coin.proto";
 
 // this line is used by starport scaffolding # proto/tx/import
@@ -103,8 +102,9 @@ message MsgApproveInResponse {
 
 message MsgUpdateBatch {
   string creator = 1;
-  string batchId = 2;
+  uint64 batchId = 2;
   string status = 3;
+  uint64  nonce = 4 ;
 }
 
 message MsgUpdateBatchResponse {

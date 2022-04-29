@@ -8,5 +8,5 @@ message Batch {
   string signedHash = 2; 
   repeated uint64 txIds = 3;
   string status = 4;
-  string digest = 5;
+  uint64 nonce = 5;
 }

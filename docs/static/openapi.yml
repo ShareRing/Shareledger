@@ -31165,8 +31165,9 @@ paths:
                         format: uint64
                     status:
                       type: string
-                    digest:
+                    nonce:
                       type: string
+                      format: uint64
         default:
           description: An unexpected error response.
           schema:
@@ -31503,8 +31504,9 @@ paths:
                         format: uint64
                     status:
                       type: string
-                    digest:
+                    nonce:
                       type: string
+                      format: uint64
               pagination:
                 type: object
                 properties:
@@ -53367,8 +53369,9 @@ definitions:
           format: uint64
       status:
         type: string
-      digest:
+      nonce:
         type: string
+        format: uint64
   shareledger.swap.MsgApproveInResponse:
     type: object
   shareledger.swap.MsgApproveResponse:
@@ -53451,8 +53454,9 @@ definitions:
                 format: uint64
             status:
               type: string
-            digest:
+            nonce:
               type: string
+              format: uint64
   shareledger.swap.QueryParamsResponse:
     type: object
     properties:
@@ -53483,8 +53487,9 @@ definitions:
                 format: uint64
             status:
               type: string
-            digest:
+            nonce:
               type: string
+              format: uint64
       pagination:
         type: object
         properties:

@@ -9,7 +9,7 @@ const TypeMsgUpdateBatch = "update_batch"
 
 var _ sdk.Msg = &MsgUpdateBatch{}
 
-func NewMsgUpdateBatch(creator string, batchId string, status string) *MsgUpdateBatch {
+func NewMsgUpdateBatch(creator string, batchId uint64, status string) *MsgUpdateBatch {
 	return &MsgUpdateBatch{
 		Creator: creator,
 		BatchId: batchId,
