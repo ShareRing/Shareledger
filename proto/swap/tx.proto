@@ -3,6 +3,7 @@ package shareledger.swap;
 
 import "cosmos/base/v1beta1/coin.proto";
 
+import "swap/format.proto";
 // this line is used by starport scaffolding # proto/tx/import
 
 option go_package = "github.com/sharering/shareledger/x/swap/types";
@@ -13,6 +14,9 @@ service Msg {
   rpc Approve(MsgApprove) returns (MsgApproveResponse);
   rpc Deposit(MsgDeposit) returns (MsgDepositResponse);
   rpc Withdraw(MsgWithdraw) returns (MsgWithdrawResponse);
+  rpc CreateFormat(MsgCreateFormat) returns (MsgCreateFormatResponse);
+  rpc UpdateFormat(MsgUpdateFormat) returns (MsgUpdateFormatResponse);
+  rpc DeleteFormat(MsgDeleteFormat) returns (MsgDeleteFormatResponse);
   rpc Cancel(MsgCancel) returns (MsgCancelResponse);
   rpc Reject(MsgReject) returns (MsgRejectResponse);
   rpc In(MsgIn) returns (MsgInResponse);
@@ -60,6 +64,26 @@ message MsgWithdraw {
 message MsgWithdrawResponse {
   string status = 1;
 }
+
+message MsgCreateFormat {
+  string creator = 1;
+  string network = 2;
+  string dataTypeFormat = 3;
+}
+message MsgCreateFormatResponse {}
+
+message MsgUpdateFormat {
+  string creator = 1;
+  string network = 2;
+  string dataTypeFormat = 3;
+}
+message MsgUpdateFormatResponse {}
+
+message MsgDeleteFormat {
+  string creator = 1;
+  string network = 2;
+}
+message MsgDeleteFormatResponse {}
 
 message MsgCancel {
   string creator = 1;

@@ -1,0 +1,31 @@
+syntax = "proto3";
+package shareledger.swap;
+
+import "gogoproto/gogo.proto";
+
+option go_package = "github.com/sharering/shareledger/x/swap/types";
+
+message Format {
+  string network = 1; 
+  string creator = 2;
+  string dataFormat = 3;
+}
+
+//message EIP712DataType {
+//  repeated Type types = 1 [(gogoproto.jsontag) = "types"];
+//  string primaryType = 2  [(gogoproto.jsontag) = "primaryType"];
+//  TypedDataDomain domain = 3 [(gogoproto.jsontag) = "domain"];
+//}
+//
+//message Type {
+//  string name = 1 [(gogoproto.jsontag) = "name"];
+//  string type = 2 [(gogoproto.jsontag) = "type"];
+//}
+//
+//message TypedDataDomain {
+//  string name = 1 [(gogoproto.jsontag) = "name"];
+//  string version = 2 [(gogoproto.jsontag) = "version"];
+//  string chainId = 3  [(gogoproto.jsontag) = "chainId"];
+//  string verifyingContract = 4 [(gogoproto.jsontag) = "verifyingContract"];
+//  string Salt = 5  [(gogoproto.jsontag) = "salt"];
+//}

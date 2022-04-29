@@ -53228,21 +53228,25 @@ definitions:
           format: uint64
       status:
         type: string
-      digest:
-        type: string
-  shareledger.swap.MsgApproveInResponse:
+  shareledger.swap.Format:
     type: object
+    properties:
+      network:
+        type: string
+      creator:
+        type: string
+      dataFormat:
+        type: string
   shareledger.swap.MsgApproveResponse:
     type: object
     properties:
       batchID:
         type: string
         format: uint64
-  shareledger.swap.MsgCancelResponse:
+  shareledger.swap.MsgCreateFormatResponse:
     type: object
-    properties:
-      status:
-        type: string
+  shareledger.swap.MsgDeleteFormatResponse:
+    type: object
   shareledger.swap.MsgDepositResponse:
     type: object
     properties:
@@ -53260,6 +53264,8 @@ definitions:
       rid:
         type: string
         format: uint64
+  shareledger.swap.MsgUpdateFormatResponse:
+    type: object
   shareledger.swap.MsgRejectResponse:
     type: object
   shareledger.swap.MsgWithdrawResponse:
@@ -53273,6 +53279,45 @@ definitions:
       outFee:
         type: string
     description: Params defines the parameters for the module.
+  shareledger.swap.QueryAllFormatResponse:
+    type: object
+    properties:
+      format:
+        type: array
+        items:
+          type: object
+          properties:
+            network:
+              type: string
+            creator:
+              type: string
+            dataFormat:
+              type: string
+      pagination:
+        type: object
+        properties:
+          next_key:
+            type: string
+            format: byte
+            title: |-
+              next_key is the key to be passed to PageRequest.key to
+              query the next page most efficiently
+          total:
+            type: string
+            format: uint64
+            title: >-
+              total is total number of results available if
+              PageRequest.count_total
+
+              was set, its value is undefined otherwise
+        description: |-
+          PageResponse is to be embedded in gRPC response messages where the
+          corresponding request message has used PageRequest.
+
+           message SomeResponse {
+                   repeated Bar results = 1;
+                   PageResponse page = 2;
+           }
   shareledger.swap.QueryFundResponse:
     type: object
     properties:
@@ -53308,7 +53353,17 @@ definitions:
               format: uint64
           status:
             type: string
-          digest:
+  shareledger.swap.QueryGetFormatResponse:
+    type: object
+    properties:
+      format:
+        type: object
+        properties:
+          network:
+            type: string
+          creator:
+            type: string
+          dataFormat:
             type: string
   shareledger.swap.QueryParamsResponse:
     type: object

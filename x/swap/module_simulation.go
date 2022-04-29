@@ -40,6 +40,18 @@ const (
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgWithdraw int = 100
 
+	opWeightMsgCreateFormat = "op_weight_msg_format"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgCreateFormat int = 100
+
+	opWeightMsgUpdateFormat = "op_weight_msg_format"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgUpdateFormat int = 100
+
+	opWeightMsgDeleteFormat = "op_weight_msg_format"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgDeleteFormat int = 100
+
 	opWeightMsgCancel = "op_weight_msg_cancel"
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgCancel int = 100
@@ -67,7 +79,17 @@ func (AppModule) GenerateGenesisState(simState *module.SimulationState) {
 	}
 	swapGenesis := types.GenesisState{
 		Params: types.DefaultParams(),
-		// this line is used by starport scaffolding # simapp/module/genesisState
+		FormatList: []types.Format{
+		{
+			Creator: sample.AccAddress(),
+Network: "0",
+},
+		{
+			Creator: sample.AccAddress(),
+Network: "1",
+},
+	},
+	// this line is used by starport scaffolding # simapp/module/genesisState
 	}
 	simState.GenState[types.ModuleName] = simState.Cdc.MustMarshalJSON(&swapGenesis)
 }
@@ -180,6 +202,39 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	operations = append(operations, simulation.NewWeightedOperation(
 		weightMsgApproveIn,
 		swapsimulation.SimulateMsgApproveIn(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgCreateFormat int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgCreateFormat, &weightMsgCreateFormat, nil,
+		func(_ *rand.Rand) {
+			weightMsgCreateFormat = defaultWeightMsgCreateFormat
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgCreateFormat,
+		swapsimulation.SimulateMsgCreateFormat(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgUpdateFormat int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgUpdateFormat, &weightMsgUpdateFormat, nil,
+		func(_ *rand.Rand) {
+			weightMsgUpdateFormat = defaultWeightMsgUpdateFormat
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgUpdateFormat,
+		swapsimulation.SimulateMsgUpdateFormat(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgDeleteFormat int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgDeleteFormat, &weightMsgDeleteFormat, nil,
+		func(_ *rand.Rand) {
+			weightMsgDeleteFormat = defaultWeightMsgDeleteFormat
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgDeleteFormat,
+		swapsimulation.SimulateMsgDeleteFormat(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
 	// this line is used by starport scaffolding # simapp/module/operation
