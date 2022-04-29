@@ -6,7 +6,6 @@ import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "cosmos/base/v1beta1/coin.proto";
 import "swap/params.proto";
-import "swap/id.proto";
 import "swap/request.proto";
 import "swap/batch.proto";
 // this line is used by starport scaffolding # 1
@@ -22,7 +21,7 @@ service Query {
 
 	// Queries a list of Search items.
 	rpc Search(QuerySearchRequest) returns (QuerySearchResponse) {
-		option (google.api.http).get = "/sharering/shareledger/swap/search/{status}/{id}/{srcAddr}/{destAddr}/{srcNetwork}/{destNetwork}";
+		option (google.api.http).get = "/sharering/shareledger/swap/search/{status}/{ids}/{srcAddr}/{destAddr}/{srcNetwork}/{destNetwork}";
 	}
 
 // Queries a Batch by id.
@@ -50,7 +49,7 @@ message QueryParamsResponse {
 
 message QuerySearchRequest {
   string status = 1;
-  uint64 id = 2;
+	repeated uint64 ids = 2;
   string srcAddr = 3;
   string destAddr = 4;
   string srcNetwork = 5;

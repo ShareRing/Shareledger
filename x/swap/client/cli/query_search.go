@@ -3,6 +3,7 @@ package cli
 import (
 	"github.com/spf13/pflag"
 	"strconv"
+	"strings"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
@@ -27,7 +28,10 @@ func CmdSearch() *cobra.Command {
 
 			queryClient := types.NewQueryClient(clientCtx)
 
-			params := parseFilterFlag(cmd.Flags())
+			params, err := parseFilterFlag(cmd.Flags())
+			if err != nil {
+				return err
+			}
 			params.Status = reqStatus
 
 			pageReq, err := client.ReadPageRequest(cmd.Flags())
@@ -55,27 +59,39 @@ func CmdSearch() *cobra.Command {
 }
 
 const (
-	flagSearchID          = "id"
-	flagSearchSrcAddr     = "src-addr"
-	flagSearchDestAddr    = "dest-addr"
-	flagSearchSrcNetwork  = "src-network"
-	flagSearchDestNetwork = "dest-network"
+	flagSearchIDs         = "ids"
+	flagSearchSrcAddr     = "src_addr"
+	flagSearchDestAddr    = "dest_addr"
+	flagSearchSrcNetwork  = "src_network"
+	flagSearchDestNetwork = "dest_network"
 )
 
 func addFilterFlagsToCmd(cmd *cobra.Command) {
-	cmd.Flags().Uint64(flagSearchID, 0, "search swap request by id")
+	cmd.Flags().String(flagSearchIDs, "", "search swap request by ids. Supported format: <id0>,<id1>,.. ")
 	cmd.Flags().String(flagSearchSrcAddr, "", "search swap request by src address")
 	cmd.Flags().String(flagSearchDestAddr, "", "search swap request by dest address")
 	cmd.Flags().String(flagSearchSrcNetwork, "", "search swap request by src network")
 	cmd.Flags().String(flagSearchDestNetwork, "", "search swap request by dest address")
 }
 
-func parseFilterFlag(flagSet *pflag.FlagSet) (filter types.QuerySearchRequest) {
-	filter.Id, _ = flagSet.GetUint64(flagSearchID)
+func parseFilterFlag(flagSet *pflag.FlagSet) (filter types.QuerySearchRequest, err error) {
+	sIdsV, _ := flagSet.GetString(flagSearchIDs)
+	sIds := strings.Split(sIdsV, ",")
+	if sIdsV != "" && len(sIds) > 0 {
+		filter.Ids = make([]uint64, 0, len(sIds))
+		for _, v := range sIds {
+			iv, err := strconv.Atoi(v)
+			if err != nil {
+				return filter, err
+			}
+			filter.Ids = append(filter.Ids, uint64(iv))
+		}
+	}
+
 	filter.SrcAddr, _ = flagSet.GetString(flagSearchSrcAddr)
 	filter.DestAddr, _ = flagSet.GetString(flagSearchDestAddr)
 	filter.SrcNetwork, _ = flagSet.GetString(flagSearchSrcNetwork)
 	filter.DestNetwork, _ = flagSet.GetString(flagSearchDestNetwork)
 
-	return filter
+	return filter, nil
 }
