@@ -2,7 +2,6 @@ package keeper
 
 import (
 	"encoding/binary"
-	"fmt"
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
@@ -63,10 +62,18 @@ func (k Keeper) AppendPendingRequest(
 // ChangeStatusRequests change status of requests and move it into respective store
 // The status flow should be: pending -> approved|rejected -> processing -> done.
 // return error if new status is pending or unsupported status
-func (k Keeper) ChangeStatusRequests(ctx sdk.Context, ids []uint64, status string, batchId *uint64) ([]types.Request, error) {
+func (k Keeper) ChangeStatusRequests(ctx sdk.Context, ids []uint64, status string, batchId *uint64, isSwapOut bool) ([]types.Request, error) {
 	if len(ids) == 0 {
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "swap request transactions' id is empty")
 	}
+
+	if isSwapOut && status == types.SwapStatusApproved {
+		if batchId == nil || *batchId == 0 {
+			return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "approve swap out must provide batch id")
+		}
+	}
+
+	//validate the request
 
 	var requiredStatus string
 	var currentStatusStore prefix.Store
@@ -77,186 +84,55 @@ func (k Keeper) ChangeStatusRequests(ctx sdk.Context, ids []uint64, status strin
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "%s is not supported", status)
 	}
 
-	currentStatusStore = k.GetStoreRequestMap(ctx)[requiredStatus]
-	// Check type swap in out
-	req, found := k.GetRequestFromStore(ctx, currentStatusStore, ids[0])
-	if !found {
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "swap request was not found with status, %s, and id, %v", requiredStatus, ids[0])
-	}
-	srcNetwork := req.SrcNetwork
-
-	var bid uint64
-	if batchId != nil {
-		bid = *batchId
-	}
-
-	switch srcNetwork {
-	case types.NetworkNameShareLedger: //cover case swap out request
-		return k.changeStatusSwapOut(ctx, requiredStatus, status, ids, bid)
-	default: //swap out
-		if req.DestNetwork == types.NetworkNameShareLedger {
-			return k.changeStatusSwapIn(ctx, requiredStatus, status, ids)
-		}
-	}
-
-	return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "not supported yet")
-}
-
-func (k Keeper) changeStatusSwapIn(ctx sdk.Context, fromStatus string, toStatus string, ids []uint64) ([]types.Request, error) {
-	//approved the swapping requests wil be changed to done
-	if toStatus == types.SwapStatusApproved {
-		toStatus = types.SwapStatusDone
-	}
-
-	fromStatusStore := k.GetStoreRequestMap(ctx)[fromStatus]
-	toStatusStore := k.GetStoreRequestMap(ctx)[toStatus]
-	requests := k.GetRequestsByIdsFromStore(ctx, fromStatusStore, ids)
-	if len(requests) != len(ids) {
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, fmt.Sprintf("transactions don't have same status or not found, with required current status, %s", fromStatus))
-	}
-	k.Logger(ctx).Debug("changing status swap in", "stt", toStatus, "ids", ids)
-	transfers := make(map[string]sdk.DecCoins)
-	for i := range requests {
-		req := &requests[i]
-		if req.SrcNetwork == types.NetworkNameShareLedger || req.DestNetwork != types.NetworkNameShareLedger {
-			return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "swap in with id, %v, has invalid source network, %v, or dest network, %v", req.Id, req.SrcNetwork, req.DestNetwork)
-		}
-		req.Status = toStatus
-		toStatusStore.Set(GetRequestIDBytes(req.Id), k.cdc.MustMarshal(req))
-		if toStatus == types.SwapStatusDone {
-			total, found := transfers[req.DestAddr]
-			if !found {
-				total = sdk.NewDecCoins()
-			}
-			total = total.Add(*req.Amount)
-			transfers[req.DestAddr] = total
-		}
-	}
-	k.Logger(ctx).Debug("transferring shr to account....", "transfers_map", transfers)
-	for a, c := range transfers {
-		addr, err := sdk.AccAddressFromBech32(a)
-		if err != nil {
-			return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, err.Error())
-		}
-		bc, err := denom.NormalizeToBaseCoins(c, false)
-		if err != nil {
-			return nil, sdkerrors.Wrapf(sdkerrors.ErrLogic, "%v", err)
-		}
-		k.Logger(ctx).Debug("transferring shr to account....", "amount", bc.String(), "address", addr)
-		if err = k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, addr, bc); err != nil {
-			return nil, err
-		}
-	}
-	return requests, nil
-}
-
-func (k Keeper) changeStatusSwapOut(ctx sdk.Context, fromStatus string, toStatus string, ids []uint64, batchId uint64) ([]types.Request, error) {
-
-	if toStatus == types.SwapStatusApproved && (batchId == 0) {
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "%s status requires batch Id", toStatus)
-	}
-
-	fromStatusStore := k.GetStoreRequestMap(ctx)[fromStatus]
-	toStatusStore := k.GetStoreRequestMap(ctx)[toStatus]
-	requests := k.GetRequestsByIdsFromStore(ctx, fromStatusStore, ids)
-	if len(requests) != len(ids) {
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, fmt.Sprintf("transactions don't have same status or not found, with required current status, %s", fromStatus))
-	}
-
-	destNetwork := requests[0].DestNetwork
-	refunds := make(map[string]sdk.DecCoins)
-	for i := range requests {
-		req := &requests[i]
-		if req.SrcNetwork != types.NetworkNameShareLedger {
-			return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "swap transaction with %v does not have same source network %v", req.Id, types.NetworkNameShareLedger)
-		}
-		if req.DestNetwork != destNetwork {
-			return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "swap transaction with %v does not have same destination network %v", req.Id, destNetwork)
-		}
-		fromStatusStore.Delete(GetRequestIDBytes(req.Id))
-		req.Status = toStatus
-		req.BatchId = batchId
-		toStatusStore.Set(GetRequestIDBytes(req.Id), k.cdc.MustMarshal(req))
-		if toStatus == types.SwapStatusRejected {
-			total, found := refunds[req.SrcAddr]
-			if !found {
-				total = sdk.NewDecCoins()
-			}
-			total = total.Add(*req.Amount).Add(*req.Fee)
-			refunds[req.SrcAddr] = total
-		}
-	}
-
-	for a, c := range refunds {
-		add, err := sdk.AccAddressFromBech32(a)
-		if err != nil {
-			return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "%+v", err)
-		}
-		bc, err := denom.NormalizeToBaseCoins(c, false)
-		if err != nil {
-			return nil, sdkerrors.Wrapf(sdkerrors.ErrLogic, "%v", err)
-		}
-		if err = k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, add, bc); err != nil {
-			return nil, err
-		}
-	}
-	return requests, nil
-}
-
-func (k Keeper) ChangeStatusRequestsImprovement(ctx sdk.Context, ids []uint64, status string, batchId *uint64) ([]types.Request, error) {
-	if len(ids) == 0 {
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "swap request transactions' id is empty")
-	}
-
-	var requiredStatus string
-	var currentStatusStore prefix.Store
-	switch status {
-	case types.SwapStatusApproved, types.SwapStatusRejected:
-		requiredStatus = types.SwapStatusPending
-	default:
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "%s is not supported", status)
-	}
 	currentStatusStore = k.GetStoreRequestMap(ctx)[requiredStatus]
 
 	reqs := k.GetRequestsByIdsFromStore(ctx, currentStatusStore, ids)
 
-	firstSrcNet := reqs[0].SrcNetwork
-	firstDestNet := reqs[0].DestNetwork
-
-	var isSwapOut bool
-	switch firstSrcNet {
-	case types.NetworkNameShareLedger:
-		//swap out
-		isSwapOut = true
-		err := k.swapOut(ctx, status, reqs)
-		if err != nil {
-			return nil, err
-		}
-	default:
-		//swap in
-		if firstDestNet == types.NetworkNameShareLedger {
-			// change status to done also
-			isSwapOut = false
-			status = types.SwapStatusDone
-			err := k.swapIn(ctx, status, reqs)
-			if err != nil {
-				return nil, err
+	destNet := reqs[0].DestNetwork
+	for i := range reqs {
+		//source network swap out case must is slp3
+		if isSwapOut {
+			if reqs[i].SrcNetwork != types.NetworkNameShareLedger {
+				return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "swap transaction with %v does not have same source network %v", reqs[i].Id, types.NetworkNameShareLedger)
+			}
+			if reqs[i].DestNetwork != destNet {
+				return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "swap transaction with %v does not have same dest network %v", reqs[i].Id, destNet)
+			}
+		} else {
+			if reqs[i].DestNetwork != types.NetworkNameShareLedger {
+				return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "swap transaction with %v does not have same destination network %v", reqs[i].Id, types.NetworkNameShareLedger)
 			}
 		}
-	}
 
+	}
+	if !isSwapOut && status == types.SwapStatusApproved {
+		status = types.SwapStatusDone
+	}
 	err := k.MoveRequest(ctx, requiredStatus, status, reqs, batchId, isSwapOut)
 	if err != nil {
 		return nil, err
 	}
 
-	return nil, nil
+	bankTransferCoins := make(map[string]sdk.DecCoins)
+
+	if isSwapOut {
+		bankTransferCoins = k.swapOut(ctx, status, reqs)
+	} else {
+		bankTransferCoins = k.swapIn(ctx, status, reqs)
+	}
+
+	err = k.SendCoinToAddr(ctx, bankTransferCoins)
+	if err != nil {
+		return nil, err
+	}
+
+	return reqs, nil
 }
 
-func (k Keeper) swapIn(ctx sdk.Context, stt string, reqs []types.Request) error {
+func (k Keeper) swapIn(_ sdk.Context, stt string, reqs []types.Request) map[string]sdk.DecCoins {
+
 	transfers := make(map[string]sdk.DecCoins)
 	for i := range reqs {
-
 		if stt == types.SwapStatusDone {
 			total, found := transfers[reqs[i].DestAddr]
 			if !found {
@@ -266,23 +142,9 @@ func (k Keeper) swapIn(ctx sdk.Context, stt string, reqs []types.Request) error 
 			transfers[reqs[i].DestAddr] = total
 		}
 	}
-	for a, c := range transfers {
-		addr, err := sdk.AccAddressFromBech32(a)
-		if err != nil {
-			return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, err.Error())
-		}
-		bc, err := denom.NormalizeToBaseCoins(c, false)
-		if err != nil {
-			return sdkerrors.Wrapf(sdkerrors.ErrLogic, "%v", err)
-		}
-
-		if err = k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, addr, bc); err != nil {
-			return err
-		}
-	}
-	return nil
+	return transfers
 }
-func (k Keeper) swapOut(ctx sdk.Context, stt string, reqs []types.Request) error {
+func (k Keeper) swapOut(_ sdk.Context, stt string, reqs []types.Request) map[string]sdk.DecCoins {
 
 	refunds := make(map[string]sdk.DecCoins)
 	for i := range reqs {
@@ -295,64 +157,12 @@ func (k Keeper) swapOut(ctx sdk.Context, stt string, reqs []types.Request) error
 			refunds[reqs[i].SrcAddr] = total
 		}
 	}
-	for a, c := range refunds {
-		add, err := sdk.AccAddressFromBech32(a)
-		if err != nil {
-			return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "%+v", err)
-		}
-		bc, err := denom.NormalizeToBaseCoins(c, false)
-		if err != nil {
-			return sdkerrors.Wrapf(sdkerrors.ErrLogic, "%v", err)
-		}
-		if err = k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, add, bc); err != nil {
-			return err
-		}
-	}
+
 	return nil
-}
-func (k Keeper) changeStatusSwapOutImprovement(ctx sdk.Context, fromStatus string, toStatus string, reqs []types.Request, batchId *uint64) ([]types.Request, error) {
-
-	if toStatus == types.SwapStatusApproved && (*batchId == 0) {
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "%s status requires batch Id", toStatus)
-	}
-
-	err := k.MoveRequest(ctx, fromStatus, toStatus, reqs, batchId, true)
-	if err != nil {
-		return nil, err
-	}
-
-	refunds := make(map[string]sdk.DecCoins)
-	for i := range reqs {
-		req := reqs[i]
-		if toStatus == types.SwapStatusRejected {
-			total, found := refunds[req.SrcAddr]
-			if !found {
-				total = sdk.NewDecCoins()
-			}
-			total = total.Add(*req.Amount).Add(*req.Fee)
-			refunds[req.SrcAddr] = total
-		}
-	}
-
-	for a, c := range refunds {
-		add, err := sdk.AccAddressFromBech32(a)
-		if err != nil {
-			return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "%+v", err)
-		}
-		bc, err := denom.NormalizeToBaseCoins(c, false)
-		if err != nil {
-			return nil, sdkerrors.Wrapf(sdkerrors.ErrLogic, "%v", err)
-		}
-		if err = k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, add, bc); err != nil {
-			return nil, err
-		}
-	}
-	return reqs, nil
 }
 
 //MoveRequest move the request to the store base on status
-//Delete request form store and add this request to store. This acction also update batch ID if it's existed
-//TODO consider the request validation
+//Delete request form store and add this request to store. This action also update batch ID if it's existed
 func (k Keeper) MoveRequest(ctx sdk.Context, fromStt, toStt string, reqs []types.Request, batchID *uint64, isOut bool) error {
 
 	storeMap := k.GetStoreRequestMap(ctx)
@@ -365,34 +175,14 @@ func (k Keeper) MoveRequest(ctx sdk.Context, fromStt, toStt string, reqs []types
 		return sdkerrors.Wrapf(sdkerrors.ErrLogic, "store not found")
 	}
 
-	if isOut {
-		if batchID == nil || *batchID == 0 {
-			return sdkerrors.Wrapf(sdkerrors.ErrLogic, "batch id not found")
-		}
-	}
-
-	destNetwork := reqs[0].DestNetwork
 	for i := range reqs {
 		req := &reqs[i]
-
-		if isOut {
-			if req.SrcNetwork != types.NetworkNameShareLedger {
-				return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "swap transaction with %v does not have same source network %v", req.Id, types.NetworkNameShareLedger)
-			}
-		} else {
-			//in case swap in need to check all request is same destination network
-			if req.DestNetwork != types.NetworkNameShareLedger {
-				return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "swap transaction with %v does not have same dest network %v", req.Id, types.NetworkNameShareLedger)
-			}
-		}
-		if req.DestNetwork != destNetwork {
-			return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "swap transaction with %v does not have same destination network %v", req.Id, destNetwork)
-		}
 		fromStore.Delete(GetRequestIDBytes(req.Id))
 		req.Status = toStt
-		if batchID != nil {
+		if isOut {
 			req.BatchId = *batchID
 		}
+
 		toStore.Set(GetRequestIDBytes(req.Id), k.cdc.MustMarshal(req))
 
 	}
@@ -409,7 +199,6 @@ func (k Keeper) GetRequestFromStore(ctx sdk.Context, store sdk.KVStore, id uint6
 	if b == nil {
 		return val, false
 	}
-	k.Logger(ctx).Error("panic in here GetRequestFromStore:211 ")
 	val = types.Request{}
 	k.cdc.MustUnmarshal(b, &val)
 	return val, true
@@ -491,4 +280,24 @@ func ValidateSrcNetwork(ctx sdk.Context, rqs []types.Request) bool {
 		}
 	}
 	return true
+}
+
+//SendCoinToAddr use bank module to and send out coin to the shareLedger address from module address
+func (k Keeper) SendCoinToAddr(ctx sdk.Context, c map[string]sdk.DecCoins) error {
+
+	for address, coin := range c {
+		addr, err := sdk.AccAddressFromBech32(address)
+		if err != nil {
+			return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "%+v", err)
+		}
+		bc, err := denom.NormalizeToBaseCoins(coin, false)
+		if err != nil {
+			return sdkerrors.Wrapf(sdkerrors.ErrLogic, "%v", err)
+		}
+		if err = k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, addr, bc); err != nil {
+			return err
+		}
+	}
+
+	return nil
 }

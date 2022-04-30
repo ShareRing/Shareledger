@@ -1,31 +1,26 @@
 package cli
 
 import (
-	sdk "github.com/cosmos/cosmos-sdk/types"
-	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	"strconv"
-
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
+	sdk "github.com/cosmos/cosmos-sdk/types"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/sharering/shareledger/x/swap/types"
 	"github.com/spf13/cobra"
 )
 
-var _ = strconv.Itoa(0)
-
 func CmdIn() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "in [src-address] [des-address] [src-network] [amount] [fee] [request-tx-hash]",
+		Use:   "in [src_address] [dest_address] [src_network] [amount] [fee]",
 		Short: "Broadcast message in",
-		Args:  cobra.ExactArgs(6),
+		Args:  cobra.ExactArgs(5),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argSrcAddress := args[0]
 			argDesAddress := args[1]
 			argSrcNetwork := args[2]
 			argAmount := args[3]
 			argFee := args[4]
-			argRequestTxHash := args[5]
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -48,7 +43,6 @@ func CmdIn() *cobra.Command {
 				argSrcNetwork,
 				sAmount,
 				sFee,
-				argRequestTxHash,
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err

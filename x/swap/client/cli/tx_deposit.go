@@ -1,17 +1,13 @@
 package cli
 
 import (
-	sdk "github.com/cosmos/cosmos-sdk/types"
-	"strconv"
-
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/sharering/shareledger/x/swap/types"
 	"github.com/spf13/cobra"
 )
-
-var _ = strconv.Itoa(0)
 
 func CmdDeposit() *cobra.Command {
 	cmd := &cobra.Command{

@@ -53418,9 +53418,6 @@ definitions:
         format: uint64
   shareledger.swap.MsgCancelResponse:
     type: object
-    properties:
-      status:
-        type: string
   shareledger.swap.MsgCreateFormatResponse:
     type: object
   shareledger.swap.MsgDeleteFormatResponse:

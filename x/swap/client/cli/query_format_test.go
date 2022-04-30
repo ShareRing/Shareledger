@@ -2,6 +2,7 @@ package cli_test
 
 import (
 	"fmt"
+	"github.com/cosmos/cosmos-sdk/testutil/network"
 	"strconv"
 	"testing"
 
@@ -12,10 +13,9 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	"github.com/sharering/shareledger/testutil/network"
 	"github.com/sharering/shareledger/testutil/nullify"
 	"github.com/sharering/shareledger/x/swap/client/cli"
-    "github.com/sharering/shareledger/x/swap/types"
+	"github.com/sharering/shareledger/x/swap/types"
 )
 
 // Prevent strconv unused error
@@ -25,12 +25,11 @@ func networkWithFormatObjects(t *testing.T, n int) (*network.Network, []types.Fo
 	t.Helper()
 	cfg := network.DefaultConfig()
 	state := types.GenesisState{}
-    require.NoError(t, cfg.Codec.UnmarshalJSON(cfg.GenesisState[types.ModuleName], &state))
+	require.NoError(t, cfg.Codec.UnmarshalJSON(cfg.GenesisState[types.ModuleName], &state))
 
 	for i := 0; i < n; i++ {
 		format := types.Format{
 			Network: strconv.Itoa(i),
-			
 		}
 		nullify.Fill(&format)
 		state.FormatList = append(state.FormatList, format)
@@ -49,24 +48,24 @@ func TestShowFormat(t *testing.T) {
 		fmt.Sprintf("--%s=json", tmcli.OutputFlag),
 	}
 	for _, tc := range []struct {
-		desc string
+		desc      string
 		idNetwork string
-        
+
 		args []string
 		err  error
 		obj  types.Format
 	}{
 		{
-			desc: "found",
+			desc:      "found",
 			idNetwork: objs[0].Network,
-            
+
 			args: common,
 			obj:  objs[0],
 		},
 		{
-			desc: "not found",
+			desc:      "not found",
 			idNetwork: strconv.Itoa(100000),
-            
+
 			args: common,
 			err:  status.Error(codes.NotFound, "not found"),
 		},
@@ -74,8 +73,7 @@ func TestShowFormat(t *testing.T) {
 		tc := tc
 		t.Run(tc.desc, func(t *testing.T) {
 			args := []string{
-			    tc.idNetwork,
-                
+				tc.idNetwork,
 			}
 			args = append(args, tc.args...)
 			out, err := clitestutil.ExecTestCLICmd(ctx, cli.CmdShowFormat(), args)
@@ -126,9 +124,9 @@ func TestListFormat(t *testing.T) {
 			require.NoError(t, net.Config.Codec.UnmarshalJSON(out.Bytes(), &resp))
 			require.LessOrEqual(t, len(resp.Format), step)
 			require.Subset(t,
-            	nullify.Fill(objs),
-            	nullify.Fill(resp.Format),
-            )
+				nullify.Fill(objs),
+				nullify.Fill(resp.Format),
+			)
 		}
 	})
 	t.Run("ByKey", func(t *testing.T) {
@@ -142,9 +140,9 @@ func TestListFormat(t *testing.T) {
 			require.NoError(t, net.Config.Codec.UnmarshalJSON(out.Bytes(), &resp))
 			require.LessOrEqual(t, len(resp.Format), step)
 			require.Subset(t,
-            	nullify.Fill(objs),
-            	nullify.Fill(resp.Format),
-            )
+				nullify.Fill(objs),
+				nullify.Fill(resp.Format),
+			)
 			next = resp.Pagination.NextKey
 		}
 	})

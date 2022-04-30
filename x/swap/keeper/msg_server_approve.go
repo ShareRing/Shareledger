@@ -15,7 +15,7 @@ func (k msgServer) Approve(goCtx context.Context, msg *types.MsgApprove) (*types
 		TxIds:      msg.Txs,
 		Status:     types.BatchStatusPending,
 	})
-	reqs, err := k.ChangeStatusRequestsImprovement(ctx, msg.Txs, types.SwapStatusApproved, &batchId)
+	reqs, err := k.ChangeStatusRequests(ctx, msg.Txs, types.SwapStatusApproved, &batchId, true)
 	if err != nil {
 		return nil, err
 	}

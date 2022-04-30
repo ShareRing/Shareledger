@@ -10,15 +10,14 @@ const TypeMsgIn = "in"
 
 var _ sdk.Msg = &MsgIn{}
 
-func NewMsgIn(creator string, srcAddress string, desAddress string, srcNetwork string, amount, fee sdk.DecCoin, requestTxHash string) *MsgIn {
+func NewMsgIn(creator string, srcAddress string, desAddress string, srcNetwork string, amount, fee sdk.DecCoin) *MsgIn {
 	return &MsgIn{
-		Creator:       creator,
-		SrcAddress:    srcAddress,
-		DestAddress:   desAddress,
-		SrcNetwork:    srcNetwork,
-		Amount:        &amount,
-		Fee:           &fee,
-		RequestTxHash: requestTxHash,
+		Creator:     creator,
+		SrcAddress:  srcAddress,
+		DestAddress: desAddress,
+		SrcNetwork:  srcNetwork,
+		Amount:      &amount,
+		Fee:         &fee,
 	}
 }
 
@@ -59,9 +58,6 @@ func (msg *MsgIn) ValidateBasic() error {
 	}
 	if strings.TrimSpace(msg.GetSrcAddress()) == "" {
 		return sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "source address empty")
-	}
-	if strings.TrimSpace(msg.GetRequestTxHash()) == "" {
-		return sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "transaction hash can't empty")
 	}
 	return nil
 }

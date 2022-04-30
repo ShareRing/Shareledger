@@ -91,7 +91,6 @@ message MsgCancel {
 }
 
 message MsgCancelResponse {
-  string status = 1;
 }
 
 message MsgReject {
@@ -109,7 +108,6 @@ message MsgIn {
   string srcNetwork = 4;
   cosmos.base.v1beta1.DecCoin amount = 5;
   cosmos.base.v1beta1.DecCoin fee = 6;
-  string requestTxHash = 7;
 }
 
 message MsgInResponse {

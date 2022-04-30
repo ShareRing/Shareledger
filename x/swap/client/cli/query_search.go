@@ -11,8 +11,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var _ = strconv.Itoa(0)
-
 func CmdSearch() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "search [status]",
