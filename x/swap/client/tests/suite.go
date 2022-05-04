@@ -727,7 +727,7 @@ func (s *SwapIntegrationTestSuite) TestReject() {
 
 			if ts.oRes != nil {
 				if txRes.Code != ts.oRes.Code {
-					s.Fail("fail when cancel request", "require cancel code must equal with test case", txRes.String())
+					s.Failf("fail when cancel request", "require cancel code must equal with test case %s", txRes.String())
 				}
 			}
 

@@ -87,7 +87,9 @@ func (k Keeper) ChangeStatusRequests(ctx sdk.Context, ids []uint64, status strin
 	currentStatusStore = k.GetStoreRequestMap(ctx)[requiredStatus]
 
 	reqs := k.GetRequestsByIdsFromStore(ctx, currentStatusStore, ids)
-
+	if len(reqs) == 0 {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "request not found")
+	}
 	destNet := reqs[0].DestNetwork
 	for i := range reqs {
 		//source network swap out case must is slp3
@@ -158,7 +160,7 @@ func (k Keeper) swapOut(_ sdk.Context, stt string, reqs []types.Request) map[str
 		}
 	}
 
-	return nil
+	return refunds
 }
 
 //MoveRequest move the request to the store base on status
@@ -179,7 +181,8 @@ func (k Keeper) MoveRequest(ctx sdk.Context, fromStt, toStt string, reqs []types
 		req := &reqs[i]
 		fromStore.Delete(GetRequestIDBytes(req.Id))
 		req.Status = toStt
-		if isOut {
+		// just needing the batch ID in case of approve swap out
+		if isOut && batchID != nil && toStt == types.SwapStatusApproved {
 			req.BatchId = *batchID
 		}
 
