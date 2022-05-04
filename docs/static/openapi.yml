@@ -31455,7 +31455,7 @@ paths:
           schema:
             type: object
             properties:
-              Request:
+              requests:
                 type: array
                 items:
                   type: object
@@ -53537,7 +53537,7 @@ definitions:
   shareledger.swap.QuerySearchResponse:
     type: object
     properties:
-      Request:
+      requests:
         type: array
         items:
           type: object

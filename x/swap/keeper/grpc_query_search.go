@@ -74,7 +74,7 @@ func (k Keeper) Search(goCtx context.Context, req *types.QuerySearchRequest) (*t
 	})
 
 	return &types.QuerySearchResponse{
-		Request:    requests,
+		Requests:   requests,
 		Pagination: pageRes,
 	}, err
 }

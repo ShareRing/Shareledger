@@ -69,7 +69,7 @@ cosmos.base.query.v1beta1.PageRequest pagination = 7;
 }
 
 message QuerySearchResponse {
-	repeated Request Request = 1 [(gogoproto.nullable) = false];
+	repeated Request requests = 1 [(gogoproto.nullable) = false];
 	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 

@@ -59,7 +59,7 @@ func CmdApprove() *cobra.Command {
 			if err != nil {
 				return err
 			}
-			if len(res.Request) != len(txIds) {
+			if len(res.Requests) != len(txIds) {
 				return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "the swapping requests ids list does not match with current pending requests")
 			}
 
@@ -73,7 +73,7 @@ func CmdApprove() *cobra.Command {
 				return err
 			}
 
-			signedHash, err := signApprovedSwap(clientCtx, signer, res.Request, signFormatData)
+			signedHash, err := signApprovedSwap(clientCtx, signer, res.Requests, signFormatData)
 			if err != nil {
 				return err
 			}
