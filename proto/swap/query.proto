@@ -78,14 +78,14 @@ message QueryGetBatchRequest {
 }
 
 message QueryGetBatchResponse {
-	Batch Batch = 1 [(gogoproto.nullable) = false];
+	Batch batch = 1 [(gogoproto.nullable) = false];
 }
 
 message QueryFundRequest {
 }
 
 message QueryFundResponse {
-	repeated	cosmos.base.v1beta1.DecCoin available = 1;
+	repeated	cosmos.base.v1beta1.DecCoin availables = 1;
 }
 
 message QueryGetFormatRequest {
@@ -102,7 +102,7 @@ message QueryAllFormatRequest {
 }
 
 message QueryAllFormatResponse {
-	repeated Format format = 1 [(gogoproto.nullable) = false];
+	repeated Format formats = 1 [(gogoproto.nullable) = false];
 	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 

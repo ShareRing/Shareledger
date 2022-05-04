@@ -36,7 +36,7 @@ func (k Keeper) FormatAll(c context.Context, req *types.QueryAllFormatRequest) (
 		return nil, status.Error(codes.Internal, err.Error())
 	}
 
-	return &types.QueryAllFormatResponse{Format: formats, Pagination: pageRes}, nil
+	return &types.QueryAllFormatResponse{Formats: formats, Pagination: pageRes}, nil
 }
 
 func (k Keeper) Format(c context.Context, req *types.QueryGetFormatRequest) (*types.QueryGetFormatResponse, error) {
@@ -46,11 +46,11 @@ func (k Keeper) Format(c context.Context, req *types.QueryGetFormatRequest) (*ty
 	ctx := sdk.UnwrapSDKContext(c)
 
 	val, found := k.GetFormat(
-	    ctx,
-	    req.Network,
-        )
+		ctx,
+		req.Network,
+	)
 	if !found {
-	    return nil, status.Error(codes.NotFound, "not found")
+		return nil, status.Error(codes.NotFound, "not found")
 	}
 
 	return &types.QueryGetFormatResponse{Format: val}, nil

@@ -31148,7 +31148,7 @@ paths:
           schema:
             type: object
             properties:
-              Batch:
+              batch:
                 type: object
                 properties:
                   id:
@@ -31199,7 +31199,7 @@ paths:
           schema:
             type: object
             properties:
-              format:
+              formats:
                 type: array
                 items:
                   type: object
@@ -31368,7 +31368,7 @@ paths:
           schema:
             type: object
             properties:
-              available:
+              availables:
                 type: array
                 items:
                   type: object
@@ -53441,7 +53441,7 @@ definitions:
   shareledger.swap.QueryAllFormatResponse:
     type: object
     properties:
-      format:
+      formats:
         type: array
         items:
           type: object
@@ -53480,7 +53480,7 @@ definitions:
   shareledger.swap.QueryFundResponse:
     type: object
     properties:
-      available:
+      availables:
         type: array
         items:
           type: object
@@ -53497,7 +53497,7 @@ definitions:
   shareledger.swap.QueryGetBatchResponse:
     type: object
     properties:
-      Batch:
+      batch:
         type: object
         properties:
           id:
