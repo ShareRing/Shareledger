@@ -21,7 +21,7 @@ service Query {
   }
 
 	// Queries a list of Search items.
-	rpc Search(QuerySwapRequest) returns (QuerySwapResponse) {
+	rpc Swap(QuerySwapRequest) returns (QuerySwapResponse) {
 		option (google.api.http).get = "/sharering/shareledger/swap/search/{status}/{ids}/{srcAddr}/{destAddr}/{srcNetwork}/{destNetwork}";
 	}
 
@@ -32,17 +32,17 @@ service Query {
 	
 
 // Queries a list of Fund items.
-	rpc Fund(QueryFundRequest) returns (QueryFundResponse) {
-		option (google.api.http).get = "/sharering/shareledger/swap/fund";
+	rpc Balances(QueryBalanceRequest) returns (QueryBalanceResponse) {
+		option (google.api.http).get = "/sharering/shareledger/swap/balance";
 	}
 
 // Queries a Format by index.
-	rpc Format(QueryGetSignSchemaRequest) returns (QuerySignSchemaResponse) {
+	rpc SignSchema(QueryGetSignSchemaRequest) returns (QuerySignSchemaResponse) {
 		option (google.api.http).get = "/sharering/shareledger/swap/sign_schema/{network}";
 	}
 
 	// Queries a list of Format items.
-	rpc FormatAll(QueryAllSignSchemaRequest) returns (QueryAllSignSchemaResponse) {
+	rpc SignSchemaAll(QueryAllSignSchemaRequest) returns (QueryAllSignSchemaResponse) {
 		option (google.api.http).get = "/sharering/shareledger/swap/sign_schema";
 	}
 
@@ -81,10 +81,10 @@ message QueryBatchResponse {
 	Batch batch = 1 [(gogoproto.nullable) = false];
 }
 
-message QueryFundRequest {
+message QueryBalanceRequest {
 }
 
-message QueryFundResponse {
+message QueryBalanceResponse {
 	cosmos.base.v1beta1.DecCoin availables = 1;
 }
 
