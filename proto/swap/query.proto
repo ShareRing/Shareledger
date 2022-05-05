@@ -58,6 +58,8 @@ message QueryParamsResponse {
   Params params = 1 [(gogoproto.nullable) = false];
 }
 
+
+//Query swap request
 message QuerySearchRequest {
   string status = 1;
 	repeated uint64 ids = 2;
@@ -67,12 +69,13 @@ message QuerySearchRequest {
   string destNetwork = 6;
 cosmos.base.query.v1beta1.PageRequest pagination = 7;
 }
-
+//Query swap response
 message QuerySearchResponse {
+	//requests =>swap
 	repeated Request requests = 1 [(gogoproto.nullable) = false];
 	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
-
+//QueryGetBatchRequest => QueryBatch request
 message QueryGetBatchRequest {
 	uint64 id = 1;
 }
@@ -87,7 +90,7 @@ message QueryFundRequest {
 message QueryFundResponse {
 	repeated	cosmos.base.v1beta1.DecCoin availables = 1;
 }
-
+//Format will be change to SignSchema
 message QueryGetFormatRequest {
 	  string network = 1;
 
@@ -100,7 +103,7 @@ message QueryGetFormatResponse {
 message QueryAllFormatRequest {
 	cosmos.base.query.v1beta1.PageRequest pagination = 1;
 }
-
+// Format change to schema
 message QueryAllFormatResponse {
 	repeated Format formats = 1 [(gogoproto.nullable) = false];
 	cosmos.base.query.v1beta1.PageResponse pagination = 2;

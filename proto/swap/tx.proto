@@ -35,13 +35,14 @@ message MsgOut {
 message MsgOutResponse {
   uint64 rid = 1;
 }
-
+//Approve txs=> ids
+//signedHash => signature
 message MsgApprove {
   string creator = 1;
   string signedHash = 2;
   repeated uint64 txs = 3;
 }
-
+//batchID >batchId
 message MsgApproveResponse {
   uint64 batchID = 1;
 }
