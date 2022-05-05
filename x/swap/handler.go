@@ -23,11 +23,23 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
 		case *types.MsgApprove:
 			res, err := msgServer.Approve(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
+		case *types.MsgCancel:
+			res, err := msgServer.Cancel(sdk.WrapSDKContext(ctx), msg)
+			return sdk.WrapServiceResult(ctx, res, err)
 		case *types.MsgDeposit:
 			res, err := msgServer.Deposit(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
 		case *types.MsgWithdraw:
 			res, err := msgServer.Withdraw(sdk.WrapSDKContext(ctx), msg)
+			return sdk.WrapServiceResult(ctx, res, err)
+		case *types.MsgReject:
+			res, err := msgServer.Reject(sdk.WrapSDKContext(ctx), msg)
+			return sdk.WrapServiceResult(ctx, res, err)
+		case *types.MsgIn:
+			res, err := msgServer.In(sdk.WrapSDKContext(ctx), msg)
+			return sdk.WrapServiceResult(ctx, res, err)
+		case *types.MsgApproveIn:
+			res, err := msgServer.ApproveIn(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
 			case *types.MsgCreateFormat:
 					res, err := msgServer.CreateFormat(sdk.WrapSDKContext(ctx), msg)

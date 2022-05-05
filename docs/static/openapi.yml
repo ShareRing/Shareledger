@@ -31163,6 +31163,8 @@ paths:
                       format: uint64
                   status:
                     type: string
+                  digest:
+                    type: string
         default:
           description: An unexpected error response.
           schema:
@@ -53395,6 +53397,8 @@ definitions:
           format: uint64
       status:
         type: string
+      digest:
+        type: string
   shareledger.swap.Format:
     type: object
     properties:
@@ -53404,12 +53408,16 @@ definitions:
         type: string
       dataFormat:
         type: string
+  shareledger.swap.MsgApproveInResponse:
+    type: object
   shareledger.swap.MsgApproveResponse:
     type: object
     properties:
       batchID:
         type: string
         format: uint64
+  shareledger.swap.MsgCancelResponse:
+    type: object
   shareledger.swap.MsgCreateFormatResponse:
     type: object
   shareledger.swap.MsgDeleteFormatResponse:
@@ -53419,12 +53427,20 @@ definitions:
     properties:
       status:
         type: string
+  shareledger.swap.MsgInResponse:
+    type: object
+    properties:
+      rId:
+        type: string
+        format: uint64
   shareledger.swap.MsgOutResponse:
     type: object
     properties:
       rid:
         type: string
         format: uint64
+  shareledger.swap.MsgRejectResponse:
+    type: object
   shareledger.swap.MsgUpdateFormatResponse:
     type: object
   shareledger.swap.MsgWithdrawResponse:
@@ -53511,6 +53527,8 @@ definitions:
               type: string
               format: uint64
           status:
+            type: string
+          digest:
             type: string
   shareledger.swap.QueryGetFormatResponse:
     type: object

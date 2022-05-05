@@ -12,7 +12,7 @@ import (
 
 func CmdShowBatch() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "show-batch [id]",
+		Use:   "show_batch [id]",
 		Short: "shows a batch",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {

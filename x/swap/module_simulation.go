@@ -52,6 +52,22 @@ const (
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgDeleteFormat int = 100
 
+	opWeightMsgCancel = "op_weight_msg_cancel"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgCancel int = 100
+
+	opWeightMsgReject = "op_weight_msg_reject"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgReject int = 100
+
+	opWeightMsgIn = "op_weight_msg_in"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgIn int = 100
+
+	opWeightMsgApproveIn = "op_weight_msg_approve_in"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgApproveIn int = 100
+
 	// this line is used by starport scaffolding # simapp/module/const
 )
 
@@ -142,6 +158,50 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	operations = append(operations, simulation.NewWeightedOperation(
 		weightMsgWithdraw,
 		swapsimulation.SimulateMsgWithdraw(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgCancel int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgCancel, &weightMsgCancel, nil,
+		func(_ *rand.Rand) {
+			weightMsgCancel = defaultWeightMsgCancel
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgCancel,
+		swapsimulation.SimulateMsgCancel(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgReject int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgReject, &weightMsgReject, nil,
+		func(_ *rand.Rand) {
+			weightMsgReject = defaultWeightMsgReject
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgReject,
+		swapsimulation.SimulateMsgReject(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgIn int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgIn, &weightMsgIn, nil,
+		func(_ *rand.Rand) {
+			weightMsgIn = defaultWeightMsgIn
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgIn,
+		swapsimulation.SimulateMsgIn(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgApproveIn int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgApproveIn, &weightMsgApproveIn, nil,
+		func(_ *rand.Rand) {
+			weightMsgApproveIn = defaultWeightMsgApproveIn
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgApproveIn,
+		swapsimulation.SimulateMsgApproveIn(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
 	var weightMsgCreateFormat int

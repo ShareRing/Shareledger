@@ -1,25 +1,31 @@
 package cli
 
 import (
+	"strconv"
+	"strings"
+
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
-	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/sharering/shareledger/x/swap/types"
 	"github.com/spf13/cobra"
 )
 
-func CmdDeposit() *cobra.Command {
+func CmdReject() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "deposit [amount]",
-		Short: "Broadcast deposit SHR to swapping module, Note: just accept shr for now",
+		Use:   "reject [txnIds]",
+		Short: "Broadcast message reject the swapping request base on request_id \n [txnIds] format ID1,ID2,ID3",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			argAmount := args[0]
 
-			decCoins, err := sdk.ParseDecCoin(argAmount)
-			if err != nil {
-				return err
+			argIDS := strings.Split(args[0], ",")
+			txIds := make([]uint64, 0, len(argIDS))
+			for _, str := range argIDS {
+				id, err := strconv.ParseUint(str, 10, 64)
+				if err != nil {
+					return err
+				}
+				txIds = append(txIds, id)
 			}
 
 			clientCtx, err := client.GetClientTxContext(cmd)
@@ -27,9 +33,9 @@ func CmdDeposit() *cobra.Command {
 				return err
 			}
 
-			msg := types.NewMsgDeposit(
+			msg := types.NewMsgReject(
 				clientCtx.GetFromAddress().String(),
-				&decCoins,
+				txIds,
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err

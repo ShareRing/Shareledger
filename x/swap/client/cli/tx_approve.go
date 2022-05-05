@@ -22,8 +22,6 @@ import (
 	"strings"
 )
 
-var _ = strconv.Itoa(0)
-
 func CmdApprove() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "approve [txIDs] [signer_name] [network_name]",

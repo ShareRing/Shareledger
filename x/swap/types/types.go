@@ -15,12 +15,14 @@ const (
 	SwapStatusPending  = "pending"
 	SwapStatusApproved = "approved"
 	SwapStatusRejected = "rejected"
+	SwapStatusDone     = "done"
 )
 
 var SupportedSwapStatuses = map[string]struct{}{
 	SwapStatusPending:  {},
 	SwapStatusApproved: {},
 	SwapStatusRejected: {},
+	SwapStatusDone:     {},
 }
 
 const (
@@ -36,6 +38,7 @@ func SwapStatusSupported(status string) bool {
 
 const (
 	EventTypeSwapApprove = "swap_approve"
+	EventTypeSwapReject  = "swap_reject"
 	EventTypeSwapOut     = "swap_out"
 	EventTypeDeposit     = "swap_deposit"
 	EventTypeWithDraw    = "swap_withdraw"
@@ -53,11 +56,11 @@ const (
 	EventTypeBatchId          = "batch_id"
 	EventTypeBatchTotal       = "batch_total"
 	EventTypeApproverAction   = "approver_action"
+	EventTypeRejectArr        = "reject_addr"
 	EventTypeApproverAddr     = "approver_addr"
 	EventTypeDepositAmount    = EventTypeSwapAmount
 	EventTypeDepositAddr      = "sender"
 	EventTypeWithdrawReceiver = "receiver"
-	EventTypeWithdrawAmount   = EventTypeSwapAmount
 )
 
 const (

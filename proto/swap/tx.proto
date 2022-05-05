@@ -17,6 +17,10 @@ service Msg {
   rpc CreateFormat(MsgCreateFormat) returns (MsgCreateFormatResponse);
   rpc UpdateFormat(MsgUpdateFormat) returns (MsgUpdateFormatResponse);
   rpc DeleteFormat(MsgDeleteFormat) returns (MsgDeleteFormatResponse);
+  rpc Cancel(MsgCancel) returns (MsgCancelResponse);
+  rpc Reject(MsgReject) returns (MsgRejectResponse);
+  rpc In(MsgIn) returns (MsgInResponse);
+  rpc ApproveIn(MsgApproveIn) returns (MsgApproveInResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -80,5 +84,42 @@ message MsgDeleteFormat {
   string network = 2;
 }
 message MsgDeleteFormatResponse {}
+
+message MsgCancel {
+  string creator = 1;
+  repeated uint64 ids = 2;
+}
+
+message MsgCancelResponse {
+}
+
+message MsgReject {
+  string creator = 1;
+  repeated uint64  txnIDs = 2;
+}
+
+message MsgRejectResponse {
+}
+
+message MsgIn {
+  string creator = 1;
+  string srcAddress = 2;
+  string destAddress = 3;
+  string srcNetwork = 4;
+  cosmos.base.v1beta1.DecCoin amount = 5;
+  cosmos.base.v1beta1.DecCoin fee = 6;
+}
+
+message MsgInResponse {
+  uint64 rId = 1;
+}
+
+message MsgApproveIn {
+  string creator = 1;
+  repeated uint64  txnIDs = 2;
+}
+
+message MsgApproveInResponse {
+}
 
 // this line is used by starport scaffolding # proto/tx/message

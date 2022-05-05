@@ -1,35 +1,41 @@
 package cli
 
 import (
+	"strconv"
+	"strings"
+
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
-	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/sharering/shareledger/x/swap/types"
 	"github.com/spf13/cobra"
 )
 
-func CmdDeposit() *cobra.Command {
+func CmdApproveIn() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "deposit [amount]",
-		Short: "Broadcast deposit SHR to swapping module, Note: just accept shr for now",
+		Use:   "approve_in [txnIds]",
+		Short: "Broadcast message approve_in",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			argAmount := args[0]
-
-			decCoins, err := sdk.ParseDecCoin(argAmount)
-			if err != nil {
-				return err
-			}
+			argTxnIDs := args[0]
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
 			}
 
-			msg := types.NewMsgDeposit(
+			argIDS := strings.Split(argTxnIDs, ",")
+			txIds := make([]uint64, 0, len(argIDS))
+			for _, str := range argIDS {
+				id, err := strconv.ParseUint(str, 10, 64)
+				if err != nil {
+					return err
+				}
+				txIds = append(txIds, id)
+			}
+			msg := types.NewMsgApproveIn(
 				clientCtx.GetFromAddress().String(),
-				&decCoins,
+				txIds,
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err
