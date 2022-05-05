@@ -14,9 +14,9 @@ service Msg {
   rpc Approve(MsgApprove) returns (MsgApproveResponse);
   rpc Deposit(MsgDeposit) returns (MsgDepositResponse);
   rpc Withdraw(MsgWithdraw) returns (MsgWithdrawResponse);
-  rpc CreateFormat(MsgCreateFormat) returns (MsgCreateFormatResponse);
-  rpc UpdateFormat(MsgUpdateFormat) returns (MsgUpdateFormatResponse);
-  rpc DeleteFormat(MsgDeleteFormat) returns (MsgDeleteFormatResponse);
+  rpc CreateFormat(MsgCreateSignSchema) returns (MsgCreateSignSchemaResponse);
+  rpc UpdateFormat(MsgUpdateSignSchema) returns (MsgUpdateSignSchemaResponse);
+  rpc DeleteFormat(MsgDeleteSignSchema) returns (MsgDeleteSignSchema);
   rpc Cancel(MsgCancel) returns (MsgCancelResponse);
   rpc Reject(MsgReject) returns (MsgRejectResponse);
   rpc In(MsgIn) returns (MsgInResponse);
@@ -35,16 +35,15 @@ message MsgOut {
 message MsgOutResponse {
   uint64 rid = 1;
 }
-//Approve txs=> ids
-//signedHash => signature
+
 message MsgApprove {
   string creator = 1;
-  string signedHash = 2;
-  repeated uint64 txs = 3;
+  string signature = 2;
+  repeated uint64 ids = 3;
 }
-//batchID >batchId
+
 message MsgApproveResponse {
-  uint64 batchID = 1;
+  uint64 batchId = 1;
 }
 
 message MsgDeposit {
@@ -66,25 +65,25 @@ message MsgWithdrawResponse {
   string status = 1;
 }
 
-message MsgCreateFormat {
+message MsgCreateSignSchema {
   string creator = 1;
   string network = 2;
-  string dataTypeFormat = 3;
+  string schema = 3;
 }
-message MsgCreateFormatResponse {}
+message MsgCreateSignSchemaResponse {}
 
-message MsgUpdateFormat {
+message MsgUpdateSignSchema {
   string creator = 1;
   string network = 2;
-  string dataTypeFormat = 3;
+  string schema = 3;
 }
-message MsgUpdateFormatResponse {}
+message MsgUpdateSignSchemaResponse {}
 
-message MsgDeleteFormat {
+message MsgDeleteSignSchema {
   string creator = 1;
   string network = 2;
 }
-message MsgDeleteFormatResponse {}
+message MsgDeleteSignSchemaResponse {}
 
 message MsgCancel {
   string creator = 1;
@@ -96,7 +95,7 @@ message MsgCancelResponse {
 
 message MsgReject {
   string creator = 1;
-  repeated uint64  txnIDs = 2;
+  repeated uint64  ids = 2;
 }
 
 message MsgRejectResponse {
@@ -117,7 +116,7 @@ message MsgInResponse {
 
 message MsgApproveIn {
   string creator = 1;
-  repeated uint64  txnIDs = 2;
+  repeated uint64  ids = 2;
 }
 
 message MsgApproveInResponse {

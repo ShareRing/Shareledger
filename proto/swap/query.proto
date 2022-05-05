@@ -21,12 +21,12 @@ service Query {
   }
 
 	// Queries a list of Search items.
-	rpc Search(QuerySearchRequest) returns (QuerySearchResponse) {
+	rpc Search(QuerySwapRequest) returns (QuerySwapResponse) {
 		option (google.api.http).get = "/sharering/shareledger/swap/search/{status}/{ids}/{srcAddr}/{destAddr}/{srcNetwork}/{destNetwork}";
 	}
 
 // Queries a Batch by id.
-	rpc Batch(QueryGetBatchRequest) returns (QueryGetBatchResponse) {
+	rpc Batch(QueryBatchRequest) returns (QueryBatchResponse) {
 		option (google.api.http).get = "/sharering/shareledger/swap/batch/{id}";
 	}
 	
@@ -37,13 +37,13 @@ service Query {
 	}
 
 // Queries a Format by index.
-	rpc Format(QueryGetFormatRequest) returns (QueryGetFormatResponse) {
-		option (google.api.http).get = "/sharering/shareledger/swap/format/{network}";
+	rpc Format(QueryGetSignSchemaRequest) returns (QuerySignSchemaResponse) {
+		option (google.api.http).get = "/sharering/shareledger/swap/sign_schema/{network}";
 	}
 
 	// Queries a list of Format items.
-	rpc FormatAll(QueryAllFormatRequest) returns (QueryAllFormatResponse) {
-		option (google.api.http).get = "/sharering/shareledger/swap/format";
+	rpc FormatAll(QueryAllSignSchemaRequest) returns (QueryAllSignSchemaResponse) {
+		option (google.api.http).get = "/sharering/shareledger/swap/sign_schema";
 	}
 
 // this line is used by starport scaffolding # 2
@@ -58,9 +58,7 @@ message QueryParamsResponse {
   Params params = 1 [(gogoproto.nullable) = false];
 }
 
-
-//Query swap request
-message QuerySearchRequest {
+message QuerySwapRequest {
   string status = 1;
 	repeated uint64 ids = 2;
   string srcAddr = 3;
@@ -69,18 +67,17 @@ message QuerySearchRequest {
   string destNetwork = 6;
 cosmos.base.query.v1beta1.PageRequest pagination = 7;
 }
-//Query swap response
-message QuerySearchResponse {
-	//requests =>swap
-	repeated Request requests = 1 [(gogoproto.nullable) = false];
+
+message QuerySwapResponse {
+	repeated Request swaps = 1 [(gogoproto.nullable) = false];
 	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
-//QueryGetBatchRequest => QueryBatch request
-message QueryGetBatchRequest {
+
+message QueryBatchRequest {
 	uint64 id = 1;
 }
 
-message QueryGetBatchResponse {
+message QueryBatchResponse {
 	Batch batch = 1 [(gogoproto.nullable) = false];
 }
 
@@ -88,24 +85,24 @@ message QueryFundRequest {
 }
 
 message QueryFundResponse {
-	repeated	cosmos.base.v1beta1.DecCoin availables = 1;
+	cosmos.base.v1beta1.DecCoin availables = 1;
 }
-//Format will be change to SignSchema
-message QueryGetFormatRequest {
+
+message QueryGetSignSchemaRequest {
 	  string network = 1;
 
 }
 
-message QueryGetFormatResponse {
-	Format format = 1 [(gogoproto.nullable) = false];
+message QuerySignSchemaResponse {
+	Format signSchema = 1 [(gogoproto.nullable) = false];
 }
 
-message QueryAllFormatRequest {
+message QueryAllSignSchemaRequest {
 	cosmos.base.query.v1beta1.PageRequest pagination = 1;
 }
-// Format change to schema
-message QueryAllFormatResponse {
-	repeated Format formats = 1 [(gogoproto.nullable) = false];
+
+message QueryAllSignSchemaResponse {
+	repeated Format schemas = 1 [(gogoproto.nullable) = false];
 	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 
