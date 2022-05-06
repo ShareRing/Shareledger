@@ -52888,7 +52888,7 @@ definitions:
         type: string
   shareledger.electoral.MsgEnrollAccountOperatorsResponse:
     type: object
-  shareledger.electoral.MsgEnrollApproverResponse:
+  shareledger.electoral.MsgEnrollApproversResponse:
     type: object
   shareledger.electoral.MsgEnrollDocIssuersResponse:
     type: object
@@ -52902,7 +52902,7 @@ definitions:
     type: object
   shareledger.electoral.MsgRevokeAccountOperatorsResponse:
     type: object
-  shareledger.electoral.MsgRevokeApproverResponse:
+  shareledger.electoral.MsgRevokeApproversResponse:
     type: object
   shareledger.electoral.MsgRevokeDocIssuersResponse:
     type: object
