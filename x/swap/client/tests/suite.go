@@ -106,7 +106,7 @@ func (s *SwapIntegrationTestSuite) TestDeposit() {
 				fundRes := swapTypes.QueryFundResponse{}
 				err = validatorCtx.Codec.UnmarshalJSON(out.Bytes(), &fundRes)
 
-				for _, c := range fundRes.Available {
+				for _, c := range fundRes.Availables {
 					if c.Denom == denom.Shr {
 						balanceModuleBeforeDeposit = sdk.NewDecCoins(*c)
 					}
@@ -146,7 +146,7 @@ func (s *SwapIntegrationTestSuite) TestDeposit() {
 				if err != nil {
 					s.T().Fatalf("can't unmarshal json %s", err)
 				}
-				for _, c := range fundRes.Available {
+				for _, c := range fundRes.Availables {
 					if c.Denom == denom.Shr {
 						balanceModuleAfterDeposit = sdk.NewDecCoins(*c)
 					}
@@ -231,7 +231,7 @@ func (s *SwapIntegrationTestSuite) TestWithDraw() {
 				fundRes := swapTypes.QueryFundResponse{}
 				err = validatorCtx.Codec.UnmarshalJSON(out.Bytes(), &fundRes)
 
-				for _, c := range fundRes.Available {
+				for _, c := range fundRes.Availables {
 					if c.Denom == denom.Shr {
 						balanceModuleBeforeDeposit = sdk.NewDecCoins(*c)
 					}
@@ -273,7 +273,7 @@ func (s *SwapIntegrationTestSuite) TestWithDraw() {
 				if err != nil {
 					s.T().Fatalf("can't unmarshal json %s", err)
 				}
-				for _, c := range fundRes.Available {
+				for _, c := range fundRes.Availables {
 					if c.Denom == denom.Shr {
 						balanceModuleAfterDeposit = sdk.NewDecCoins(*c)
 					}
@@ -421,7 +421,7 @@ func (s *SwapIntegrationTestSuite) TestCancel() {
 				fundRes := swapTypes.QueryFundResponse{}
 				err = cliCtx.Codec.UnmarshalJSON(out.Bytes(), &fundRes)
 
-				for _, c := range fundRes.Available {
+				for _, c := range fundRes.Availables {
 					if c.Denom == denom.Shr {
 						balanceModuleBefore = sdk.NewDecCoins(*c)
 					}
@@ -508,7 +508,7 @@ func (s *SwapIntegrationTestSuite) TestCancel() {
 				if err != nil {
 					s.T().Fatalf("can't unmarshal json %s", err)
 				}
-				for _, c := range fundRes.Available {
+				for _, c := range fundRes.Availables {
 					if c.Denom == denom.Shr {
 						balanceModuleAfterCancel = sdk.NewDecCoins(*c)
 					}
@@ -658,7 +658,7 @@ func (s *SwapIntegrationTestSuite) TestReject() {
 				fundRes := swapTypes.QueryFundResponse{}
 				err = cliCtx.Codec.UnmarshalJSON(out.Bytes(), &fundRes)
 
-				for _, c := range fundRes.Available {
+				for _, c := range fundRes.Availables {
 					if c.Denom == denom.Shr {
 						balanceModuleBefore = sdk.NewDecCoins(*c)
 					}
@@ -744,7 +744,7 @@ func (s *SwapIntegrationTestSuite) TestReject() {
 				if err != nil {
 					s.T().Fatalf("can't unmarshal json %s", err)
 				}
-				for _, c := range fundRes.Available {
+				for _, c := range fundRes.Availables {
 					if c.Denom == denom.Shr {
 						balanceModuleAfterCancel = sdk.NewDecCoins(*c)
 					}

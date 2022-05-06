@@ -807,9 +807,9 @@ var (
 
 	forward_Query_Fund_0 = runtime.ForwardResponseMessage
 
-	forward_Query_SearchBatch_0 = runtime.ForwardResponseMessage
-
 	forward_Query_Format_0 = runtime.ForwardResponseMessage
 
 	forward_Query_FormatAll_0 = runtime.ForwardResponseMessage
+
+	forward_Query_SearchBatch_0 = runtime.ForwardResponseMessage
 )
