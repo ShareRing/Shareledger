@@ -3,6 +3,7 @@ package keeper
 import (
 	"context"
 	"strconv"
+	"time"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/sharering/shareledger/x/swap/types"
@@ -10,7 +11,7 @@ import (
 
 func (k msgServer) In(goCtx context.Context, msg *types.MsgSwapIn) (*types.MsgSwapInResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
-
+	tn := time.Now().Unix()
 	req, err := k.AppendPendingRequest(ctx, types.Request{
 		SrcAddr:     msg.SrcAddress,
 		DestAddr:    msg.DestAddress,
@@ -19,6 +20,7 @@ func (k msgServer) In(goCtx context.Context, msg *types.MsgSwapIn) (*types.MsgSw
 		Amount:      msg.Amount,
 		Fee:         msg.Fee,
 		Status:      types.SwapStatusPending,
+		CreatedAt:   uint64(tn),
 	})
 	if err != nil {
 		return nil, err

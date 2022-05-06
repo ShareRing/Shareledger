@@ -4,6 +4,7 @@ import (
 	"context"
 	denom "github.com/sharering/shareledger/x/utils/demo"
 	"strconv"
+	"time"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/sharering/shareledger/x/swap/types"
@@ -20,7 +21,7 @@ func (k msgServer) Out(goCtx context.Context, msg *types.MsgSwapOut) (*types.Msg
 	if err := k.bankKeeper.SendCoinsFromAccountToModule(ctx, msg.GetSigners()[0], types.ModuleName, baseCoins); err != nil {
 		return nil, err
 	}
-
+	tn := time.Now().Unix()
 	req, err := k.AppendPendingRequest(ctx, types.Request{
 		SrcAddr:     msg.Creator,
 		DestAddr:    msg.DestAddress,
@@ -29,6 +30,7 @@ func (k msgServer) Out(goCtx context.Context, msg *types.MsgSwapOut) (*types.Msg
 		Amount:      msg.Amount,
 		Fee:         msg.Fee,
 		Status:      types.SwapStatusPending,
+		CreatedAt:   uint64(tn),
 	})
 
 	if err == nil {

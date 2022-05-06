@@ -15,4 +15,5 @@ message Request {
   cosmos.base.v1beta1.DecCoin fee = 7;
   string status = 8;
   uint64 batchId = 9;
+  uint64 createdAt = 10;
 }

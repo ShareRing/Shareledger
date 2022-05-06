@@ -31339,6 +31339,9 @@ paths:
                     batchId:
                       type: string
                       format: uint64
+                    createdAt:
+                      type: string
+                      format: uint64
               pagination:
                 type: object
                 properties:
@@ -53595,6 +53598,9 @@ definitions:
             batchId:
               type: string
               format: uint64
+            createdAt:
+              type: string
+              format: uint64
       pagination:
         type: object
         properties:
@@ -53661,6 +53667,9 @@ definitions:
       status:
         type: string
       batchId:
+        type: string
+        format: uint64
+      createdAt:
         type: string
         format: uint64
   shareledger.swap.SignSchema:

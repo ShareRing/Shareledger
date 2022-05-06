@@ -33,7 +33,6 @@ func CmdOut() *cobra.Command {
 			if err != nil {
 				return err
 			}
-
 			msg := types.NewMsgSwapOut(
 				clientCtx.GetFromAddress().String(),
 				argDestAddr,

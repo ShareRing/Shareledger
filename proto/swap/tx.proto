@@ -108,6 +108,7 @@ message MsgSwapIn {
   string network = 4;
   cosmos.base.v1beta1.DecCoin amount = 5;
   cosmos.base.v1beta1.DecCoin fee = 6;
+
 }
 
 message MsgSwapInResponse {
