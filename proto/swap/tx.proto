@@ -10,7 +10,7 @@ option go_package = "github.com/sharering/shareledger/x/swap/types";
 
 // Msg defines the Msg service.
 service Msg {
-  rpc Out(MsgSwapOut) returns (MsgOutResponse);
+  rpc Out(MsgSwapOut) returns (MsgOutSwapResponse);
   rpc Approve(MsgApprove) returns (MsgApproveResponse);
   rpc Deposit(MsgDeposit) returns (MsgDepositResponse);
   rpc Withdraw(MsgWithdraw) returns (MsgWithdrawResponse);
@@ -19,7 +19,7 @@ service Msg {
   rpc DeleteSignSchema(MsgDeleteSignSchema) returns (MsgDeleteSignSchemaResponse);
   rpc Cancel(MsgCancel) returns (MsgCancelResponse);
   rpc Reject(MsgReject) returns (MsgRejectResponse);
-  rpc In(MsgSwapIn) returns (MsgInResponse);
+  rpc In(MsgSwapIn) returns (MsgSwapInResponse);
   rpc ApproveIn(MsgApproveIn) returns (MsgApproveInResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
@@ -32,8 +32,8 @@ message MsgSwapOut {
   cosmos.base.v1beta1.DecCoin fee = 5;
 }
 
-message MsgOutResponse {
-  uint64 rid = 1;
+message MsgOutSwapResponse {
+  uint64 id = 1;
 }
 
 message MsgApprove {
@@ -110,8 +110,8 @@ message MsgSwapIn {
   cosmos.base.v1beta1.DecCoin fee = 6;
 }
 
-message MsgInResponse {
-  uint64 rId = 1;
+message MsgSwapInResponse {
+  uint64 id = 1;
 }
 
 message MsgApproveIn {

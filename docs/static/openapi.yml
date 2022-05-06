@@ -53416,20 +53416,20 @@ definitions:
     properties:
       status:
         type: string
-  shareledger.swap.MsgInResponse:
+  shareledger.swap.MsgOutSwapResponse:
     type: object
     properties:
-      rId:
-        type: string
-        format: uint64
-  shareledger.swap.MsgOutResponse:
-    type: object
-    properties:
-      rid:
+      id:
         type: string
         format: uint64
   shareledger.swap.MsgRejectResponse:
     type: object
+  shareledger.swap.MsgSwapInResponse:
+    type: object
+    properties:
+      id:
+        type: string
+        format: uint64
   shareledger.swap.MsgUpdateSignSchemaResponse:
     type: object
   shareledger.swap.MsgWithdrawResponse:

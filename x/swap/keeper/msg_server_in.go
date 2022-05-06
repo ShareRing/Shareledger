@@ -8,7 +8,7 @@ import (
 	"github.com/sharering/shareledger/x/swap/types"
 )
 
-func (k msgServer) In(goCtx context.Context, msg *types.MsgSwapIn) (*types.MsgInResponse, error) {
+func (k msgServer) In(goCtx context.Context, msg *types.MsgSwapIn) (*types.MsgSwapInResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	req, err := k.AppendPendingRequest(ctx, types.Request{
@@ -38,5 +38,5 @@ func (k msgServer) In(goCtx context.Context, msg *types.MsgSwapIn) (*types.MsgIn
 		),
 	)
 
-	return &types.MsgInResponse{RId: req.Id}, nil
+	return &types.MsgSwapInResponse{Id: req.Id}, nil
 }

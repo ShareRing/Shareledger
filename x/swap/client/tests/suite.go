@@ -404,7 +404,6 @@ func (s *SwapIntegrationTestSuite) TestCancel() {
 				}
 				fundRes := swapTypes.QueryBalanceResponse{}
 				err = cliCtx.Codec.UnmarshalJSON(out.Bytes(), &fundRes)
-				s.T().Log(fundRes)
 				balanceModuleBefore = sdk.NewDecCoins(*fundRes.GetBalance())
 
 			}
