@@ -11,9 +11,9 @@ import (
 func (k msgServer) ApproveOut(goCtx context.Context, msg *types.MsgApproveOut) (*types.MsgApproveResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 	batchId := k.AppendBatch(ctx, types.Batch{
-		SignedHash: msg.Signature,
-		TxIds:      msg.Ids,
-		Status:     types.BatchStatusPending,
+		Signature: msg.Signature,
+		TxIds:     msg.Ids,
+		Status:    types.BatchStatusPending,
 	})
 	reqs, err := k.ChangeStatusRequests(ctx, msg.Ids, types.SwapStatusApproved, &batchId, true)
 	if err != nil {

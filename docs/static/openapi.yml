@@ -31200,7 +31200,7 @@ paths:
                   id:
                     type: string
                     format: uint64
-                  signedHash:
+                  signature:
                     type: string
                   txIds:
                     type: array
@@ -53389,7 +53389,7 @@ definitions:
       id:
         type: string
         format: uint64
-      signedHash:
+      signature:
         type: string
       txIds:
         type: array
@@ -53509,7 +53509,7 @@ definitions:
           id:
             type: string
             format: uint64
-          signedHash:
+          signature:
             type: string
           txIds:
             type: array
