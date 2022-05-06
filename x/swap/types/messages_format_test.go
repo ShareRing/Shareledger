@@ -4,8 +4,8 @@ import (
 	"testing"
 
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	"github.com/stretchr/testify/require"
 	"github.com/sharering/shareledger/testutil/sample"
+	"github.com/stretchr/testify/require"
 )
 
 func TestMsgCreateFormat_ValidateBasic(t *testing.T) {

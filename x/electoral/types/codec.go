@@ -18,6 +18,10 @@ func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgRevokeDocIssuers{}, "electoral/RevokeDocIssuers", nil)
 	cdc.RegisterConcrete(&MsgEnrollAccountOperators{}, "electoral/EnrollAccountOperators", nil)
 	cdc.RegisterConcrete(&MsgRevokeAccountOperators{}, "electoral/RevokeAccountOperators", nil)
+	cdc.RegisterConcrete(&MsgEnrollRelayer{}, "electoral/EnrollRelayer", nil)
+	cdc.RegisterConcrete(&MsgRevokeRelayers{}, "electoral/RevokeRelayers", nil)
+	cdc.RegisterConcrete(&MsgEnrollApprover{}, "electoral/EnrollApprover", nil)
+	cdc.RegisterConcrete(&MsgRevokeApprover{}, "electoral/RevokeApprover", nil)
 	// this line is used by starport scaffolding # 2
 }
 
@@ -51,6 +55,18 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgRevokeAccountOperators{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgEnrollRelayer{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgRevokeRelayers{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgEnrollApprover{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgRevokeApprover{},
 	)
 	// this line is used by starport scaffolding # 3
 

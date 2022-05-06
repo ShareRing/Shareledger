@@ -1,34 +1,34 @@
 package keeper
 
 import (
+	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/sharering/shareledger/x/swap/types"
-	"github.com/cosmos/cosmos-sdk/store/prefix"
 )
 
 // SetFormat set a specific format in the store from its index
 func (k Keeper) SetFormat(ctx sdk.Context, format types.Format) {
-	store :=  prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.FormatKeyPrefix))
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.FormatKeyPrefix))
 	b := k.cdc.MustMarshal(&format)
 	store.Set(types.FormatKey(
-        format.Network,
-    ), b)
+		format.Network,
+	), b)
 }
 
 // GetFormat returns a format from its index
 func (k Keeper) GetFormat(
-    ctx sdk.Context,
-    network string,
-    
+	ctx sdk.Context,
+	network string,
+
 ) (val types.Format, found bool) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.FormatKeyPrefix))
 
 	b := store.Get(types.FormatKey(
-        network,
-    ))
-    if b == nil {
-        return val, false
-    }
+		network,
+	))
+	if b == nil {
+		return val, false
+	}
 
 	k.cdc.MustUnmarshal(b, &val)
 	return val, true
@@ -36,19 +36,19 @@ func (k Keeper) GetFormat(
 
 // RemoveFormat removes a format from the store
 func (k Keeper) RemoveFormat(
-    ctx sdk.Context,
-    network string,
-    
+	ctx sdk.Context,
+	network string,
+
 ) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.FormatKeyPrefix))
 	store.Delete(types.FormatKey(
-	    network,
-    ))
+		network,
+	))
 }
 
 // GetAllFormat returns all format
 func (k Keeper) GetAllFormat(ctx sdk.Context) (list []types.Format) {
-    store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.FormatKeyPrefix))
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.FormatKeyPrefix))
 	iterator := sdk.KVStorePrefixIterator(store, []byte{})
 
 	defer iterator.Close()
@@ -56,8 +56,8 @@ func (k Keeper) GetAllFormat(ctx sdk.Context) (list []types.Format) {
 	for ; iterator.Valid(); iterator.Next() {
 		var val types.Format
 		k.cdc.MustUnmarshal(iterator.Value(), &val)
-        list = append(list, val)
+		list = append(list, val)
 	}
 
-    return
+	return
 }
