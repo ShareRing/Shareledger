@@ -8,7 +8,7 @@ import (
 	"strings"
 )
 
-func (k msgServer) Approve(goCtx context.Context, msg *types.MsgApproveOut) (*types.MsgApproveResponse, error) {
+func (k msgServer) ApproveOut(goCtx context.Context, msg *types.MsgApproveOut) (*types.MsgApproveResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 	batchId := k.AppendBatch(ctx, types.Batch{
 		SignedHash: msg.Signature,

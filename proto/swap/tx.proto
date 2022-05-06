@@ -10,8 +10,8 @@ option go_package = "github.com/sharering/shareledger/x/swap/types";
 
 // Msg defines the Msg service.
 service Msg {
-  rpc Out(MsgRequestOut) returns (MsgOutSwapResponse);
-  rpc Approve(MsgApproveOut) returns (MsgApproveResponse);
+  rpc RequestOut(MsgRequestOut) returns (MsgOutSwapResponse);
+  rpc ApproveOut(MsgApproveOut) returns (MsgApproveResponse);
   rpc Deposit(MsgDeposit) returns (MsgDepositResponse);
   rpc Withdraw(MsgWithdraw) returns (MsgWithdrawResponse);
   rpc CreateSignSchema(MsgCreateSignSchema) returns (MsgCreateSignSchemaResponse);
@@ -19,7 +19,7 @@ service Msg {
   rpc DeleteSignSchema(MsgDeleteSignSchema) returns (MsgDeleteSignSchemaResponse);
   rpc Cancel(MsgCancel) returns (MsgCancelResponse);
   rpc Reject(MsgReject) returns (MsgRejectResponse);
-  rpc In(MsgRequestIn) returns (MsgSwapInResponse);
+  rpc RequestIn(MsgRequestIn) returns (MsgSwapInResponse);
   rpc ApproveIn(MsgApproveIn) returns (MsgApproveInResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
