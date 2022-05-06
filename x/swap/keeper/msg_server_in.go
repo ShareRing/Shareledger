@@ -8,13 +8,13 @@ import (
 	"github.com/sharering/shareledger/x/swap/types"
 )
 
-func (k msgServer) In(goCtx context.Context, msg *types.MsgIn) (*types.MsgInResponse, error) {
+func (k msgServer) In(goCtx context.Context, msg *types.MsgSwapIn) (*types.MsgInResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	req, err := k.AppendPendingRequest(ctx, types.Request{
 		SrcAddr:     msg.SrcAddress,
 		DestAddr:    msg.DestAddress,
-		SrcNetwork:  msg.SrcNetwork,
+		SrcNetwork:  msg.Network,
 		DestNetwork: types.NetworkNameShareLedger,
 		Amount:      msg.Amount,
 		Fee:         msg.Fee,
@@ -34,7 +34,7 @@ func (k msgServer) In(goCtx context.Context, msg *types.MsgIn) (*types.MsgInResp
 			sdk.NewAttribute(types.EventTypeSwapDestAddr, msg.DestAddress),
 			sdk.NewAttribute(types.EventTypeSwapSrcAddr, msg.SrcAddress),
 			sdk.NewAttribute(types.EventTypeSwapDestNetwork, types.NetworkNameShareLedger),
-			sdk.NewAttribute(types.EventTypeSwapSrcNetwork, msg.SrcNetwork),
+			sdk.NewAttribute(types.EventTypeSwapSrcNetwork, msg.Network),
 		),
 	)
 

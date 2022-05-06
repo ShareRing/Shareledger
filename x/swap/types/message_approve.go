@@ -9,11 +9,11 @@ const TypeMsgApprove = "approve"
 
 var _ sdk.Msg = &MsgApprove{}
 
-func NewMsgApprove(creator string, signedHash string, txIDs []uint64) *MsgApprove {
+func NewMsgApprove(creator string, signedHash string, ids []uint64) *MsgApprove {
 	return &MsgApprove{
-		Creator:    creator,
-		SignedHash: signedHash,
-		Txs:        txIDs,
+		Creator:   creator,
+		Signature: signedHash,
+		Ids:       ids,
 	}
 }
 
@@ -43,7 +43,7 @@ func (msg *MsgApprove) ValidateBasic() error {
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
 	}
-	if len(msg.Txs) == 0 {
+	if len(msg.Ids) == 0 {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "swap transaction ids are required. Supported format input: ID1,ID2,ID3")
 	}
 

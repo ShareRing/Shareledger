@@ -9,7 +9,7 @@ import (
 	"github.com/sharering/shareledger/x/swap/types"
 )
 
-func (k msgServer) Out(goCtx context.Context, msg *types.MsgOut) (*types.MsgOutResponse, error) {
+func (k msgServer) Out(goCtx context.Context, msg *types.MsgSwapOut) (*types.MsgOutResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 	sumCoins := sdk.NewDecCoins().Add(*msg.Amount).Add(*msg.Fee)
 
@@ -23,7 +23,7 @@ func (k msgServer) Out(goCtx context.Context, msg *types.MsgOut) (*types.MsgOutR
 
 	req, err := k.AppendPendingRequest(ctx, types.Request{
 		SrcAddr:     msg.Creator,
-		DestAddr:    msg.DestAddr,
+		DestAddr:    msg.DestAddress,
 		SrcNetwork:  types.NetworkNameShareLedger,
 		DestNetwork: msg.Network,
 		Amount:      msg.Amount,

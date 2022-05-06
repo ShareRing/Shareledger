@@ -11,29 +11,29 @@ const (
 	TypeMsgDeleteFormat = "delete_format"
 )
 
-var _ sdk.Msg = &MsgCreateFormat{}
+var _ sdk.Msg = &MsgCreateSignSchema{}
 
 func NewMsgCreateFormat(
 	creator string,
 	network string,
 	dataType string,
-) *MsgCreateFormat {
-	return &MsgCreateFormat{
-		Creator:        creator,
-		Network:        network,
-		DataTypeFormat: dataType,
+) *MsgCreateSignSchema {
+	return &MsgCreateSignSchema{
+		Creator: creator,
+		Network: network,
+		Schema:  dataType,
 	}
 }
 
-func (msg *MsgCreateFormat) Route() string {
+func (msg *MsgCreateSignSchema) Route() string {
 	return RouterKey
 }
 
-func (msg *MsgCreateFormat) Type() string {
+func (msg *MsgCreateSignSchema) Type() string {
 	return TypeMsgCreateFormat
 }
 
-func (msg *MsgCreateFormat) GetSigners() []sdk.AccAddress {
+func (msg *MsgCreateSignSchema) GetSigners() []sdk.AccAddress {
 	creator, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		panic(err)
@@ -41,17 +41,17 @@ func (msg *MsgCreateFormat) GetSigners() []sdk.AccAddress {
 	return []sdk.AccAddress{creator}
 }
 
-func (msg *MsgCreateFormat) GetSignBytes() []byte {
+func (msg *MsgCreateSignSchema) GetSignBytes() []byte {
 	bz := ModuleCdc.MustMarshalJSON(msg)
 	return sdk.MustSortJSON(bz)
 }
 
-func (msg *MsgCreateFormat) ValidateBasic() error {
+func (msg *MsgCreateSignSchema) ValidateBasic() error {
 	_, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
 	}
-	if len(msg.DataTypeFormat) == 0 {
+	if len(msg.Schema) == 0 {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "data type format is required")
 	}
 	return nil
@@ -90,29 +90,29 @@ func (msg *MsgCreateFormat) ValidateBasic() error {
 //	return nil
 //}
 
-var _ sdk.Msg = &MsgUpdateFormat{}
+var _ sdk.Msg = &MsgUpdateSignSchema{}
 
 func NewMsgUpdateFormat(
 	creator string,
 	network string,
 	dataFormat string,
-) *MsgUpdateFormat {
-	return &MsgUpdateFormat{
-		Creator:        creator,
-		Network:        network,
-		DataTypeFormat: dataFormat,
+) *MsgUpdateSignSchema {
+	return &MsgUpdateSignSchema{
+		Creator: creator,
+		Network: network,
+		Schema:  dataFormat,
 	}
 }
 
-func (msg *MsgUpdateFormat) Route() string {
+func (msg *MsgUpdateSignSchema) Route() string {
 	return RouterKey
 }
 
-func (msg *MsgUpdateFormat) Type() string {
+func (msg *MsgUpdateSignSchema) Type() string {
 	return TypeMsgUpdateFormat
 }
 
-func (msg *MsgUpdateFormat) GetSigners() []sdk.AccAddress {
+func (msg *MsgUpdateSignSchema) GetSigners() []sdk.AccAddress {
 	creator, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		panic(err)
@@ -120,43 +120,43 @@ func (msg *MsgUpdateFormat) GetSigners() []sdk.AccAddress {
 	return []sdk.AccAddress{creator}
 }
 
-func (msg *MsgUpdateFormat) GetSignBytes() []byte {
+func (msg *MsgUpdateSignSchema) GetSignBytes() []byte {
 	bz := ModuleCdc.MustMarshalJSON(msg)
 	return sdk.MustSortJSON(bz)
 }
 
-func (msg *MsgUpdateFormat) ValidateBasic() error {
+func (msg *MsgUpdateSignSchema) ValidateBasic() error {
 	_, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
 	}
-	if len(msg.DataTypeFormat) == 0 {
+	if len(msg.Schema) == 0 {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "data type format is required")
 	}
 	return nil
 }
 
-var _ sdk.Msg = &MsgDeleteFormat{}
+var _ sdk.Msg = &MsgDeleteSignSchema{}
 
 func NewMsgDeleteFormat(
 	creator string,
 	network string,
 
-) *MsgDeleteFormat {
-	return &MsgDeleteFormat{
+) *MsgDeleteSignSchema {
+	return &MsgDeleteSignSchema{
 		Creator: creator,
 		Network: network,
 	}
 }
-func (msg *MsgDeleteFormat) Route() string {
+func (msg *MsgDeleteSignSchema) Route() string {
 	return RouterKey
 }
 
-func (msg *MsgDeleteFormat) Type() string {
+func (msg *MsgDeleteSignSchema) Type() string {
 	return TypeMsgDeleteFormat
 }
 
-func (msg *MsgDeleteFormat) GetSigners() []sdk.AccAddress {
+func (msg *MsgDeleteSignSchema) GetSigners() []sdk.AccAddress {
 	creator, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		panic(err)
@@ -164,12 +164,12 @@ func (msg *MsgDeleteFormat) GetSigners() []sdk.AccAddress {
 	return []sdk.AccAddress{creator}
 }
 
-func (msg *MsgDeleteFormat) GetSignBytes() []byte {
+func (msg *MsgDeleteSignSchema) GetSignBytes() []byte {
 	bz := ModuleCdc.MustMarshalJSON(msg)
 	return sdk.MustSortJSON(bz)
 }
 
-func (msg *MsgDeleteFormat) ValidateBasic() error {
+func (msg *MsgDeleteSignSchema) ValidateBasic() error {
 	_, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)

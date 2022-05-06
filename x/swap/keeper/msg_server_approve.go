@@ -11,11 +11,11 @@ import (
 func (k msgServer) Approve(goCtx context.Context, msg *types.MsgApprove) (*types.MsgApproveResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 	batchId := k.AppendBatch(ctx, types.Batch{
-		SignedHash: msg.SignedHash,
-		TxIds:      msg.Txs,
+		SignedHash: msg.Signature,
+		TxIds:      msg.Ids,
 		Status:     types.BatchStatusPending,
 	})
-	reqs, err := k.ChangeStatusRequests(ctx, msg.Txs, types.SwapStatusApproved, &batchId, true)
+	reqs, err := k.ChangeStatusRequests(ctx, msg.Ids, types.SwapStatusApproved, &batchId, true)
 	if err != nil {
 		return nil, err
 	}
@@ -41,6 +41,6 @@ func (k msgServer) Approve(goCtx context.Context, msg *types.MsgApprove) (*types
 	)
 
 	return &types.MsgApproveResponse{
-		BatchID: batchId,
+		BatchId: batchId,
 	}, nil
 }

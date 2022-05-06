@@ -45,7 +45,7 @@ func CmdApprove() *cobra.Command {
 				return err
 			}
 
-			var filter types.QuerySearchRequest
+			var filter types.QuerySwapRequest
 			filter.Status = types.BatchStatusPending
 			filter.Ids = txIds[:]
 			filter.Pagination = &query.PageRequest{
@@ -53,25 +53,25 @@ func CmdApprove() *cobra.Command {
 				Limit:  uint64(len(txIds)),
 			}
 			queryClient := types.NewQueryClient(clientCtx)
-			res, err := queryClient.Search(cmd.Context(), &filter)
+			res, err := queryClient.Swap(cmd.Context(), &filter)
 			if err != nil {
 				return err
 			}
-			if len(res.Requests) != len(txIds) {
+			if len(res.Swaps) != len(txIds) {
 				return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "the swapping requests ids list does not match with current pending requests")
 			}
 
-			formatRes, err := queryClient.Format(cmd.Context(), &types.QueryGetFormatRequest{Network: networkName})
+			formatRes, err := queryClient.SignSchema(cmd.Context(), &types.QueryGetSignSchemaRequest{Network: networkName})
 			if err != nil {
 				return err
 			}
 
 			var signFormatData apitypes.TypedData
-			if err := json.Unmarshal([]byte(formatRes.Format.DataFormat), &signFormatData); err != nil {
+			if err := json.Unmarshal([]byte(formatRes.GetSignSchema().Schema), &signFormatData); err != nil {
 				return err
 			}
 
-			signedHash, err := signApprovedSwap(clientCtx, signer, res.Requests, signFormatData)
+			signedHash, err := signApprovedSwap(clientCtx, signer, res.Swaps, signFormatData)
 			if err != nil {
 				return err
 			}

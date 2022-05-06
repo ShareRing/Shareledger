@@ -6,30 +6,30 @@ import (
 	"strings"
 )
 
-const TypeMsgIn = "in"
+const TypeMsgSwapIn = "in"
 
-var _ sdk.Msg = &MsgIn{}
+var _ sdk.Msg = &MsgSwapIn{}
 
-func NewMsgIn(creator string, srcAddress string, desAddress string, srcNetwork string, amount, fee sdk.DecCoin) *MsgIn {
-	return &MsgIn{
+func NewMsgSwapIn(creator string, srcAddress string, desAddress string, srcNetwork string, amount, fee sdk.DecCoin) *MsgSwapIn {
+	return &MsgSwapIn{
 		Creator:     creator,
 		SrcAddress:  srcAddress,
 		DestAddress: desAddress,
-		SrcNetwork:  srcNetwork,
+		Network:     srcNetwork,
 		Amount:      &amount,
 		Fee:         &fee,
 	}
 }
 
-func (msg *MsgIn) Route() string {
+func (msg *MsgSwapIn) Route() string {
 	return RouterKey
 }
 
-func (msg *MsgIn) Type() string {
-	return TypeMsgIn
+func (msg *MsgSwapIn) Type() string {
+	return TypeMsgSwapIn
 }
 
-func (msg *MsgIn) GetSigners() []sdk.AccAddress {
+func (msg *MsgSwapIn) GetSigners() []sdk.AccAddress {
 	creator, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		panic(err)
@@ -37,12 +37,12 @@ func (msg *MsgIn) GetSigners() []sdk.AccAddress {
 	return []sdk.AccAddress{creator}
 }
 
-func (msg *MsgIn) GetSignBytes() []byte {
+func (msg *MsgSwapIn) GetSignBytes() []byte {
 	bz := ModuleCdc.MustMarshalJSON(msg)
 	return sdk.MustSortJSON(bz)
 }
 
-func (msg *MsgIn) ValidateBasic() error {
+func (msg *MsgSwapIn) ValidateBasic() error {
 	_, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)

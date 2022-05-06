@@ -9,10 +9,10 @@ const TypeMsgReject = "reject"
 
 var _ sdk.Msg = &MsgReject{}
 
-func NewMsgReject(creator string, txnIDs []uint64) *MsgReject {
+func NewMsgReject(creator string, ids []uint64) *MsgReject {
 	return &MsgReject{
 		Creator: creator,
-		TxnIDs:  txnIDs,
+		Ids:     ids,
 	}
 }
 
@@ -42,7 +42,7 @@ func (msg *MsgReject) ValidateBasic() error {
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
 	}
-	if len(msg.GetTxnIDs()) == 0 {
+	if len(msg.GetIds()) == 0 {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "swap transaction list must not empty (%s)", err)
 	}
 	return nil

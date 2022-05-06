@@ -11,19 +11,19 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (k Keeper) FormatAll(c context.Context, req *types.QueryAllFormatRequest) (*types.QueryAllFormatResponse, error) {
+func (k Keeper) SignSchemaAll(c context.Context, req *types.QueryAllSignSchemasRequest) (*types.QueryAllSignSchemasResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
 
-	var formats []types.Format
+	var formats []types.SignSchema
 	ctx := sdk.UnwrapSDKContext(c)
 
 	store := ctx.KVStore(k.storeKey)
 	formatStore := prefix.NewStore(store, types.KeyPrefix(types.FormatKeyPrefix))
 
 	pageRes, err := query.Paginate(formatStore, req.Pagination, func(key []byte, value []byte) error {
-		var format types.Format
+		var format types.SignSchema
 		if err := k.cdc.Unmarshal(value, &format); err != nil {
 			return err
 		}
@@ -36,10 +36,10 @@ func (k Keeper) FormatAll(c context.Context, req *types.QueryAllFormatRequest) (
 		return nil, status.Error(codes.Internal, err.Error())
 	}
 
-	return &types.QueryAllFormatResponse{Formats: formats, Pagination: pageRes}, nil
+	return &types.QueryAllSignSchemasResponse{Schemas: formats, Pagination: pageRes}, nil
 }
 
-func (k Keeper) Format(c context.Context, req *types.QueryGetFormatRequest) (*types.QueryGetFormatResponse, error) {
+func (k Keeper) SignSchema(c context.Context, req *types.QueryGetSignSchemaRequest) (*types.QuerySignSchemaResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
@@ -53,5 +53,5 @@ func (k Keeper) Format(c context.Context, req *types.QueryGetFormatRequest) (*ty
 		return nil, status.Error(codes.NotFound, "not found")
 	}
 
-	return &types.QueryGetFormatResponse{Format: val}, nil
+	return &types.QuerySignSchemaResponse{SignSchema: val}, nil
 }

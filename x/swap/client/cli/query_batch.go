@@ -25,7 +25,7 @@ func CmdShowBatch() *cobra.Command {
 				return err
 			}
 
-			params := &types.QueryGetBatchRequest{
+			params := &types.QueryBatchRequest{
 				Id: id,
 			}
 

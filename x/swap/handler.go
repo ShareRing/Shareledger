@@ -17,7 +17,7 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
 		ctx = ctx.WithEventManager(sdk.NewEventManager())
 
 		switch msg := msg.(type) {
-		case *types.MsgOut:
+		case *types.MsgSwapOut:
 			res, err := msgServer.Out(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
 		case *types.MsgApprove:
@@ -35,22 +35,22 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
 		case *types.MsgReject:
 			res, err := msgServer.Reject(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgIn:
+		case *types.MsgSwapIn:
 			res, err := msgServer.In(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
 		case *types.MsgApproveIn:
 			res, err := msgServer.ApproveIn(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
-			case *types.MsgCreateFormat:
-					res, err := msgServer.CreateFormat(sdk.WrapSDKContext(ctx), msg)
-					return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgUpdateFormat:
-					res, err := msgServer.UpdateFormat(sdk.WrapSDKContext(ctx), msg)
-					return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgDeleteFormat:
-					res, err := msgServer.DeleteFormat(sdk.WrapSDKContext(ctx), msg)
-					return sdk.WrapServiceResult(ctx, res, err)
-// this line is used by starport scaffolding # 1
+		case *types.MsgCreateSignSchema:
+			res, err := msgServer.CreateSignSchema(sdk.WrapSDKContext(ctx), msg)
+			return sdk.WrapServiceResult(ctx, res, err)
+		case *types.MsgUpdateSignSchema:
+			res, err := msgServer.UpdateSignSchema(sdk.WrapSDKContext(ctx), msg)
+			return sdk.WrapServiceResult(ctx, res, err)
+		case *types.MsgDeleteSignSchema:
+			res, err := msgServer.DeleteSignSchema(sdk.WrapSDKContext(ctx), msg)
+			return sdk.WrapServiceResult(ctx, res, err)
+			// this line is used by starport scaffolding # 1
 		default:
 			errMsg := fmt.Sprintf("unrecognized %s message type: %T", types.ModuleName, msg)
 			return nil, sdkerrors.Wrap(sdkerrors.ErrUnknownRequest, errMsg)

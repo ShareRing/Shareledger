@@ -36,7 +36,7 @@ func CmdIn() *cobra.Command {
 				return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid swap amount %s err %", argFee, err)
 			}
 
-			msg := types.NewMsgIn(
+			msg := types.NewMsgSwapIn(
 				clientCtx.GetFromAddress().String(),
 				argSrcAddress,
 				argDesAddress,

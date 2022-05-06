@@ -3,30 +3,30 @@ package shareledger.swap;
 
 import "cosmos/base/v1beta1/coin.proto";
 
-import "swap/format.proto";
+import "swap/sign_schema.proto";
 // this line is used by starport scaffolding # proto/tx/import
 
 option go_package = "github.com/sharering/shareledger/x/swap/types";
 
 // Msg defines the Msg service.
 service Msg {
-      rpc Out(MsgOut) returns (MsgOutResponse);
+  rpc Out(MsgSwapOut) returns (MsgOutResponse);
   rpc Approve(MsgApprove) returns (MsgApproveResponse);
   rpc Deposit(MsgDeposit) returns (MsgDepositResponse);
   rpc Withdraw(MsgWithdraw) returns (MsgWithdrawResponse);
-  rpc CreateFormat(MsgCreateSignSchema) returns (MsgCreateSignSchemaResponse);
-  rpc UpdateFormat(MsgUpdateSignSchema) returns (MsgUpdateSignSchemaResponse);
-  rpc DeleteFormat(MsgDeleteSignSchema) returns (MsgDeleteSignSchema);
+  rpc CreateSignSchema(MsgCreateSignSchema) returns (MsgCreateSignSchemaResponse);
+  rpc UpdateSignSchema(MsgUpdateSignSchema) returns (MsgUpdateSignSchemaResponse);
+  rpc DeleteSignSchema(MsgDeleteSignSchema) returns (MsgDeleteSignSchemaResponse);
   rpc Cancel(MsgCancel) returns (MsgCancelResponse);
   rpc Reject(MsgReject) returns (MsgRejectResponse);
-  rpc In(MsgIn) returns (MsgInResponse);
+  rpc In(MsgSwapIn) returns (MsgInResponse);
   rpc ApproveIn(MsgApproveIn) returns (MsgApproveInResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
-message MsgOut {
+message MsgSwapOut {
   string creator = 1;
-  string destAddr = 2;
+  string destAddress = 2;
   string network = 3;
   cosmos.base.v1beta1.DecCoin amount = 4;
   cosmos.base.v1beta1.DecCoin fee = 5;
@@ -101,11 +101,11 @@ message MsgReject {
 message MsgRejectResponse {
 }
 
-message MsgIn {
+message MsgSwapIn {
   string creator = 1;
   string srcAddress = 2;
   string destAddress = 3;
-  string srcNetwork = 4;
+  string network = 4;
   cosmos.base.v1beta1.DecCoin amount = 5;
   cosmos.base.v1beta1.DecCoin fee = 6;
 }

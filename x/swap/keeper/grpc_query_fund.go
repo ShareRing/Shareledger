@@ -10,7 +10,7 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (k Keeper) Fund(goCtx context.Context, req *types.QueryFundRequest) (*types.QueryFundResponse, error) {
+func (k Keeper) Balances(goCtx context.Context, req *types.QueryBalanceRequest) (*types.QueryBalanceResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
@@ -24,15 +24,12 @@ func (k Keeper) Fund(goCtx context.Context, req *types.QueryFundRequest) (*types
 	coins := k.bankKeeper.SpendableCoins(ctx, moduleAddr)
 	dCoin := denom.ToDisplayCoins(coins)
 
-	r := &types.QueryFundResponse{
-		Availables: make([]*sdk.DecCoin, 0, dCoin.Len()),
-	}
+	balance := sdk.DecCoin{}
 	for _, c := range dCoin {
-		r.Availables = append(r.Availables, &sdk.DecCoin{
-			Denom:  c.Denom,
-			Amount: c.Amount,
-		})
+		if c.Denom == denom.Shr {
+			balance = c
+		}
 	}
 
-	return r, nil
+	return &types.QueryBalanceResponse{Balance: &balance}, nil
 }

@@ -103,14 +103,10 @@ func (s *SwapIntegrationTestSuite) TestDeposit() {
 				if err != nil {
 					s.Failf("query swap fund fail %s out %s", err.Error(), string(out.Bytes()))
 				}
-				fundRes := swapTypes.QueryFundResponse{}
+				fundRes := swapTypes.QueryBalanceResponse{}
 				err = validatorCtx.Codec.UnmarshalJSON(out.Bytes(), &fundRes)
 
-				for _, c := range fundRes.Available {
-					if c.Denom == denom.Shr {
-						balanceModuleBeforeDeposit = sdk.NewDecCoins(*c)
-					}
-				}
+				balanceModuleBeforeDeposit = sdk.NewDecCoins(*fundRes.GetBalance())
 
 			}
 			if tc.expectCreatorChange != nil {
@@ -141,16 +137,12 @@ func (s *SwapIntegrationTestSuite) TestDeposit() {
 					s.Fail("query swap fund fail", err.Error())
 				}
 
-				fundRes := swapTypes.QueryFundResponse{}
+				fundRes := swapTypes.QueryBalanceResponse{}
 				err = validatorCtx.Codec.UnmarshalJSON(out.Bytes(), &fundRes)
 				if err != nil {
 					s.T().Fatalf("can't unmarshal json %s", err)
 				}
-				for _, c := range fundRes.Available {
-					if c.Denom == denom.Shr {
-						balanceModuleAfterDeposit = sdk.NewDecCoins(*c)
-					}
-				}
+				balanceModuleAfterDeposit = sdk.NewDecCoins(*fundRes.GetBalance())
 				s.Require().Equalf(balanceModuleBeforeDeposit.AmountOf(denom.Shr).Add(sdk.NewDec(tc.expectModuleChange.D)), balanceModuleAfterDeposit.AmountOf(denom.Shr), "module balance isn't equal")
 			}
 			if tc.expectCreatorChange != nil {
@@ -228,14 +220,10 @@ func (s *SwapIntegrationTestSuite) TestWithDraw() {
 				if err != nil {
 					s.Failf("query swap fund fail %s out %s", err.Error(), string(out.Bytes()))
 				}
-				fundRes := swapTypes.QueryFundResponse{}
+				fundRes := swapTypes.QueryBalanceResponse{}
 				err = validatorCtx.Codec.UnmarshalJSON(out.Bytes(), &fundRes)
 
-				for _, c := range fundRes.Available {
-					if c.Denom == denom.Shr {
-						balanceModuleBeforeDeposit = sdk.NewDecCoins(*c)
-					}
-				}
+				balanceModuleBeforeDeposit = sdk.NewDecCoins(*fundRes.GetBalance())
 
 			}
 			rAddr, _ := sdk.AccAddressFromBech32(tc.iReceiver)
@@ -268,16 +256,12 @@ func (s *SwapIntegrationTestSuite) TestWithDraw() {
 					s.Fail("query swap fund fail", err.Error())
 				}
 
-				fundRes := swapTypes.QueryFundResponse{}
+				fundRes := swapTypes.QueryBalanceResponse{}
 				err = validatorCtx.Codec.UnmarshalJSON(out.Bytes(), &fundRes)
 				if err != nil {
 					s.T().Fatalf("can't unmarshal json %s", err)
 				}
-				for _, c := range fundRes.Available {
-					if c.Denom == denom.Shr {
-						balanceModuleAfterDeposit = sdk.NewDecCoins(*c)
-					}
-				}
+				balanceModuleAfterDeposit = sdk.NewDecCoins(*fundRes.GetBalance())
 				s.Require().Equalf(
 					balanceModuleBeforeDeposit.AmountOf(denom.Shr).Add(sdk.NewDec(tc.expectModuleChange.D)).String(),
 					balanceModuleAfterDeposit.AmountOf(denom.Shr).String(), "module balance isn't equal")
@@ -418,14 +402,10 @@ func (s *SwapIntegrationTestSuite) TestCancel() {
 				if err != nil {
 					s.Failf("query swap fund fail %s out %s", err.Error(), string(out.Bytes()))
 				}
-				fundRes := swapTypes.QueryFundResponse{}
+				fundRes := swapTypes.QueryBalanceResponse{}
 				err = cliCtx.Codec.UnmarshalJSON(out.Bytes(), &fundRes)
-
-				for _, c := range fundRes.Available {
-					if c.Denom == denom.Shr {
-						balanceModuleBefore = sdk.NewDecCoins(*c)
-					}
-				}
+				s.T().Log(fundRes)
+				balanceModuleBefore = sdk.NewDecCoins(*fundRes.GetBalance())
 
 			}
 			if ts.expectCreatorChange != nil {
@@ -503,16 +483,12 @@ func (s *SwapIntegrationTestSuite) TestCancel() {
 					s.Fail("query swap fund fail", err.Error())
 				}
 
-				fundRes := swapTypes.QueryFundResponse{}
+				fundRes := swapTypes.QueryBalanceResponse{}
 				err = cliCtx.Codec.UnmarshalJSON(out.Bytes(), &fundRes)
 				if err != nil {
 					s.T().Fatalf("can't unmarshal json %s", err)
 				}
-				for _, c := range fundRes.Available {
-					if c.Denom == denom.Shr {
-						balanceModuleAfterCancel = sdk.NewDecCoins(*c)
-					}
-				}
+				balanceModuleAfterCancel = sdk.NewDecCoins(*fundRes.GetBalance())
 
 				s.Require().Equalf(balanceModuleBefore.AmountOf(denom.Shr).Add(sdk.NewDec(ts.expectModuleChange.D)).String(), balanceModuleAfterCancel.AmountOf(denom.Shr).String(), "module balance isn't equal")
 			}
@@ -655,14 +631,10 @@ func (s *SwapIntegrationTestSuite) TestReject() {
 				if err != nil {
 					s.Failf("query swap fund fail %s out %s", err.Error(), string(out.Bytes()))
 				}
-				fundRes := swapTypes.QueryFundResponse{}
+				fundRes := swapTypes.QueryBalanceResponse{}
 				err = cliCtx.Codec.UnmarshalJSON(out.Bytes(), &fundRes)
 
-				for _, c := range fundRes.Available {
-					if c.Denom == denom.Shr {
-						balanceModuleBefore = sdk.NewDecCoins(*c)
-					}
-				}
+				balanceModuleBefore = sdk.NewDecCoins(*fundRes.GetBalance())
 			}
 			if ts.expectCreatorChange != nil {
 				out := tests.CmdQueryBalance(s.T(), cliCtx, netutilts.Accounts[ts.iTxCreatorSwap])
@@ -739,16 +711,12 @@ func (s *SwapIntegrationTestSuite) TestReject() {
 					s.Fail("query swap fund fail", err.Error())
 				}
 
-				fundRes := swapTypes.QueryFundResponse{}
+				fundRes := swapTypes.QueryBalanceResponse{}
 				err = cliCtx.Codec.UnmarshalJSON(out.Bytes(), &fundRes)
 				if err != nil {
 					s.T().Fatalf("can't unmarshal json %s", err)
 				}
-				for _, c := range fundRes.Available {
-					if c.Denom == denom.Shr {
-						balanceModuleAfterCancel = sdk.NewDecCoins(*c)
-					}
-				}
+				balanceModuleAfterCancel = sdk.NewDecCoins(*fundRes.GetBalance())
 
 				s.Require().Equalf(balanceModuleBefore.AmountOf(denom.Shr).Add(sdk.NewDec(ts.expectModuleChange.D)).String(), balanceModuleAfterCancel.AmountOf(denom.Shr).String(), "module balance isn't equal")
 			}
@@ -769,10 +737,10 @@ func networkWithFormat(t *testing.T, cf *network.Config) {
 	var gen = swapTypes.GenesisState{}
 	require.NoError(t, cf.Codec.UnmarshalJSON(cf.GenesisState[swapTypes.ModuleName], &gen))
 
-	gen.FormatList = []swapTypes.Format{{
-		Network:    "erc20",
-		Creator:    "shareledger1lq9svs76xwekrrzw7uprekyqydf7fp02p8zp8e",
-		DataFormat: "{\"types\":{\"EIP712Domain\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"version\",\"type\":\"string\"},{\"name\":\"chainId\",\"type\":\"uint256\"},{\"name\":\"verifyingContract\",\"type\":\"address\"}],\"Swap\":[{\"name\":\"ids\",\"type\":\"uint256[]\"},{\"name\":\"tos\",\"type\":\"address[]\"},{\"name\":\"amounts\",\"type\":\"uint256[]\"}]},\"primaryType\":\"Swap\",\"domain\":{\"name\":\"ShareRingSwap\",\"version\":\"2.0\",\"chainId\":\"0x7a69\",\"verifyingContract\":\"0x0165878a594ca255338adfa4d48449f69242eb8f\",\"salt\":\"\"}}",
+	gen.FormatList = []swapTypes.SignSchema{{
+		Network: "erc20",
+		Creator: "shareledger1lq9svs76xwekrrzw7uprekyqydf7fp02p8zp8e",
+		Schema:  "{\"types\":{\"EIP712Domain\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"version\",\"type\":\"string\"},{\"name\":\"chainId\",\"type\":\"uint256\"},{\"name\":\"verifyingContract\",\"type\":\"address\"}],\"Swap\":[{\"name\":\"ids\",\"type\":\"uint256[]\"},{\"name\":\"tos\",\"type\":\"address[]\"},{\"name\":\"amounts\",\"type\":\"uint256[]\"}]},\"primaryType\":\"Swap\",\"domain\":{\"name\":\"ShareRingSwap\",\"version\":\"2.0\",\"chainId\":\"0x7a69\",\"verifyingContract\":\"0x0165878a594ca255338adfa4d48449f69242eb8f\",\"salt\":\"\"}}",
 	}}
 	buf, err := cf.Codec.MarshalJSON(&gen)
 	require.NoError(t, err)
