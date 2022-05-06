@@ -8,7 +8,10 @@ import (
 	"testing"
 )
 
-var runOnce = sync.Once{}
+var (
+	runOnce = sync.Once{}
+	NetConf = network.DefaultConfig()
+)
 
 func init() {
 	runOnce.Do(func() {
@@ -16,7 +19,6 @@ func init() {
 	})
 }
 func TestSwappingModuleIntegration(t *testing.T) {
-	networkConf := network.DefaultConfig()
-	networkConf.NumValidators = 1
-	suite.Run(t, NewSwapIntegrationTestSuite(networkConf))
+	NetConf.NumValidators = 1
+	suite.Run(t, NewSwapIntegrationTestSuite(NetConf))
 }

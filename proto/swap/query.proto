@@ -6,9 +6,9 @@ import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "cosmos/base/v1beta1/coin.proto";
 import "swap/params.proto";
-import "swap/id.proto";
 import "swap/request.proto";
 import "swap/batch.proto";
+import "swap/format.proto";
 // this line is used by starport scaffolding # 1
 
 option go_package = "github.com/sharering/shareledger/x/swap/types";
@@ -22,7 +22,7 @@ service Query {
 
 	// Queries a list of Search items.
 	rpc Search(QuerySearchRequest) returns (QuerySearchResponse) {
-		option (google.api.http).get = "/sharering/shareledger/swap/search/{status}/{id}/{srcAddr}/{destAddr}/{srcNetwork}/{destNetwork}";
+		option (google.api.http).get = "/sharering/shareledger/swap/search/{status}/{ids}/{srcAddr}/{destAddr}/{srcNetwork}/{destNetwork}";
 	}
 
 // Queries a Batch by ids.
@@ -34,6 +34,16 @@ service Query {
 // Queries a list of Fund items.
 	rpc Fund(QueryFundRequest) returns (QueryFundResponse) {
 		option (google.api.http).get = "/sharering/shareledger/swap/fund";
+	}
+
+// Queries a Format by index.
+	rpc Format(QueryGetFormatRequest) returns (QueryGetFormatResponse) {
+		option (google.api.http).get = "/sharering/shareledger/swap/format/{network}";
+	}
+
+	// Queries a list of Format items.
+	rpc FormatAll(QueryAllFormatRequest) returns (QueryAllFormatResponse) {
+		option (google.api.http).get = "/sharering/shareledger/swap/format";
 	}
 
 // Queries a list of SearchBatch items.
@@ -55,7 +65,7 @@ message QueryParamsResponse {
 
 message QuerySearchRequest {
   string status = 1;
-  uint64 id = 2;
+	repeated uint64 ids = 2;
   string srcAddr = 3;
   string destAddr = 4;
   string srcNetwork = 5;
@@ -64,7 +74,7 @@ cosmos.base.query.v1beta1.PageRequest pagination = 7;
 }
 
 message QuerySearchResponse {
-	repeated Request Request = 1 [(gogoproto.nullable) = false];
+	repeated Request requests = 1 [(gogoproto.nullable) = false];
 	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 
@@ -80,7 +90,25 @@ message QueryFundRequest {
 }
 
 message QueryFundResponse {
-	repeated	cosmos.base.v1beta1.DecCoin available = 1;
+	repeated	cosmos.base.v1beta1.DecCoin availables = 1;
+}
+
+message QueryGetFormatRequest {
+	  string network = 1;
+
+}
+
+message QueryGetFormatResponse {
+	Format format = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllFormatRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllFormatResponse {
+	repeated Format formats = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 
 message QuerySearchBatchRequest {

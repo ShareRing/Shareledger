@@ -8,9 +8,11 @@ import (
 	"github.com/sharering/shareledger/x/gentlemint/client/tests"
 	swapTypes "github.com/sharering/shareledger/x/swap/types"
 	denom "github.com/sharering/shareledger/x/utils/demo"
+	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
 	"os"
 	"strings"
+	"testing"
 )
 
 type SwapIntegrationTestSuite struct {
@@ -27,7 +29,7 @@ func NewSwapIntegrationTestSuite(cfg network.Config) *SwapIntegrationTestSuite {
 
 func (s *SwapIntegrationTestSuite) SetupSuite() {
 	s.T().Log("setting up integration test suite for swap module")
-
+	networkWithFormat(s.T(), &s.cfg)
 	kb, dir := netutilts.GetTestingGenesis(s.T(), &s.cfg)
 	s.dir = dir
 
@@ -38,49 +40,7 @@ func (s *SwapIntegrationTestSuite) SetupSuite() {
 	//override the keyring by our keyring information
 	s.network.Validators[0].ClientCtx.Keyring = kb
 
-	//s.seedingSwapRequest(7, nil, []string{"1", "2", "3"}, nil)
-
 	s.T().Log("setting up integration test suite successfully")
-}
-
-//seedingSwapRequest this function helps us to prepare the swapping request for testing
-// numberRq is total request that uou want to create
-// pending is array of requestID that you want it become pending. this mean you do nothing this id
-// approved is array of requestID that you want this become approved status by calling approve func
-// rejected same about but that is used for rejected....
-func (s *SwapIntegrationTestSuite) seedingSwapRequest(numberRq int, pending, approved, rejected []string) {
-	cliCtx := s.network.Validators[0].ClientCtx
-	for i := 0; i < numberRq; i++ {
-		_, err := CmdOut(
-			cliCtx,
-			"0x7b9039bd633411b48a5a5c4262b5b1a16546d209",
-			"etherium",
-			"10shr",
-			"2shr",
-			netutilts.MakeByAccount(netutilts.KeyAccount1),
-			netutilts.SHRFee2,
-			netutilts.SkipConfirmation,
-			netutilts.SyncBroadcast)
-		if err != nil {
-			s.Fail("crate swap out fail %s", err)
-		}
-	}
-	_ = s.network.WaitForNextBlock()
-
-	approvedIds := strings.Join(approved, ",")
-	out, err := CmdApprove(
-		cliCtx,
-		"some_random_hash",
-		approvedIds, netutilts.SHRFee2,
-		netutilts.SkipConfirmation,
-		netutilts.BlockBroadcast)
-	if err != nil {
-		s.Fail("crate swap out fail %s", err)
-	}
-	txOut := netutilts.ParseStdOut(s.T(), out.Bytes())
-	if txOut.Code != netutilts.ShareLedgerSuccessCode {
-		s.T().Error("fail to approve")
-	}
 }
 
 func (s *SwapIntegrationTestSuite) TearDownSuite() {
@@ -368,26 +328,26 @@ func (s *SwapIntegrationTestSuite) TestCancel() {
 	)
 	cliCtx := s.network.Validators[0].ClientCtx
 	cancelCase := []cancelSuite{
-		{
-			description: "In case cancel success",
-			initSwapOut: []swapArg{
-				{
-					wAmount: "20shr",
-					wFee:    "5shr",
-				},
-			},
-			approve: 0,
-			cancelArg: cancelArgs{
-				f: 0,
-				t: 1,
-			},
-			iTxCreatorSwap:      netutilts.KeyAccount1,
-			iTxCreatorCancel:    netutilts.KeyAccount1,
-			iTxFee:              netutilts.SHRFee2,
-			oRes:                &sdk.TxResponse{Code: netutilts.ShareLedgerSuccessCode},
-			expectCreatorChange: &Num{D: -4}, //expect the creator just must pay 4shr for txn fee
-			expectModuleChange:  &Num{D: 0},  // expect module amount doest change cause
-		},
+		//{
+		//	description: "In case cancel success",
+		//	initSwapOut: []swapArg{
+		//		{
+		//			wAmount: "20shr",
+		//			wFee:    "5shr",
+		//		},
+		//	},
+		//	approve: 0,
+		//	cancelArg: cancelArgs{
+		//		f: 0,
+		//		t: 1,
+		//	},
+		//	iTxCreatorSwap:      netutilts.KeyAccount1,
+		//	iTxCreatorCancel:    netutilts.KeyAccount1,
+		//	iTxFee:              netutilts.SHRFee2,
+		//	oRes:                &sdk.TxResponse{Code: netutilts.ShareLedgerSuccessCode},
+		//	expectCreatorChange: &Num{D: -4}, //expect the creator just must pay 4shr for txn fee
+		//	expectModuleChange:  &Num{D: 0},  // expect module amount doest change cause
+		//},
 		{
 			description: "In case can not cancel cause there are some swap request was approved",
 			initSwapOut: []swapArg{
@@ -416,34 +376,34 @@ func (s *SwapIntegrationTestSuite) TestCancel() {
 			expectCreatorChange: &Num{D: -80}, //expect the creator just must pay 4shr for txn fee
 			expectModuleChange:  &Num{D: 72},  // expect module amount doest change cause
 		},
-		{
-			description: "In case can not cancel cause the tx creator isn't owner of this request",
-			initSwapOut: []swapArg{
-				{
-					wAmount: "20shr",
-					wFee:    "5shr",
-				},
-				{
-					wAmount: "30shr",
-					wFee:    "2shr",
-				},
-				{
-					wAmount: "10shr",
-					wFee:    "5shr",
-				},
-			},
-			approve: 0,
-			cancelArg: cancelArgs{
-				f: 0,
-				t: 2,
-			},
-			iTxCreatorSwap:      netutilts.KeyAccount1,
-			iTxCreatorCancel:    netutilts.KeyAccount2,
-			iTxFee:              netutilts.SHRFee2,
-			oRes:                &sdk.TxResponse{Code: sdkerrors.ErrUnauthorized.ABCICode()},
-			expectCreatorChange: &Num{D: -78}, //expect the creator just must pay 4shr for txn fee
-			expectModuleChange:  &Num{D: 72},  // expect module amount doest change cause
-		},
+		//{
+		//	description: "In case can not cancel cause the tx creator isn't owner of this request",
+		//	initSwapOut: []swapArg{
+		//		{
+		//			wAmount: "20shr",
+		//			wFee:    "5shr",
+		//		},
+		//		{
+		//			wAmount: "30shr",
+		//			wFee:    "2shr",
+		//		},
+		//		{
+		//			wAmount: "10shr",
+		//			wFee:    "5shr",
+		//		},
+		//	},
+		//	approve: 0,
+		//	cancelArg: cancelArgs{
+		//		f: 0,
+		//		t: 2,
+		//	},
+		//	iTxCreatorSwap:      netutilts.KeyAccount1,
+		//	iTxCreatorCancel:    netutilts.KeyAccount2,
+		//	iTxFee:              netutilts.SHRFee2,
+		//	oRes:                &sdk.TxResponse{Code: sdkerrors.ErrUnauthorized.ABCICode()},
+		//	expectCreatorChange: &Num{D: -78}, //expect the creator just must pay 4shr for txn fee
+		//	expectModuleChange:  &Num{D: 72},  // expect module amount doest change cause
+		//},
 	}
 
 	for _, ts := range cancelCase {
@@ -497,14 +457,15 @@ func (s *SwapIntegrationTestSuite) TestCancel() {
 				appIDs := strings.Join(swapIDs[0:ts.approve], ",")
 				out, err := CmdApprove(
 					cliCtx,
-					"some_random_hash",
+					netutilts.KeyTreasurer,
 					appIDs,
+					"erc20",
 					netutilts.SHRFee2,
 					netutilts.SkipConfirmation,
 					netutilts.BlockBroadcast,
 					netutilts.MakeByAccount(netutilts.KeyTreasurer))
 				if err != nil {
-					s.Fail("fail when init the swap out request", err)
+					s.Fail("fail when approve the swap out request", err)
 				}
 				txRes := netutilts.ParseStdOut(s.T(), out.Bytes())
 				if txRes.Code != netutilts.ShareLedgerSuccessCode {
@@ -733,8 +694,9 @@ func (s *SwapIntegrationTestSuite) TestReject() {
 				appIDs := strings.Join(swapIDs[0:ts.approve], ",")
 				out, err := CmdApprove(
 					cliCtx,
-					"some_random_hash",
+					netutilts.KeyTreasurer,
 					appIDs,
+					"erc20",
 					netutilts.SHRFee2,
 					netutilts.SkipConfirmation,
 					netutilts.BlockBroadcast,
@@ -765,7 +727,7 @@ func (s *SwapIntegrationTestSuite) TestReject() {
 
 			if ts.oRes != nil {
 				if txRes.Code != ts.oRes.Code {
-					s.Fail("fail when cancel request", "require cancel code must equal with test case", txRes.String())
+					s.Failf("fail when cancel request", "require cancel code must equal with test case %s", txRes.String())
 				}
 			}
 
@@ -800,4 +762,19 @@ func (s *SwapIntegrationTestSuite) TestReject() {
 		})
 
 	}
+}
+
+func networkWithFormat(t *testing.T, cf *network.Config) {
+	t.Helper()
+	var gen = swapTypes.GenesisState{}
+	require.NoError(t, cf.Codec.UnmarshalJSON(cf.GenesisState[swapTypes.ModuleName], &gen))
+
+	gen.FormatList = []swapTypes.Format{{
+		Network:    "erc20",
+		Creator:    "shareledger1lq9svs76xwekrrzw7uprekyqydf7fp02p8zp8e",
+		DataFormat: "{\"types\":{\"EIP712Domain\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"version\",\"type\":\"string\"},{\"name\":\"chainId\",\"type\":\"uint256\"},{\"name\":\"verifyingContract\",\"type\":\"address\"}],\"Swap\":[{\"name\":\"ids\",\"type\":\"uint256[]\"},{\"name\":\"tos\",\"type\":\"address[]\"},{\"name\":\"amounts\",\"type\":\"uint256[]\"}]},\"primaryType\":\"Swap\",\"domain\":{\"name\":\"ShareRingSwap\",\"version\":\"2.0\",\"chainId\":\"0x7a69\",\"verifyingContract\":\"0x0165878a594ca255338adfa4d48449f69242eb8f\",\"salt\":\"\"}}",
+	}}
+	buf, err := cf.Codec.MarshalJSON(&gen)
+	require.NoError(t, err)
+	cf.GenesisState[swapTypes.ModuleName] = buf
 }

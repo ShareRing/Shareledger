@@ -11,7 +11,15 @@ import (
 func (k msgServer) In(goCtx context.Context, msg *types.MsgIn) (*types.MsgInResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	rID, err := k.Keeper.In(ctx, msg)
+	req, err := k.AppendPendingRequest(ctx, types.Request{
+		SrcAddr:     msg.SrcAddress,
+		DestAddr:    msg.DestAddress,
+		SrcNetwork:  msg.SrcNetwork,
+		DestNetwork: types.NetworkNameShareLedger,
+		Amount:      msg.Amount,
+		Fee:         msg.Fee,
+		Status:      types.SwapStatusPending,
+	})
 	if err != nil {
 		return nil, err
 	}
@@ -22,7 +30,7 @@ func (k msgServer) In(goCtx context.Context, msg *types.MsgIn) (*types.MsgInResp
 			sdk.NewAttribute(sdk.AttributeKeyModule, types.AttributeValueCategory),
 			sdk.NewAttribute(types.EventTypeSwapAmount, msg.Amount.String()),
 			sdk.NewAttribute(types.EventTypeSwapFee, msg.Fee.String()),
-			sdk.NewAttribute(types.EventTypeSwapId, strconv.FormatUint(rID, 10)),
+			sdk.NewAttribute(types.EventTypeSwapId, strconv.FormatUint(req.Id, 10)),
 			sdk.NewAttribute(types.EventTypeSwapDestAddr, msg.DestAddress),
 			sdk.NewAttribute(types.EventTypeSwapSrcAddr, msg.SrcAddress),
 			sdk.NewAttribute(types.EventTypeSwapDestNetwork, types.NetworkNameShareLedger),
@@ -30,5 +38,5 @@ func (k msgServer) In(goCtx context.Context, msg *types.MsgIn) (*types.MsgInResp
 		),
 	)
 
-	return &types.MsgInResponse{RId: rID}, nil
+	return &types.MsgInResponse{RId: req.Id}, nil
 }

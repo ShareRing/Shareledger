@@ -11,8 +11,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var _ = strconv.Itoa(0)
-
 func CmdReject() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "reject [txnIds]",

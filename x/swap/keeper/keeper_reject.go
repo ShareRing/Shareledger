@@ -6,7 +6,7 @@ import (
 )
 
 func (k Keeper) RejectSwap(ctx sdk.Context, msg *types.MsgReject) ([]types.Request, error) {
-	reqs, err := k.ChangeStatusRequests(ctx, msg.TxnIDs, types.SwapStatusRejected, nil)
+	reqs, err := k.ChangeStatusRequests(ctx, msg.TxnIDs, types.SwapStatusRejected, nil, true)
 	if err != nil {
 		return nil, err
 	}

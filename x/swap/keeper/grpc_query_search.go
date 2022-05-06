@@ -35,14 +35,23 @@ func (k Keeper) Search(goCtx context.Context, req *types.QuerySearchRequest) (*t
 	}
 	store := k.GetStoreRequestMap(ctx)[req.Status]
 	var requests []types.Request
-
+	filterIds := make(map[uint64]struct{})
+	var filteredIds bool
+	if len(req.Ids) > 0 {
+		for _, id := range req.Ids {
+			filterIds[id] = struct{}{}
+		}
+		filteredIds = true
+	}
 	pageRes, err := query.FilteredPaginate(store, req.Pagination, func(key []byte, value []byte, accumulate bool) (bool, error) {
 		var val types.Request
 		if err := k.cdc.Unmarshal(value, &val); err != nil {
 			return false, err
 		}
-		if req.Id != 0 && req.Id != val.Id {
-			return false, nil
+		if filteredIds {
+			if _, found := filterIds[val.Id]; !found {
+				return false, nil
+			}
 		}
 		if req.DestAddr != "" && !strings.EqualFold(req.DestAddr, val.DestAddr) {
 			return false, nil
@@ -65,7 +74,7 @@ func (k Keeper) Search(goCtx context.Context, req *types.QuerySearchRequest) (*t
 	})
 
 	return &types.QuerySearchResponse{
-		Request:    requests,
+		Requests:   requests,
 		Pagination: pageRes,
 	}, err
 }

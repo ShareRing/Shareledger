@@ -40,8 +40,8 @@ func CmdOut(clientCtx client.Context, dest, network, amount, fee string, extraFl
 	return clitestutil.ExecTestCLICmd(clientCtx, cli.CmdOut(), args)
 }
 
-func CmdApprove(clientCtx client.Context, sign, reqIds string, extraFlags ...string) (testutil.BufferWriter, error) {
-	args := []string{sign, reqIds}
+func CmdApprove(clientCtx client.Context, signName, reqIds, netName string, extraFlags ...string) (testutil.BufferWriter, error) {
+	args := []string{reqIds, signName, netName}
 	args = append(args, extraFlags...)
 
 	return clitestutil.ExecTestCLICmd(clientCtx, cli.CmdApprove(), args)

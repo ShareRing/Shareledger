@@ -21,7 +21,7 @@ func CmdCreateId() *cobra.Command {
 		Use:   "create [id] [backup-address] [owner-address] [extra-data]",
 		Short: "CreateAsset new id",
 		Long: strings.TrimSpace(fmt.Sprintf(`
-CreateAsset a new Id by given information
+CreateAsset a new Ids by given information
 Example:
 $ %s tx %s create uid-159654 shareledger1s432u6zv95wpluxhf4qru2ewy58kc3w4tkzm3v shareledger1s432u6zv95wpluxhf4qru2ewy58kc3w4tkzm3v http://sharering.network`, version.Name, types.ModuleName)),
 		Args: cobra.ExactArgs(4),

@@ -25,10 +25,10 @@ func (k Keeper) Fund(goCtx context.Context, req *types.QueryFundRequest) (*types
 	dCoin := denom.ToDisplayCoins(coins)
 
 	r := &types.QueryFundResponse{
-		Available: make([]*sdk.DecCoin, 0, dCoin.Len()),
+		Availables: make([]*sdk.DecCoin, 0, dCoin.Len()),
 	}
 	for _, c := range dCoin {
-		r.Available = append(r.Available, &sdk.DecCoin{
+		r.Availables = append(r.Availables, &sdk.DecCoin{
 			Denom:  c.Denom,
 			Amount: c.Amount,
 		})

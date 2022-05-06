@@ -21,7 +21,11 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 
 	// Set batch count
 	k.SetBatchCount(ctx, genState.BatchCount)
-	// this line is used by starport scaffolding # genesis/module/init
+	// Set all the format
+for _, elem := range genState.FormatList {
+	k.SetFormat(ctx, elem)
+}
+// this line is used by starport scaffolding # genesis/module/init
 	k.SetParams(ctx, genState.Params)
 }
 
@@ -35,7 +39,8 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 	genesis.RequestCount = k.GetRequestCount(ctx)
 	genesis.BatchList = k.GetAllBatch(ctx)
 	genesis.BatchCount = k.GetBatchCount(ctx)
-	// this line is used by starport scaffolding # genesis/module/export
+	genesis.FormatList = k.GetAllFormat(ctx)
+// this line is used by starport scaffolding # genesis/module/export
 
 	return genesis
 }

@@ -1,21 +1,17 @@
 package cli
 
 import (
-	sdk "github.com/cosmos/cosmos-sdk/types"
-	"strconv"
-
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/sharering/shareledger/x/swap/types"
 	"github.com/spf13/cobra"
 )
 
-var _ = strconv.Itoa(0)
-
 func CmdOut() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "out [dest-addr] [network] [amount] [fee]",
+		Use:   "out [dest_address] [network] [amount] [fee]",
 		Short: "create new request swap out",
 		Args:  cobra.ExactArgs(4),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
