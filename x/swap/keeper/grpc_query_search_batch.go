@@ -21,7 +21,7 @@ func (k Keeper) SearchBatch(goCtx context.Context, req *types.QuerySearchBatchRe
 
 	batchStore := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.BatchKey))
 
-	var batchs []types.Batch
+	var batches []types.Batch
 
 	pageRes, err := query.FilteredPaginate(batchStore, req.GetPagination(), func(key []byte, value []byte, accumulate bool) (bool, error) {
 		var val types.Batch
@@ -33,7 +33,7 @@ func (k Keeper) SearchBatch(goCtx context.Context, req *types.QuerySearchBatchRe
 		}
 
 		if accumulate {
-			batchs = append(batchs, val)
+			batches = append(batches, val)
 		}
 		return true, nil
 	})
@@ -42,7 +42,7 @@ func (k Keeper) SearchBatch(goCtx context.Context, req *types.QuerySearchBatchRe
 	}
 
 	return &types.QuerySearchBatchResponse{
-		Batch:      batchs,
+		Batch:      batches,
 		Pagination: pageRes,
 	}, nil
 }

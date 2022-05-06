@@ -30,25 +30,14 @@ func CmdUpdateBatch() *cobra.Command {
 				return err
 			}
 
-			batchID, err := strconv.ParseUint(argBatchId, 10, 64)
-			if err != nil {
-				return err
-			}
+			batchID, _ := strconv.ParseUint(argBatchId, 10, 64)
+
 			msg := types.NewMsgUpdateBatch(
 				clientCtx.GetFromAddress().String(),
 				batchID,
 				argStatus,
 			)
-			var n uint64
-			if argNonce != "" {
-				n, err = strconv.ParseUint(argNonce, 10, 64)
-				if err != nil {
-					return err
-				}
-			}
-			if n != 0 {
-				msg.Nonce = n
-			}
+			msg.Nonce, _ = strconv.ParseUint(argNonce, 10, 64)
 
 			if err := msg.ValidateBasic(); err != nil {
 				return err

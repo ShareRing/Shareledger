@@ -43,5 +43,8 @@ func (msg *MsgUpdateBatch) ValidateBasic() error {
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
 	}
+	if msg.Status == BatchStatusProcessing && msg.Nonce == 0 {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "the nonce number can't empty or zero in case %s status", msg.Status)
+	}
 	return nil
 }

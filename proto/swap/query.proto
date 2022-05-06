@@ -83,7 +83,7 @@ message QueryGetBatchRequest {
 }
 
 message QueryGetBatchResponse {
-	repeated Batch Batch = 1 [(gogoproto.nullable) = false];
+	repeated Batch Batchs = 1 [(gogoproto.nullable) = false];
 }
 
 message QueryFundRequest {
@@ -117,7 +117,7 @@ cosmos.base.query.v1beta1.PageRequest pagination = 2;
 }
 
 message QuerySearchBatchResponse {
-	repeated Batch Batch = 1 [(gogoproto.nullable) = false];
+	repeated Batch batchs = 1 [(gogoproto.nullable) = false];
 cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 
