@@ -17,10 +17,10 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
 		ctx = ctx.WithEventManager(sdk.NewEventManager())
 
 		switch msg := msg.(type) {
-		case *types.MsgSwapOut:
+		case *types.MsgRequestOut:
 			res, err := msgServer.Out(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgApprove:
+		case *types.MsgApproveOut:
 			res, err := msgServer.Approve(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
 		case *types.MsgCancel:
@@ -35,7 +35,7 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
 		case *types.MsgReject:
 			res, err := msgServer.Reject(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgSwapIn:
+		case *types.MsgRequestIn:
 			res, err := msgServer.In(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
 		case *types.MsgApproveIn:

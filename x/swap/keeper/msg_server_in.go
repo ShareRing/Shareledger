@@ -9,7 +9,7 @@ import (
 	"github.com/sharering/shareledger/x/swap/types"
 )
 
-func (k msgServer) In(goCtx context.Context, msg *types.MsgSwapIn) (*types.MsgSwapInResponse, error) {
+func (k msgServer) In(goCtx context.Context, msg *types.MsgRequestIn) (*types.MsgSwapInResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 	tn := time.Now().Unix()
 	req, err := k.AppendPendingRequest(ctx, types.Request{

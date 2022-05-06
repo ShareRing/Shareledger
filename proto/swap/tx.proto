@@ -10,8 +10,8 @@ option go_package = "github.com/sharering/shareledger/x/swap/types";
 
 // Msg defines the Msg service.
 service Msg {
-  rpc Out(MsgSwapOut) returns (MsgOutSwapResponse);
-  rpc Approve(MsgApprove) returns (MsgApproveResponse);
+  rpc Out(MsgRequestOut) returns (MsgOutSwapResponse);
+  rpc Approve(MsgApproveOut) returns (MsgApproveResponse);
   rpc Deposit(MsgDeposit) returns (MsgDepositResponse);
   rpc Withdraw(MsgWithdraw) returns (MsgWithdrawResponse);
   rpc CreateSignSchema(MsgCreateSignSchema) returns (MsgCreateSignSchemaResponse);
@@ -19,12 +19,12 @@ service Msg {
   rpc DeleteSignSchema(MsgDeleteSignSchema) returns (MsgDeleteSignSchemaResponse);
   rpc Cancel(MsgCancel) returns (MsgCancelResponse);
   rpc Reject(MsgReject) returns (MsgRejectResponse);
-  rpc In(MsgSwapIn) returns (MsgSwapInResponse);
+  rpc In(MsgRequestIn) returns (MsgSwapInResponse);
   rpc ApproveIn(MsgApproveIn) returns (MsgApproveInResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
-message MsgSwapOut {
+message MsgRequestOut {
   string creator = 1;
   string destAddress = 2;
   string network = 3;
@@ -36,7 +36,7 @@ message MsgOutSwapResponse {
   uint64 id = 1;
 }
 
-message MsgApprove {
+message MsgApproveOut {
   string creator = 1;
   string signature = 2;
   repeated uint64 ids = 3;
@@ -101,7 +101,7 @@ message MsgReject {
 message MsgRejectResponse {
 }
 
-message MsgSwapIn {
+message MsgRequestIn {
   string creator = 1;
   string srcAddress = 2;
   string destAddress = 3;
