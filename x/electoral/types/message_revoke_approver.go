@@ -7,24 +7,24 @@ import (
 
 const TypeMsgRevokeApprover = "revoke_approver"
 
-var _ sdk.Msg = &MsgRevokeApprover{}
+var _ sdk.Msg = &MsgRevokeApprovers{}
 
-func NewMsgRevokeApprover(creator string, addresses string) *MsgRevokeApprover {
-	return &MsgRevokeApprover{
+func NewMsgRevokeApprover(creator string, addresses []string) *MsgRevokeApprovers {
+	return &MsgRevokeApprovers{
 		Creator:   creator,
 		Addresses: addresses,
 	}
 }
 
-func (msg *MsgRevokeApprover) Route() string {
+func (msg *MsgRevokeApprovers) Route() string {
 	return RouterKey
 }
 
-func (msg *MsgRevokeApprover) Type() string {
+func (msg *MsgRevokeApprovers) Type() string {
 	return TypeMsgRevokeApprover
 }
 
-func (msg *MsgRevokeApprover) GetSigners() []sdk.AccAddress {
+func (msg *MsgRevokeApprovers) GetSigners() []sdk.AccAddress {
 	creator, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		panic(err)
@@ -32,12 +32,12 @@ func (msg *MsgRevokeApprover) GetSigners() []sdk.AccAddress {
 	return []sdk.AccAddress{creator}
 }
 
-func (msg *MsgRevokeApprover) GetSignBytes() []byte {
+func (msg *MsgRevokeApprovers) GetSignBytes() []byte {
 	bz := ModuleCdc.MustMarshalJSON(msg)
 	return sdk.MustSortJSON(bz)
 }
 
-func (msg *MsgRevokeApprover) ValidateBasic() error {
+func (msg *MsgRevokeApprovers) ValidateBasic() error {
 	_, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)

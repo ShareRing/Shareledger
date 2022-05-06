@@ -8,7 +8,7 @@ option go_package = "github.com/sharering/shareledger/x/electoral/types";
 
 // Msg defines the Msg service.
 service Msg {
-      rpc EnrollVoter(MsgEnrollVoter) returns (MsgEnrollVoterResponse);
+  rpc EnrollVoter(MsgEnrollVoter) returns (MsgEnrollVoterResponse);
   rpc RevokeVoter(MsgRevokeVoter) returns (MsgRevokeVoterResponse);
   rpc EnrollLoaders(MsgEnrollLoaders) returns (MsgEnrollLoadersResponse);
   rpc RevokeLoaders(MsgRevokeLoaders) returns (MsgRevokeLoadersResponse);

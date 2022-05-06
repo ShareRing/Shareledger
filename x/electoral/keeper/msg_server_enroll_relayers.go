@@ -7,7 +7,7 @@ import (
 	"github.com/sharering/shareledger/x/electoral/types"
 )
 
-func (k msgServer) EnrollRelayer(goCtx context.Context, msg *types.MsgEnrollRelayers) (*types.MsgEnrollRelayersResponse, error) {
+func (k msgServer) EnrollRelayers(goCtx context.Context, msg *types.MsgEnrollRelayers) (*types.MsgEnrollRelayersResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	event := sdk.NewEvent(types.EventTypeEnrollRelayer)

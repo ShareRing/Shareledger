@@ -32,3 +32,10 @@ func (k Keeper) IsIDSigner(ctx sdk.Context, address sdk.AccAddress) bool {
 func (k Keeper) IsDocIssuer(ctx sdk.Context, address sdk.AccAddress) bool {
 	return k.isActive(ctx, address, types.AccStateKeyDocIssuer)
 }
+
+func (k Keeper) IsApprover(ctx sdk.Context, address sdk.AccAddress) bool {
+	return k.isActive(ctx, address, types.AccStateKeyApprover)
+}
+func (k Keeper) IsRelayer(ctx sdk.Context, address sdk.AccAddress) bool {
+	return k.isActive(ctx, address, types.AccStateKeyRelayer)
+}

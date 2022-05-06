@@ -9,7 +9,7 @@ const TypeMsgRevokeRelayers = "revoke_relayers"
 
 var _ sdk.Msg = &MsgRevokeRelayers{}
 
-func NewMsgRevokeRelayers(creator string, addresses string) *MsgRevokeRelayers {
+func NewMsgRevokeRelayers(creator string, addresses []string) *MsgRevokeRelayers {
 	return &MsgRevokeRelayers{
 		Creator:   creator,
 		Addresses: addresses,

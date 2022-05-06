@@ -27,6 +27,8 @@ const (
 	ErrMsgNotOperatorAccount      = "Transaction's Signer is not operator account"
 	ErrMsgNotVoterAccount         = "Transaction's Signer is not voter account"
 	ErrMsgNotAuthorityAndTreasure = "Transaction's Signer is not authority OR treasure account"
+	ErrMsgNotApproverAccount      = "Transaction's Signer is not approver account"
+	ErrMsgNotRelayerAccount       = "Transaction's Signer is not relayer account"
 )
 
 func NewAuthDecorator(rk RoleKeeper, ik IDKeeper) Auth {
@@ -64,6 +66,13 @@ func (a Auth) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate bool, next sdk.Ant
 			*electoraltypes.MsgEnrollAccountOperators,
 			*electoraltypes.MsgRevokeAccountOperators,
 			*electoraltypes.MsgEnrollVoter,
+			*electoraltypes.MsgEnrollApprovers,
+			*electoraltypes.MsgEnrollRelayers,
+			*electoraltypes.MsgRevokeRelayers,
+			*electoraltypes.MsgRevokeApprovers,
+			*swapmoduletypes.MsgCreateFormat,
+			*swapmoduletypes.MsgUpdateFormat,
+			*swapmoduletypes.MsgDeleteFormat,
 			*electoraltypes.MsgRevokeVoter:
 			if !a.rk.IsAuthority(ctx, signer) {
 				return ctx, sdkerrors.Wrapf(sdkerrors.ErrUnauthorized, ErrMsgNotAuthority)
@@ -112,6 +121,14 @@ func (a Auth) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate bool, next sdk.Ant
 		case *swapmoduletypes.MsgWithdraw:
 			if !a.rk.IsAuthority(ctx, signer) && !a.rk.IsTreasurer(ctx, signer) {
 				return ctx, sdkerrors.Wrapf(sdkerrors.ErrUnauthorized, ErrMsgNotAuthorityAndTreasure)
+			}
+		case *swapmoduletypes.MsgApprove:
+			if !a.rk.IsApprover(ctx, signer) {
+				return ctx, sdkerrors.Wrapf(sdkerrors.ErrUnauthorized, ErrMsgNotApproverAccount)
+			}
+		case *swapmoduletypes.MsgApproveIn, *swapmoduletypes.MsgIn:
+			if !a.rk.IsRelayer(ctx, signer) {
+				return ctx, sdkerrors.Wrapf(sdkerrors.ErrUnauthorized, ErrMsgNotRelayerAccount)
 			}
 		}
 	}

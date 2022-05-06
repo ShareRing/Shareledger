@@ -66,7 +66,17 @@ func (k Keeper) activeRelayer(ctx sdk.Context, addr sdk.AccAddress) {
 		Status:  string(types.StatusActive),
 	})
 }
-
+func (k Keeper) activeApprover(ctx sdk.Context, addr sdk.AccAddress) {
+	key := types.GenAccStateIndexKey(addr, types.AccStateKeyApprover)
+	k.SetAccState(ctx, types.AccState{
+		Key:     string(key),
+		Address: addr.String(),
+		Status:  string(types.StatusActive),
+	})
+}
+func (k Keeper) revokeApprover(ctx sdk.Context, addr sdk.AccAddress) (err error) {
+	return k.revokeApproverAccount(ctx, addr, types.AccStateKeyApprover)
+}
 func (k Keeper) revokeRelayer(ctx sdk.Context, addr sdk.AccAddress) (err error) {
 	return k.revokeRelayerAccount(ctx, addr, types.AccStateKeyRelayer)
 }
@@ -94,6 +104,16 @@ func (k Keeper) revokeVoter(ctx sdk.Context, addr sdk.AccAddress) (err error) {
 	return k.revokeAccAccount(ctx, addr, types.AccStateKeyVoter)
 }
 func (k Keeper) revokeRelayerAccount(ctx sdk.Context, addr sdk.AccAddress, keyType types.AccStateKeyType) error {
+	key := types.GenAccStateIndexKey(addr, keyType)
+	r, found := k.GetAccState(ctx, key)
+	if !found {
+		return sdkerrors.ErrNotFound
+	}
+	r.Status = string(types.StatusInactive)
+	k.SetAccState(ctx, r)
+	return nil
+}
+func (k Keeper) revokeApproverAccount(ctx sdk.Context, addr sdk.AccAddress, keyType types.AccStateKeyType) error {
 	key := types.GenAccStateIndexKey(addr, keyType)
 	r, found := k.GetAccState(ctx, key)
 	if !found {
