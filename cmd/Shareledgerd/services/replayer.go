@@ -8,6 +8,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/crypto/keyring"
 	"github.com/cosmos/cosmos-sdk/server"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	"github.com/pkg/errors"
 	swapmoduletypes "github.com/sharering/shareledger/x/swap/types"
 	"github.com/spf13/cobra"
 	"strings"
@@ -136,11 +137,46 @@ func (r *relayer) startOutProcess(ctx context.Context) error {
 }
 
 func (r *relayer) getPendingBatches() []swapmoduletypes.Batch {
-	panic("implement me")
+	qClient := swapmoduletypes.NewQueryClient(r.Client)
+	pendingQuery := &swapmoduletypes.QuerySearchBatchesRequest{
+		Status: swapmoduletypes.BatchStatusPending,
+	}
+
+	batchesRes, err := qClient.SearchBatches(context.Background(), pendingQuery)
+	//TODO consider logging
+	if err != nil {
+		return nil
+	}
+	return batchesRes.GetBatchs()
+
 }
 
 func (r *relayer) processingBatch(batchId uint64) (swapmoduletypes.Batch, error) {
-	panic("implement me")
+	mClient := swapmoduletypes.NewMsgClient(r.Client)
+	qClient := swapmoduletypes.NewQueryClient(r.Client)
+	updateMsg := &swapmoduletypes.MsgUpdateBatch{
+		Creator: r.Client.GetFromAddress().String(),
+		BatchId: batchId,
+		Status:  swapmoduletypes.BatchStatusProcessing,
+	}
+	_, err := mClient.UpdateBatch(context.Background(), updateMsg)
+	if err != nil {
+		return swapmoduletypes.Batch{}, errors.Wrapf(err, "update batch id %d to processing fail", batchId)
+	}
+
+	batchIdReq := &swapmoduletypes.QueryBatchesRequest{
+		Ids: []uint64{batchId},
+	}
+
+	batchesRes, err := qClient.Batches(context.Background(), batchIdReq)
+
+	if err != nil {
+		return swapmoduletypes.Batch{}, errors.Wrapf(err, "geting batch id %d fail", batchId)
+	}
+	if len(batchesRes.GetBatches()) != 0 {
+		return swapmoduletypes.Batch{}, fmt.Errorf("batches reponse is empty")
+	}
+	return batchesRes.GetBatches()[0], nil
 }
 
 func (r *relayer) submitBatch(ctx context.Context, batches swapmoduletypes.Batch) (txHash string, err error) {
