@@ -67,7 +67,7 @@ func CmdApprove() *cobra.Command {
 			}
 
 			var signFormatData apitypes.TypedData
-			if err := json.Unmarshal([]byte(formatRes.GetSignSchema().Schema), &signFormatData); err != nil {
+			if err := json.Unmarshal([]byte(formatRes.GetSchema().Schema), &signFormatData); err != nil {
 				return err
 			}
 

@@ -27,7 +27,7 @@ func CmdListFormat() *cobra.Command {
 				Pagination: pageReq,
 			}
 
-			res, err := queryClient.SignSchemaAll(context.Background(), params)
+			res, err := queryClient.AllSignSchemas(context.Background(), params)
 			if err != nil {
 				return err
 			}

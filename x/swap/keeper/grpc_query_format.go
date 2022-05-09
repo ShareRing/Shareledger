@@ -11,7 +11,7 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (k Keeper) SignSchemaAll(c context.Context, req *types.QueryAllSignSchemasRequest) (*types.QueryAllSignSchemasResponse, error) {
+func (k Keeper) AllSignSchemas(c context.Context, req *types.QueryAllSignSchemasRequest) (*types.QueryAllSignSchemasResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
@@ -53,5 +53,5 @@ func (k Keeper) SignSchema(c context.Context, req *types.QueryGetSignSchemaReque
 		return nil, status.Error(codes.NotFound, "not found")
 	}
 
-	return &types.QuerySignSchemaResponse{SignSchema: val}, nil
+	return &types.QuerySignSchemaResponse{Schema: val}, nil
 }

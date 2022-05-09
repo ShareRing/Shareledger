@@ -23,7 +23,7 @@ func CmdFund() *cobra.Command {
 
 			params := &types.QueryBalanceRequest{}
 
-			res, err := queryClient.Balances(cmd.Context(), params)
+			res, err := queryClient.Balance(cmd.Context(), params)
 			if err != nil {
 				return err
 			}

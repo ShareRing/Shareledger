@@ -32,7 +32,7 @@ service Query {
 	
 
 // Queries a list of Fund items.
-	rpc Balances(QueryBalanceRequest) returns (QueryBalanceResponse) {
+	rpc Balance(QueryBalanceRequest) returns (QueryBalanceResponse) {
 		option (google.api.http).get = "/sharering/shareledger/swap/balance";
 	}
 
@@ -42,7 +42,7 @@ service Query {
 	}
 
 	// Queries a list of Format items.
-	rpc SignSchemaAll(QueryAllSignSchemasRequest) returns (QueryAllSignSchemasResponse) {
+	rpc AllSignSchemas(QueryAllSignSchemasRequest) returns (QueryAllSignSchemasResponse) {
 		option (google.api.http).get = "/sharering/shareledger/swap/sign_schema";
 	}
 
@@ -94,7 +94,7 @@ message QueryGetSignSchemaRequest {
 }
 
 message QuerySignSchemaResponse {
-	SignSchema signSchema = 1 [(gogoproto.nullable) = false];
+	SignSchema schema = 1 [(gogoproto.nullable) = false];
 }
 
 message QueryAllSignSchemasRequest {

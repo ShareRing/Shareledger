@@ -31141,7 +31141,7 @@ paths:
   /sharering/shareledger/swap/balance:
     get:
       summary: Queries a list of Fund items.
-      operationId: ShareledgerSwapBalances
+      operationId: ShareledgerSwapBalance
       responses:
         '200':
           description: A successful response.
@@ -31478,7 +31478,7 @@ paths:
   /sharering/shareledger/swap/sign_schema:
     get:
       summary: Queries a list of Format items.
-      operationId: ShareledgerSwapSignSchemaAll
+      operationId: ShareledgerSwapAllSignSchemas
       responses:
         '200':
           description: A successful response.
@@ -31610,7 +31610,7 @@ paths:
           schema:
             type: object
             properties:
-              signSchema:
+              schema:
                 type: object
                 properties:
                   network:
@@ -53533,7 +53533,7 @@ definitions:
   shareledger.swap.QuerySignSchemaResponse:
     type: object
     properties:
-      signSchema:
+      schema:
         type: object
         properties:
           network:
