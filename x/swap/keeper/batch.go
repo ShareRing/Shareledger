@@ -93,6 +93,27 @@ func (k Keeper) GetAllBatch(ctx sdk.Context) (list []types.Batch) {
 	return
 }
 
+// GetBatchsByIDs returns all batch
+func (k Keeper) GetBatchsByIDs(ctx sdk.Context, ids []uint64) (list []types.Batch) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.BatchKey))
+	iterator := sdk.KVStorePrefixIterator(store, []byte{})
+	defer iterator.Close()
+	bMap := make(map[uint64]struct{})
+	for i := range ids {
+		bMap[ids[i]] = struct{}{}
+	}
+
+	for ; iterator.Valid(); iterator.Next() {
+		var val types.Batch
+		k.cdc.MustUnmarshal(iterator.Value(), &val)
+		if _, f := bMap[val.GetId()]; f {
+			list = append(list, val)
+		}
+
+	}
+	return
+}
+
 // GetBatchIDBytes returns the byte representation of the ID
 func GetBatchIDBytes(id uint64) []byte {
 	bz := make([]byte, 8)

@@ -1,49 +1,48 @@
 syntax = "proto3";
 package shareledger.swap;
-
 import "cosmos/base/v1beta1/coin.proto";
 
-import "swap/format.proto";
 // this line is used by starport scaffolding # proto/tx/import
 
 option go_package = "github.com/sharering/shareledger/x/swap/types";
 
 // Msg defines the Msg service.
 service Msg {
-      rpc Out(MsgOut) returns (MsgOutResponse);
-  rpc Approve(MsgApprove) returns (MsgApproveResponse);
+  rpc RequestOut(MsgRequestOut) returns (MsgOutSwapResponse);
+  rpc ApproveOut(MsgApproveOut) returns (MsgApproveResponse);
   rpc Deposit(MsgDeposit) returns (MsgDepositResponse);
   rpc Withdraw(MsgWithdraw) returns (MsgWithdrawResponse);
-  rpc CreateFormat(MsgCreateFormat) returns (MsgCreateFormatResponse);
-  rpc UpdateFormat(MsgUpdateFormat) returns (MsgUpdateFormatResponse);
-  rpc DeleteFormat(MsgDeleteFormat) returns (MsgDeleteFormatResponse);
+  rpc CreateSignSchema(MsgCreateSignSchema) returns (MsgCreateSignSchemaResponse);
+  rpc UpdateSignSchema(MsgUpdateSignSchema) returns (MsgUpdateSignSchemaResponse);
+  rpc DeleteSignSchema(MsgDeleteSignSchema) returns (MsgDeleteSignSchemaResponse);
   rpc Cancel(MsgCancel) returns (MsgCancelResponse);
   rpc Reject(MsgReject) returns (MsgRejectResponse);
-  rpc In(MsgIn) returns (MsgInResponse);
+  rpc RequestIn(MsgRequestIn) returns (MsgSwapInResponse);
   rpc ApproveIn(MsgApproveIn) returns (MsgApproveInResponse);
+  rpc UpdateBatch(MsgUpdateBatch) returns (MsgUpdateBatchResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
-message MsgOut {
+message MsgRequestOut {
   string creator = 1;
-  string destAddr = 2;
+  string destAddress = 2;
   string network = 3;
   cosmos.base.v1beta1.DecCoin amount = 4;
   cosmos.base.v1beta1.DecCoin fee = 5;
 }
 
-message MsgOutResponse {
-  uint64 rid = 1;
+message MsgOutSwapResponse {
+  uint64 id = 1;
 }
 
-message MsgApprove {
+message MsgApproveOut {
   string creator = 1;
-  string signedHash = 2;
-  repeated uint64 txs = 3;
+  string signature = 2;
+  repeated uint64 ids = 3;
 }
 
 message MsgApproveResponse {
-  uint64 batchID = 1;
+  uint64 batchId = 1;
 }
 
 message MsgDeposit {
@@ -65,25 +64,25 @@ message MsgWithdrawResponse {
   string status = 1;
 }
 
-message MsgCreateFormat {
+message MsgCreateSignSchema {
   string creator = 1;
   string network = 2;
-  string dataTypeFormat = 3;
+  string schema = 3;
 }
-message MsgCreateFormatResponse {}
+message MsgCreateSignSchemaResponse {}
 
-message MsgUpdateFormat {
+message MsgUpdateSignSchema {
   string creator = 1;
   string network = 2;
-  string dataTypeFormat = 3;
+  string schema = 3;
 }
-message MsgUpdateFormatResponse {}
+message MsgUpdateSignSchemaResponse {}
 
-message MsgDeleteFormat {
+message MsgDeleteSignSchema {
   string creator = 1;
   string network = 2;
 }
-message MsgDeleteFormatResponse {}
+message MsgDeleteSignSchemaResponse {}
 
 message MsgCancel {
   string creator = 1;
@@ -95,31 +94,42 @@ message MsgCancelResponse {
 
 message MsgReject {
   string creator = 1;
-  repeated uint64  txnIDs = 2;
+  repeated uint64  ids = 2;
 }
 
 message MsgRejectResponse {
 }
 
-message MsgIn {
+message MsgRequestIn {
   string creator = 1;
   string srcAddress = 2;
   string destAddress = 3;
-  string srcNetwork = 4;
+  string network = 4;
   cosmos.base.v1beta1.DecCoin amount = 5;
   cosmos.base.v1beta1.DecCoin fee = 6;
+
 }
 
-message MsgInResponse {
-  uint64 rId = 1;
+message MsgSwapInResponse {
+  uint64 id = 1;
 }
 
 message MsgApproveIn {
   string creator = 1;
-  repeated uint64  txnIDs = 2;
+  repeated uint64  ids = 2;
 }
 
 message MsgApproveInResponse {
+}
+
+message MsgUpdateBatch {
+  string creator = 1;
+  uint64 batchId = 2;
+  string status = 3;
+  uint64  nonce = 4 ;
+}
+
+message MsgUpdateBatchResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message

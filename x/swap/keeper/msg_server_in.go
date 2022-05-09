@@ -3,22 +3,24 @@ package keeper
 import (
 	"context"
 	"strconv"
+	"time"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/sharering/shareledger/x/swap/types"
 )
 
-func (k msgServer) In(goCtx context.Context, msg *types.MsgIn) (*types.MsgInResponse, error) {
+func (k msgServer) RequestIn(goCtx context.Context, msg *types.MsgRequestIn) (*types.MsgSwapInResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
-
+	tn := time.Now().Unix()
 	req, err := k.AppendPendingRequest(ctx, types.Request{
 		SrcAddr:     msg.SrcAddress,
 		DestAddr:    msg.DestAddress,
-		SrcNetwork:  msg.SrcNetwork,
+		SrcNetwork:  msg.Network,
 		DestNetwork: types.NetworkNameShareLedger,
 		Amount:      msg.Amount,
 		Fee:         msg.Fee,
 		Status:      types.SwapStatusPending,
+		CreatedAt:   uint64(tn),
 	})
 	if err != nil {
 		return nil, err
@@ -34,9 +36,9 @@ func (k msgServer) In(goCtx context.Context, msg *types.MsgIn) (*types.MsgInResp
 			sdk.NewAttribute(types.EventTypeSwapDestAddr, msg.DestAddress),
 			sdk.NewAttribute(types.EventTypeSwapSrcAddr, msg.SrcAddress),
 			sdk.NewAttribute(types.EventTypeSwapDestNetwork, types.NetworkNameShareLedger),
-			sdk.NewAttribute(types.EventTypeSwapSrcNetwork, msg.SrcNetwork),
+			sdk.NewAttribute(types.EventTypeSwapSrcNetwork, msg.Network),
 		),
 	)
 
-	return &types.MsgInResponse{RId: req.Id}, nil
+	return &types.MsgSwapInResponse{Id: req.Id}, nil
 }

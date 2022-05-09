@@ -4,12 +4,13 @@ import (
 	"context"
 	denom "github.com/sharering/shareledger/x/utils/demo"
 	"strconv"
+	"time"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/sharering/shareledger/x/swap/types"
 )
 
-func (k msgServer) Out(goCtx context.Context, msg *types.MsgOut) (*types.MsgOutResponse, error) {
+func (k msgServer) RequestOut(goCtx context.Context, msg *types.MsgRequestOut) (*types.MsgOutSwapResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 	sumCoins := sdk.NewDecCoins().Add(*msg.Amount).Add(*msg.Fee)
 
@@ -20,15 +21,16 @@ func (k msgServer) Out(goCtx context.Context, msg *types.MsgOut) (*types.MsgOutR
 	if err := k.bankKeeper.SendCoinsFromAccountToModule(ctx, msg.GetSigners()[0], types.ModuleName, baseCoins); err != nil {
 		return nil, err
 	}
-
+	tn := time.Now().Unix()
 	req, err := k.AppendPendingRequest(ctx, types.Request{
 		SrcAddr:     msg.Creator,
-		DestAddr:    msg.DestAddr,
+		DestAddr:    msg.DestAddress,
 		SrcNetwork:  types.NetworkNameShareLedger,
 		DestNetwork: msg.Network,
 		Amount:      msg.Amount,
 		Fee:         msg.Fee,
 		Status:      types.SwapStatusPending,
+		CreatedAt:   uint64(tn),
 	})
 
 	if err == nil {
@@ -46,7 +48,7 @@ func (k msgServer) Out(goCtx context.Context, msg *types.MsgOut) (*types.MsgOutR
 			),
 		)
 	}
-	return &types.MsgOutResponse{
-		Rid: req.Id,
+	return &types.MsgOutSwapResponse{
+		Id: req.Id,
 	}, err
 }

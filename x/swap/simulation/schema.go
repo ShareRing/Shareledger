@@ -4,13 +4,13 @@ import (
 	"math/rand"
 	"strconv"
 
-	"github.com/sharering/shareledger/x/swap/keeper"
-	"github.com/sharering/shareledger/x/swap/types"
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	simappparams "github.com/cosmos/cosmos-sdk/simapp/params"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
 	"github.com/cosmos/cosmos-sdk/x/simulation"
+	"github.com/sharering/shareledger/x/swap/keeper"
+	"github.com/sharering/shareledger/x/swap/types"
 )
 
 // Prevent strconv unused error
@@ -26,12 +26,12 @@ func SimulateMsgCreateFormat(
 		simAccount, _ := simtypes.RandomAcc(r, accs)
 
 		i := r.Int()
-		msg := &types.MsgCreateFormat{
+		msg := &types.MsgCreateSignSchema{
 			Creator: simAccount.Address.String(),
 			Network: strconv.Itoa(i),
 		}
 
-		_, found := k.GetFormat(ctx , msg.Network)
+		_, found := k.GetSignSchema(ctx, msg.Network)
 		if found {
 			return simtypes.NoOpMsg(types.ModuleName, msg.Type(), "Format already exist"), nil, nil
 		}
@@ -63,10 +63,10 @@ func SimulateMsgUpdateFormat(
 	) (simtypes.OperationMsg, []simtypes.FutureOperation, error) {
 		var (
 			simAccount = simtypes.Account{}
-			format = types.Format{}
-			msg = &types.MsgUpdateFormat{}
-			allFormat = k.GetAllFormat(ctx)
-			found = false
+			format     = types.SignSchema{}
+			msg        = &types.MsgUpdateSignSchema{}
+			allFormat  = k.GetAllSignSchema(ctx)
+			found      = false
 		)
 		for _, obj := range allFormat {
 			simAccount, found = FindAccount(accs, obj.Creator)
@@ -79,7 +79,7 @@ func SimulateMsgUpdateFormat(
 			return simtypes.NoOpMsg(types.ModuleName, msg.Type(), "format creator not found"), nil, nil
 		}
 		msg.Creator = simAccount.Address.String()
-		
+
 		msg.Network = format.Network
 
 		txCtx := simulation.OperationInput{
@@ -109,10 +109,10 @@ func SimulateMsgDeleteFormat(
 	) (simtypes.OperationMsg, []simtypes.FutureOperation, error) {
 		var (
 			simAccount = simtypes.Account{}
-			format = types.Format{}
-			msg = &types.MsgUpdateFormat{}
-			allFormat = k.GetAllFormat(ctx)
-			found = false
+			format     = types.SignSchema{}
+			msg        = &types.MsgUpdateSignSchema{}
+			allFormat  = k.GetAllSignSchema(ctx)
+			found      = false
 		)
 		for _, obj := range allFormat {
 			simAccount, found = FindAccount(accs, obj.Creator)
@@ -125,7 +125,7 @@ func SimulateMsgDeleteFormat(
 			return simtypes.NoOpMsg(types.ModuleName, msg.Type(), "format creator not found"), nil, nil
 		}
 		msg.Creator = simAccount.Address.String()
-		
+
 		msg.Network = format.Network
 
 		txCtx := simulation.OperationInput{

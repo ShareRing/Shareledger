@@ -23,11 +23,11 @@ func CmdListFormat() *cobra.Command {
 
 			queryClient := types.NewQueryClient(clientCtx)
 
-			params := &types.QueryAllFormatRequest{
+			params := &types.QueryAllSignSchemasRequest{
 				Pagination: pageReq,
 			}
 
-			res, err := queryClient.FormatAll(context.Background(), params)
+			res, err := queryClient.AllSignSchemas(context.Background(), params)
 			if err != nil {
 				return err
 			}
@@ -54,11 +54,11 @@ func CmdShowFormat() *cobra.Command {
 
 			argNetwork := args[0]
 
-			params := &types.QueryGetFormatRequest{
+			params := &types.QueryGetSignSchemaRequest{
 				Network: argNetwork,
 			}
 
-			res, err := queryClient.Format(context.Background(), params)
+			res, err := queryClient.SignSchema(context.Background(), params)
 			if err != nil {
 				return err
 			}

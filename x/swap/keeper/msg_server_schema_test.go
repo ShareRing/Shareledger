@@ -1,16 +1,16 @@
 package keeper_test
 
 import (
-    "strconv"
+	"strconv"
 	"testing"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/stretchr/testify/require"
 
-    keepertest "github.com/sharering/shareledger/testutil/keeper"
-    "github.com/sharering/shareledger/x/swap/keeper"
-    "github.com/sharering/shareledger/x/swap/types"
+	keepertest "github.com/sharering/shareledger/testutil/keeper"
+	"github.com/sharering/shareledger/x/swap/keeper"
+	"github.com/sharering/shareledger/x/swap/types"
 )
 
 // Prevent strconv unused error
@@ -23,14 +23,12 @@ func TestFormatMsgServerCreate(t *testing.T) {
 	creator := "A"
 	for i := 0; i < 5; i++ {
 		expected := &types.MsgCreateFormat{Creator: creator,
-		    Network: strconv.Itoa(i),
-            
+			Network: strconv.Itoa(i),
 		}
 		_, err := srv.CreateFormat(wctx, expected)
 		require.NoError(t, err)
-		rst, found := k.GetFormat(ctx,
-		    expected.Network,
-            
+		rst, found := k.GetSignSchema(ctx,
+			expected.Network,
 		)
 		require.True(t, found)
 		require.Equal(t, expected.Creator, rst.Creator)
@@ -46,27 +44,24 @@ func TestFormatMsgServerUpdate(t *testing.T) {
 		err     error
 	}{
 		{
-			desc:    "Completed",
+			desc: "Completed",
 			request: &types.MsgUpdateFormat{Creator: creator,
-			    Network: strconv.Itoa(0),
-                
+				Network: strconv.Itoa(0),
 			},
 		},
 		{
-			desc:    "Unauthorized",
+			desc: "Unauthorized",
 			request: &types.MsgUpdateFormat{Creator: "B",
-			    Network: strconv.Itoa(0),
-                
+				Network: strconv.Itoa(0),
 			},
-			err:     sdkerrors.ErrUnauthorized,
+			err: sdkerrors.ErrUnauthorized,
 		},
 		{
-			desc:    "KeyNotFound",
+			desc: "KeyNotFound",
 			request: &types.MsgUpdateFormat{Creator: creator,
-			    Network: strconv.Itoa(100000),
-                
+				Network: strconv.Itoa(100000),
 			},
-			err:     sdkerrors.ErrKeyNotFound,
+			err: sdkerrors.ErrKeyNotFound,
 		},
 	} {
 		t.Run(tc.desc, func(t *testing.T) {
@@ -74,8 +69,7 @@ func TestFormatMsgServerUpdate(t *testing.T) {
 			srv := keeper.NewMsgServerImpl(*k)
 			wctx := sdk.WrapSDKContext(ctx)
 			expected := &types.MsgCreateFormat{Creator: creator,
-			    Network: strconv.Itoa(0),
-                
+				Network: strconv.Itoa(0),
 			}
 			_, err := srv.CreateFormat(wctx, expected)
 			require.NoError(t, err)
@@ -85,9 +79,8 @@ func TestFormatMsgServerUpdate(t *testing.T) {
 				require.ErrorIs(t, err, tc.err)
 			} else {
 				require.NoError(t, err)
-				rst, found := k.GetFormat(ctx,
-				    expected.Network,
-                    
+				rst, found := k.GetSignSchema(ctx,
+					expected.Network,
 				)
 				require.True(t, found)
 				require.Equal(t, expected.Creator, rst.Creator)
@@ -105,27 +98,24 @@ func TestFormatMsgServerDelete(t *testing.T) {
 		err     error
 	}{
 		{
-			desc:    "Completed",
+			desc: "Completed",
 			request: &types.MsgDeleteFormat{Creator: creator,
-			    Network: strconv.Itoa(0),
-                
+				Network: strconv.Itoa(0),
 			},
 		},
 		{
-			desc:    "Unauthorized",
+			desc: "Unauthorized",
 			request: &types.MsgDeleteFormat{Creator: "B",
-			    Network: strconv.Itoa(0),
-                
+				Network: strconv.Itoa(0),
 			},
-			err:     sdkerrors.ErrUnauthorized,
+			err: sdkerrors.ErrUnauthorized,
 		},
 		{
-			desc:    "KeyNotFound",
+			desc: "KeyNotFound",
 			request: &types.MsgDeleteFormat{Creator: creator,
-			    Network: strconv.Itoa(100000),
-                
+				Network: strconv.Itoa(100000),
 			},
-			err:     sdkerrors.ErrKeyNotFound,
+			err: sdkerrors.ErrKeyNotFound,
 		},
 	} {
 		t.Run(tc.desc, func(t *testing.T) {
@@ -134,8 +124,7 @@ func TestFormatMsgServerDelete(t *testing.T) {
 			wctx := sdk.WrapSDKContext(ctx)
 
 			_, err := srv.CreateFormat(wctx, &types.MsgCreateFormat{Creator: creator,
-			    Network: strconv.Itoa(0),
-                
+				Network: strconv.Itoa(0),
 			})
 			require.NoError(t, err)
 			_, err = srv.DeleteFormat(wctx, tc.request)
@@ -143,9 +132,8 @@ func TestFormatMsgServerDelete(t *testing.T) {
 				require.ErrorIs(t, err, tc.err)
 			} else {
 				require.NoError(t, err)
-				_, found := k.GetFormat(ctx,
-				    tc.request.Network,
-                    
+				_, found := k.GetSignSchema(ctx,
+					tc.request.Network,
 				)
 				require.False(t, found)
 			}

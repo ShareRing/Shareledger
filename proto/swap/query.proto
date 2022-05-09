@@ -8,7 +8,7 @@ import "cosmos/base/v1beta1/coin.proto";
 import "swap/params.proto";
 import "swap/request.proto";
 import "swap/batch.proto";
-import "swap/format.proto";
+import "swap/sign_schema.proto";
 // this line is used by starport scaffolding # 1
 
 option go_package = "github.com/sharering/shareledger/x/swap/types";
@@ -21,29 +21,34 @@ service Query {
   }
 
 	// Queries a list of Search items.
-	rpc Search(QuerySearchRequest) returns (QuerySearchResponse) {
+	rpc Swap(QuerySwapRequest) returns (QuerySwapResponse) {
 		option (google.api.http).get = "/sharering/shareledger/swap/search/{status}/{ids}/{srcAddr}/{destAddr}/{srcNetwork}/{destNetwork}";
 	}
 
 // Queries a Batch by id.
-	rpc Batch(QueryGetBatchRequest) returns (QueryGetBatchResponse) {
-		option (google.api.http).get = "/sharering/shareledger/swap/batch/{id}";
+	rpc Batches(QueryBatchesRequest) returns (QueryBatchesResponse) {
+		option (google.api.http).get = "/sharering/shareledger/swap/batches/{ids}";
 	}
 	
 
 // Queries a list of Fund items.
-	rpc Fund(QueryFundRequest) returns (QueryFundResponse) {
-		option (google.api.http).get = "/sharering/shareledger/swap/fund";
+	rpc Balance(QueryBalanceRequest) returns (QueryBalanceResponse) {
+		option (google.api.http).get = "/sharering/shareledger/swap/balance";
 	}
 
 // Queries a Format by index.
-	rpc Format(QueryGetFormatRequest) returns (QueryGetFormatResponse) {
-		option (google.api.http).get = "/sharering/shareledger/swap/format/{network}";
+	rpc SignSchema(QueryGetSignSchemaRequest) returns (QuerySignSchemaResponse) {
+		option (google.api.http).get = "/sharering/shareledger/swap/sign_schema/{network}";
 	}
 
 	// Queries a list of Format items.
-	rpc FormatAll(QueryAllFormatRequest) returns (QueryAllFormatResponse) {
-		option (google.api.http).get = "/sharering/shareledger/swap/format";
+	rpc AllSignSchemas(QueryAllSignSchemasRequest) returns (QueryAllSignSchemasResponse) {
+		option (google.api.http).get = "/sharering/shareledger/swap/sign_schema";
+	}
+
+// Queries a list of SearchBatch items.
+	rpc SearchBatches(QuerySearchBatchesRequest) returns (QuerySearchBatchesResponse) {
+		option (google.api.http).get = "/sharering/shareledger/swap/search_batches";
 	}
 
 // this line is used by starport scaffolding # 2
@@ -58,7 +63,7 @@ message QueryParamsResponse {
   Params params = 1 [(gogoproto.nullable) = false];
 }
 
-message QuerySearchRequest {
+message QuerySwapRequest {
   string status = 1;
 	repeated uint64 ids = 2;
   string srcAddr = 3;
@@ -68,42 +73,52 @@ message QuerySearchRequest {
 cosmos.base.query.v1beta1.PageRequest pagination = 7;
 }
 
-message QuerySearchResponse {
-	repeated Request requests = 1 [(gogoproto.nullable) = false];
+message QuerySwapResponse {
+	repeated Request swaps = 1 [(gogoproto.nullable) = false];
 	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 
-message QueryGetBatchRequest {
-	uint64 id = 1;
+message QueryBatchesRequest {
+	repeated uint64 ids = 1;
 }
 
-message QueryGetBatchResponse {
-	Batch batch = 1 [(gogoproto.nullable) = false];
+message QueryBatchesResponse {
+	repeated Batch batches = 1 [(gogoproto.nullable) = false];
 }
 
-message QueryFundRequest {
+message QueryBalanceRequest {
 }
 
-message QueryFundResponse {
-	repeated	cosmos.base.v1beta1.DecCoin availables = 1;
+message QueryBalanceResponse {
+	cosmos.base.v1beta1.DecCoin balance = 1;
 }
 
-message QueryGetFormatRequest {
+message QueryGetSignSchemaRequest {
 	  string network = 1;
 
 }
 
-message QueryGetFormatResponse {
-	Format format = 1 [(gogoproto.nullable) = false];
+message QuerySignSchemaResponse {
+	SignSchema schema = 1 [(gogoproto.nullable) = false];
 }
 
-message QueryAllFormatRequest {
+message QueryAllSignSchemasRequest {
 	cosmos.base.query.v1beta1.PageRequest pagination = 1;
 }
 
-message QueryAllFormatResponse {
-	repeated Format formats = 1 [(gogoproto.nullable) = false];
+message QueryAllSignSchemasResponse {
+	repeated SignSchema schemas = 1 [(gogoproto.nullable) = false];
 	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QuerySearchBatchesRequest {
+	string status = 1;
+cosmos.base.query.v1beta1.PageRequest pagination = 2;
+}
+
+message QuerySearchBatchesResponse {
+	repeated Batch batchs = 1 [(gogoproto.nullable) = false];
+cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 
 // this line is used by starport scaffolding # 3
