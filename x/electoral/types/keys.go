@@ -35,12 +35,6 @@ var (
 	EventTypeRevokeDocIssuer = "revoke_doc_issuer"
 	EventTypeEnrollDocIssuer = "enroll_doc_issuer"
 
-	EventTypeRevokeRelayer = "revoke_relayer"
-	EventTypeEnrollRelayer = "enroll_relayer"
-
-	EventTypeRevokeApprover = "revoke_approver"
-	EventTypeEnrollApprover = "enroll_approver"
-
 	// Attr
 	EventAttrAddress = "address"
 )

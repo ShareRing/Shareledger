@@ -14,71 +14,46 @@ func (k Keeper) isActive(ctx sdk.Context, address sdk.AccAddress, keyType types.
 }
 
 func (k Keeper) activeShrpLoader(ctx sdk.Context, addr sdk.AccAddress) {
-	key := types.GenAccStateIndexKey(addr, types.AccStateKeyShrpLoaders)
-	k.SetAccState(ctx, types.AccState{
-		Key:     string(key),
-		Address: addr.String(),
-		Status:  string(types.StatusActive),
-	})
+
+	k.ActiveAccState(ctx, addr, types.AccStateKeyShrpLoaders)
 }
 
 func (k Keeper) activeIdSigner(ctx sdk.Context, addr sdk.AccAddress) {
-	key := types.GenAccStateIndexKey(addr, types.AccStateKeyIdSigner)
-	k.SetAccState(ctx, types.AccState{
-		Key:     string(key),
-		Address: addr.String(),
-		Status:  string(types.StatusActive),
-	})
+	k.ActiveAccState(ctx, addr, types.AccStateKeyIdSigner)
+
 }
 
 func (k Keeper) activeDocIssuer(ctx sdk.Context, addr sdk.AccAddress) {
-	key := types.GenAccStateIndexKey(addr, types.AccStateKeyDocIssuer)
-	k.SetAccState(ctx, types.AccState{
-		Key:     string(key),
-		Address: addr.String(),
-		Status:  string(types.StatusActive),
-	})
+	k.ActiveAccState(ctx, addr, types.AccStateKeyDocIssuer)
+
 }
 
 func (k Keeper) activeAccOperator(ctx sdk.Context, addr sdk.AccAddress) {
-	key := types.GenAccStateIndexKey(addr, types.AccStateKeyAccOp)
-	k.SetAccState(ctx, types.AccState{
-		Key:     string(key),
-		Address: addr.String(),
-		Status:  string(types.StatusActive),
-	})
+	k.ActiveAccState(ctx, addr, types.AccStateKeyAccOp)
+
 }
 
 func (k Keeper) activeVoter(ctx sdk.Context, addr sdk.AccAddress) {
-	key := types.GenAccStateIndexKey(addr, types.AccStateKeyVoter)
-	k.SetAccState(ctx, types.AccState{
-		Key:     string(key),
-		Address: addr.String(),
-		Status:  string(types.StatusActive),
-	})
+	k.ActiveAccState(ctx, addr, types.AccStateKeyVoter)
+
 }
 
 func (k Keeper) activeRelayer(ctx sdk.Context, addr sdk.AccAddress) {
-	key := types.GenAccStateIndexKey(addr, types.AccStateKeyRelayer)
-	k.SetAccState(ctx, types.AccState{
-		Key:     string(key),
-		Address: addr.String(),
-		Status:  string(types.StatusActive),
-	})
+	k.ActiveAccState(ctx, addr, types.AccStateKeyRelayer)
 }
 func (k Keeper) activeApprover(ctx sdk.Context, addr sdk.AccAddress) {
+	k.ActiveAccState(ctx, addr, types.AccStateKeyApprover)
+
+}
+func (k Keeper) removeApprover(ctx sdk.Context, addr sdk.AccAddress) (err error) {
 	key := types.GenAccStateIndexKey(addr, types.AccStateKeyApprover)
-	k.SetAccState(ctx, types.AccState{
-		Key:     string(key),
-		Address: addr.String(),
-		Status:  string(types.StatusActive),
-	})
+	k.RemoveAccState(ctx, key)
+	return nil
 }
-func (k Keeper) revokeApprover(ctx sdk.Context, addr sdk.AccAddress) (err error) {
-	return k.revokeApproverAccount(ctx, addr, types.AccStateKeyApprover)
-}
-func (k Keeper) revokeRelayer(ctx sdk.Context, addr sdk.AccAddress) (err error) {
-	return k.revokeRelayerAccount(ctx, addr, types.AccStateKeyRelayer)
+func (k Keeper) removeRelayer(ctx sdk.Context, addr sdk.AccAddress) (err error) {
+	key := types.GenAccStateIndexKey(addr, types.AccStateKeyRelayer)
+	k.RemoveAccState(ctx, key)
+	return nil
 }
 
 func (k Keeper) revokeAccOperator(ctx sdk.Context, addr sdk.AccAddress) (err error) {
@@ -102,26 +77,6 @@ func (k Keeper) revokeIdSigner(ctx sdk.Context, addr sdk.AccAddress) (err error)
 
 func (k Keeper) revokeVoter(ctx sdk.Context, addr sdk.AccAddress) (err error) {
 	return k.revokeAccAccount(ctx, addr, types.AccStateKeyVoter)
-}
-func (k Keeper) revokeRelayerAccount(ctx sdk.Context, addr sdk.AccAddress, keyType types.AccStateKeyType) error {
-	key := types.GenAccStateIndexKey(addr, keyType)
-	r, found := k.GetAccState(ctx, key)
-	if !found {
-		return sdkerrors.ErrNotFound
-	}
-	r.Status = string(types.StatusInactive)
-	k.SetAccState(ctx, r)
-	return nil
-}
-func (k Keeper) revokeApproverAccount(ctx sdk.Context, addr sdk.AccAddress, keyType types.AccStateKeyType) error {
-	key := types.GenAccStateIndexKey(addr, keyType)
-	r, found := k.GetAccState(ctx, key)
-	if !found {
-		return sdkerrors.ErrNotFound
-	}
-	r.Status = string(types.StatusInactive)
-	k.SetAccState(ctx, r)
-	return nil
 }
 func (k Keeper) revokeAccAccount(ctx sdk.Context, addr sdk.AccAddress, keyType types.AccStateKeyType) error {
 	key := types.GenAccStateIndexKey(addr, keyType)
@@ -220,4 +175,13 @@ func (k Keeper) IterateAccState(ctx sdk.Context, accTypeIndex types.AccStateKeyT
 	}
 
 	return
+}
+
+func (k Keeper) ActiveAccState(ctx sdk.Context, address sdk.AccAddress, accState types.AccStateKeyType) {
+	key := types.GenAccStateIndexKey(address, accState)
+	k.SetAccState(ctx, types.AccState{
+		Key:     string(key),
+		Address: address.String(),
+		Status:  string(types.StatusActive),
+	})
 }
