@@ -123,7 +123,7 @@ func signApprovedSwap(ctx client.Context, signer string, requests []types.Reques
 	//	},
 	//	PrimaryType: "Swap",
 	//}
-	fmt.Println(json.Marshal(signer))
+	//fmt.Println(json.Marshal(signer))
 
 	txIds := make([]interface{}, 0, len(requests))
 	destinations := make([]interface{}, 0, len(requests))
