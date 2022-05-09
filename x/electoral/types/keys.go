@@ -34,6 +34,7 @@ var (
 
 	EventTypeRevokeDocIssuer = "revoke_doc_issuer"
 	EventTypeEnrollDocIssuer = "enroll_doc_issuer"
+
 	// Attr
 	EventAttrAddress = "address"
 )

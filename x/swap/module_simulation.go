@@ -80,16 +80,16 @@ func (AppModule) GenerateGenesisState(simState *module.SimulationState) {
 	swapGenesis := types.GenesisState{
 		Params: types.DefaultParams(),
 		FormatList: []types.Format{
-		{
-			Creator: sample.AccAddress(),
-Network: "0",
-},
-		{
-			Creator: sample.AccAddress(),
-Network: "1",
-},
-	},
-	// this line is used by starport scaffolding # simapp/module/genesisState
+			{
+				Creator: sample.AccAddress(),
+				Network: "0",
+			},
+			{
+				Creator: sample.AccAddress(),
+				Network: "1",
+			},
+		},
+		// this line is used by starport scaffolding # simapp/module/genesisState
 	}
 	simState.GenState[types.ModuleName] = simState.Cdc.MustMarshalJSON(&swapGenesis)
 }
