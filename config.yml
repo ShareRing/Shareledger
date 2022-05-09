@@ -17,6 +17,13 @@ accounts:
   - name: user
     coins: [ "100000000000nshr" ]
     mnemonic: "bright payment cash tomato tragic impulse perfect jacket matter jelly artist pulse will cinnamon erase middle elevator away clinic razor rotate tide unfair trigger"
+  - name: approver
+    coins: ["100000000000nshr"]
+    mnemonic: "spend people immense ill property hungry craft corn quote once hand clarify adapt disorder airport balance alley wisdom physical appear debris awake pencil skate"
+  - name: "relayer"
+    coins: ["100000000000nshr"]
+    mnemonic : "indoor donate grid ostrich tree swamp cactus common piano buzz version world second try garage squirrel alert fork december control bind spoon taste essay
+"
 validator:
   name: validator
   staked: "100000000000000000nshr"
@@ -73,6 +80,12 @@ genesis:
           status: active
         - key: votershareledger18pf3zdwqjntd9wkvfcjvmdc7hua6c0q2eck5h5
           address: shareledger18pf3zdwqjntd9wkvfcjvmdc7hua6c0q2eck5h5
+          status: active
+        - key: approvershareledger1j4ndn4qed0ukulc0a6a5fxe6yxmnm7wh59pwpn
+          address: shareledger1j4ndn4qed0ukulc0a6a5fxe6yxmnm7wh59pwpn
+          status: active
+        - key: relayershareledger16k53l0v5fr93u2kpe7ek2lc3tm37k4954zalvv
+          address: shareledger16k53l0v5fr93u2kpe7ek2lc3tm37k4954zalvv
           status: active
       authority:
         address: shareledger1lq9svs76xwekrrzw7uprekyqydf7fp02p8zp8e

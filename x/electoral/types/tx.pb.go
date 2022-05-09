@@ -907,6 +907,358 @@ func (m *MsgRevokeAccountOperatorsResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_MsgRevokeAccountOperatorsResponse proto.InternalMessageInfo
 
+type MsgEnrollRelayers struct {
+	Creator   string   `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+	Addresses []string `protobuf:"bytes,2,rep,name=addresses,proto3" json:"addresses,omitempty"`
+}
+
+func (m *MsgEnrollRelayers) Reset()         { *m = MsgEnrollRelayers{} }
+func (m *MsgEnrollRelayers) String() string { return proto.CompactTextString(m) }
+func (*MsgEnrollRelayers) ProtoMessage()    {}
+func (*MsgEnrollRelayers) Descriptor() ([]byte, []int) {
+	return fileDescriptor_10832aea077e441f, []int{20}
+}
+func (m *MsgEnrollRelayers) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgEnrollRelayers) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgEnrollRelayers.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgEnrollRelayers) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgEnrollRelayers.Merge(m, src)
+}
+func (m *MsgEnrollRelayers) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgEnrollRelayers) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgEnrollRelayers.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgEnrollRelayers proto.InternalMessageInfo
+
+func (m *MsgEnrollRelayers) GetCreator() string {
+	if m != nil {
+		return m.Creator
+	}
+	return ""
+}
+
+func (m *MsgEnrollRelayers) GetAddresses() []string {
+	if m != nil {
+		return m.Addresses
+	}
+	return nil
+}
+
+type MsgEnrollRelayersResponse struct {
+}
+
+func (m *MsgEnrollRelayersResponse) Reset()         { *m = MsgEnrollRelayersResponse{} }
+func (m *MsgEnrollRelayersResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgEnrollRelayersResponse) ProtoMessage()    {}
+func (*MsgEnrollRelayersResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_10832aea077e441f, []int{21}
+}
+func (m *MsgEnrollRelayersResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgEnrollRelayersResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgEnrollRelayersResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgEnrollRelayersResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgEnrollRelayersResponse.Merge(m, src)
+}
+func (m *MsgEnrollRelayersResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgEnrollRelayersResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgEnrollRelayersResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgEnrollRelayersResponse proto.InternalMessageInfo
+
+type MsgRevokeRelayers struct {
+	Creator   string   `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+	Addresses []string `protobuf:"bytes,2,rep,name=addresses,proto3" json:"addresses,omitempty"`
+}
+
+func (m *MsgRevokeRelayers) Reset()         { *m = MsgRevokeRelayers{} }
+func (m *MsgRevokeRelayers) String() string { return proto.CompactTextString(m) }
+func (*MsgRevokeRelayers) ProtoMessage()    {}
+func (*MsgRevokeRelayers) Descriptor() ([]byte, []int) {
+	return fileDescriptor_10832aea077e441f, []int{22}
+}
+func (m *MsgRevokeRelayers) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgRevokeRelayers) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgRevokeRelayers.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgRevokeRelayers) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgRevokeRelayers.Merge(m, src)
+}
+func (m *MsgRevokeRelayers) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgRevokeRelayers) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgRevokeRelayers.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgRevokeRelayers proto.InternalMessageInfo
+
+func (m *MsgRevokeRelayers) GetCreator() string {
+	if m != nil {
+		return m.Creator
+	}
+	return ""
+}
+
+func (m *MsgRevokeRelayers) GetAddresses() []string {
+	if m != nil {
+		return m.Addresses
+	}
+	return nil
+}
+
+type MsgRevokeRelayersResponse struct {
+}
+
+func (m *MsgRevokeRelayersResponse) Reset()         { *m = MsgRevokeRelayersResponse{} }
+func (m *MsgRevokeRelayersResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgRevokeRelayersResponse) ProtoMessage()    {}
+func (*MsgRevokeRelayersResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_10832aea077e441f, []int{23}
+}
+func (m *MsgRevokeRelayersResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgRevokeRelayersResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgRevokeRelayersResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgRevokeRelayersResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgRevokeRelayersResponse.Merge(m, src)
+}
+func (m *MsgRevokeRelayersResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgRevokeRelayersResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgRevokeRelayersResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgRevokeRelayersResponse proto.InternalMessageInfo
+
+type MsgEnrollApprovers struct {
+	Creator   string   `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+	Addresses []string `protobuf:"bytes,2,rep,name=addresses,proto3" json:"addresses,omitempty"`
+}
+
+func (m *MsgEnrollApprovers) Reset()         { *m = MsgEnrollApprovers{} }
+func (m *MsgEnrollApprovers) String() string { return proto.CompactTextString(m) }
+func (*MsgEnrollApprovers) ProtoMessage()    {}
+func (*MsgEnrollApprovers) Descriptor() ([]byte, []int) {
+	return fileDescriptor_10832aea077e441f, []int{24}
+}
+func (m *MsgEnrollApprovers) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgEnrollApprovers) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgEnrollApprovers.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgEnrollApprovers) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgEnrollApprovers.Merge(m, src)
+}
+func (m *MsgEnrollApprovers) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgEnrollApprovers) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgEnrollApprovers.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgEnrollApprovers proto.InternalMessageInfo
+
+func (m *MsgEnrollApprovers) GetCreator() string {
+	if m != nil {
+		return m.Creator
+	}
+	return ""
+}
+
+func (m *MsgEnrollApprovers) GetAddresses() []string {
+	if m != nil {
+		return m.Addresses
+	}
+	return nil
+}
+
+type MsgEnrollApproversResponse struct {
+}
+
+func (m *MsgEnrollApproversResponse) Reset()         { *m = MsgEnrollApproversResponse{} }
+func (m *MsgEnrollApproversResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgEnrollApproversResponse) ProtoMessage()    {}
+func (*MsgEnrollApproversResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_10832aea077e441f, []int{25}
+}
+func (m *MsgEnrollApproversResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgEnrollApproversResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgEnrollApproversResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgEnrollApproversResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgEnrollApproversResponse.Merge(m, src)
+}
+func (m *MsgEnrollApproversResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgEnrollApproversResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgEnrollApproversResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgEnrollApproversResponse proto.InternalMessageInfo
+
+type MsgRevokeApprovers struct {
+	Creator   string   `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+	Addresses []string `protobuf:"bytes,2,rep,name=addresses,proto3" json:"addresses,omitempty"`
+}
+
+func (m *MsgRevokeApprovers) Reset()         { *m = MsgRevokeApprovers{} }
+func (m *MsgRevokeApprovers) String() string { return proto.CompactTextString(m) }
+func (*MsgRevokeApprovers) ProtoMessage()    {}
+func (*MsgRevokeApprovers) Descriptor() ([]byte, []int) {
+	return fileDescriptor_10832aea077e441f, []int{26}
+}
+func (m *MsgRevokeApprovers) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgRevokeApprovers) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgRevokeApprovers.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgRevokeApprovers) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgRevokeApprovers.Merge(m, src)
+}
+func (m *MsgRevokeApprovers) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgRevokeApprovers) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgRevokeApprovers.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgRevokeApprovers proto.InternalMessageInfo
+
+func (m *MsgRevokeApprovers) GetCreator() string {
+	if m != nil {
+		return m.Creator
+	}
+	return ""
+}
+
+func (m *MsgRevokeApprovers) GetAddresses() []string {
+	if m != nil {
+		return m.Addresses
+	}
+	return nil
+}
+
+type MsgRevokeApproversResponse struct {
+}
+
+func (m *MsgRevokeApproversResponse) Reset()         { *m = MsgRevokeApproversResponse{} }
+func (m *MsgRevokeApproversResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgRevokeApproversResponse) ProtoMessage()    {}
+func (*MsgRevokeApproversResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_10832aea077e441f, []int{27}
+}
+func (m *MsgRevokeApproversResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgRevokeApproversResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgRevokeApproversResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgRevokeApproversResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgRevokeApproversResponse.Merge(m, src)
+}
+func (m *MsgRevokeApproversResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgRevokeApproversResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgRevokeApproversResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgRevokeApproversResponse proto.InternalMessageInfo
+
 func init() {
 	proto.RegisterType((*MsgEnrollVoter)(nil), "shareledger.electoral.MsgEnrollVoter")
 	proto.RegisterType((*MsgEnrollVoterResponse)(nil), "shareledger.electoral.MsgEnrollVoterResponse")
@@ -928,45 +1280,59 @@ func init() {
 	proto.RegisterType((*MsgEnrollAccountOperatorsResponse)(nil), "shareledger.electoral.MsgEnrollAccountOperatorsResponse")
 	proto.RegisterType((*MsgRevokeAccountOperators)(nil), "shareledger.electoral.MsgRevokeAccountOperators")
 	proto.RegisterType((*MsgRevokeAccountOperatorsResponse)(nil), "shareledger.electoral.MsgRevokeAccountOperatorsResponse")
+	proto.RegisterType((*MsgEnrollRelayers)(nil), "shareledger.electoral.MsgEnrollRelayers")
+	proto.RegisterType((*MsgEnrollRelayersResponse)(nil), "shareledger.electoral.MsgEnrollRelayersResponse")
+	proto.RegisterType((*MsgRevokeRelayers)(nil), "shareledger.electoral.MsgRevokeRelayers")
+	proto.RegisterType((*MsgRevokeRelayersResponse)(nil), "shareledger.electoral.MsgRevokeRelayersResponse")
+	proto.RegisterType((*MsgEnrollApprovers)(nil), "shareledger.electoral.MsgEnrollApprovers")
+	proto.RegisterType((*MsgEnrollApproversResponse)(nil), "shareledger.electoral.MsgEnrollApproversResponse")
+	proto.RegisterType((*MsgRevokeApprovers)(nil), "shareledger.electoral.MsgRevokeApprovers")
+	proto.RegisterType((*MsgRevokeApproversResponse)(nil), "shareledger.electoral.MsgRevokeApproversResponse")
 }
 
 func init() { proto.RegisterFile("electoral/tx.proto", fileDescriptor_10832aea077e441f) }
 
 var fileDescriptor_10832aea077e441f = []byte{
-	// 513 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xac, 0x96, 0x4f, 0x8b, 0xd3, 0x40,
-	0x18, 0xc6, 0x1b, 0x17, 0xd4, 0xbe, 0xa2, 0x2e, 0x23, 0x2e, 0xd9, 0xb8, 0x06, 0xad, 0xc8, 0xfe,
-	0x01, 0x93, 0xb5, 0x5e, 0xbc, 0x2a, 0xeb, 0x61, 0xa5, 0x45, 0xe8, 0x82, 0x07, 0x2f, 0x92, 0x9d,
-	0xbc, 0x64, 0x8b, 0x31, 0x53, 0x66, 0xa6, 0xb2, 0xde, 0xfd, 0x00, 0x7e, 0x2c, 0x8f, 0x7b, 0xf4,
-	0x28, 0xed, 0xe7, 0x10, 0xa4, 0x9b, 0x76, 0x3a, 0x99, 0x26, 0x9d, 0xd4, 0xf6, 0x98, 0xcc, 0x33,
-	0xcf, 0xef, 0xc9, 0xe5, 0x47, 0x80, 0x60, 0x8a, 0x54, 0x32, 0x1e, 0xa5, 0xa1, 0xbc, 0x0c, 0x06,
-	0x9c, 0x49, 0x46, 0x1e, 0x8a, 0x8b, 0x88, 0x63, 0x8a, 0x71, 0x82, 0x3c, 0x50, 0xe7, 0xde, 0xee,
-	0x3c, 0x1a, 0x51, 0xfa, 0x59, 0xc8, 0x48, 0x62, 0x7e, 0xa3, 0x75, 0x02, 0xf7, 0xba, 0x22, 0x79,
-	0x97, 0x71, 0x96, 0xa6, 0x1f, 0x99, 0x44, 0x4e, 0x5c, 0xb8, 0x45, 0x39, 0x46, 0x92, 0x71, 0xd7,
-	0x79, 0xe2, 0x1c, 0x34, 0x7b, 0xb3, 0xc7, 0xc9, 0x49, 0x14, 0xc7, 0x1c, 0x85, 0x70, 0x6f, 0xe4,
-	0x27, 0xd3, 0xc7, 0x96, 0x0b, 0x3b, 0xc5, 0x96, 0x1e, 0x8a, 0x01, 0xcb, 0x04, 0x4e, 0xfb, 0x7b,
-	0xf8, 0x8d, 0x7d, 0xc1, 0x75, 0xfb, 0xb5, 0x16, 0xd5, 0xff, 0x1e, 0xb6, 0x15, 0xb9, 0xc3, 0xa2,
-	0x18, 0xb9, 0x58, 0x42, 0xd8, 0x83, 0xe6, 0xb4, 0x12, 0x27, 0x8c, 0xad, 0x83, 0x66, 0x6f, 0xfe,
-	0xa2, 0xe5, 0x81, 0x6b, 0x76, 0x19, 0x9c, 0x7c, 0xc1, 0x66, 0x38, 0x85, 0x2e, 0xc5, 0xe9, 0x00,
-	0x51, 0x1b, 0x4e, 0xe3, 0xb3, 0x7e, 0x92, 0xad, 0x43, 0xda, 0x03, 0x6f, 0xb1, 0xcd, 0x60, 0xe5,
-	0x3b, 0x36, 0xc5, 0x32, 0xda, 0x14, 0xab, 0x0b, 0x0f, 0xd4, 0x92, 0x13, 0x46, 0x4f, 0x85, 0x18,
-	0xae, 0x03, 0x7b, 0x0c, 0x8f, 0x4a, 0xea, 0x0c, 0x5a, 0xbe, 0x65, 0x63, 0x34, 0xb3, 0x4e, 0xd1,
-	0xce, 0x60, 0x57, 0x8d, 0x79, 0x43, 0x29, 0x1b, 0x66, 0xf2, 0xc3, 0x00, 0xf9, 0xa4, 0xf8, 0xff,
-	0x99, 0xcf, 0xe0, 0x69, 0x65, 0xa9, 0x41, 0xce, 0x87, 0x6d, 0x98, 0x5c, 0x5e, 0x3a, 0x23, 0xb7,
-	0xff, 0xde, 0x86, 0xad, 0xae, 0x48, 0x08, 0x85, 0x3b, 0xba, 0x3c, 0x9e, 0x07, 0xa5, 0x06, 0x0a,
-	0x8a, 0x76, 0xf0, 0x5e, 0xd4, 0x8a, 0xcd, 0x60, 0x13, 0x88, 0x6e, 0x90, 0x25, 0x10, 0x2d, 0xb6,
-	0x0c, 0x52, 0x62, 0x12, 0xd2, 0x87, 0xbb, 0x45, 0x8d, 0xec, 0xdb, 0x46, 0x4e, 0x83, 0x5e, 0x58,
-	0x33, 0xa8, 0xa3, 0x8a, 0x26, 0xd9, 0xb7, 0x4d, 0xad, 0x81, 0x2a, 0xf5, 0x09, 0x61, 0x70, 0xdf,
-	0x94, 0xc9, 0xa1, 0x6d, 0xae, 0x8a, 0x7a, 0x2f, 0x6b, 0x47, 0x75, 0xa0, 0x69, 0x94, 0x43, 0xdb,
-	0xe8, 0x5a, 0xc0, 0x0a, 0xb3, 0x10, 0x0e, 0xdb, 0x0b, 0x5a, 0x39, 0xb2, 0xed, 0x9e, 0x67, 0xbd,
-	0x76, 0xfd, 0xac, 0xce, 0x5c, 0x90, 0xcb, 0x91, 0x6d, 0x7a, 0x3d, 0x66, 0x95, 0x65, 0xc8, 0x0f,
-	0x07, 0x76, 0x2a, 0x1c, 0x73, 0x6c, 0xfb, 0x04, 0xf3, 0x86, 0xf7, 0x7a, 0xd5, 0x1b, 0x85, 0x19,
-	0x15, 0xc2, 0x39, 0xb6, 0x7d, 0xd5, 0x2a, 0x33, 0x96, 0xfb, 0xe7, 0x6d, 0xe7, 0xd7, 0xc8, 0x77,
-	0xae, 0x46, 0xbe, 0xf3, 0x67, 0xe4, 0x3b, 0x3f, 0xc7, 0x7e, 0xe3, 0x6a, 0xec, 0x37, 0x7e, 0x8f,
-	0xfd, 0xc6, 0xa7, 0x76, 0xd2, 0x97, 0x17, 0xc3, 0xf3, 0x80, 0xb2, 0xaf, 0xe1, 0x75, 0x3b, 0xef,
-	0x67, 0x49, 0xa8, 0x71, 0xc2, 0xcb, 0x50, 0xfb, 0x75, 0xfa, 0x3e, 0x40, 0x71, 0x7e, 0xf3, 0xfa,
-	0x67, 0xe8, 0xd5, 0xbf, 0x00, 0x00, 0x00, 0xff, 0xff, 0x56, 0xae, 0xf2, 0xaa, 0x54, 0x09, 0x00,
-	0x00,
+	// 613 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xac, 0x97, 0xc1, 0x6e, 0xd3, 0x4c,
+	0x14, 0x85, 0xe3, 0xbf, 0xd2, 0x8f, 0x72, 0x81, 0x52, 0x06, 0x51, 0xa5, 0x6e, 0xb1, 0x20, 0x08,
+	0x35, 0xad, 0x44, 0x1c, 0xc2, 0x86, 0x6d, 0x51, 0x59, 0x14, 0x12, 0x21, 0xb9, 0x12, 0x0b, 0x36,
+	0xc8, 0xb5, 0x47, 0x6e, 0x84, 0xf1, 0x58, 0x33, 0x4e, 0xd5, 0xee, 0x79, 0x00, 0xde, 0x87, 0x17,
+	0x60, 0xd9, 0x25, 0x4b, 0x94, 0xbc, 0x08, 0x4a, 0x1d, 0x8f, 0xc7, 0x63, 0x3b, 0x33, 0x25, 0x5e,
+	0x26, 0x3e, 0x73, 0xbe, 0x33, 0x96, 0xee, 0x3d, 0x32, 0x20, 0x1c, 0x62, 0x2f, 0x21, 0xd4, 0x0d,
+	0xed, 0xe4, 0xb2, 0x1f, 0x53, 0x92, 0x10, 0xf4, 0x98, 0x9d, 0xbb, 0x14, 0x87, 0xd8, 0x0f, 0x30,
+	0xed, 0xf3, 0xe7, 0xe6, 0x4e, 0x2e, 0x75, 0x3d, 0xef, 0x0b, 0x4b, 0xdc, 0x04, 0xa7, 0x27, 0xba,
+	0xc7, 0xb0, 0x39, 0x66, 0xc1, 0xbb, 0x88, 0x92, 0x30, 0xfc, 0x44, 0x12, 0x4c, 0x51, 0x07, 0xee,
+	0x78, 0x14, 0xbb, 0x09, 0xa1, 0x1d, 0xe3, 0xa9, 0xd1, 0x6b, 0x3b, 0xd9, 0xcf, 0xc5, 0x13, 0xd7,
+	0xf7, 0x29, 0x66, 0xac, 0xf3, 0x5f, 0xfa, 0x64, 0xf9, 0xb3, 0xdb, 0x81, 0xed, 0xa2, 0x8b, 0x83,
+	0x59, 0x4c, 0x22, 0x86, 0x97, 0xfe, 0x0e, 0xbe, 0x20, 0x5f, 0xf1, 0xba, 0xfe, 0x82, 0x0b, 0xf7,
+	0x7f, 0x0f, 0x5b, 0x9c, 0x3c, 0x22, 0xae, 0x8f, 0x29, 0x5b, 0x41, 0xd8, 0x83, 0xf6, 0xd2, 0x12,
+	0x2f, 0x18, 0x1b, 0xbd, 0xb6, 0x93, 0xff, 0xd1, 0x35, 0xa1, 0x23, 0x7b, 0x49, 0x9c, 0x34, 0x41,
+	0x33, 0x9c, 0x82, 0x17, 0xe7, 0x8c, 0x00, 0xf1, 0x0c, 0x27, 0xfe, 0xe9, 0x24, 0x88, 0xd6, 0x21,
+	0xed, 0x81, 0x59, 0x76, 0x93, 0x58, 0x69, 0x8e, 0xa6, 0x58, 0x92, 0x1b, 0x67, 0x8d, 0xe1, 0x11,
+	0x4f, 0x72, 0x4c, 0xbc, 0x13, 0xc6, 0xa6, 0xeb, 0xc0, 0x9e, 0xc0, 0x6e, 0x85, 0x9d, 0x44, 0x4b,
+	0xb3, 0x34, 0x46, 0x93, 0xed, 0x38, 0xed, 0x14, 0x76, 0x78, 0x98, 0x23, 0xcf, 0x23, 0xd3, 0x28,
+	0xf9, 0x18, 0x63, 0xba, 0x30, 0xfe, 0x77, 0xe6, 0x73, 0x78, 0x56, 0x6b, 0x2a, 0x91, 0xd3, 0x60,
+	0x0d, 0x93, 0xab, 0x4d, 0x39, 0xf9, 0x03, 0x3c, 0xe4, 0xf1, 0x1c, 0x1c, 0xba, 0x57, 0xeb, 0xbc,
+	0xdf, 0x5d, 0xe1, 0x05, 0x66, 0x66, 0x12, 0x29, 0x8d, 0xd3, 0x10, 0xa9, 0x68, 0x56, 0x39, 0x7b,
+	0x47, 0x71, 0x4c, 0xc9, 0x45, 0x53, 0xb3, 0xc7, 0xdd, 0x2a, 0x67, 0xaf, 0x29, 0x96, 0xe4, 0x96,
+	0xb1, 0x86, 0x3f, 0xef, 0xc1, 0xc6, 0x98, 0x05, 0xc8, 0x83, 0xbb, 0xe2, 0xa2, 0x7f, 0xd1, 0xaf,
+	0x6c, 0x8b, 0x7e, 0x71, 0x93, 0x9b, 0x2f, 0xb5, 0x64, 0x19, 0x6c, 0x01, 0x11, 0xb7, 0xfd, 0x0a,
+	0x88, 0x20, 0x5b, 0x05, 0xa9, 0xd8, 0xfa, 0x68, 0x02, 0xf7, 0x8b, 0x2b, 0x7f, 0x5f, 0x15, 0x72,
+	0x29, 0x34, 0x6d, 0x4d, 0xa1, 0x88, 0x2a, 0x6e, 0xfd, 0x7d, 0x55, 0x54, 0x0d, 0x54, 0xe5, 0xee,
+	0x47, 0x04, 0x1e, 0xc8, 0x8b, 0xff, 0x40, 0x15, 0x97, 0x4b, 0xcd, 0x57, 0xda, 0x52, 0x11, 0x28,
+	0x6f, 0xff, 0x03, 0x55, 0x68, 0x2d, 0x60, 0x4d, 0x0b, 0x20, 0x0a, 0x5b, 0xa5, 0x0a, 0x38, 0x54,
+	0xe5, 0xce, 0xb5, 0xe6, 0x50, 0x5f, 0x2b, 0x32, 0x4b, 0x45, 0x70, 0xa8, 0x8a, 0xae, 0xc7, 0xac,
+	0x6b, 0x04, 0xf4, 0xdd, 0x80, 0xed, 0x9a, 0x3e, 0x18, 0xa8, 0xae, 0x20, 0x9f, 0x30, 0xdf, 0xdc,
+	0xf6, 0x44, 0x21, 0x46, 0x4d, 0x39, 0x0c, 0x54, 0xb7, 0xba, 0x4d, 0x8c, 0xd5, 0x5d, 0x81, 0x42,
+	0xd8, 0x94, 0x8a, 0xa2, 0xa7, 0xba, 0x52, 0xa6, 0x34, 0x07, 0xba, 0x4a, 0x91, 0x26, 0x95, 0x45,
+	0x4f, 0x95, 0x5c, 0x87, 0x56, 0xdd, 0x19, 0xf9, 0xcc, 0xe6, 0x4b, 0x5c, 0x39, 0xb3, 0x5c, 0xaa,
+	0x9e, 0xd9, 0xd2, 0x32, 0xcf, 0x67, 0x56, 0x0b, 0x28, 0x49, 0xd5, 0x33, 0x5b, 0x02, 0xbe, 0x1d,
+	0xfd, 0x9a, 0x59, 0xc6, 0xf5, 0xcc, 0x32, 0xfe, 0xcc, 0x2c, 0xe3, 0xc7, 0xdc, 0x6a, 0x5d, 0xcf,
+	0xad, 0xd6, 0xef, 0xb9, 0xd5, 0xfa, 0x3c, 0x0c, 0x26, 0xc9, 0xf9, 0xf4, 0xac, 0xef, 0x91, 0x6f,
+	0xf6, 0x8d, 0x2d, 0x9d, 0x44, 0x81, 0x2d, 0x00, 0xec, 0x4b, 0x5b, 0xf8, 0x48, 0xb9, 0x8a, 0x31,
+	0x3b, 0xfb, 0xff, 0xe6, 0xb3, 0xe3, 0xf5, 0xdf, 0x00, 0x00, 0x00, 0xff, 0xff, 0x8d, 0x06, 0x45,
+	0x36, 0xbe, 0x0c, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -991,6 +1357,10 @@ type MsgClient interface {
 	RevokeDocIssuers(ctx context.Context, in *MsgRevokeDocIssuers, opts ...grpc.CallOption) (*MsgRevokeDocIssuersResponse, error)
 	EnrollAccountOperators(ctx context.Context, in *MsgEnrollAccountOperators, opts ...grpc.CallOption) (*MsgEnrollAccountOperatorsResponse, error)
 	RevokeAccountOperators(ctx context.Context, in *MsgRevokeAccountOperators, opts ...grpc.CallOption) (*MsgRevokeAccountOperatorsResponse, error)
+	EnrollRelayers(ctx context.Context, in *MsgEnrollRelayers, opts ...grpc.CallOption) (*MsgEnrollRelayersResponse, error)
+	RevokeRelayers(ctx context.Context, in *MsgRevokeRelayers, opts ...grpc.CallOption) (*MsgRevokeRelayersResponse, error)
+	EnrollApprovers(ctx context.Context, in *MsgEnrollApprovers, opts ...grpc.CallOption) (*MsgEnrollApproversResponse, error)
+	RevokeApprovers(ctx context.Context, in *MsgRevokeApprovers, opts ...grpc.CallOption) (*MsgRevokeApproversResponse, error)
 }
 
 type msgClient struct {
@@ -1091,6 +1461,42 @@ func (c *msgClient) RevokeAccountOperators(ctx context.Context, in *MsgRevokeAcc
 	return out, nil
 }
 
+func (c *msgClient) EnrollRelayers(ctx context.Context, in *MsgEnrollRelayers, opts ...grpc.CallOption) (*MsgEnrollRelayersResponse, error) {
+	out := new(MsgEnrollRelayersResponse)
+	err := c.cc.Invoke(ctx, "/shareledger.electoral.Msg/EnrollRelayers", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *msgClient) RevokeRelayers(ctx context.Context, in *MsgRevokeRelayers, opts ...grpc.CallOption) (*MsgRevokeRelayersResponse, error) {
+	out := new(MsgRevokeRelayersResponse)
+	err := c.cc.Invoke(ctx, "/shareledger.electoral.Msg/RevokeRelayers", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *msgClient) EnrollApprovers(ctx context.Context, in *MsgEnrollApprovers, opts ...grpc.CallOption) (*MsgEnrollApproversResponse, error) {
+	out := new(MsgEnrollApproversResponse)
+	err := c.cc.Invoke(ctx, "/shareledger.electoral.Msg/EnrollApprovers", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *msgClient) RevokeApprovers(ctx context.Context, in *MsgRevokeApprovers, opts ...grpc.CallOption) (*MsgRevokeApproversResponse, error) {
+	out := new(MsgRevokeApproversResponse)
+	err := c.cc.Invoke(ctx, "/shareledger.electoral.Msg/RevokeApprovers", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MsgServer is the server API for Msg service.
 type MsgServer interface {
 	EnrollVoter(context.Context, *MsgEnrollVoter) (*MsgEnrollVoterResponse, error)
@@ -1103,6 +1509,10 @@ type MsgServer interface {
 	RevokeDocIssuers(context.Context, *MsgRevokeDocIssuers) (*MsgRevokeDocIssuersResponse, error)
 	EnrollAccountOperators(context.Context, *MsgEnrollAccountOperators) (*MsgEnrollAccountOperatorsResponse, error)
 	RevokeAccountOperators(context.Context, *MsgRevokeAccountOperators) (*MsgRevokeAccountOperatorsResponse, error)
+	EnrollRelayers(context.Context, *MsgEnrollRelayers) (*MsgEnrollRelayersResponse, error)
+	RevokeRelayers(context.Context, *MsgRevokeRelayers) (*MsgRevokeRelayersResponse, error)
+	EnrollApprovers(context.Context, *MsgEnrollApprovers) (*MsgEnrollApproversResponse, error)
+	RevokeApprovers(context.Context, *MsgRevokeApprovers) (*MsgRevokeApproversResponse, error)
 }
 
 // UnimplementedMsgServer can be embedded to have forward compatible implementations.
@@ -1138,6 +1548,18 @@ func (*UnimplementedMsgServer) EnrollAccountOperators(ctx context.Context, req *
 }
 func (*UnimplementedMsgServer) RevokeAccountOperators(ctx context.Context, req *MsgRevokeAccountOperators) (*MsgRevokeAccountOperatorsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RevokeAccountOperators not implemented")
+}
+func (*UnimplementedMsgServer) EnrollRelayers(ctx context.Context, req *MsgEnrollRelayers) (*MsgEnrollRelayersResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method EnrollRelayers not implemented")
+}
+func (*UnimplementedMsgServer) RevokeRelayers(ctx context.Context, req *MsgRevokeRelayers) (*MsgRevokeRelayersResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RevokeRelayers not implemented")
+}
+func (*UnimplementedMsgServer) EnrollApprovers(ctx context.Context, req *MsgEnrollApprovers) (*MsgEnrollApproversResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method EnrollApprovers not implemented")
+}
+func (*UnimplementedMsgServer) RevokeApprovers(ctx context.Context, req *MsgRevokeApprovers) (*MsgRevokeApproversResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RevokeApprovers not implemented")
 }
 
 func RegisterMsgServer(s grpc1.Server, srv MsgServer) {
@@ -1324,6 +1746,78 @@ func _Msg_RevokeAccountOperators_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Msg_EnrollRelayers_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgEnrollRelayers)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).EnrollRelayers(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/shareledger.electoral.Msg/EnrollRelayers",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).EnrollRelayers(ctx, req.(*MsgEnrollRelayers))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Msg_RevokeRelayers_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgRevokeRelayers)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).RevokeRelayers(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/shareledger.electoral.Msg/RevokeRelayers",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).RevokeRelayers(ctx, req.(*MsgRevokeRelayers))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Msg_EnrollApprovers_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgEnrollApprovers)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).EnrollApprovers(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/shareledger.electoral.Msg/EnrollApprovers",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).EnrollApprovers(ctx, req.(*MsgEnrollApprovers))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Msg_RevokeApprovers_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgRevokeApprovers)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).RevokeApprovers(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/shareledger.electoral.Msg/RevokeApprovers",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).RevokeApprovers(ctx, req.(*MsgRevokeApprovers))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var _Msg_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "shareledger.electoral.Msg",
 	HandlerType: (*MsgServer)(nil),
@@ -1367,6 +1861,22 @@ var _Msg_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "RevokeAccountOperators",
 			Handler:    _Msg_RevokeAccountOperators_Handler,
+		},
+		{
+			MethodName: "EnrollRelayers",
+			Handler:    _Msg_EnrollRelayers_Handler,
+		},
+		{
+			MethodName: "RevokeRelayers",
+			Handler:    _Msg_RevokeRelayers_Handler,
+		},
+		{
+			MethodName: "EnrollApprovers",
+			Handler:    _Msg_EnrollApprovers_Handler,
+		},
+		{
+			MethodName: "RevokeApprovers",
+			Handler:    _Msg_RevokeApprovers_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -1989,6 +2499,254 @@ func (m *MsgRevokeAccountOperatorsResponse) MarshalToSizedBuffer(dAtA []byte) (i
 	return len(dAtA) - i, nil
 }
 
+func (m *MsgEnrollRelayers) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgEnrollRelayers) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgEnrollRelayers) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Addresses) > 0 {
+		for iNdEx := len(m.Addresses) - 1; iNdEx >= 0; iNdEx-- {
+			i -= len(m.Addresses[iNdEx])
+			copy(dAtA[i:], m.Addresses[iNdEx])
+			i = encodeVarintTx(dAtA, i, uint64(len(m.Addresses[iNdEx])))
+			i--
+			dAtA[i] = 0x12
+		}
+	}
+	if len(m.Creator) > 0 {
+		i -= len(m.Creator)
+		copy(dAtA[i:], m.Creator)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Creator)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgEnrollRelayersResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgEnrollRelayersResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgEnrollRelayersResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgRevokeRelayers) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgRevokeRelayers) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgRevokeRelayers) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Addresses) > 0 {
+		for iNdEx := len(m.Addresses) - 1; iNdEx >= 0; iNdEx-- {
+			i -= len(m.Addresses[iNdEx])
+			copy(dAtA[i:], m.Addresses[iNdEx])
+			i = encodeVarintTx(dAtA, i, uint64(len(m.Addresses[iNdEx])))
+			i--
+			dAtA[i] = 0x12
+		}
+	}
+	if len(m.Creator) > 0 {
+		i -= len(m.Creator)
+		copy(dAtA[i:], m.Creator)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Creator)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgRevokeRelayersResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgRevokeRelayersResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgRevokeRelayersResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgEnrollApprovers) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgEnrollApprovers) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgEnrollApprovers) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Addresses) > 0 {
+		for iNdEx := len(m.Addresses) - 1; iNdEx >= 0; iNdEx-- {
+			i -= len(m.Addresses[iNdEx])
+			copy(dAtA[i:], m.Addresses[iNdEx])
+			i = encodeVarintTx(dAtA, i, uint64(len(m.Addresses[iNdEx])))
+			i--
+			dAtA[i] = 0x12
+		}
+	}
+	if len(m.Creator) > 0 {
+		i -= len(m.Creator)
+		copy(dAtA[i:], m.Creator)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Creator)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgEnrollApproversResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgEnrollApproversResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgEnrollApproversResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgRevokeApprovers) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgRevokeApprovers) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgRevokeApprovers) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Addresses) > 0 {
+		for iNdEx := len(m.Addresses) - 1; iNdEx >= 0; iNdEx-- {
+			i -= len(m.Addresses[iNdEx])
+			copy(dAtA[i:], m.Addresses[iNdEx])
+			i = encodeVarintTx(dAtA, i, uint64(len(m.Addresses[iNdEx])))
+			i--
+			dAtA[i] = 0x12
+		}
+	}
+	if len(m.Creator) > 0 {
+		i -= len(m.Creator)
+		copy(dAtA[i:], m.Creator)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Creator)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgRevokeApproversResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgRevokeApproversResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgRevokeApproversResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
 func encodeVarintTx(dAtA []byte, offset int, v uint64) int {
 	offset -= sovTx(v)
 	base := offset
@@ -2268,6 +3026,118 @@ func (m *MsgRevokeAccountOperators) Size() (n int) {
 }
 
 func (m *MsgRevokeAccountOperatorsResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
+func (m *MsgEnrollRelayers) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Creator)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	if len(m.Addresses) > 0 {
+		for _, s := range m.Addresses {
+			l = len(s)
+			n += 1 + l + sovTx(uint64(l))
+		}
+	}
+	return n
+}
+
+func (m *MsgEnrollRelayersResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
+func (m *MsgRevokeRelayers) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Creator)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	if len(m.Addresses) > 0 {
+		for _, s := range m.Addresses {
+			l = len(s)
+			n += 1 + l + sovTx(uint64(l))
+		}
+	}
+	return n
+}
+
+func (m *MsgRevokeRelayersResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
+func (m *MsgEnrollApprovers) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Creator)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	if len(m.Addresses) > 0 {
+		for _, s := range m.Addresses {
+			l = len(s)
+			n += 1 + l + sovTx(uint64(l))
+		}
+	}
+	return n
+}
+
+func (m *MsgEnrollApproversResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
+func (m *MsgRevokeApprovers) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Creator)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	if len(m.Addresses) > 0 {
+		for _, s := range m.Addresses {
+			l = len(s)
+			n += 1 + l + sovTx(uint64(l))
+		}
+	}
+	return n
+}
+
+func (m *MsgRevokeApproversResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -3899,6 +4769,662 @@ func (m *MsgRevokeAccountOperatorsResponse) Unmarshal(dAtA []byte) error {
 		}
 		if fieldNum <= 0 {
 			return fmt.Errorf("proto: MsgRevokeAccountOperatorsResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgEnrollRelayers) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgEnrollRelayers: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgEnrollRelayers: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Creator", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Creator = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Addresses", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Addresses = append(m.Addresses, string(dAtA[iNdEx:postIndex]))
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgEnrollRelayersResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgEnrollRelayersResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgEnrollRelayersResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgRevokeRelayers) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgRevokeRelayers: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgRevokeRelayers: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Creator", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Creator = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Addresses", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Addresses = append(m.Addresses, string(dAtA[iNdEx:postIndex]))
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgRevokeRelayersResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgRevokeRelayersResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgRevokeRelayersResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgEnrollApprovers) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgEnrollApprovers: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgEnrollApprovers: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Creator", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Creator = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Addresses", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Addresses = append(m.Addresses, string(dAtA[iNdEx:postIndex]))
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgEnrollApproversResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgEnrollApproversResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgEnrollApproversResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgRevokeApprovers) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgRevokeApprovers: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgRevokeApprovers: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Creator", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Creator = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Addresses", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Addresses = append(m.Addresses, string(dAtA[iNdEx:postIndex]))
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgRevokeApproversResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgRevokeApproversResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgRevokeApproversResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:

@@ -53034,21 +53034,29 @@ definitions:
         type: string
   shareledger.electoral.MsgEnrollAccountOperatorsResponse:
     type: object
+  shareledger.electoral.MsgEnrollApproversResponse:
+    type: object
   shareledger.electoral.MsgEnrollDocIssuersResponse:
     type: object
   shareledger.electoral.MsgEnrollIdSignersResponse:
     type: object
   shareledger.electoral.MsgEnrollLoadersResponse:
     type: object
+  shareledger.electoral.MsgEnrollRelayersResponse:
+    type: object
   shareledger.electoral.MsgEnrollVoterResponse:
     type: object
   shareledger.electoral.MsgRevokeAccountOperatorsResponse:
+    type: object
+  shareledger.electoral.MsgRevokeApproversResponse:
     type: object
   shareledger.electoral.MsgRevokeDocIssuersResponse:
     type: object
   shareledger.electoral.MsgRevokeIdSignersResponse:
     type: object
   shareledger.electoral.MsgRevokeLoadersResponse:
+    type: object
+  shareledger.electoral.MsgRevokeRelayersResponse:
     type: object
   shareledger.electoral.MsgRevokeVoterResponse:
     type: object

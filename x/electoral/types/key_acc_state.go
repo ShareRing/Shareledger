@@ -21,6 +21,8 @@ const (
 	AccStateKeyAccOp       AccStateKeyType = "accop"
 	AccStateKeyShrpLoaders AccStateKeyType = "shrploader"
 	AccStateKeyVoter       AccStateKeyType = "voter"
+	AccStateKeyRelayer     AccStateKeyType = "relayer"
+	AccStateKeyApprover    AccStateKeyType = "approver"
 )
 
 type IndexKeyAccState string

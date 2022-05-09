@@ -1,7 +1,7 @@
 package keeper_test
 
 import (
-    "strconv"
+	"strconv"
 	"testing"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -10,9 +10,9 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	"github.com/sharering/shareledger/x/swap/types"
-	"github.com/sharering/shareledger/testutil/nullify"
 	keepertest "github.com/sharering/shareledger/testutil/keeper"
+	"github.com/sharering/shareledger/testutil/nullify"
+	"github.com/sharering/shareledger/x/swap/types"
 )
 
 // Prevent strconv unused error
@@ -29,28 +29,25 @@ func TestFormatQuerySingle(t *testing.T) {
 		err      error
 	}{
 		{
-			desc:     "First",
-			request:  &types.QueryGetFormatRequest{
-			    Network: msgs[0].Network,
-                
+			desc: "First",
+			request: &types.QueryGetFormatRequest{
+				Network: msgs[0].Network,
 			},
 			response: &types.QueryGetFormatResponse{Format: msgs[0]},
 		},
 		{
-			desc:     "Second",
-			request:  &types.QueryGetFormatRequest{
-			    Network: msgs[1].Network,
-                
+			desc: "Second",
+			request: &types.QueryGetFormatRequest{
+				Network: msgs[1].Network,
 			},
 			response: &types.QueryGetFormatResponse{Format: msgs[1]},
 		},
 		{
-			desc:    "KeyNotFound",
+			desc: "KeyNotFound",
 			request: &types.QueryGetFormatRequest{
-			    Network:strconv.Itoa(100000),
-                
+				Network: strconv.Itoa(100000),
 			},
-			err:     status.Error(codes.NotFound, "not found"),
+			err: status.Error(codes.NotFound, "not found"),
 		},
 		{
 			desc: "InvalidRequest",
@@ -94,9 +91,9 @@ func TestFormatQueryPaginated(t *testing.T) {
 			require.NoError(t, err)
 			require.LessOrEqual(t, len(resp.Format), step)
 			require.Subset(t,
-            	nullify.Fill(msgs),
-            	nullify.Fill(resp.Format),
-            )
+				nullify.Fill(msgs),
+				nullify.Fill(resp.Format),
+			)
 		}
 	})
 	t.Run("ByKey", func(t *testing.T) {
@@ -107,9 +104,9 @@ func TestFormatQueryPaginated(t *testing.T) {
 			require.NoError(t, err)
 			require.LessOrEqual(t, len(resp.Format), step)
 			require.Subset(t,
-            	nullify.Fill(msgs),
-            	nullify.Fill(resp.Format),
-            )
+				nullify.Fill(msgs),
+				nullify.Fill(resp.Format),
+			)
 			next = resp.Pagination.NextKey
 		}
 	})
