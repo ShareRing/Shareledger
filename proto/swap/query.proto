@@ -26,8 +26,8 @@ service Query {
 	}
 
 // Queries a Batch by id.
-	rpc Batch(QueryBatchRequest) returns (QueryBatchResponse) {
-		option (google.api.http).get = "/sharering/shareledger/swap/batch/{id}";
+	rpc Batches(QueryBatchesRequest) returns (QueryBatchesResponse) {
+		option (google.api.http).get = "/sharering/shareledger/swap/batches/{ids}";
 	}
 	
 
@@ -78,12 +78,12 @@ message QuerySwapResponse {
 	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 
-message QueryBatchRequest {
+message QueryBatchesRequest {
 	repeated uint64 ids = 1;
 }
 
-message QueryBatchResponse {
-	repeated Batch batchs = 1 [(gogoproto.nullable) = false];
+message QueryBatchesResponse {
+	repeated Batch batches = 1 [(gogoproto.nullable) = false];
 }
 
 message QueryBalanceRequest {

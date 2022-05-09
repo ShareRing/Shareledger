@@ -14,7 +14,7 @@ var _ = strconv.Itoa(0)
 
 func CmdUpdateBatch() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "update-batch [batch-id] [status] [nonce]",
+		Use:   "update_batch [batch-id] [status] [nonce]",
 		Short: "Broadcast message update-batch",
 		Args:  cobra.MinimumNArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {

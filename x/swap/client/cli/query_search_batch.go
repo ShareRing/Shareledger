@@ -13,7 +13,7 @@ var _ = strconv.Itoa(0)
 
 func CmdSearchBatch() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "search-batch [status]",
+		Use:   "search_batch [status]",
 		Short: "Query search-batch",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {

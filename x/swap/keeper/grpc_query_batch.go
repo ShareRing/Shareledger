@@ -9,7 +9,7 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (k Keeper) Batch(c context.Context, req *types.QueryBatchRequest) (*types.QueryBatchResponse, error) {
+func (k Keeper) Batches(c context.Context, req *types.QueryBatchesRequest) (*types.QueryBatchesResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
@@ -17,5 +17,5 @@ func (k Keeper) Batch(c context.Context, req *types.QueryBatchRequest) (*types.Q
 	ctx := sdk.UnwrapSDKContext(c)
 	batch := k.GetBatchsByIDs(ctx, req.Ids)
 
-	return &types.QueryBatchResponse{Batch: batch}, nil
+	return &types.QueryBatchesResponse{Batches: batch}, nil
 }

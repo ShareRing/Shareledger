@@ -42,7 +42,7 @@ func (k Keeper) SearchBatch(goCtx context.Context, req *types.QuerySearchBatchRe
 	}
 
 	return &types.QuerySearchBatchResponse{
-		Batch:      batches,
+		Batchs:     batches,
 		Pagination: pageRes,
 	}, nil
 }

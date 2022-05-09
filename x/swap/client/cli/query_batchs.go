@@ -2,40 +2,38 @@ package cli
 
 import (
 	"context"
-	"strconv"
-	"strings"
-
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/sharering/shareledger/x/swap/types"
 	"github.com/spf13/cobra"
+	"strconv"
 )
 
-func CmdShowBatch() *cobra.Command {
+func CmdShowBatches() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "show_batch [ids]",
-		Short: "shows a batch base on list of IDs = 1,2,3,4",
-		Args:  cobra.ExactArgs(1),
+		Use:     "show_batches [ids]",
+		Short:   "shows a batch base on list of IDs",
+		Example: "show_batch 1 2 3 ",
+		Args:    cobra.MinimumNArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx := client.GetClientContextFromCmd(cmd)
 
 			queryClient := types.NewQueryClient(clientCtx)
-			idsArgs := args[0]
-			idsStr := strings.Split(idsArgs, ",")
-			ids := make([]uint64, 0, len(idsStr))
-			for i := range idsStr {
-				id, err := strconv.ParseUint(idsStr[i], 10, 64)
+			idsArgs := args[:]
+			ids := make([]uint64, 0, len(idsArgs))
+			for i := range idsArgs {
+				id, err := strconv.ParseUint(idsArgs[i], 10, 64)
 				if err != nil {
 					return err
 				}
 				ids = append(ids, id)
 			}
 
-			params := &types.QueryGetBatchRequest{
+			params := &types.QueryBatchesRequest{
 				Ids: ids,
 			}
 
-			res, err := queryClient.Batch(context.Background(), params)
+			res, err := queryClient.Batches(context.Background(), params)
 			if err != nil {
 				return err
 			}
