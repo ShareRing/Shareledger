@@ -6,7 +6,7 @@ import "swap/params.proto";
 import "swap/id.proto";
 import "swap/request.proto";
 import "swap/batch.proto";
-import "swap/format.proto";
+import "swap/sign_schema.proto";
 // this line is used by starport scaffolding # genesis/proto/import
 
 option go_package = "github.com/sharering/shareledger/x/swap/types";
@@ -19,6 +19,6 @@ message GenesisState {
   uint64 requestCount = 4;
   repeated Batch batchList = 5 [(gogoproto.nullable) = false];
   uint64 batchCount = 6;
-  repeated Format formatList = 7 [(gogoproto.nullable) = false];
+  repeated SignSchema formatList = 7 [(gogoproto.nullable) = false];
   // this line is used by starport scaffolding # genesis/proto/state
 }

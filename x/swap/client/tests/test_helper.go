@@ -53,8 +53,8 @@ func CmdSearch(clientCtx client.Context, status string, extraFlags ...string) (t
 	return clitestutil.ExecTestCLICmd(clientCtx, cli.CmdSearch(), args)
 }
 
-func ParseSearchResponse(cdc codec.Codec, sRes []byte) (types.QuerySearchResponse, error) {
-	res := types.QuerySearchResponse{}
+func ParseSearchResponse(cdc codec.Codec, sRes []byte) (types.QuerySwapResponse, error) {
+	res := types.QuerySwapResponse{}
 	err := cdc.Unmarshal(sRes, &res)
 	if err != nil {
 		return res, err

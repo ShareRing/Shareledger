@@ -11,18 +11,18 @@ import (
 func TestMsgCreateFormat_ValidateBasic(t *testing.T) {
 	tests := []struct {
 		name string
-		msg  MsgCreateFormat
+		msg  MsgCreateSignSchema
 		err  error
 	}{
 		{
 			name: "invalid address",
-			msg: MsgCreateFormat{
+			msg: MsgCreateSignSchema{
 				Creator: "invalid_address",
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
-			msg: MsgCreateFormat{
+			msg: MsgCreateSignSchema{
 				Creator: sample.AccAddress(),
 			},
 		},
@@ -42,18 +42,18 @@ func TestMsgCreateFormat_ValidateBasic(t *testing.T) {
 func TestMsgUpdateFormat_ValidateBasic(t *testing.T) {
 	tests := []struct {
 		name string
-		msg  MsgUpdateFormat
+		msg  MsgUpdateSignSchema
 		err  error
 	}{
 		{
 			name: "invalid address",
-			msg: MsgUpdateFormat{
+			msg: MsgUpdateSignSchema{
 				Creator: "invalid_address",
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
-			msg: MsgUpdateFormat{
+			msg: MsgUpdateSignSchema{
 				Creator: sample.AccAddress(),
 			},
 		},
@@ -73,18 +73,18 @@ func TestMsgUpdateFormat_ValidateBasic(t *testing.T) {
 func TestMsgDeleteFormat_ValidateBasic(t *testing.T) {
 	tests := []struct {
 		name string
-		msg  MsgDeleteFormat
+		msg  MsgDeleteSignSchema
 		err  error
 	}{
 		{
 			name: "invalid address",
-			msg: MsgDeleteFormat{
+			msg: MsgDeleteSignSchema{
 				Creator: "invalid_address",
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
-			msg: MsgDeleteFormat{
+			msg: MsgDeleteSignSchema{
 				Creator: sample.AccAddress(),
 			},
 		},

@@ -1,17 +1,21 @@
 package cli
 
 import (
+	"strconv"
+
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/sharering/shareledger/x/swap/types"
 	"github.com/spf13/cobra"
 )
 
-func CmdFund() *cobra.Command {
+var _ = strconv.Itoa(0)
+
+func CmdSearchBatch() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "fund",
-		Short: "Query available token inside swapping module",
-		Args:  cobra.ExactArgs(0),
+		Use:   "search_batch [status]",
+		Short: "Query search-batch",
+		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 
 			clientCtx, err := client.GetClientTxContext(cmd)
@@ -21,9 +25,15 @@ func CmdFund() *cobra.Command {
 
 			queryClient := types.NewQueryClient(clientCtx)
 
-			params := &types.QueryBalanceRequest{}
+			params := &types.QuerySearchBatchesRequest{}
 
-			res, err := queryClient.Balance(cmd.Context(), params)
+			pageReq, err := client.ReadPageRequest(cmd.Flags())
+			if err != nil {
+				return err
+			}
+			params.Pagination = pageReq
+			params.Status = args[0]
+			res, err := queryClient.SearchBatches(cmd.Context(), params)
 			if err != nil {
 				return err
 			}

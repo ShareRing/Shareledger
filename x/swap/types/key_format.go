@@ -5,8 +5,8 @@ import "encoding/binary"
 var _ binary.ByteOrder
 
 const (
-	// FormatKeyPrefix is the prefix to retrieve all Format
-	FormatKeyPrefix = "Format/value/"
+	// SignSchemaKeyPrefix is the prefix to retrieve all Format
+	SignSchemaKeyPrefix = "Schema/value/"
 )
 
 // FormatKey returns the store key to retrieve a Format from the index fields

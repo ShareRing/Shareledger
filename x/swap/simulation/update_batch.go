@@ -10,7 +10,7 @@ import (
 	"github.com/sharering/shareledger/x/swap/types"
 )
 
-func SimulateMsgIn(
+func SimulateMsgUpdateBatch(
 	ak types.AccountKeeper,
 	bk types.BankKeeper,
 	k keeper.Keeper,
@@ -18,12 +18,12 @@ func SimulateMsgIn(
 	return func(r *rand.Rand, app *baseapp.BaseApp, ctx sdk.Context, accs []simtypes.Account, chainID string,
 	) (simtypes.OperationMsg, []simtypes.FutureOperation, error) {
 		simAccount, _ := simtypes.RandomAcc(r, accs)
-		msg := &types.MsgRequestIn{
+		msg := &types.MsgUpdateBatch{
 			Creator: simAccount.Address.String(),
 		}
 
-		// TODO: Handling the In simulation
+		// TODO: Handling the UpdateBatch simulation
 
-		return simtypes.NoOpMsg(types.ModuleName, msg.Type(), "In simulation not implemented"), nil, nil
+		return simtypes.NoOpMsg(types.ModuleName, msg.Type(), "UpdateBatch simulation not implemented"), nil, nil
 	}
 }

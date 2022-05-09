@@ -12,7 +12,7 @@ import (
 func (k msgServer) ApproveIn(goCtx context.Context, msg *types.MsgApproveIn) (*types.MsgApproveInResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	reqs, err := k.ChangeStatusRequests(ctx, msg.GetTxnIDs(), types.SwapStatusApproved, nil, false)
+	reqs, err := k.ChangeStatusRequests(ctx, msg.GetIds(), types.SwapStatusApproved, nil, false)
 	if err != nil {
 		return nil, err
 	}

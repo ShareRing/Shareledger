@@ -20,7 +20,7 @@ func createNFormat(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.Format
 	for i := range items {
 		items[i].Network = strconv.Itoa(i)
 
-		keeper.SetFormat(ctx, items[i])
+		keeper.SetSchema(ctx, items[i])
 	}
 	return items
 }
@@ -29,7 +29,7 @@ func TestFormatGet(t *testing.T) {
 	keeper, ctx := keepertest.SwapKeeper(t)
 	items := createNFormat(keeper, ctx, 10)
 	for _, item := range items {
-		rst, found := keeper.GetFormat(ctx,
+		rst, found := keeper.GetSignSchema(ctx,
 			item.Network,
 		)
 		require.True(t, found)
@@ -43,10 +43,10 @@ func TestFormatRemove(t *testing.T) {
 	keeper, ctx := keepertest.SwapKeeper(t)
 	items := createNFormat(keeper, ctx, 10)
 	for _, item := range items {
-		keeper.RemoveFormat(ctx,
+		keeper.RemoveSignSchema(ctx,
 			item.Network,
 		)
-		_, found := keeper.GetFormat(ctx,
+		_, found := keeper.GetSignSchema(ctx,
 			item.Network,
 		)
 		require.False(t, found)
@@ -58,6 +58,6 @@ func TestFormatGetAll(t *testing.T) {
 	items := createNFormat(keeper, ctx, 10)
 	require.ElementsMatch(t,
 		nullify.Fill(items),
-		nullify.Fill(keeper.GetAllFormat(ctx)),
+		nullify.Fill(keeper.GetAllSignSchema(ctx)),
 	)
 }

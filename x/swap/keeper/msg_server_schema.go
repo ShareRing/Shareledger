@@ -8,11 +8,11 @@ import (
 	"github.com/sharering/shareledger/x/swap/types"
 )
 
-func (k msgServer) CreateFormat(goCtx context.Context, msg *types.MsgCreateFormat) (*types.MsgCreateFormatResponse, error) {
+func (k msgServer) CreateSignSchema(goCtx context.Context, msg *types.MsgCreateSignSchema) (*types.MsgCreateSignSchemaResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	// Check if the value already exists
-	_, isFound := k.GetFormat(
+	_, isFound := k.GetSignSchema(
 		ctx,
 		msg.Network,
 	)
@@ -20,24 +20,24 @@ func (k msgServer) CreateFormat(goCtx context.Context, msg *types.MsgCreateForma
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "index already set")
 	}
 
-	var format = types.Format{
-		Creator:    msg.Creator,
-		Network:    msg.Network,
-		DataFormat: msg.DataTypeFormat,
+	var format = types.SignSchema{
+		Creator: msg.Creator,
+		Network: msg.Network,
+		Schema:  msg.Schema,
 	}
 
-	k.SetFormat(
+	k.SetSchema(
 		ctx,
 		format,
 	)
-	return &types.MsgCreateFormatResponse{}, nil
+	return &types.MsgCreateSignSchemaResponse{}, nil
 }
 
-func (k msgServer) UpdateFormat(goCtx context.Context, msg *types.MsgUpdateFormat) (*types.MsgUpdateFormatResponse, error) {
+func (k msgServer) UpdateSignSchema(goCtx context.Context, msg *types.MsgUpdateSignSchema) (*types.MsgUpdateSignSchemaResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	// Check if the value exists
-	valFound, isFound := k.GetFormat(
+	valFound, isFound := k.GetSignSchema(
 		ctx,
 		msg.Network,
 	)
@@ -50,22 +50,22 @@ func (k msgServer) UpdateFormat(goCtx context.Context, msg *types.MsgUpdateForma
 		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "incorrect owner")
 	}
 
-	var format = types.Format{
-		Creator:    msg.Creator,
-		Network:    msg.Network,
-		DataFormat: msg.DataTypeFormat,
+	var format = types.SignSchema{
+		Creator: msg.Creator,
+		Network: msg.Network,
+		Schema:  msg.Schema,
 	}
 
-	k.SetFormat(ctx, format)
+	k.SetSchema(ctx, format)
 
-	return &types.MsgUpdateFormatResponse{}, nil
+	return &types.MsgUpdateSignSchemaResponse{}, nil
 }
 
-func (k msgServer) DeleteFormat(goCtx context.Context, msg *types.MsgDeleteFormat) (*types.MsgDeleteFormatResponse, error) {
+func (k msgServer) DeleteSignSchema(goCtx context.Context, msg *types.MsgDeleteSignSchema) (*types.MsgDeleteSignSchemaResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	// Check if the value exists
-	valFound, isFound := k.GetFormat(
+	valFound, isFound := k.GetSignSchema(
 		ctx,
 		msg.Network,
 	)
@@ -78,10 +78,10 @@ func (k msgServer) DeleteFormat(goCtx context.Context, msg *types.MsgDeleteForma
 		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "incorrect owner")
 	}
 
-	k.RemoveFormat(
+	k.RemoveSignSchema(
 		ctx,
 		msg.Network,
 	)
 
-	return &types.MsgDeleteFormatResponse{}, nil
+	return &types.MsgDeleteSignSchemaResponse{}, nil
 }

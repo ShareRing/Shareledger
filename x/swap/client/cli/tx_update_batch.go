@@ -1,45 +1,44 @@
 package cli
 
 import (
+	"strconv"
+
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
-	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/sharering/shareledger/x/swap/types"
 	"github.com/spf13/cobra"
 )
 
-func CmdOut() *cobra.Command {
+var _ = strconv.Itoa(0)
+
+func CmdUpdateBatch() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "out [dest_address] [network] [amount] [fee]",
-		Short: "create new request swap out",
-		Args:  cobra.ExactArgs(4),
+		Use:   "update_batch [batch-id] [status] [nonce]",
+		Short: "Broadcast message update-batch",
+		Args:  cobra.MinimumNArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			argDestAddr := args[0]
-			argNetwork := args[1]
-			argAmount := args[2]
-			argFee := args[3]
+			argBatchId := args[0]
+			argStatus := args[1]
+			var argNonce string
+			if len(args) > 2 {
+				argNonce = args[2]
+			}
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
 			}
 
-			amount, err := sdk.ParseDecCoin(argAmount)
-			if err != nil {
-				return err
-			}
-			fee, err := sdk.ParseDecCoin(argFee)
-			if err != nil {
-				return err
-			}
-			msg := types.NewMsgRequestOut(
+			batchID, _ := strconv.ParseUint(argBatchId, 10, 64)
+			nonce, _ := strconv.ParseUint(argNonce, 10, 64)
+			msg := types.NewMsgUpdateBatch(
 				clientCtx.GetFromAddress().String(),
-				argDestAddr,
-				argNetwork,
-				amount,
-				fee,
+				batchID,
+				nonce,
+				argStatus,
 			)
+
 			if err := msg.ValidateBasic(); err != nil {
 				return err
 			}

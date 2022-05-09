@@ -26,12 +26,12 @@ func SimulateMsgCreateFormat(
 		simAccount, _ := simtypes.RandomAcc(r, accs)
 
 		i := r.Int()
-		msg := &types.MsgCreateFormat{
+		msg := &types.MsgCreateSignSchema{
 			Creator: simAccount.Address.String(),
 			Network: strconv.Itoa(i),
 		}
 
-		_, found := k.GetFormat(ctx, msg.Network)
+		_, found := k.GetSignSchema(ctx, msg.Network)
 		if found {
 			return simtypes.NoOpMsg(types.ModuleName, msg.Type(), "Format already exist"), nil, nil
 		}
@@ -63,9 +63,9 @@ func SimulateMsgUpdateFormat(
 	) (simtypes.OperationMsg, []simtypes.FutureOperation, error) {
 		var (
 			simAccount = simtypes.Account{}
-			format     = types.Format{}
-			msg        = &types.MsgUpdateFormat{}
-			allFormat  = k.GetAllFormat(ctx)
+			format     = types.SignSchema{}
+			msg        = &types.MsgUpdateSignSchema{}
+			allFormat  = k.GetAllSignSchema(ctx)
 			found      = false
 		)
 		for _, obj := range allFormat {
@@ -109,9 +109,9 @@ func SimulateMsgDeleteFormat(
 	) (simtypes.OperationMsg, []simtypes.FutureOperation, error) {
 		var (
 			simAccount = simtypes.Account{}
-			format     = types.Format{}
-			msg        = &types.MsgUpdateFormat{}
-			allFormat  = k.GetAllFormat(ctx)
+			format     = types.SignSchema{}
+			msg        = &types.MsgUpdateSignSchema{}
+			allFormat  = k.GetAllSignSchema(ctx)
 			found      = false
 		)
 		for _, obj := range allFormat {

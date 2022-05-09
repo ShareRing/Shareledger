@@ -9,10 +9,10 @@ const TypeMsgApproveIn = "approve_in"
 
 var _ sdk.Msg = &MsgApproveIn{}
 
-func NewMsgApproveIn(creator string, txnIDs []uint64) *MsgApproveIn {
+func NewMsgApproveIn(creator string, ids []uint64) *MsgApproveIn {
 	return &MsgApproveIn{
 		Creator: creator,
-		TxnIDs:  txnIDs,
+		Ids:     ids,
 	}
 }
 
@@ -42,7 +42,7 @@ func (msg *MsgApproveIn) ValidateBasic() error {
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
 	}
-	if len(msg.GetTxnIDs()) == 0 {
+	if len(msg.GetIds()) == 0 {
 		return sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "transaction ids list can't empty")
 	}
 	return nil

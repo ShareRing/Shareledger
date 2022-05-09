@@ -24,7 +24,7 @@ func (k Keeper) SearchIds(ctx sdk.Context, status string, ids []uint64) ([]types
 	return k.GetRequestsByIdsFromStore(ctx, store, ids), nil
 }
 
-func (k Keeper) Search(goCtx context.Context, req *types.QuerySearchRequest) (*types.QuerySearchResponse, error) {
+func (k Keeper) Swap(goCtx context.Context, req *types.QuerySwapRequest) (*types.QuerySwapResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
@@ -34,7 +34,7 @@ func (k Keeper) Search(goCtx context.Context, req *types.QuerySearchRequest) (*t
 		return nil, err
 	}
 	store := k.GetStoreRequestMap(ctx)[req.Status]
-	var requests []types.Request
+	var swapRequests []types.Request
 	filterIds := make(map[uint64]struct{})
 	var filteredIds bool
 	if len(req.Ids) > 0 {
@@ -67,14 +67,14 @@ func (k Keeper) Search(goCtx context.Context, req *types.QuerySearchRequest) (*t
 		}
 
 		if accumulate {
-			requests = append(requests, val)
+			swapRequests = append(swapRequests, val)
 		}
 
 		return true, nil
 	})
 
-	return &types.QuerySearchResponse{
-		Requests:   requests,
+	return &types.QuerySwapResponse{
+		Swaps:      swapRequests,
 		Pagination: pageRes,
 	}, err
 }
