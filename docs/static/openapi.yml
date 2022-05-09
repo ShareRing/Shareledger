@@ -31482,10 +31482,10 @@ paths:
           type: boolean
       tags:
         - Query
-  /sharering/shareledger/swap/search_batch:
+  /sharering/shareledger/swap/search_batches:
     get:
       summary: Queries a list of SearchBatch items.
-      operationId: ShareledgerSwapSearchBatch
+      operationId: ShareledgerSwapSearchBatches
       responses:
         '200':
           description: A successful response.
@@ -53689,7 +53689,7 @@ definitions:
           outFee:
             type: string
     description: QueryParamsResponse is response type for the Query/Params RPC method.
-  shareledger.swap.QuerySearchBatchResponse:
+  shareledger.swap.QuerySearchBatchesResponse:
     type: object
     properties:
       batchs:

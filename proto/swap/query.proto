@@ -47,8 +47,8 @@ service Query {
 	}
 
 // Queries a list of SearchBatch items.
-	rpc SearchBatch(QuerySearchBatchRequest) returns (QuerySearchBatchResponse) {
-		option (google.api.http).get = "/sharering/shareledger/swap/search_batch";
+	rpc SearchBatches(QuerySearchBatchesRequest) returns (QuerySearchBatchesResponse) {
+		option (google.api.http).get = "/sharering/shareledger/swap/search_batches";
 	}
 
 // this line is used by starport scaffolding # 2
@@ -111,12 +111,12 @@ message QueryAllSignSchemasResponse {
 	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 
-message QuerySearchBatchRequest {
+message QuerySearchBatchesRequest {
 	string status = 1;
 cosmos.base.query.v1beta1.PageRequest pagination = 2;
 }
 
-message QuerySearchBatchResponse {
+message QuerySearchBatchesResponse {
 	repeated Batch batchs = 1 [(gogoproto.nullable) = false];
 cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }

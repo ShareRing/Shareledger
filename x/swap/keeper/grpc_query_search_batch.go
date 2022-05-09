@@ -12,7 +12,7 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (k Keeper) SearchBatch(goCtx context.Context, req *types.QuerySearchBatchRequest) (*types.QuerySearchBatchResponse, error) {
+func (k Keeper) SearchBatches(goCtx context.Context, req *types.QuerySearchBatchesRequest) (*types.QuerySearchBatchesResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
@@ -41,7 +41,7 @@ func (k Keeper) SearchBatch(goCtx context.Context, req *types.QuerySearchBatchRe
 		return nil, sdkerrors.Wrap(err, "getting batchs fail")
 	}
 
-	return &types.QuerySearchBatchResponse{
+	return &types.QuerySearchBatchesResponse{
 		Batchs:     batches,
 		Pagination: pageRes,
 	}, nil

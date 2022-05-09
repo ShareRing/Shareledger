@@ -12,7 +12,7 @@ func (k msgServer) CreateSignSchema(goCtx context.Context, msg *types.MsgCreateS
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	// Check if the value already exists
-	_, isFound := k.GetFormat(
+	_, isFound := k.GetSignSchema(
 		ctx,
 		msg.Network,
 	)
@@ -26,7 +26,7 @@ func (k msgServer) CreateSignSchema(goCtx context.Context, msg *types.MsgCreateS
 		Schema:  msg.Schema,
 	}
 
-	k.SetFormat(
+	k.SetSchema(
 		ctx,
 		format,
 	)
@@ -37,7 +37,7 @@ func (k msgServer) UpdateSignSchema(goCtx context.Context, msg *types.MsgUpdateS
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	// Check if the value exists
-	valFound, isFound := k.GetFormat(
+	valFound, isFound := k.GetSignSchema(
 		ctx,
 		msg.Network,
 	)
@@ -56,7 +56,7 @@ func (k msgServer) UpdateSignSchema(goCtx context.Context, msg *types.MsgUpdateS
 		Schema:  msg.Schema,
 	}
 
-	k.SetFormat(ctx, format)
+	k.SetSchema(ctx, format)
 
 	return &types.MsgUpdateSignSchemaResponse{}, nil
 }
@@ -65,7 +65,7 @@ func (k msgServer) DeleteSignSchema(goCtx context.Context, msg *types.MsgDeleteS
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	// Check if the value exists
-	valFound, isFound := k.GetFormat(
+	valFound, isFound := k.GetSignSchema(
 		ctx,
 		msg.Network,
 	)
@@ -78,7 +78,7 @@ func (k msgServer) DeleteSignSchema(goCtx context.Context, msg *types.MsgDeleteS
 		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "incorrect owner")
 	}
 
-	k.RemoveFormat(
+	k.RemoveSignSchema(
 		ctx,
 		msg.Network,
 	)

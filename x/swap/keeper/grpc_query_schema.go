@@ -16,19 +16,19 @@ func (k Keeper) AllSignSchemas(c context.Context, req *types.QueryAllSignSchemas
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
 
-	var formats []types.SignSchema
+	var schemas []types.SignSchema
 	ctx := sdk.UnwrapSDKContext(c)
 
 	store := ctx.KVStore(k.storeKey)
-	formatStore := prefix.NewStore(store, types.KeyPrefix(types.FormatKeyPrefix))
+	signSchemaStore := prefix.NewStore(store, types.KeyPrefix(types.SignSchemaKeyPrefix))
 
-	pageRes, err := query.Paginate(formatStore, req.Pagination, func(key []byte, value []byte) error {
-		var format types.SignSchema
-		if err := k.cdc.Unmarshal(value, &format); err != nil {
+	pageRes, err := query.Paginate(signSchemaStore, req.Pagination, func(key []byte, value []byte) error {
+		var signSchema types.SignSchema
+		if err := k.cdc.Unmarshal(value, &signSchema); err != nil {
 			return err
 		}
 
-		formats = append(formats, format)
+		schemas = append(schemas, signSchema)
 		return nil
 	})
 
@@ -36,7 +36,7 @@ func (k Keeper) AllSignSchemas(c context.Context, req *types.QueryAllSignSchemas
 		return nil, status.Error(codes.Internal, err.Error())
 	}
 
-	return &types.QueryAllSignSchemasResponse{Schemas: formats, Pagination: pageRes}, nil
+	return &types.QueryAllSignSchemasResponse{Schemas: schemas, Pagination: pageRes}, nil
 }
 
 func (k Keeper) SignSchema(c context.Context, req *types.QueryGetSignSchemaRequest) (*types.QuerySignSchemaResponse, error) {
@@ -45,7 +45,7 @@ func (k Keeper) SignSchema(c context.Context, req *types.QueryGetSignSchemaReque
 	}
 	ctx := sdk.UnwrapSDKContext(c)
 
-	val, found := k.GetFormat(
+	val, found := k.GetSignSchema(
 		ctx,
 		req.Network,
 	)

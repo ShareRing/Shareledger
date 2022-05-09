@@ -27,7 +27,7 @@ func TestFormatMsgServerCreate(t *testing.T) {
 		}
 		_, err := srv.CreateFormat(wctx, expected)
 		require.NoError(t, err)
-		rst, found := k.GetFormat(ctx,
+		rst, found := k.GetSignSchema(ctx,
 			expected.Network,
 		)
 		require.True(t, found)
@@ -79,7 +79,7 @@ func TestFormatMsgServerUpdate(t *testing.T) {
 				require.ErrorIs(t, err, tc.err)
 			} else {
 				require.NoError(t, err)
-				rst, found := k.GetFormat(ctx,
+				rst, found := k.GetSignSchema(ctx,
 					expected.Network,
 				)
 				require.True(t, found)
@@ -132,7 +132,7 @@ func TestFormatMsgServerDelete(t *testing.T) {
 				require.ErrorIs(t, err, tc.err)
 			} else {
 				require.NoError(t, err)
-				_, found := k.GetFormat(ctx,
+				_, found := k.GetSignSchema(ctx,
 					tc.request.Network,
 				)
 				require.False(t, found)

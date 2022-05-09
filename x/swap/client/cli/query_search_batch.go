@@ -25,7 +25,7 @@ func CmdSearchBatch() *cobra.Command {
 
 			queryClient := types.NewQueryClient(clientCtx)
 
-			params := &types.QuerySearchBatchRequest{}
+			params := &types.QuerySearchBatchesRequest{}
 
 			pageReq, err := client.ReadPageRequest(cmd.Flags())
 			if err != nil {
@@ -33,7 +33,7 @@ func CmdSearchBatch() *cobra.Command {
 			}
 			params.Pagination = pageReq
 			params.Status = args[0]
-			res, err := queryClient.SearchBatch(cmd.Context(), params)
+			res, err := queryClient.SearchBatches(cmd.Context(), params)
 			if err != nil {
 				return err
 			}

@@ -31,13 +31,13 @@ func CmdUpdateBatch() *cobra.Command {
 			}
 
 			batchID, _ := strconv.ParseUint(argBatchId, 10, 64)
-
+			nonce, _ := strconv.ParseUint(argNonce, 10, 64)
 			msg := types.NewMsgUpdateBatch(
 				clientCtx.GetFromAddress().String(),
 				batchID,
+				nonce,
 				argStatus,
 			)
-			msg.Nonce, _ = strconv.ParseUint(argNonce, 10, 64)
 
 			if err := msg.ValidateBasic(); err != nil {
 				return err
