@@ -31138,9 +31138,55 @@ paths:
           type: string
       tags:
         - Query
-  '/sharering/shareledger/swap/batch/{ids}':
+  /sharering/shareledger/swap/balance:
     get:
-      summary: Queries a Batch by ids.
+      summary: Queries a list of Fund items.
+      operationId: ShareledgerSwapBalance
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              balance:
+                type: object
+                properties:
+                  denom:
+                    type: string
+                  amount:
+                    type: string
+                description: >-
+                  DecCoin defines a token with a denomination and a decimal
+                  amount.
+
+
+                  NOTE: The amount field is an Dec which implements the custom
+                  method
+
+                  signatures required by gogoproto.
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
+  '/sharering/shareledger/swap/batch/{id}':
+    get:
+      summary: Queries a Batch by id.
       operationId: ShareledgerSwapBatch
       responses:
         '200':
@@ -31154,7 +31200,7 @@ paths:
                   id:
                     type: string
                     format: uint64
-                  signedHash:
+                  signature:
                     type: string
                   txIds:
                     type: array
@@ -31184,232 +31230,11 @@ paths:
                       type: string
                   additionalProperties: {}
       parameters:
-        - name: ids
-          in: path
-          required: true
-          type: array
-          items:
-            type: string
-            format: uint64
-          collectionFormat: csv
-          minItems: 1
-      tags:
-        - Query
-  /sharering/shareledger/swap/format:
-    get:
-      summary: Queries a list of Format items.
-      operationId: ShareledgerSwapFormatAll
-      responses:
-        '200':
-          description: A successful response.
-          schema:
-            type: object
-            properties:
-              formats:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    network:
-                      type: string
-                    creator:
-                      type: string
-                    dataFormat:
-                      type: string
-              pagination:
-                type: object
-                properties:
-                  next_key:
-                    type: string
-                    format: byte
-                    title: |-
-                      next_key is the key to be passed to PageRequest.key to
-                      query the next page most efficiently
-                  total:
-                    type: string
-                    format: uint64
-                    title: >-
-                      total is total number of results available if
-                      PageRequest.count_total
-
-                      was set, its value is undefined otherwise
-                description: >-
-                  PageResponse is to be embedded in gRPC response messages where
-                  the
-
-                  corresponding request message has used PageRequest.
-
-                   message SomeResponse {
-                           repeated Bar results = 1;
-                           PageResponse page = 2;
-                   }
-        default:
-          description: An unexpected error response.
-          schema:
-            type: object
-            properties:
-              code:
-                type: integer
-                format: int32
-              message:
-                type: string
-              details:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    '@type':
-                      type: string
-                  additionalProperties: {}
-      parameters:
-        - name: pagination.key
-          description: |-
-            key is a value returned in PageResponse.next_key to begin
-            querying the next page most efficiently. Only one of offset or key
-            should be set.
-          in: query
-          required: false
-          type: string
-          format: byte
-        - name: pagination.offset
-          description: >-
-            offset is a numeric offset that can be used when key is unavailable.
-
-            It is less efficient than using key. Only one of offset or key
-            should
-
-            be set.
-          in: query
-          required: false
-          type: string
-          format: uint64
-        - name: pagination.limit
-          description: >-
-            limit is the total number of results to be returned in the result
-            page.
-
-            If left empty it will default to a value to be set by each app.
-          in: query
-          required: false
-          type: string
-          format: uint64
-        - name: pagination.count_total
-          description: >-
-            count_total is set to true  to indicate that the result set should
-            include
-
-            a count of the total number of items available for pagination in
-            UIs.
-
-            count_total is only respected when offset is used. It is ignored
-            when key
-
-            is set.
-          in: query
-          required: false
-          type: boolean
-        - name: pagination.reverse
-          description: >-
-            reverse is set to true if results are to be returned in the
-            descending order.
-
-
-            Since: cosmos-sdk 0.43
-          in: query
-          required: false
-          type: boolean
-      tags:
-        - Query
-  '/sharering/shareledger/swap/format/{network}':
-    get:
-      summary: Queries a Format by index.
-      operationId: ShareledgerSwapFormat
-      responses:
-        '200':
-          description: A successful response.
-          schema:
-            type: object
-            properties:
-              format:
-                type: object
-                properties:
-                  network:
-                    type: string
-                  creator:
-                    type: string
-                  dataFormat:
-                    type: string
-        default:
-          description: An unexpected error response.
-          schema:
-            type: object
-            properties:
-              code:
-                type: integer
-                format: int32
-              message:
-                type: string
-              details:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    '@type':
-                      type: string
-                  additionalProperties: {}
-      parameters:
-        - name: network
+        - name: id
           in: path
           required: true
           type: string
-      tags:
-        - Query
-  /sharering/shareledger/swap/fund:
-    get:
-      summary: Queries a list of Fund items.
-      operationId: ShareledgerSwapFund
-      responses:
-        '200':
-          description: A successful response.
-          schema:
-            type: object
-            properties:
-              availables:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    denom:
-                      type: string
-                    amount:
-                      type: string
-                  description: >-
-                    DecCoin defines a token with a denomination and a decimal
-                    amount.
-
-
-                    NOTE: The amount field is an Dec which implements the custom
-                    method
-
-                    signatures required by gogoproto.
-        default:
-          description: An unexpected error response.
-          schema:
-            type: object
-            properties:
-              code:
-                type: integer
-                format: int32
-              message:
-                type: string
-              details:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    '@type':
-                      type: string
-                  additionalProperties: {}
+          format: uint64
       tags:
         - Query
   /sharering/shareledger/swap/params:
@@ -31454,14 +31279,14 @@ paths:
   '/sharering/shareledger/swap/search/{status}/{ids}/{srcAddr}/{destAddr}/{srcNetwork}/{destNetwork}':
     get:
       summary: Queries a list of Search items.
-      operationId: ShareledgerSwapSearch
+      operationId: ShareledgerSwapSwap
       responses:
         '200':
           description: A successful response.
           schema:
             type: object
             properties:
-              requests:
+              swaps:
                 type: array
                 items:
                   type: object
@@ -31512,6 +31337,9 @@ paths:
                     status:
                       type: string
                     batchId:
+                      type: string
+                      format: uint64
+                    createdAt:
                       type: string
                       format: uint64
               pagination:
@@ -31647,36 +31475,27 @@ paths:
           type: boolean
       tags:
         - Query
-  /sharering/shareledger/swap/search_batch:
+  /sharering/shareledger/swap/sign_schema:
     get:
-      summary: Queries a list of SearchBatch items.
-      operationId: ShareledgerSwapSearchBatch
+      summary: Queries a list of Format items.
+      operationId: ShareledgerSwapAllSignSchemas
       responses:
         '200':
           description: A successful response.
           schema:
             type: object
             properties:
-              Batch:
+              schemas:
                 type: array
                 items:
                   type: object
                   properties:
-                    id:
+                    network:
                       type: string
-                      format: uint64
-                    signedHash:
+                    creator:
                       type: string
-                    txIds:
-                      type: array
-                      items:
-                        type: string
-                        format: uint64
-                    status:
+                    schema:
                       type: string
-                    nonce:
-                      type: string
-                      format: uint64
               pagination:
                 type: object
                 properties:
@@ -31723,10 +31542,6 @@ paths:
                       type: string
                   additionalProperties: {}
       parameters:
-        - name: status
-          in: query
-          required: false
-          type: string
         - name: pagination.key
           description: |-
             key is a value returned in PageResponse.next_key to begin
@@ -31783,6 +31598,50 @@ paths:
           in: query
           required: false
           type: boolean
+      tags:
+        - Query
+  '/sharering/shareledger/swap/sign_schema/{network}':
+    get:
+      summary: Queries a Format by index.
+      operationId: ShareledgerSwapSignSchema
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              schema:
+                type: object
+                properties:
+                  network:
+                    type: string
+                  creator:
+                    type: string
+                  schema:
+                    type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: network
+          in: path
+          required: true
+          type: string
       tags:
         - Query
 definitions:
@@ -53530,7 +53389,7 @@ definitions:
       id:
         type: string
         format: uint64
-      signedHash:
+      signature:
         type: string
       txIds:
         type: array
@@ -53539,51 +53398,42 @@ definitions:
           format: uint64
       status:
         type: string
-      nonce:
-        type: string
-  shareledger.swap.Format:
-    type: object
-    properties:
-      network:
-        type: string
-      creator:
-        type: string
-      dataFormat:
+      digest:
         type: string
   shareledger.swap.MsgApproveInResponse:
     type: object
   shareledger.swap.MsgApproveResponse:
     type: object
     properties:
-      batchID:
+      batchId:
         type: string
         format: uint64
   shareledger.swap.MsgCancelResponse:
     type: object
-  shareledger.swap.MsgCreateFormatResponse:
+  shareledger.swap.MsgCreateSignSchemaResponse:
     type: object
-  shareledger.swap.MsgDeleteFormatResponse:
+  shareledger.swap.MsgDeleteSignSchemaResponse:
     type: object
   shareledger.swap.MsgDepositResponse:
     type: object
     properties:
       status:
         type: string
-  shareledger.swap.MsgInResponse:
+  shareledger.swap.MsgOutSwapResponse:
     type: object
     properties:
-      rId:
-        type: string
-        format: uint64
-  shareledger.swap.MsgOutResponse:
-    type: object
-    properties:
-      rid:
+      id:
         type: string
         format: uint64
   shareledger.swap.MsgRejectResponse:
     type: object
-  shareledger.swap.MsgUpdateFormatResponse:
+  shareledger.swap.MsgSwapInResponse:
+    type: object
+    properties:
+      id:
+        type: string
+        format: uint64
+  shareledger.swap.MsgUpdateSignSchemaResponse:
     type: object
   shareledger.swap.MsgWithdrawResponse:
     type: object
@@ -53596,10 +53446,10 @@ definitions:
       outFee:
         type: string
     description: Params defines the parameters for the module.
-  shareledger.swap.QueryAllFormatResponse:
+  shareledger.swap.QueryAllSignSchemasResponse:
     type: object
     properties:
-      formats:
+      schemas:
         type: array
         items:
           type: object
@@ -53608,7 +53458,7 @@ definitions:
               type: string
             creator:
               type: string
-            dataFormat:
+            schema:
               type: string
       pagination:
         type: object
@@ -53635,24 +53485,22 @@ definitions:
                    repeated Bar results = 1;
                    PageResponse page = 2;
            }
-  shareledger.swap.QueryFundResponse:
+  shareledger.swap.QueryBalanceResponse:
     type: object
     properties:
-      availables:
-        type: array
-        items:
-          type: object
-          properties:
-            denom:
-              type: string
-            amount:
-              type: string
-          description: |-
-            DecCoin defines a token with a denomination and a decimal amount.
+      balance:
+        type: object
+        properties:
+          denom:
+            type: string
+          amount:
+            type: string
+        description: |-
+          DecCoin defines a token with a denomination and a decimal amount.
 
-            NOTE: The amount field is an Dec which implements the custom method
-            signatures required by gogoproto.
-  shareledger.swap.QueryGetBatchResponse:
+          NOTE: The amount field is an Dec which implements the custom method
+          signatures required by gogoproto.
+  shareledger.swap.QueryBatchResponse:
     type: object
     properties:
       batch:
@@ -53661,7 +53509,7 @@ definitions:
           id:
             type: string
             format: uint64
-          signedHash:
+          signature:
             type: string
           txIds:
             type: array
@@ -53671,18 +53519,6 @@ definitions:
           status:
             type: string
           digest:
-            type: string
-  shareledger.swap.QueryGetFormatResponse:
-    type: object
-    properties:
-      format:
-        type: object
-        properties:
-          network:
-            type: string
-          creator:
-            type: string
-          dataFormat:
             type: string
   shareledger.swap.QueryParamsResponse:
     type: object
@@ -53694,58 +53530,22 @@ definitions:
           outFee:
             type: string
     description: QueryParamsResponse is response type for the Query/Params RPC method.
-  shareledger.swap.QuerySearchBatchResponse:
+  shareledger.swap.QuerySignSchemaResponse:
     type: object
     properties:
-      Batch:
-        type: array
-        items:
-          type: object
-          properties:
-            id:
-              type: string
-              format: uint64
-            signedHash:
-              type: string
-            txIds:
-              type: array
-              items:
-                type: string
-                format: uint64
-            status:
-              type: string
-            nonce:
-              type: string
-              format: uint64
-      pagination:
+      schema:
         type: object
         properties:
-          next_key:
+          network:
             type: string
-            format: byte
-            title: |-
-              next_key is the key to be passed to PageRequest.key to
-              query the next page most efficiently
-          total:
+          creator:
             type: string
-            format: uint64
-            title: >-
-              total is total number of results available if
-              PageRequest.count_total
-
-              was set, its value is undefined otherwise
-        description: |-
-          PageResponse is to be embedded in gRPC response messages where the
-          corresponding request message has used PageRequest.
-
-           message SomeResponse {
-                   repeated Bar results = 1;
-                   PageResponse page = 2;
-           }
-  shareledger.swap.QuerySearchResponse:
+          schema:
+            type: string
+  shareledger.swap.QuerySwapResponse:
     type: object
     properties:
-      requests:
+      swaps:
         type: array
         items:
           type: object
@@ -53796,6 +53596,9 @@ definitions:
             status:
               type: string
             batchId:
+              type: string
+              format: uint64
+            createdAt:
               type: string
               format: uint64
       pagination:
@@ -53866,3 +53669,15 @@ definitions:
       batchId:
         type: string
         format: uint64
+      createdAt:
+        type: string
+        format: uint64
+  shareledger.swap.SignSchema:
+    type: object
+    properties:
+      network:
+        type: string
+      creator:
+        type: string
+      schema:
+        type: string

@@ -13,8 +13,8 @@ func DefaultGenesis() *GenesisState {
 		IdList:      []Id{},
 		RequestList: []Request{},
 		BatchList:   []Batch{},
-		FormatList: []Format{},
-// this line is used by starport scaffolding # genesis/types/default
+		FormatList:  []SignSchema{},
+		// this line is used by starport scaffolding # genesis/types/default
 		Params: DefaultParams(),
 	}
 }
@@ -57,16 +57,16 @@ func (gs GenesisState) Validate() error {
 		batchIdMap[elem.Id] = true
 	}
 	// Check for duplicated index in format
-formatIndexMap := make(map[string]struct{})
+	formatIndexMap := make(map[string]struct{})
 
-for _, elem := range gs.FormatList {
-	index := string(FormatKey(elem.Network))
-	if _, ok := formatIndexMap[index]; ok {
-		return fmt.Errorf("duplicated index for format")
+	for _, elem := range gs.FormatList {
+		index := string(FormatKey(elem.Network))
+		if _, ok := formatIndexMap[index]; ok {
+			return fmt.Errorf("duplicated index for format")
+		}
+		formatIndexMap[index] = struct{}{}
 	}
-	formatIndexMap[index] = struct{}{}
-}
-// this line is used by starport scaffolding # genesis/types/validate
+	// this line is used by starport scaffolding # genesis/types/validate
 
 	return gs.Params.Validate()
 }

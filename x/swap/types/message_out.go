@@ -6,29 +6,29 @@ import (
 	denom "github.com/sharering/shareledger/x/utils/demo"
 )
 
-const TypeMsgOut = "out"
+const TypeMsgRequestOut = "out"
 
-var _ sdk.Msg = &MsgOut{}
+var _ sdk.Msg = &MsgRequestOut{}
 
-func NewMsgOut(creator string, destAddr string, network string, amount sdk.DecCoin, fee sdk.DecCoin) *MsgOut {
-	return &MsgOut{
-		Creator:  creator,
-		DestAddr: destAddr,
-		Network:  network,
-		Amount:   &amount,
-		Fee:      &fee,
+func NewMsgRequestOut(creator string, destAddr string, network string, amount sdk.DecCoin, fee sdk.DecCoin) *MsgRequestOut {
+	return &MsgRequestOut{
+		Creator:     creator,
+		DestAddress: destAddr,
+		Network:     network,
+		Amount:      &amount,
+		Fee:         &fee,
 	}
 }
 
-func (msg *MsgOut) Route() string {
+func (msg *MsgRequestOut) Route() string {
 	return RouterKey
 }
 
-func (msg *MsgOut) Type() string {
-	return TypeMsgOut
+func (msg *MsgRequestOut) Type() string {
+	return TypeMsgRequestOut
 }
 
-func (msg *MsgOut) GetSigners() []sdk.AccAddress {
+func (msg *MsgRequestOut) GetSigners() []sdk.AccAddress {
 	creator, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		panic(err)
@@ -36,12 +36,12 @@ func (msg *MsgOut) GetSigners() []sdk.AccAddress {
 	return []sdk.AccAddress{creator}
 }
 
-func (msg *MsgOut) GetSignBytes() []byte {
+func (msg *MsgRequestOut) GetSignBytes() []byte {
 	bz := ModuleCdc.MustMarshalJSON(msg)
 	return sdk.MustSortJSON(bz)
 }
 
-func (msg *MsgOut) ValidateBasic() error {
+func (msg *MsgRequestOut) ValidateBasic() error {
 	_, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)

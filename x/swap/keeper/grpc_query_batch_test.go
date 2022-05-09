@@ -20,8 +20,8 @@ func TestBatchQuerySingle(t *testing.T) {
 	msgs := createNBatch(keeper, ctx, 2)
 	for _, tc := range []struct {
 		desc     string
-		request  *types.QueryGetBatchRequest
-		response *types.QueryGetBatchResponse
+		request  *types.QueryBatchRequest
+		response *types.QueryBatchResponse
 		err      error
 	}{
 		{

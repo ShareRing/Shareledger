@@ -17,11 +17,11 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
 		ctx = ctx.WithEventManager(sdk.NewEventManager())
 
 		switch msg := msg.(type) {
-		case *types.MsgOut:
-			res, err := msgServer.Out(sdk.WrapSDKContext(ctx), msg)
+		case *types.MsgRequestOut:
+			res, err := msgServer.RequestOut(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgApprove:
-			res, err := msgServer.Approve(sdk.WrapSDKContext(ctx), msg)
+		case *types.MsgApproveOut:
+			res, err := msgServer.ApproveOut(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
 		case *types.MsgCancel:
 			res, err := msgServer.Cancel(sdk.WrapSDKContext(ctx), msg)
@@ -35,22 +35,21 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
 		case *types.MsgReject:
 			res, err := msgServer.Reject(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgIn:
-			res, err := msgServer.In(sdk.WrapSDKContext(ctx), msg)
+		case *types.MsgRequestIn:
+			res, err := msgServer.RequestIn(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
 		case *types.MsgApproveIn:
 			res, err := msgServer.ApproveIn(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
-			case *types.MsgCreateFormat:
-					res, err := msgServer.CreateFormat(sdk.WrapSDKContext(ctx), msg)
-					return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgUpdateFormat:
-					res, err := msgServer.UpdateFormat(sdk.WrapSDKContext(ctx), msg)
-					return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgDeleteFormat:
-					res, err := msgServer.DeleteFormat(sdk.WrapSDKContext(ctx), msg)
-					return sdk.WrapServiceResult(ctx, res, err)
-// this line is used by starport scaffolding # 1
+		case *types.MsgCreateSignSchema:
+			res, err := msgServer.CreateSignSchema(sdk.WrapSDKContext(ctx), msg)
+			return sdk.WrapServiceResult(ctx, res, err)
+		case *types.MsgUpdateSignSchema:
+			res, err := msgServer.UpdateSignSchema(sdk.WrapSDKContext(ctx), msg)
+			return sdk.WrapServiceResult(ctx, res, err)
+		case *types.MsgDeleteSignSchema:
+			res, err := msgServer.DeleteSignSchema(sdk.WrapSDKContext(ctx), msg)
+			return sdk.WrapServiceResult(ctx, res, err)
 		case *types.MsgUpdateBatch:
 			res, err := msgServer.UpdateBatch(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)

@@ -42,7 +42,7 @@ func CmdSearch() *cobra.Command {
 				return err
 			}
 
-			res, err := queryClient.Search(cmd.Context(), &params)
+			res, err := queryClient.Swap(cmd.Context(), &params)
 			if err != nil {
 				return err
 			}
@@ -72,7 +72,7 @@ func addFilterFlagsToCmd(cmd *cobra.Command) {
 	cmd.Flags().String(flagSearchDestNetwork, "", "search swap request by dest address")
 }
 
-func parseFilterFlag(flagSet *pflag.FlagSet) (filter types.QuerySearchRequest, err error) {
+func parseFilterFlag(flagSet *pflag.FlagSet) (filter types.QuerySwapRequest, err error) {
 	sIdsV, _ := flagSet.GetString(flagSearchIDs)
 	sIds := strings.Split(sIdsV, ",")
 	if sIdsV != "" && len(sIds) > 0 {

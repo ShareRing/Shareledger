@@ -5,10 +5,10 @@ import "gogoproto/gogo.proto";
 
 option go_package = "github.com/sharering/shareledger/x/swap/types";
 
-message Format {
+message SignSchema {
   string network = 1; 
   string creator = 2;
-  string dataFormat = 3;
+  string schema = 3;
 }
 
 //message EIP712DataType {
