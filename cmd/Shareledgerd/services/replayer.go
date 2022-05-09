@@ -38,7 +38,7 @@ func NewStartCommands(defaultNodeHome string) *cobra.Command {
 		Use:   "start",
 		Short: "start relayer process",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			ctx, err := client.GetClientTxContext(cmd)
+			clientTx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
 			}
@@ -52,7 +52,7 @@ func NewStartCommands(defaultNodeHome string) *cobra.Command {
 			for i := 0; i < lenSigners-1; i += 2 {
 				networkName := networkSignerPairs[i]
 				keyName := networkSignerPairs[i+1]
-				kb := ctx.Keyring
+				kb := clientTx.Keyring
 				ks := keyring.NewKeyRingEIP712(kb)
 				if _, err := ks.Key(keyName); err != nil {
 					return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "%v key name has error %+v", keyName, err)
@@ -61,18 +61,18 @@ func NewStartCommands(defaultNodeHome string) *cobra.Command {
 			}
 			swapType, _ := cmd.Flags().GetString(flagType)
 
-			cancelContext, cancel := context.WithCancel(context.Background())
+			ctx, cancel := context.WithCancel(context.Background())
 			go func() {
 				server.WaitForQuitSignals()
 				cancel()
 			}()
-
+			relayerClient := initRelayer(clientTx, mapNetworkSigners, "https://eth-ropsten.alchemyapi.io/v2/0M8yP6-iyIof8dFJN0Jph59jJlSKqmbW")
 			time.Now().UTC().Unix()
 			switch swapType {
 			case "in":
-				return startInProcess(cancelContext, ctx, mapNetworkSigners)
+				return relayerClient.startInProcess(ctx)
 			case "out":
-				return startOutProcess(cancelContext, ctx, mapNetworkSigners)
+				return relayerClient.startOutProcess(ctx)
 			default:
 				return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "relayer type is required either in or out")
 			}
@@ -107,12 +107,23 @@ func NewStartCommands(defaultNodeHome string) *cobra.Command {
 	return cmd
 }
 
+func initRelayer(client client.Context, signers map[string]string, ethUrl string) *relayer {
+	return &relayer{
+		Signers:      signers,
+		IntervalScan: time.Second * 10, //TODO: interval scan
+		EthUrl:       ethUrl,
+		Client:       client,
+	}
+}
+
 type relayer struct {
 	Signers      map[string]string
 	IntervalScan time.Duration
+	EthUrl       string
+	Client       client.Context
 }
 
-func startOutProcess(ctx context.Context, client client.Context, signers map[string]string) error {
+func (r *relayer) startOutProcess(ctx context.Context) error {
 	// TODO: Get pending batches
 	//var batches []swapmoduletypes.Batch
 	// batches := getPendingBatches()
@@ -124,18 +135,60 @@ func startOutProcess(ctx context.Context, client client.Context, signers map[str
 	return nil
 }
 
-func getPendingBatches() []swapmoduletypes.Batch {
+func (r *relayer) getPendingBatches() []swapmoduletypes.Batch {
 	panic("implement me")
 }
 
-func processingBatch(batchId uint64) (swapmoduletypes.Batch, error) {
+func (r *relayer) processingBatch(batchId uint64) (swapmoduletypes.Batch, error) {
 	panic("implement me")
 }
 
-func submitBatch(ctx context.Context, client client.Context, batches swapmoduletypes.Batch) (txHash string, err error) {
+func (r *relayer) submitBatch(ctx context.Context, batches swapmoduletypes.Batch) (txHash string, err error) {
+	//conn, err := ethclient.Dial(r.EthUrl)
+	//if err != nil {
+	//	return "", sdkerrors.Wrapf(sdkerrors.ErrLogic, err.Error())
+	//}
+	//swapClient, err := swap.NewSwap(common.HexToAddress("0xC5eAdD9b5ea60A991a65888ECC8F26FbDdc7Dbf4"), conn)
+	//if err != nil {
+	//	return "", sdkerrors.Wrapf(sdkerrors.ErrLogic, err.Error())
+	//}
+	//info, err := r.Client.Keyring.Key(r.Signers["erc20"])
+	//if err != nil {
+	//	return "", err
+	//}
+	//var priv types.PrivKey
+	//
+	//switch i := info.(type) {
+	//case info:
+	//	if i.PrivKeyArmor == "" {
+	//		return "nil, nil", fmt.Errorf("private key not available")
+	//	}
+	//	priv, err = legacy.PrivKeyFromBytes([]byte(i.PrivKeyArmor))
+	//	if err != nil {
+	//		return nil, nil, err
+	//	}
+	//default:
+	//	return nil, nil, fmt.Errorf("eip712 currently supports for local key")
+	//}
+	//secp256k1Priv, ok := priv.(*secp256k1.PrivKey)
+	//
+	//bind.NewKeyedTransactorWithChainID()
+	//
+	//swapClient.Swap(bind.TransactOpts{
+	//	From:      common.Address{},
+	//	Nonce:     nil,
+	//	Signer:    nil,
+	//	Value:     nil,
+	//	GasPrice:  nil,
+	//	GasFeeCap: nil,
+	//	GasTipCap: nil,
+	//	GasLimit:  0,
+	//	Context:   nil,
+	//	NoSend:    false,
+	//})
 	panic("implement me")
 }
 
-func startInProcess(ctx context.Context, client client.Context, signers map[string]string) error {
+func (r *relayer) startInProcess(ctx context.Context) error {
 	return nil
 }
