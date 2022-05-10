@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/sharering/shareledger/cmd/Shareledgerd/cli"
+	"github.com/sharering/shareledger/cmd/Shareledgerd/services"
 	"os"
 	"sync"
 
@@ -33,6 +34,7 @@ func main() {
 		cosmoscmd.AddSubCmd(
 			sub.NewImportKeyCmd(),
 			getGenesisCmd(app.DefaultNodeHome),
+			services.GetRelayerCommands(app.DefaultNodeHome),
 		),
 	)
 	// override name of root cmd from tendermint

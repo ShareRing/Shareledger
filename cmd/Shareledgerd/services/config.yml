@@ -1,0 +1,6 @@
+scanInterval: 20s
+type: in #out
+networks:
+  erc20:
+    signer: acc3
+    url: https://eth-ropsten.alchemyapi.io/v2/0M8yP6-iyIof8dFJN0Jph59jJlSKqmbW
