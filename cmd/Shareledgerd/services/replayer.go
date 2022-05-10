@@ -12,6 +12,7 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/pkg/errors"
+	"github.com/rs/zerolog/log"
 	"github.com/sharering/shareledger/pkg/swap/abi/swap"
 	swapmoduletypes "github.com/sharering/shareledger/x/swap/types"
 	denom "github.com/sharering/shareledger/x/utils/demo"
@@ -179,29 +180,65 @@ type Relayer struct {
 }
 
 func (r *Relayer) startOutProcess(ctx context.Context) error {
+	doneChan := make(chan error)
+	initInterval := time.Second
+	go func() {
+		for {
+			select {
+			case <-time.Tick(initInterval):
+				// right after start the process, it should be run immediately before following configuration
+				initInterval = r.Config.ScanInterval
+				//TODO: process pending
+				batches, err := r.getPendingBatches()
+				if err != nil {
+					log.Err(err).Msg("get pending batches")
+				}
+				if len(batches) == 0 {
+					log.Info().Msg("pending batches list is empty")
+				}
+				//TODO: double check short period calling to Shareledger BC - Account Nonce number
+				for _, b := range batches {
+					batch, err := r.processingBatch(b.Id)
+					if err != nil {
+						log.Err(err).Msg(fmt.Sprintf("batch, %s, has error", batch.Id))
+						// in case there are multiple relayer running at same time, there will be error about status was not satisfied.
+						// continue to others
+						continue
+					}
+					txHash, err := r.submitBatch(ctx, batch)
+					_ = txHash
+					if err != nil {
+						//TODO: handle error??
+					}
+				}
+			case <-ctx.Done():
+				log.Info().Msg("context is done. out process is exiting")
+			}
+		}
+	}()
 	// TODO: Get pending batches
 	//var batches []swapmoduletypes.Batch
-	// batches := getPendingBatches()
+
 	// processingBatch(batches[0].id)
 	// TODO: Change batch to pending
 
 	// TODO: fw the current batch to sc -- pending
 	// submitBatch(...)
-	return nil
+
+	return <-doneChan
 }
 
-func (r *Relayer) getPendingBatches() []swapmoduletypes.Batch {
+func (r *Relayer) getPendingBatches() ([]swapmoduletypes.Batch, error) {
 	qClient := swapmoduletypes.NewQueryClient(r.Client)
 	pendingQuery := &swapmoduletypes.QuerySearchBatchesRequest{
 		Status: swapmoduletypes.BatchStatusPending,
 	}
 
 	batchesRes, err := qClient.SearchBatches(context.Background(), pendingQuery)
-	//TODO consider logging
 	if err != nil {
-		return nil
+		return nil, err
 	}
-	return batchesRes.GetBatchs()
+	return batchesRes.GetBatchs(), nil
 }
 
 func (r *Relayer) updateBatch(msg *swapmoduletypes.MsgUpdateBatch) (swapmoduletypes.Batch, error) {
@@ -227,8 +264,19 @@ func (r *Relayer) updateBatch(msg *swapmoduletypes.MsgUpdateBatch) (swapmodulety
 	return batchesRes.GetBatches()[0], nil
 }
 
-func (r *Relayer) processingBatch(batchId uint64) (swapmoduletypes.Batch, error) {
+func (r *Relayer) markDone(batchId uint64, txHash string) (b swapmoduletypes.Batch, err error) {
+	if batchId == 0 || len(txHash) == 0 {
+		return swapmoduletypes.Batch{}, fmt.Errorf("batchId and txHash are required")
+	}
+	updateMsg := &swapmoduletypes.MsgUpdateBatch{
+		Creator: r.Client.GetFromAddress().String(),
+		BatchId: batchId,
+		Status:  swapmoduletypes.BatchStatusDone,
+	}
+	return r.updateBatch(updateMsg)
+}
 
+func (r *Relayer) processingBatch(batchId uint64) (swapmoduletypes.Batch, error) {
 	updateMsg := &swapmoduletypes.MsgUpdateBatch{
 		Creator: r.Client.GetFromAddress().String(),
 		BatchId: batchId,
