@@ -11,6 +11,7 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/ethclient"
+	"github.com/ethereum/go-ethereum/signer/core/apitypes"
 	"github.com/pkg/errors"
 	"github.com/rs/zerolog/log"
 	"github.com/sharering/shareledger/pkg/swap/abi/swap"
@@ -179,16 +180,45 @@ type Relayer struct {
 	Client client.Context
 }
 
+type DigestBatch struct {
+	BatchID uint64
+	Digest  common.Hash
+}
+
+type BatchDetail struct {
+	Batch      swapmoduletypes.Batch
+	Requests   []swapmoduletypes.Request
+	SignSchema apitypes.TypedData
+}
+
+func (b BatchDetail) Validate() error {
+	return nil
+}
+
+func (b BatchDetail) Network() string {
+	return b.Requests[0].DestNetwork
+}
+
 func (r *Relayer) startOutProcess(ctx context.Context, network string) error {
 	doneChan := make(chan error)
-	initInterval := time.Second
+	initInterval := time.Millisecond
+	ticker := time.NewTicker(initInterval)
+	firstRun := true
+
+	defer func() {
+		ticker.Stop()
+	}()
+
 	go func() {
 		for {
 			select {
-			case <-time.Tick(initInterval):
+			case <-ticker.C:
 				// right after start the process, it should be run immediately before following configuration
-				initInterval = r.Config.ScanInterval
-				//TODO: process pending
+				if firstRun {
+					ticker.Reset(r.Config.ScanInterval)
+					firstRun = false
+				}
+
 				batch, err := r.getNextPendingBatch(network)
 				if err != nil {
 					log.Err(err).Msg("get pending batches")
@@ -207,14 +237,14 @@ func (r *Relayer) startOutProcess(ctx context.Context, network string) error {
 				//	continue
 				//}
 
-				if done, err := r.isDoneBatchOnSC(ctx, *batch); err != nil || done {
+				if done, err := r.isBatchDoneOnSC(ctx, [32]byte{}); err != nil || done {
 					//TODO: Khang update done to SC if err == nil
 					if err != nil {
 						doneChan <- err
 					}
 				}
-
-				txHash, err := r.submitBatch(ctx, *batch)
+				var detail BatchDetail
+				txHash, err := r.submitBatch(ctx, detail)
 				_ = txHash
 				// TODO: Hoai job check requently
 				if err != nil {
@@ -226,10 +256,6 @@ func (r *Relayer) startOutProcess(ctx context.Context, network string) error {
 		}
 	}()
 	return <-doneChan
-}
-
-func (r *Relayer) isProcessed(batch swapmoduletypes.Batch) (bool, error) {
-	panic("implement me")
 }
 
 func (r *Relayer) getNextPendingBatch(network string) (*swapmoduletypes.Batch, error) {
@@ -294,16 +320,18 @@ func (r *Relayer) processingBatch(batchId uint64) (swapmoduletypes.Batch, error)
 	return batch, nil
 }
 
-func (r *Relayer) isDoneBatchOnSC(ctx context.Context, batch swapmoduletypes.Batch) (done bool, err error) {
+func (r *Relayer) isBatchDoneOnSC(ctx context.Context, digest common.Hash) (done bool, err error) {
 	panic("implement me")
 }
 
-func (r *Relayer) submitBatch(ctx context.Context, batch swapmoduletypes.Batch) (txHash string, err error) {
-	batch.Network = "erc20"
-	networkConfig, found := r.Config.Network[batch.Network]
+func (r *Relayer) submitBatch(ctx context.Context, detail BatchDetail) (txHash string, err error) {
+	if err := detail.Validate(); err != nil {
+		return "", err
+	}
+	networkConfig, found := r.Config.Network[detail.Network()]
 	uid := networkConfig.Signer
 	if !found {
-		return "", sdkerrors.Wrapf(sdkerrors.ErrLogic, "network, %s, is not supported", batch.Network)
+		return "", sdkerrors.Wrapf(sdkerrors.ErrLogic, "network, %s, is not supported", detail.Network())
 	}
 	conn, err := ethclient.Dial(networkConfig.Url)
 	if err != nil {

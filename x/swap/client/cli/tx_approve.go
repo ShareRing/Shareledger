@@ -7,17 +7,14 @@ import (
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
 	"github.com/cosmos/cosmos-sdk/crypto/keyring"
-	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/cosmos/cosmos-sdk/types/query"
 	"github.com/ethereum/go-ethereum/common/hexutil"
-	"github.com/ethereum/go-ethereum/common/math"
 	"github.com/ethereum/go-ethereum/signer/core/apitypes"
 	crypto2 "github.com/sharering/shareledger/pkg/crypto"
+	"github.com/sharering/shareledger/pkg/swap"
 	"github.com/sharering/shareledger/x/swap/types"
-	denom "github.com/sharering/shareledger/x/utils/demo"
 	"github.com/spf13/cobra"
-	"math/big"
 	"strconv"
 	"strings"
 )
@@ -124,25 +121,11 @@ func signApprovedSwap(ctx client.Context, signer string, requests []types.Reques
 	//	PrimaryType: "Swap",
 	//}
 	//fmt.Println(json.Marshal(signer))
-
-	txIds := make([]interface{}, 0, len(requests))
-	destinations := make([]interface{}, 0, len(requests))
-	amounts := make([]interface{}, 0, len(requests))
-	for _, tx := range requests {
-		txIds = append(txIds, (*math.HexOrDecimal256)(new(big.Int).SetUint64(tx.Id)))
-		destinations = append(destinations, tx.DestAddr)
-		bCoin, err := denom.NormalizeToBaseCoins(sdk.NewDecCoins(*tx.Amount), false)
-		if err != nil {
-			return "", err
-		}
-		amounts = append(amounts, (*math.HexOrDecimal256)(big.NewInt(bCoin.AmountOf(denom.Base).Int64())))
+	signData, err := swap.BuildTypedData(signFormatData, requests)
+	if err != nil {
+		return "", err
 	}
-	signFormatData.Message = apitypes.TypedDataMessage{
-		"ids":     txIds,
-		"tos":     destinations,
-		"amounts": amounts,
-	}
-	signHash, err := crypto2.Keccak256HashEIP712(signFormatData)
+	signHash, err := crypto2.Keccak256HashEIP712(signData)
 	if err != nil {
 		return "", err
 	}
