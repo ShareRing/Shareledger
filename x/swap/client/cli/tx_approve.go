@@ -148,7 +148,7 @@ func signApprovedSwap(ctx client.Context, signer string, requests []types.Reques
 	}
 
 	kb := ctx.Keyring
-	ks := keyring.NewKeyRingEIP712(kb)
+	ks := keyring.NewKeyRingETH(kb)
 	sig, npk, err := ks.Sign(signer, signHash.Bytes())
 	if err != nil {
 		return "", err

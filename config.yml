@@ -105,8 +105,6 @@ genesis:
         params:
           controller_enabled: true
         ports: []
-
-
 init:
   client:
     chain-id: "ShareRing-VoyagerNet"
