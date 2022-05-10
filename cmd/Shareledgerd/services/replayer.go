@@ -38,6 +38,7 @@ func GetRelayerCommands(defaultNodeHome string) *cobra.Command {
 
 //const flagType = "type" // in/out
 //const flagSignerKeyName = "network-signers"
+
 func NewStartCommands(defaultNodeHome string) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "start",
@@ -211,10 +212,10 @@ func (r *Relayer) processOut(ctx context.Context, network string) error {
 		return err
 	}
 	if done, err := r.isBatchDoneOnSC(ctx, digest); err != nil || done {
-		//TODO: Khang update done to SC if err == nil
 		if err != nil {
 			return err
 		}
+		// done.
 	}
 	var detail BatchDetail
 	txHash, err := r.submitBatch(ctx, network, detail)
