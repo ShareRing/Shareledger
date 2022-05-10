@@ -9,4 +9,6 @@ message Batch {
   repeated uint64 txIds = 3;
   string status = 4;
   uint64 nonce = 5;
+  string transactionHash = 6;
+  string destNetwork = 7;
 }
