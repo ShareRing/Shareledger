@@ -126,7 +126,8 @@ message MsgUpdateBatch {
   string creator = 1;
   uint64 batchId = 2;
   string status = 3;
-  uint64  nonce = 4 ;
+  string txHash = 4;
+  string network = 5;
 }
 
 message MsgUpdateBatchResponse {

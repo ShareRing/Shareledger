@@ -105,6 +105,56 @@ genesis:
         params:
           controller_enabled: true
         ports: []
+    swap:
+      batchCount: '2'
+      batchList:
+        - id: '1'
+          network: ''
+          signature: >-
+            0x6f62ea25cbf6d5f4a6829b6e671b769085300d8aac75f7574427fef8fc3d7fb8620818bb95d920fcd7f5a54fb0804d29b3bf0f3afdef0b507da4d729dcca932d1c
+          status: pending
+          txHash: ''
+          txIds:
+            - '1'
+            - '2'
+      formatList:
+        - creator: shareledger1lq9svs76xwekrrzw7uprekyqydf7fp02p8zp8e
+          network: erc20
+          schema: >-
+            {"types":{"EIP712Domain":[{"name":"name","type":"string"},{"name":"version","type":"string"},{"name":"chainId","type":"uint256"},{"name":"verifyingContract","type":"address"}],"Swap":[{"name":"ids","type":"uint256[]"},{"name":"tos","type":"address[]"},{"name":"amounts","type":"uint256[]"}]},"primaryType":"Swap","domain":{"name":"ShareRingSwap","version":"2.0","chainId":"0x7a69","verifyingContract":"0x0165878a594ca255338adfa4d48449f69242eb8f","salt":""}}
+      idList: [ ]
+      params:
+        outFee: out_fee
+      requestCount: '3'
+      requestList:
+        - amount:
+            amount: '10.000000000000000000'
+            denom: shr
+          batchId: '1'
+          createdAt: '1652165972'
+          destAddr: '0xfd98647ef698567357a8065849f0beb76812c8d7'
+          destNetwork: erc20
+          fee:
+            amount: '2.000000000000000000'
+            denom: shr
+          id: '1'
+          srcAddr: shareledger1t3g4570e23h96h5hm5gdtfrjprmvk9qwmrglfr
+          srcNetwork: slp3
+          status: approved
+        - amount:
+            amount: '10.000000000000000000'
+            denom: shr
+          batchId: '1'
+          createdAt: '1652165978'
+          destAddr: '0xfd98647ef698567357a8065849f0beb76812c8d9'
+          destNetwork: erc20
+          fee:
+            amount: '2.000000000000000000'
+            denom: shr
+          id: '2'
+          srcAddr: shareledger1t3g4570e23h96h5hm5gdtfrjprmvk9qwmrglfr
+          srcNetwork: slp3
+          status: approved
 init:
   client:
     chain-id: "ShareRing-VoyagerNet"
