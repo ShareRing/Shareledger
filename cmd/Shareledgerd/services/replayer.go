@@ -102,7 +102,7 @@ func NewStartCommands(defaultNodeHome string) *cobra.Command {
 			case "in":
 				return relayerClient.startInProcess(ctx)
 			case "out":
-				return relayerClient.startOutProcess(ctx, "erc20")
+				return relayerClient.startProcess(ctx, relayerClient.processOut, "erc20")
 			default:
 				return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "Relayer type is required either in or out")
 			}
@@ -228,64 +228,71 @@ func (b BatchDetail) Digest() (common.Hash, error) {
 	return hash, err
 }
 
-func (r *Relayer) startOutProcess(ctx context.Context, network string) error {
+type processFunc func(ctx context.Context, network string) error
+
+func (r *Relayer) startProcess(ctx context.Context, f processFunc, network string) error {
 	doneChan := make(chan error)
 	initInterval := time.Millisecond
 	ticker := time.NewTicker(initInterval)
-	firstRun := true
-
 	defer func() {
 		ticker.Stop()
 	}()
-
+	firstRun := true
 	go func() {
 		for {
 			select {
 			case <-ticker.C:
-				// right after start the process, it should be run immediately before following configuration
 				if firstRun {
 					ticker.Reset(r.Config.ScanInterval)
 					firstRun = false
 				}
-
-				batch, err := r.getNextPendingBatch(network)
-				if err != nil {
-					log.Err(err).Msg("get pending batches")
-				}
-				if batch == nil {
-					log.Info().Msg("pending batches list is empty")
-					continue
-				}
-				batchDetail, err := r.getBatchDetail(ctx, *batch)
+				err := f(ctx, network)
 				if err != nil {
 					doneChan <- err
 					return
-				}
-				digest, err := batchDetail.Digest()
-				if err != nil {
-					doneChan <- err
-					return
-				}
-				if done, err := r.isBatchDoneOnSC(ctx, digest); err != nil || done {
-					//TODO: Khang update done to SC if err == nil
-					if err != nil {
-						doneChan <- err
-						return
-					}
-				}
-				var detail BatchDetail
-				txHash, err := r.submitBatch(ctx, network, detail)
-				_ = txHash
-				// TODO: Hoai job check requently
-				if err != nil {
-					//TODO: handle error??
 				}
 			case <-ctx.Done():
 				log.Info().Msg("context is done. out process is exiting")
+				doneChan <- nil
+				return
 			}
 		}
 	}()
+
 	return <-doneChan
+}
+
+func (r *Relayer) processOut(ctx context.Context, network string) error {
+	batch, err := r.getNextPendingBatch(network)
+	if err != nil {
+		log.Err(err).Msg("get pending batches")
+	}
+	if batch == nil {
+		log.Info().Msg("pending batches list is empty")
+		return nil
+	}
+	batchDetail, err := r.getBatchDetail(ctx, *batch)
+	if err != nil {
+		return err
+	}
+	digest, err := batchDetail.Digest()
+	if err != nil {
+		return err
+	}
+	if done, err := r.isBatchDoneOnSC(ctx, digest); err != nil || done {
+		//TODO: Khang update done to SC if err == nil
+		if err != nil {
+			return err
+		}
+	}
+	var detail BatchDetail
+	txHash, err := r.submitBatch(ctx, network, detail)
+	_ = txHash
+	// TODO: Hoai job check requently
+	if err != nil {
+		//TODO: handle error??
+	}
+	return nil
 }
 
 func (r *Relayer) getNextPendingBatch(network string) (*swapmoduletypes.Batch, error) {
