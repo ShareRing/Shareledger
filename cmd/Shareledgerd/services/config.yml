@@ -1,5 +1,5 @@
 scanInterval: 20s
-type: in #out
+type: out
 networks:
   erc20:
     signer: acc3

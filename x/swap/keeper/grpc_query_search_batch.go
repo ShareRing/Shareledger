@@ -31,6 +31,11 @@ func (k Keeper) SearchBatches(goCtx context.Context, req *types.QuerySearchBatch
 		if val.Status != req.GetStatus() {
 			return false, nil
 		}
+		if req.GetNetwork() != "" {
+			if val.Network != req.GetNetwork() {
+				return false, nil
+			}
+		}
 
 		if accumulate {
 			batches = append(batches, val)

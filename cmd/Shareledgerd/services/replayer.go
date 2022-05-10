@@ -25,6 +25,7 @@ import (
 	"math/big"
 	"os"
 	"path/filepath"
+	"sort"
 	"time"
 )
 
@@ -93,7 +94,7 @@ func NewStartCommands(defaultNodeHome string) *cobra.Command {
 
 			ctx, cancel := context.WithCancel(context.Background())
 			go func() {
-				server.WaitForQuitSignals()
+				_ = server.WaitForQuitSignals()
 				cancel()
 			}()
 
@@ -172,15 +173,24 @@ func NewStartCommands(defaultNodeHome string) *cobra.Command {
 }
 
 func initRelayer(client client.Context, cfg RelayerConfig) *Relayer {
+
+	mClient := swapmoduletypes.NewMsgClient(client)
+	qClient := swapmoduletypes.NewQueryClient(client)
 	return &Relayer{
 		Config: cfg,
 		Client: client,
+
+		qClient:   qClient,
+		msgClient: mClient,
 	}
 }
 
 type Relayer struct {
 	Config RelayerConfig
 	Client client.Context
+
+	qClient   swapmoduletypes.QueryClient
+	msgClient swapmoduletypes.MsgClient
 }
 
 type DigestBatch struct {
@@ -281,13 +291,25 @@ func (r *Relayer) startOutProcess(ctx context.Context, network string) error {
 func (r *Relayer) getNextPendingBatch(network string) (*swapmoduletypes.Batch, error) {
 	qClient := swapmoduletypes.NewQueryClient(r.Client)
 	pendingQuery := &swapmoduletypes.QuerySearchBatchesRequest{
-		Status: swapmoduletypes.BatchStatusPending,
+		Status:  swapmoduletypes.BatchStatusPending,
+		Network: network,
 	}
 
 	batchesRes, err := qClient.SearchBatches(context.Background(), pendingQuery)
-	_ = batchesRes
-	_ = err
-	return &swapmoduletypes.Batch{}, err
+	batches := batchesRes.GetBatchs()
+	sort.Sort(BatchSortByIDAscending(batches))
+
+	if len(batches) == 0 {
+		return nil, fmt.Errorf("pending batchs is empty")
+	}
+
+	idQ := &swapmoduletypes.QueryBatchesRequest{Ids: []uint64{batches[0].Id}}
+	batch, err := r.qClient.Batches(context.Background(), idQ)
+	if err != nil || len(batch.GetBatches()) == 0 {
+		return nil, fmt.Errorf("batch not found")
+	}
+
+	return &batch.GetBatches()[0], err
 }
 
 func (r *Relayer) getBatchDetail(ctx context.Context, batch swapmoduletypes.Batch) (detail BatchDetail, err error) {
@@ -309,10 +331,7 @@ func (r *Relayer) getBatchDetail(ctx context.Context, batch swapmoduletypes.Batc
 }
 
 func (r *Relayer) updateBatch(msg *swapmoduletypes.MsgUpdateBatch) (swapmoduletypes.Batch, error) {
-	mClient := swapmoduletypes.NewMsgClient(r.Client)
-	qClient := swapmoduletypes.NewQueryClient(r.Client)
-
-	_, err := mClient.UpdateBatch(context.Background(), msg)
+	_, err := r.msgClient.UpdateBatch(context.Background(), msg)
 	if err != nil {
 		return swapmoduletypes.Batch{}, errors.Wrapf(err, "update batch id %d to processing fail", msg.GetBatchId())
 	}
@@ -320,7 +339,7 @@ func (r *Relayer) updateBatch(msg *swapmoduletypes.MsgUpdateBatch) (swapmodulety
 		Ids: []uint64{msg.GetBatchId()},
 	}
 
-	batchesRes, err := qClient.Batches(context.Background(), batchIdReq)
+	batchesRes, err := r.qClient.Batches(context.Background(), batchIdReq)
 
 	if err != nil {
 		return swapmoduletypes.Batch{}, errors.Wrapf(err, "geting batch id %d fail", msg.GetBatchId())
@@ -343,7 +362,7 @@ func (r *Relayer) markDone(batchId uint64, txHash string) (b swapmoduletypes.Bat
 	return r.updateBatch(updateMsg)
 }
 
-func (r *Relayer) processingBatch(batchId uint64) (swapmoduletypes.Batch, error) {
+func (r *Relayer) markBatchProcessing(batchId uint64) (swapmoduletypes.Batch, error) {
 	updateMsg := &swapmoduletypes.MsgUpdateBatch{
 		Creator: r.Client.GetFromAddress().String(),
 		BatchId: batchId,
@@ -358,8 +377,26 @@ func (r *Relayer) processingBatch(batchId uint64) (swapmoduletypes.Batch, error)
 	return batch, nil
 }
 
-func (r *Relayer) isBatchDoneOnSC(ctx context.Context, digest common.Hash) (done bool, err error) {
-	panic("implement me")
+func (r *Relayer) isBatchDoneOnSC(_ context.Context, digest common.Hash) (done bool, err error) {
+	networkConfig, found := r.Config.Network["erc20"] //TODO fix this place after integrate
+	if !found {
+		return false, sdkerrors.Wrapf(sdkerrors.ErrLogic, "network, %s, is not supported", "erc20")
+	}
+	conn, err := ethclient.Dial(networkConfig.Url)
+	swapClient, err := swap.NewSwap(common.HexToAddress(networkConfig.Contract), conn)
+	if err != nil {
+		return false, sdkerrors.Wrapf(sdkerrors.ErrLogic, err.Error())
+	}
+	res, err := swapClient.Swaps(nil, digest)
+	if err != nil {
+		return false, sdkerrors.Wrapf(sdkerrors.ErrLogic, err.Error())
+	}
+	//TODO handle response
+	if res == nil {
+		return false, nil
+	}
+	return true, nil
+
 }
 
 func (r *Relayer) submitBatch(ctx context.Context, network string, detail BatchDetail) (txHash string, err error) {
