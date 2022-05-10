@@ -31,8 +31,15 @@ func CmdSearchBatch() *cobra.Command {
 			if err != nil {
 				return err
 			}
+			filterNetwork, err := cmd.Flags().GetString(flagSearchDestNetwork)
+			if err != nil {
+				return err
+			}
+
 			params.Pagination = pageReq
 			params.Status = args[0]
+			params.Network = filterNetwork
+
 			res, err := queryClient.SearchBatches(cmd.Context(), params)
 			if err != nil {
 				return err
@@ -43,6 +50,7 @@ func CmdSearchBatch() *cobra.Command {
 	}
 
 	flags.AddQueryFlagsToCmd(cmd)
+	cmd.Flags().String(flagSearchDestNetwork, "", "the destination network you want to get")
 
 	return cmd
 }

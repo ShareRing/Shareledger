@@ -105,6 +105,16 @@ func (k Keeper) ChangeStatusRequests(ctx sdk.Context, ids []uint64, status strin
 		}
 
 	}
+
+	if isSwapOut && status == types.SwapStatusApproved {
+		b, f := k.GetBatch(ctx, *batchId)
+		if !f {
+			return nil, sdkerrors.Wrapf(sdkerrors.ErrLogic, "fail to set batch network")
+		}
+		b.Network = destNet
+		k.SetBatch(ctx, b)
+	}
+
 	if !isSwapOut && status == types.SwapStatusApproved {
 		status = types.SwapStatusDone
 	}

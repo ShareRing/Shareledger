@@ -16,8 +16,9 @@ func CmdUpdateBatch() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "update_batch [batch-id] [status] [txHash] [network]",
 		Short: "Broadcast message update-batch",
-		Args:  cobra.MinimumNArgs(2),
+		Args:  cobra.ExactArgs(4),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
+
 			argBatchId := args[0]
 			argStatus := args[1]
 			argTxHash := args[2]

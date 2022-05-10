@@ -113,7 +113,8 @@ message QueryAllSignSchemasResponse {
 
 message QuerySearchBatchesRequest {
 	string status = 1;
-cosmos.base.query.v1beta1.PageRequest pagination = 2;
+	string network = 2;
+cosmos.base.query.v1beta1.PageRequest pagination = 3;
 }
 
 message QuerySearchBatchesResponse {
