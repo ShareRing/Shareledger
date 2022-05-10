@@ -6,6 +6,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/crypto/keyring"
+	"github.com/cosmos/cosmos-sdk/server"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/ethereum/go-ethereum/common"
@@ -43,8 +44,10 @@ var supportedTypes = map[string]struct{}{
 }
 
 type Network struct {
-	Signer string `yaml:"signer"`
-	Url    string `yaml:"url"`
+	Signer   string `yaml:"signer"`
+	Url      string `yaml:"url"`
+	ChainId  int64  `yaml:"chainId"`
+	Contract string `yaml:"contract"`
 }
 
 type RelayerConfig struct {
@@ -71,22 +74,36 @@ func NewStartCommands(defaultNodeHome string) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "start",
 		Short: "start Relayer process",
-		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return nil
-			//clientTx, err := client.GetClientTxContext(cmd)
-			//if err != nil {
-			//	return err
-			//}
-			//
-			//configPath, _ := cmd.Flags().GetString(flagConfigPath)
-			//cfg, err := parseConfig(configPath)
-			//if err != nil {
-			//	return err
-			//}
-			//"https://eth-ropsten.alchemyapi.io/v2/0M8yP6-iyIof8dFJN0Jph59jJlSKqmbW"
-			//relayerClient2 := initRelayer(clientTx, cfg)
-			//relayerClient2.submitBatch(context.Background(), swapmoduletypes.Batch{})
+			clientTx, err := client.GetClientTxContext(cmd)
+			if err != nil {
+				return err
+			}
+			configPath, _ := cmd.Flags().GetString(flagConfigPath)
+			cfg, err := parseConfig(configPath)
+			if err != nil {
+				return err
+			}
+			relayerClient := initRelayer(clientTx, cfg)
+
+			ctx, cancel := context.WithCancel(context.Background())
+			go func() {
+				server.WaitForQuitSignals()
+				cancel()
+			}()
+
+			switch cfg.Type {
+			case "in":
+				return relayerClient.startInProcess(ctx)
+			case "out":
+				return relayerClient.startOutProcess(ctx)
+			default:
+				return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "Relayer type is required either in or out")
+			}
+
+			//hash, err := relayerClient.submitBatch(context.Background(), swapmoduletypes.Batch{})
+			//fmt.Println(hash, err)
+			//return err
 			//return err
 			//
 			//signerStr, _ := cmd.Flags().GetString(flagSignerKeyName)
@@ -108,11 +125,7 @@ func NewStartCommands(defaultNodeHome string) *cobra.Command {
 			//}
 			//swapType, _ := cmd.Flags().GetString(flagType)
 			//
-			//ctx, cancel := context.WithCancel(context.Background())
-			//go func() {
-			//	server.WaitForQuitSignals()
-			//	cancel()
-			//}()
+
 			//relayerClient := initRelayer(clientTx, mapNetworkSigners, "https://eth-ropsten.alchemyapi.io/v2/0M8yP6-iyIof8dFJN0Jph59jJlSKqmbW")
 			//time.Now().UTC().Unix()
 			//switch swapType {
@@ -230,21 +243,26 @@ func (r *Relayer) processingBatch(batchId uint64) (swapmoduletypes.Batch, error)
 	return batch, nil
 }
 
-func (r *Relayer) submitBatch(ctx context.Context, network string, batch swapmoduletypes.Batch) (txHash string, err error) {
-	networkConfig, found := r.Config.Network[network]
+func (r *Relayer) submitBatch(ctx context.Context, batch swapmoduletypes.Batch) (txHash string, err error) {
+	batch.Network = "erc20"
+	networkConfig, found := r.Config.Network[batch.Network]
+	uid := networkConfig.Signer
 	if !found {
-		return "", sdkerrors.Wrapf(sdkerrors.ErrLogic, "network, %s, is not supported", network)
+		return "", sdkerrors.Wrapf(sdkerrors.ErrLogic, "network, %s, is not supported", batch.Network)
 	}
 	conn, err := ethclient.Dial(networkConfig.Url)
 	if err != nil {
 		return "", sdkerrors.Wrapf(sdkerrors.ErrLogic, err.Error())
 	}
-	swapClient, err := swap.NewSwap(common.HexToAddress("0xC5eAdD9b5ea60A991a65888ECC8F26FbDdc7Dbf4"), conn)
+	swapClient, err := swap.NewSwap(common.HexToAddress(networkConfig.Contract), conn)
 	if err != nil {
 		return "", sdkerrors.Wrapf(sdkerrors.ErrLogic, err.Error())
 	}
 
-	info, err := r.Client.Keyring.Key("acc3")
+	info, err := r.Client.Keyring.Key(uid)
+	if err != nil {
+		return "", err
+	}
 	pubkey := keyring.PubKeyETH{
 		PubKey: info.GetPubKey(),
 	}
@@ -253,18 +271,16 @@ func (r *Relayer) submitBatch(ctx context.Context, network string, batch swapmod
 	if err != nil {
 		return "", err
 	}
-	opts, err := keyring.NewKeyedTransactorWithChainID(r.Client.Keyring, "acc3", big.NewInt(3))
+	opts, err := keyring.NewKeyedTransactorWithChainID(r.Client.Keyring, uid, big.NewInt(networkConfig.ChainId))
 	if err != nil {
-		fmt.Println(err)
-	}
-	opts.Nonce = big.NewInt(int64(currentNonce))
-	a, err := swapClient.Swap(opts, []*big.Int{}, []common.Address{}, []*big.Int{}, []byte{})
-	if err != nil {
-		fmt.Println(err)
 		return "", err
 	}
-	fmt.Println("a", a)
-	return "ok", nil
+	opts.Nonce = big.NewInt(int64(currentNonce))
+	tx, err := swapClient.Swap(opts, []*big.Int{}, []common.Address{}, []*big.Int{}, []byte{})
+	if err != nil {
+		return "", err
+	}
+	return tx.Hash().Hex(), err
 }
 
 func (r *Relayer) startInProcess(ctx context.Context) error {
