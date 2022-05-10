@@ -215,7 +215,13 @@ func (r *Relayer) processOut(ctx context.Context, network string) error {
 		if err != nil {
 			return err
 		}
-		// done.
+		if done {
+			_, err = r.markDone(batchDetail.Batch.Id, batchDetail.Batch.GetTxHash())
+			if err != nil {
+				return err
+			}
+			return nil
+		}
 	}
 	var detail BatchDetail
 	txHash, err := r.submitBatch(ctx, network, detail)
