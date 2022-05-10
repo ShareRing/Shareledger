@@ -9,12 +9,13 @@ const TypeMsgUpdateBatch = "update_batch"
 
 var _ sdk.Msg = &MsgUpdateBatch{}
 
-func NewMsgUpdateBatch(creator string, batchId uint64, nonce uint64, status string) *MsgUpdateBatch {
+func NewMsgUpdateBatch(creator string, batchId uint64, txHash, network, status string) *MsgUpdateBatch {
 	return &MsgUpdateBatch{
 		Creator: creator,
 		BatchId: batchId,
 		Status:  status,
-		Nonce:   nonce,
+		TxHash:  txHash,
+		Network: network,
 	}
 }
 
@@ -44,7 +45,7 @@ func (msg *MsgUpdateBatch) ValidateBasic() error {
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
 	}
-	if msg.Status == BatchStatusProcessing && msg.Nonce == 0 {
+	if msg.Status == BatchStatusProcessing && msg.TxHash == "" {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "the nonce number can't empty or zero in case %s status", msg.Status)
 	}
 	return nil

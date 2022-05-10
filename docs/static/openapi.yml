@@ -31211,9 +31211,10 @@ paths:
                         format: uint64
                     status:
                       type: string
-                    nonce:
+                    txHash:
                       type: string
-                      format: uint64
+                    network:
+                      type: string
         default:
           description: An unexpected error response.
           schema:
@@ -31509,9 +31510,10 @@ paths:
                         format: uint64
                     status:
                       type: string
-                    nonce:
+                    txHash:
                       type: string
-                      format: uint64
+                    network:
+                      type: string
               pagination:
                 type: object
                 properties:
@@ -53551,9 +53553,10 @@ definitions:
           format: uint64
       status:
         type: string
-      nonce:
+      txHash:
         type: string
-        format: uint64
+      network:
+        type: string
   shareledger.swap.MsgApproveInResponse:
     type: object
   shareledger.swap.MsgApproveResponse:
@@ -53676,9 +53679,10 @@ definitions:
                 format: uint64
             status:
               type: string
-            nonce:
+            txHash:
               type: string
-              format: uint64
+            network:
+              type: string
   shareledger.swap.QueryParamsResponse:
     type: object
     properties:
@@ -53709,9 +53713,10 @@ definitions:
                 format: uint64
             status:
               type: string
-            nonce:
+            txHash:
               type: string
-              format: uint64
+            network:
+              type: string
       pagination:
         type: object
         properties:

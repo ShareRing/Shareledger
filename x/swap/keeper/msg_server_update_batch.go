@@ -30,11 +30,10 @@ func (k msgServer) UpdateBatch(goCtx context.Context, msg *types.MsgUpdateBatch)
 	if batch.GetStatus() != requireStatus {
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "updating batch status [%s] => [%s] is not allowed", batch.GetStatus(), msg.GetStatus())
 	}
-	if msg.GetNonce() != 0 {
-		batch.Nonce = msg.GetNonce()
-	}
 
 	batch.Status = msg.GetStatus()
+	batch.Network = msg.GetNetwork()
+	batch.TxHash = msg.GetTxHash()
 	k.SetBatch(ctx, batch)
 
 	return &types.MsgUpdateBatchResponse{}, nil

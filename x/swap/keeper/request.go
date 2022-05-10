@@ -19,10 +19,8 @@ func (k Keeper) GetRequestCount(ctx sdk.Context) uint64 {
 	if bz != nil {
 		requestCount = binary.BigEndian.Uint64(bz)
 	}
-	if requestCount == 0 {
-		requestCount = 1
-	}
-	return requestCount
+
+	return requestCount + 1
 }
 
 // SetRequestCount set the total number of request
@@ -49,8 +47,8 @@ func (k Keeper) AppendPendingRequest(
 	count := k.GetRequestCount(ctx)
 	// Set the ID of the appended value
 	// We are using 0 as zero value for id.
-	request.Id = count + 1
-	k.SetRequestCount(ctx, count+1)
+	request.Id = count
+	k.SetRequestCount(ctx, count)
 
 	store := k.GetStoreRequestMap(ctx)[request.Status]
 	appendedValue := k.cdc.MustMarshal(&request)
