@@ -97,7 +97,7 @@ func NewStartCommands(defaultNodeHome string) *cobra.Command {
 			case "in":
 				return relayerClient.startInProcess(ctx)
 			case "out":
-				return relayerClient.startOutProcess(ctx)
+				return relayerClient.startOutProcess(ctx, "erc20")
 			default:
 				return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "Relayer type is required either in or out")
 			}
@@ -179,7 +179,7 @@ type Relayer struct {
 	Client client.Context
 }
 
-func (r *Relayer) startOutProcess(ctx context.Context) error {
+func (r *Relayer) startOutProcess(ctx context.Context, network string) error {
 	doneChan := make(chan error)
 	initInterval := time.Second
 	go func() {
@@ -189,56 +189,59 @@ func (r *Relayer) startOutProcess(ctx context.Context) error {
 				// right after start the process, it should be run immediately before following configuration
 				initInterval = r.Config.ScanInterval
 				//TODO: process pending
-				batches, err := r.getPendingBatches()
+				batch, err := r.getNextPendingBatch(network)
 				if err != nil {
 					log.Err(err).Msg("get pending batches")
 				}
-				if len(batches) == 0 {
+				if batch == nil {
 					log.Info().Msg("pending batches list is empty")
+					continue
 				}
-				//TODO: double check short period calling to Shareledger BC - Account Nonce number
-				for _, b := range batches {
-					batch, err := r.processingBatch(b.Id)
+
+				// do not need to update processing
+				//batch, err := r.processingBatch(batch.Id)
+				//if err != nil {
+				//	log.Err(err).Msg(fmt.Sprintf("batch, %s, has error", batch.Id))
+				//	// in case there are multiple relayer running at same time, there will be error about status was not satisfied.
+				//	// continue to others
+				//	continue
+				//}
+
+				if done, err := r.isDoneBatchOnSC(ctx, *batch); err != nil || done {
+					//TODO: Khang update done to SC if err == nil
 					if err != nil {
-						log.Err(err).Msg(fmt.Sprintf("batch, %s, has error", batch.Id))
-						// in case there are multiple relayer running at same time, there will be error about status was not satisfied.
-						// continue to others
-						continue
+						doneChan <- err
 					}
-					txHash, err := r.submitBatch(ctx, batch)
-					_ = txHash
-					if err != nil {
-						//TODO: handle error??
-					}
+				}
+
+				txHash, err := r.submitBatch(ctx, *batch)
+				_ = txHash
+				// TODO: Hoai job check requently
+				if err != nil {
+					//TODO: handle error??
 				}
 			case <-ctx.Done():
 				log.Info().Msg("context is done. out process is exiting")
 			}
 		}
 	}()
-	// TODO: Get pending batches
-	//var batches []swapmoduletypes.Batch
-
-	// processingBatch(batches[0].id)
-	// TODO: Change batch to pending
-
-	// TODO: fw the current batch to sc -- pending
-	// submitBatch(...)
-
 	return <-doneChan
 }
 
-func (r *Relayer) getPendingBatches() ([]swapmoduletypes.Batch, error) {
+func (r *Relayer) isProcessed(batch swapmoduletypes.Batch) (bool, error) {
+	panic("implement me")
+}
+
+func (r *Relayer) getNextPendingBatch(network string) (*swapmoduletypes.Batch, error) {
 	qClient := swapmoduletypes.NewQueryClient(r.Client)
 	pendingQuery := &swapmoduletypes.QuerySearchBatchesRequest{
 		Status: swapmoduletypes.BatchStatusPending,
 	}
 
 	batchesRes, err := qClient.SearchBatches(context.Background(), pendingQuery)
-	if err != nil {
-		return nil, err
-	}
-	return batchesRes.GetBatchs(), nil
+	_ = batchesRes
+	_ = err
+	return &swapmoduletypes.Batch{}, err
 }
 
 func (r *Relayer) updateBatch(msg *swapmoduletypes.MsgUpdateBatch) (swapmoduletypes.Batch, error) {
@@ -289,6 +292,10 @@ func (r *Relayer) processingBatch(batchId uint64) (swapmoduletypes.Batch, error)
 	}
 
 	return batch, nil
+}
+
+func (r *Relayer) isDoneBatchOnSC(ctx context.Context, batch swapmoduletypes.Batch) (done bool, err error) {
+	panic("implement me")
 }
 
 func (r *Relayer) submitBatch(ctx context.Context, batch swapmoduletypes.Batch) (txHash string, err error) {
