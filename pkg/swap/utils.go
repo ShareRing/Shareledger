@@ -28,5 +28,4 @@ func BuildTypedData(signSchemaData apitypes.TypedData, requests []swaptypes.Requ
 		"amounts": amounts,
 	}
 	return signSchemaData, nil
-
 }

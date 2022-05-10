@@ -2,6 +2,7 @@ package services
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
@@ -14,6 +15,8 @@ import (
 	"github.com/ethereum/go-ethereum/signer/core/apitypes"
 	"github.com/pkg/errors"
 	"github.com/rs/zerolog/log"
+	crypto2 "github.com/sharering/shareledger/pkg/crypto"
+	swaputils "github.com/sharering/shareledger/pkg/swap"
 	"github.com/sharering/shareledger/pkg/swap/abi/swap"
 	swapmoduletypes "github.com/sharering/shareledger/x/swap/types"
 	denom "github.com/sharering/shareledger/x/utils/demo"
@@ -188,15 +191,31 @@ type DigestBatch struct {
 type BatchDetail struct {
 	Batch      swapmoduletypes.Batch
 	Requests   []swapmoduletypes.Request
-	SignSchema apitypes.TypedData
+	SignSchema swapmoduletypes.SignSchema
 }
 
 func (b BatchDetail) Validate() error {
+	if len(b.Requests) == 0 {
+		return fmt.Errorf("requests is empty")
+	}
+	if len(b.SignSchema.Schema) == 0 {
+		return fmt.Errorf("schema is empty")
+	}
 	return nil
 }
 
-func (b BatchDetail) Network() string {
-	return b.Requests[0].DestNetwork
+func (b BatchDetail) Digest() (common.Hash, error) {
+	var hash common.Hash
+	var signFormatData apitypes.TypedData
+	if err := json.Unmarshal([]byte(b.SignSchema.Schema), &signFormatData); err != nil {
+		return hash, err
+	}
+	data, err := swaputils.BuildTypedData(signFormatData, b.Requests)
+	if err != nil {
+		return hash, err
+	}
+	hash, err = crypto2.Keccak256HashEIP712(data)
+	return hash, err
 }
 
 func (r *Relayer) startOutProcess(ctx context.Context, network string) error {
@@ -227,24 +246,25 @@ func (r *Relayer) startOutProcess(ctx context.Context, network string) error {
 					log.Info().Msg("pending batches list is empty")
 					continue
 				}
-
-				// do not need to update processing
-				//batch, err := r.processingBatch(batch.Id)
-				//if err != nil {
-				//	log.Err(err).Msg(fmt.Sprintf("batch, %s, has error", batch.Id))
-				//	// in case there are multiple relayer running at same time, there will be error about status was not satisfied.
-				//	// continue to others
-				//	continue
-				//}
-
-				if done, err := r.isBatchDoneOnSC(ctx, [32]byte{}); err != nil || done {
+				batchDetail, err := r.getBatchDetail(ctx, *batch)
+				if err != nil {
+					doneChan <- err
+					return
+				}
+				digest, err := batchDetail.Digest()
+				if err != nil {
+					doneChan <- err
+					return
+				}
+				if done, err := r.isBatchDoneOnSC(ctx, digest); err != nil || done {
 					//TODO: Khang update done to SC if err == nil
 					if err != nil {
 						doneChan <- err
+						return
 					}
 				}
 				var detail BatchDetail
-				txHash, err := r.submitBatch(ctx, detail)
+				txHash, err := r.submitBatch(ctx, network, detail)
 				_ = txHash
 				// TODO: Hoai job check requently
 				if err != nil {
@@ -268,6 +288,24 @@ func (r *Relayer) getNextPendingBatch(network string) (*swapmoduletypes.Batch, e
 	_ = batchesRes
 	_ = err
 	return &swapmoduletypes.Batch{}, err
+}
+
+func (r *Relayer) getBatchDetail(ctx context.Context, batch swapmoduletypes.Batch) (detail BatchDetail, err error) {
+	qClient := swapmoduletypes.NewQueryClient(r.Client)
+	batchesRes, err := qClient.Swap(ctx, &swapmoduletypes.QuerySwapRequest{Ids: batch.TxIds})
+	if err != nil {
+		return detail, err
+	}
+	schema, err := qClient.SignSchema(ctx, &swapmoduletypes.QueryGetSignSchemaRequest{Network: batch.Network})
+	if err != nil {
+		return detail, err
+	}
+	detail = BatchDetail{
+		Batch:      batch,
+		Requests:   batchesRes.Swaps,
+		SignSchema: schema.Schema,
+	}
+	return detail, nil
 }
 
 func (r *Relayer) updateBatch(msg *swapmoduletypes.MsgUpdateBatch) (swapmoduletypes.Batch, error) {
@@ -324,14 +362,14 @@ func (r *Relayer) isBatchDoneOnSC(ctx context.Context, digest common.Hash) (done
 	panic("implement me")
 }
 
-func (r *Relayer) submitBatch(ctx context.Context, detail BatchDetail) (txHash string, err error) {
+func (r *Relayer) submitBatch(ctx context.Context, network string, detail BatchDetail) (txHash string, err error) {
 	if err := detail.Validate(); err != nil {
 		return "", err
 	}
-	networkConfig, found := r.Config.Network[detail.Network()]
+	networkConfig, found := r.Config.Network[network]
 	uid := networkConfig.Signer
 	if !found {
-		return "", sdkerrors.Wrapf(sdkerrors.ErrLogic, "network, %s, is not supported", detail.Network())
+		return "", sdkerrors.Wrapf(sdkerrors.ErrLogic, "network, %s, is not supported", network)
 	}
 	conn, err := ethclient.Dial(networkConfig.Url)
 	if err != nil {
