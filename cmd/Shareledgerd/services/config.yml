@@ -1,4 +1,4 @@
-scanInterval: 20s
+scanInterval: 5s
 type: out
 networks:
   erc20:

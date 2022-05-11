@@ -225,14 +225,13 @@ func (r *Relayer) processOut(ctx context.Context, network string) error {
 	}
 	// There is a case that there is already pending transaction.
 	// But the sc wil double check and return fee if the request batch already processed.
-	var detail BatchDetail
-	txHash, err := r.submitBatch(ctx, network, detail)
-	_ = txHash
+	txHash, err := r.submitBatch(ctx, network, batchDetail)
+	fmt.Println(txHash, err)
 	// TODO: Hoai job check requently
 	if err != nil {
 		//TODO: handle error??
 	}
-	return nil
+	return err
 }
 
 func (r *Relayer) getNextPendingBatch(network string) (*swapmoduletypes.Batch, error) {
@@ -261,9 +260,10 @@ func (r *Relayer) getNextPendingBatch(network string) (*swapmoduletypes.Batch, e
 
 func (r *Relayer) getBatchDetail(ctx context.Context, batch swapmoduletypes.Batch) (detail BatchDetail, err error) {
 	qClient := swapmoduletypes.NewQueryClient(r.Client)
-	batchesRes, err := qClient.Swap(ctx, &swapmoduletypes.QuerySwapRequest{Ids: batch.TxIds})
+	// only approved swap requests have batch
+	batchesRes, err := qClient.Swap(ctx, &swapmoduletypes.QuerySwapRequest{Ids: batch.TxIds, Status: swapmoduletypes.SwapStatusApproved})
 	if err != nil {
-		return detail, err
+		return detail, sdkerrors.Wrapf(err, "get list swap")
 	}
 	schema, err := qClient.SignSchema(ctx, &swapmoduletypes.QueryGetSignSchemaRequest{Network: batch.Network})
 	if err != nil {
@@ -384,7 +384,9 @@ func (r *Relayer) submitBatch(ctx context.Context, network string, detail BatchD
 		return "", err
 	}
 	opts.Nonce = big.NewInt(int64(currentNonce))
+
 	tx, err := swapClient.Swap(opts, []*big.Int{}, []common.Address{}, []*big.Int{}, []byte{})
+	
 	if err != nil {
 		return "", err
 	}

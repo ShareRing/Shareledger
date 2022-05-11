@@ -109,7 +109,7 @@ genesis:
       batchCount: '2'
       batchList:
         - id: '1'
-          network: ''
+          network: 'erc20'
           signature: >-
             0x6f62ea25cbf6d5f4a6829b6e671b769085300d8aac75f7574427fef8fc3d7fb8620818bb95d920fcd7f5a54fb0804d29b3bf0f3afdef0b507da4d729dcca932d1c
           status: pending
