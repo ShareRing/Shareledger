@@ -119,7 +119,7 @@ func signApprovedSwap(ctx client.Context, signer string, signData swap.SignDetai
 	//}
 	//fmt.Println(json.Marshal(signer))
 
-	//signData, err := swap.BuildTypedData(signFormatData, requests)
+	//signData, err := swap.buildTypedData(signFormatData, requests)
 	//if err != nil {
 	//	return "", err
 	//}
