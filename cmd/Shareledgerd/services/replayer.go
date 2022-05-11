@@ -211,7 +211,7 @@ func (r *Relayer) processOut(ctx context.Context, network string) error {
 	if err != nil {
 		return err
 	}
-	if done, err := r.isBatchDoneOnSC(ctx, digest); err != nil || done {
+	if done, err := r.isBatchDoneOnSC(network, digest); err != nil || done {
 		if err != nil {
 			return err
 		}
@@ -223,6 +223,8 @@ func (r *Relayer) processOut(ctx context.Context, network string) error {
 			return nil
 		}
 	}
+	// There is a case that there is already pending transaction.
+	// But the sc wil double check and return fee if the request batch already processed.
 	var detail BatchDetail
 	txHash, err := r.submitBatch(ctx, network, detail)
 	_ = txHash
@@ -322,25 +324,24 @@ func (r *Relayer) markBatchProcessing(batchId uint64) (swapmoduletypes.Batch, er
 	return batch, nil
 }
 
-func (r *Relayer) isBatchDoneOnSC(_ context.Context, digest common.Hash) (done bool, err error) {
-	networkConfig, found := r.Config.Network["erc20"] //TODO fix this place after integrate
+func (r *Relayer) isBatchDoneOnSC(network string, digest common.Hash) (done bool, err error) {
+	networkConfig, found := r.Config.Network[network] //TODO fix this place after integrate
 	if !found {
 		return false, sdkerrors.Wrapf(sdkerrors.ErrLogic, "network, %s, is not supported", "erc20")
 	}
 	conn, err := ethclient.Dial(networkConfig.Url)
+	defer func() {
+		conn.Close()
+	}()
 	swapClient, err := swap.NewSwap(common.HexToAddress(networkConfig.Contract), conn)
 	if err != nil {
 		return false, sdkerrors.Wrapf(sdkerrors.ErrLogic, err.Error())
 	}
 	res, err := swapClient.Swaps(nil, digest)
-	if err != nil {
-		return false, sdkerrors.Wrapf(sdkerrors.ErrLogic, err.Error())
+	if len(res) > 0 {
+		done = true
 	}
-	//TODO handle response
-	if res == nil {
-		return false, nil
-	}
-	return true, nil
+	return done, err
 
 }
 
@@ -354,6 +355,9 @@ func (r *Relayer) submitBatch(ctx context.Context, network string, detail BatchD
 		return "", sdkerrors.Wrapf(sdkerrors.ErrLogic, "network, %s, is not supported", network)
 	}
 	conn, err := ethclient.Dial(networkConfig.Url)
+	defer func() {
+		conn.Close()
+	}()
 	if err != nil {
 		return "", sdkerrors.Wrapf(sdkerrors.ErrLogic, err.Error())
 	}
@@ -374,6 +378,7 @@ func (r *Relayer) submitBatch(ctx context.Context, network string, detail BatchD
 	if err != nil {
 		return "", err
 	}
+
 	opts, err := keyring.NewKeyedTransactorWithChainID(r.Client.Keyring, uid, big.NewInt(networkConfig.ChainId))
 	if err != nil {
 		return "", err
