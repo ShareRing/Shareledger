@@ -217,7 +217,7 @@ func (r *Relayer) processOut(ctx context.Context, network string) error {
 			return err
 		}
 		if done {
-			_, err = r.markDone(batchDetail.Batch.Id, batchDetail.Batch.GetTxHash())
+			_, err = r.markDone(batchDetail.Batch.Id)
 			if err != nil {
 				return err
 			}
@@ -260,13 +260,13 @@ func (r *Relayer) getNextPendingBatch(network string) (*swapmoduletypes.Batch, e
 }
 
 func (r *Relayer) getBatchDetail(ctx context.Context, batch swapmoduletypes.Batch) (detail BatchDetail, err error) {
-	qClient := swapmoduletypes.NewQueryClient(r.Client)
+
 	// only approved swap requests have batch
-	batchesRes, err := qClient.Swap(ctx, &swapmoduletypes.QuerySwapRequest{Ids: batch.TxIds, Status: swapmoduletypes.SwapStatusApproved})
+	batchesRes, err := r.qClient.Swap(ctx, &swapmoduletypes.QuerySwapRequest{Ids: batch.TxIds, Status: swapmoduletypes.SwapStatusApproved})
 	if err != nil {
 		return detail, sdkerrors.Wrapf(err, "get list swap")
 	}
-	schema, err := qClient.SignSchema(ctx, &swapmoduletypes.QueryGetSignSchemaRequest{Network: batch.Network})
+	schema, err := r.qClient.SignSchema(ctx, &swapmoduletypes.QueryGetSignSchemaRequest{Network: batch.Network})
 	if err != nil {
 		return detail, err
 	}
@@ -298,10 +298,8 @@ func (r *Relayer) updateBatch(msg *swapmoduletypes.MsgUpdateBatch) (swapmodulety
 	return batchesRes.GetBatches()[0], nil
 }
 
-func (r *Relayer) markDone(batchId uint64, txHash string) (b swapmoduletypes.Batch, err error) {
-	if batchId == 0 || len(txHash) == 0 {
-		return swapmoduletypes.Batch{}, fmt.Errorf("batchId and txHash are required")
-	}
+func (r *Relayer) markDone(batchId uint64) (b swapmoduletypes.Batch, err error) {
+
 	updateMsg := &swapmoduletypes.MsgUpdateBatch{
 		Creator: r.Client.GetFromAddress().String(),
 		BatchId: batchId,
