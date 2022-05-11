@@ -148,7 +148,8 @@ func (k Keeper) swapIn(_ sdk.Context, stt string, reqs []types.Request) map[stri
 			if !found {
 				total = sdk.NewDecCoins()
 			}
-			total = total.Add(*reqs[i].Amount)
+			total.Add(sdk.NewDecCoinFromCoin(*reqs[i].GetAmount()))
+
 			transfers[reqs[i].DestAddr] = total
 		}
 	}
@@ -163,7 +164,8 @@ func (k Keeper) swapOut(_ sdk.Context, stt string, reqs []types.Request) map[str
 			if !found {
 				total = sdk.NewDecCoins()
 			}
-			total = total.Add(*reqs[i].Amount).Add(*reqs[i].Fee)
+			total.Add(sdk.NewDecCoinFromCoin(*reqs[i].GetAmount()))
+			total.Add(sdk.NewDecCoinFromCoin(*reqs[i].GetFee()))
 			refunds[reqs[i].SrcAddr] = total
 		}
 	}

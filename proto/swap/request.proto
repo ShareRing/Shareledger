@@ -11,8 +11,8 @@ message Request {
   string destAddr = 3;
   string srcNetwork = 4;
   string destNetwork = 5;
-  cosmos.base.v1beta1.DecCoin amount = 6;
-  cosmos.base.v1beta1.DecCoin fee = 7;
+  cosmos.base.v1beta1.Coin amount = 6;
+  cosmos.base.v1beta1.Coin fee = 7;
   string status = 8;
   uint64 batchId = 9;
   uint64 createdAt = 10;

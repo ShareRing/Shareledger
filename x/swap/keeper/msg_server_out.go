@@ -12,23 +12,36 @@ import (
 
 func (k msgServer) RequestOut(goCtx context.Context, msg *types.MsgRequestOut) (*types.MsgOutSwapResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
-	sumCoins := sdk.NewDecCoins().Add(*msg.Amount).Add(*msg.Fee)
 
-	baseCoins, err := denom.NormalizeToBaseCoins(sumCoins, true)
+	amount, err := denom.NormalizeToBaseCoins(sdk.NewDecCoins(*msg.GetAmount()), true)
 	if err != nil {
 		return nil, err
 	}
-	if err := k.bankKeeper.SendCoinsFromAccountToModule(ctx, msg.GetSigners()[0], types.ModuleName, baseCoins); err != nil {
+
+	fee, err := denom.NormalizeToBaseCoins(sdk.NewDecCoins(*msg.GetFee()), true)
+	if err != nil {
 		return nil, err
 	}
+
+	sumCoin := amount.Add(fee...)
+
+	if err := k.bankKeeper.SendCoinsFromAccountToModule(ctx, msg.GetSigners()[0], types.ModuleName, sumCoin); err != nil {
+		return nil, err
+	}
+
+	var insertAmountCoin *sdk.Coin
+	var insertFeeCoin *sdk.Coin
+	*insertFeeCoin = sdk.NewCoin(denom.Base, fee.AmountOf(denom.Base))
+	*insertAmountCoin = sdk.NewCoin(denom.Base, amount.AmountOf(denom.Base))
+
 	tn := time.Now().Unix()
 	req, err := k.AppendPendingRequest(ctx, types.Request{
 		SrcAddr:     msg.Creator,
 		DestAddr:    msg.DestAddress,
 		SrcNetwork:  types.NetworkNameShareLedger,
 		DestNetwork: msg.Network,
-		Amount:      msg.Amount,
-		Fee:         msg.Fee,
+		Amount:      insertAmountCoin,
+		Fee:         insertFeeCoin,
 		Status:      types.SwapStatusPending,
 		CreatedAt:   uint64(tn),
 	})
@@ -38,8 +51,8 @@ func (k msgServer) RequestOut(goCtx context.Context, msg *types.MsgRequestOut) (
 			sdk.NewEvent(
 				types.EventTypeSwapOut,
 				sdk.NewAttribute(sdk.AttributeKeyModule, types.AttributeValueCategory),
-				sdk.NewAttribute(types.EventTypeSwapAmount, req.Amount.String()),
-				sdk.NewAttribute(types.EventTypeSwapFee, req.Fee.String()),
+				sdk.NewAttribute(types.EventTypeSwapAmount, amount.String()),
+				sdk.NewAttribute(types.EventTypeSwapFee, fee.String()),
 				sdk.NewAttribute(types.EventTypeSwapId, strconv.FormatUint(req.Id, 10)),
 				sdk.NewAttribute(types.EventTypeSwapDestAddr, req.DestAddr),
 				sdk.NewAttribute(types.EventTypeSwapSrcAddr, req.SrcAddr),
