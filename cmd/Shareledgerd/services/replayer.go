@@ -10,6 +10,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/pkg/errors"
 	"github.com/rs/zerolog/log"
@@ -385,8 +386,25 @@ func (r *Relayer) submitBatch(ctx context.Context, network string, detail BatchD
 	}
 	opts.Nonce = big.NewInt(int64(currentNonce))
 
-	tx, err := swapClient.Swap(opts, []*big.Int{}, []common.Address{}, []*big.Int{}, []byte{})
-	
+	transactionIds := make([]*big.Int, 0, len(detail.Requests))
+	destAddr := make([]common.Address, 0, len(detail.Requests))
+	amounts := make([]*big.Int, 0, len(detail.Requests))
+
+	for _, r := range detail.Requests {
+		coins, err := denom.NormalizeToBaseCoins(sdk.NewDecCoins(*r.Amount), false)
+		if err != nil {
+			return "", err
+		}
+		transactionIds = append(transactionIds, big.NewInt(int64(r.Id)))
+		destAddr = append(destAddr, common.HexToAddress(r.DestAddr))
+		amounts = append(amounts, big.NewInt(coins[0].Amount.Int64()))
+	}
+	sig, err := hexutil.Decode(detail.Batch.Signature)
+	if err != nil {
+		return "", err
+	}
+	tx, err := swapClient.Swap(opts, transactionIds, destAddr, amounts, sig)
+
 	if err != nil {
 		return "", err
 	}
