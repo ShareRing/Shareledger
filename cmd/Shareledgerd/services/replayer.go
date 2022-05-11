@@ -218,7 +218,7 @@ func (r *Relayer) processOut(ctx context.Context, network string) error {
 			return err
 		}
 		if done {
-			_, err = r.markDone(batchDetail.Batch.Id, batchDetail.Batch.GetTxHash())
+			_, err = r.markDone(batchDetail.Batch.Id)
 			if err != nil {
 				return err
 			}
