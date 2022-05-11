@@ -10,20 +10,31 @@ import (
 )
 
 type BatchDetail struct {
-	Batch      swapmoduletypes.Batch
-	Requests   []swapmoduletypes.Request
-	SignSchema swapmoduletypes.SignSchema
+	Batch swapmoduletypes.Batch
+	SignDetail
 }
 
 func NewBatchDetail(batch swapmoduletypes.Batch, requests []swapmoduletypes.Request, signSchema swapmoduletypes.SignSchema) BatchDetail {
 	return BatchDetail{
 		Batch:      batch,
+		SignDetail: NewSignDetail(requests, signSchema),
+	}
+}
+
+type SignDetail struct {
+	Requests   []swapmoduletypes.Request
+	SignSchema swapmoduletypes.SignSchema
+}
+
+func NewSignDetail(requests []swapmoduletypes.Request, signSchema swapmoduletypes.SignSchema) SignDetail {
+	return SignDetail{
+		//Batch:      batch,
 		Requests:   requests,
 		SignSchema: signSchema,
 	}
 }
 
-func (b BatchDetail) Validate() error {
+func (b SignDetail) Validate() error {
 	if len(b.Requests) == 0 {
 		return fmt.Errorf("requests is empty")
 	}
@@ -33,7 +44,7 @@ func (b BatchDetail) Validate() error {
 	return nil
 }
 
-func (b BatchDetail) Digest() (common.Hash, error) {
+func (b SignDetail) Digest() (common.Hash, error) {
 	var hash common.Hash
 	var signFormatData apitypes.TypedData
 	if err := json.Unmarshal([]byte(b.SignSchema.Schema), &signFormatData); err != nil {

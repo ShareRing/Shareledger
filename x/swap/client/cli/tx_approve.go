@@ -1,7 +1,6 @@
 package cli
 
 import (
-	"encoding/json"
 	"fmt"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
@@ -10,8 +9,6 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/cosmos/cosmos-sdk/types/query"
 	"github.com/ethereum/go-ethereum/common/hexutil"
-	"github.com/ethereum/go-ethereum/signer/core/apitypes"
-	crypto2 "github.com/sharering/shareledger/pkg/crypto"
 	"github.com/sharering/shareledger/pkg/swap"
 	"github.com/sharering/shareledger/x/swap/types"
 	"github.com/spf13/cobra"
@@ -63,12 +60,12 @@ func CmdApprove() *cobra.Command {
 				return err
 			}
 
-			var signFormatData apitypes.TypedData
-			if err := json.Unmarshal([]byte(formatRes.GetSchema().Schema), &signFormatData); err != nil {
-				return err
-			}
-
-			signedHash, err := signApprovedSwap(clientCtx, signer, res.Swaps, signFormatData)
+			//var signFormatData apitypes.TypedData
+			//if err := json.Unmarshal([]byte(formatRes.GetSchema().Schema), &signFormatData); err != nil {
+			//	return err
+			//}
+			signDetail := swap.NewSignDetail(res.Swaps, formatRes.GetSchema())
+			signedHash, err := signApprovedSwap(clientCtx, signer, signDetail)
 			if err != nil {
 				return err
 			}
@@ -88,7 +85,7 @@ func CmdApprove() *cobra.Command {
 	return cmd
 }
 
-func signApprovedSwap(ctx client.Context, signer string, requests []types.Request, signFormatData apitypes.TypedData) (string, error) {
+func signApprovedSwap(ctx client.Context, signer string, signData swap.SignDetail) (string, error) {
 	//signerData := apitypes.TypedData{
 	//	Domain: apitypes.TypedDataDomain{
 	//		Name:              "ShareRingSwap",
@@ -121,24 +118,28 @@ func signApprovedSwap(ctx client.Context, signer string, requests []types.Reques
 	//	PrimaryType: "Swap",
 	//}
 	//fmt.Println(json.Marshal(signer))
-	signData, err := swap.BuildTypedData(signFormatData, requests)
-	if err != nil {
-		return "", err
-	}
-	signHash, err := crypto2.Keccak256HashEIP712(signData)
-	if err != nil {
-		return "", err
-	}
 
+	//signData, err := swap.BuildTypedData(signFormatData, requests)
+	//if err != nil {
+	//	return "", err
+	//}
+	//signHash, err := crypto2.Keccak256HashEIP712(signData)
+	//if err != nil {
+	//	return "", err
+	//}
+	digest, err := signData.Digest()
+	if err != nil {
+		return "", err
+	}
 	kb := ctx.Keyring
 	ks := keyring.NewKeyRingETH(kb)
-	sig, npk, err := ks.Sign(signer, signHash.Bytes())
+	sig, npk, err := ks.Sign(signer, digest.Bytes())
 	if err != nil {
 		return "", err
 	}
-	fmt.Println("digest", signHash.String())
+	fmt.Println("digest", digest.String())
 	fmt.Println("Signed eip712", hexutil.Encode(sig))
 	fmt.Println("Signed Address EIP712", hexutil.Encode(npk.Address().Bytes()))
-	fmt.Println("Trying to verify", npk.VerifySignature(signHash.Bytes(), sig))
+	fmt.Println("Trying to verify", npk.VerifySignature(digest.Bytes(), sig))
 	return hexutil.Encode(sig), nil
 }
