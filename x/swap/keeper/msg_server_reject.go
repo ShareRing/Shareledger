@@ -19,7 +19,7 @@ func (k msgServer) Reject(goCtx context.Context, msg *types.MsgReject) (*types.M
 	total := sdk.NewDecCoins()
 	reqIds := make([]string, 0, len(reqs))
 	for _, r := range reqs {
-		total = total.Add(*r.Amount)
+		total = total.Add(sdk.NewDecCoinFromCoin(*r.GetAmount()))
 		reqIds = append(reqIds, fmt.Sprintf("%v", r.Id))
 	}
 	ctx.EventManager().EmitEvent(

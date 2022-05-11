@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+	denom "github.com/sharering/shareledger/x/utils/demo"
 	"strconv"
 	"time"
 
@@ -12,13 +13,26 @@ import (
 func (k msgServer) RequestIn(goCtx context.Context, msg *types.MsgRequestIn) (*types.MsgSwapInResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 	tn := time.Now().Unix()
+	amount, err := denom.NormalizeToBaseCoins(sdk.NewDecCoins(*msg.GetAmount()), true)
+	if err != nil {
+		return nil, err
+	}
+
+	fee, err := denom.NormalizeToBaseCoins(sdk.NewDecCoins(*msg.GetFee()), true)
+	if err != nil {
+		return nil, err
+	}
+	var insertAmountCoin *sdk.Coin
+	var insertFeeCoin *sdk.Coin
+	*insertFeeCoin = sdk.NewCoin(denom.Base, fee.AmountOf(denom.Base))
+	*insertAmountCoin = sdk.NewCoin(denom.Base, amount.AmountOf(denom.Base))
 	req, err := k.AppendPendingRequest(ctx, types.Request{
 		SrcAddr:     msg.SrcAddress,
 		DestAddr:    msg.DestAddress,
 		SrcNetwork:  msg.Network,
 		DestNetwork: types.NetworkNameShareLedger,
-		Amount:      msg.Amount,
-		Fee:         msg.Fee,
+		Amount:      insertAmountCoin,
+		Fee:         insertFeeCoin,
 		Status:      types.SwapStatusPending,
 		CreatedAt:   uint64(tn),
 	})
