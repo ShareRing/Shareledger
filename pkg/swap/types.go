@@ -51,7 +51,11 @@ func (b SignDetail) Digest() (common.Hash, error) {
 	if err := json.Unmarshal([]byte(b.SignSchema.Schema), &signFormatData); err != nil {
 		return hash, err
 	}
-	data, err := buildTypedData(signFormatData, b.Requests)
+	params, err := b.GetContractParams()
+	if err != nil {
+		return hash, err
+	}
+	data, err := buildTypedData(signFormatData, params)
 	if err != nil {
 		return hash, err
 	}

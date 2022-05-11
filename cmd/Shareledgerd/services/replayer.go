@@ -11,6 +11,7 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/common/hexutil"
+	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/pkg/errors"
 	"github.com/rs/zerolog/log"
@@ -196,6 +197,20 @@ func (r *Relayer) startProcess(ctx context.Context, f processFunc, network strin
 	return <-doneChan
 }
 
+func (r *Relayer) checkAndMarkDone(ctx context.Context, batchId uint64, network string, digest common.Hash) (done bool, err error) {
+	isSCDone, err := r.isBatchDoneOnSC(network, digest)
+	if err != nil {
+		return false, err
+	}
+	done = isSCDone
+	if done {
+		if _, err = r.markDone(batchId); err != nil {
+			return false, err
+		}
+	}
+	return done, nil
+}
+
 func (r *Relayer) processOut(ctx context.Context, network string) error {
 	batch, err := r.getNextPendingBatch(network)
 	if err != nil {
@@ -213,18 +228,11 @@ func (r *Relayer) processOut(ctx context.Context, network string) error {
 	if err != nil {
 		return err
 	}
-	if done, err := r.isBatchDoneOnSC(network, digest); err != nil || done {
-		if err != nil {
-			return err
-		}
-		if done {
-			_, err = r.markDone(batchDetail.Batch.Id)
-			if err != nil {
-				return err
-			}
-			return nil
-		}
+	done, err := r.checkAndMarkDone(ctx, batchDetail.Batch.Id, network, digest)
+	if err != nil || done {
+		return err // err nil when done is true
 	}
+
 	// There is a case that there is already pending transaction.
 	// But the sc wil double check and return fee if the request batch already processed.
 	txHash, err := r.submitBatch(ctx, network, batchDetail)
@@ -234,6 +242,21 @@ func (r *Relayer) processOut(ctx context.Context, network string) error {
 		//TODO: handle error??
 	}
 	return err
+}
+
+func (r *Relayer) checkTxHash(ctx context.Context, network string, txHash common.Hash) (*types.Receipt, error) {
+	networkConfig, found := r.Config.Network[network]
+	if !found {
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrLogic, "network, %s, is not supported", network)
+	}
+	conn, err := ethclient.Dial(networkConfig.Url)
+	if err != nil {
+		return nil, err
+	}
+	defer func() {
+		conn.Close()
+	}()
+	return conn.TransactionReceipt(ctx, txHash)
 }
 
 func (r *Relayer) getNextPendingBatch(network string) (*swapmoduletypes.Batch, error) {
@@ -322,7 +345,7 @@ func (r *Relayer) markBatchProcessing(batchId uint64) (swapmoduletypes.Batch, er
 func (r *Relayer) isBatchDoneOnSC(network string, digest common.Hash) (done bool, err error) {
 	networkConfig, found := r.Config.Network[network]
 	if !found {
-		return false, sdkerrors.Wrapf(sdkerrors.ErrLogic, "network, %s, is not supported", "erc20")
+		return false, sdkerrors.Wrapf(sdkerrors.ErrLogic, "network, %s, is not supported", network)
 	}
 	conn, err := ethclient.Dial(networkConfig.Url)
 	defer func() {
@@ -340,30 +363,30 @@ func (r *Relayer) isBatchDoneOnSC(network string, digest common.Hash) (done bool
 
 }
 
-func (r *Relayer) submitBatch(ctx context.Context, network string, batchDetail swaputil.BatchDetail) (txHash string, err error) {
+func (r *Relayer) submitBatch(ctx context.Context, network string, batchDetail swaputil.BatchDetail) (txHash common.Hash, err error) {
 	if err := batchDetail.Validate(); err != nil {
-		return "", err
+		return txHash, err
 	}
 	networkConfig, found := r.Config.Network[network]
 	uid := networkConfig.Signer
 	if !found {
-		return "", sdkerrors.Wrapf(sdkerrors.ErrLogic, "network, %s, is not supported", network)
+		return txHash, sdkerrors.Wrapf(sdkerrors.ErrLogic, "network, %s, is not supported", network)
 	}
 	conn, err := ethclient.Dial(networkConfig.Url)
 	defer func() {
 		conn.Close()
 	}()
 	if err != nil {
-		return "", sdkerrors.Wrapf(sdkerrors.ErrLogic, err.Error())
+		return txHash, sdkerrors.Wrapf(sdkerrors.ErrLogic, err.Error())
 	}
 	swapClient, err := swap.NewSwap(common.HexToAddress(networkConfig.Contract), conn)
 	if err != nil {
-		return "", sdkerrors.Wrapf(sdkerrors.ErrLogic, err.Error())
+		return txHash, sdkerrors.Wrapf(sdkerrors.ErrLogic, err.Error())
 	}
 
 	info, err := r.Client.Keyring.Key(uid)
 	if err != nil {
-		return "", err
+		return txHash, err
 	}
 	pubkey := keyring.PubKeyETH{
 		PubKey: info.GetPubKey(),
@@ -371,31 +394,31 @@ func (r *Relayer) submitBatch(ctx context.Context, network string, batchDetail s
 	commonAdd := common.BytesToAddress(pubkey.Address().Bytes())
 	currentNonce, err := conn.PendingNonceAt(ctx, commonAdd)
 	if err != nil {
-		return "", err
+		return txHash, err
 	}
 
 	opts, err := keyring.NewKeyedTransactorWithChainID(r.Client.Keyring, uid, big.NewInt(networkConfig.ChainId))
 	if err != nil {
-		return "", err
+		return txHash, err
 	}
 	opts.Nonce = big.NewInt(int64(currentNonce))
 	sig, err := hexutil.Decode(batchDetail.Batch.Signature)
 	if err != nil {
-		return "", err
+		return txHash, err
 	}
 	d, _ := batchDetail.Digest()
 	fmt.Println("digest", d.Hex())
 	fmt.Println("sig", batchDetail.Batch.Signature)
 	params, err := batchDetail.GetContractParams()
 	if err != nil {
-		return "", err
+		return txHash, err
 	}
 	tx, err := swapClient.Swap(opts, params.TransactionIds, params.DestAddrs, params.Amounts, sig)
-
 	if err != nil {
-		return "", err
+		return txHash, err
 	}
-	return tx.Hash().Hex(), err
+	txHash = tx.Hash()
+	return txHash, err
 }
 
 func (r *Relayer) startInProcess(ctx context.Context) error {
