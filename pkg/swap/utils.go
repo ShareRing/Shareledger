@@ -9,7 +9,7 @@ import (
 	"math/big"
 )
 
-func BuildTypedData(signSchemaData apitypes.TypedData, requests []swaptypes.Request) (apitypes.TypedData, error) {
+func buildTypedData(signSchemaData apitypes.TypedData, requests []swaptypes.Request) (apitypes.TypedData, error) {
 	txIds := make([]interface{}, 0, len(requests))
 	destinations := make([]interface{}, 0, len(requests))
 	amounts := make([]interface{}, 0, len(requests))

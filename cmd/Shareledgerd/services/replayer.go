@@ -379,20 +379,6 @@ func (r *Relayer) submitBatch(ctx context.Context, network string, batchDetail s
 		return "", err
 	}
 	opts.Nonce = big.NewInt(int64(currentNonce))
-
-	transactionIds := make([]*big.Int, 0, len(batchDetail.Requests))
-	destAddr := make([]common.Address, 0, len(batchDetail.Requests))
-	amounts := make([]*big.Int, 0, len(batchDetail.Requests))
-
-	for _, r := range batchDetail.Requests {
-		coins, err := denom.NormalizeToBaseCoins(sdk.NewDecCoinsFromCoins(*r.Amount), false)
-		if err != nil {
-			return "", err
-		}
-		transactionIds = append(transactionIds, big.NewInt(int64(r.Id)))
-		destAddr = append(destAddr, common.HexToAddress(r.DestAddr))
-		amounts = append(amounts, big.NewInt(coins[0].Amount.Int64()))
-	}
 	sig, err := hexutil.Decode(batchDetail.Batch.Signature)
 	if err != nil {
 		return "", err
@@ -400,7 +386,11 @@ func (r *Relayer) submitBatch(ctx context.Context, network string, batchDetail s
 	d, _ := batchDetail.Digest()
 	fmt.Println("digest", d.Hex())
 	fmt.Println("sig", batchDetail.Batch.Signature)
-	tx, err := swapClient.Swap(opts, transactionIds, destAddr, amounts, sig)
+	params, err := batchDetail.GetContractParams()
+	if err != nil {
+		return "", err
+	}
+	tx, err := swapClient.Swap(opts, params.TransactionIds, params.DestAddrs, params.Amounts, sig)
 
 	if err != nil {
 		return "", err
