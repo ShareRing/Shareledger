@@ -385,7 +385,7 @@ func (r *Relayer) submitBatch(ctx context.Context, network string, batchDetail s
 	amounts := make([]*big.Int, 0, len(batchDetail.Requests))
 
 	for _, r := range batchDetail.Requests {
-		coins, err := denom.NormalizeToBaseCoins(sdk.NewDecCoins(*r.Amount), false)
+		coins, err := denom.NormalizeToBaseCoins(sdk.NewDecCoinsFromCoins(*r.Amount), false)
 		if err != nil {
 			return "", err
 		}
