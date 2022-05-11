@@ -106,52 +106,11 @@ genesis:
           controller_enabled: true
         ports: []
     swap:
-      requestList:
-        - amount:
-            amount: '10000000000'
-            denom: nshr
-          batchId: '3'
-          createdAt: '1652255483'
-          destAddr: '0xfd98647ef698567357a8065849f0beb76812c8d9'
-          destNetwork: erc20
-          fee:
-            amount: '2000000000'
-            denom: nshr
-          id: '2'
-          srcAddr: shareledger1t3g4570e23h96h5hm5gdtfrjprmvk9qwmrglfr
-          srcNetwork: slp3
-          status: approved
-        - amount:
-            amount: '10000000000'
-            denom: nshr
-          batchId: '3'
-          createdAt: '1652256536'
-          destAddr: '0xfd98647ef698567357a8065849f0beb76812c8d9'
-          destNetwork: erc20
-          fee:
-            amount: '2000000000'
-            denom: nshr
-          id: '4'
-          srcAddr: shareledger1t3g4570e23h96h5hm5gdtfrjprmvk9qwmrglfr
-          srcNetwork: slp3
-          status: approved
-      requestCount: '5'
-      batchCount: '4'
-      batchList:
-          - id: '3'
-            network: erc20
-            signature: >-
-              0x852c1645ac3eba7be6bdd89fac9f79f66bb34f17de638fa07113978085ad6e9323f9881291f32f886655f3e1562d9d1e381d47a36a08bce732c026fab2a327591c
-            status: pending
-            txHash: ''
-            txIds:
-              - '2'
-              - '4'
       formatList:
         - creator: shareledger1lq9svs76xwekrrzw7uprekyqydf7fp02p8zp8e
           network: erc20
           schema: >-
-            {"types":{"EIP712Domain":[{"name":"name","type":"string"},{"name":"version","type":"string"},{"name":"chainId","type":"uint256"},{"name":"verifyingContract","type":"address"}],"Swap":[{"name":"ids","type":"uint256[]"},{"name":"tos","type":"address[]"},{"name":"amounts","type":"uint256[]"}]},"primaryType":"Swap","domain":{"name":"ShareRingSwap","version":"2.0","chainId":"0x7a69","verifyingContract":"0x0165878a594ca255338adfa4d48449f69242eb8f","salt":""}}
+            {"types":{"EIP712Domain":[{"name":"name","type":"string"},{"name":"version","type":"string"},{"name":"chainId","type":"uint256"},{"name":"verifyingContract","type":"address"}],"Swap":[{"name":"ids","type":"uint256[]"},{"name":"tos","type":"address[]"},{"name":"amounts","type":"uint256[]"}]},"primaryType":"Swap","domain":{"name":"ShareRingSwap","version":"2.0","chainId":"0x3","verifyingContract":"0xecf82F815DB77182dD46195B46E6aB3BdB6F6977","salt":""}}
       idList: [ ]
       params:
         outFee: out_fee
