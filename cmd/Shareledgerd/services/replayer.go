@@ -14,6 +14,7 @@ import (
 	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/pkg/errors"
 	"github.com/rs/zerolog/log"
+	swaputil "github.com/sharering/shareledger/pkg/swap"
 	"github.com/sharering/shareledger/pkg/swap/abi/swap"
 	swapmoduletypes "github.com/sharering/shareledger/x/swap/types"
 	denom "github.com/sharering/shareledger/x/utils/demo"
@@ -259,7 +260,7 @@ func (r *Relayer) getNextPendingBatch(network string) (*swapmoduletypes.Batch, e
 	return &batch.GetBatches()[0], err
 }
 
-func (r *Relayer) getBatchDetail(ctx context.Context, batch swapmoduletypes.Batch) (detail BatchDetail, err error) {
+func (r *Relayer) getBatchDetail(ctx context.Context, batch swapmoduletypes.Batch) (detail swaputil.BatchDetail, err error) {
 	qClient := swapmoduletypes.NewQueryClient(r.Client)
 	// only approved swap requests have batch
 	batchesRes, err := qClient.Swap(ctx, &swapmoduletypes.QuerySwapRequest{Ids: batch.TxIds, Status: swapmoduletypes.SwapStatusApproved})
@@ -270,12 +271,7 @@ func (r *Relayer) getBatchDetail(ctx context.Context, batch swapmoduletypes.Batc
 	if err != nil {
 		return detail, err
 	}
-	detail = BatchDetail{
-		Batch:      batch,
-		Requests:   batchesRes.Swaps,
-		SignSchema: schema.Schema,
-	}
-	return detail, nil
+	return swaputil.NewBatchDetail(batch, batchesRes.Swaps, schema.Schema), nil
 }
 
 func (r *Relayer) updateBatch(msg *swapmoduletypes.MsgUpdateBatch) (swapmoduletypes.Batch, error) {
@@ -326,7 +322,7 @@ func (r *Relayer) markBatchProcessing(batchId uint64) (swapmoduletypes.Batch, er
 }
 
 func (r *Relayer) isBatchDoneOnSC(network string, digest common.Hash) (done bool, err error) {
-	networkConfig, found := r.Config.Network[network] //TODO fix this place after integrate
+	networkConfig, found := r.Config.Network[network]
 	if !found {
 		return false, sdkerrors.Wrapf(sdkerrors.ErrLogic, "network, %s, is not supported", "erc20")
 	}
@@ -346,8 +342,8 @@ func (r *Relayer) isBatchDoneOnSC(network string, digest common.Hash) (done bool
 
 }
 
-func (r *Relayer) submitBatch(ctx context.Context, network string, detail BatchDetail) (txHash string, err error) {
-	if err := detail.Validate(); err != nil {
+func (r *Relayer) submitBatch(ctx context.Context, network string, batchDetail swaputil.BatchDetail) (txHash string, err error) {
+	if err := batchDetail.Validate(); err != nil {
 		return "", err
 	}
 	networkConfig, found := r.Config.Network[network]
@@ -386,11 +382,11 @@ func (r *Relayer) submitBatch(ctx context.Context, network string, detail BatchD
 	}
 	opts.Nonce = big.NewInt(int64(currentNonce))
 
-	transactionIds := make([]*big.Int, 0, len(detail.Requests))
-	destAddr := make([]common.Address, 0, len(detail.Requests))
-	amounts := make([]*big.Int, 0, len(detail.Requests))
+	transactionIds := make([]*big.Int, 0, len(batchDetail.Requests))
+	destAddr := make([]common.Address, 0, len(batchDetail.Requests))
+	amounts := make([]*big.Int, 0, len(batchDetail.Requests))
 
-	for _, r := range detail.Requests {
+	for _, r := range batchDetail.Requests {
 		coins, err := denom.NormalizeToBaseCoins(sdk.NewDecCoins(*r.Amount), false)
 		if err != nil {
 			return "", err
@@ -399,10 +395,13 @@ func (r *Relayer) submitBatch(ctx context.Context, network string, detail BatchD
 		destAddr = append(destAddr, common.HexToAddress(r.DestAddr))
 		amounts = append(amounts, big.NewInt(coins[0].Amount.Int64()))
 	}
-	sig, err := hexutil.Decode(detail.Batch.Signature)
+	sig, err := hexutil.Decode(batchDetail.Batch.Signature)
 	if err != nil {
 		return "", err
 	}
+	d, _ := batchDetail.Digest()
+	fmt.Println("digest", d.Hex())
+	fmt.Println("sig", batchDetail.Batch.Signature)
 	tx, err := swapClient.Swap(opts, transactionIds, destAddr, amounts, sig)
 
 	if err != nil {
