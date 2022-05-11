@@ -16,7 +16,7 @@ func BuildTypedData(signSchemaData apitypes.TypedData, requests []swaptypes.Requ
 	for _, tx := range requests {
 		txIds = append(txIds, (*math.HexOrDecimal256)(new(big.Int).SetUint64(tx.Id)))
 		destinations = append(destinations, tx.DestAddr)
-		bCoin, err := denom.NormalizeToBaseCoins(sdk.NewDecCoins(*tx.Amount), false)
+		bCoin, err := denom.NormalizeToBaseCoins(sdk.NewDecCoinsFromCoins(*tx.Amount), false)
 		if err != nil {
 			return signSchemaData, err
 		}
