@@ -5,4 +5,4 @@ networks:
     signer: acc3
     url: https://eth-ropsten.alchemyapi.io/v2/0M8yP6-iyIof8dFJN0Jph59jJlSKqmbW
     chainId: 3
-    contract: 0xC5eAdD9b5ea60A991a65888ECC8F26FbDdc7Dbf4
+    contract: 0xecf82F815DB77182dD46195B46E6aB3BdB6F6977
