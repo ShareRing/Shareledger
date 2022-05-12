@@ -9,6 +9,7 @@ message SignSchema {
   string network = 1; 
   string creator = 2;
   string schema = 3;
+  int32 contractExponent = 4;
 }
 
 //message EIP712DataType {
