@@ -8,7 +8,6 @@ import (
 	"os/signal"
 	"path/filepath"
 	"sort"
-	"strconv"
 	"sync"
 	"syscall"
 	"time"
@@ -62,9 +61,25 @@ func NewStartCommands(defaultNodeHome string) *cobra.Command {
 			if err != nil {
 				return err
 			}
-			relayerClient, _ := initRelayer(clientTx, cfg)
+			mgClient, err := database.NewMongo(cfg.MongoURI)
+			if err != nil {
+				return err
+			}
 
 			ctx, cancel := context.WithCancel(context.Background())
+			timeoutContext, cancelTimeOut := context.WithTimeout(ctx, time.Second*10)
+			defer cancelTimeOut()
+			relayerClient := initRelayer(clientTx, cfg, mgClient)
+			if err := mgClient.ConnectDB(timeoutContext); err != nil {
+				cancel()
+				return err
+			}
+
+			defer func() {
+				if err := mgClient.Disconnect(ctx); err != nil {
+					log.Info().Msg("Disconnected from DB")
+				}
+			}()
 
 			numberProcessing := len(cfg.Network)
 			processChan := make(chan error)
@@ -138,24 +153,18 @@ func parseConfig(filePath string) (RelayerConfig, error) {
 	return cfg, err
 }
 
-func initRelayer(client client.Context, cfg RelayerConfig) (*Relayer, error) {
-
+func initRelayer(client client.Context, cfg RelayerConfig, db database.DBRelayer) *Relayer {
 	mClient := swapmoduletypes.NewMsgClient(client)
 	qClient := swapmoduletypes.NewQueryClient(client)
-	dbClient, err := database.ConnectDB(cfg.MongoURI)
-	dbCollection := dbClient.GetCollection(cfg.DbName, cfg.CollectionName)
-	if err != nil {
-		return nil, err
-	}
 
 	return &Relayer{
 		Config:   cfg,
 		Client:   client,
-		DBClient: dbCollection,
+		DBClient: db,
 
 		qClient:   qClient,
 		msgClient: mClient,
-	}, nil
+	}
 }
 
 func (r *Relayer) startProcess(ctx context.Context, f processFunc, network string) error {
@@ -403,8 +412,7 @@ func (r *Relayer) submitBatch(ctx context.Context, network string, batchDetail s
 	if err != nil {
 		return txHash, err
 	}
-	log.Info().Str("nonce", strconv.FormatUint(currentNonce, 10)).Msg("current nonce")
-	log.Info().Str("commonAddr", commonAdd.String()).Msg("address")
+
 	opts, err := keyring.NewKeyedTransactorWithChainID(r.Client.Keyring, networkConfig.Signer, big.NewInt(networkConfig.ChainId))
 	if err != nil {
 		return txHash, err
