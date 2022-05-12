@@ -44,7 +44,7 @@ func CmdListSignSchema() *cobra.Command {
 
 func CmdShowFormat() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "format [network]",
+		Use:   "schema [network]",
 		Short: "get a format by network name",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
