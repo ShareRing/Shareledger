@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+	denom "github.com/sharering/shareledger/x/utils/demo"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
@@ -20,15 +21,29 @@ func (k msgServer) CreateSignSchema(goCtx context.Context, msg *types.MsgCreateS
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "index already set")
 	}
 
-	var format = types.SignSchema{
+	inF, err := denom.NormalizeToBaseCoin(denom.Base, sdk.NewDecCoins(*msg.In), sdk.NewDec(0), false)
+	if err != nil {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "invalid fee")
+	}
+	outF, err := denom.NormalizeToBaseCoin(denom.Base, sdk.NewDecCoins(*msg.Out), sdk.NewDec(0), false)
+	if err != nil {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "invalid fee")
+	}
+
+	var signSchema = types.SignSchema{
 		Creator: msg.Creator,
 		Network: msg.Network,
 		Schema:  msg.Schema,
+		Fee: &types.Fee{
+			In:  &inF,
+			Out: &outF,
+		},
+		ContractExponent: msg.GetContractExponent(),
 	}
 
 	k.SetSchema(
 		ctx,
-		format,
+		signSchema,
 	)
 	return &types.MsgCreateSignSchemaResponse{}, nil
 }
@@ -50,13 +65,37 @@ func (k msgServer) UpdateSignSchema(goCtx context.Context, msg *types.MsgUpdateS
 		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "incorrect owner")
 	}
 
-	var format = types.SignSchema{
+	var schema = types.SignSchema{
 		Creator: msg.Creator,
 		Network: msg.Network,
-		Schema:  msg.Schema,
+		Schema:  valFound.Schema,
+		Fee:     valFound.Fee,
+	}
+	if msg.Schema != "" {
+		schema.Schema = msg.Schema
 	}
 
-	k.SetSchema(ctx, format)
+	if !msg.Out.IsZero() {
+		outF, err := denom.NormalizeToBaseCoin(denom.Base, sdk.NewDecCoins(*msg.Out), sdk.NewDec(0), false)
+		if err != nil {
+			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "invalid fee")
+		}
+		schema.Fee.Out = &outF
+
+	}
+	if !msg.In.IsZero() {
+		inF, err := denom.NormalizeToBaseCoin(denom.Base, sdk.NewDecCoins(*msg.In), sdk.NewDec(0), false)
+		if err != nil {
+			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "invalid fee")
+		}
+		schema.Fee.In = &inF
+	}
+
+	if msg.GetContractExponent() != 0 {
+		schema.ContractExponent = msg.GetContractExponent()
+	}
+
+	k.SetSchema(ctx, schema)
 
 	return &types.MsgUpdateSignSchemaResponse{}, nil
 }

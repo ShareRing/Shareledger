@@ -13,6 +13,13 @@ func CheckSupport(denom string) error {
 	return nil
 }
 
+func IsShrOrBase(dCoin sdk.DecCoin) bool {
+	if dCoin.Denom == Base || dCoin.Denom == Shr {
+		return true
+	}
+	return false
+}
+
 func CheckFeeSupportedCoin(dCoin sdk.DecCoin) error {
 	if dCoin.Denom != ShrP {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "%v denomination is not supported. Only support %v", dCoin.Denom, ShrP)
@@ -168,4 +175,13 @@ func To(coins sdk.DecCoins, dest string, usdRate sdk.Dec) (coin sdk.DecCoin, err
 	}
 	coin = sdk.NewDecCoinFromDec(dest, vd)
 	return
+}
+
+func OnlyBaseDenom(cs sdk.Coins) sdk.Coin {
+	for _, c := range cs {
+		if c.Denom == Base {
+			return c
+		}
+	}
+	return sdk.Coin{}
 }

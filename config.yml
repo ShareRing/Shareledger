@@ -106,14 +106,63 @@ genesis:
           controller_enabled: true
         ports: []
     swap:
+      batchCount: '2'
+      batchList:
+        - id: '1'
+          network: erc20
+          signature: >-
+            0x62d7e3bddab6922f185088389abca34625531bde982c1353f4664b8e61b8e62844696584c3d815a62a8ad43a9fd7f9b7e1fe69ff8cf407299572e64f1b46cb711c
+          status: pending
+          txHash: ''
+          txIds:
+            - '1'
+            - '2'
       formatList:
-        - creator: shareledger1lq9svs76xwekrrzw7uprekyqydf7fp02p8zp8e
+        - contractExponent: 2
+          creator: shareledger1lq9svs76xwekrrzw7uprekyqydf7fp02p8zp8e
+          fee:
+            in:
+              amount: '100000000000'
+              denom: nshr
+            out:
+              amount: '200000000000'
+              denom: nshr
           network: erc20
           schema: >-
-            {"types":{"EIP712Domain":[{"name":"name","type":"string"},{"name":"version","type":"string"},{"name":"chainId","type":"uint256"},{"name":"verifyingContract","type":"address"}],"Swap":[{"name":"ids","type":"uint256[]"},{"name":"tos","type":"address[]"},{"name":"amounts","type":"uint256[]"}]},"primaryType":"Swap","domain":{"name":"ShareRingSwap","version":"2.0","chainId":"0x3","verifyingContract":"0xecf82F815DB77182dD46195B46E6aB3BdB6F6977","salt":""}}
+            {"types":{"EIP712Domain":[{"name":"name","type":"string"},{"name":"version","type":"string"},{"name":"chainId","type":"uint256"},{"name":"verifyingContract","type":"address"}],"Swap":[{"name":"ids","type":"uint256[]"},{"name":"tos","type":"address[]"},{"name":"amounts","type":"uint256[]"}]},"primaryType":"Swap","domain":{"name":"ShareRingSwap","version":"2.0","chainId":"0x3","verifyingContract":"0x7451bDECe7270a4fe4aAFFDCAa8c37bd8D041B4a","salt":""}}
       idList: [ ]
       params:
         outFee: out_fee
+      requestCount: '3'
+      requestList:
+        - amount:
+            amount: '10000000000'
+            denom: nshr
+          batchId: '1'
+          createdAt: '1652348033'
+          destAddr: '0x97B98D335c28F9aD9c123E344a78F00C84146431'
+          destNetwork: erc20
+          fee:
+            amount: '2000000000'
+            denom: nshr
+          id: '1'
+          srcAddr: shareledger1t3g4570e23h96h5hm5gdtfrjprmvk9qwmrglfr
+          srcNetwork: slp3
+          status: approved
+        - amount:
+            amount: '10000000000'
+            denom: nshr
+          batchId: '1'
+          createdAt: '1652348037'
+          destAddr: '0x97B98D335c28F9aD9c123E344a78F00C84146431'
+          destNetwork: erc20
+          fee:
+            amount: '2000000000'
+            denom: nshr
+          id: '2'
+          srcAddr: shareledger1t3g4570e23h96h5hm5gdtfrjprmvk9qwmrglfr
+          srcNetwork: slp3
+          status: approved
 
 init:
   client:

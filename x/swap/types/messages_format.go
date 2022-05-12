@@ -3,6 +3,7 @@ package types
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	denom "github.com/sharering/shareledger/x/utils/demo"
 )
 
 const (
@@ -17,11 +18,16 @@ func NewMsgCreateFormat(
 	creator string,
 	network string,
 	dataType string,
+	inFee, outFee *sdk.DecCoin,
+	contractExponent int32,
 ) *MsgCreateSignSchema {
 	return &MsgCreateSignSchema{
-		Creator: creator,
-		Network: network,
-		Schema:  dataType,
+		Creator:          creator,
+		Network:          network,
+		Schema:           dataType,
+		In:               inFee,
+		Out:              outFee,
+		ContractExponent: contractExponent,
 	}
 }
 
@@ -54,7 +60,21 @@ func (msg *MsgCreateSignSchema) ValidateBasic() error {
 	if len(msg.Schema) == 0 {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "data type format is required")
 	}
+
+	if err := msg.Out.Validate(); err != nil {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid swap out fee (%s)", err)
+	}
+	if err := msg.In.Validate(); err != nil {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid swap in fee (%s)", err)
+	}
+	if !denom.IsShrOrBase(*msg.In) {
+		return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "invalid swap in fee")
+	}
+	if !denom.IsShrOrBase(*msg.Out) {
+		return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "invalid swap out fee")
+	}
 	return nil
+
 	//return validateEIP712Data(msg.Network, msg.DataType)
 }
 
@@ -96,11 +116,16 @@ func NewMsgUpdateFormat(
 	creator string,
 	network string,
 	dataFormat string,
+	in, out *sdk.DecCoin,
+	exp int32,
 ) *MsgUpdateSignSchema {
 	return &MsgUpdateSignSchema{
-		Creator: creator,
-		Network: network,
-		Schema:  dataFormat,
+		Creator:          creator,
+		Network:          network,
+		Schema:           dataFormat,
+		In:               in,
+		Out:              out,
+		ContractExponent: exp,
 	}
 }
 
@@ -130,9 +155,7 @@ func (msg *MsgUpdateSignSchema) ValidateBasic() error {
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
 	}
-	if len(msg.Schema) == 0 {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "data type format is required")
-	}
+
 	return nil
 }
 
