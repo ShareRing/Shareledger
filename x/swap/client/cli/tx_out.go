@@ -35,11 +35,11 @@ func CmdOut() *cobra.Command {
 			if err != nil {
 				return err
 			}
-			params := &types.QueryGetSignSchemaRequest{
+			params := &types.QueryGetSchemaRequest{
 				Network: argNetwork,
 			}
 
-			res, err := queryClient.SignSchema(context.Background(), params)
+			res, err := queryClient.Schema(context.Background(), params)
 			if err != nil {
 				return err
 			}

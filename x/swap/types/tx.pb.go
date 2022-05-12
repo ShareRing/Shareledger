@@ -452,7 +452,7 @@ func (m *MsgWithdrawResponse) GetStatus() string {
 	return ""
 }
 
-type MsgCreateSignSchema struct {
+type MsgCreateSchema struct {
 	Creator          string         `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
 	Network          string         `protobuf:"bytes,2,opt,name=network,proto3" json:"network,omitempty"`
 	Schema           string         `protobuf:"bytes,3,opt,name=schema,proto3" json:"schema,omitempty"`
@@ -461,18 +461,18 @@ type MsgCreateSignSchema struct {
 	ContractExponent int32          `protobuf:"varint,6,opt,name=contractExponent,proto3" json:"contractExponent,omitempty"`
 }
 
-func (m *MsgCreateSignSchema) Reset()         { *m = MsgCreateSignSchema{} }
-func (m *MsgCreateSignSchema) String() string { return proto.CompactTextString(m) }
-func (*MsgCreateSignSchema) ProtoMessage()    {}
-func (*MsgCreateSignSchema) Descriptor() ([]byte, []int) {
+func (m *MsgCreateSchema) Reset()         { *m = MsgCreateSchema{} }
+func (m *MsgCreateSchema) String() string { return proto.CompactTextString(m) }
+func (*MsgCreateSchema) ProtoMessage()    {}
+func (*MsgCreateSchema) Descriptor() ([]byte, []int) {
 	return fileDescriptor_e6107e4e71e75faa, []int{8}
 }
-func (m *MsgCreateSignSchema) XXX_Unmarshal(b []byte) error {
+func (m *MsgCreateSchema) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgCreateSignSchema) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgCreateSchema) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgCreateSignSchema.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgCreateSchema.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -482,75 +482,75 @@ func (m *MsgCreateSignSchema) XXX_Marshal(b []byte, deterministic bool) ([]byte,
 		return b[:n], nil
 	}
 }
-func (m *MsgCreateSignSchema) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgCreateSignSchema.Merge(m, src)
+func (m *MsgCreateSchema) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgCreateSchema.Merge(m, src)
 }
-func (m *MsgCreateSignSchema) XXX_Size() int {
+func (m *MsgCreateSchema) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgCreateSignSchema) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgCreateSignSchema.DiscardUnknown(m)
+func (m *MsgCreateSchema) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgCreateSchema.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgCreateSignSchema proto.InternalMessageInfo
+var xxx_messageInfo_MsgCreateSchema proto.InternalMessageInfo
 
-func (m *MsgCreateSignSchema) GetCreator() string {
+func (m *MsgCreateSchema) GetCreator() string {
 	if m != nil {
 		return m.Creator
 	}
 	return ""
 }
 
-func (m *MsgCreateSignSchema) GetNetwork() string {
+func (m *MsgCreateSchema) GetNetwork() string {
 	if m != nil {
 		return m.Network
 	}
 	return ""
 }
 
-func (m *MsgCreateSignSchema) GetSchema() string {
+func (m *MsgCreateSchema) GetSchema() string {
 	if m != nil {
 		return m.Schema
 	}
 	return ""
 }
 
-func (m *MsgCreateSignSchema) GetIn() *types.DecCoin {
+func (m *MsgCreateSchema) GetIn() *types.DecCoin {
 	if m != nil {
 		return m.In
 	}
 	return nil
 }
 
-func (m *MsgCreateSignSchema) GetOut() *types.DecCoin {
+func (m *MsgCreateSchema) GetOut() *types.DecCoin {
 	if m != nil {
 		return m.Out
 	}
 	return nil
 }
 
-func (m *MsgCreateSignSchema) GetContractExponent() int32 {
+func (m *MsgCreateSchema) GetContractExponent() int32 {
 	if m != nil {
 		return m.ContractExponent
 	}
 	return 0
 }
 
-type MsgCreateSignSchemaResponse struct {
+type MsgCreateSchemaResponse struct {
 }
 
-func (m *MsgCreateSignSchemaResponse) Reset()         { *m = MsgCreateSignSchemaResponse{} }
-func (m *MsgCreateSignSchemaResponse) String() string { return proto.CompactTextString(m) }
-func (*MsgCreateSignSchemaResponse) ProtoMessage()    {}
-func (*MsgCreateSignSchemaResponse) Descriptor() ([]byte, []int) {
+func (m *MsgCreateSchemaResponse) Reset()         { *m = MsgCreateSchemaResponse{} }
+func (m *MsgCreateSchemaResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgCreateSchemaResponse) ProtoMessage()    {}
+func (*MsgCreateSchemaResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_e6107e4e71e75faa, []int{9}
 }
-func (m *MsgCreateSignSchemaResponse) XXX_Unmarshal(b []byte) error {
+func (m *MsgCreateSchemaResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgCreateSignSchemaResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgCreateSchemaResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgCreateSignSchemaResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgCreateSchemaResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -560,19 +560,19 @@ func (m *MsgCreateSignSchemaResponse) XXX_Marshal(b []byte, deterministic bool) 
 		return b[:n], nil
 	}
 }
-func (m *MsgCreateSignSchemaResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgCreateSignSchemaResponse.Merge(m, src)
+func (m *MsgCreateSchemaResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgCreateSchemaResponse.Merge(m, src)
 }
-func (m *MsgCreateSignSchemaResponse) XXX_Size() int {
+func (m *MsgCreateSchemaResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgCreateSignSchemaResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgCreateSignSchemaResponse.DiscardUnknown(m)
+func (m *MsgCreateSchemaResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgCreateSchemaResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgCreateSignSchemaResponse proto.InternalMessageInfo
+var xxx_messageInfo_MsgCreateSchemaResponse proto.InternalMessageInfo
 
-type MsgUpdateSignSchema struct {
+type MsgUpdateSchema struct {
 	Creator          string         `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
 	Network          string         `protobuf:"bytes,2,opt,name=network,proto3" json:"network,omitempty"`
 	Schema           string         `protobuf:"bytes,3,opt,name=schema,proto3" json:"schema,omitempty"`
@@ -581,18 +581,18 @@ type MsgUpdateSignSchema struct {
 	ContractExponent int32          `protobuf:"varint,6,opt,name=contractExponent,proto3" json:"contractExponent,omitempty"`
 }
 
-func (m *MsgUpdateSignSchema) Reset()         { *m = MsgUpdateSignSchema{} }
-func (m *MsgUpdateSignSchema) String() string { return proto.CompactTextString(m) }
-func (*MsgUpdateSignSchema) ProtoMessage()    {}
-func (*MsgUpdateSignSchema) Descriptor() ([]byte, []int) {
+func (m *MsgUpdateSchema) Reset()         { *m = MsgUpdateSchema{} }
+func (m *MsgUpdateSchema) String() string { return proto.CompactTextString(m) }
+func (*MsgUpdateSchema) ProtoMessage()    {}
+func (*MsgUpdateSchema) Descriptor() ([]byte, []int) {
 	return fileDescriptor_e6107e4e71e75faa, []int{10}
 }
-func (m *MsgUpdateSignSchema) XXX_Unmarshal(b []byte) error {
+func (m *MsgUpdateSchema) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgUpdateSignSchema) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgUpdateSchema) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgUpdateSignSchema.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgUpdateSchema.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -602,75 +602,75 @@ func (m *MsgUpdateSignSchema) XXX_Marshal(b []byte, deterministic bool) ([]byte,
 		return b[:n], nil
 	}
 }
-func (m *MsgUpdateSignSchema) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgUpdateSignSchema.Merge(m, src)
+func (m *MsgUpdateSchema) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgUpdateSchema.Merge(m, src)
 }
-func (m *MsgUpdateSignSchema) XXX_Size() int {
+func (m *MsgUpdateSchema) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgUpdateSignSchema) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgUpdateSignSchema.DiscardUnknown(m)
+func (m *MsgUpdateSchema) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgUpdateSchema.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgUpdateSignSchema proto.InternalMessageInfo
+var xxx_messageInfo_MsgUpdateSchema proto.InternalMessageInfo
 
-func (m *MsgUpdateSignSchema) GetCreator() string {
+func (m *MsgUpdateSchema) GetCreator() string {
 	if m != nil {
 		return m.Creator
 	}
 	return ""
 }
 
-func (m *MsgUpdateSignSchema) GetNetwork() string {
+func (m *MsgUpdateSchema) GetNetwork() string {
 	if m != nil {
 		return m.Network
 	}
 	return ""
 }
 
-func (m *MsgUpdateSignSchema) GetSchema() string {
+func (m *MsgUpdateSchema) GetSchema() string {
 	if m != nil {
 		return m.Schema
 	}
 	return ""
 }
 
-func (m *MsgUpdateSignSchema) GetIn() *types.DecCoin {
+func (m *MsgUpdateSchema) GetIn() *types.DecCoin {
 	if m != nil {
 		return m.In
 	}
 	return nil
 }
 
-func (m *MsgUpdateSignSchema) GetOut() *types.DecCoin {
+func (m *MsgUpdateSchema) GetOut() *types.DecCoin {
 	if m != nil {
 		return m.Out
 	}
 	return nil
 }
 
-func (m *MsgUpdateSignSchema) GetContractExponent() int32 {
+func (m *MsgUpdateSchema) GetContractExponent() int32 {
 	if m != nil {
 		return m.ContractExponent
 	}
 	return 0
 }
 
-type MsgUpdateSignSchemaResponse struct {
+type MsgUpdateSchemaResponse struct {
 }
 
-func (m *MsgUpdateSignSchemaResponse) Reset()         { *m = MsgUpdateSignSchemaResponse{} }
-func (m *MsgUpdateSignSchemaResponse) String() string { return proto.CompactTextString(m) }
-func (*MsgUpdateSignSchemaResponse) ProtoMessage()    {}
-func (*MsgUpdateSignSchemaResponse) Descriptor() ([]byte, []int) {
+func (m *MsgUpdateSchemaResponse) Reset()         { *m = MsgUpdateSchemaResponse{} }
+func (m *MsgUpdateSchemaResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgUpdateSchemaResponse) ProtoMessage()    {}
+func (*MsgUpdateSchemaResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_e6107e4e71e75faa, []int{11}
 }
-func (m *MsgUpdateSignSchemaResponse) XXX_Unmarshal(b []byte) error {
+func (m *MsgUpdateSchemaResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgUpdateSignSchemaResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgUpdateSchemaResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgUpdateSignSchemaResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgUpdateSchemaResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -680,35 +680,35 @@ func (m *MsgUpdateSignSchemaResponse) XXX_Marshal(b []byte, deterministic bool) 
 		return b[:n], nil
 	}
 }
-func (m *MsgUpdateSignSchemaResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgUpdateSignSchemaResponse.Merge(m, src)
+func (m *MsgUpdateSchemaResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgUpdateSchemaResponse.Merge(m, src)
 }
-func (m *MsgUpdateSignSchemaResponse) XXX_Size() int {
+func (m *MsgUpdateSchemaResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgUpdateSignSchemaResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgUpdateSignSchemaResponse.DiscardUnknown(m)
+func (m *MsgUpdateSchemaResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgUpdateSchemaResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgUpdateSignSchemaResponse proto.InternalMessageInfo
+var xxx_messageInfo_MsgUpdateSchemaResponse proto.InternalMessageInfo
 
-type MsgDeleteSignSchema struct {
+type MsgDeleteSchema struct {
 	Creator string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
 	Network string `protobuf:"bytes,2,opt,name=network,proto3" json:"network,omitempty"`
 }
 
-func (m *MsgDeleteSignSchema) Reset()         { *m = MsgDeleteSignSchema{} }
-func (m *MsgDeleteSignSchema) String() string { return proto.CompactTextString(m) }
-func (*MsgDeleteSignSchema) ProtoMessage()    {}
-func (*MsgDeleteSignSchema) Descriptor() ([]byte, []int) {
+func (m *MsgDeleteSchema) Reset()         { *m = MsgDeleteSchema{} }
+func (m *MsgDeleteSchema) String() string { return proto.CompactTextString(m) }
+func (*MsgDeleteSchema) ProtoMessage()    {}
+func (*MsgDeleteSchema) Descriptor() ([]byte, []int) {
 	return fileDescriptor_e6107e4e71e75faa, []int{12}
 }
-func (m *MsgDeleteSignSchema) XXX_Unmarshal(b []byte) error {
+func (m *MsgDeleteSchema) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgDeleteSignSchema) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgDeleteSchema) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgDeleteSignSchema.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgDeleteSchema.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -718,47 +718,47 @@ func (m *MsgDeleteSignSchema) XXX_Marshal(b []byte, deterministic bool) ([]byte,
 		return b[:n], nil
 	}
 }
-func (m *MsgDeleteSignSchema) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgDeleteSignSchema.Merge(m, src)
+func (m *MsgDeleteSchema) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgDeleteSchema.Merge(m, src)
 }
-func (m *MsgDeleteSignSchema) XXX_Size() int {
+func (m *MsgDeleteSchema) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgDeleteSignSchema) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgDeleteSignSchema.DiscardUnknown(m)
+func (m *MsgDeleteSchema) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgDeleteSchema.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgDeleteSignSchema proto.InternalMessageInfo
+var xxx_messageInfo_MsgDeleteSchema proto.InternalMessageInfo
 
-func (m *MsgDeleteSignSchema) GetCreator() string {
+func (m *MsgDeleteSchema) GetCreator() string {
 	if m != nil {
 		return m.Creator
 	}
 	return ""
 }
 
-func (m *MsgDeleteSignSchema) GetNetwork() string {
+func (m *MsgDeleteSchema) GetNetwork() string {
 	if m != nil {
 		return m.Network
 	}
 	return ""
 }
 
-type MsgDeleteSignSchemaResponse struct {
+type MsgDeleteSchemaResponse struct {
 }
 
-func (m *MsgDeleteSignSchemaResponse) Reset()         { *m = MsgDeleteSignSchemaResponse{} }
-func (m *MsgDeleteSignSchemaResponse) String() string { return proto.CompactTextString(m) }
-func (*MsgDeleteSignSchemaResponse) ProtoMessage()    {}
-func (*MsgDeleteSignSchemaResponse) Descriptor() ([]byte, []int) {
+func (m *MsgDeleteSchemaResponse) Reset()         { *m = MsgDeleteSchemaResponse{} }
+func (m *MsgDeleteSchemaResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgDeleteSchemaResponse) ProtoMessage()    {}
+func (*MsgDeleteSchemaResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_e6107e4e71e75faa, []int{13}
 }
-func (m *MsgDeleteSignSchemaResponse) XXX_Unmarshal(b []byte) error {
+func (m *MsgDeleteSchemaResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgDeleteSignSchemaResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgDeleteSchemaResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgDeleteSignSchemaResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgDeleteSchemaResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -768,17 +768,17 @@ func (m *MsgDeleteSignSchemaResponse) XXX_Marshal(b []byte, deterministic bool) 
 		return b[:n], nil
 	}
 }
-func (m *MsgDeleteSignSchemaResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgDeleteSignSchemaResponse.Merge(m, src)
+func (m *MsgDeleteSchemaResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgDeleteSchemaResponse.Merge(m, src)
 }
-func (m *MsgDeleteSignSchemaResponse) XXX_Size() int {
+func (m *MsgDeleteSchemaResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgDeleteSignSchemaResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgDeleteSignSchemaResponse.DiscardUnknown(m)
+func (m *MsgDeleteSchemaResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgDeleteSchemaResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgDeleteSignSchemaResponse proto.InternalMessageInfo
+var xxx_messageInfo_MsgDeleteSchemaResponse proto.InternalMessageInfo
 
 type MsgCancel struct {
 	Creator string   `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
@@ -1293,12 +1293,12 @@ func init() {
 	proto.RegisterType((*MsgDepositResponse)(nil), "shareledger.swap.MsgDepositResponse")
 	proto.RegisterType((*MsgWithdraw)(nil), "shareledger.swap.MsgWithdraw")
 	proto.RegisterType((*MsgWithdrawResponse)(nil), "shareledger.swap.MsgWithdrawResponse")
-	proto.RegisterType((*MsgCreateSignSchema)(nil), "shareledger.swap.MsgCreateSignSchema")
-	proto.RegisterType((*MsgCreateSignSchemaResponse)(nil), "shareledger.swap.MsgCreateSignSchemaResponse")
-	proto.RegisterType((*MsgUpdateSignSchema)(nil), "shareledger.swap.MsgUpdateSignSchema")
-	proto.RegisterType((*MsgUpdateSignSchemaResponse)(nil), "shareledger.swap.MsgUpdateSignSchemaResponse")
-	proto.RegisterType((*MsgDeleteSignSchema)(nil), "shareledger.swap.MsgDeleteSignSchema")
-	proto.RegisterType((*MsgDeleteSignSchemaResponse)(nil), "shareledger.swap.MsgDeleteSignSchemaResponse")
+	proto.RegisterType((*MsgCreateSchema)(nil), "shareledger.swap.MsgCreateSchema")
+	proto.RegisterType((*MsgCreateSchemaResponse)(nil), "shareledger.swap.MsgCreateSchemaResponse")
+	proto.RegisterType((*MsgUpdateSchema)(nil), "shareledger.swap.MsgUpdateSchema")
+	proto.RegisterType((*MsgUpdateSchemaResponse)(nil), "shareledger.swap.MsgUpdateSchemaResponse")
+	proto.RegisterType((*MsgDeleteSchema)(nil), "shareledger.swap.MsgDeleteSchema")
+	proto.RegisterType((*MsgDeleteSchemaResponse)(nil), "shareledger.swap.MsgDeleteSchemaResponse")
 	proto.RegisterType((*MsgCancel)(nil), "shareledger.swap.MsgCancel")
 	proto.RegisterType((*MsgCancelResponse)(nil), "shareledger.swap.MsgCancelResponse")
 	proto.RegisterType((*MsgReject)(nil), "shareledger.swap.MsgReject")
@@ -1314,63 +1314,63 @@ func init() {
 func init() { proto.RegisterFile("swap/tx.proto", fileDescriptor_e6107e4e71e75faa) }
 
 var fileDescriptor_e6107e4e71e75faa = []byte{
-	// 889 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe4, 0x57, 0xdd, 0x6e, 0xe3, 0x44,
-	0x14, 0xae, 0xed, 0x24, 0x6d, 0x4e, 0xd8, 0x55, 0xf0, 0xa2, 0xca, 0x72, 0xbb, 0x26, 0xf2, 0xee,
-	0xa2, 0x08, 0x6d, 0x6d, 0xed, 0x82, 0x84, 0xc4, 0x5d, 0x7f, 0x10, 0x04, 0x29, 0x6a, 0xe5, 0x08,
-	0xa1, 0x22, 0x6e, 0x1c, 0x7b, 0x70, 0x0c, 0xcd, 0x8c, 0xf1, 0x8c, 0x9b, 0xf4, 0x25, 0x10, 0x8f,
-	0xc1, 0xa3, 0x20, 0x71, 0xd3, 0x4b, 0x2e, 0x51, 0x7b, 0x07, 0x2f, 0x81, 0xec, 0x8c, 0x1d, 0xdb,
-	0xb1, 0xdd, 0x14, 0x2e, 0xf7, 0xae, 0x33, 0xe7, 0x9c, 0xef, 0x7c, 0xf3, 0xe5, 0xf4, 0x3b, 0x09,
-	0x3c, 0xa1, 0x0b, 0x3b, 0x30, 0xd9, 0xd2, 0x08, 0x42, 0xc2, 0x88, 0xdc, 0xa7, 0x33, 0x3b, 0x44,
-	0x57, 0xc8, 0xf5, 0x50, 0x68, 0xc4, 0x21, 0x55, 0x73, 0x08, 0x9d, 0x13, 0x6a, 0x4e, 0x6d, 0x8a,
-	0xcc, 0xeb, 0x37, 0x53, 0xc4, 0xec, 0x37, 0xa6, 0x43, 0x7c, 0xbc, 0xaa, 0xd0, 0xff, 0x10, 0xe0,
-	0xc9, 0x98, 0x7a, 0x16, 0xfa, 0x39, 0x42, 0x94, 0x9d, 0x47, 0x4c, 0x56, 0x60, 0xd7, 0x09, 0x91,
-	0xcd, 0x48, 0xa8, 0x08, 0x03, 0x61, 0xd8, 0xb5, 0xd2, 0xa3, 0x3c, 0x80, 0x9e, 0x8b, 0x28, 0x3b,
-	0x76, 0xdd, 0x10, 0x51, 0xaa, 0x88, 0x49, 0x34, 0x7f, 0x15, 0xd7, 0x62, 0xc4, 0x16, 0x24, 0xfc,
-	0x49, 0x91, 0x56, 0xb5, 0xfc, 0x28, 0x7f, 0x0a, 0x1d, 0x7b, 0x4e, 0x22, 0xcc, 0x94, 0xd6, 0x40,
-	0x18, 0xf6, 0xde, 0x1e, 0x1a, 0x2b, 0x62, 0x46, 0x4c, 0xcc, 0xe0, 0xc4, 0x8c, 0x33, 0xe4, 0x9c,
-	0x12, 0x1f, 0x5b, 0x3c, 0x57, 0x36, 0x40, 0xfa, 0x01, 0x21, 0xa5, 0xbd, 0x45, 0x49, 0x9c, 0xa8,
-	0xbf, 0x04, 0x79, 0x4c, 0xbd, 0xf3, 0x88, 0x4d, 0x16, 0x76, 0x60, 0x21, 0x1a, 0x10, 0x4c, 0x91,
-	0xfc, 0x14, 0x44, 0xdf, 0x4d, 0x1e, 0xd3, 0xb2, 0x44, 0xdf, 0xd5, 0x2f, 0x93, 0x27, 0x1f, 0x07,
-	0x41, 0x48, 0xae, 0x51, 0xf3, 0x93, 0x0f, 0xa1, 0x4b, 0x7d, 0x0f, 0xdb, 0x2c, 0x0a, 0x11, 0x7f,
-	0xf0, 0xfa, 0x42, 0xee, 0x83, 0xe4, 0xbb, 0x54, 0x91, 0x06, 0xd2, 0xb0, 0x65, 0xc5, 0x7f, 0xea,
-	0x46, 0x42, 0x80, 0x43, 0x67, 0x04, 0x14, 0xd8, 0x9d, 0xda, 0xcc, 0x99, 0x8d, 0x52, 0x16, 0xe9,
-	0x51, 0xff, 0x1e, 0x60, 0x4c, 0xbd, 0x33, 0x14, 0x10, 0xea, 0x37, 0xf1, 0x58, 0xcb, 0x27, 0x6e,
-	0x2f, 0x9f, 0xfe, 0x3a, 0x61, 0xc3, 0xd1, 0x33, 0x36, 0xfb, 0xd0, 0xa1, 0xcc, 0x66, 0x11, 0xe5,
-	0x4d, 0xf8, 0x49, 0xbf, 0x81, 0xde, 0x98, 0x7a, 0xdf, 0xfa, 0x6c, 0xe6, 0x86, 0xf6, 0xa2, 0x81,
-	0x8c, 0x0a, 0x7b, 0x21, 0x72, 0x90, 0x7f, 0x8d, 0x42, 0xae, 0x49, 0x76, 0xce, 0x11, 0x95, 0x1e,
-	0x41, 0xf4, 0x08, 0x9e, 0xe5, 0x5a, 0x3f, 0xc8, 0xf4, 0x1f, 0x21, 0xc9, 0x3f, 0x8d, 0xf9, 0xa0,
-	0x89, 0xef, 0xe1, 0x89, 0x33, 0x43, 0x73, 0xbb, 0x81, 0x72, 0x6e, 0x30, 0xc5, 0xe2, 0x60, 0xc6,
-	0x3d, 0x92, 0x6a, 0x3e, 0xb1, 0xfc, 0x24, 0xbf, 0x06, 0xd1, 0xc7, 0x5b, 0x0d, 0xab, 0xe8, 0xe3,
-	0x78, 0x50, 0x49, 0xc4, 0xb6, 0x1b, 0x54, 0x12, 0x31, 0xf9, 0x63, 0xe8, 0x3b, 0x04, 0xb3, 0xd0,
-	0x76, 0xd8, 0x17, 0xcb, 0x80, 0x60, 0x84, 0x99, 0xd2, 0x19, 0x08, 0xc3, 0xb6, 0xb5, 0x71, 0xaf,
-	0x3f, 0x87, 0x83, 0x8a, 0xc7, 0xa6, 0x22, 0xa5, 0x62, 0x7c, 0x13, 0xb8, 0xef, 0x8e, 0x18, 0xe5,
-	0xc7, 0x66, 0x62, 0x8c, 0x12, 0x2d, 0xce, 0xd0, 0x15, 0xfa, 0xbf, 0x5a, 0xf0, 0x4e, 0x65, 0xa8,
-	0xac, 0xd3, 0x67, 0xd0, 0x8d, 0x3f, 0x15, 0x1b, 0x3b, 0xe8, 0xaa, 0x01, 0x9f, 0x5b, 0x84, 0xb8,
-	0xb6, 0x88, 0x67, 0xf0, 0x7e, 0x56, 0x58, 0x42, 0xb3, 0xd0, 0x8f, 0xc8, 0x61, 0xff, 0x01, 0x6d,
-	0x55, 0x98, 0xa1, 0xfd, 0x2d, 0xc0, 0x7b, 0x6b, 0x53, 0x1f, 0xe1, 0x06, 0x44, 0x0d, 0x80, 0x86,
-	0x4e, 0xd1, 0xd2, 0x73, 0x37, 0x65, 0xcf, 0x97, 0x1a, 0x3d, 0xbf, 0x55, 0xe7, 0xf9, 0xed, 0xc7,
-	0x7b, 0x7e, 0x67, 0x5b, 0xcf, 0x7f, 0x91, 0x28, 0x10, 0x1b, 0xfe, 0x08, 0xd7, 0x5a, 0xfe, 0xe7,
-	0x89, 0x20, 0xdc, 0x97, 0x1b, 0x05, 0xd9, 0x94, 0x78, 0x1f, 0x3e, 0xc8, 0xd7, 0x66, 0x2a, 0xff,
-	0x22, 0xc0, 0xd3, 0x6c, 0x16, 0x4f, 0x62, 0x43, 0x6f, 0x9e, 0xb3, 0x74, 0x05, 0x88, 0x85, 0x15,
-	0x90, 0x33, 0x39, 0x29, 0x6f, 0x72, 0xf1, 0x3d, 0x5b, 0x7e, 0x65, 0xd3, 0x19, 0x97, 0x95, 0x9f,
-	0xf2, 0x7a, 0xb7, 0x8b, 0x13, 0xab, 0xc0, 0x7e, 0x91, 0x4f, 0x4a, 0xf5, 0xed, 0x6f, 0x7b, 0x20,
-	0x8d, 0xa9, 0x27, 0x4f, 0x00, 0x72, 0x9b, 0xfe, 0x43, 0xa3, 0xfc, 0x75, 0xc1, 0x28, 0x7c, 0x15,
-	0x50, 0x5f, 0x56, 0x26, 0x94, 0xd7, 0xeb, 0x04, 0x20, 0xb7, 0x4b, 0xab, 0x41, 0xd7, 0x09, 0x35,
-	0xa0, 0xe5, 0x95, 0x39, 0x86, 0xdd, 0x74, 0x2b, 0x1e, 0x56, 0x16, 0xf0, 0x68, 0x0d, 0x5c, 0x79,
-	0xe7, 0x5d, 0xc0, 0x5e, 0xb6, 0xd8, 0x9e, 0x57, 0x56, 0xa4, 0x61, 0xf5, 0x55, 0x63, 0x38, 0x43,
-	0x9c, 0x41, 0x7f, 0x63, 0xff, 0x54, 0x97, 0x96, 0xd3, 0xd4, 0xa3, 0xad, 0xd2, 0xf2, 0x9d, 0x36,
-	0xcc, 0xbd, 0xba, 0x53, 0x39, 0xad, 0xa6, 0x53, 0x9d, 0x7b, 0xc6, 0x9d, 0x36, 0xac, 0xf3, 0x55,
-	0x8d, 0xbe, 0xc5, 0xb4, 0x9a, 0x4e, 0x75, 0xee, 0x29, 0x7f, 0x0d, 0x1d, 0x6e, 0x9d, 0x07, 0xd5,
-	0x62, 0x24, 0x41, 0xf5, 0x45, 0x43, 0x30, 0x8f, 0xc5, 0x8d, 0xf3, 0xa0, 0x66, 0xa0, 0xe3, 0x60,
-	0x0d, 0x56, 0xd1, 0x39, 0xe5, 0x0b, 0xe8, 0xae, 0x5d, 0x53, 0x6b, 0xfa, 0xff, 0x18, 0xe1, 0x1a,
-	0xc4, 0x92, 0x13, 0x4d, 0xa0, 0xbb, 0xb6, 0x1d, 0xad, 0x69, 0xf6, 0x47, 0x58, 0xfd, 0xa8, 0x39,
-	0x9e, 0x81, 0x5e, 0x42, 0x2f, 0x6f, 0x3b, 0x83, 0x86, 0x8f, 0x39, 0xc9, 0x50, 0x87, 0x0f, 0x65,
-	0xa4, 0xd0, 0x27, 0x5f, 0xfe, 0x7e, 0xa7, 0x09, 0xb7, 0x77, 0x9a, 0xf0, 0xd7, 0x9d, 0x26, 0xfc,
-	0x7a, 0xaf, 0xed, 0xdc, 0xde, 0x6b, 0x3b, 0x7f, 0xde, 0x6b, 0x3b, 0xdf, 0x1d, 0x79, 0x3e, 0x9b,
-	0x45, 0x53, 0xc3, 0x21, 0x73, 0x33, 0x41, 0x0b, 0x7d, 0xec, 0x99, 0x39, 0x5c, 0x73, 0x69, 0xae,
-	0x7e, 0x8e, 0xdc, 0x04, 0x88, 0x4e, 0x3b, 0xc9, 0x0f, 0x8c, 0x4f, 0xfe, 0x0d, 0x00, 0x00, 0xff,
-	0xff, 0x2b, 0x0e, 0x4c, 0x20, 0xa3, 0x0c, 0x00, 0x00,
+	// 887 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe4, 0x57, 0x41, 0x8f, 0xdb, 0x44,
+	0x14, 0x5e, 0xdb, 0x49, 0x76, 0xf3, 0xd2, 0x96, 0xc5, 0x45, 0x8b, 0x71, 0x17, 0x93, 0xba, 0x05,
+	0x05, 0xd4, 0xda, 0x6a, 0x41, 0x42, 0xe2, 0xd6, 0x76, 0x2b, 0x08, 0x52, 0xd4, 0xca, 0x11, 0x42,
+	0x45, 0xbd, 0x38, 0xf6, 0xe0, 0x18, 0x36, 0x33, 0xc6, 0x33, 0xde, 0xa4, 0x77, 0xce, 0x88, 0x9f,
+	0x85, 0xc4, 0xa5, 0x47, 0x8e, 0x68, 0xf7, 0x80, 0xc4, 0xaf, 0x40, 0x76, 0xc6, 0xf6, 0xd8, 0xb5,
+	0xbd, 0x59, 0x38, 0x72, 0xdb, 0x99, 0xf7, 0xde, 0x37, 0xdf, 0xfb, 0xf2, 0xf4, 0xbd, 0x35, 0x5c,
+	0xa7, 0x6b, 0x37, 0xb2, 0xd9, 0xc6, 0x8a, 0x62, 0xc2, 0x88, 0x7a, 0x48, 0x97, 0x6e, 0x8c, 0x4e,
+	0x91, 0x1f, 0xa0, 0xd8, 0x4a, 0x43, 0xba, 0xe1, 0x11, 0xba, 0x22, 0xd4, 0x5e, 0xb8, 0x14, 0xd9,
+	0x67, 0x0f, 0x16, 0x88, 0xb9, 0x0f, 0x6c, 0x8f, 0x84, 0x78, 0x5b, 0x61, 0xfe, 0x2e, 0xc1, 0xf5,
+	0x19, 0x0d, 0x1c, 0xf4, 0x53, 0x82, 0x28, 0x7b, 0x96, 0x30, 0x55, 0x83, 0x7d, 0x2f, 0x46, 0x2e,
+	0x23, 0xb1, 0x26, 0x8d, 0xa5, 0xc9, 0xd0, 0xc9, 0x8f, 0xea, 0x18, 0x46, 0x3e, 0xa2, 0xec, 0x91,
+	0xef, 0xc7, 0x88, 0x52, 0x4d, 0xce, 0xa2, 0xe2, 0x55, 0x5a, 0x8b, 0x11, 0x5b, 0x93, 0xf8, 0x47,
+	0x4d, 0xd9, 0xd6, 0xf2, 0xa3, 0xfa, 0x19, 0x0c, 0xdc, 0x15, 0x49, 0x30, 0xd3, 0x7a, 0x63, 0x69,
+	0x32, 0x7a, 0x78, 0x6c, 0x6d, 0x89, 0x59, 0x29, 0x31, 0x8b, 0x13, 0xb3, 0x4e, 0x90, 0xf7, 0x84,
+	0x84, 0xd8, 0xe1, 0xb9, 0xaa, 0x05, 0xca, 0xf7, 0x08, 0x69, 0xfd, 0x1d, 0x4a, 0xd2, 0x44, 0xf3,
+	0x2e, 0xa8, 0x33, 0x1a, 0x3c, 0x4b, 0xd8, 0x7c, 0xed, 0x46, 0x0e, 0xa2, 0x11, 0xc1, 0x14, 0xa9,
+	0x37, 0x40, 0x0e, 0xfd, 0xac, 0x99, 0x9e, 0x23, 0x87, 0xbe, 0xf9, 0x22, 0x6b, 0xf9, 0x51, 0x14,
+	0xc5, 0xe4, 0x0c, 0x75, 0xb7, 0x7c, 0x0c, 0x43, 0x1a, 0x06, 0xd8, 0x65, 0x49, 0x8c, 0x78, 0xc3,
+	0xe5, 0x85, 0x7a, 0x08, 0x4a, 0xe8, 0x53, 0x4d, 0x19, 0x2b, 0x93, 0x9e, 0x93, 0xfe, 0x69, 0x5a,
+	0x19, 0x01, 0x0e, 0x5d, 0x10, 0xd0, 0x60, 0x7f, 0xe1, 0x32, 0x6f, 0x39, 0xcd, 0x59, 0xe4, 0x47,
+	0xf3, 0x25, 0xc0, 0x8c, 0x06, 0x27, 0x28, 0x22, 0x34, 0xec, 0xe2, 0x51, 0xca, 0x27, 0xef, 0x2e,
+	0x9f, 0x79, 0x2f, 0x63, 0xc3, 0xd1, 0x0b, 0x36, 0x47, 0x30, 0xa0, 0xcc, 0x65, 0x09, 0xe5, 0x8f,
+	0xf0, 0x93, 0xf9, 0x0a, 0x46, 0x33, 0x1a, 0x7c, 0x1b, 0xb2, 0xa5, 0x1f, 0xbb, 0xeb, 0x0e, 0x32,
+	0x3a, 0x1c, 0xc4, 0xc8, 0x43, 0xe1, 0x19, 0x8a, 0xb9, 0x26, 0xc5, 0x59, 0x20, 0xaa, 0x5c, 0x81,
+	0xe8, 0x7d, 0xb8, 0x29, 0x3c, 0x7d, 0x29, 0xd3, 0xbf, 0x24, 0x78, 0x6b, 0x46, 0x83, 0x27, 0x29,
+	0x1f, 0x34, 0xf7, 0x96, 0x68, 0xe5, 0x76, 0xd0, 0x15, 0x86, 0x52, 0xae, 0x0e, 0x65, 0x8a, 0x9f,
+	0x55, 0xf3, 0x69, 0xe5, 0x27, 0xf5, 0x1e, 0xc8, 0x21, 0xde, 0x69, 0x50, 0xe5, 0x10, 0xa7, 0x43,
+	0x4a, 0x12, 0xb6, 0xdb, 0x90, 0x92, 0x84, 0xa9, 0x9f, 0xc0, 0xa1, 0x47, 0x30, 0x8b, 0x5d, 0x8f,
+	0x3d, 0xdd, 0x44, 0x04, 0x23, 0xcc, 0xb4, 0xc1, 0x58, 0x9a, 0xf4, 0x9d, 0x37, 0xee, 0xcd, 0xf7,
+	0xe0, 0xdd, 0x5a, 0xa3, 0xb9, 0x38, 0xb9, 0x08, 0xdf, 0x44, 0xfe, 0xff, 0x43, 0x04, 0xb1, 0xd1,
+	0x42, 0x84, 0xa7, 0x99, 0x06, 0x27, 0xe8, 0x14, 0xfd, 0x17, 0x0d, 0xf8, 0x0b, 0x22, 0x4c, 0xf1,
+	0xc2, 0xe7, 0x30, 0x4c, 0x7f, 0x01, 0x17, 0x7b, 0xe8, 0xb4, 0x03, 0x9b, 0x5b, 0x81, 0x5c, 0x5a,
+	0xc1, 0x4d, 0x78, 0xbb, 0x28, 0xac, 0xa1, 0x39, 0xe8, 0x07, 0xe4, 0xb1, 0x7f, 0x81, 0xb6, 0x2d,
+	0x2c, 0xd0, 0xfe, 0x96, 0xe0, 0x5a, 0x69, 0xde, 0x53, 0xdc, 0x81, 0x68, 0x00, 0xd0, 0xd8, 0xab,
+	0x5a, 0xb7, 0x70, 0x53, 0xf7, 0x76, 0xa5, 0xd3, 0xdb, 0x7b, 0x6d, 0xde, 0xde, 0xbf, 0xba, 0xb7,
+	0x0f, 0x76, 0xf5, 0xf6, 0x3b, 0x99, 0x02, 0xa9, 0xb1, 0x4f, 0x71, 0xab, 0xb5, 0x7f, 0x91, 0x09,
+	0xc2, 0xfd, 0xb7, 0x53, 0x90, 0x37, 0x25, 0x3e, 0x82, 0x77, 0xc4, 0xda, 0x42, 0xe5, 0x5f, 0x24,
+	0xb8, 0x51, 0xcc, 0xdf, 0xe3, 0xd4, 0xb8, 0xbb, 0x67, 0x2c, 0xb7, 0x7a, 0xb9, 0x62, 0xf5, 0x82,
+	0x99, 0x29, 0xa2, 0x99, 0xa5, 0xf7, 0x6c, 0xf3, 0x95, 0x4b, 0x97, 0x5c, 0x56, 0x7e, 0x12, 0xf5,
+	0xee, 0x57, 0xa7, 0x55, 0x83, 0xa3, 0x2a, 0x9f, 0x9c, 0xea, 0xc3, 0x9f, 0x0f, 0x40, 0x99, 0xd1,
+	0x40, 0x9d, 0x03, 0x08, 0x1b, 0xfd, 0x03, 0xab, 0xfe, 0x6f, 0x81, 0x55, 0x59, 0xf9, 0xfa, 0xdd,
+	0xc6, 0x84, 0xfa, 0x1a, 0x9d, 0x03, 0x08, 0x3b, 0xb3, 0x19, 0xb4, 0x4c, 0x68, 0x01, 0xad, 0xaf,
+	0xc6, 0x19, 0xec, 0xe7, 0xdb, 0xef, 0xb8, 0xb1, 0x80, 0x47, 0x5b, 0xe0, 0xea, 0xbb, 0xed, 0x39,
+	0x1c, 0x14, 0x0b, 0xec, 0xfd, 0xc6, 0x8a, 0x3c, 0xac, 0x7f, 0xd8, 0x19, 0x2e, 0x10, 0x5f, 0xc2,
+	0xb5, 0xca, 0x9e, 0xb9, 0xdd, 0x58, 0x26, 0xa6, 0xe8, 0x1f, 0x5f, 0x9a, 0x22, 0xa2, 0x57, 0x0c,
+	0xbc, 0x19, 0x5d, 0x4c, 0x69, 0x41, 0x6f, 0x72, 0xc7, 0x14, 0xbd, 0x62, 0x8d, 0xb7, 0x5b, 0x34,
+	0x2c, 0x53, 0x5a, 0xd0, 0x9b, 0x9c, 0x51, 0xfd, 0x1a, 0x06, 0xdc, 0x16, 0x6f, 0x35, 0x37, 0x9c,
+	0x05, 0xf5, 0x3b, 0x1d, 0x41, 0x11, 0x8b, 0x9b, 0xe2, 0xad, 0x96, 0x61, 0x4d, 0x83, 0x2d, 0x58,
+	0x55, 0x57, 0x54, 0x9f, 0xc3, 0xb0, 0x74, 0x44, 0xa3, 0x6b, 0xf6, 0xa7, 0xb8, 0x05, 0xb1, 0xe6,
+	0x32, 0x73, 0x18, 0x96, 0x96, 0x62, 0x74, 0xcd, 0xf5, 0x14, 0xeb, 0x1f, 0x75, 0xc7, 0x0b, 0xd0,
+	0x17, 0x30, 0x12, 0x2d, 0x65, 0xdc, 0xf1, 0xb3, 0x66, 0x19, 0xfa, 0xe4, 0xb2, 0x8c, 0x1c, 0xfa,
+	0xf1, 0x97, 0xbf, 0x9d, 0x1b, 0xd2, 0xeb, 0x73, 0x43, 0xfa, 0xf3, 0xdc, 0x90, 0x7e, 0xbd, 0x30,
+	0xf6, 0x5e, 0x5f, 0x18, 0x7b, 0x7f, 0x5c, 0x18, 0x7b, 0xdf, 0xdd, 0x0f, 0x42, 0xb6, 0x4c, 0x16,
+	0x96, 0x47, 0x56, 0x76, 0x86, 0x16, 0x87, 0x38, 0xb0, 0x05, 0x5c, 0x7b, 0x63, 0x6f, 0x3f, 0x29,
+	0x5e, 0x45, 0x88, 0x2e, 0x06, 0xd9, 0x47, 0xc2, 0xa7, 0xff, 0x04, 0x00, 0x00, 0xff, 0xff, 0x6f,
+	0xd1, 0xbc, 0x7a, 0x67, 0x0c, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -1389,9 +1389,9 @@ type MsgClient interface {
 	ApproveOut(ctx context.Context, in *MsgApproveOut, opts ...grpc.CallOption) (*MsgApproveResponse, error)
 	Deposit(ctx context.Context, in *MsgDeposit, opts ...grpc.CallOption) (*MsgDepositResponse, error)
 	Withdraw(ctx context.Context, in *MsgWithdraw, opts ...grpc.CallOption) (*MsgWithdrawResponse, error)
-	CreateSignSchema(ctx context.Context, in *MsgCreateSignSchema, opts ...grpc.CallOption) (*MsgCreateSignSchemaResponse, error)
-	UpdateSignSchema(ctx context.Context, in *MsgUpdateSignSchema, opts ...grpc.CallOption) (*MsgUpdateSignSchemaResponse, error)
-	DeleteSignSchema(ctx context.Context, in *MsgDeleteSignSchema, opts ...grpc.CallOption) (*MsgDeleteSignSchemaResponse, error)
+	CreateSchema(ctx context.Context, in *MsgCreateSchema, opts ...grpc.CallOption) (*MsgCreateSchemaResponse, error)
+	UpdateSchema(ctx context.Context, in *MsgUpdateSchema, opts ...grpc.CallOption) (*MsgUpdateSchemaResponse, error)
+	DeleteSchema(ctx context.Context, in *MsgDeleteSchema, opts ...grpc.CallOption) (*MsgDeleteSchemaResponse, error)
 	Cancel(ctx context.Context, in *MsgCancel, opts ...grpc.CallOption) (*MsgCancelResponse, error)
 	Reject(ctx context.Context, in *MsgReject, opts ...grpc.CallOption) (*MsgRejectResponse, error)
 	RequestIn(ctx context.Context, in *MsgRequestIn, opts ...grpc.CallOption) (*MsgSwapInResponse, error)
@@ -1443,27 +1443,27 @@ func (c *msgClient) Withdraw(ctx context.Context, in *MsgWithdraw, opts ...grpc.
 	return out, nil
 }
 
-func (c *msgClient) CreateSignSchema(ctx context.Context, in *MsgCreateSignSchema, opts ...grpc.CallOption) (*MsgCreateSignSchemaResponse, error) {
-	out := new(MsgCreateSignSchemaResponse)
-	err := c.cc.Invoke(ctx, "/shareledger.swap.Msg/CreateSignSchema", in, out, opts...)
+func (c *msgClient) CreateSchema(ctx context.Context, in *MsgCreateSchema, opts ...grpc.CallOption) (*MsgCreateSchemaResponse, error) {
+	out := new(MsgCreateSchemaResponse)
+	err := c.cc.Invoke(ctx, "/shareledger.swap.Msg/CreateSchema", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *msgClient) UpdateSignSchema(ctx context.Context, in *MsgUpdateSignSchema, opts ...grpc.CallOption) (*MsgUpdateSignSchemaResponse, error) {
-	out := new(MsgUpdateSignSchemaResponse)
-	err := c.cc.Invoke(ctx, "/shareledger.swap.Msg/UpdateSignSchema", in, out, opts...)
+func (c *msgClient) UpdateSchema(ctx context.Context, in *MsgUpdateSchema, opts ...grpc.CallOption) (*MsgUpdateSchemaResponse, error) {
+	out := new(MsgUpdateSchemaResponse)
+	err := c.cc.Invoke(ctx, "/shareledger.swap.Msg/UpdateSchema", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *msgClient) DeleteSignSchema(ctx context.Context, in *MsgDeleteSignSchema, opts ...grpc.CallOption) (*MsgDeleteSignSchemaResponse, error) {
-	out := new(MsgDeleteSignSchemaResponse)
-	err := c.cc.Invoke(ctx, "/shareledger.swap.Msg/DeleteSignSchema", in, out, opts...)
+func (c *msgClient) DeleteSchema(ctx context.Context, in *MsgDeleteSchema, opts ...grpc.CallOption) (*MsgDeleteSchemaResponse, error) {
+	out := new(MsgDeleteSchemaResponse)
+	err := c.cc.Invoke(ctx, "/shareledger.swap.Msg/DeleteSchema", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1521,9 +1521,9 @@ type MsgServer interface {
 	ApproveOut(context.Context, *MsgApproveOut) (*MsgApproveResponse, error)
 	Deposit(context.Context, *MsgDeposit) (*MsgDepositResponse, error)
 	Withdraw(context.Context, *MsgWithdraw) (*MsgWithdrawResponse, error)
-	CreateSignSchema(context.Context, *MsgCreateSignSchema) (*MsgCreateSignSchemaResponse, error)
-	UpdateSignSchema(context.Context, *MsgUpdateSignSchema) (*MsgUpdateSignSchemaResponse, error)
-	DeleteSignSchema(context.Context, *MsgDeleteSignSchema) (*MsgDeleteSignSchemaResponse, error)
+	CreateSchema(context.Context, *MsgCreateSchema) (*MsgCreateSchemaResponse, error)
+	UpdateSchema(context.Context, *MsgUpdateSchema) (*MsgUpdateSchemaResponse, error)
+	DeleteSchema(context.Context, *MsgDeleteSchema) (*MsgDeleteSchemaResponse, error)
 	Cancel(context.Context, *MsgCancel) (*MsgCancelResponse, error)
 	Reject(context.Context, *MsgReject) (*MsgRejectResponse, error)
 	RequestIn(context.Context, *MsgRequestIn) (*MsgSwapInResponse, error)
@@ -1547,14 +1547,14 @@ func (*UnimplementedMsgServer) Deposit(ctx context.Context, req *MsgDeposit) (*M
 func (*UnimplementedMsgServer) Withdraw(ctx context.Context, req *MsgWithdraw) (*MsgWithdrawResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Withdraw not implemented")
 }
-func (*UnimplementedMsgServer) CreateSignSchema(ctx context.Context, req *MsgCreateSignSchema) (*MsgCreateSignSchemaResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CreateSignSchema not implemented")
+func (*UnimplementedMsgServer) CreateSchema(ctx context.Context, req *MsgCreateSchema) (*MsgCreateSchemaResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateSchema not implemented")
 }
-func (*UnimplementedMsgServer) UpdateSignSchema(ctx context.Context, req *MsgUpdateSignSchema) (*MsgUpdateSignSchemaResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method UpdateSignSchema not implemented")
+func (*UnimplementedMsgServer) UpdateSchema(ctx context.Context, req *MsgUpdateSchema) (*MsgUpdateSchemaResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateSchema not implemented")
 }
-func (*UnimplementedMsgServer) DeleteSignSchema(ctx context.Context, req *MsgDeleteSignSchema) (*MsgDeleteSignSchemaResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method DeleteSignSchema not implemented")
+func (*UnimplementedMsgServer) DeleteSchema(ctx context.Context, req *MsgDeleteSchema) (*MsgDeleteSchemaResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteSchema not implemented")
 }
 func (*UnimplementedMsgServer) Cancel(ctx context.Context, req *MsgCancel) (*MsgCancelResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Cancel not implemented")
@@ -1648,56 +1648,56 @@ func _Msg_Withdraw_Handler(srv interface{}, ctx context.Context, dec func(interf
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Msg_CreateSignSchema_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgCreateSignSchema)
+func _Msg_CreateSchema_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgCreateSchema)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MsgServer).CreateSignSchema(ctx, in)
+		return srv.(MsgServer).CreateSchema(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/shareledger.swap.Msg/CreateSignSchema",
+		FullMethod: "/shareledger.swap.Msg/CreateSchema",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).CreateSignSchema(ctx, req.(*MsgCreateSignSchema))
+		return srv.(MsgServer).CreateSchema(ctx, req.(*MsgCreateSchema))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Msg_UpdateSignSchema_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgUpdateSignSchema)
+func _Msg_UpdateSchema_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgUpdateSchema)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MsgServer).UpdateSignSchema(ctx, in)
+		return srv.(MsgServer).UpdateSchema(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/shareledger.swap.Msg/UpdateSignSchema",
+		FullMethod: "/shareledger.swap.Msg/UpdateSchema",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).UpdateSignSchema(ctx, req.(*MsgUpdateSignSchema))
+		return srv.(MsgServer).UpdateSchema(ctx, req.(*MsgUpdateSchema))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Msg_DeleteSignSchema_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgDeleteSignSchema)
+func _Msg_DeleteSchema_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgDeleteSchema)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MsgServer).DeleteSignSchema(ctx, in)
+		return srv.(MsgServer).DeleteSchema(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/shareledger.swap.Msg/DeleteSignSchema",
+		FullMethod: "/shareledger.swap.Msg/DeleteSchema",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).DeleteSignSchema(ctx, req.(*MsgDeleteSignSchema))
+		return srv.(MsgServer).DeleteSchema(ctx, req.(*MsgDeleteSchema))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1813,16 +1813,16 @@ var _Msg_serviceDesc = grpc.ServiceDesc{
 			Handler:    _Msg_Withdraw_Handler,
 		},
 		{
-			MethodName: "CreateSignSchema",
-			Handler:    _Msg_CreateSignSchema_Handler,
+			MethodName: "CreateSchema",
+			Handler:    _Msg_CreateSchema_Handler,
 		},
 		{
-			MethodName: "UpdateSignSchema",
-			Handler:    _Msg_UpdateSignSchema_Handler,
+			MethodName: "UpdateSchema",
+			Handler:    _Msg_UpdateSchema_Handler,
 		},
 		{
-			MethodName: "DeleteSignSchema",
-			Handler:    _Msg_DeleteSignSchema_Handler,
+			MethodName: "DeleteSchema",
+			Handler:    _Msg_DeleteSchema_Handler,
 		},
 		{
 			MethodName: "Cancel",
@@ -2179,7 +2179,7 @@ func (m *MsgWithdrawResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgCreateSignSchema) Marshal() (dAtA []byte, err error) {
+func (m *MsgCreateSchema) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -2189,12 +2189,12 @@ func (m *MsgCreateSignSchema) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgCreateSignSchema) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgCreateSchema) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgCreateSignSchema) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgCreateSchema) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -2252,7 +2252,7 @@ func (m *MsgCreateSignSchema) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgCreateSignSchemaResponse) Marshal() (dAtA []byte, err error) {
+func (m *MsgCreateSchemaResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -2262,12 +2262,12 @@ func (m *MsgCreateSignSchemaResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgCreateSignSchemaResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgCreateSchemaResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgCreateSignSchemaResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgCreateSchemaResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -2275,7 +2275,7 @@ func (m *MsgCreateSignSchemaResponse) MarshalToSizedBuffer(dAtA []byte) (int, er
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgUpdateSignSchema) Marshal() (dAtA []byte, err error) {
+func (m *MsgUpdateSchema) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -2285,12 +2285,12 @@ func (m *MsgUpdateSignSchema) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgUpdateSignSchema) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgUpdateSchema) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgUpdateSignSchema) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgUpdateSchema) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -2348,7 +2348,7 @@ func (m *MsgUpdateSignSchema) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgUpdateSignSchemaResponse) Marshal() (dAtA []byte, err error) {
+func (m *MsgUpdateSchemaResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -2358,12 +2358,12 @@ func (m *MsgUpdateSignSchemaResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgUpdateSignSchemaResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgUpdateSchemaResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgUpdateSignSchemaResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgUpdateSchemaResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -2371,7 +2371,7 @@ func (m *MsgUpdateSignSchemaResponse) MarshalToSizedBuffer(dAtA []byte) (int, er
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgDeleteSignSchema) Marshal() (dAtA []byte, err error) {
+func (m *MsgDeleteSchema) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -2381,12 +2381,12 @@ func (m *MsgDeleteSignSchema) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgDeleteSignSchema) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgDeleteSchema) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgDeleteSignSchema) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgDeleteSchema) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -2408,7 +2408,7 @@ func (m *MsgDeleteSignSchema) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgDeleteSignSchemaResponse) Marshal() (dAtA []byte, err error) {
+func (m *MsgDeleteSchemaResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -2418,12 +2418,12 @@ func (m *MsgDeleteSignSchemaResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgDeleteSignSchemaResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgDeleteSchemaResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgDeleteSignSchemaResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgDeleteSchemaResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -2978,7 +2978,7 @@ func (m *MsgWithdrawResponse) Size() (n int) {
 	return n
 }
 
-func (m *MsgCreateSignSchema) Size() (n int) {
+func (m *MsgCreateSchema) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -3010,7 +3010,7 @@ func (m *MsgCreateSignSchema) Size() (n int) {
 	return n
 }
 
-func (m *MsgCreateSignSchemaResponse) Size() (n int) {
+func (m *MsgCreateSchemaResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -3019,7 +3019,7 @@ func (m *MsgCreateSignSchemaResponse) Size() (n int) {
 	return n
 }
 
-func (m *MsgUpdateSignSchema) Size() (n int) {
+func (m *MsgUpdateSchema) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -3051,7 +3051,7 @@ func (m *MsgUpdateSignSchema) Size() (n int) {
 	return n
 }
 
-func (m *MsgUpdateSignSchemaResponse) Size() (n int) {
+func (m *MsgUpdateSchemaResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -3060,7 +3060,7 @@ func (m *MsgUpdateSignSchemaResponse) Size() (n int) {
 	return n
 }
 
-func (m *MsgDeleteSignSchema) Size() (n int) {
+func (m *MsgDeleteSchema) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -3077,7 +3077,7 @@ func (m *MsgDeleteSignSchema) Size() (n int) {
 	return n
 }
 
-func (m *MsgDeleteSignSchemaResponse) Size() (n int) {
+func (m *MsgDeleteSchemaResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -4239,7 +4239,7 @@ func (m *MsgWithdrawResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgCreateSignSchema) Unmarshal(dAtA []byte) error {
+func (m *MsgCreateSchema) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -4262,10 +4262,10 @@ func (m *MsgCreateSignSchema) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgCreateSignSchema: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgCreateSchema: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgCreateSignSchema: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgCreateSchema: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -4476,7 +4476,7 @@ func (m *MsgCreateSignSchema) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgCreateSignSchemaResponse) Unmarshal(dAtA []byte) error {
+func (m *MsgCreateSchemaResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -4499,10 +4499,10 @@ func (m *MsgCreateSignSchemaResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgCreateSignSchemaResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgCreateSchemaResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgCreateSignSchemaResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgCreateSchemaResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:
@@ -4526,7 +4526,7 @@ func (m *MsgCreateSignSchemaResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgUpdateSignSchema) Unmarshal(dAtA []byte) error {
+func (m *MsgUpdateSchema) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -4549,10 +4549,10 @@ func (m *MsgUpdateSignSchema) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgUpdateSignSchema: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgUpdateSchema: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgUpdateSignSchema: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgUpdateSchema: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -4763,7 +4763,7 @@ func (m *MsgUpdateSignSchema) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgUpdateSignSchemaResponse) Unmarshal(dAtA []byte) error {
+func (m *MsgUpdateSchemaResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -4786,10 +4786,10 @@ func (m *MsgUpdateSignSchemaResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgUpdateSignSchemaResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgUpdateSchemaResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgUpdateSignSchemaResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgUpdateSchemaResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:
@@ -4813,7 +4813,7 @@ func (m *MsgUpdateSignSchemaResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgDeleteSignSchema) Unmarshal(dAtA []byte) error {
+func (m *MsgDeleteSchema) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -4836,10 +4836,10 @@ func (m *MsgDeleteSignSchema) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgDeleteSignSchema: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgDeleteSchema: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgDeleteSignSchema: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgDeleteSchema: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -4927,7 +4927,7 @@ func (m *MsgDeleteSignSchema) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgDeleteSignSchemaResponse) Unmarshal(dAtA []byte) error {
+func (m *MsgDeleteSchemaResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -4950,10 +4950,10 @@ func (m *MsgDeleteSignSchemaResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgDeleteSignSchemaResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgDeleteSchemaResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgDeleteSignSchemaResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgDeleteSchemaResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:

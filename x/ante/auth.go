@@ -70,9 +70,9 @@ func (a Auth) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate bool, next sdk.Ant
 			*electoraltypes.MsgEnrollRelayers,
 			*electoraltypes.MsgRevokeRelayers,
 			*electoraltypes.MsgRevokeApprovers,
-			*swapmoduletypes.MsgCreateSignSchema,
-			*swapmoduletypes.MsgUpdateSignSchema,
-			*swapmoduletypes.MsgDeleteSignSchema,
+			*swapmoduletypes.MsgCreateSchema,
+			*swapmoduletypes.MsgUpdateSchema,
+			*swapmoduletypes.MsgDeleteSchema,
 			*electoraltypes.MsgRevokeVoter:
 			if !a.rk.IsAuthority(ctx, signer) {
 				return ctx, sdkerrors.Wrapf(sdkerrors.ErrUnauthorized, ErrMsgNotAuthority)

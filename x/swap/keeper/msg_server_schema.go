@@ -9,11 +9,11 @@ import (
 	"github.com/sharering/shareledger/x/swap/types"
 )
 
-func (k msgServer) CreateSignSchema(goCtx context.Context, msg *types.MsgCreateSignSchema) (*types.MsgCreateSignSchemaResponse, error) {
+func (k msgServer) CreateSchema(goCtx context.Context, msg *types.MsgCreateSchema) (*types.MsgCreateSchemaResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	// Check if the value already exists
-	_, isFound := k.GetSignSchema(
+	_, isFound := k.GetSchema(
 		ctx,
 		msg.Network,
 	)
@@ -30,7 +30,7 @@ func (k msgServer) CreateSignSchema(goCtx context.Context, msg *types.MsgCreateS
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "invalid fee")
 	}
 
-	var signSchema = types.SignSchema{
+	var signSchema = types.Schema{
 		Creator: msg.Creator,
 		Network: msg.Network,
 		Schema:  msg.Schema,
@@ -45,14 +45,14 @@ func (k msgServer) CreateSignSchema(goCtx context.Context, msg *types.MsgCreateS
 		ctx,
 		signSchema,
 	)
-	return &types.MsgCreateSignSchemaResponse{}, nil
+	return &types.MsgCreateSchemaResponse{}, nil
 }
 
-func (k msgServer) UpdateSignSchema(goCtx context.Context, msg *types.MsgUpdateSignSchema) (*types.MsgUpdateSignSchemaResponse, error) {
+func (k msgServer) UpdateSchema(goCtx context.Context, msg *types.MsgUpdateSchema) (*types.MsgUpdateSchemaResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	// Check if the value exists
-	valFound, isFound := k.GetSignSchema(
+	valFound, isFound := k.GetSchema(
 		ctx,
 		msg.Network,
 	)
@@ -65,7 +65,7 @@ func (k msgServer) UpdateSignSchema(goCtx context.Context, msg *types.MsgUpdateS
 		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "incorrect owner")
 	}
 
-	var schema = types.SignSchema{
+	var schema = types.Schema{
 		Creator: msg.Creator,
 		Network: msg.Network,
 		Schema:  valFound.Schema,
@@ -97,14 +97,14 @@ func (k msgServer) UpdateSignSchema(goCtx context.Context, msg *types.MsgUpdateS
 
 	k.SetSchema(ctx, schema)
 
-	return &types.MsgUpdateSignSchemaResponse{}, nil
+	return &types.MsgUpdateSchemaResponse{}, nil
 }
 
-func (k msgServer) DeleteSignSchema(goCtx context.Context, msg *types.MsgDeleteSignSchema) (*types.MsgDeleteSignSchemaResponse, error) {
+func (k msgServer) DeleteSchema(goCtx context.Context, msg *types.MsgDeleteSchema) (*types.MsgDeleteSchemaResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	// Check if the value exists
-	valFound, isFound := k.GetSignSchema(
+	valFound, isFound := k.GetSchema(
 		ctx,
 		msg.Network,
 	)
@@ -117,10 +117,10 @@ func (k msgServer) DeleteSignSchema(goCtx context.Context, msg *types.MsgDeleteS
 		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "incorrect owner")
 	}
 
-	k.RemoveSignSchema(
+	k.RemoveSchema(
 		ctx,
 		msg.Network,
 	)
 
-	return &types.MsgDeleteSignSchemaResponse{}, nil
+	return &types.MsgDeleteSchemaResponse{}, nil
 }

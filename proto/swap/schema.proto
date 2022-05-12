@@ -6,7 +6,7 @@ import "cosmos/base/v1beta1/coin.proto";
 
 option go_package = "github.com/sharering/shareledger/x/swap/types";
 
-message SignSchema {
+message Schema {
   string network = 1; 
   string creator = 2;
   string schema = 3;

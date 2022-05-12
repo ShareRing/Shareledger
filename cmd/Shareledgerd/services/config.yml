@@ -6,6 +6,6 @@ type: out
 networks:
   erc20:
     signer: acc3
-    url: https://eth-ropsten.alchemyapi.io/v2/0M8yP6-iyIof8dFJN0Jph59jJlSKqmbW
-    chainId: 3
-    contract: 0xecf82F815DB77182dD46195B46E6aB3BdB6F6977
+    url: https://eth-rinkeby.alchemyapi.io/v2/0M8yP6-iyIof8dFJN0Jph59jJlSKqmbW
+    chainId: 4
+    contract: 0x7451bDECe7270a4fe4aAFFDCAa8c37bd8D041B4a

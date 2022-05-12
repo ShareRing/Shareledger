@@ -15,8 +15,8 @@ import (
 // Prevent strconv unused error
 var _ = strconv.IntSize
 
-func createNFormat(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.Format {
-	items := make([]types.Format, n)
+func createNSchema(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.Schema {
+	items := make([]types.Schema, n)
 	for i := range items {
 		items[i].Network = strconv.Itoa(i)
 
@@ -27,9 +27,9 @@ func createNFormat(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.Format
 
 func TestFormatGet(t *testing.T) {
 	keeper, ctx := keepertest.SwapKeeper(t)
-	items := createNFormat(keeper, ctx, 10)
+	items := createNSchema(keeper, ctx, 10)
 	for _, item := range items {
-		rst, found := keeper.GetSignSchema(ctx,
+		rst, found := keeper.GetSchema(ctx,
 			item.Network,
 		)
 		require.True(t, found)
@@ -41,12 +41,12 @@ func TestFormatGet(t *testing.T) {
 }
 func TestFormatRemove(t *testing.T) {
 	keeper, ctx := keepertest.SwapKeeper(t)
-	items := createNFormat(keeper, ctx, 10)
+	items := createNSchema(keeper, ctx, 10)
 	for _, item := range items {
-		keeper.RemoveSignSchema(ctx,
+		keeper.RemoveSchema(ctx,
 			item.Network,
 		)
-		_, found := keeper.GetSignSchema(ctx,
+		_, found := keeper.GetSchema(ctx,
 			item.Network,
 		)
 		require.False(t, found)
@@ -55,9 +55,9 @@ func TestFormatRemove(t *testing.T) {
 
 func TestFormatGetAll(t *testing.T) {
 	keeper, ctx := keepertest.SwapKeeper(t)
-	items := createNFormat(keeper, ctx, 10)
+	items := createNSchema(keeper, ctx, 10)
 	require.ElementsMatch(t,
 		nullify.Fill(items),
-		nullify.Fill(keeper.GetAllSignSchema(ctx)),
+		nullify.Fill(keeper.GetAllSchema(ctx)),
 	)
 }

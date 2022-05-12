@@ -13,7 +13,7 @@ func DefaultGenesis() *GenesisState {
 		IdList:      []Id{},
 		RequestList: []Request{},
 		BatchList:   []Batch{},
-		FormatList:  []SignSchema{},
+		FormatList:  []Schema{},
 		// this line is used by starport scaffolding # genesis/types/default
 		Params: DefaultParams(),
 	}

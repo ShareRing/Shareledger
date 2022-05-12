@@ -8,7 +8,7 @@ import "cosmos/base/v1beta1/coin.proto";
 import "swap/params.proto";
 import "swap/request.proto";
 import "swap/batch.proto";
-import "swap/sign_schema.proto";
+import "swap/schema.proto";
 // this line is used by starport scaffolding # 1
 
 option go_package = "github.com/sharering/shareledger/x/swap/types";
@@ -37,12 +37,12 @@ service Query {
 	}
 
 // Queries a Format by index.
-	rpc SignSchema(QueryGetSignSchemaRequest) returns (QuerySignSchemaResponse) {
+	rpc Schema(QueryGetSchemaRequest) returns (QuerySchemaResponse) {
 		option (google.api.http).get = "/sharering/shareledger/swap/sign_schema/{network}";
 	}
 
 	// Queries a list of Format items.
-	rpc AllSignSchemas(QueryAllSignSchemasRequest) returns (QueryAllSignSchemasResponse) {
+	rpc AllSchemas(QueryAllSchemasRequest) returns (QueryAllSchemasResponse) {
 		option (google.api.http).get = "/sharering/shareledger/swap/sign_schema";
 	}
 
@@ -93,21 +93,21 @@ message QueryBalanceResponse {
 	cosmos.base.v1beta1.DecCoin balance = 1;
 }
 
-message QueryGetSignSchemaRequest {
+message QueryGetSchemaRequest {
 	  string network = 1;
 
 }
 
-message QuerySignSchemaResponse {
-	SignSchema schema = 1 [(gogoproto.nullable) = false];
+message QuerySchemaResponse {
+	Schema schema = 1 [(gogoproto.nullable) = false];
 }
 
-message QueryAllSignSchemasRequest {
+message QueryAllSchemasRequest {
 	cosmos.base.query.v1beta1.PageRequest pagination = 1;
 }
 
-message QueryAllSignSchemasResponse {
-	repeated SignSchema schemas = 1 [(gogoproto.nullable) = false];
+message QueryAllSchemasResponse {
+	repeated Schema schemas = 1 [(gogoproto.nullable) = false];
 	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 

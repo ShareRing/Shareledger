@@ -8,6 +8,7 @@ import (
 	"os/signal"
 	"path/filepath"
 	"sort"
+	"strconv"
 	"sync"
 	"syscall"
 	"time"
@@ -61,7 +62,7 @@ func NewStartCommands(defaultNodeHome string) *cobra.Command {
 			if err != nil {
 				return err
 			}
-			relayerClient := initRelayer(clientTx, cfg)
+			relayerClient, _ := initRelayer(clientTx, cfg)
 
 			ctx, cancel := context.WithCancel(context.Background())
 
@@ -85,7 +86,7 @@ func NewStartCommands(defaultNodeHome string) *cobra.Command {
 					case err := <-processChan:
 						numberProcessing--
 						if err != nil {
-							log.Err(err)
+							log.Err(err).Msg("got error when processing batch")
 						}
 						if numberProcessing == 0 {
 							log.Info().Msg("all process were quited. Exiting")
@@ -287,7 +288,7 @@ func (r *Relayer) getBatchDetail(ctx context.Context, batch swapmoduletypes.Batc
 	if err != nil {
 		return detail, sdkerrors.Wrapf(err, "get list swap")
 	}
-	schema, err := qClient.SignSchema(ctx, &swapmoduletypes.QueryGetSignSchemaRequest{Network: batch.Network})
+	schema, err := qClient.Schema(ctx, &swapmoduletypes.QueryGetSchemaRequest{Network: batch.Network})
 	if err != nil {
 		return detail, err
 	}
@@ -402,7 +403,8 @@ func (r *Relayer) submitBatch(ctx context.Context, network string, batchDetail s
 	if err != nil {
 		return txHash, err
 	}
-
+	log.Info().Str("nonce", strconv.FormatUint(currentNonce, 10)).Msg("current nonce")
+	log.Info().Str("commonAddr", commonAdd.String()).Msg("address")
 	opts, err := keyring.NewKeyedTransactorWithChainID(r.Client.Keyring, networkConfig.Signer, big.NewInt(networkConfig.ChainId))
 	if err != nil {
 		return txHash, err
