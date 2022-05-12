@@ -65,9 +65,21 @@ func NewStartCommands(defaultNodeHome string) *cobra.Command {
 			if err != nil {
 				return err
 			}
-			relayerClient := initRelayer(clientTx, cfg, mgClient)
 
 			ctx, cancel := context.WithCancel(context.Background())
+			timeoutContext, cancelTimeOut := context.WithTimeout(ctx, time.Second*10)
+			defer cancelTimeOut()
+			relayerClient := initRelayer(clientTx, cfg, mgClient)
+			if err := mgClient.ConnectDB(timeoutContext); err != nil {
+				cancel()
+				return err
+			}
+
+			defer func() {
+				if err := mgClient.Disconnect(ctx); err != nil {
+					log.Info().Msg("Disconnected from DB")
+				}
+			}()
 
 			numberProcessing := len(cfg.Network)
 			processChan := make(chan error)
