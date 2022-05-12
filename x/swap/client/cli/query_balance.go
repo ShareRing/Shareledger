@@ -7,9 +7,9 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func CmdFund() *cobra.Command {
+func CmdBalance() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "fund",
+		Use:   "balance",
 		Short: "Query available token inside swapping module",
 		Args:  cobra.ExactArgs(0),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {

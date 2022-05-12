@@ -139,6 +139,16 @@ func ToDisplayCoins(coins sdk.Coins) sdk.DecCoins {
 	return sdk.NewDecCoins(dShr, dShrP)
 }
 
+// ShrCoinsToExponent only shr and nshr are allowed. others will be ignored.
+func ShrCoinsToExponent(coins sdk.DecCoins, exponent int, roundUp bool) (total int64, err error) {
+	baseCoins, err := NormalizeToBaseCoins(coins, roundUp)
+	if err != nil {
+		return 0, err
+	}
+	totalBaseCoin := baseCoins.AmountOf(Base)
+	return totalBaseCoin.Mul(sdk.NewInt(int64(math.Pow10(exponent)))).Quo(sdk.NewInt(ShrExponent)).Int64(), nil
+}
+
 func To(coins sdk.DecCoins, dest string, usdRate sdk.Dec) (coin sdk.DecCoin, err error) {
 	if err = coins.Validate(); err != nil {
 		return

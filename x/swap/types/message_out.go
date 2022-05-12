@@ -57,6 +57,12 @@ func (msg *MsgRequestOut) ValidateBasic() error {
 	if err := denom.CheckSupportedCoins(sdk.NewDecCoins(*msg.Fee), nil); err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, err.Error())
 	}
-
+	coin, err := denom.NormalizeToBaseCoins(sdk.NewDecCoins(*msg.GetAmount()), false)
+	if err != nil {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, err.Error())
+	}
+	if coin.AmountOf(denom.Base).IsZero() {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "only nshr or shr is supported")
+	}
 	return nil
 }

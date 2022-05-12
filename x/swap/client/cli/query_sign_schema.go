@@ -9,10 +9,10 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func CmdListFormat() *cobra.Command {
+func CmdListSignSchema() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "formats",
-		Short: "list all format",
+		Use:   "sign_schema",
+		Short: "list all sign schema",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx := client.GetClientContextFromCmd(cmd)
 
@@ -44,7 +44,7 @@ func CmdListFormat() *cobra.Command {
 
 func CmdShowFormat() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "format [network]",
+		Use:   "schema [network]",
 		Short: "get a format by network name",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
