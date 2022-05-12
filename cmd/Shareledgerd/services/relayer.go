@@ -424,7 +424,6 @@ func (r *Relayer) processIn(ctx context.Context, network string) error {
 }
 
 func (r *Relayer) SubmitSwapIn(ctx context.Context, swap swapmoduletypes.MsgRequestIn) error {
-	//TODO: khang
 	return nil
 }
 
