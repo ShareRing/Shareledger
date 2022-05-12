@@ -76,7 +76,7 @@ func CmdUpdateSchema() *cobra.Command {
 
 			// Get value arguments
 
-			in, out, exp, dataStr, err := parseSignSchemaArgsFromCmd(cmd)
+			in, out, exp, dataStr, err := parseSchemaArgsFromCmd(cmd)
 			if err != nil {
 				return err
 			}
@@ -134,17 +134,13 @@ func CmdDeleteSchema() *cobra.Command {
 
 	return cmd
 }
-func parseSignSchemaArgsFromCmd(cmd *cobra.Command) (inFee, outFee *sdk.DecCoin, cExp int32, schema string, err error) {
-	in, err := cmd.Flags().GetString(FlagsFeeIn)
-	if err != nil {
-		return
-	}
-	out, err := cmd.Flags().GetString(FlagsFeeOut)
-	if err != nil {
-		return
-	}
+func parseSchemaArgsFromCmd(cmd *cobra.Command) (inFee, outFee *sdk.DecCoin, cExp int32, schema string, err error) {
 
 	cExpStr, err := cmd.Flags().GetString(FlagsContractExponent)
+	if err != nil {
+		return
+	}
+	in, out, err := getInOutStrFromFlag(cmd)
 	if err != nil {
 		return
 	}
@@ -154,6 +150,28 @@ func parseSignSchemaArgsFromCmd(cmd *cobra.Command) (inFee, outFee *sdk.DecCoin,
 	}
 	schema, err = cmd.Flags().GetString(FlagsSchema)
 	return
+}
+
+func parseInOutFeeFromCmd(cmd *cobra.Command) (inFee, outFee *sdk.DecCoin, err error) {
+	in, out, err := getInOutStrFromFlag(cmd)
+	inFee, outFee, _, err = parseCoinArgs(in, out, "")
+	if err != nil {
+		return
+	}
+	return
+}
+
+func getInOutStrFromFlag(cmd *cobra.Command) (i, o string, err error) {
+	i, err = cmd.Flags().GetString(FlagsFeeIn)
+	if err != nil {
+		return
+	}
+	o, err = cmd.Flags().GetString(FlagsFeeOut)
+	if err != nil {
+		return
+	}
+	return
+
 }
 func parseCoinArgs(in, out, ce string) (inFee, outFee *sdk.DecCoin, cExp int32, err error) {
 	inFee = new(sdk.DecCoin)

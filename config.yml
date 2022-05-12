@@ -22,8 +22,11 @@ accounts:
     mnemonic: "spend people immense ill property hungry craft corn quote once hand clarify adapt disorder airport balance alley wisdom physical appear debris awake pencil skate"
   - name: "relayer"
     coins: ["100000000000nshr"]
-    mnemonic : "indoor donate grid ostrich tree swamp cactus common piano buzz version world second try garage squirrel alert fork december control bind spoon taste essay
-"
+    mnemonic : "indoor donate grid ostrich tree swamp cactus common piano buzz version world second try garage squirrel alert fork december control bind spoon taste essay"
+  - name: "swap_manager"
+    coins: ["100000000000nshr"]
+    mnemonic: "logic fade bike misery female father false speak code immune improve key food enter night timber kick spare amused miss expire bottom walk century"
+
 validator:
   name: validator
   staked: "100000000000000000nshr"
@@ -86,6 +89,9 @@ genesis:
           status: active
         - key: relayershareledger16k53l0v5fr93u2kpe7ek2lc3tm37k4954zalvv
           address: shareledger16k53l0v5fr93u2kpe7ek2lc3tm37k4954zalvv
+          status: active
+        - key: swapManagershareledger1yfwgejzj4nmkp6es6q3xea9uwexy5xwjs9rpcx
+          address: shareledger1yfwgejzj4nmkp6es6q3xea9uwexy5xwjs9rpcx
           status: active
       authority:
         address: shareledger1lq9svs76xwekrrzw7uprekyqydf7fp02p8zp8e

@@ -53124,6 +53124,8 @@ definitions:
     type: object
   shareledger.electoral.MsgEnrollRelayersResponse:
     type: object
+  shareledger.electoral.MsgEnrollSwapManagersResponse:
+    type: object
   shareledger.electoral.MsgEnrollVoterResponse:
     type: object
   shareledger.electoral.MsgRevokeAccountOperatorsResponse:
@@ -53137,6 +53139,8 @@ definitions:
   shareledger.electoral.MsgRevokeLoadersResponse:
     type: object
   shareledger.electoral.MsgRevokeRelayersResponse:
+    type: object
+  shareledger.electoral.MsgRevokeSwapManagersResponse:
     type: object
   shareledger.electoral.MsgRevokeVoterResponse:
     type: object
@@ -53698,6 +53702,8 @@ definitions:
   shareledger.swap.MsgUpdateBatchResponse:
     type: object
   shareledger.swap.MsgUpdateSchemaResponse:
+    type: object
+  shareledger.swap.MsgUpdateSwapFeeResponse:
     type: object
   shareledger.swap.MsgWithdrawResponse:
     type: object

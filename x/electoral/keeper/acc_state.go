@@ -41,6 +41,10 @@ func (k Keeper) activeVoter(ctx sdk.Context, addr sdk.AccAddress) {
 func (k Keeper) activeRelayer(ctx sdk.Context, addr sdk.AccAddress) {
 	k.ActiveAccState(ctx, addr, types.AccStateKeyRelayer)
 }
+
+func (k Keeper) activeSwapManager(ctx sdk.Context, addr sdk.AccAddress) {
+	k.ActiveAccState(ctx, addr, types.AccStateKeySwapManager)
+}
 func (k Keeper) activeApprover(ctx sdk.Context, addr sdk.AccAddress) {
 	k.ActiveAccState(ctx, addr, types.AccStateKeyApprover)
 
@@ -50,6 +54,12 @@ func (k Keeper) removeApprover(ctx sdk.Context, addr sdk.AccAddress) (err error)
 	k.RemoveAccState(ctx, key)
 	return nil
 }
+func (k Keeper) removeSwapManager(ctx sdk.Context, addr sdk.AccAddress) (err error) {
+	key := types.GenAccStateIndexKey(addr, types.AccStateKeySwapManager)
+	k.RemoveAccState(ctx, key)
+	return nil
+}
+
 func (k Keeper) removeRelayer(ctx sdk.Context, addr sdk.AccAddress) (err error) {
 	key := types.GenAccStateIndexKey(addr, types.AccStateKeyRelayer)
 	k.RemoveAccState(ctx, key)

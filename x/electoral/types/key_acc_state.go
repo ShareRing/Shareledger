@@ -23,6 +23,7 @@ const (
 	AccStateKeyVoter       AccStateKeyType = "voter"
 	AccStateKeyRelayer     AccStateKeyType = "relayer"
 	AccStateKeyApprover    AccStateKeyType = "approver"
+	AccStateKeySwapManager AccStateKeyType = "swapManager"
 )
 
 type IndexKeyAccState string

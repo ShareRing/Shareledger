@@ -72,6 +72,10 @@ const (
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgUpdateBatch int = 100
 
+	opWeightMsgUpdateSwapFee = "op_weight_msg_update_swap_fee"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgUpdateSwapFee int = 100
+
 	// this line is used by starport scaffolding # simapp/module/const
 )
 
@@ -250,6 +254,17 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	operations = append(operations, simulation.NewWeightedOperation(
 		weightMsgUpdateBatch,
 		swapsimulation.SimulateMsgUpdateBatch(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgUpdateSwapFee int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgUpdateSwapFee, &weightMsgUpdateSwapFee, nil,
+		func(_ *rand.Rand) {
+			weightMsgUpdateSwapFee = defaultWeightMsgUpdateSwapFee
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgUpdateSwapFee,
+		swapsimulation.SimulateMsgUpdateSwapFee(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
 	// this line is used by starport scaffolding # simapp/module/operation
