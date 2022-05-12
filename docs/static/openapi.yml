@@ -31645,6 +31645,9 @@ paths:
                       type: string
                     schema:
                       type: string
+                    contractExponent:
+                      type: integer
+                      format: int32
               pagination:
                 type: object
                 properties:
@@ -31768,6 +31771,9 @@ paths:
                     type: string
                   schema:
                     type: string
+                  contractExponent:
+                    type: integer
+                    format: int32
         default:
           description: An unexpected error response.
           schema:
@@ -53621,6 +53627,9 @@ definitions:
               type: string
             schema:
               type: string
+            contractExponent:
+              type: integer
+              format: int32
       pagination:
         type: object
         properties:
@@ -53756,6 +53765,9 @@ definitions:
             type: string
           schema:
             type: string
+          contractExponent:
+            type: integer
+            format: int32
   shareledger.swap.QuerySwapResponse:
     type: object
     properties:
@@ -53893,3 +53905,6 @@ definitions:
         type: string
       schema:
         type: string
+      contractExponent:
+        type: integer
+        format: int32
