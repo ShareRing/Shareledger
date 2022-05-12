@@ -2,9 +2,11 @@ package services
 
 import (
 	"context"
-	"github.com/cosmos/cosmos-sdk/client"
-	swapmoduletypes "github.com/sharering/shareledger/x/swap/types"
 	"time"
+
+	"github.com/cosmos/cosmos-sdk/client"
+	"github.com/sharering/shareledger/cmd/Shareledgerd/services/database"
+	swapmoduletypes "github.com/sharering/shareledger/x/swap/types"
 )
 
 const flagConfigPath = "config"
@@ -24,14 +26,18 @@ type Network struct {
 }
 
 type RelayerConfig struct {
-	Network      map[string]Network `yaml:"networks"`
-	Type         string             `yaml:"type"`
-	ScanInterval time.Duration      `yaml:"scanInterval"`
+	Network        map[string]Network `yaml:"networks"`
+	Type           string             `yaml:"type"`
+	ScanInterval   time.Duration      `yaml:"scanInterval"`
+	MongoURI       string             `yaml:"mongoURI"`
+	DbName         string             `yaml:"dbName"`
+	CollectionName string             `yaml:"collectionName"`
 }
 
 type Relayer struct {
-	Config RelayerConfig
-	Client client.Context
+	Config   RelayerConfig
+	Client   client.Context
+	DBClient *database.RequestCollection
 
 	qClient   swapmoduletypes.QueryClient
 	msgClient swapmoduletypes.MsgClient
