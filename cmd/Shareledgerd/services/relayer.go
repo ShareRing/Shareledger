@@ -95,7 +95,12 @@ func NewStartCommands(defaultNodeHome string) *cobra.Command {
 
 			switch cfg.Type {
 			case "in":
-				return relayerClient.startInProcess(ctx)
+				for network := range cfg.Network {
+					go func(network string) {
+						processChan <- relayerClient.startProcess(ctx, relayerClient.processIn, network)
+					}(network)
+				}
+
 			case "out":
 				for network := range cfg.Network {
 					go func(network string) {
@@ -403,9 +408,9 @@ func (r *Relayer) submitBatch(ctx context.Context, network string, batchDetail s
 	return txHash, err
 }
 
-func (r *Relayer) startInProcess(ctx context.Context) error {
+func (r *Relayer) processIn(ctx context.Context, network string) error {
 	//TODO concurrency handle here
-	_, err := r.listenETHSwap(ctx)
+	_, err := r.listenETHSwap(ctx, network)
 	if err != nil {
 		return err
 	}
@@ -413,7 +418,11 @@ func (r *Relayer) startInProcess(ctx context.Context) error {
 	return r.initSwapInRequest(ctx, "0xxa", "shareledger1w4l5fchs69d9avlgvdehq9ypvdh4xyev3p490g", "erc20", 100, 15)
 }
 
-func (r *Relayer) listenETHSwap(ctx context.Context) (interface{}, error) {
+func (r *Relayer) SubmitSwapIn(ctx context.Context, swap swapmoduletypes.MsgRequestIn) error {
+	return nil
+}
+
+func (r *Relayer) listenETHSwap(ctx context.Context, network string) (interface{}, error) {
 	return nil, nil
 }
 
