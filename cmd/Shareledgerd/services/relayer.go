@@ -23,6 +23,7 @@ import (
 	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/pkg/errors"
 	"github.com/rs/zerolog/log"
+	"github.com/sharering/shareledger/cmd/Shareledgerd/services/database"
 	event "github.com/sharering/shareledger/cmd/Shareledgerd/services/subscriber"
 	swaputil "github.com/sharering/shareledger/pkg/swap"
 	"github.com/sharering/shareledger/pkg/swap/abi/swap"
@@ -136,17 +137,24 @@ func parseConfig(filePath string) (RelayerConfig, error) {
 	return cfg, err
 }
 
-func initRelayer(client client.Context, cfg RelayerConfig) *Relayer {
+func initRelayer(client client.Context, cfg RelayerConfig) (*Relayer, error) {
 
 	mClient := swapmoduletypes.NewMsgClient(client)
 	qClient := swapmoduletypes.NewQueryClient(client)
+	dbClient, err := database.ConnectDB(cfg.MongoURI)
+	dbCollection := dbClient.GetCollection(cfg.DbName, cfg.CollectionName)
+	if err != nil {
+		return nil, err
+	}
+
 	return &Relayer{
-		Config: cfg,
-		Client: client,
+		Config:   cfg,
+		Client:   client,
+		DBClient: dbCollection,
 
 		qClient:   qClient,
 		msgClient: mClient,
-	}
+	}, nil
 }
 
 func (r *Relayer) startProcess(ctx context.Context, f processFunc, network string) error {
@@ -439,7 +447,6 @@ func (r *Relayer) processIn(ctx context.Context, network string) error {
 }
 
 func (r *Relayer) SubmitSwapIn(ctx context.Context, swap swapmoduletypes.MsgRequestIn) error {
-	//TODO: khang
 	return nil
 }
 

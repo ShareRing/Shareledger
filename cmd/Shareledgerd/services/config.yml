@@ -1,3 +1,6 @@
+mongoURI: mongodb+srv://phuong:uIoqBJDBzHn17Khe@cluster0.ol2f7.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
+dbName: "ShareRing"
+collectionName: "Request"
 scanInterval: 5s
 type: out
 networks:
