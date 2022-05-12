@@ -227,11 +227,7 @@ func (r *Relayer) processOut(ctx context.Context, network string) error {
 }
 
 func (r *Relayer) checkTxHash(ctx context.Context, network string, txHash common.Hash) (*types.Receipt, error) {
-	networkConfig, found := r.Config.Network[network]
-	if !found {
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrLogic, "network, %s, is not supported", network)
-	}
-	conn, err := ethclient.Dial(networkConfig.Url)
+	conn, _, err := r.initConn(network)
 	if err != nil {
 		return nil, err
 	}
@@ -329,12 +325,20 @@ func (r *Relayer) markBatchProcessing(batchId uint64) (swapmoduletypes.Batch, er
 	return batch, nil
 }
 
-func (r *Relayer) isBatchDoneOnSC(network string, digest common.Hash) (done bool, err error) {
+func (r *Relayer) initConn(network string) (*ethclient.Client, Network, error) {
 	networkConfig, found := r.Config.Network[network]
 	if !found {
-		return false, sdkerrors.Wrapf(sdkerrors.ErrLogic, "network, %s, is not supported", network)
+		return nil, networkConfig, sdkerrors.Wrapf(sdkerrors.ErrLogic, "network, %s, is not supported", network)
 	}
 	conn, err := ethclient.Dial(networkConfig.Url)
+	return conn, networkConfig, err
+}
+
+func (r *Relayer) isBatchDoneOnSC(network string, digest common.Hash) (done bool, err error) {
+	conn, networkConfig, err := r.initConn(network)
+	if err != nil {
+		return false, err
+	}
 	defer func() {
 		conn.Close()
 	}()
@@ -354,24 +358,20 @@ func (r *Relayer) submitBatch(ctx context.Context, network string, batchDetail s
 	if err := batchDetail.Validate(); err != nil {
 		return txHash, err
 	}
-	networkConfig, found := r.Config.Network[network]
-	uid := networkConfig.Signer
-	if !found {
-		return txHash, sdkerrors.Wrapf(sdkerrors.ErrLogic, "network, %s, is not supported", network)
+	conn, networkConfig, err := r.initConn(network)
+	if err != nil {
+		return txHash, err
 	}
-	conn, err := ethclient.Dial(networkConfig.Url)
 	defer func() {
 		conn.Close()
 	}()
-	if err != nil {
-		return txHash, sdkerrors.Wrapf(sdkerrors.ErrLogic, err.Error())
-	}
+
 	swapClient, err := swap.NewSwap(common.HexToAddress(networkConfig.Contract), conn)
 	if err != nil {
 		return txHash, sdkerrors.Wrapf(sdkerrors.ErrLogic, err.Error())
 	}
 
-	info, err := r.Client.Keyring.Key(uid)
+	info, err := r.Client.Keyring.Key(networkConfig.Signer)
 	if err != nil {
 		return txHash, err
 	}
@@ -384,7 +384,7 @@ func (r *Relayer) submitBatch(ctx context.Context, network string, batchDetail s
 		return txHash, err
 	}
 
-	opts, err := keyring.NewKeyedTransactorWithChainID(r.Client.Keyring, uid, big.NewInt(networkConfig.ChainId))
+	opts, err := keyring.NewKeyedTransactorWithChainID(r.Client.Keyring, networkConfig.Signer, big.NewInt(networkConfig.ChainId))
 	if err != nil {
 		return txHash, err
 	}
@@ -393,9 +393,6 @@ func (r *Relayer) submitBatch(ctx context.Context, network string, batchDetail s
 	if err != nil {
 		return txHash, err
 	}
-	d, _ := batchDetail.Digest()
-	fmt.Println("digest", d.Hex())
-	fmt.Println("sig", batchDetail.Batch.Signature)
 	params, err := batchDetail.GetContractParams()
 	if err != nil {
 		return txHash, err
@@ -409,7 +406,6 @@ func (r *Relayer) submitBatch(ctx context.Context, network string, batchDetail s
 }
 
 func (r *Relayer) processIn(ctx context.Context, network string) error {
-	//TODO concurrency handle here
 	_, err := r.listenETHSwap(ctx, network)
 	if err != nil {
 		return err
@@ -419,6 +415,7 @@ func (r *Relayer) processIn(ctx context.Context, network string) error {
 }
 
 func (r *Relayer) SubmitSwapIn(ctx context.Context, swap swapmoduletypes.MsgRequestIn) error {
+	//TODO: khang
 	return nil
 }
 
