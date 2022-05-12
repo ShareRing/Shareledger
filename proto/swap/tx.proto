@@ -20,7 +20,7 @@ service Msg {
   rpc RequestIn(MsgRequestIn) returns (MsgSwapInResponse);
   rpc ApproveIn(MsgApproveIn) returns (MsgApproveInResponse);
   rpc UpdateBatch(MsgUpdateBatch) returns (MsgUpdateBatchResponse);
-// this line is used by starport scaffolding # proto/tx/rpc
+  // this line is used by starport scaffolding # proto/tx/rpc
 }
 
 message MsgRequestOut {
@@ -68,6 +68,10 @@ message MsgCreateSignSchema {
   string creator = 1;
   string network = 2;
   string schema = 3;
+  cosmos.base.v1beta1.DecCoin in = 4;
+  cosmos.base.v1beta1.DecCoin out = 5;
+  int32 contractExponent = 6;
+
 }
 message MsgCreateSignSchemaResponse {}
 
@@ -75,6 +79,9 @@ message MsgUpdateSignSchema {
   string creator = 1;
   string network = 2;
   string schema = 3;
+  cosmos.base.v1beta1.DecCoin in = 4;
+  cosmos.base.v1beta1.DecCoin out = 5;
+  int32 contractExponent = 6;
 }
 message MsgUpdateSignSchemaResponse {}
 

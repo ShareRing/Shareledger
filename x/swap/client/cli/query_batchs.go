@@ -12,8 +12,8 @@ import (
 func CmdShowBatches() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "show_batches [ids]",
-		Short:   "shows a batch base on list of IDs",
-		Example: "show_batch 1 2 3 ",
+		Short:   "shows a batches base on list of IDs",
+		Example: "show_batches 1 2 3 ",
 		Args:    cobra.MinimumNArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx := client.GetClientContextFromCmd(cmd)

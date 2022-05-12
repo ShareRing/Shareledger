@@ -24,7 +24,7 @@ func CmdWithdraw(clientCtx client.Context, receiver, amount string, extraFlags .
 }
 
 func CmdFund(clientCtx client.Context, extraFlags ...string) (testutil.BufferWriter, error) {
-	return clitestutil.ExecTestCLICmd(clientCtx, cli.CmdFund(), extraFlags)
+	return clitestutil.ExecTestCLICmd(clientCtx, cli.CmdBalance(), extraFlags)
 }
 
 func CmdCancel(clientCtx client.Context, ids string, extraFlags ...string) (testutil.BufferWriter, error) {

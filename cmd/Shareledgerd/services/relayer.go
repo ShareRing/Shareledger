@@ -3,6 +3,15 @@ package services
 import (
 	"context"
 	"fmt"
+	"math/big"
+	"os"
+	"os/signal"
+	"path/filepath"
+	"sort"
+	"sync"
+	"syscall"
+	"time"
+
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/crypto/keyring"
@@ -14,20 +23,13 @@ import (
 	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/pkg/errors"
 	"github.com/rs/zerolog/log"
+	event "github.com/sharering/shareledger/cmd/Shareledgerd/services/subscriber"
 	swaputil "github.com/sharering/shareledger/pkg/swap"
 	"github.com/sharering/shareledger/pkg/swap/abi/swap"
 	swapmoduletypes "github.com/sharering/shareledger/x/swap/types"
 	denom "github.com/sharering/shareledger/x/utils/demo"
 	"github.com/spf13/cobra"
 	"gopkg.in/yaml.v3"
-	"math/big"
-	"os"
-	"os/signal"
-	"path/filepath"
-	"sort"
-	"sync"
-	"syscall"
-	"time"
 )
 
 func GetRelayerCommands(defaultNodeHome string) *cobra.Command {
@@ -415,20 +417,29 @@ func (r *Relayer) submitBatch(ctx context.Context, network string, batchDetail s
 }
 
 func (r *Relayer) processIn(ctx context.Context, network string) error {
-	_, err := r.listenETHSwap(ctx, network)
+	s, err := event.New(&event.NewInput{
+		ProviderURL:  r.Config.Network[network].Url,
+		CurrentBlock: big.NewInt(0),
+	})
 	if err != nil {
 		return err
 	}
+
+	//TODO concurrency handle here
+	topic := "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef" // this should be in config.yaml
+	events, err := s.GetEvents(ctx, &event.EventInput{
+		ContractAddress: r.Config.Network[network].Contract,
+		Topic:           topic,
+	})
+
+	fmt.Println(events) // unused error skip
 	//Mocking the input
-	return r.initSwapInRequest(ctx, "0xxa", "shareledger1w4l5fchs69d9avlgvdehq9ypvdh4xyev3p490g", "erc20", 100, 15)
+	r.initSwapInRequest(ctx, "0xxa", "shareledger1w4l5fchs69d9avlgvdehq9ypvdh4xyev3p490g", "erc20", 100, 15)
+	return nil
 }
 
 func (r *Relayer) SubmitSwapIn(ctx context.Context, swap swapmoduletypes.MsgRequestIn) error {
 	return nil
-}
-
-func (r *Relayer) listenETHSwap(ctx context.Context, network string) (interface{}, error) {
-	return nil, nil
 }
 
 func (r *Relayer) initSwapInRequest(
