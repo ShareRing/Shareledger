@@ -15,8 +15,35 @@ type Client struct {
 	*mongo.Client
 }
 
+func (c *Client) UpdateRequests(shareledgerIDs []uint64, status Status) error {
+	//TODO implement me
+	panic("implement me")
+}
+
+func (c *Client) GetRequestByType(shareledgerID, requestType string) (Request, error) {
+	//TODO implement me
+	panic("implement me")
+}
+
+func (c *Client) GetRequestByTxHash(txHash string) (Request, error) {
+	//TODO implement me
+	panic("implement me")
+}
+
+func (c *Client) SetRequest(request Request) {
+	//TODO implement me
+	panic("implement me")
+}
+
 type RequestCollection struct {
 	*mongo.Collection
+}
+
+func NewMongo(mongoURI string) (DBRelayer, error) {
+	client, err := mongo.NewClient(options.Client().ApplyURI(mongoURI))
+	return &Client{
+		Client: client,
+	}, err
 }
 
 func ConnectDB(mongoURI string) (*Client, error) {

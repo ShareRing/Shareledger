@@ -61,7 +61,11 @@ func NewStartCommands(defaultNodeHome string) *cobra.Command {
 			if err != nil {
 				return err
 			}
-			relayerClient := initRelayer(clientTx, cfg)
+			mgClient, err := database.NewMongo(cfg.MongoURI)
+			if err != nil {
+				return err
+			}
+			relayerClient := initRelayer(clientTx, cfg, mgClient)
 
 			ctx, cancel := context.WithCancel(context.Background())
 
@@ -137,24 +141,18 @@ func parseConfig(filePath string) (RelayerConfig, error) {
 	return cfg, err
 }
 
-func initRelayer(client client.Context, cfg RelayerConfig) (*Relayer, error) {
-
+func initRelayer(client client.Context, cfg RelayerConfig, db database.DBRelayer) *Relayer {
 	mClient := swapmoduletypes.NewMsgClient(client)
 	qClient := swapmoduletypes.NewQueryClient(client)
-	dbClient, err := database.ConnectDB(cfg.MongoURI)
-	dbCollection := dbClient.GetCollection(cfg.DbName, cfg.CollectionName)
-	if err != nil {
-		return nil, err
-	}
 
 	return &Relayer{
 		Config:   cfg,
 		Client:   client,
-		DBClient: dbCollection,
+		DBClient: db,
 
 		qClient:   qClient,
 		msgClient: mClient,
-	}, nil
+	}
 }
 
 func (r *Relayer) startProcess(ctx context.Context, f processFunc, network string) error {
