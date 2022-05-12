@@ -911,10 +911,10 @@ var xxx_messageInfo_MsgRejectResponse proto.InternalMessageInfo
 type MsgRequestIn struct {
 	Creator     string         `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
 	SrcAddress  string         `protobuf:"bytes,2,opt,name=srcAddress,proto3" json:"srcAddress,omitempty"`
-	DestAddress string         `protobuf:"bytes,3,opt,name=destAddress,proto3" json:"destAddress,omitempty"`
-	Network     string         `protobuf:"bytes,4,opt,name=network,proto3" json:"network,omitempty"`
-	Amount      *types.DecCoin `protobuf:"bytes,5,opt,name=amount,proto3" json:"amount,omitempty"`
-	Fee         *types.DecCoin `protobuf:"bytes,6,opt,name=fee,proto3" json:"fee,omitempty"`
+	DestAddress string         `protobuf:"bytes,3,opt,name=destAddress,proto3" json:"destAddress,omitempty"` //
+	Network     string         `protobuf:"bytes,4,opt,name=network,proto3" json:"network,omitempty"` //
+	Amount      *types.DecCoin `protobuf:"bytes,5,opt,name=amount,proto3" json:"amount,omitempty"` ///
+	Fee         *types.DecCoin `protobuf:"bytes,6,opt,name=fee,proto3" json:"fee,omitempty"` //
 }
 
 func (m *MsgRequestIn) Reset()         { *m = MsgRequestIn{} }

@@ -6,7 +6,6 @@ import (
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/crypto/keyring"
-	"github.com/cosmos/cosmos-sdk/server"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/ethereum/go-ethereum/common"
@@ -23,8 +22,11 @@ import (
 	"gopkg.in/yaml.v3"
 	"math/big"
 	"os"
+	"os/signal"
 	"path/filepath"
 	"sort"
+	"sync"
+	"syscall"
 	"time"
 )
 
@@ -59,77 +61,57 @@ func NewStartCommands(defaultNodeHome string) *cobra.Command {
 			relayerClient := initRelayer(clientTx, cfg)
 
 			ctx, cancel := context.WithCancel(context.Background())
+
+			numberProcessing := len(cfg.Network)
+			processChan := make(chan error)
+			doneChan := make(chan struct{})
+			sigs := make(chan os.Signal, 1)
 			go func() {
-				_ = server.WaitForQuitSignals()
-				cancel()
+				signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM)
+			}()
+
+			go func() {
+				defer func() {
+					doneChan <- struct{}{}
+				}()
+				for {
+					select {
+					case <-sigs:
+						cancel()
+						return
+					case err := <-processChan:
+						numberProcessing--
+						if err != nil {
+							log.Err(err)
+						}
+						if numberProcessing == 0 {
+							log.Info().Msg("all process were quited. Exiting")
+							cancel()
+							return
+						}
+					}
+				}
 			}()
 
 			switch cfg.Type {
 			case "in":
-				return relayerClient.startInProcess(ctx)
+				for network := range cfg.Network {
+					go func(network string) {
+						processChan <- relayerClient.startProcess(ctx, relayerClient.processIn, network)
+					}(network)
+				}
+
 			case "out":
-				return relayerClient.startProcess(ctx, relayerClient.processOut, "erc20")
+				for network := range cfg.Network {
+					go func(network string) {
+						processChan <- relayerClient.startProcess(ctx, relayerClient.processOut, network)
+					}(network)
+				}
 			default:
 				return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "Relayer type is required either in or out")
 			}
-
-			//hash, err := relayerClient.submitBatch(context.Background(), swapmoduletypes.Batch{})
-			//fmt.Println(hash, err)
-			//return err
-			//return err
-			//
-			//signerStr, _ := cmd.Flags().GetString(flagSignerKeyName)
-			//networkSignerPairs := strings.Split(signerStr, ",")
-			//lenSigners := len(networkSignerPairs)
-			//if lenSigners == 0 || lenSigners%2 != 0 {
-			//	return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, fmt.Sprintf("%v flag is required and should be in pairs format <network-name>,<signer-key>..."))
-			//}
-			//mapNetworkSigners := make(map[string]string)
-			//for i := 0; i < lenSigners-1; i += 2 {
-			//	networkName := networkSignerPairs[i]
-			//	keyName := networkSignerPairs[i+1]
-			//	kb := clientTx.Keyring
-			//	ks := keyring.NewKeyRingETH(kb)
-			//	if _, err := ks.Key(keyName); err != nil {
-			//		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "%v key name has error %+v", keyName, err)
-			//	}
-			//	mapNetworkSigners[networkName] = keyName
-			//}
-			//swapType, _ := cmd.Flags().GetString(flagType)
-			//
-
-			//relayerClient := initRelayer(clientTx, mapNetworkSigners, "https://eth-ropsten.alchemyapi.io/v2/0M8yP6-iyIof8dFJN0Jph59jJlSKqmbW")
-			//time.Now().UTC().Unix()
-			//switch swapType {
-			//case "in":
-			//	return relayerClient.startInProcess(ctx)
-			//case "out":
-			//	return relayerClient.startOutProcess(ctx)
-			//default:
-			//	return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "Relayer type is required either in or out")
-			//}
-			//serverCtx := server.NewDefaultContext()
-			//
-			//config := serverCtx.Config
-			//homeDir, _ := cmd.Flags().GetString(cli.HomeFlag)
-			//config = config.SetRoot(homeDir)
-			//
-			//clientCtx, err := client.GetClientQueryContext(cmd)
-			//addr, err := getAddr(cmd, clientCtx.HomeDir, args)
-			//if err != nil {
-			//	return err
-			//}
-			//var electoralGenesis electoralmoduletypes.GenesisState
-			//if err := unmarshalGenesisState(cmd, homeDir, electoralmoduletypes.ModuleName, &electoralGenesis); err != nil {
-			//	return errors.Wrap(err, "unmarshal genesis state electoral module types")
-			//}
-			//electoralGenesis.Authority = &electoralmoduletypes.Authority{
-			//	Address: addr.String(),
-			//}
-			//if err := exportGenesisFile(cmd, homeDir, electoralmoduletypes.ModuleName, &electoralGenesis); err != nil {
-			//	return errors.Wrap(err, "export genesis file ")
-			//}
-			//return nil
+			<-doneChan
+			return nil
 		},
 	}
 
@@ -297,7 +279,13 @@ func (r *Relayer) getBatchDetail(ctx context.Context, batch swapmoduletypes.Batc
 	return swaputil.NewBatchDetail(batch, batchesRes.Swaps, schema.Schema), nil
 }
 
+var lock sync.Mutex
+
+// updateBatch thread safe to avoid running in multiple go routine for multiple network
 func (r *Relayer) updateBatch(msg *swapmoduletypes.MsgUpdateBatch) (swapmoduletypes.Batch, error) {
+	lock.Lock()
+	defer lock.Unlock()
+
 	_, err := r.msgClient.UpdateBatch(context.Background(), msg)
 	if err != nil {
 		return swapmoduletypes.Batch{}, errors.Wrapf(err, "update batch id %d to processing fail", msg.GetBatchId())
@@ -318,7 +306,6 @@ func (r *Relayer) updateBatch(msg *swapmoduletypes.MsgUpdateBatch) (swapmodulety
 }
 
 func (r *Relayer) markDone(batchId uint64) (b swapmoduletypes.Batch, err error) {
-
 	updateMsg := &swapmoduletypes.MsgUpdateBatch{
 		Creator: r.Client.GetFromAddress().String(),
 		BatchId: batchId,
@@ -421,9 +408,9 @@ func (r *Relayer) submitBatch(ctx context.Context, network string, batchDetail s
 	return txHash, err
 }
 
-func (r *Relayer) startInProcess(ctx context.Context) error {
+func (r *Relayer) processIn(ctx context.Context, network string) error {
 	//TODO concurrency handle here
-	_, err := r.listenETHSwap(ctx)
+	_, err := r.listenETHSwap(ctx, network)
 	if err != nil {
 		return err
 	}
@@ -431,7 +418,11 @@ func (r *Relayer) startInProcess(ctx context.Context) error {
 	return r.initSwapInRequest(ctx, "0xxa", "shareledger1w4l5fchs69d9avlgvdehq9ypvdh4xyev3p490g", "erc20", 100, 15)
 }
 
-func (r *Relayer) listenETHSwap(ctx context.Context) (interface{}, error) {
+func (r *Relayer) SubmitSwapIn(ctx context.Context, swap swapmoduletypes.MsgRequestIn) error {
+	return nil
+}
+
+func (r *Relayer) listenETHSwap(ctx context.Context, network string) (interface{}, error) {
 	return nil, nil
 }
 
