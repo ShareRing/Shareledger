@@ -74,7 +74,7 @@ func (c *DB) SetLastScannedBlockNumber(contractAddress string, lastScannedBlockN
 	return nil
 }
 
-func (c *DB) UpdateBatches(shareledgerIDs []uint64, status Status) error {
+func (c *DB) UpdateBatchesOut(shareledgerIDs []uint64, status Status) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
@@ -95,11 +95,39 @@ func (c *DB) UpdateBatches(shareledgerIDs []uint64, status Status) error {
 	if err != nil {
 		return err
 	}
-
 	return nil
 }
 
-func (c *DB) GetBatchByType(shareledgerID, requestType string) (Batch, error) {
+func (c *DB) GetNextPendingBatchOut(network string) (*Batch, error) {
+	return c.getOneBatchStatus(network, Pending)
+}
+
+func (c *DB) getOneBatchStatus(network string, status Status) (*Batch, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+	collection := c.GetCollection(ShareRing, BatchCollection)
+
+	var batch Batch
+	err := collection.FindOne(ctx, bson.M{
+		"status":  status,
+		"network": network,
+	}, &options.FindOneOptions{
+		Sort: bson.M{
+			"$sort": bson.M{
+				"shareledgerID": 1,
+			},
+		},
+	}).Decode(&batch)
+	if err != nil {
+		if err != mongo.ErrNoDocuments {
+			return nil, nil
+		}
+		return nil, err
+	}
+	return &batch, err
+}
+
+func (c *DB) SearchBatchByType(shareledgerID uint64, requestType Type) (*Batch, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
@@ -112,10 +140,13 @@ func (c *DB) GetBatchByType(shareledgerID, requestType string) (Batch, error) {
 		"type":          requestType,
 	}).Decode(&queryResult)
 	if err != nil {
-		return Batch{}, err
+		if err == mongo.ErrNoDocuments {
+			return nil, nil
+		}
+		return &Batch{}, err
 	}
 
-	return queryResult, nil
+	return &queryResult, nil
 }
 
 func (c *DB) GetBatchByTxHash(txHash string) (Batch, error) {
@@ -141,15 +172,11 @@ func (c *DB) SetBatch(request Batch) error {
 	defer cancel()
 
 	collection := c.GetCollection(ShareRing, BatchCollection)
-
-	_, err := collection.InsertOne(ctx, bson.M{
+	upsert := true
+	_, err := collection.UpdateOne(ctx, bson.M{
 		"shareledgerID": request.ShareledgerID,
-		"status":        request.Status,
-		"txHash":        request.TxHash,
 		"type":          request.Type,
-		"network":       request.Network,
-		"blockNumber":   request.BlockNumber,
-	})
+	}, request, &options.UpdateOptions{Upsert: &upsert})
 	if err != nil {
 		return err
 	}

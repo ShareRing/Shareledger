@@ -30,7 +30,7 @@ var (
 
 // SwapMetaData contains all meta data concerning the Swap contract.
 var SwapMetaData = &bind.MetaData{
-	ABI: "[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_token\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_relayer\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_approver\",\"type\":\"address\"}],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"previousOwner\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"OwnershipTransferred\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint256[]\",\"name\":\"ids\",\"type\":\"uint256[]\"},{\"indexed\":true,\"internalType\":\"address[]\",\"name\":\"tos\",\"type\":\"address[]\"},{\"indexed\":false,\"internalType\":\"uint256[]\",\"name\":\"amounts\",\"type\":\"uint256[]\"}],\"name\":\"SwapCompleted\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_address\",\"type\":\"address\"}],\"name\":\"addApprover\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address[]\",\"name\":\"_addresses\",\"type\":\"address[]\"}],\"name\":\"addApprovers\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"name\":\"approvers\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_amount\",\"type\":\"uint256\"}],\"name\":\"deposit\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256[]\",\"name\":\"_ids\",\"type\":\"uint256[]\"},{\"internalType\":\"address[]\",\"name\":\"_tos\",\"type\":\"address[]\"},{\"internalType\":\"uint256[]\",\"name\":\"_amounts\",\"type\":\"uint256[]\"}],\"name\":\"digest\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"_digest\",\"type\":\"bytes32\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"relayer\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_address\",\"type\":\"address\"}],\"name\":\"removeApprover\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address[]\",\"name\":\"_addresses\",\"type\":\"address[]\"}],\"name\":\"removeApprovers\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"renounceOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_address\",\"type\":\"address\"}],\"name\":\"setRelayer\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256[]\",\"name\":\"_ids\",\"type\":\"uint256[]\"},{\"internalType\":\"address[]\",\"name\":\"_tos\",\"type\":\"address[]\"},{\"internalType\":\"uint256[]\",\"name\":\"_amounts\",\"type\":\"uint256[]\"},{\"internalType\":\"bytes\",\"name\":\"_signature\",\"type\":\"bytes\"}],\"name\":\"swap\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"\",\"type\":\"bytes32\"}],\"name\":\"swaps\",\"outputs\":[{\"internalType\":\"bytes\",\"name\":\"signature\",\"type\":\"bytes\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"token\",\"outputs\":[{\"internalType\":\"contractIERC20\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"tokensAvailable\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"transferOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"unsetRelayer\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256[]\",\"name\":\"_ids\",\"type\":\"uint256[]\"},{\"internalType\":\"address[]\",\"name\":\"_tos\",\"type\":\"address[]\"},{\"internalType\":\"uint256[]\",\"name\":\"_amounts\",\"type\":\"uint256[]\"},{\"internalType\":\"bytes\",\"name\":\"signature\",\"type\":\"bytes\"}],\"name\":\"verify\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"_address\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"withdraw\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]",
+	ABI: "[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_token\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_relayer\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_approver\",\"type\":\"address\"}],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"previousOwner\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"OwnershipTransferred\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint256[]\",\"name\":\"ids\",\"type\":\"uint256[]\"}],\"name\":\"SwapCompleted\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"name\":\"_approvers\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_address\",\"type\":\"address\"}],\"name\":\"addApprover\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address[]\",\"name\":\"_addresses\",\"type\":\"address[]\"}],\"name\":\"addApprovers\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_address\",\"type\":\"address\"}],\"name\":\"approver\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"_digest\",\"type\":\"bytes32\"}],\"name\":\"batch\",\"outputs\":[{\"internalType\":\"uint256[]\",\"name\":\"ids\",\"type\":\"uint256[]\"},{\"internalType\":\"address[]\",\"name\":\"tos\",\"type\":\"address[]\"},{\"internalType\":\"uint256[]\",\"name\":\"amounts\",\"type\":\"uint256[]\"},{\"internalType\":\"bytes\",\"name\":\"signature\",\"type\":\"bytes\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_amount\",\"type\":\"uint256\"}],\"name\":\"deposit\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256[]\",\"name\":\"_ids\",\"type\":\"uint256[]\"},{\"internalType\":\"address[]\",\"name\":\"_tos\",\"type\":\"address[]\"},{\"internalType\":\"uint256[]\",\"name\":\"_amounts\",\"type\":\"uint256[]\"}],\"name\":\"digest\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"_digest\",\"type\":\"bytes32\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"relayer\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_address\",\"type\":\"address\"}],\"name\":\"removeApprover\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address[]\",\"name\":\"_addresses\",\"type\":\"address[]\"}],\"name\":\"removeApprovers\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"renounceOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_id\",\"type\":\"uint256\"}],\"name\":\"request\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"\",\"type\":\"bytes32\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_address\",\"type\":\"address\"}],\"name\":\"setRelayer\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256[]\",\"name\":\"_ids\",\"type\":\"uint256[]\"},{\"internalType\":\"address[]\",\"name\":\"_tos\",\"type\":\"address[]\"},{\"internalType\":\"uint256[]\",\"name\":\"_amounts\",\"type\":\"uint256[]\"},{\"internalType\":\"bytes\",\"name\":\"_signature\",\"type\":\"bytes\"}],\"name\":\"swap\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"token\",\"outputs\":[{\"internalType\":\"contractIERC20\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"tokensAvailable\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"transferOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"unsetRelayer\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256[]\",\"name\":\"_ids\",\"type\":\"uint256[]\"},{\"internalType\":\"address[]\",\"name\":\"_tos\",\"type\":\"address[]\"},{\"internalType\":\"uint256[]\",\"name\":\"_amounts\",\"type\":\"uint256[]\"},{\"internalType\":\"bytes\",\"name\":\"signature\",\"type\":\"bytes\"}],\"name\":\"verify\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"_address\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"withdraw\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]",
 }
 
 // SwapABI is the input ABI used to generate the binding from.
@@ -179,12 +179,12 @@ func (_Swap *SwapTransactorRaw) Transact(opts *bind.TransactOpts, method string,
 	return _Swap.Contract.contract.Transact(opts, method, params...)
 }
 
-// Approvers is a free data retrieval call binding the contract method 0x0a144391.
+// Approvers is a free data retrieval call binding the contract method 0x3ab970e0.
 //
-// Solidity: function approvers(address ) view returns(bool)
+// Solidity: function _approvers(address ) view returns(bool)
 func (_Swap *SwapCaller) Approvers(opts *bind.CallOpts, arg0 common.Address) (bool, error) {
 	var out []interface{}
-	err := _Swap.contract.Call(opts, &out, "approvers", arg0)
+	err := _Swap.contract.Call(opts, &out, "_approvers", arg0)
 
 	if err != nil {
 		return *new(bool), err
@@ -196,18 +196,104 @@ func (_Swap *SwapCaller) Approvers(opts *bind.CallOpts, arg0 common.Address) (bo
 
 }
 
-// Approvers is a free data retrieval call binding the contract method 0x0a144391.
+// Approvers is a free data retrieval call binding the contract method 0x3ab970e0.
 //
-// Solidity: function approvers(address ) view returns(bool)
+// Solidity: function _approvers(address ) view returns(bool)
 func (_Swap *SwapSession) Approvers(arg0 common.Address) (bool, error) {
 	return _Swap.Contract.Approvers(&_Swap.CallOpts, arg0)
 }
 
-// Approvers is a free data retrieval call binding the contract method 0x0a144391.
+// Approvers is a free data retrieval call binding the contract method 0x3ab970e0.
 //
-// Solidity: function approvers(address ) view returns(bool)
+// Solidity: function _approvers(address ) view returns(bool)
 func (_Swap *SwapCallerSession) Approvers(arg0 common.Address) (bool, error) {
 	return _Swap.Contract.Approvers(&_Swap.CallOpts, arg0)
+}
+
+// Approver is a free data retrieval call binding the contract method 0x3f131d9f.
+//
+// Solidity: function approver(address _address) view returns(bool)
+func (_Swap *SwapCaller) Approver(opts *bind.CallOpts, _address common.Address) (bool, error) {
+	var out []interface{}
+	err := _Swap.contract.Call(opts, &out, "approver", _address)
+
+	if err != nil {
+		return *new(bool), err
+	}
+
+	out0 := *abi.ConvertType(out[0], new(bool)).(*bool)
+
+	return out0, err
+
+}
+
+// Approver is a free data retrieval call binding the contract method 0x3f131d9f.
+//
+// Solidity: function approver(address _address) view returns(bool)
+func (_Swap *SwapSession) Approver(_address common.Address) (bool, error) {
+	return _Swap.Contract.Approver(&_Swap.CallOpts, _address)
+}
+
+// Approver is a free data retrieval call binding the contract method 0x3f131d9f.
+//
+// Solidity: function approver(address _address) view returns(bool)
+func (_Swap *SwapCallerSession) Approver(_address common.Address) (bool, error) {
+	return _Swap.Contract.Approver(&_Swap.CallOpts, _address)
+}
+
+// Batch is a free data retrieval call binding the contract method 0xfddaa065.
+//
+// Solidity: function batch(bytes32 _digest) view returns(uint256[] ids, address[] tos, uint256[] amounts, bytes signature)
+func (_Swap *SwapCaller) Batch(opts *bind.CallOpts, _digest [32]byte) (struct {
+	Ids       []*big.Int
+	Tos       []common.Address
+	Amounts   []*big.Int
+	Signature []byte
+}, error) {
+	var out []interface{}
+	err := _Swap.contract.Call(opts, &out, "batch", _digest)
+
+	outstruct := new(struct {
+		Ids       []*big.Int
+		Tos       []common.Address
+		Amounts   []*big.Int
+		Signature []byte
+	})
+	if err != nil {
+		return *outstruct, err
+	}
+
+	outstruct.Ids = *abi.ConvertType(out[0], new([]*big.Int)).(*[]*big.Int)
+	outstruct.Tos = *abi.ConvertType(out[1], new([]common.Address)).(*[]common.Address)
+	outstruct.Amounts = *abi.ConvertType(out[2], new([]*big.Int)).(*[]*big.Int)
+	outstruct.Signature = *abi.ConvertType(out[3], new([]byte)).(*[]byte)
+
+	return *outstruct, err
+
+}
+
+// Batch is a free data retrieval call binding the contract method 0xfddaa065.
+//
+// Solidity: function batch(bytes32 _digest) view returns(uint256[] ids, address[] tos, uint256[] amounts, bytes signature)
+func (_Swap *SwapSession) Batch(_digest [32]byte) (struct {
+	Ids       []*big.Int
+	Tos       []common.Address
+	Amounts   []*big.Int
+	Signature []byte
+}, error) {
+	return _Swap.Contract.Batch(&_Swap.CallOpts, _digest)
+}
+
+// Batch is a free data retrieval call binding the contract method 0xfddaa065.
+//
+// Solidity: function batch(bytes32 _digest) view returns(uint256[] ids, address[] tos, uint256[] amounts, bytes signature)
+func (_Swap *SwapCallerSession) Batch(_digest [32]byte) (struct {
+	Ids       []*big.Int
+	Tos       []common.Address
+	Amounts   []*big.Int
+	Signature []byte
+}, error) {
+	return _Swap.Contract.Batch(&_Swap.CallOpts, _digest)
 }
 
 // Digest is a free data retrieval call binding the contract method 0xf6708f96.
@@ -303,35 +389,35 @@ func (_Swap *SwapCallerSession) Relayer() (common.Address, error) {
 	return _Swap.Contract.Relayer(&_Swap.CallOpts)
 }
 
-// Swaps is a free data retrieval call binding the contract method 0xeb84e7f2.
+// Request is a free data retrieval call binding the contract method 0xd845a4b3.
 //
-// Solidity: function swaps(bytes32 ) view returns(bytes signature)
-func (_Swap *SwapCaller) Swaps(opts *bind.CallOpts, arg0 [32]byte) ([]byte, error) {
+// Solidity: function request(uint256 _id) view returns(bytes32)
+func (_Swap *SwapCaller) Request(opts *bind.CallOpts, _id *big.Int) ([32]byte, error) {
 	var out []interface{}
-	err := _Swap.contract.Call(opts, &out, "swaps", arg0)
+	err := _Swap.contract.Call(opts, &out, "request", _id)
 
 	if err != nil {
-		return *new([]byte), err
+		return *new([32]byte), err
 	}
 
-	out0 := *abi.ConvertType(out[0], new([]byte)).(*[]byte)
+	out0 := *abi.ConvertType(out[0], new([32]byte)).(*[32]byte)
 
 	return out0, err
 
 }
 
-// Swaps is a free data retrieval call binding the contract method 0xeb84e7f2.
+// Request is a free data retrieval call binding the contract method 0xd845a4b3.
 //
-// Solidity: function swaps(bytes32 ) view returns(bytes signature)
-func (_Swap *SwapSession) Swaps(arg0 [32]byte) ([]byte, error) {
-	return _Swap.Contract.Swaps(&_Swap.CallOpts, arg0)
+// Solidity: function request(uint256 _id) view returns(bytes32)
+func (_Swap *SwapSession) Request(_id *big.Int) ([32]byte, error) {
+	return _Swap.Contract.Request(&_Swap.CallOpts, _id)
 }
 
-// Swaps is a free data retrieval call binding the contract method 0xeb84e7f2.
+// Request is a free data retrieval call binding the contract method 0xd845a4b3.
 //
-// Solidity: function swaps(bytes32 ) view returns(bytes signature)
-func (_Swap *SwapCallerSession) Swaps(arg0 [32]byte) ([]byte, error) {
-	return _Swap.Contract.Swaps(&_Swap.CallOpts, arg0)
+// Solidity: function request(uint256 _id) view returns(bytes32)
+func (_Swap *SwapCallerSession) Request(_id *big.Int) ([32]byte, error) {
+	return _Swap.Contract.Request(&_Swap.CallOpts, _id)
 }
 
 // Token is a free data retrieval call binding the contract method 0xfc0c546a.
@@ -880,48 +966,38 @@ func (it *SwapSwapCompletedIterator) Close() error {
 
 // SwapSwapCompleted represents a SwapCompleted event raised by the Swap contract.
 type SwapSwapCompleted struct {
-	Ids     []*big.Int
-	Tos     []common.Address
-	Amounts []*big.Int
-	Raw     types.Log // Blockchain specific contextual infos
+	Ids []*big.Int
+	Raw types.Log // Blockchain specific contextual infos
 }
 
-// FilterSwapCompleted is a free log retrieval operation binding the contract event 0x95a50fb089964b8a9063bb0f4240408c48f639ea2982fe98dfe06688afcbfd90.
+// FilterSwapCompleted is a free log retrieval operation binding the contract event 0x796a6fb73c9c09afe863a5d1bc7040da846e5aeb2ad3cb42ee36e08a0c0a3e71.
 //
-// Solidity: event SwapCompleted(uint256[] indexed ids, address[] indexed tos, uint256[] amounts)
-func (_Swap *SwapFilterer) FilterSwapCompleted(opts *bind.FilterOpts, ids [][]*big.Int, tos [][]common.Address) (*SwapSwapCompletedIterator, error) {
+// Solidity: event SwapCompleted(uint256[] indexed ids)
+func (_Swap *SwapFilterer) FilterSwapCompleted(opts *bind.FilterOpts, ids [][]*big.Int) (*SwapSwapCompletedIterator, error) {
 
 	var idsRule []interface{}
 	for _, idsItem := range ids {
 		idsRule = append(idsRule, idsItem)
 	}
-	var tosRule []interface{}
-	for _, tosItem := range tos {
-		tosRule = append(tosRule, tosItem)
-	}
 
-	logs, sub, err := _Swap.contract.FilterLogs(opts, "SwapCompleted", idsRule, tosRule)
+	logs, sub, err := _Swap.contract.FilterLogs(opts, "SwapCompleted", idsRule)
 	if err != nil {
 		return nil, err
 	}
 	return &SwapSwapCompletedIterator{contract: _Swap.contract, event: "SwapCompleted", logs: logs, sub: sub}, nil
 }
 
-// WatchSwapCompleted is a free log subscription operation binding the contract event 0x95a50fb089964b8a9063bb0f4240408c48f639ea2982fe98dfe06688afcbfd90.
+// WatchSwapCompleted is a free log subscription operation binding the contract event 0x796a6fb73c9c09afe863a5d1bc7040da846e5aeb2ad3cb42ee36e08a0c0a3e71.
 //
-// Solidity: event SwapCompleted(uint256[] indexed ids, address[] indexed tos, uint256[] amounts)
-func (_Swap *SwapFilterer) WatchSwapCompleted(opts *bind.WatchOpts, sink chan<- *SwapSwapCompleted, ids [][]*big.Int, tos [][]common.Address) (event.Subscription, error) {
+// Solidity: event SwapCompleted(uint256[] indexed ids)
+func (_Swap *SwapFilterer) WatchSwapCompleted(opts *bind.WatchOpts, sink chan<- *SwapSwapCompleted, ids [][]*big.Int) (event.Subscription, error) {
 
 	var idsRule []interface{}
 	for _, idsItem := range ids {
 		idsRule = append(idsRule, idsItem)
 	}
-	var tosRule []interface{}
-	for _, tosItem := range tos {
-		tosRule = append(tosRule, tosItem)
-	}
 
-	logs, sub, err := _Swap.contract.WatchLogs(opts, "SwapCompleted", idsRule, tosRule)
+	logs, sub, err := _Swap.contract.WatchLogs(opts, "SwapCompleted", idsRule)
 	if err != nil {
 		return nil, err
 	}
@@ -953,9 +1029,9 @@ func (_Swap *SwapFilterer) WatchSwapCompleted(opts *bind.WatchOpts, sink chan<- 
 	}), nil
 }
 
-// ParseSwapCompleted is a log parse operation binding the contract event 0x95a50fb089964b8a9063bb0f4240408c48f639ea2982fe98dfe06688afcbfd90.
+// ParseSwapCompleted is a log parse operation binding the contract event 0x796a6fb73c9c09afe863a5d1bc7040da846e5aeb2ad3cb42ee36e08a0c0a3e71.
 //
-// Solidity: event SwapCompleted(uint256[] indexed ids, address[] indexed tos, uint256[] amounts)
+// Solidity: event SwapCompleted(uint256[] indexed ids)
 func (_Swap *SwapFilterer) ParseSwapCompleted(log types.Log) (*SwapSwapCompleted, error) {
 	event := new(SwapSwapCompleted)
 	if err := _Swap.contract.UnpackLog(event, "SwapCompleted", log); err != nil {

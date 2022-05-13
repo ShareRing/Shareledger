@@ -25,12 +25,6 @@ service Query {
 		option (google.api.http).get = "/sharering/shareledger/swap/search/{status}/{ids}/{srcAddr}/{destAddr}/{srcNetwork}/{destNetwork}";
 	}
 
-// Queries a Batch by id.
-	rpc Batches(QueryBatchesRequest) returns (QueryBatchesResponse) {
-		option (google.api.http).get = "/sharering/shareledger/swap/batches/{ids}";
-	}
-	
-
 // Queries a list of Fund items.
 	rpc Balance(QueryBalanceRequest) returns (QueryBalanceResponse) {
 		option (google.api.http).get = "/sharering/shareledger/swap/balance";
@@ -47,7 +41,7 @@ service Query {
 	}
 
 // Queries a list of SearchBatch items.
-	rpc SearchBatches(QuerySearchBatchesRequest) returns (QuerySearchBatchesResponse) {
+	rpc Batches(QueryBatchesRequest) returns (QueryBatchesResponse) {
 		option (google.api.http).get = "/sharering/shareledger/swap/search_batches";
 	}
 
@@ -78,12 +72,9 @@ message QuerySwapResponse {
 	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 
-message QueryBatchesRequest {
-	repeated uint64 ids = 1;
-}
-
 message QueryBatchesResponse {
 	repeated Batch batches = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 
 message QueryBalanceRequest {
@@ -111,15 +102,12 @@ message QueryAllSchemasResponse {
 	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 
-message QuerySearchBatchesRequest {
+message QueryBatchesRequest {
 	string status = 1;
 	string network = 2;
-cosmos.base.query.v1beta1.PageRequest pagination = 3;
+	repeated  uint64 ids = 3;
+cosmos.base.query.v1beta1.PageRequest pagination = 4;
 }
 
-message QuerySearchBatchesResponse {
-	repeated Batch batchs = 1 [(gogoproto.nullable) = false];
-cosmos.base.query.v1beta1.PageResponse pagination = 2;
-}
 
 // this line is used by starport scaffolding # 3

@@ -31184,67 +31184,6 @@ paths:
                   additionalProperties: {}
       tags:
         - Query
-  '/sharering/shareledger/swap/batches/{ids}':
-    get:
-      summary: Queries a Batch by id.
-      operationId: ShareledgerSwapBatches
-      responses:
-        '200':
-          description: A successful response.
-          schema:
-            type: object
-            properties:
-              batches:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    id:
-                      type: string
-                      format: uint64
-                    signature:
-                      type: string
-                    txIds:
-                      type: array
-                      items:
-                        type: string
-                        format: uint64
-                    status:
-                      type: string
-                    txHash:
-                      type: string
-                    network:
-                      type: string
-        default:
-          description: An unexpected error response.
-          schema:
-            type: object
-            properties:
-              code:
-                type: integer
-                format: int32
-              message:
-                type: string
-              details:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    '@type':
-                      type: string
-                  additionalProperties: {}
-      parameters:
-        - name: ids
-          in: path
-          required: true
-          type: array
-          items:
-            type: string
-            format: uint64
-          collectionFormat: csv
-          minItems: 1
-      tags:
-        - Query
   /sharering/shareledger/swap/params:
     get:
       summary: Parameters queries the parameters of the module.
@@ -31484,14 +31423,14 @@ paths:
   /sharering/shareledger/swap/search_batches:
     get:
       summary: Queries a list of SearchBatch items.
-      operationId: ShareledgerSwapSearchBatches
+      operationId: ShareledgerSwapBatches
       responses:
         '200':
           description: A successful response.
           schema:
             type: object
             properties:
-              batchs:
+              batches:
                 type: array
                 items:
                   type: object
@@ -31566,6 +31505,14 @@ paths:
           in: query
           required: false
           type: string
+        - name: ids
+          in: query
+          required: false
+          type: array
+          items:
+            type: string
+            format: uint64
+          collectionFormat: multi
         - name: pagination.key
           description: |-
             key is a value returned in PageResponse.next_key to begin
@@ -53674,6 +53621,8 @@ definitions:
       batchId:
         type: string
         format: uint64
+  shareledger.swap.MsgCancelBatchesResponse:
+    type: object
   shareledger.swap.MsgCancelResponse:
     type: object
   shareledger.swap.MsgCreateSchemaResponse:
@@ -53830,6 +53779,31 @@ definitions:
               type: string
             network:
               type: string
+      pagination:
+        type: object
+        properties:
+          next_key:
+            type: string
+            format: byte
+            title: |-
+              next_key is the key to be passed to PageRequest.key to
+              query the next page most efficiently
+          total:
+            type: string
+            format: uint64
+            title: >-
+              total is total number of results available if
+              PageRequest.count_total
+
+              was set, its value is undefined otherwise
+        description: |-
+          PageResponse is to be embedded in gRPC response messages where the
+          corresponding request message has used PageRequest.
+
+           message SomeResponse {
+                   repeated Bar results = 1;
+                   PageResponse page = 2;
+           }
   shareledger.swap.QueryParamsResponse:
     type: object
     properties:
@@ -53888,55 +53862,6 @@ definitions:
                   method
 
                   signatures required by gogoproto.
-  shareledger.swap.QuerySearchBatchesResponse:
-    type: object
-    properties:
-      batchs:
-        type: array
-        items:
-          type: object
-          properties:
-            id:
-              type: string
-              format: uint64
-            signature:
-              type: string
-            txIds:
-              type: array
-              items:
-                type: string
-                format: uint64
-            status:
-              type: string
-            txHash:
-              type: string
-            network:
-              type: string
-      pagination:
-        type: object
-        properties:
-          next_key:
-            type: string
-            format: byte
-            title: |-
-              next_key is the key to be passed to PageRequest.key to
-              query the next page most efficiently
-          total:
-            type: string
-            format: uint64
-            title: >-
-              total is total number of results available if
-              PageRequest.count_total
-
-              was set, its value is undefined otherwise
-        description: |-
-          PageResponse is to be embedded in gRPC response messages where the
-          corresponding request message has used PageRequest.
-
-           message SomeResponse {
-                   repeated Bar results = 1;
-                   PageResponse page = 2;
-           }
   shareledger.swap.QuerySwapResponse:
     type: object
     properties:

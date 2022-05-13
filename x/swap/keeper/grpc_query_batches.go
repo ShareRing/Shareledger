@@ -12,13 +12,16 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (k Keeper) SearchBatches(goCtx context.Context, req *types.QuerySearchBatchesRequest) (*types.QuerySearchBatchesResponse, error) {
+func (k Keeper) Batches(goCtx context.Context, req *types.QueryBatchesRequest) (*types.QueryBatchesResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
-
+	bMap := make(map[uint64]struct{})
+	for i := range req.GetIds() {
+		bMap[req.Ids[i]] = struct{}{}
+	}
 	batchStore := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.BatchKey))
 
 	var batches []types.Batch
@@ -28,11 +31,20 @@ func (k Keeper) SearchBatches(goCtx context.Context, req *types.QuerySearchBatch
 		if err := k.cdc.Unmarshal(value, &val); err != nil {
 			return false, err
 		}
-		if val.Status != req.GetStatus() {
-			return false, nil
+		if req.GetStatus() != "" {
+			if val.Status != req.GetStatus() {
+				return false, nil
+			}
 		}
+
 		if req.GetNetwork() != "" {
 			if val.Network != req.GetNetwork() {
+				return false, nil
+			}
+		}
+		if len(req.GetIds()) > 0 {
+			_, matched := bMap[val.Id]
+			if !matched {
 				return false, nil
 			}
 		}
@@ -43,11 +55,11 @@ func (k Keeper) SearchBatches(goCtx context.Context, req *types.QuerySearchBatch
 		return true, nil
 	})
 	if err != nil {
-		return nil, sdkerrors.Wrap(err, "getting batchs fail")
+		return nil, sdkerrors.Wrap(err, "getting batches fail")
 	}
 
-	return &types.QuerySearchBatchesResponse{
-		Batchs:     batches,
+	return &types.QueryBatchesResponse{
+		Batches:    batches,
 		Pagination: pageRes,
 	}, nil
 }

@@ -40,9 +40,9 @@ type RelayerConfig struct {
 }
 
 type Relayer struct {
-	Config   RelayerConfig
-	Client   client.Context
-	DBClient database.DBRelayer
+	Config RelayerConfig
+	Client client.Context
+	db     database.DBRelayer
 
 	qClient   swapmoduletypes.QueryClient
 	msgClient swapmoduletypes.MsgClient
