@@ -6,7 +6,7 @@ type: out
 networks:
   erc20:
     signer: acc3
-    url: https://eth-rinkeby.alchemyapi.io/v2/0M8yP6-iyIof8dFJN0Jph59jJlSKqmbW
+    url: https://rinkeby.infura.io/v3/bf1a5b4c59cb45ea8ebf48497d3295ae
     chainId: 4
     contract: 0x7451bDECe7270a4fe4aAFFDCAa8c37bd8D041B4a
     lastScannedBlock: 0
