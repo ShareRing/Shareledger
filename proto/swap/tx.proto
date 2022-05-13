@@ -21,6 +21,7 @@ service Msg {
   rpc ApproveIn(MsgApproveIn) returns (MsgApproveInResponse);
   rpc UpdateBatch(MsgUpdateBatch) returns (MsgUpdateBatchResponse);
   rpc UpdateSwapFee(MsgUpdateSwapFee) returns (MsgUpdateSwapFeeResponse);
+  rpc CancelBatches(MsgCancelBatches) returns (MsgCancelBatchesResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -149,6 +150,14 @@ message MsgUpdateSwapFee {
 }
 
 message MsgUpdateSwapFeeResponse {
+}
+
+message MsgCancelBatches {
+  string creator = 1;
+  repeated uint64 ids = 2;
+}
+
+message MsgCancelBatchesResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message

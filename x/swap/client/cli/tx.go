@@ -38,6 +38,7 @@ func GetTxCmd() *cobra.Command {
 	cmd.AddCommand(CmdUpdateSchema())
 	cmd.AddCommand(CmdDeleteSchema())
 	cmd.AddCommand(CmdUpdateSwapFee())
+	cmd.AddCommand(CmdCancelBatches())
 	// this line is used by starport scaffolding # 1
 	cmd.AddCommand(CmdCancel())
 	cmd.AddCommand(CmdReject())

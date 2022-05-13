@@ -76,6 +76,10 @@ const (
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgUpdateSwapFee int = 100
 
+	opWeightMsgCancelBatches = "op_weight_msg_cancel_batches"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgCancelBatches int = 100
+
 	// this line is used by starport scaffolding # simapp/module/const
 )
 
@@ -265,6 +269,17 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	operations = append(operations, simulation.NewWeightedOperation(
 		weightMsgUpdateSwapFee,
 		swapsimulation.SimulateMsgUpdateSwapFee(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgCancelBatches int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgCancelBatches, &weightMsgCancelBatches, nil,
+		func(_ *rand.Rand) {
+			weightMsgCancelBatches = defaultWeightMsgCancelBatches
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgCancelBatches,
+		swapsimulation.SimulateMsgCancelBatches(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
 	// this line is used by starport scaffolding # simapp/module/operation

@@ -29,7 +29,10 @@ const (
 	ErrMsgNotAuthorityAndTreasure = "Transaction's Signer is not authority OR treasure account"
 	//ErrMsgNotApproverAccount      = "Transaction's Signer is not approver account"
 	//ErrMsgNotRelayerAccount       = "Transaction's Signer is not relayer account"
-	ErrMsgNotSwapManager = "Transaction's Signer is not swap manager account"
+	ErrMsgNotSwapManager       = "Transaction's Signer is not swap manager account"
+	ErrMsgNotRelayerOrApprover = "Transaction's Signer is not relayer approver"
+	ErrMsgNotRelayer           = "Transaction's Signer is not relayer approver"
+	ErrMsgStatusInvalid        = "Can't update batch to canceled via update function"
 )
 
 func NewAuthDecorator(rk RoleKeeper, ik IDKeeper) Auth {
@@ -137,6 +140,17 @@ func (a Auth) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate bool, next sdk.Ant
 		case *swapmoduletypes.MsgUpdateSwapFee:
 			if !a.rk.IsSwapManager(ctx, signer) && !a.rk.IsTreasurer(ctx, signer) {
 				return ctx, sdkerrors.Wrapf(sdkerrors.ErrUnauthorized, ErrMsgNotSwapManager)
+			}
+		case *swapmoduletypes.MsgCancelBatches:
+			if !a.rk.IsRelayer(ctx, signer) && !a.rk.IsApprover(ctx, signer) {
+				return ctx, sdkerrors.Wrapf(sdkerrors.ErrUnauthorized, ErrMsgNotRelayerOrApprover)
+			}
+		case *swapmoduletypes.MsgUpdateBatch:
+			if msg.Status == swapmoduletypes.BatchStatusCanceled {
+				return ctx, sdkerrors.Wrapf(sdkerrors.ErrUnauthorized, ErrMsgStatusInvalid)
+			}
+			if !a.rk.IsRelayer(ctx, signer) {
+				return ctx, sdkerrors.Wrapf(sdkerrors.ErrUnauthorized, ErrMsgNotRelayer)
 			}
 		}
 	}

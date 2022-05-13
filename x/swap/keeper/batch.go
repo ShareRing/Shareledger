@@ -91,8 +91,8 @@ func (k Keeper) GetAllBatch(ctx sdk.Context) (list []types.Batch) {
 	return
 }
 
-// GetBatchsByIDs returns all batch
-func (k Keeper) GetBatchsByIDs(ctx sdk.Context, ids []uint64) (list []types.Batch) {
+// GetBatchesByIDs returns all batch
+func (k Keeper) GetBatchesByIDs(ctx sdk.Context, ids []uint64) (list []types.Batch) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.BatchKey))
 	iterator := sdk.KVStorePrefixIterator(store, []byte{})
 	defer iterator.Close()

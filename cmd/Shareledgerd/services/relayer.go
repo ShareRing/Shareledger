@@ -4,10 +4,12 @@ import (
 	"context"
 	"fmt"
 	"github.com/rs/zerolog/log"
+	"gopkg.in/yaml.v3"
 	"math/big"
 	"os"
 	"os/signal"
 	"path/filepath"
+	"sort"
 	"sync"
 	"syscall"
 	"time"
@@ -30,7 +32,6 @@ import (
 	denom "github.com/sharering/shareledger/x/utils/demo"
 	"github.com/spf13/cobra"
 	"go.mongodb.org/mongo-driver/mongo"
-	"gopkg.in/yaml.v3"
 )
 
 func GetRelayerCommands(defaultNodeHome string) *cobra.Command {
@@ -395,14 +396,20 @@ func (r *Relayer) checkTxHash(ctx context.Context, network string, txHash common
 
 func (r *Relayer) getNextPendingBatch(network string) (*swapmoduletypes.Batch, error) {
 	qClient := swapmoduletypes.NewQueryClient(r.Client)
-	pendingQuery := &swapmoduletypes.QuerySearchBatchesRequest{
+	pendingQuery := &swapmoduletypes.QueryBatchesRequest{
 		Status:  swapmoduletypes.BatchStatusPending,
 		Network: network,
 	}
 
-	batchesRes, err := qClient.SearchBatches(context.Background(), pendingQuery)
-	batches := batchesRes.GetBatchs()
-	return &batches[6], err
+	batchesRes, err := qClient.Batches(context.Background(), pendingQuery)
+	batches := batchesRes.GetBatches()
+	sort.Sort(BatchSortByIDAscending(batches))
+
+	if len(batches) == 0 {
+		return nil, fmt.Errorf("pending batchs is empty")
+	}
+
+	return &batches[0], err
 }
 
 func (r *Relayer) getBatchDetail(ctx context.Context, batch swapmoduletypes.Batch) (detail swaputil.BatchDetail, err error) {
