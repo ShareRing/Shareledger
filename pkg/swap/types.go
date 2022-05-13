@@ -17,7 +17,7 @@ type BatchDetail struct {
 	SignDetail
 }
 
-func NewBatchDetail(batch swapmoduletypes.Batch, requests []swapmoduletypes.Request, signSchema swapmoduletypes.SignSchema) BatchDetail {
+func NewBatchDetail(batch swapmoduletypes.Batch, requests []swapmoduletypes.Request, signSchema swapmoduletypes.Schema) BatchDetail {
 	return BatchDetail{
 		Batch:      batch,
 		SignDetail: NewSignDetail(requests, signSchema),
@@ -26,10 +26,10 @@ func NewBatchDetail(batch swapmoduletypes.Batch, requests []swapmoduletypes.Requ
 
 type SignDetail struct {
 	Requests   []swapmoduletypes.Request
-	SignSchema swapmoduletypes.SignSchema
+	SignSchema swapmoduletypes.Schema
 }
 
-func NewSignDetail(requests []swapmoduletypes.Request, signSchema swapmoduletypes.SignSchema) SignDetail {
+func NewSignDetail(requests []swapmoduletypes.Request, signSchema swapmoduletypes.Schema) SignDetail {
 	return SignDetail{
 		//Batch:      batch,
 		Requests:   requests,

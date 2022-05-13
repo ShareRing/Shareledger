@@ -39,7 +39,7 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 	genesis.RequestCount = k.GetRequestCount(ctx)
 	genesis.BatchList = k.GetAllBatch(ctx)
 	genesis.BatchCount = k.GetBatchCount(ctx)
-	genesis.FormatList = k.GetAllSignSchema(ctx)
+	genesis.FormatList = k.GetAllSchema(ctx)
 	// this line is used by starport scaffolding # genesis/module/export
 
 	return genesis

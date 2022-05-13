@@ -11,19 +11,19 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (k Keeper) AllSignSchemas(c context.Context, req *types.QueryAllSignSchemasRequest) (*types.QueryAllSignSchemasResponse, error) {
+func (k Keeper) AllSchemas(c context.Context, req *types.QueryAllSchemasRequest) (*types.QueryAllSchemasResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
 
-	var schemas []types.SignSchema
+	var schemas []types.Schema
 	ctx := sdk.UnwrapSDKContext(c)
 
 	store := ctx.KVStore(k.storeKey)
 	signSchemaStore := prefix.NewStore(store, types.KeyPrefix(types.SignSchemaKeyPrefix))
 
 	pageRes, err := query.Paginate(signSchemaStore, req.Pagination, func(key []byte, value []byte) error {
-		var signSchema types.SignSchema
+		var signSchema types.Schema
 		if err := k.cdc.Unmarshal(value, &signSchema); err != nil {
 			return err
 		}
@@ -36,16 +36,16 @@ func (k Keeper) AllSignSchemas(c context.Context, req *types.QueryAllSignSchemas
 		return nil, status.Error(codes.Internal, err.Error())
 	}
 
-	return &types.QueryAllSignSchemasResponse{Schemas: schemas, Pagination: pageRes}, nil
+	return &types.QueryAllSchemasResponse{Schemas: schemas, Pagination: pageRes}, nil
 }
 
-func (k Keeper) SignSchema(c context.Context, req *types.QueryGetSignSchemaRequest) (*types.QuerySignSchemaResponse, error) {
+func (k Keeper) Schema(c context.Context, req *types.QueryGetSchemaRequest) (*types.QuerySchemaResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
 	ctx := sdk.UnwrapSDKContext(c)
 
-	val, found := k.GetSignSchema(
+	val, found := k.GetSchema(
 		ctx,
 		req.Network,
 	)
@@ -53,5 +53,5 @@ func (k Keeper) SignSchema(c context.Context, req *types.QueryGetSignSchemaReque
 		return nil, status.Error(codes.NotFound, "not found")
 	}
 
-	return &types.QuerySignSchemaResponse{Schema: val}, nil
+	return &types.QuerySchemaResponse{Schema: val}, nil
 }

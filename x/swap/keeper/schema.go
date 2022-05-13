@@ -7,7 +7,7 @@ import (
 )
 
 // SetSchema set a specific format in the store from its index
-func (k Keeper) SetSchema(ctx sdk.Context, format types.SignSchema) {
+func (k Keeper) SetSchema(ctx sdk.Context, format types.Schema) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.SignSchemaKeyPrefix))
 	b := k.cdc.MustMarshal(&format)
 	store.Set(types.FormatKey(
@@ -15,12 +15,12 @@ func (k Keeper) SetSchema(ctx sdk.Context, format types.SignSchema) {
 	), b)
 }
 
-// GetSignSchema returns a format from its index
-func (k Keeper) GetSignSchema(
+// GetSchema returns a format from its index
+func (k Keeper) GetSchema(
 	ctx sdk.Context,
 	network string,
 
-) (val types.SignSchema, found bool) {
+) (val types.Schema, found bool) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.SignSchemaKeyPrefix))
 
 	b := store.Get(types.FormatKey(
@@ -34,8 +34,8 @@ func (k Keeper) GetSignSchema(
 	return val, true
 }
 
-// RemoveSignSchema removes a format from the store
-func (k Keeper) RemoveSignSchema(
+// RemoveSchema removes a format from the store
+func (k Keeper) RemoveSchema(
 	ctx sdk.Context,
 	network string,
 
@@ -46,15 +46,15 @@ func (k Keeper) RemoveSignSchema(
 	))
 }
 
-// GetAllSignSchema returns all format
-func (k Keeper) GetAllSignSchema(ctx sdk.Context) (list []types.SignSchema) {
+// GetAllSchema returns all format
+func (k Keeper) GetAllSchema(ctx sdk.Context) (list []types.Schema) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.SignSchemaKeyPrefix))
 	iterator := sdk.KVStorePrefixIterator(store, []byte{})
 
 	defer iterator.Close()
 
 	for ; iterator.Valid(); iterator.Next() {
-		var val types.SignSchema
+		var val types.Schema
 		k.cdc.MustUnmarshal(iterator.Value(), &val)
 		list = append(list, val)
 	}

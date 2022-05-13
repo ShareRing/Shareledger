@@ -22,6 +22,8 @@ service Msg {
   rpc RevokeRelayers(MsgRevokeRelayers) returns (MsgRevokeRelayersResponse);
   rpc EnrollApprovers(MsgEnrollApprovers) returns (MsgEnrollApproversResponse);
   rpc RevokeApprovers(MsgRevokeApprovers) returns (MsgRevokeApproversResponse);
+  rpc EnrollSwapManagers(MsgEnrollSwapManagers) returns (MsgEnrollSwapManagersResponse);
+  rpc RevokeSwapManagers(MsgRevokeSwapManagers) returns (MsgRevokeSwapManagersResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -135,6 +137,22 @@ message MsgRevokeApprovers {
 }
 
 message MsgRevokeApproversResponse {
+}
+
+message MsgEnrollSwapManagers {
+  string creator = 1;
+  repeated string addresses = 2;
+}
+
+message MsgEnrollSwapManagersResponse {
+}
+
+message MsgRevokeSwapManagers {
+  string creator = 1;
+  repeated string addresses = 2;
+}
+
+message MsgRevokeSwapManagersResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message

@@ -26,6 +26,7 @@ type RoleKeeper interface {
 	IsVoter(ctx sdk.Context, address sdk.AccAddress) bool
 	IsApprover(ctx sdk.Context, address sdk.AccAddress) bool
 	IsRelayer(ctx sdk.Context, address sdk.AccAddress) bool
+	IsSwapManager(ctx sdk.Context, address sdk.AccAddress) bool
 }
 type IDKeeper interface {
 	GetFullIDByIDString(ctx sdk.Context, id string) (*idtypes.Id, bool)

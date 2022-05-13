@@ -31627,7 +31627,7 @@ paths:
   /sharering/shareledger/swap/sign_schema:
     get:
       summary: Queries a list of Format items.
-      operationId: ShareledgerSwapAllSignSchemas
+      operationId: ShareledgerSwapAllSchemas
       responses:
         '200':
           description: A successful response.
@@ -31790,7 +31790,7 @@ paths:
   '/sharering/shareledger/swap/sign_schema/{network}':
     get:
       summary: Queries a Format by index.
-      operationId: ShareledgerSwapSignSchema
+      operationId: ShareledgerSwapSchema
       responses:
         '200':
           description: A successful response.
@@ -53124,6 +53124,8 @@ definitions:
     type: object
   shareledger.electoral.MsgEnrollRelayersResponse:
     type: object
+  shareledger.electoral.MsgEnrollSwapManagersResponse:
+    type: object
   shareledger.electoral.MsgEnrollVoterResponse:
     type: object
   shareledger.electoral.MsgRevokeAccountOperatorsResponse:
@@ -53137,6 +53139,8 @@ definitions:
   shareledger.electoral.MsgRevokeLoadersResponse:
     type: object
   shareledger.electoral.MsgRevokeRelayersResponse:
+    type: object
+  shareledger.electoral.MsgRevokeSwapManagersResponse:
     type: object
   shareledger.electoral.MsgRevokeVoterResponse:
     type: object
@@ -53672,9 +53676,9 @@ definitions:
         format: uint64
   shareledger.swap.MsgCancelResponse:
     type: object
-  shareledger.swap.MsgCreateSignSchemaResponse:
+  shareledger.swap.MsgCreateSchemaResponse:
     type: object
-  shareledger.swap.MsgDeleteSignSchemaResponse:
+  shareledger.swap.MsgDeleteSchemaResponse:
     type: object
   shareledger.swap.MsgDepositResponse:
     type: object
@@ -53697,7 +53701,9 @@ definitions:
         format: uint64
   shareledger.swap.MsgUpdateBatchResponse:
     type: object
-  shareledger.swap.MsgUpdateSignSchemaResponse:
+  shareledger.swap.MsgUpdateSchemaResponse:
+    type: object
+  shareledger.swap.MsgUpdateSwapFeeResponse:
     type: object
   shareledger.swap.MsgWithdrawResponse:
     type: object
@@ -53710,7 +53716,7 @@ definitions:
       outFee:
         type: string
     description: Params defines the parameters for the module.
-  shareledger.swap.QueryAllSignSchemasResponse:
+  shareledger.swap.QueryAllSchemasResponse:
     type: object
     properties:
       schemas:
@@ -53834,6 +53840,54 @@ definitions:
           outFee:
             type: string
     description: QueryParamsResponse is response type for the Query/Params RPC method.
+  shareledger.swap.QuerySchemaResponse:
+    type: object
+    properties:
+      schema:
+        type: object
+        properties:
+          network:
+            type: string
+          creator:
+            type: string
+          schema:
+            type: string
+          contractExponent:
+            type: integer
+            format: int32
+          fee:
+            type: object
+            properties:
+              in:
+                type: object
+                properties:
+                  denom:
+                    type: string
+                  amount:
+                    type: string
+                description: >-
+                  Coin defines a token with a denomination and an amount.
+
+
+                  NOTE: The amount field is an Int which implements the custom
+                  method
+
+                  signatures required by gogoproto.
+              out:
+                type: object
+                properties:
+                  denom:
+                    type: string
+                  amount:
+                    type: string
+                description: >-
+                  Coin defines a token with a denomination and an amount.
+
+
+                  NOTE: The amount field is an Int which implements the custom
+                  method
+
+                  signatures required by gogoproto.
   shareledger.swap.QuerySearchBatchesResponse:
     type: object
     properties:
@@ -53883,54 +53937,6 @@ definitions:
                    repeated Bar results = 1;
                    PageResponse page = 2;
            }
-  shareledger.swap.QuerySignSchemaResponse:
-    type: object
-    properties:
-      schema:
-        type: object
-        properties:
-          network:
-            type: string
-          creator:
-            type: string
-          schema:
-            type: string
-          contractExponent:
-            type: integer
-            format: int32
-          fee:
-            type: object
-            properties:
-              in:
-                type: object
-                properties:
-                  denom:
-                    type: string
-                  amount:
-                    type: string
-                description: >-
-                  Coin defines a token with a denomination and an amount.
-
-
-                  NOTE: The amount field is an Int which implements the custom
-                  method
-
-                  signatures required by gogoproto.
-              out:
-                type: object
-                properties:
-                  denom:
-                    type: string
-                  amount:
-                    type: string
-                description: >-
-                  Coin defines a token with a denomination and an amount.
-
-
-                  NOTE: The amount field is an Int which implements the custom
-                  method
-
-                  signatures required by gogoproto.
   shareledger.swap.QuerySwapResponse:
     type: object
     properties:
@@ -54059,7 +54065,7 @@ definitions:
       createdAt:
         type: string
         format: uint64
-  shareledger.swap.SignSchema:
+  shareledger.swap.Schema:
     type: object
     properties:
       network:

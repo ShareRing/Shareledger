@@ -55,7 +55,7 @@ func CmdApprove() *cobra.Command {
 				return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "the swapping requests ids list does not match with current pending requests")
 			}
 
-			formatRes, err := queryClient.SignSchema(cmd.Context(), &types.QueryGetSignSchemaRequest{Network: networkName})
+			formatRes, err := queryClient.Schema(cmd.Context(), &types.QueryGetSchemaRequest{Network: networkName})
 			if err != nil {
 				return err
 			}

@@ -22,8 +22,11 @@ accounts:
     mnemonic: "spend people immense ill property hungry craft corn quote once hand clarify adapt disorder airport balance alley wisdom physical appear debris awake pencil skate"
   - name: "relayer"
     coins: ["100000000000nshr"]
-    mnemonic : "indoor donate grid ostrich tree swamp cactus common piano buzz version world second try garage squirrel alert fork december control bind spoon taste essay
-"
+    mnemonic : "indoor donate grid ostrich tree swamp cactus common piano buzz version world second try garage squirrel alert fork december control bind spoon taste essay"
+  - name: "swap_manager"
+    coins: ["100000000000nshr"]
+    mnemonic: "logic fade bike misery female father false speak code immune improve key food enter night timber kick spare amused miss expire bottom walk century"
+
 validator:
   name: validator
   staked: "100000000000000000nshr"
@@ -87,6 +90,9 @@ genesis:
         - key: relayershareledger16k53l0v5fr93u2kpe7ek2lc3tm37k4954zalvv
           address: shareledger16k53l0v5fr93u2kpe7ek2lc3tm37k4954zalvv
           status: active
+        - key: swapManagershareledger1yfwgejzj4nmkp6es6q3xea9uwexy5xwjs9rpcx
+          address: shareledger1yfwgejzj4nmkp6es6q3xea9uwexy5xwjs9rpcx
+          status: active
       authority:
         address: shareledger1lq9svs76xwekrrzw7uprekyqydf7fp02p8zp8e
       treasurer:
@@ -107,16 +113,6 @@ genesis:
         ports: []
     swap:
       batchCount: '2'
-      batchList:
-        - id: '1'
-          network: erc20
-          signature: >-
-            0x62d7e3bddab6922f185088389abca34625531bde982c1353f4664b8e61b8e62844696584c3d815a62a8ad43a9fd7f9b7e1fe69ff8cf407299572e64f1b46cb711c
-          status: pending
-          txHash: ''
-          txIds:
-            - '1'
-            - '2'
       formatList:
         - contractExponent: 2
           creator: shareledger1lq9svs76xwekrrzw7uprekyqydf7fp02p8zp8e
@@ -138,7 +134,7 @@ genesis:
         - amount:
             amount: '10000000000'
             denom: nshr
-          batchId: '1'
+          batchId: '0'
           createdAt: '1652348033'
           destAddr: '0x97B98D335c28F9aD9c123E344a78F00C84146431'
           destNetwork: erc20
@@ -148,11 +144,11 @@ genesis:
           id: '1'
           srcAddr: shareledger1t3g4570e23h96h5hm5gdtfrjprmvk9qwmrglfr
           srcNetwork: slp3
-          status: approved
+          status: pending
         - amount:
             amount: '10000000000'
             denom: nshr
-          batchId: '1'
+          batchId: '0'
           createdAt: '1652348037'
           destAddr: '0x97B98D335c28F9aD9c123E344a78F00C84146431'
           destNetwork: erc20
@@ -162,7 +158,7 @@ genesis:
           id: '2'
           srcAddr: shareledger1t3g4570e23h96h5hm5gdtfrjprmvk9qwmrglfr
           srcNetwork: slp3
-          status: approved
+          status: pending
 
 init:
   client:

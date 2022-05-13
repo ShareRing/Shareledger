@@ -5,7 +5,7 @@ import "go.mongodb.org/mongo-driver/bson/primitive"
 type Status string
 type Type string
 
-type Request struct {
+type Batch struct {
 	ID            primitive.ObjectID `bson:"_id" json:"id,omitempty"`
 	ShareledgerID string             `json:"shareledgerID,omitempty" validate:"required"`
 	Status        Status             `json:"status,omitempty" validate:"required"`

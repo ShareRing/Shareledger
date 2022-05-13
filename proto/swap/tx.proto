@@ -12,15 +12,16 @@ service Msg {
   rpc ApproveOut(MsgApproveOut) returns (MsgApproveResponse);
   rpc Deposit(MsgDeposit) returns (MsgDepositResponse);
   rpc Withdraw(MsgWithdraw) returns (MsgWithdrawResponse);
-  rpc CreateSignSchema(MsgCreateSignSchema) returns (MsgCreateSignSchemaResponse);
-  rpc UpdateSignSchema(MsgUpdateSignSchema) returns (MsgUpdateSignSchemaResponse);
-  rpc DeleteSignSchema(MsgDeleteSignSchema) returns (MsgDeleteSignSchemaResponse);
+  rpc CreateSchema(MsgCreateSchema) returns (MsgCreateSchemaResponse);
+  rpc UpdateSchema(MsgUpdateSchema) returns (MsgUpdateSchemaResponse);
+  rpc DeleteSchema(MsgDeleteSchema) returns (MsgDeleteSchemaResponse);
   rpc Cancel(MsgCancel) returns (MsgCancelResponse);
   rpc Reject(MsgReject) returns (MsgRejectResponse);
   rpc RequestIn(MsgRequestIn) returns (MsgSwapInResponse);
   rpc ApproveIn(MsgApproveIn) returns (MsgApproveInResponse);
   rpc UpdateBatch(MsgUpdateBatch) returns (MsgUpdateBatchResponse);
-  // this line is used by starport scaffolding # proto/tx/rpc
+  rpc UpdateSwapFee(MsgUpdateSwapFee) returns (MsgUpdateSwapFeeResponse);
+// this line is used by starport scaffolding # proto/tx/rpc
 }
 
 message MsgRequestOut {
@@ -64,7 +65,7 @@ message MsgWithdrawResponse {
   string status = 1;
 }
 
-message MsgCreateSignSchema {
+message MsgCreateSchema {
   string creator = 1;
   string network = 2;
   string schema = 3;
@@ -73,9 +74,9 @@ message MsgCreateSignSchema {
   int32 contractExponent = 6;
 
 }
-message MsgCreateSignSchemaResponse {}
+message MsgCreateSchemaResponse {}
 
-message MsgUpdateSignSchema {
+message MsgUpdateSchema {
   string creator = 1;
   string network = 2;
   string schema = 3;
@@ -83,13 +84,13 @@ message MsgUpdateSignSchema {
   cosmos.base.v1beta1.DecCoin out = 5;
   int32 contractExponent = 6;
 }
-message MsgUpdateSignSchemaResponse {}
+message MsgUpdateSchemaResponse {}
 
-message MsgDeleteSignSchema {
+message MsgDeleteSchema {
   string creator = 1;
   string network = 2;
 }
-message MsgDeleteSignSchemaResponse {}
+message MsgDeleteSchemaResponse {}
 
 message MsgCancel {
   string creator = 1;
@@ -138,6 +139,16 @@ message MsgUpdateBatch {
 }
 
 message MsgUpdateBatchResponse {
+}
+
+message MsgUpdateSwapFee {
+  string creator = 1;
+  string network = 2;
+  cosmos.base.v1beta1.DecCoin in = 3;
+  cosmos.base.v1beta1.DecCoin out = 4;
+}
+
+message MsgUpdateSwapFeeResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message

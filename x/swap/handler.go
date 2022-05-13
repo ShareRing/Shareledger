@@ -41,17 +41,20 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
 		case *types.MsgApproveIn:
 			res, err := msgServer.ApproveIn(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgCreateSignSchema:
-			res, err := msgServer.CreateSignSchema(sdk.WrapSDKContext(ctx), msg)
+		case *types.MsgCreateSchema:
+			res, err := msgServer.CreateSchema(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgUpdateSignSchema:
-			res, err := msgServer.UpdateSignSchema(sdk.WrapSDKContext(ctx), msg)
+		case *types.MsgUpdateSchema:
+			res, err := msgServer.UpdateSchema(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgDeleteSignSchema:
-			res, err := msgServer.DeleteSignSchema(sdk.WrapSDKContext(ctx), msg)
+		case *types.MsgDeleteSchema:
+			res, err := msgServer.DeleteSchema(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
 		case *types.MsgUpdateBatch:
 			res, err := msgServer.UpdateBatch(sdk.WrapSDKContext(ctx), msg)
+			return sdk.WrapServiceResult(ctx, res, err)
+		case *types.MsgUpdateSwapFee:
+			res, err := msgServer.UpdateSwapFee(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
 			// this line is used by starport scaffolding # 1
 		default:

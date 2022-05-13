@@ -39,3 +39,6 @@ func (k Keeper) IsApprover(ctx sdk.Context, address sdk.AccAddress) bool {
 func (k Keeper) IsRelayer(ctx sdk.Context, address sdk.AccAddress) bool {
 	return k.isActive(ctx, address, types.AccStateKeyRelayer)
 }
+func (k Keeper) IsSwapManager(ctx sdk.Context, address sdk.AccAddress) bool {
+	return k.isActive(ctx, address, types.AccStateKeySwapManager)
+}

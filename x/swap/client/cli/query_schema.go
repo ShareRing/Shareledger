@@ -9,10 +9,10 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func CmdListSignSchema() *cobra.Command {
+func CmdListSchema() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "sign_schema",
-		Short: "list all sign schema",
+		Use:   "schema",
+		Short: "list all schema",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx := client.GetClientContextFromCmd(cmd)
 
@@ -23,11 +23,11 @@ func CmdListSignSchema() *cobra.Command {
 
 			queryClient := types.NewQueryClient(clientCtx)
 
-			params := &types.QueryAllSignSchemasRequest{
+			params := &types.QueryAllSchemasRequest{
 				Pagination: pageReq,
 			}
 
-			res, err := queryClient.AllSignSchemas(context.Background(), params)
+			res, err := queryClient.AllSchemas(context.Background(), params)
 			if err != nil {
 				return err
 			}
@@ -54,11 +54,11 @@ func CmdShowFormat() *cobra.Command {
 
 			argNetwork := args[0]
 
-			params := &types.QueryGetSignSchemaRequest{
+			params := &types.QueryGetSchemaRequest{
 				Network: argNetwork,
 			}
 
-			res, err := queryClient.SignSchema(context.Background(), params)
+			res, err := queryClient.Schema(context.Background(), params)
 			if err != nil {
 				return err
 			}

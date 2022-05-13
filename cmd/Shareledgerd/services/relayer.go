@@ -64,9 +64,21 @@ func NewStartCommands(defaultNodeHome string) *cobra.Command {
 			if err != nil {
 				return err
 			}
-			relayerClient := initRelayer(clientTx, cfg, mgClient)
 
 			ctx, cancel := context.WithCancel(context.Background())
+			timeoutContext, cancelTimeOut := context.WithTimeout(ctx, time.Second*10)
+			defer cancelTimeOut()
+			relayerClient := initRelayer(clientTx, cfg, mgClient)
+			if err := mgClient.ConnectDB(timeoutContext); err != nil {
+				cancel()
+				return err
+			}
+
+			defer func() {
+				if err := mgClient.Disconnect(ctx); err != nil {
+					log.Info().Msg("Disconnected from DB")
+				}
+			}()
 
 			numberProcessing := len(cfg.Network)
 			processChan := make(chan struct {
@@ -281,7 +293,7 @@ func (r *Relayer) getBatchDetail(ctx context.Context, batch swapmoduletypes.Batc
 	if err != nil {
 		return detail, sdkerrors.Wrapf(err, "get list swap")
 	}
-	schema, err := qClient.SignSchema(ctx, &swapmoduletypes.QueryGetSignSchemaRequest{Network: batch.Network})
+	schema, err := qClient.Schema(ctx, &swapmoduletypes.QueryGetSchemaRequest{Network: batch.Network})
 	if err != nil {
 		return detail, err
 	}

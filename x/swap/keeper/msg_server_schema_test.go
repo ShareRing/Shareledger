@@ -22,12 +22,12 @@ func TestFormatMsgServerCreate(t *testing.T) {
 	wctx := sdk.WrapSDKContext(ctx)
 	creator := "A"
 	for i := 0; i < 5; i++ {
-		expected := &types.MsgCreateFormat{Creator: creator,
+		expected := &types.MsgCreateSchema{Creator: creator,
 			Network: strconv.Itoa(i),
 		}
-		_, err := srv.CreateFormat(wctx, expected)
+		_, err := srv.CreateSchema(wctx, expected)
 		require.NoError(t, err)
-		rst, found := k.GetSignSchema(ctx,
+		rst, found := k.GetSchema(ctx,
 			expected.Network,
 		)
 		require.True(t, found)
@@ -40,25 +40,25 @@ func TestFormatMsgServerUpdate(t *testing.T) {
 
 	for _, tc := range []struct {
 		desc    string
-		request *types.MsgUpdateFormat
+		request *types.MsgUpdateSchema
 		err     error
 	}{
 		{
 			desc: "Completed",
-			request: &types.MsgUpdateFormat{Creator: creator,
+			request: &types.MsgUpdateSchema{Creator: creator,
 				Network: strconv.Itoa(0),
 			},
 		},
 		{
 			desc: "Unauthorized",
-			request: &types.MsgUpdateFormat{Creator: "B",
+			request: &types.MsgUpdateSchema{Creator: "B",
 				Network: strconv.Itoa(0),
 			},
 			err: sdkerrors.ErrUnauthorized,
 		},
 		{
 			desc: "KeyNotFound",
-			request: &types.MsgUpdateFormat{Creator: creator,
+			request: &types.MsgUpdateSchema{Creator: creator,
 				Network: strconv.Itoa(100000),
 			},
 			err: sdkerrors.ErrKeyNotFound,
@@ -68,18 +68,18 @@ func TestFormatMsgServerUpdate(t *testing.T) {
 			k, ctx := keepertest.SwapKeeper(t)
 			srv := keeper.NewMsgServerImpl(*k)
 			wctx := sdk.WrapSDKContext(ctx)
-			expected := &types.MsgCreateFormat{Creator: creator,
+			expected := &types.MsgCreateSchema{Creator: creator,
 				Network: strconv.Itoa(0),
 			}
-			_, err := srv.CreateFormat(wctx, expected)
+			_, err := srv.CreateSchema(wctx, expected)
 			require.NoError(t, err)
 
-			_, err = srv.UpdateFormat(wctx, tc.request)
+			_, err = srv.UpdateSchema(wctx, tc.request)
 			if tc.err != nil {
 				require.ErrorIs(t, err, tc.err)
 			} else {
 				require.NoError(t, err)
-				rst, found := k.GetSignSchema(ctx,
+				rst, found := k.GetSchema(ctx,
 					expected.Network,
 				)
 				require.True(t, found)
@@ -94,25 +94,25 @@ func TestFormatMsgServerDelete(t *testing.T) {
 
 	for _, tc := range []struct {
 		desc    string
-		request *types.MsgDeleteFormat
+		request *types.MsgDeleteSchema
 		err     error
 	}{
 		{
 			desc: "Completed",
-			request: &types.MsgDeleteFormat{Creator: creator,
+			request: &types.MsgDeleteSchema{Creator: creator,
 				Network: strconv.Itoa(0),
 			},
 		},
 		{
 			desc: "Unauthorized",
-			request: &types.MsgDeleteFormat{Creator: "B",
+			request: &types.MsgDeleteSchema{Creator: "B",
 				Network: strconv.Itoa(0),
 			},
 			err: sdkerrors.ErrUnauthorized,
 		},
 		{
 			desc: "KeyNotFound",
-			request: &types.MsgDeleteFormat{Creator: creator,
+			request: &types.MsgDeleteSchema{Creator: creator,
 				Network: strconv.Itoa(100000),
 			},
 			err: sdkerrors.ErrKeyNotFound,
@@ -123,16 +123,16 @@ func TestFormatMsgServerDelete(t *testing.T) {
 			srv := keeper.NewMsgServerImpl(*k)
 			wctx := sdk.WrapSDKContext(ctx)
 
-			_, err := srv.CreateFormat(wctx, &types.MsgCreateFormat{Creator: creator,
+			_, err := srv.CreateSchema(wctx, &types.MsgCreateSchema{Creator: creator,
 				Network: strconv.Itoa(0),
 			})
 			require.NoError(t, err)
-			_, err = srv.DeleteFormat(wctx, tc.request)
+			_, err = srv.DeleteSchema(wctx, tc.request)
 			if tc.err != nil {
 				require.ErrorIs(t, err, tc.err)
 			} else {
 				require.NoError(t, err)
-				_, found := k.GetSignSchema(ctx,
+				_, found := k.GetSchema(ctx,
 					tc.request.Network,
 				)
 				require.False(t, found)

@@ -21,7 +21,7 @@ var _ = strconv.IntSize
 func TestFormatQuerySingle(t *testing.T) {
 	keeper, ctx := keepertest.SwapKeeper(t)
 	wctx := sdk.WrapSDKContext(ctx)
-	msgs := createNFormat(keeper, ctx, 2)
+	msgs := createNSchema(keeper, ctx, 2)
 	for _, tc := range []struct {
 		desc     string
 		request  *types.QueryGetFormatRequest
@@ -72,7 +72,7 @@ func TestFormatQuerySingle(t *testing.T) {
 func TestFormatQueryPaginated(t *testing.T) {
 	keeper, ctx := keepertest.SwapKeeper(t)
 	wctx := sdk.WrapSDKContext(ctx)
-	msgs := createNFormat(keeper, ctx, 5)
+	msgs := createNSchema(keeper, ctx, 5)
 
 	request := func(next []byte, offset, limit uint64, total bool) *types.QueryAllFormatRequest {
 		return &types.QueryAllFormatRequest{
