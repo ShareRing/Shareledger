@@ -3,6 +3,7 @@ package services
 import (
 	"context"
 	"fmt"
+	"github.com/rs/zerolog/log"
 	"math/big"
 	"os"
 	"os/signal"
@@ -21,7 +22,6 @@ import (
 	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/pkg/errors"
-	"github.com/rs/zerolog/log"
 	"github.com/sharering/shareledger/cmd/Shareledgerd/services/database"
 	event "github.com/sharering/shareledger/cmd/Shareledgerd/services/subscriber"
 	swaputil "github.com/sharering/shareledger/pkg/swap"
@@ -103,7 +103,7 @@ func NewStartCommands(defaultNodeHome string) *cobra.Command {
 					case process := <-processChan:
 						numberProcessing--
 						if process.Err != nil {
-							log.Err(process.Err).Stack().Msg(fmt.Sprintf("process with network %s", process.Network))
+							log.Error().Stack().Err(process.Err).Msg(fmt.Sprintf("process with network %s", process.Network))
 						}
 						if numberProcessing == 0 {
 							log.Info().Msg("all process were quited. Exiting")
@@ -232,7 +232,7 @@ func (r *Relayer) processOut(ctx context.Context, network string) error {
 	}
 	batchDetail, err := r.getBatchDetail(ctx, *batch)
 	if err != nil {
-		return err
+		return errors.Wrap(err, "get batch detail")
 	}
 	/*digest, err := batchDetail.Digest()
 	if err != nil {
