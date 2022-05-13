@@ -76,7 +76,7 @@ type SwapParams struct {
 // GetContractParams return params for interact with contract
 // The Amounts will be converted from base coins to exponent that configured in SignSchema ContractExponent
 func (b SignDetail) GetContractParams() (params SwapParams, err error) {
-	if b.SignSchema.ContractExponent != 0 {
+	if b.SignSchema.ContractExponent == 0 {
 		return SwapParams{}, fmt.Errorf("contract exponent is required")
 	}
 	params = SwapParams{

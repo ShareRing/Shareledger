@@ -7,7 +7,6 @@ import (
 	"os"
 	"os/signal"
 	"path/filepath"
-	"sort"
 	"sync"
 	"syscall"
 	"time"
@@ -70,7 +69,10 @@ func NewStartCommands(defaultNodeHome string) *cobra.Command {
 			ctx, cancel := context.WithCancel(context.Background())
 
 			numberProcessing := len(cfg.Network)
-			processChan := make(chan error)
+			processChan := make(chan struct {
+				Network string
+				Err     error
+			})
 			doneChan := make(chan struct{})
 			sigs := make(chan os.Signal, 1)
 			go func() {
@@ -86,10 +88,10 @@ func NewStartCommands(defaultNodeHome string) *cobra.Command {
 					case <-sigs:
 						cancel()
 						return
-					case err := <-processChan:
+					case process := <-processChan:
 						numberProcessing--
-						if err != nil {
-							log.Err(err)
+						if process.Err != nil {
+							log.Err(process.Err).Stack().Msg(fmt.Sprintf("process with network %s", process.Network))
 						}
 						if numberProcessing == 0 {
 							log.Info().Msg("all process were quited. Exiting")
@@ -104,14 +106,20 @@ func NewStartCommands(defaultNodeHome string) *cobra.Command {
 			case "in":
 				for network := range cfg.Network {
 					go func(network string) {
-						processChan <- relayerClient.startProcess(ctx, relayerClient.processIn, network)
+						processChan <- struct {
+							Network string
+							Err     error
+						}{Network: network, Err: relayerClient.startProcess(ctx, relayerClient.processIn, network)}
 					}(network)
 				}
 
 			case "out":
 				for network := range cfg.Network {
 					go func(network string) {
-						processChan <- relayerClient.startProcess(ctx, relayerClient.processOut, network)
+						processChan <- struct {
+							Network string
+							Err     error
+						}{Network: network, Err: relayerClient.startProcess(ctx, relayerClient.processOut, network)}
 					}(network)
 				}
 			default:
@@ -214,14 +222,14 @@ func (r *Relayer) processOut(ctx context.Context, network string) error {
 	if err != nil {
 		return err
 	}
-	digest, err := batchDetail.Digest()
+	/*digest, err := batchDetail.Digest()
 	if err != nil {
 		return err
-	}
-	done, err := r.checkAndMarkDone(ctx, batchDetail.Batch.Id, network, digest)
-	if err != nil || done {
-		return err // err nil when done is true
-	}
+	}*/
+	//done, err := r.checkAndMarkDone(ctx, batchDetail.Batch.Id, network, digest)
+	//if err != nil || done {
+	//	return err // err nil when done is true
+	//}
 
 	// There is a case that there is already pending transaction.
 	// But the sc wil double check and return fee if the request batch already processed.
@@ -263,19 +271,7 @@ func (r *Relayer) getNextPendingBatch(network string) (*swapmoduletypes.Batch, e
 
 	batchesRes, err := qClient.SearchBatches(context.Background(), pendingQuery)
 	batches := batchesRes.GetBatchs()
-	sort.Sort(BatchSortByIDAscending(batches))
-
-	if len(batches) == 0 {
-		return nil, fmt.Errorf("pending batchs is empty")
-	}
-
-	idQ := &swapmoduletypes.QueryBatchesRequest{Ids: []uint64{batches[0].Id}}
-	batch, err := r.qClient.Batches(context.Background(), idQ)
-	if err != nil || len(batch.GetBatches()) == 0 {
-		return nil, fmt.Errorf("batch not found")
-	}
-
-	return &batch.GetBatches()[0], err
+	return &batches[0], err
 }
 
 func (r *Relayer) getBatchDetail(ctx context.Context, batch swapmoduletypes.Batch) (detail swaputil.BatchDetail, err error) {
