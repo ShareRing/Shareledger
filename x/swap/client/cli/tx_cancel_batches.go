@@ -2,6 +2,7 @@ package cli
 
 import (
 	"strconv"
+	"strings"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
@@ -12,32 +13,30 @@ import (
 
 var _ = strconv.Itoa(0)
 
-func CmdUpdateBatch() *cobra.Command {
+func CmdCancelBatches() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "update_batch [batch-id] [status] [txHash] [network]",
-		Short: "Broadcast message update-batch",
-		Args:  cobra.ExactArgs(4),
+		Use:   "cancel_batches [ids]",
+		Short: "Broadcast message CancelBatches",
+		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-
-			argBatchId := args[0]
-			argStatus := args[1]
-			argTxHash := args[2]
-			argNetwork := args[3]
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
 			}
-
-			batchID, _ := strconv.ParseUint(argBatchId, 10, 64)
-			msg := types.NewMsgUpdateBatch(
+			argIDS := strings.Split(args[0], ",")
+			txIds := make([]uint64, 0, len(argIDS))
+			for _, str := range argIDS {
+				id, err := strconv.ParseUint(str, 10, 64)
+				if err != nil {
+					return err
+				}
+				txIds = append(txIds, id)
+			}
+			msg := types.NewMsgCancelBatches(
 				clientCtx.GetFromAddress().String(),
-				batchID,
-				argTxHash,
-				argNetwork,
-				argStatus,
+				txIds,
 			)
-
 			if err := msg.ValidateBasic(); err != nil {
 				return err
 			}

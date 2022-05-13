@@ -11,7 +11,7 @@ import (
 
 func CmdListSchema() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "schema",
+		Use:   "schemas",
 		Short: "list all schema",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx := client.GetClientContextFromCmd(cmd)

@@ -78,6 +78,8 @@ func (k Keeper) ChangeStatusRequests(ctx sdk.Context, ids []uint64, status strin
 	switch status {
 	case types.SwapStatusApproved, types.SwapStatusRejected:
 		requiredStatus = types.SwapStatusPending
+	case types.BatchStatusPending: // the request just gone to pending when this status was approved. In case we cancel the swap batch
+		requiredStatus = types.SwapStatusApproved
 	default:
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "%s is not supported", status)
 	}

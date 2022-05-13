@@ -268,13 +268,13 @@ func (r *Relayer) checkTxHash(ctx context.Context, network string, txHash common
 
 func (r *Relayer) getNextPendingBatch(network string) (*swapmoduletypes.Batch, error) {
 	qClient := swapmoduletypes.NewQueryClient(r.Client)
-	pendingQuery := &swapmoduletypes.QuerySearchBatchesRequest{
+	pendingQuery := &swapmoduletypes.QueryBatchesRequest{
 		Status:  swapmoduletypes.BatchStatusPending,
 		Network: network,
 	}
 
-	batchesRes, err := qClient.SearchBatches(context.Background(), pendingQuery)
-	batches := batchesRes.GetBatchs()
+	batchesRes, err := qClient.Batches(context.Background(), pendingQuery)
+	batches := batchesRes.GetBatches()
 	sort.Sort(BatchSortByIDAscending(batches))
 
 	if len(batches) == 0 {

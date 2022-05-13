@@ -11,10 +11,10 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func CmdSearch() *cobra.Command {
+func CmdSwap() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "search [status]",
-		Short: "search swaps, status is required for searching. Supported status: pending, approved, rejected, processing, done",
+		Use:   "request [status]",
+		Short: "search swap request, status is required for searching. Supported status: pending, approved, rejected, processing, done",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			reqStatus := args[0]
@@ -62,6 +62,7 @@ const (
 	flagSearchDestAddr    = "dest_addr"
 	flagSearchSrcNetwork  = "src_network"
 	flagSearchDestNetwork = "dest_network"
+	flagSearchStatus      = "status"
 )
 
 func addFilterFlagsToCmd(cmd *cobra.Command) {
