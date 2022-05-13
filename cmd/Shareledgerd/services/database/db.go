@@ -2,6 +2,7 @@ package database
 
 import (
 	"context"
+	"fmt"
 	"time"
 
 	"github.com/rs/zerolog/log"
@@ -45,15 +46,26 @@ func (c *DB) GetSLP3Address(erc20Addr, network string) (string, error) {
 	return queryResult.ShareledgerAddress, nil
 }
 
-func (c *DB) SetLastScannedBlockNumber(lastScannedBlockNumer uint64) error {
+func (c *DB) SetLastScannedBlockNumber(contractAddress string, lastScannedBlockNumber int64) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
 	collection := c.GetCollection(ShareRing, SettingCollection)
 
-	_, err := collection.UpdateMany(ctx, bson.M{}, bson.D{
-		{Key: "$set", Value: bson.D{{Key: "lastScannedBlockNumber", Value: lastScannedBlockNumer}}},
-	})
+	_, err := collection.UpdateMany(
+		ctx,
+		bson.M{},
+		bson.D{
+			{
+				Key: "$set",
+				Value: bson.D{
+					{
+						Key:   fmt.Sprintf("lastScannedBlockNumber.%s", contractAddress),
+						Value: lastScannedBlockNumber,
+					},
+				},
+			},
+		})
 
 	if err != nil {
 		return err

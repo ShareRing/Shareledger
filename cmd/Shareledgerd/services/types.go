@@ -19,12 +19,15 @@ var supportedTypes = map[string]struct{}{
 type processFunc func(ctx context.Context, network string) error
 
 type Network struct {
-	Signer           string `yaml:"signer"`
-	Url              string `yaml:"url"`
-	ChainId          int64  `yaml:"chainId"`
-	Contract         string `yaml:"contract"`
-	LastScannedBlock int64  `yaml:"lastScannedBlock"`
-	Topic            string `yaml:"topic"`
+	Signer                              string `yaml:"signer"`
+	Url                                 string `yaml:"url"`
+	ChainId                             int64  `yaml:"chainId"`
+	Contract                            string `yaml:"contract"` // swap contract address
+	PegWallet                           string `yaml:"pegWallet"`
+	LastScannedTransferEventBlockNumber int64  `yaml:"lastScannedTransferEventBlockNumber"`
+	LastScannedSwapEventBlockNumber     int64  `yaml:"lastScannedSwapEventBlockNumber"`
+	Topic                               string `yaml:"topic"` // swap topic
+	TransferTopic                       string `yaml:"transferTopic"`
 }
 
 type RelayerConfig struct {

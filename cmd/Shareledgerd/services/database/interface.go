@@ -9,6 +9,6 @@ type DBRelayer interface {
 	GetBatchByTxHash(txHash string) (Batch, error)
 	SetBatch(request Batch) error
 	UpdateBatches(shareledgerIDs []uint64, status Status) error
-	SetLastScannedBlockNumber(lastScannedBlockNumer uint64) error
+	SetLastScannedBlockNumber(contractAddress string, lastScannedBlockNumber int64) error
 	GetSLP3Address(erc20Addr, network string) (string, error)
 }
