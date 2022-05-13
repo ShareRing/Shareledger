@@ -3,6 +3,8 @@ package services
 import (
 	"context"
 	"fmt"
+	"github.com/rs/zerolog/log"
+	"gopkg.in/yaml.v3"
 	"math/big"
 	"os"
 	"os/signal"
@@ -22,7 +24,6 @@ import (
 	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/pkg/errors"
-	"github.com/rs/zerolog/log"
 	"github.com/sharering/shareledger/cmd/Shareledgerd/services/database"
 	event "github.com/sharering/shareledger/cmd/Shareledgerd/services/subscriber"
 	swaputil "github.com/sharering/shareledger/pkg/swap"
@@ -30,7 +31,7 @@ import (
 	swapmoduletypes "github.com/sharering/shareledger/x/swap/types"
 	denom "github.com/sharering/shareledger/x/utils/demo"
 	"github.com/spf13/cobra"
-	"gopkg.in/yaml.v3"
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
 func GetRelayerCommands(defaultNodeHome string) *cobra.Command {
@@ -82,7 +83,10 @@ func NewStartCommands(defaultNodeHome string) *cobra.Command {
 			}()
 
 			numberProcessing := len(cfg.Network)
-			processChan := make(chan error)
+			processChan := make(chan struct {
+				Network string
+				Err     error
+			})
 			doneChan := make(chan struct{})
 			sigs := make(chan os.Signal, 1)
 			go func() {
@@ -98,10 +102,10 @@ func NewStartCommands(defaultNodeHome string) *cobra.Command {
 					case <-sigs:
 						cancel()
 						return
-					case err := <-processChan:
+					case process := <-processChan:
 						numberProcessing--
-						if err != nil {
-							log.Err(err).Msg("got error when processing batch")
+						if process.Err != nil {
+							log.Error().Stack().Err(process.Err).Msg(fmt.Sprintf("process with network %s", process.Network))
 						}
 						if numberProcessing == 0 {
 							log.Info().Msg("all process were quited. Exiting")
@@ -116,14 +120,20 @@ func NewStartCommands(defaultNodeHome string) *cobra.Command {
 			case "in":
 				for network := range cfg.Network {
 					go func(network string) {
-						processChan <- relayerClient.startProcess(ctx, relayerClient.processIn, network)
+						processChan <- struct {
+							Network string
+							Err     error
+						}{Network: network, Err: relayerClient.startProcess(ctx, relayerClient.processIn, network)}
 					}(network)
 				}
 
 			case "out":
 				for network := range cfg.Network {
 					go func(network string) {
-						processChan <- relayerClient.startProcess(ctx, relayerClient.processOut, network)
+						processChan <- struct {
+							Network string
+							Err     error
+						}{Network: network, Err: relayerClient.startProcess(ctx, relayerClient.processOut, network)}
 					}(network)
 				}
 			default:
@@ -158,9 +168,9 @@ func initRelayer(client client.Context, cfg RelayerConfig, db database.DBRelayer
 	qClient := swapmoduletypes.NewQueryClient(client)
 
 	return &Relayer{
-		Config:   cfg,
-		Client:   client,
-		DBClient: db,
+		Config: cfg,
+		Client: client,
+		db:     db,
 
 		qClient:   qClient,
 		msgClient: mClient,
@@ -199,19 +209,36 @@ func (r *Relayer) startProcess(ctx context.Context, f processFunc, network strin
 	return <-doneChan
 }
 
-func (r *Relayer) checkAndMarkDone(ctx context.Context, batchId uint64, network string, digest common.Hash) (done bool, err error) {
-	isSCDone, err := r.isBatchDoneOnSC(network, digest)
-	if err != nil {
-		return false, err
-	}
-	done = isSCDone
-	if done {
-		if _, err = r.markDone(batchId); err != nil {
-			return false, err
-		}
-	}
-	return done, nil
-}
+//func (r *Relayer) getRequestStatus(ctx context.Context, detail swaputil.BatchDetail, network string) (status database.Status, txHash string, err error) {
+//	processedBatch, err := r.db.SearchBatchByType(detail.Batch.Id, "in")
+//	if err != nil || processedBatch == nil {
+//		return "pending", err
+//	}
+//
+//	// the final state is in db. so there is no need to check if it's done or not when the status done or failed.
+//	if processedBatch.Status == database.Done || processedBatch.Status == database.Failed {
+//		return processedBatch.Status, nil
+//	}
+//
+//	// pending in db -> need to check on sc
+//
+//	hash, err := detail.Digest()
+//	if err != nil {
+//		return "", err
+//	}
+//	processedBatch.
+//	isSCDone, err := r.isBatchDoneOnSC(network, hash)
+//	if err != nil {
+//		return false, err
+//	}
+//	done = isSCDone
+//	if done {
+//		if _, err = r.markDone(batchId); err != nil {
+//			return false, err
+//		}
+//	}
+//	return done, nil
+//}
 
 func (r *Relayer) processOut(ctx context.Context, network string) error {
 	batch, err := r.getNextPendingBatch(network)
@@ -224,25 +251,54 @@ func (r *Relayer) processOut(ctx context.Context, network string) error {
 	}
 	batchDetail, err := r.getBatchDetail(ctx, *batch)
 	if err != nil {
-		return err
+		return errors.Wrap(err, "get batch detail")
 	}
-	digest, err := batchDetail.Digest()
+	var txHash common.Hash
+	processedBatch, err := r.db.SearchBatchByType(batch.Id, database.Out)
 	if err != nil {
 		return err
 	}
-	done, err := r.checkAndMarkDone(ctx, batchDetail.Batch.Id, network, digest)
-	if err != nil || done {
-		return err // err nil when done is true
+	if processedBatch != nil {
+		switch processedBatch.Status {
+		case database.Failed:
+			_, err = r.updateBatchStatus(batch.Id, swapmoduletypes.BatchStatusFail)
+			return err
+		case database.Done:
+			_, err = r.updateBatchStatus(batch.Id, swapmoduletypes.BatchStatusDone)
+			return err
+		default:
+			if len(processedBatch.TxHash) > 0 {
+				txHash = common.HexToHash(processedBatch.TxHash)
+			}
+		}
 	}
 
-	// There is a case that there is already pending transaction.
-	// But the sc wil double check and return fee if the request batch already processed.
-	txHash, err := r.submitBatch(ctx, network, batchDetail)
+	// in case this batch was not processed
+	if len(txHash.Bytes()) == 0 {
+		txHash, err = r.submitBatch(ctx, network, batchDetail)
+		if err != nil {
+			return err
+		}
+	}
+
+	for {
+		time.Sleep(time.Second * 5)
+		fmt.Println("checking receipt")
+		receipt, err := r.checkTxHash(ctx, network, txHash)
+		if err != nil && err.Error() != "not found" {
+			return err
+		}
+		if receipt != nil {
+			if receipt.Status == 1 {
+				//r.updateBatchStatus()
+			} else {
+				fmt.Println("FAILED", receipt.Status)
+			}
+			break
+		}
+	}
 	fmt.Println(txHash, err)
 	// TODO: Hoai job check requently
-	if err != nil {
-		//TODO: handle error??
-	}
 	return err
 }
 
@@ -281,13 +337,7 @@ func (r *Relayer) getNextPendingBatch(network string) (*swapmoduletypes.Batch, e
 		return nil, fmt.Errorf("pending batchs is empty")
 	}
 
-	idQ := &swapmoduletypes.QueryBatchesRequest{Ids: []uint64{batches[0].Id}}
-	batch, err := r.qClient.Batches(context.Background(), idQ)
-	if err != nil || len(batch.GetBatches()) == 0 {
-		return nil, fmt.Errorf("batch not found")
-	}
-
-	return &batch.GetBatches()[0], err
+	return &batches[0], err
 }
 
 func (r *Relayer) getBatchDetail(ctx context.Context, batch swapmoduletypes.Batch) (detail swaputil.BatchDetail, err error) {
@@ -330,28 +380,13 @@ func (r *Relayer) updateBatch(msg *swapmoduletypes.MsgUpdateBatch) (swapmodulety
 	return batchesRes.GetBatches()[0], nil
 }
 
-func (r *Relayer) markDone(batchId uint64) (b swapmoduletypes.Batch, err error) {
+func (r *Relayer) updateBatchStatus(batchId uint64, status string) (b swapmoduletypes.Batch, err error) {
 	updateMsg := &swapmoduletypes.MsgUpdateBatch{
 		Creator: r.Client.GetFromAddress().String(),
 		BatchId: batchId,
-		Status:  swapmoduletypes.BatchStatusDone,
+		Status:  status,
 	}
 	return r.updateBatch(updateMsg)
-}
-
-func (r *Relayer) markBatchProcessing(batchId uint64) (swapmoduletypes.Batch, error) {
-	updateMsg := &swapmoduletypes.MsgUpdateBatch{
-		Creator: r.Client.GetFromAddress().String(),
-		BatchId: batchId,
-		Status:  swapmoduletypes.BatchStatusProcessing,
-	}
-
-	batch, err := r.updateBatch(updateMsg)
-	if err != nil {
-		return swapmoduletypes.Batch{}, nil
-	}
-
-	return batch, nil
 }
 
 func (r *Relayer) initConn(network string) (*ethclient.Client, Network, error) {
@@ -437,22 +472,54 @@ func (r *Relayer) submitBatch(ctx context.Context, network string, batchDetail s
 func (r *Relayer) processIn(ctx context.Context, network string) error {
 	s, err := event.New(&event.NewInput{
 		ProviderURL:  r.Config.Network[network].Url,
-		CurrentBlock: big.NewInt(0),
+		CurrentBlock: big.NewInt(r.Config.Network[network].LastScannedBlock), // config.yaml pre-define before running process
+		DBClient:     r.db,
 	})
 	if err != nil {
 		return err
 	}
 
-	//TODO concurrency handle here
-	topic := "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef" // this should be in config.yaml
 	events, err := s.GetEvents(ctx, &event.EventInput{
 		ContractAddress: r.Config.Network[network].Contract,
-		Topic:           topic,
+		Topic:           r.Config.Network[network].Topic,
 	})
 
-	fmt.Println(events) // unused error skip
-	//Mocking the input
-	r.initSwapInRequest(ctx, "0xxa", "shareledger1w4l5fchs69d9avlgvdehq9ypvdh4xyev3p490g", "erc20", 100, 15)
+	// check if these event are handle or not in db
+	for _, e := range events {
+		batch, err := r.db.GetBatchByTxHash(e.TxHash)
+		if err != nil {
+			// batch existed, skip processing
+			if batch != (database.Batch{}) && err != mongo.ErrNoDocuments {
+				continue
+			}
+
+			log.Err(err)
+		}
+
+		// get slp3 address from db
+		slp3, err := r.db.GetSLP3Address(e.ToAddress, network)
+		if err != nil {
+			// log error and skip process this request
+			log.Err(err)
+			continue
+		}
+
+		// call shareledger transaction
+		err = r.initSwapInRequest(
+			ctx,
+			e.ToAddress,
+			slp3,
+			network,
+			e.TxHash,
+			e.BlockNumber,
+			e.Amount.BigInt().Uint64(),
+			15,
+		)
+		if err != nil {
+			log.Err(err)
+		}
+	}
+
 	return nil
 }
 
@@ -462,23 +529,39 @@ func (r *Relayer) SubmitSwapIn(ctx context.Context, swap swapmoduletypes.MsgRequ
 
 func (r *Relayer) initSwapInRequest(
 	ctx context.Context,
-	destAddr, slp3Addr, srcNet string,
-	amount, fee uint64) error {
+	srcAddr, destAddr, network, txHash string,
+	blockNumber, amount, fee uint64) error {
 	swapAmount := sdk.NewDecCoin(denom.Shr, sdk.NewIntFromUint64(amount))
 	swapFee := sdk.NewDecCoin(denom.Shr, sdk.NewIntFromUint64(fee))
 
 	msgClient := swapmoduletypes.NewMsgClient(r.Client)
 	inMsg := swapmoduletypes.NewMsgRequestIn(
 		r.Client.GetFromAddress().String(),
-		slp3Addr,
+		srcAddr,
 		destAddr,
-		srcNet,
+		network,
 		swapAmount,
 		swapFee,
 	)
-	_, err := msgClient.RequestIn(ctx, inMsg)
+	response, err := msgClient.RequestIn(ctx, inMsg)
 	if err != nil {
 		return err
 	}
+
+	// approve in msg
+
+	newBatch := database.Batch{
+		ShareledgerID: response.Id,
+		Status:        database.Done,
+		Type:          database.In,
+		Network:       network,
+		TxHash:        txHash,
+		BlockNumber:   blockNumber,
+	}
+	err = r.db.SetBatch(newBatch)
+	if err != nil {
+		return err
+	}
+
 	return nil
 }

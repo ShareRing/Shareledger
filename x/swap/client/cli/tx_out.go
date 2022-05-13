@@ -16,7 +16,7 @@ func CmdOut() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "out [dest_address] [network] [amount]",
 		Short: "create new request swap out. Swap fee will be calculated and included to this transaction automatically",
-		Args:  cobra.ExactArgs(4),
+		Args:  cobra.ExactArgs(3),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argDestAddr := args[0]
 			argNetwork := args[1]
