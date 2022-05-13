@@ -20,13 +20,32 @@ type Collection struct {
 }
 
 const (
-	ShareRing         = "Sharering"
-	RequestCollection = "Requests"
-	BatchCollection   = "Batches"
-	SettingCollection = "Settings"
+	ShareRing         = "sharering"
+	RequestCollection = "requests"
+	BatchCollection   = "batches"
+	SettingCollection = "settings"
+	AddressCollection = "addresses"
 )
 
-func (c *DB) SetLastScannedBlockNumber(lastScannedBlockNumer uint32) error {
+func (c *DB) GetSLP3Address(erc20Addr, network string) (string, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	collection := c.GetCollection(ShareRing, AddressCollection)
+
+	var queryResult Address
+	err := collection.FindOne(ctx, bson.M{
+		"result":  erc20Addr,
+		"network": network,
+	}).Decode(&queryResult)
+	if err != nil {
+		return "", err
+	}
+
+	return queryResult.ShareledgerAddress, nil
+}
+
+func (c *DB) SetLastScannedBlockNumber(lastScannedBlockNumer uint64) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
@@ -76,11 +95,10 @@ func (c *DB) GetBatchByType(shareledgerID, requestType string) (Batch, error) {
 
 	var queryResult Batch
 
-	filter := bson.M{
+	err := collection.FindOne(ctx, bson.M{
 		"shareledgerID": shareledgerID,
 		"type":          requestType,
-	}
-	err := collection.FindOne(ctx, filter).Decode(&queryResult)
+	}).Decode(&queryResult)
 	if err != nil {
 		return Batch{}, err
 	}
@@ -96,10 +114,9 @@ func (c *DB) GetBatchByTxHash(txHash string) (Batch, error) {
 
 	var queryResult Batch
 
-	filter := bson.M{
+	err := collection.FindOne(ctx, bson.M{
 		"txHash": txHash,
-	}
-	err := collection.FindOne(ctx, filter).Decode(&queryResult)
+	}).Decode(&queryResult)
 	if err != nil {
 		return Batch{}, err
 	}
@@ -107,26 +124,25 @@ func (c *DB) GetBatchByTxHash(txHash string) (Batch, error) {
 	return queryResult, nil
 }
 
-func (c *DB) SetBatch(request Batch) (interface{}, error) {
+func (c *DB) SetBatch(request Batch) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
 	collection := c.GetCollection(ShareRing, BatchCollection)
 
-	id, err := collection.InsertOne(ctx, bson.M{
+	_, err := collection.InsertOne(ctx, bson.M{
 		"shareledgerID": request.ShareledgerID,
 		"status":        request.Status,
 		"txHash":        request.TxHash,
 		"type":          request.Type,
 		"network":       request.Network,
 		"blockNumber":   request.BlockNumber,
-		"nonce":         request.Nonce,
 	})
 	if err != nil {
-		return "", nil
+		return err
 	}
 
-	return id.InsertedID, nil
+	return nil
 }
 
 func NewMongo(mongoURI string) (DBRelayer, error) {

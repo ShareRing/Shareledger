@@ -30,6 +30,7 @@ import (
 	swapmoduletypes "github.com/sharering/shareledger/x/swap/types"
 	denom "github.com/sharering/shareledger/x/utils/demo"
 	"github.com/spf13/cobra"
+	"go.mongodb.org/mongo-driver/mongo"
 	"gopkg.in/yaml.v3"
 )
 
@@ -437,22 +438,54 @@ func (r *Relayer) submitBatch(ctx context.Context, network string, batchDetail s
 func (r *Relayer) processIn(ctx context.Context, network string) error {
 	s, err := event.New(&event.NewInput{
 		ProviderURL:  r.Config.Network[network].Url,
-		CurrentBlock: big.NewInt(0),
+		CurrentBlock: big.NewInt(r.Config.Network[network].LastScannedBlock), // config.yaml pre-define before running process
+		DBClient:     r.DBClient,
 	})
 	if err != nil {
 		return err
 	}
 
-	//TODO concurrency handle here
-	topic := "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef" // this should be in config.yaml
 	events, err := s.GetEvents(ctx, &event.EventInput{
 		ContractAddress: r.Config.Network[network].Contract,
-		Topic:           topic,
+		Topic:           r.Config.Network[network].Topic,
 	})
 
-	fmt.Println(events) // unused error skip
-	//Mocking the input
-	r.initSwapInRequest(ctx, "0xxa", "shareledger1w4l5fchs69d9avlgvdehq9ypvdh4xyev3p490g", "erc20", 100, 15)
+	// check if these event are handle or not in db
+	for _, e := range events {
+		batch, err := r.DBClient.GetBatchByTxHash(e.TxHash)
+		if err != nil {
+			// batch existed, skip processing
+			if batch != (database.Batch{}) && err != mongo.ErrNoDocuments {
+				continue
+			}
+
+			log.Err(err)
+		}
+
+		// get slp3 address from db
+		slp3, err := r.DBClient.GetSLP3Address(e.ToAddress, network)
+		if err != nil {
+			// log error and skip process this request
+			log.Err(err)
+			continue
+		}
+
+		// call shareledger transaction
+		err = r.initSwapInRequest(
+			ctx,
+			e.ToAddress,
+			slp3,
+			network,
+			e.TxHash,
+			e.BlockNumber,
+			e.Amount.BigInt().Uint64(),
+			15,
+		)
+		if err != nil {
+			log.Err(err)
+		}
+	}
+
 	return nil
 }
 
@@ -462,23 +495,39 @@ func (r *Relayer) SubmitSwapIn(ctx context.Context, swap swapmoduletypes.MsgRequ
 
 func (r *Relayer) initSwapInRequest(
 	ctx context.Context,
-	destAddr, slp3Addr, srcNet string,
-	amount, fee uint64) error {
+	srcAddr, destAddr, network, txHash string,
+	blockNumber, amount, fee uint64) error {
 	swapAmount := sdk.NewDecCoin(denom.Shr, sdk.NewIntFromUint64(amount))
 	swapFee := sdk.NewDecCoin(denom.Shr, sdk.NewIntFromUint64(fee))
 
 	msgClient := swapmoduletypes.NewMsgClient(r.Client)
 	inMsg := swapmoduletypes.NewMsgRequestIn(
 		r.Client.GetFromAddress().String(),
-		slp3Addr,
+		srcAddr,
 		destAddr,
-		srcNet,
+		network,
 		swapAmount,
 		swapFee,
 	)
-	_, err := msgClient.RequestIn(ctx, inMsg)
+	response, err := msgClient.RequestIn(ctx, inMsg)
 	if err != nil {
 		return err
 	}
+
+	// approve in msg
+
+	newBatch := database.Batch{
+		ShareledgerID: response.Id,
+		Status:        database.Done,
+		Type:          database.In,
+		Network:       network,
+		TxHash:        txHash,
+		BlockNumber:   blockNumber,
+	}
+	err = r.DBClient.SetBatch(newBatch)
+	if err != nil {
+		return err
+	}
+
 	return nil
 }

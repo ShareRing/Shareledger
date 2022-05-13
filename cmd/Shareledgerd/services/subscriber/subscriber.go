@@ -9,6 +9,7 @@ import (
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/ethclient"
+	"github.com/sharering/shareledger/cmd/Shareledgerd/services/database"
 	"github.com/shopspring/decimal"
 	log "github.com/sirupsen/logrus"
 )
@@ -28,16 +29,19 @@ type EventOutput struct {
 	ToAddress   string
 	Amount      decimal.Decimal
 	TxHash      string
+	BlockNumber uint64
 }
 
 type Service struct {
 	client       *ethclient.Client
 	currentBlock *big.Int
+	DBClient     database.DBRelayer
 }
 
 type NewInput struct {
 	ProviderURL  string
 	CurrentBlock *big.Int
+	DBClient     database.DBRelayer
 }
 
 func init() {
@@ -53,6 +57,7 @@ func New(input *NewInput) (*Service, error) {
 	return &Service{
 		client:       client,
 		currentBlock: input.CurrentBlock,
+		DBClient:     input.DBClient,
 	}, nil
 }
 
@@ -110,10 +115,17 @@ func (s *Service) GetEvents(ctx context.Context, input *EventInput) (events []Ev
 		output.FromAddress = common.BytesToAddress(vLog.Topics[1].Bytes()).String()
 		output.ToAddress = common.BytesToAddress(vLog.Topics[2].Bytes()).String()
 		output.TxHash = vLog.TxHash.String()
+		output.BlockNumber = vLog.BlockNumber
 
 		events = append(events, output)
 
 	}
+	// save last scanned block number to db
+	err = s.DBClient.SetLastScannedBlockNumber(header.Number.Uint64())
+	if err != nil {
+		return nil, err
+	}
+
 	// set current block number = latest + 1 for next tick interval
 	s.currentBlock.Add(header.Number, big.NewInt(1))
 	return events, nil

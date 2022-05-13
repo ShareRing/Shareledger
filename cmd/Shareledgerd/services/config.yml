@@ -9,3 +9,5 @@ networks:
     url: https://eth-rinkeby.alchemyapi.io/v2/0M8yP6-iyIof8dFJN0Jph59jJlSKqmbW
     chainId: 4
     contract: 0x7451bDECe7270a4fe4aAFFDCAa8c37bd8D041B4a
+    lastScannedBlock: 0
+    topic: 0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef
