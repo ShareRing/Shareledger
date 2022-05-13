@@ -30,6 +30,7 @@ const (
 	BatchStatusProcessing = "processing"
 	BatchStatusDone       = "done"
 	BatchStatusFail       = "failed"
+	BatchStatusCanceled   = "canceled"
 )
 
 func SwapStatusSupported(status string) bool {

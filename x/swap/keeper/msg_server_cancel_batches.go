@@ -13,15 +13,16 @@ func (k msgServer) CancelBatches(goCtx context.Context, msg *types.MsgCancelBatc
 	batches := k.GetBatchesByIDs(ctx, msg.GetIds())
 	var requestIDs []uint64
 	for _, batch := range batches {
-		if batch.GetStatus() != types.BatchStatusProcessing {
+		if batch.GetStatus() != types.BatchStatusPending || batch.GetStatus() != types.BatchStatusFail {
 			return &types.MsgCancelBatchesResponse{},
 				sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "batch_id %d status %s is invalid for canceling", batch.GetId(), batch.GetStatus())
 		}
-		k.RemoveBatch(ctx, batch.GetId())
+		batch.Status = types.BatchStatusCanceled
+		k.SetBatch(ctx, batch)
 		requestIDs = append(requestIDs, batch.GetTxIds()...)
 	}
-	var zeroBatchNum uint64 = 0
 
+	var zeroBatchNum uint64 = 0
 	_, err := k.ChangeStatusRequests(ctx, requestIDs, types.BatchStatusPending, &zeroBatchNum, true)
 	if err != nil {
 		return &types.MsgCancelBatchesResponse{},
