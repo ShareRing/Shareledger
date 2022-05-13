@@ -87,7 +87,7 @@ func (c *DB) UpdateBatches(shareledgerIDs []uint64, status Status) error {
 	return nil
 }
 
-func (c *DB) GetBatchByType(shareledgerID, requestType string) (Batch, error) {
+func (c *DB) SearchBatchByType(shareledgerID uint64, requestType string) (*Batch, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
@@ -100,10 +100,13 @@ func (c *DB) GetBatchByType(shareledgerID, requestType string) (Batch, error) {
 		"type":          requestType,
 	}).Decode(&queryResult)
 	if err != nil {
-		return Batch{}, err
+		if err == mongo.ErrNoDocuments {
+			return nil, nil
+		}
+		return &Batch{}, err
 	}
 
-	return queryResult, nil
+	return &queryResult, nil
 }
 
 func (c *DB) GetBatchByTxHash(txHash string) (Batch, error) {
