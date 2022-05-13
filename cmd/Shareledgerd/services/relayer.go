@@ -239,15 +239,75 @@ func (r *Relayer) startProcess(ctx context.Context, f processFunc, network strin
 //	return done, nil
 //}
 
+// setBatchOutFail update on db the fail batch.
+func (r *Relayer) setBatchOutFail(ctx context.Context, batch database.Batch) error {
+	if batch.Nonce == 0 {
+		return fmt.Errorf("failed batch nonce is required")
+	}
+	batch.Status = database.Failed
+	return r.db.SetBatch(batch)
+}
+
+
+func (r *Relayer) syncBatchOutFailed(ctx context.Context, id uint64, latestNonce uint64) error {
+	return nil
+}
+
+// syncBatchOutDone update on db and shareledger
+func (r *Relayer) syncBatchOutDone(ctx context.Context, id uint64) error {
+	if _, err := r.updateBatchStatus(id, swapmoduletypes.BatchStatusDone); err != nil {
+		return err
+	}
+	return r.db.UpdateBatchesOut([]uint64{id}, database.Done)
+}
+
+func (r *Relayer) syncBatchStatus(ctx context.Context, batch database.Batch) error {
+	for {
+		log.Info().Msgf("checking receipt, network, %s, txHash, %s", batch.Network, batch.TxHash)
+		fmt.Println("checking receipt", batch.Network, batch.TxHash)
+		receipt, err := r.checkTxHash(ctx, batch.Network, common.HexToHash(batch.TxHash))
+		if err != nil && err.Error() != "not found" {
+			if err.Error() == "not found" { //transaction is still on mem pool
+				continue
+			}
+			if IsErrBatchProcessed(err) {
+				return r.syncBatchOutDone(ctx, batch.ShareledgerID)
+			}
+			if IsErrRequestProcessed(err) {
+				//return r.set
+			}
+		}
+		if receipt != nil {
+			switch receipt.Status {
+			case 1:
+				if _, err = r.updateBatchStatus(batch.Id, swapmoduletypes.BatchStatusDone); err != nil {
+					return err
+				}
+			case 0:
+				receipt.
+			}
+			break
+		}
+	}
+}
+
 func (r *Relayer) processOut(ctx context.Context, network string) error {
-	batch, err := r.getNextPendingBatch(network)
+	//batch, err := r.getNextPendingBatch(network)
+	batch, err := r.db.GetNextPendingBatchOut(network)
 	if err != nil {
-		log.Err(err).Msg("get pending batches")
+		return err
 	}
 	if batch == nil {
 		log.Info().Msg("pending batches list is empty")
 		return nil
 	}
+	//
+	if len(batch.TxHash) == 0 {
+		err := r.syncBatchStatus(ctx, batch)
+	} else {
+		err := r.submitBatch(context, batch)
+	}
+
 	batchDetail, err := r.getBatchDetail(ctx, *batch)
 	if err != nil {
 		return errors.Wrap(err, "get batch detail")
@@ -271,33 +331,45 @@ func (r *Relayer) processOut(ctx context.Context, network string) error {
 			}
 		}
 	}
-
+	var zeroHash common.Hash
 	// in case this batch was not processed
-	if len(txHash.Bytes()) == 0 {
+	if txHash == zeroHash {
 		txHash, err = r.submitBatch(ctx, network, batchDetail)
 		if err != nil {
 			return err
 		}
-	}
-
-	for {
-		time.Sleep(time.Second * 5)
-		fmt.Println("checking receipt")
-		receipt, err := r.checkTxHash(ctx, network, txHash)
-		if err != nil && err.Error() != "not found" {
+		if err = r.db.SetBatch(database.Batch{
+			ShareledgerID: batchDetail.Batch.Id,
+			Status:        database.Pending,
+			Type:          database.In,
+			TxHash:        txHash.Hex(),
+			Network:       network,
+			BlockNumber:   0,
+		}); err != nil {
 			return err
 		}
-		if receipt != nil {
-			if receipt.Status == 1 {
-				//r.updateBatchStatus()
-			} else {
-				fmt.Println("FAILED", receipt.Status)
-			}
-			break
-		}
 	}
+
+	//for {
+	//	time.Sleep(time.Second * 5)
+	//	fmt.Println("checking receipt", network, txHash)
+	//	receipt, err := r.checkTxHash(ctx, network, txHash)
+	//	if err != nil && err.Error() != "not found" {
+	//		return err
+	//	}
+	//	if receipt != nil {
+	//		switch receipt.Status {
+	//		case 1:
+	//			if _, err = r.updateBatchStatus(batch.Id, swapmoduletypes.BatchStatusDone); err != nil {
+	//				return err
+	//			}
+	//		case 0: //FAIL TODO: -> check many case fail. processed -> update done, wrong -> failed
+	//			fmt.Println("wrong")
+	//		}
+	//		break
+	//	}
+	//}
 	fmt.Println(txHash, err)
-	// TODO: Hoai job check requently
 	return err
 }
 
@@ -436,7 +508,9 @@ func (r *Relayer) submitBatch(ctx context.Context, network string, batchDetail s
 		PubKey: info.GetPubKey(),
 	}
 	commonAdd := common.BytesToAddress(pubkey.Address().Bytes())
-	currentNonce, err := conn.PendingNonceAt(ctx, commonAdd)
+
+	//it should override pending nonce
+	currentNonce, err := conn.NonceAt(ctx, commonAdd, nil)
 	if err != nil {
 		return txHash, err
 	}

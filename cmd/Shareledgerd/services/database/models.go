@@ -5,9 +5,10 @@ import "go.mongodb.org/mongo-driver/bson/primitive"
 type Status string
 
 const (
-	Pending Status = "pending"
-	Done    Status = "done"
-	Failed  Status = "failed"
+	Pending   Status = "pending"
+	Done      Status = "done"
+	Cancelled Status = "cancelled"
+	Failed    Status = "failed"
 )
 
 type Type string
@@ -18,13 +19,14 @@ const (
 )
 
 type Batch struct {
-	ID            primitive.ObjectID `bson:"_id" json:"id,omitempty"`
-	ShareledgerID uint64             `json:"shareledgerID,omitempty" validate:"required"`
-	Status        Status             `json:"status,omitempty" validate:"required"`
-	Type          Type               `json:"type,omitempty" validate:"required"`
-	TxHash        string             `json:"txHash,omitempty" validate:"required"`
-	Network       string             `json:"network,omitempty" validate:"required"`
-	BlockNumber   uint64             `json:"blockNumber,omitempty" validate:"required"`
+	ID            primitive.ObjectID `bson:"_id" json:"id"`
+	ShareledgerID uint64             `bson:"shareledgerID" json:"shareledgerID"`
+	Status        Status             `bson:"status" json:"status"`
+	Type          Type               `bson:"type"  json:"type"`
+	TxHash        string             `bson:"txHash" json:"txHash"`
+	Network       string             `bson:"network" json:"network"`
+	BlockNumber   uint64             `bson:"blockNumber" json:"blockNumber"`
+	Nonce         uint64             `bson:"nonce" json:"nonce"`
 }
 
 type Network string
