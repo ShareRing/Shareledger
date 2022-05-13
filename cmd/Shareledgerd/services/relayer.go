@@ -248,7 +248,6 @@ func (r *Relayer) setBatchOutFail(ctx context.Context, batch database.Batch) err
 	return r.db.SetBatch(batch)
 }
 
-
 func (r *Relayer) syncBatchOutFailed(ctx context.Context, id uint64, latestNonce uint64) error {
 	return nil
 }
@@ -280,20 +279,21 @@ func (r *Relayer) syncBatchStatus(ctx context.Context, batch database.Batch) err
 		if receipt != nil {
 			switch receipt.Status {
 			case 1:
-				if _, err = r.updateBatchStatus(batch.Id, swapmoduletypes.BatchStatusDone); err != nil {
-					return err
-				}
+				//if _, err = r.updateBatchStatus(batch.Id, swapmoduletypes.BatchStatusDone); err != nil {
+				//	return err
+				//}
 			case 0:
-				receipt.
+				//receipt.
 			}
 			break
 		}
 	}
+	return nil
 }
 
 func (r *Relayer) processOut(ctx context.Context, network string) error {
-	//batch, err := r.getNextPendingBatch(network)
-	batch, err := r.db.GetNextPendingBatchOut(network)
+	batch, err := r.getNextPendingBatch(network)
+	//batch, err := r.db.GetNextPendingBatchOut(network)
 	if err != nil {
 		return err
 	}
@@ -303,9 +303,9 @@ func (r *Relayer) processOut(ctx context.Context, network string) error {
 	}
 	//
 	if len(batch.TxHash) == 0 {
-		err := r.syncBatchStatus(ctx, batch)
+		//err := r.syncBatchStatus(ctx, batch)
 	} else {
-		err := r.submitBatch(context, batch)
+		//err := r.submitBatch(context, batch)
 	}
 
 	batchDetail, err := r.getBatchDetail(ctx, *batch)
@@ -475,8 +475,8 @@ func (r *Relayer) isBatchDoneOnSC(network string, digest common.Hash) (done bool
 	if err != nil {
 		return false, sdkerrors.Wrapf(sdkerrors.ErrLogic, err.Error())
 	}
-	res, err := swapClient.Swaps(nil, digest)
-	if len(res) > 0 {
+	res, err := swapClient.Batch(nil, digest)
+	if len(res.Signature) > 0 {
 		done = true
 	}
 	return done, err
