@@ -21,6 +21,7 @@ type processFunc func(ctx context.Context, network string) error
 
 type Network struct {
 	Signer                              string `yaml:"signer"`
+	Exponent                            int    `yaml:"exponent"`
 	Url                                 string `yaml:"url"`
 	ChainId                             int64  `yaml:"chainId"`
 	Contract                            string `yaml:"contract"` // swap contract address

@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"math/big"
 	"os"
 	"os/signal"
@@ -429,11 +430,15 @@ func (r *Relayer) processOut(ctx context.Context, network string) error {
 
 func (r *Relayer) getBalance(ctx context.Context, network string) (sdk.Coin, error) {
 	conn, networkConfig, err := r.initConn(network)
-	_, err = swap.NewSwap(common.HexToAddress(networkConfig.Contract), conn)
-	//if err != nil {
-	return sdk.Coin{}, err
-	//}
-	//swapClient.TokensAvailable()
+	swapClient, err := swap.NewSwap(common.HexToAddress(networkConfig.Contract), conn)
+	if err != nil {
+		return sdk.Coin{}, err
+	}
+	value, err := swapClient.TokensAvailable(&bind.CallOpts{
+		Pending: false,
+		Context: ctx,
+	})
+	return denom.ExponentToBase(sdk.NewInt(value.Int64()), r.Config.Network[network].Exponent), err
 }
 
 func (r *Relayer) checkTxHash(ctx context.Context, network string, txHash common.Hash) (*types.Receipt, error) {

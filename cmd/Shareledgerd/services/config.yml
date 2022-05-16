@@ -7,6 +7,7 @@ networks:
   erc20:
     signer: acc3
     url: https://ropsten.infura.io/v3/bf1a5b4c59cb45ea8ebf48497d3295ae
+    exponent: 2
     chainId: 3
     contract: 0x0cb4b0f613D3219309860128053bEc26f3958Aa1
     pegWallet: 0x0cb4b0f613D3219309860128053bEc26f3958Aa1
