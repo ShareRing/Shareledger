@@ -44,3 +44,8 @@ type Address struct {
 	Network            Network `json:"network,omitempty" validate:"required"`
 	Result             string  `json:"result,omitempty" validate:"required"`
 }
+
+type Setting struct {
+	LastScannedBatchID     uint64            `bson:"lastScannedBatchID"`
+	LastScannedBlockNumber map[string]uint64 `bson:"lastScannedBlockNumber"`
+}
