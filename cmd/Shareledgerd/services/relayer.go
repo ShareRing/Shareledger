@@ -214,20 +214,17 @@ func (r *Relayer) startProcess(ctx context.Context, f processFunc, network strin
 	defer func() {
 		ticker.Stop()
 	}()
-	firstRun := true
 	go func() {
 		for {
 			select {
 			case <-ticker.C:
-				if firstRun {
-					ticker.Reset(r.Config.ScanInterval)
-					firstRun = false
-				}
+				ticker.Stop()
 				err := f(ctx, network)
 				if err != nil {
 					doneChan <- err
 					return
 				}
+				ticker.Reset(r.Config.ScanInterval)
 			case <-ctx.Done():
 				log.Info().Msg("context is done. out process is exiting")
 				doneChan <- nil
@@ -243,38 +240,47 @@ func (r *Relayer) setLog(id uint64, msg string) error {
 	return r.db.SetLog(id, msg)
 }
 
-func (r *Relayer) trackSubmittedBatch(ctx context.Context, batch database.Batch) error {
+func (r *Relayer) trackSubmittedBatch(ctx context.Context, batch database.Batch, timeout time.Duration) (database.Status, error) {
+	deadTime := time.Now().Add(timeout).Add(time.Millisecond)
 	for {
-		log.Info().Msgf("checking receipt, network, %s, txHash, %s", batch.Network, batch.TxHash)
-		fmt.Println("checking receipt", batch.Network, batch.TxHash)
-		receipt, err := r.checkTxHash(ctx, batch.Network, common.HexToHash(batch.TxHash))
-		if err != nil && err.Error() != "not found" {
-			if err.Error() == "not found" { //transaction is still on mem pool
-				continue
+		select {
+		case <-time.Tick(timeout / 2):
+			if time.Now().After(deadTime) {
+				return database.Submitted, nil
 			}
-			if IsErrBatchProcessed(err) {
-				return r.db.UpdateBatchesOut([]uint64{batch.ShareledgerID}, database.Done)
-			}
-			if e := r.setLog(batch.ShareledgerID, err.Error()); e != nil {
-				log.Error().Stack().Err(err).Msg(e.Error())
-			}
-			return r.db.UpdateBatchesOut([]uint64{batch.ShareledgerID}, database.Failed)
-		}
-		if receipt != nil {
-			switch receipt.Status {
-			case 1:
-				return r.db.UpdateBatchesOut([]uint64{batch.ShareledgerID}, database.Done)
-			case 0:
-				msgLog, _ := json.MarshalIndent(receipt, "", "  ")
-				if e := r.setLog(batch.ShareledgerID, string(msgLog)); e != nil {
+			log.Info().Msgf("checking receipt, network, %s, txHash, %s", batch.Network, batch.TxHash)
+			fmt.Println("checking receipt", batch.Network, batch.TxHash)
+			receipt, err := r.checkTxHash(ctx, batch.Network, common.HexToHash(batch.TxHash))
+			if err != nil && err.Error() != "not found" {
+				if err.Error() == "not found" { //transaction is still on mem pool
+					continue
+				}
+				if IsErrBatchProcessed(err) {
+					return database.Done, r.db.UpdateBatchesOut([]uint64{batch.ShareledgerID}, database.Done)
+				}
+				if e := r.setLog(batch.ShareledgerID, err.Error()); e != nil {
 					log.Error().Stack().Err(err).Msg(e.Error())
 				}
-				return r.db.UpdateBatchesOut([]uint64{batch.ShareledgerID}, database.Failed)
+				return database.Failed, r.db.UpdateBatchesOut([]uint64{batch.ShareledgerID}, database.Failed)
 			}
-			break
+			if receipt != nil {
+				switch receipt.Status {
+				case 1:
+					return database.Done, r.db.UpdateBatchesOut([]uint64{batch.ShareledgerID}, database.Done)
+				case 0:
+					msgLog, _ := json.MarshalIndent(receipt, "", "  ")
+					if e := r.setLog(batch.ShareledgerID, string(msgLog)); e != nil {
+						log.Error().Stack().Err(err).Msg(e.Error())
+					}
+					return database.Failed, r.db.UpdateBatchesOut([]uint64{batch.ShareledgerID}, database.Failed)
+				default:
+					return database.Submitted, nil
+				}
+			}
+		case <-ctx.Done():
+			return database.Submitted, nil
 		}
 	}
-	return nil
 }
 
 func (r *Relayer) syncEventSuccessfulBatches(ctx context.Context, network string) error {
@@ -369,20 +375,19 @@ func (r *Relayer) syncFailedBatches(ctx context.Context, network string) error {
 	return nil
 }
 
-func (r *Relayer) processNextPendingBachOut(ctx context.Context, network string) error {
-	batch, err := r.db.GetNextPendingBatchOut(network)
-	if err != nil {
-		return err
-	}
-	if batch == nil {
-		log.Info().Msg("pending batches list is empty")
-		return nil
-	}
+func (r *Relayer) processNextPendingBatchesOut(ctx context.Context, network string) error {
+	offset := 0
+	for {
+		batch, err := r.db.GetNextPendingBatchOut(network, offset)
+		offset++
+		if err != nil {
+			return err
+		}
+		if batch == nil {
+			log.Info().Msg("pending batches list is empty")
+			return nil
+		}
 
-	// already submit to sc
-	if batch.Status == database.Submitted {
-		return r.trackSubmittedBatch(ctx, *batch)
-	} else {
 		b, err := r.getBatch(batch.ShareledgerID)
 		if err != nil || b == nil {
 			return err
@@ -401,31 +406,57 @@ func (r *Relayer) processNextPendingBachOut(ctx context.Context, network string)
 			return err
 		}
 		if currentBalance.IsLT(total) {
-			return fmt.Errorf("current %s contract's balances is less than swap amount %s in network %s", currentBalance.String(), total.String(), network)
+			log.Warn().Msg(fmt.Sprintf("with batch,%v. Contract's balances,  %s, is less than swap amount %s in network %s", batch.ShareledgerID, currentBalance.String(), total.String(), network))
+			continue
 		}
-		txHash, nonce, err := r.submitBatch(ctx, network, batchDetail)
 
-		batch.Nonce = nonce
-		batch.Status = database.Submitted
-		batch.TxHash = txHash.String()
-		if err != nil {
-			if IsErrBatchProcessed(err) {
-				batch.Status = database.Done
-			} else {
-				batch.Status = database.Failed
+		retry := r.Config.Network[network].Retry
+		var currentPrice *big.Int
+		numberRetry := 0
+		for numberRetry < retry.MaxRetry {
+			numberRetry++
+			if currentPrice != nil {
+				nextPrice := retry.RetryPercentage*float64(currentPrice.Int64())/100 + float64(currentPrice.Int64())
+				currentPrice, _ = big.NewFloat(nextPrice).Int(nil)
 			}
-			r.setLog(batch.ShareledgerID, err.Error())
+			tx, err := r.submitBatch(ctx, network, batchDetail, currentPrice)
+			if err != nil {
+				if IsErrBatchProcessed(err) {
+					batch.Status = database.Done
+				} else {
+					batch.Status = database.Failed
+				}
+				r.setLog(batch.ShareledgerID, err.Error())
+			}
+			if tx != nil {
+				batch.Nonce = tx.Nonce()
+				batch.Status = database.Submitted
+				batch.TxHash = tx.Hash().String()
+				currentPrice = tx.GasPrice()
+			}
+			if err := r.db.SetBatch(*batch); err != nil {
+				return err
+			}
+			if batch.Status == database.Done || batch.Status == database.Failed {
+				break
+			}
+			if batch.Status == database.Submitted {
+				status, err := r.trackSubmittedBatch(ctx, *batch, retry.IntervalRetry)
+				if err != nil {
+					return err
+				}
+				if status != database.Submitted {
+					// status will be failed and done which do not need to keep tracking
+					break
+				}
+				continue
+			}
 		}
-		if err := r.db.SetBatch(*batch); err != nil {
-			return err
-		}
-		if batch.Status == database.Submitted {
-			return r.trackSubmittedBatch(ctx, *batch)
-		}
-		return nil
 	}
-	return err
+	return nil
 }
+
+var runningLock sync.Mutex
 
 func (r *Relayer) processOut(ctx context.Context, network string) error {
 	if err := r.syncEventSuccessfulBatches(ctx, network); err != nil {
@@ -437,7 +468,7 @@ func (r *Relayer) processOut(ctx context.Context, network string) error {
 	if err := r.syncNewBatchesOut(ctx, network); err != nil {
 		return err
 	}
-	if err := r.processNextPendingBachOut(ctx, network); err != nil {
+	if err := r.processNextPendingBatchesOut(ctx, network); err != nil {
 		return err
 	}
 	return nil
@@ -563,13 +594,13 @@ func (r *Relayer) isBatchDoneOnSC(network string, digest common.Hash) (done bool
 
 }
 
-func (r *Relayer) submitBatch(ctx context.Context, network string, batchDetail swaputil.BatchDetail) (txHash common.Hash, submittedNonce uint64, err error) {
+func (r *Relayer) submitBatch(ctx context.Context, network string, batchDetail swaputil.BatchDetail, price *big.Int) (tx *types.Transaction, err error) {
 	if err := batchDetail.Validate(); err != nil {
-		return txHash, 0, err
+		return tx, err
 	}
 	conn, networkConfig, err := r.initConn(network)
 	if err != nil {
-		return txHash, 0, err
+		return tx, err
 	}
 	defer func() {
 		conn.Close()
@@ -577,12 +608,12 @@ func (r *Relayer) submitBatch(ctx context.Context, network string, batchDetail s
 
 	swapClient, err := swap.NewSwap(common.HexToAddress(networkConfig.Contract), conn)
 	if err != nil {
-		return txHash, 0, sdkerrors.Wrapf(sdkerrors.ErrLogic, err.Error())
+		return tx, sdkerrors.Wrapf(sdkerrors.ErrLogic, err.Error())
 	}
 
 	info, err := r.Client.Keyring.Key(networkConfig.Signer)
 	if err != nil {
-		return txHash, 0, err
+		return tx, err
 	}
 	pubkey := keyring.PubKeyETH{
 		PubKey: info.GetPubKey(),
@@ -592,27 +623,27 @@ func (r *Relayer) submitBatch(ctx context.Context, network string, batchDetail s
 	//it should override pending nonce
 	currentNonce, err := conn.NonceAt(ctx, commonAdd, nil)
 	if err != nil {
-		return txHash, 0, err
+		return tx, err
 	}
-	submittedNonce = currentNonce
 	opts, err := keyring.NewKeyedTransactorWithChainID(r.Client.Keyring, networkConfig.Signer, big.NewInt(networkConfig.ChainId))
 	if err != nil {
-		return txHash, submittedNonce, err
+		return tx, err
+	}
+	if price != nil {
+		opts.GasPrice = price
 	}
 	opts.Nonce = big.NewInt(int64(currentNonce))
 	sig, err := hexutil.Decode(batchDetail.Batch.Signature)
+
 	if err != nil {
-		return txHash, submittedNonce, err
+		return tx, err
 	}
 	params, err := batchDetail.GetContractParams()
 	if err != nil {
-		return txHash, submittedNonce, err
+		return tx, err
 	}
-	tx, err := swapClient.Swap(opts, params.TransactionIds, params.DestAddrs, params.Amounts, sig)
-	if tx != nil {
-		txHash = tx.Hash()
-	}
-	return txHash, submittedNonce, err
+	tx, err = swapClient.Swap(opts, params.TransactionIds, params.DestAddrs, params.Amounts, sig)
+	return tx, err
 }
 
 func (r *Relayer) processIn(ctx context.Context, network string) error {

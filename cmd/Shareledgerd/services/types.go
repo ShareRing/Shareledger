@@ -30,6 +30,13 @@ type Network struct {
 	LastScannedSwapEventBlockNumber     int64  `yaml:"lastScannedSwapEventBlockNumber"`
 	Topic                               string `yaml:"topic"` // swap topic
 	TransferTopic                       string `yaml:"transferTopic"`
+	Retry                               Retry  `yaml:"retry"`
+}
+
+type Retry struct {
+	IntervalRetry   time.Duration `yaml:"intervalRetry"'`
+	MaxRetry        int           `yaml:"maxRetry"`
+	RetryPercentage float64       `yaml:"retryPercentage"`
 }
 
 type RelayerConfig struct {
