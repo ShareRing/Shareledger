@@ -46,7 +46,12 @@ func (c *DB) InsertBatches(batches []Batch) error {
 	defer cancel()
 
 	collection := c.GetCollection(ShareRing, BatchCollection)
-	_, err := collection.InsertMany(ctx, []interface{}{batches})
+	var newDocs []interface{}
+	for _, v := range batches {
+		newDocs = append(newDocs, v)
+	}
+
+	_, err := collection.InsertMany(ctx, newDocs)
 	if err != nil {
 		return err
 	}

@@ -20,7 +20,7 @@ const (
 )
 
 type Batch struct {
-	ID            primitive.ObjectID `bson:"_id" json:"id"`
+	ID            primitive.ObjectID `bson:"_id,omitempty" json:"id"`
 	ShareledgerID uint64             `bson:"shareledgerID" json:"shareledgerID"`
 	Status        Status             `bson:"status" json:"status"`
 	Type          Type               `bson:"type"  json:"type"`
@@ -32,7 +32,7 @@ type Batch struct {
 }
 
 type Logs struct {
-	ID      primitive.ObjectID `bson:"_id" json:"id"`
+	ID      primitive.ObjectID `bson:"_id,omitempty" json:"id"`
 	BathID  uint64             `bson:"batchID" json:"batchID"`
 	Message string             `bson:"message" json:"message"`
 }
