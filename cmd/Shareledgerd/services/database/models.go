@@ -29,6 +29,12 @@ type Batch struct {
 	Nonce         uint64             `bson:"nonce" json:"nonce"`
 }
 
+type Logs struct {
+	ID      primitive.ObjectID `bson:"_id" json:"id"`
+	BathID  uint64             `bson:"batchID" json:"batchID"`
+	Message string             `bson:"message" json:"message"`
+}
+
 type Network string
 
 type Address struct {

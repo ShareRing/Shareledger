@@ -2,6 +2,7 @@ package services
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"github.com/rs/zerolog/log"
 	"gopkg.in/yaml.v3"
@@ -254,14 +255,22 @@ func (r *Relayer) syncBatchOutFailed(ctx context.Context, id uint64, latestNonce
 }
 
 // syncBatchOutDone update on db and shareledger
-func (r *Relayer) syncBatchOutDone(ctx context.Context, id uint64) error {
-	if _, err := r.updateBatchStatus(id, swapmoduletypes.BatchStatusDone); err != nil {
-		return err
-	}
-	return r.db.UpdateBatchesOut([]uint64{id}, database.Done)
+//func (r *Relayer) syncBatchOutDone(id uint64) error {
+//	if _, err := r.updateBatchStatus(id, swapmoduletypes.BatchStatusDone); err != nil {
+//		return err
+//	}
+//	return r.db.UpdateBatchesOut([]uint64{id}, database.Done)
+//}
+
+//func (r *Relayer) setBatchFail(id uint64) error {
+//	return r.db.UpdateBatchesOut([]uint64{id}, database.Failed)
+//}
+
+func (r *Relayer) setLog(id uint64, msg string) error {
+	return r.db.SetLog(id, msg)
 }
 
-func (r *Relayer) syncBatchStatus(ctx context.Context, batch database.Batch) error {
+func (r *Relayer) syncDBBatchStatus(ctx context.Context, batch database.Batch) error {
 	for {
 		log.Info().Msgf("checking receipt, network, %s, txHash, %s", batch.Network, batch.TxHash)
 		fmt.Println("checking receipt", batch.Network, batch.TxHash)
@@ -271,20 +280,23 @@ func (r *Relayer) syncBatchStatus(ctx context.Context, batch database.Batch) err
 				continue
 			}
 			if IsErrBatchProcessed(err) {
-				return r.syncBatchOutDone(ctx, batch.ShareledgerID)
+				return r.db.UpdateBatchesOut([]uint64{batch.ShareledgerID}, database.Done)
 			}
-			if IsErrRequestProcessed(err) {
-				//return r.set
+			if e := r.setLog(batch.ShareledgerID, err.Error()); e != nil {
+				log.Error().Stack().Err(err).Msg(e.Error())
 			}
+			return r.db.UpdateBatchesOut([]uint64{batch.ShareledgerID}, database.Failed)
 		}
 		if receipt != nil {
 			switch receipt.Status {
 			case 1:
-				//if _, err = r.updateBatchStatus(batch.Id, swapmoduletypes.BatchStatusDone); err != nil {
-				//	return err
-				//}
+				return r.db.UpdateBatchesOut([]uint64{batch.ShareledgerID}, database.Done)
 			case 0:
-				//receipt.
+				msgLog, _ := json.MarshalIndent(receipt, "", "  ")
+				if e := r.setLog(batch.ShareledgerID, string(msgLog)); e != nil {
+					log.Error().Stack().Err(err).Msg(e.Error())
+				}
+				return r.db.UpdateBatchesOut([]uint64{batch.ShareledgerID}, database.Failed)
 			}
 			break
 		}
@@ -292,9 +304,52 @@ func (r *Relayer) syncBatchStatus(ctx context.Context, batch database.Batch) err
 	return nil
 }
 
+//func (r *Relayer) submitBatch(ctx context.Context, batch swapmoduletypes.Batch) error {
+//	batchDetail, err := r.getBatchDetail(ctx, batch)
+//	if err != nil {
+//		return errors.Wrap(err, "get batch detail")
+//	}
+//	var txHash common.Hash
+//	processedBatch, err := r.db.SearchBatchByType(batch.Id, database.Out)
+//	if err != nil {
+//		return err
+//	}
+//	if processedBatch != nil {
+//		switch processedBatch.Status {
+//		case database.Failed:
+//			_, err = r.updateBatchStatus(batch.Id, swapmoduletypes.BatchStatusFail)
+//			return err
+//		case database.Done:
+//			_, err = r.updateBatchStatus(batch.Id, swapmoduletypes.BatchStatusDone)
+//			return err
+//		default:
+//			if len(processedBatch.TxHash) > 0 {
+//				txHash = common.HexToHash(processedBatch.TxHash)
+//			}
+//		}
+//	}
+//	var zeroHash common.Hash
+//	// in case this batch was not processed
+//	if txHash == zeroHash {
+//		txHash, err = r.submitBatch(ctx, batch.Network, batchDetail)
+//		if err != nil {
+//			return err
+//		}
+//		if err = r.db.SetBatch(database.Batch{
+//			ShareledgerID: batchDetail.Batch.Id,
+//			Status:        database.Pending,
+//			Type:          database.In,
+//			TxHash:        txHash.Hex(),
+//			Network:       network,
+//			BlockNumber:   0,
+//		}); err != nil {
+//			return err
+//		}
+//	}
+//}
+
 func (r *Relayer) processOut(ctx context.Context, network string) error {
-	batch, err := r.getNextPendingBatch(network)
-	//batch, err := r.db.GetNextPendingBatchOut(network)
+	batch, err := r.db.GetNextPendingBatchOut(network)
 	if err != nil {
 		return err
 	}
@@ -302,53 +357,18 @@ func (r *Relayer) processOut(ctx context.Context, network string) error {
 		log.Info().Msg("pending batches list is empty")
 		return nil
 	}
-	//
-	if len(batch.TxHash) == 0 {
-		//err := r.syncBatchStatus(ctx, batch)
-	} else {
-		//err := r.submitBatch(context, batch)
-	}
-
-	batchDetail, err := r.getBatchDetail(ctx, *batch)
-	if err != nil {
-		return errors.Wrap(err, "get batch detail")
-	}
-	var txHash common.Hash
-	processedBatch, err := r.db.SearchBatchByType(batch.Id, database.Out)
-	if err != nil {
-		return err
-	}
-	if processedBatch != nil {
-		switch processedBatch.Status {
-		case database.Failed:
-			_, err = r.updateBatchStatus(batch.Id, swapmoduletypes.BatchStatusFail)
-			return err
-		case database.Done:
-			_, err = r.updateBatchStatus(batch.Id, swapmoduletypes.BatchStatusDone)
-			return err
-		default:
-			if len(processedBatch.TxHash) > 0 {
-				txHash = common.HexToHash(processedBatch.TxHash)
-			}
-		}
-	}
-	var zeroHash common.Hash
-	// in case this batch was not processed
-	if txHash == zeroHash {
-		txHash, err = r.submitBatch(ctx, network, batchDetail)
+	if len(batch.TxHash) != 0 {
+		err := r.syncDBBatchStatus(ctx, *batch)
 		if err != nil {
 			return err
 		}
-		if err = r.db.SetBatch(database.Batch{
-			ShareledgerID: batchDetail.Batch.Id,
-			Status:        database.Pending,
-			Type:          database.In,
-			TxHash:        txHash.Hex(),
-			Network:       network,
-			BlockNumber:   0,
-		}); err != nil {
+	} else {
+		b, err := r.getBatch(batch.ShareledgerID)
+		if err != nil || b == nil {
 			return err
 		}
+		//return r.submitBatch(ctx, *b)
+		//err := r.submitBatch(context, batch)
 	}
 
 	//for {
@@ -370,7 +390,7 @@ func (r *Relayer) processOut(ctx context.Context, network string) error {
 	//		break
 	//	}
 	//}
-	fmt.Println(txHash, err)
+	//fmt.Println(txHash, err)
 	return err
 }
 
@@ -394,21 +414,23 @@ func (r *Relayer) checkTxHash(ctx context.Context, network string, txHash common
 	return conn.TransactionReceipt(ctx, txHash)
 }
 
-func (r *Relayer) getNextPendingBatch(network string) (*swapmoduletypes.Batch, error) {
+func (r *Relayer) getBatch(batchId uint64) (*swapmoduletypes.Batch, error) {
 	qClient := swapmoduletypes.NewQueryClient(r.Client)
 	pendingQuery := &swapmoduletypes.QueryBatchesRequest{
-		Status:  swapmoduletypes.BatchStatusPending,
-		Network: network,
+		Ids: []uint64{batchId},
+		//Status:  swapmoduletypes.BatchStatusPending,
+		//Network: network,
 	}
 
 	batchesRes, err := qClient.Batches(context.Background(), pendingQuery)
 	batches := batchesRes.GetBatches()
 	sort.Sort(BatchSortByIDAscending(batches))
-
-	if len(batches) == 0 {
-		return nil, fmt.Errorf("pending batchs is empty")
+	if err != nil {
+		return nil, err
 	}
-
+	if len(batches) == 0 {
+		return nil, nil
+	}
 	return &batches[0], err
 }
 

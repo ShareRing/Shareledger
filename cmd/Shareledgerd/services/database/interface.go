@@ -12,4 +12,5 @@ type DBRelayer interface {
 	SetLastScannedBlockNumber(lastScannedBlockNumer uint64) error
 	GetSLP3Address(erc20Addr, network string) (string, error)
 	GetNextPendingBatchOut(network string) (*Batch, error)
+	SetLog(batchId uint64, msg string) error
 }

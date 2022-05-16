@@ -25,6 +25,7 @@ const (
 	BatchCollection   = "batches"
 	SettingCollection = "settings"
 	AddressCollection = "addresses"
+	LogsCollection    = "logs"
 )
 
 func (c *DB) GetSLP3Address(erc20Addr, network string) (string, error) {
@@ -170,6 +171,17 @@ func (c *DB) SetBatch(request Batch) error {
 	}
 
 	return nil
+}
+
+func (c *DB) SetLog(batchId uint64, msg string) error {
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+	collection := c.GetCollection(ShareRing, LogsCollection)
+	_, err := collection.InsertOne(ctx, Logs{
+		BathID:  batchId,
+		Message: msg,
+	})
+	return err
 }
 
 func NewMongo(mongoURI string) (DBRelayer, error) {
