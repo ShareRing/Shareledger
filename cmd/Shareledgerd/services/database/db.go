@@ -42,18 +42,63 @@ func (c *DB) SetBatchesOutFailed(nonceNumber uint64) error {
 }
 
 func (c *DB) InsertBatches(batches []Batch) error {
-	//TODO implement me
-	panic("implement me")
+	ctx, cancel := context.WithTimeout(context.Background(), timeout)
+	defer cancel()
+
+	collection := c.GetCollection(ShareRing, BatchCollection)
+	_, err := collection.InsertMany(ctx, []interface{}{batches})
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
-func (c *DB) UpdateLatestScannedBatchId(id uint64) error {
-	//TODO implement me
-	panic("implement me")
+func (c *DB) UpdateLatestScannedBatchId(id uint64, network string) error {
+	ctx, cancel := context.WithTimeout(context.Background(), timeout)
+	defer cancel()
+
+	collection := c.GetCollection(ShareRing, SettingCollection)
+
+	_, err := collection.UpdateMany(
+		ctx,
+		bson.M{},
+		bson.D{
+			{
+				Key: "$set",
+				Value: bson.D{
+					{
+						Key:   fmt.Sprintf("settings.lastScannedBatchID.%s", network),
+						Value: id,
+					},
+				},
+			},
+		})
+
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func (c *DB) GetLastScannedBatch(network string) (uint64, error) {
-	//TODO implement me
-	panic("implement me")
+	ctx, cancel := context.WithTimeout(context.Background(), timeout)
+	defer cancel()
+
+	collection := c.GetCollection(ShareRing, SettingCollection)
+
+	var queryResult bson.M
+	var setting Setting
+	_ = collection.FindOne(ctx, bson.M{}).Decode(&queryResult)
+	doc, err := bson.Marshal(queryResult["settings"])
+	if err != nil {
+		return 0, err
+	}
+
+	err = bson.Unmarshal(doc, &setting)
+
+	return setting.LastScannedBatchID[Network(network)], nil
 }
 
 type Collection struct {
@@ -67,6 +112,7 @@ const (
 	SettingCollection = "settings"
 	AddressCollection = "addresses"
 	LogsCollection    = "logs"
+	timeout           = 10 * time.Second
 )
 
 func (c *DB) GetSLP3Address(erc20Addr, network string) (string, error) {
@@ -101,7 +147,7 @@ func (c *DB) SetLastScannedBlockNumber(contractAddress string, lastScannedBlockN
 				Key: "$set",
 				Value: bson.D{
 					{
-						Key:   fmt.Sprintf("lastScannedBlockNumber.%s", contractAddress),
+						Key:   fmt.Sprintf("settings.lastScannedBlockNumber.%s", contractAddress),
 						Value: lastScannedBlockNumber,
 					},
 				},
