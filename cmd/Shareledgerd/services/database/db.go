@@ -190,11 +190,11 @@ func (c *DB) UpdateBatchesOut(shareledgerIDs []uint64, status Status) error {
 	return nil
 }
 
-func (c *DB) GetNextPendingBatchOut(network string) (*Batch, error) {
-	return c.getOneBatchStatus(network, Pending)
+func (c *DB) GetNextPendingBatchOut(network string, offset int64) (*Batch, error) {
+	return c.getOneBatchStatus(network, Pending, &offset)
 }
 
-func (c *DB) getOneBatchStatus(network string, status Status) (*Batch, error) {
+func (c *DB) getOneBatchStatus(network string, status Status, offset *int64) (*Batch, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	collection := c.GetCollection(ShareRing, BatchCollection)
@@ -205,10 +205,9 @@ func (c *DB) getOneBatchStatus(network string, status Status) (*Batch, error) {
 		"network": network,
 	}, &options.FindOneOptions{
 		Sort: bson.M{
-			"$sort": bson.M{
-				"shareledgerID": 1,
-			},
+			"shareledgerID": 1,
 		},
+		Skip: offset,
 	}).Decode(&batch)
 	if err != nil {
 		if err != mongo.ErrNoDocuments {
@@ -216,6 +215,7 @@ func (c *DB) getOneBatchStatus(network string, status Status) (*Batch, error) {
 		}
 		return nil, err
 	}
+
 	return &batch, err
 }
 

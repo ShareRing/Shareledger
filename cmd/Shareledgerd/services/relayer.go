@@ -364,14 +364,10 @@ func (r *Relayer) syncFailedBatches(ctx context.Context, network string) error {
 	})
 	return err
 
-	if err != nil {
-		return err
-	}
-	return nil
 }
 
 func (r *Relayer) processNextPendingBachOut(ctx context.Context, network string) error {
-	batch, err := r.db.GetNextPendingBatchOut(network)
+	batch, err := r.db.GetNextPendingBatchOut(network, 0)
 	if err != nil {
 		return err
 	}
