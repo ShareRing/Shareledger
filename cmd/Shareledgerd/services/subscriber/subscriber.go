@@ -76,7 +76,7 @@ func New(input *NewInput) (*Service, error) {
 }
 
 func (s *Service) GetSwapCompleteEvent(ctx context.Context, input *EventSwapCompleteInput) (events []EventSwapCompleteOutput, err error) {
-	swapAbi, err := abi.JSON(strings.NewReader(string(swapcontract.AMetaData.ABI)))
+	swapAbi, err := abi.JSON(strings.NewReader(string(swapcontract.SwapcontractMetaData.ABI)))
 	if err != nil {
 		return nil, err
 	}
@@ -140,7 +140,7 @@ func (s *Service) GetSwapCompleteEvent(ctx context.Context, input *EventSwapComp
 }
 
 func (s *Service) GetTransferEvent(ctx context.Context, input *EventTransferInput) (events []EventTransferOutput, err error) {
-	erc20Abi, err := abi.JSON(strings.NewReader(string(erc20.AMetaData.ABI)))
+	erc20Abi, err := abi.JSON(strings.NewReader(string(erc20.Erc20MetaData.ABI)))
 	if err != nil {
 		return nil, err
 	}
