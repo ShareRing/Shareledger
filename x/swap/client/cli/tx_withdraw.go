@@ -12,7 +12,7 @@ import (
 func CmdWithdraw() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "withdraw [receiver] [amount]",
-		Short: "Broadcast message withdraw",
+		Short: "Broadcast message withdraw to withdraw the shr from swap module to receiver address",
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argReceiver := args[0]

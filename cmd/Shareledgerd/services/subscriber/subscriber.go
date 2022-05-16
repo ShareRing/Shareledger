@@ -2,29 +2,31 @@ package subscriber
 
 import (
 	"context"
+	"github.com/ethereum/go-ethereum/common"
 	"math/big"
 	"strings"
 
 	eth "github.com/ethereum/go-ethereum"
 	"github.com/ethereum/go-ethereum/accounts/abi"
-	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/sharering/shareledger/cmd/Shareledgerd/services/database"
+	"github.com/sharering/shareledger/cmd/Shareledgerd/services/subscriber/erc20"
+	"github.com/sharering/shareledger/cmd/Shareledgerd/services/subscriber/swapcontract"
 	"github.com/shopspring/decimal"
 	log "github.com/sirupsen/logrus"
 )
 
 const (
-	eventName = "Transfer"
+	transferEvent = "Transfer"
+	swapEvent     = "SwapCompleted"
 )
 
-type EventInput struct {
-	ContractAddress string
-	Topic           string
-	// OutputChannel   chan EventOutput
+type EventTransferInput struct {
+	PegWalletAddress string
+	TransferTopic    string
 }
 
-type EventOutput struct {
+type EventTransferOutput struct {
 	FromAddress string
 	ToAddress   string
 	Amount      decimal.Decimal
@@ -32,16 +34,27 @@ type EventOutput struct {
 	BlockNumber uint64
 }
 
+type EventSwapCompleteInput struct {
+	SwapContractAddress string
+	SwapTopic           string
+}
+
+type EventSwapCompleteOutput struct {
+	TxHash string
+}
+
 type Service struct {
-	client       *ethclient.Client
-	currentBlock *big.Int
-	DBClient     database.DBRelayer
+	client               *ethclient.Client
+	transferCurrentBlock *big.Int
+	swapCurrentBlock     *big.Int
+	DBClient             database.DBRelayer
 }
 
 type NewInput struct {
-	ProviderURL  string
-	CurrentBlock *big.Int
-	DBClient     database.DBRelayer
+	ProviderURL          string
+	TransferCurrentBlock *big.Int
+	SwapCurrentBlock     *big.Int
+	DBClient             database.DBRelayer
 }
 
 func init() {
@@ -55,15 +68,79 @@ func New(input *NewInput) (*Service, error) {
 	}
 
 	return &Service{
-		client:       client,
-		currentBlock: input.CurrentBlock,
-		DBClient:     input.DBClient,
+		client:               client,
+		transferCurrentBlock: input.TransferCurrentBlock,
+		swapCurrentBlock:     input.SwapCurrentBlock,
+		DBClient:             input.DBClient,
 	}, nil
 }
 
-func (s *Service) GetEvents(ctx context.Context, input *EventInput) (events []EventOutput, err error) {
+func (s *Service) GetSwapCompleteEvent(ctx context.Context, input *EventSwapCompleteInput) (events []EventSwapCompleteOutput, err error) {
+	swapAbi, err := abi.JSON(strings.NewReader(string(swapcontract.AMetaData.ABI)))
+	if err != nil {
+		return nil, err
+	}
 
-	erc20Abi, err := abi.JSON(strings.NewReader(string(AMetaData.ABI)))
+	header, err := s.client.HeaderByNumber(ctx, nil)
+	if err != nil {
+		return events, err
+	}
+
+	if header.Number.Cmp(s.swapCurrentBlock) == 0 {
+		log.Info("there is no new block")
+		return events, nil
+	}
+
+	log.Debugf("Scanning from block %v to block %v", s.swapCurrentBlock, header.Number)
+	any := []common.Hash{}
+	query := eth.FilterQuery{
+		FromBlock: s.swapCurrentBlock,
+		ToBlock:   header.Number,
+		Addresses: []common.Address{common.HexToAddress(input.SwapContractAddress)},
+		Topics: [][]common.Hash{
+			[]common.Hash{common.HexToHash(input.SwapTopic)},
+			any,
+		},
+	}
+
+	logs, err := s.client.FilterLogs(ctx, query)
+	if err != nil {
+		return events, err
+	}
+
+	events = make([]EventSwapCompleteOutput, 0, len(logs))
+
+	for _, vLog := range logs {
+		output := EventSwapCompleteOutput{}
+		var event = struct {
+			Value *big.Int // amount in erc20 contract
+		}{}
+
+		err := swapAbi.UnpackIntoInterface(&event, swapEvent, vLog.Data)
+		if err != nil {
+			log.Errorf("Event unpacking error: %s", err)
+			continue
+		}
+
+		output.TxHash = vLog.TxHash.String()
+
+		events = append(events, output)
+
+	}
+
+	// save last scanned block number to db
+	err = s.DBClient.SetLastScannedBlockNumber(input.SwapContractAddress, header.Number.Int64())
+	if err != nil {
+		return nil, err
+	}
+
+	// set current block number = latest + 1 for next tick interval
+	s.swapCurrentBlock.Add(header.Number, big.NewInt(1))
+	return events, nil
+}
+
+func (s *Service) GetTransferEvent(ctx context.Context, input *EventTransferInput) (events []EventTransferOutput, err error) {
+	erc20Abi, err := abi.JSON(strings.NewReader(string(erc20.AMetaData.ABI)))
 	if err != nil {
 		return nil, err
 	}
@@ -74,19 +151,19 @@ func (s *Service) GetEvents(ctx context.Context, input *EventInput) (events []Ev
 	}
 
 	// if head = current => skip
-	if header.Number.Cmp(s.currentBlock) == 0 {
-		log.Info("there is no new")
+	if header.Number.Cmp(s.transferCurrentBlock) == 0 {
+		log.Info("there is no new block")
 		return events, nil
 	}
 
-	log.Debugf("Scanning from block %v to block %v", s.currentBlock, header.Number)
+	log.Debugf("Scanning from block %v to block %v", s.transferCurrentBlock, header.Number)
 	any := []common.Hash{}
 	query := eth.FilterQuery{
-		FromBlock: s.currentBlock,
+		FromBlock: s.transferCurrentBlock,
 		ToBlock:   header.Number,
-		Addresses: []common.Address{common.HexToAddress(input.ContractAddress)},
+		Addresses: []common.Address{common.HexToAddress(input.PegWalletAddress)},
 		Topics: [][]common.Hash{
-			[]common.Hash{common.HexToHash(input.Topic)},
+			[]common.Hash{common.HexToHash(input.TransferTopic)},
 			any,
 			any,
 		},
@@ -97,15 +174,15 @@ func (s *Service) GetEvents(ctx context.Context, input *EventInput) (events []Ev
 		return events, err
 	}
 
-	events = make([]EventOutput, 0, len(logs))
+	events = make([]EventTransferOutput, 0, len(logs))
 
 	for _, vLog := range logs {
-		output := EventOutput{}
+		output := EventTransferOutput{}
 		var event = struct {
 			Value *big.Int // amount in erc20 contract
 		}{}
 
-		err := erc20Abi.UnpackIntoInterface(&event, eventName, vLog.Data)
+		err := erc20Abi.UnpackIntoInterface(&event, transferEvent, vLog.Data)
 		if err != nil {
 			log.Errorf("Event unpacking error: %s", err)
 			continue
@@ -121,12 +198,12 @@ func (s *Service) GetEvents(ctx context.Context, input *EventInput) (events []Ev
 
 	}
 	// save last scanned block number to db
-	err = s.DBClient.SetLastScannedBlockNumber(header.Number.Uint64())
+	err = s.DBClient.SetLastScannedBlockNumber(input.PegWalletAddress, header.Number.Int64())
 	if err != nil {
 		return nil, err
 	}
 
 	// set current block number = latest + 1 for next tick interval
-	s.currentBlock.Add(header.Number, big.NewInt(1))
+	s.transferCurrentBlock.Add(header.Number, big.NewInt(1))
 	return events, nil
 }

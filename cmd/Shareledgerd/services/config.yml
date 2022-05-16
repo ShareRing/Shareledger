@@ -9,5 +9,8 @@ networks:
     url: https://ropsten.infura.io/v3/bf1a5b4c59cb45ea8ebf48497d3295ae
     chainId: 3
     contract: 0x0cb4b0f613D3219309860128053bEc26f3958Aa1
-    lastScannedBlock: 0
+    pegWallet: 0x0cb4b0f613D3219309860128053bEc26f3958Aa1
+      lastScannedTransferEventBlockNumber: 0
+      lastScannedSwapEventBlockNumber: 0
     topic: 0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef
+    transferTopic: 0x796a6fb73c9c09afe863a5d1bc7040da846e5aeb2ad3cb42ee36e08a0c0a3e71

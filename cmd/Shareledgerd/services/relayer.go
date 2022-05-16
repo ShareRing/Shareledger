@@ -3,8 +3,6 @@ package services
 import (
 	"context"
 	"fmt"
-	"github.com/rs/zerolog/log"
-	"gopkg.in/yaml.v3"
 	"math/big"
 	"os"
 	"os/signal"
@@ -13,6 +11,9 @@ import (
 	"sync"
 	"syscall"
 	"time"
+
+	"github.com/rs/zerolog/log"
+	"gopkg.in/yaml.v3"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
@@ -545,17 +546,18 @@ func (r *Relayer) submitBatch(ctx context.Context, network string, batchDetail s
 
 func (r *Relayer) processIn(ctx context.Context, network string) error {
 	s, err := event.New(&event.NewInput{
-		ProviderURL:  r.Config.Network[network].Url,
-		CurrentBlock: big.NewInt(r.Config.Network[network].LastScannedBlock), // config.yaml pre-define before running process
-		DBClient:     r.db,
+		ProviderURL:          r.Config.Network[network].Url,
+		TransferCurrentBlock: big.NewInt(r.Config.Network[network].LastScannedTransferEventBlockNumber), // config.yaml pre-define before running process
+		SwapCurrentBlock:     big.NewInt(r.Config.Network[network].LastScannedSwapEventBlockNumber),
+		DBClient:             r.db,
 	})
 	if err != nil {
 		return err
 	}
 
-	events, err := s.GetEvents(ctx, &event.EventInput{
-		ContractAddress: r.Config.Network[network].Contract,
-		Topic:           r.Config.Network[network].Topic,
+	events, err := s.GetTransferEvent(ctx, &event.EventTransferInput{
+		PegWalletAddress: r.Config.Network[network].PegWallet,
+		TransferTopic:    r.Config.Network[network].TransferTopic,
 	})
 
 	// check if these event are handle or not in db
@@ -607,8 +609,6 @@ func (r *Relayer) initSwapInRequest(
 	blockNumber, amount, fee uint64) error {
 	swapAmount := sdk.NewDecCoin(denom.Shr, sdk.NewIntFromUint64(amount))
 	swapFee := sdk.NewDecCoin(denom.Shr, sdk.NewIntFromUint64(fee))
-
-	msgClient := swapmoduletypes.NewMsgClient(r.Client)
 	inMsg := swapmoduletypes.NewMsgRequestIn(
 		r.Client.GetFromAddress().String(),
 		srcAddr,
@@ -617,7 +617,7 @@ func (r *Relayer) initSwapInRequest(
 		swapAmount,
 		swapFee,
 	)
-	response, err := msgClient.RequestIn(ctx, inMsg)
+	response, err := r.msgClient.RequestIn(ctx, inMsg)
 	if err != nil {
 		return err
 	}

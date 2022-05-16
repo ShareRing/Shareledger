@@ -13,7 +13,7 @@ import (
 func CmdIn() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "in [src_address] [dest_address] [src_network] [amount] [fee]",
-		Short: "Broadcast message in",
+		Short: "Broadcast message in, to create the swap in request",
 		Args:  cobra.ExactArgs(5),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argSrcAddress := args[0]

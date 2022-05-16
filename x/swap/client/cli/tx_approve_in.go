@@ -13,7 +13,7 @@ import (
 
 func CmdApproveIn() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "approve_in [txnIds]",
+		Use:   "approve-in [txnIds]",
 		Short: "Broadcast message approve_in",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
