@@ -277,6 +277,28 @@ func (r *Relayer) updateDBBatchStatus(ctx context.Context, batch database.Batch)
 }
 
 func (r *Relayer) syncEventSuccessfulBatches(ctx context.Context, network string) error {
+	service, found := r.events[network]
+	if !found {
+		return fmt.Errorf("%s network does not have swap event subscrber", network)
+	}
+	events, err := service.GetSwapCompleteEvent(ctx)
+	if err != nil {
+		return err
+	}
+	for _, event := range events {
+		batch, err := r.db.GetBatchByTxHash(event.TxHash)
+		if err != nil {
+			return err
+		}
+		batch.Status = database.Done
+		nonce := batch.Nonce
+		if err := r.db.UpdateBatchesOut([]uint64{batch.ShareledgerID}, database.Done); err != nil {
+			return err
+		}
+		if err := r.db.SetBatchesOutFailed(nonce); err != nil {
+			return err
+		}
+	}
 	return nil
 }
 
@@ -319,26 +341,7 @@ func (r *Relayer) syncNewBatchesOut(ctx context.Context, network string) error {
 }
 
 func (r *Relayer) syncFailedBatches(ctx context.Context, network string) error {
-	conn, networkConfig, err := r.initConn(network)
-	if err != nil {
-		return err
-	}
-	defer func() {
-		conn.Close()
-	}()
-	info, err := r.Client.Keyring.Key(networkConfig.Signer)
-	if err != nil {
-		return err
-	}
-	pubkey := keyring.PubKeyETH{
-		PubKey: info.GetPubKey(),
-	}
-	commonAdd := common.BytesToAddress(pubkey.Address().Bytes())
-	currentNonce, err := conn.NonceAt(ctx, commonAdd, nil)
-	if err != nil {
-		return err
-	}
-	failedBatches, err := r.db.SearchBatchByStatus(network, database.Failed, currentNonce)
+	failedBatches, err := r.db.SearchBatchByStatus(network, database.Failed)
 	if err != nil {
 		return err
 	}
@@ -385,6 +388,7 @@ func (r *Relayer) processNextPendingBachOut(ctx context.Context, network string)
 			return err
 		}
 		txHash, nonce, err := r.submitBatch(ctx, network, batchDetail)
+
 		batch.Nonce = nonce
 		batch.Status = database.Submitted
 		batch.TxHash = txHash.String()

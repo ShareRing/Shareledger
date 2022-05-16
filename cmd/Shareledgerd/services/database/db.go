@@ -16,6 +16,31 @@ type DB struct {
 	*mongo.Client
 }
 
+func (c *DB) SetBatchesOutFailed(nonceNumber uint64) error {
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	collection := c.GetCollection(ShareRing, BatchCollection)
+
+	_, err := collection.UpdateMany(
+		ctx,
+		bson.M{
+			"nonce": bson.M{
+				"$lte": nonceNumber,
+			},
+			"type":   "out",
+			"status": Submitted,
+		},
+		bson.D{
+			{Key: "$set", Value: bson.D{{Key: "status", Value: Failed}}},
+		},
+	)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func (c *DB) InsertBatches(batches []Batch) error {
 	//TODO implement me
 	panic("implement me")
@@ -164,7 +189,7 @@ func (c *DB) SearchBatchByType(shareledgerID uint64, requestType Type) (*Batch, 
 
 	return &queryResult, nil
 }
-func (c *DB) SearchBatchByStatus(network string, status Status, nonce uint64) ([]Batch, error) {
+func (c *DB) SearchBatchByStatus(network string, status Status) ([]Batch, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
@@ -175,9 +200,6 @@ func (c *DB) SearchBatchByStatus(network string, status Status, nonce uint64) ([
 	cursor, err := collection.Find(ctx, bson.M{
 		"network": network,
 		"status":  status,
-		"nonce": bson.M{
-			"$lt": nonce,
-		},
 	}, nil)
 
 	if err != nil {
