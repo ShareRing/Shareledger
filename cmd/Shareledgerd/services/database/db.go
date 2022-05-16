@@ -26,7 +26,7 @@ func (c *DB) UpdateLatestScannedBatchId(id uint64) error {
 	panic("implement me")
 }
 
-func (c *DB) GetLastScannedBatch() (uint64, error) {
+func (c *DB) GetLastScannedBatch(network string) (uint64, error) {
 	//TODO implement me
 	panic("implement me")
 }

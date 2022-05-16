@@ -2,6 +2,7 @@ package services
 
 import (
 	"context"
+	"github.com/sharering/shareledger/cmd/Shareledgerd/services/subscriber"
 	"time"
 
 	"github.com/cosmos/cosmos-sdk/client"
@@ -43,6 +44,7 @@ type Relayer struct {
 	Config RelayerConfig
 	Client client.Context
 	db     database.DBRelayer
+	events map[string]subscriber.Service
 
 	qClient   swapmoduletypes.QueryClient
 	msgClient swapmoduletypes.MsgClient

@@ -21,10 +21,10 @@ const (
 	swapEvent     = "SwapCompleted"
 )
 
-type EventTransferInput struct {
-	PegWalletAddress string
-	TransferTopic    string
-}
+//type EventTransferInput struct {
+//	PegWalletAddress string
+//	TransferTopic    string
+//}
 
 type EventTransferOutput struct {
 	FromAddress string
@@ -34,10 +34,10 @@ type EventTransferOutput struct {
 	BlockNumber uint64
 }
 
-type EventSwapCompleteInput struct {
-	SwapContractAddress string
-	SwapTopic           string
-}
+//type EventSwapCompleteInput struct {
+//	SwapContractAddress string
+//	SwapTopic           string
+//}
 
 type EventSwapCompleteOutput struct {
 	TxHash string
@@ -48,13 +48,24 @@ type Service struct {
 	transferCurrentBlock *big.Int
 	swapCurrentBlock     *big.Int
 	DBClient             database.DBRelayer
+
+	pegWalletAddress    string
+	transferTopic       string
+	swapContractAddress string
+	swapTopic           string
 }
 
 type NewInput struct {
 	ProviderURL          string
 	TransferCurrentBlock *big.Int
 	SwapCurrentBlock     *big.Int
-	DBClient             database.DBRelayer
+
+	PegWalletAddress    string
+	TransferTopic       string
+	SwapContractAddress string
+	SwapTopic           string
+
+	DBClient database.DBRelayer
 }
 
 func init() {
@@ -72,10 +83,15 @@ func New(input *NewInput) (*Service, error) {
 		transferCurrentBlock: input.TransferCurrentBlock,
 		swapCurrentBlock:     input.SwapCurrentBlock,
 		DBClient:             input.DBClient,
+
+		pegWalletAddress:    input.PegWalletAddress,
+		transferTopic:       input.TransferTopic,
+		swapContractAddress: input.SwapContractAddress,
+		swapTopic:           input.SwapTopic,
 	}, nil
 }
 
-func (s *Service) GetSwapCompleteEvent(ctx context.Context, input *EventSwapCompleteInput) (events []EventSwapCompleteOutput, err error) {
+func (s *Service) GetSwapCompleteEvent(ctx context.Context) (events []EventSwapCompleteOutput, err error) {
 	swapAbi, err := abi.JSON(strings.NewReader(string(swap.SwapMetaData.ABI)))
 	if err != nil {
 		return nil, err
@@ -96,9 +112,9 @@ func (s *Service) GetSwapCompleteEvent(ctx context.Context, input *EventSwapComp
 	query := eth.FilterQuery{
 		FromBlock: s.swapCurrentBlock,
 		ToBlock:   header.Number,
-		Addresses: []common.Address{common.HexToAddress(input.SwapContractAddress)},
+		Addresses: []common.Address{common.HexToAddress(s.swapContractAddress)},
 		Topics: [][]common.Hash{
-			[]common.Hash{common.HexToHash(input.SwapTopic)},
+			[]common.Hash{common.HexToHash(s.swapTopic)},
 			any,
 		},
 	}
@@ -128,7 +144,7 @@ func (s *Service) GetSwapCompleteEvent(ctx context.Context, input *EventSwapComp
 	}
 
 	// save last scanned block number to db
-	err = s.DBClient.SetLastScannedBlockNumber(input.SwapContractAddress, header.Number.Int64())
+	err = s.DBClient.SetLastScannedBlockNumber(s.swapContractAddress, header.Number.Int64())
 	if err != nil {
 		return nil, err
 	}
@@ -138,7 +154,7 @@ func (s *Service) GetSwapCompleteEvent(ctx context.Context, input *EventSwapComp
 	return events, nil
 }
 
-func (s *Service) GetTransferEvent(ctx context.Context, input *EventTransferInput) (events []EventTransferOutput, err error) {
+func (s *Service) GetTransferEvent(ctx context.Context) (events []EventTransferOutput, err error) {
 	erc20Abi, err := abi.JSON(strings.NewReader(string(erc20.Erc20MetaData.ABI)))
 	if err != nil {
 		return nil, err
@@ -160,9 +176,9 @@ func (s *Service) GetTransferEvent(ctx context.Context, input *EventTransferInpu
 	query := eth.FilterQuery{
 		FromBlock: s.transferCurrentBlock,
 		ToBlock:   header.Number,
-		Addresses: []common.Address{common.HexToAddress(input.PegWalletAddress)},
+		Addresses: []common.Address{common.HexToAddress(s.pegWalletAddress)},
 		Topics: [][]common.Hash{
-			[]common.Hash{common.HexToHash(input.TransferTopic)},
+			[]common.Hash{common.HexToHash(s.transferTopic)},
 			any,
 			any,
 		},
@@ -197,7 +213,7 @@ func (s *Service) GetTransferEvent(ctx context.Context, input *EventTransferInpu
 
 	}
 	// save last scanned block number to db
-	err = s.DBClient.SetLastScannedBlockNumber(input.PegWalletAddress, header.Number.Int64())
+	err = s.DBClient.SetLastScannedBlockNumber(s.pegWalletAddress, header.Number.Int64())
 	if err != nil {
 		return nil, err
 	}

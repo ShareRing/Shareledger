@@ -72,7 +72,10 @@ func NewStartCommands(defaultNodeHome string) *cobra.Command {
 			ctx, cancel := context.WithCancel(context.Background())
 			timeoutContext, cancelTimeOut := context.WithTimeout(ctx, time.Second*10)
 			defer cancelTimeOut()
-			relayerClient := initRelayer(clientTx, cfg, mgClient)
+			relayerClient, err := initRelayer(clientTx, cfg, mgClient)
+			if err != nil {
+				return err
+			}
 			if err := mgClient.ConnectDB(timeoutContext); err != nil {
 				cancel()
 				return err
@@ -125,7 +128,10 @@ func NewStartCommands(defaultNodeHome string) *cobra.Command {
 						processChan <- struct {
 							Network string
 							Err     error
-						}{Network: network, Err: relayerClient.startProcess(ctx, relayerClient.processIn, network)}
+						}{
+							Network: network,
+							Err:     relayerClient.startProcess(ctx, relayerClient.processIn, network),
+						}
 					}(network)
 				}
 
@@ -135,7 +141,10 @@ func NewStartCommands(defaultNodeHome string) *cobra.Command {
 						processChan <- struct {
 							Network string
 							Err     error
-						}{Network: network, Err: relayerClient.startProcess(ctx, relayerClient.processOut, network)}
+						}{
+							Network: network,
+							Err:     relayerClient.startProcess(ctx, relayerClient.processOut, network),
+						}
 					}(network)
 				}
 			default:
@@ -165,18 +174,36 @@ func parseConfig(filePath string) (RelayerConfig, error) {
 	return cfg, err
 }
 
-func initRelayer(client client.Context, cfg RelayerConfig, db database.DBRelayer) *Relayer {
+func initRelayer(client client.Context, cfg RelayerConfig, db database.DBRelayer) (*Relayer, error) {
 	mClient := swapmoduletypes.NewMsgClient(client)
 	qClient := swapmoduletypes.NewQueryClient(client)
 
-	return &Relayer{
-		Config: cfg,
-		Client: client,
-		db:     db,
+	events := make(map[string]event.Service)
+	for network, cfg := range cfg.Network {
+		e, err := event.New(&event.NewInput{
+			ProviderURL:          cfg.Url,
+			TransferCurrentBlock: big.NewInt(cfg.LastScannedTransferEventBlockNumber), // config.yaml pre-define before running process
+			SwapCurrentBlock:     big.NewInt(cfg.LastScannedSwapEventBlockNumber),
+			PegWalletAddress:     cfg.PegWallet,
+			TransferTopic:        cfg.TransferTopic,
+			SwapContractAddress:  cfg.Contract,
+			SwapTopic:            cfg.Topic,
+			DBClient:             db,
+		})
+		if err != nil {
+			return nil, err
+		}
+		events[network] = *e
+	}
 
+	return &Relayer{
+		Config:    cfg,
+		Client:    client,
+		db:        db,
+		events:    events,
 		qClient:   qClient,
 		msgClient: mClient,
-	}
+	}, nil
 }
 
 func (r *Relayer) startProcess(ctx context.Context, f processFunc, network string) error {
@@ -211,24 +238,11 @@ func (r *Relayer) startProcess(ctx context.Context, f processFunc, network strin
 	return <-doneChan
 }
 
-// setBatchOutFail update on db the fail batch.
-func (r *Relayer) setBatchOutFail(ctx context.Context, batch database.Batch) error {
-	if batch.Nonce == 0 {
-		return fmt.Errorf("failed batch nonce is required")
-	}
-	batch.Status = database.Failed
-	return r.db.SetBatch(batch)
-}
-
-func (r *Relayer) syncBatchOutFailed(ctx context.Context, id uint64, latestNonce uint64) error {
-	return nil
-}
-
 func (r *Relayer) setLog(id uint64, msg string) error {
 	return r.db.SetLog(id, msg)
 }
 
-func (r *Relayer) syncDBBatchStatus(ctx context.Context, batch database.Batch) error {
+func (r *Relayer) updateDBBatchStatus(ctx context.Context, batch database.Batch) error {
 	for {
 		log.Info().Msgf("checking receipt, network, %s, txHash, %s", batch.Network, batch.TxHash)
 		fmt.Println("checking receipt", batch.Network, batch.TxHash)
@@ -262,39 +276,37 @@ func (r *Relayer) syncDBBatchStatus(ctx context.Context, batch database.Batch) e
 	return nil
 }
 
-func (r *Relayer) syncSubmittedBatches(ctx context.Context) error {
-	panic("implement me")
+func (r *Relayer) syncEventSuccessfulBatches(ctx context.Context, network string) error {
+	return nil
 }
 
-func (r *Relayer) syncNewBatchesOut(ctx context.Context, networks []string) error {
-	lastScannedBatchId, err := r.db.GetLastScannedBatch()
+func (r *Relayer) syncNewBatchesOut(ctx context.Context, network string) error {
+	lastScannedBatchId, err := r.db.GetLastScannedBatch(network)
 	if err != nil {
 		return err
 	}
 	maxBatchId := lastScannedBatchId
 	newBatches := make([]database.Batch, 0)
 
-	for _, network := range networks {
-		res, err := r.qClient.Batches(ctx, &swapmoduletypes.QueryBatchesRequest{
-			Status:  swapmoduletypes.BatchStatusPending,
-			Network: network,
-		})
-		if err != nil {
-			return err
+	res, err := r.qClient.Batches(ctx, &swapmoduletypes.QueryBatchesRequest{
+		Status:  swapmoduletypes.BatchStatusPending,
+		Network: network,
+	})
+	if err != nil {
+		return err
+	}
+	for _, b := range res.Batches {
+		if b.Id > lastScannedBatchId {
+			newBatches = append(newBatches, database.Batch{
+				ShareledgerID: b.Id,
+				Status:        database.Pending,
+				Type:          database.Out,
+				TxHash:        common.Hash{}.String(),
+				Network:       b.Network,
+			})
 		}
-		for _, b := range res.Batches {
-			if b.Id > lastScannedBatchId {
-				newBatches = append(newBatches, database.Batch{
-					ShareledgerID: b.Id,
-					Status:        database.Pending,
-					Type:          database.Out,
-					TxHash:        common.Hash{}.String(),
-					Network:       b.Network,
-				})
-			}
-			if maxBatchId < b.Id {
-				maxBatchId = b.Id
-			}
+		if maxBatchId < b.Id {
+			maxBatchId = b.Id
 		}
 	}
 	if err := r.db.InsertBatches(newBatches); err != nil {
@@ -306,54 +318,51 @@ func (r *Relayer) syncNewBatchesOut(ctx context.Context, networks []string) erro
 	return nil
 }
 
-func (r *Relayer) syncFailedBatches(ctx context.Context, networks []string) error {
-	for _, network := range networks {
-		err := func(network string) error {
-			conn, networkConfig, err := r.initConn(network)
-			if err != nil {
-				return err
-			}
-			defer func() {
-				conn.Close()
-			}()
-			info, err := r.Client.Keyring.Key(networkConfig.Signer)
-			if err != nil {
-				return err
-			}
-			pubkey := keyring.PubKeyETH{
-				PubKey: info.GetPubKey(),
-			}
-			commonAdd := common.BytesToAddress(pubkey.Address().Bytes())
-			currentNonce, err := conn.NonceAt(ctx, commonAdd, nil)
-			if err != nil {
-				return err
-			}
-			failedBatches, err := r.db.SearchBatchByStatus(network, database.Failed, currentNonce)
-			if err != nil {
-				return err
-			}
-			if len(failedBatches) == 0 {
-				return nil
-			}
+func (r *Relayer) syncFailedBatches(ctx context.Context, network string) error {
+	conn, networkConfig, err := r.initConn(network)
+	if err != nil {
+		return err
+	}
+	defer func() {
+		conn.Close()
+	}()
+	info, err := r.Client.Keyring.Key(networkConfig.Signer)
+	if err != nil {
+		return err
+	}
+	pubkey := keyring.PubKeyETH{
+		PubKey: info.GetPubKey(),
+	}
+	commonAdd := common.BytesToAddress(pubkey.Address().Bytes())
+	currentNonce, err := conn.NonceAt(ctx, commonAdd, nil)
+	if err != nil {
+		return err
+	}
+	failedBatches, err := r.db.SearchBatchByStatus(network, database.Failed, currentNonce)
+	if err != nil {
+		return err
+	}
+	if len(failedBatches) == 0 {
+		return nil
+	}
 
-			ids := make([]uint64, 0, len(failedBatches))
-			for _, f := range failedBatches {
-				ids = append(ids, f.ShareledgerID)
-			}
-			_, err = r.msgClient.CancelBatches(ctx, &swapmoduletypes.MsgCancelBatches{
-				Creator: r.Client.GetFromAddress().String(),
-				Ids:     ids,
-			})
-			return err
-		}(network)
-		if err != nil {
-			return err
-		}
+	ids := make([]uint64, 0, len(failedBatches))
+	for _, f := range failedBatches {
+		ids = append(ids, f.ShareledgerID)
+	}
+	_, err = r.msgClient.CancelBatches(ctx, &swapmoduletypes.MsgCancelBatches{
+		Creator: r.Client.GetFromAddress().String(),
+		Ids:     ids,
+	})
+	return err
+
+	if err != nil {
+		return err
 	}
 	return nil
 }
 
-func (r *Relayer) processOut(ctx context.Context, network string) error {
+func (r *Relayer) processNextPendingBachOut(ctx context.Context, network string) error {
 	batch, err := r.db.GetNextPendingBatchOut(network)
 	if err != nil {
 		return err
@@ -365,7 +374,7 @@ func (r *Relayer) processOut(ctx context.Context, network string) error {
 
 	// already submit to sc
 	if batch.Status == database.Submitted {
-		return r.syncDBBatchStatus(ctx, *batch)
+		return r.updateDBBatchStatus(ctx, *batch)
 	} else {
 		b, err := r.getBatch(batch.ShareledgerID)
 		if err != nil || b == nil {
@@ -391,11 +400,27 @@ func (r *Relayer) processOut(ctx context.Context, network string) error {
 			return err
 		}
 		if batch.Status == database.Submitted {
-			return r.syncDBBatchStatus(ctx, *batch)
+			return r.updateDBBatchStatus(ctx, *batch)
 		}
 		return nil
 	}
 	return err
+}
+
+func (r *Relayer) processOut(ctx context.Context, network string) error {
+	if err := r.syncEventSuccessfulBatches(ctx, network); err != nil {
+		return err
+	}
+	if err := r.syncFailedBatches(ctx, network); err != nil {
+		return err
+	}
+	if err := r.syncNewBatchesOut(ctx, network); err != nil {
+		return err
+	}
+	if err := r.processNextPendingBachOut(ctx, network); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (r *Relayer) getBalance(ctx context.Context, network string) (sdk.Coin, error) {
@@ -567,20 +592,14 @@ func (r *Relayer) submitBatch(ctx context.Context, network string, batchDetail s
 }
 
 func (r *Relayer) processIn(ctx context.Context, network string) error {
-	s, err := event.New(&event.NewInput{
-		ProviderURL:          r.Config.Network[network].Url,
-		TransferCurrentBlock: big.NewInt(r.Config.Network[network].LastScannedTransferEventBlockNumber), // config.yaml pre-define before running process
-		SwapCurrentBlock:     big.NewInt(r.Config.Network[network].LastScannedSwapEventBlockNumber),
-		DBClient:             r.db,
-	})
+	eventService, found := r.events[network]
+	if !found {
+		return fmt.Errorf("%s does not have event subcriber", network)
+	}
+	events, err := eventService.GetTransferEvent(ctx)
 	if err != nil {
 		return err
 	}
-
-	events, err := s.GetTransferEvent(ctx, &event.EventTransferInput{
-		PegWalletAddress: r.Config.Network[network].PegWallet,
-		TransferTopic:    r.Config.Network[network].TransferTopic,
-	})
 
 	// check if these event are handle or not in db
 	for _, e := range events {
