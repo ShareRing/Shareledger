@@ -211,37 +211,6 @@ func (r *Relayer) startProcess(ctx context.Context, f processFunc, network strin
 	return <-doneChan
 }
 
-//func (r *Relayer) getRequestStatus(ctx context.Context, detail swaputil.BatchDetail, network string) (status database.Status, txHash string, err error) {
-//	processedBatch, err := r.db.SearchBatchByType(detail.Batch.Id, "in")
-//	if err != nil || processedBatch == nil {
-//		return "pending", err
-//	}
-//
-//	// the final state is in db. so there is no need to check if it's done or not when the status done or failed.
-//	if processedBatch.Status == database.Done || processedBatch.Status == database.Failed {
-//		return processedBatch.Status, nil
-//	}
-//
-//	// pending in db -> need to check on sc
-//
-//	hash, err := detail.Digest()
-//	if err != nil {
-//		return "", err
-//	}
-//	processedBatch.
-//	isSCDone, err := r.isBatchDoneOnSC(network, hash)
-//	if err != nil {
-//		return false, err
-//	}
-//	done = isSCDone
-//	if done {
-//		if _, err = r.markDone(batchId); err != nil {
-//			return false, err
-//		}
-//	}
-//	return done, nil
-//}
-
 // setBatchOutFail update on db the fail batch.
 func (r *Relayer) setBatchOutFail(ctx context.Context, batch database.Batch) error {
 	if batch.Nonce == 0 {
@@ -254,18 +223,6 @@ func (r *Relayer) setBatchOutFail(ctx context.Context, batch database.Batch) err
 func (r *Relayer) syncBatchOutFailed(ctx context.Context, id uint64, latestNonce uint64) error {
 	return nil
 }
-
-// syncBatchOutDone update on db and shareledger
-//func (r *Relayer) syncBatchOutDone(id uint64) error {
-//	if _, err := r.updateBatchStatus(id, swapmoduletypes.BatchStatusDone); err != nil {
-//		return err
-//	}
-//	return r.db.UpdateBatchesOut([]uint64{id}, database.Done)
-//}
-
-//func (r *Relayer) setBatchFail(id uint64) error {
-//	return r.db.UpdateBatchesOut([]uint64{id}, database.Failed)
-//}
 
 func (r *Relayer) setLog(id uint64, msg string) error {
 	return r.db.SetLog(id, msg)
@@ -305,49 +262,96 @@ func (r *Relayer) syncDBBatchStatus(ctx context.Context, batch database.Batch) e
 	return nil
 }
 
-//func (r *Relayer) submitBatch(ctx context.Context, batch swapmoduletypes.Batch) error {
-//	batchDetail, err := r.getBatchDetail(ctx, batch)
-//	if err != nil {
-//		return errors.Wrap(err, "get batch detail")
-//	}
-//	var txHash common.Hash
-//	processedBatch, err := r.db.SearchBatchByType(batch.Id, database.Out)
-//	if err != nil {
-//		return err
-//	}
-//	if processedBatch != nil {
-//		switch processedBatch.Status {
-//		case database.Failed:
-//			_, err = r.updateBatchStatus(batch.Id, swapmoduletypes.BatchStatusFail)
-//			return err
-//		case database.Done:
-//			_, err = r.updateBatchStatus(batch.Id, swapmoduletypes.BatchStatusDone)
-//			return err
-//		default:
-//			if len(processedBatch.TxHash) > 0 {
-//				txHash = common.HexToHash(processedBatch.TxHash)
-//			}
-//		}
-//	}
-//	var zeroHash common.Hash
-//	// in case this batch was not processed
-//	if txHash == zeroHash {
-//		txHash, err = r.submitBatch(ctx, batch.Network, batchDetail)
-//		if err != nil {
-//			return err
-//		}
-//		if err = r.db.SetBatch(database.Batch{
-//			ShareledgerID: batchDetail.Batch.Id,
-//			Status:        database.Pending,
-//			Type:          database.In,
-//			TxHash:        txHash.Hex(),
-//			Network:       network,
-//			BlockNumber:   0,
-//		}); err != nil {
-//			return err
-//		}
-//	}
-//}
+func (r *Relayer) syncSubmittedBatches(ctx context.Context) error {
+	panic("implement me")
+}
+
+func (r *Relayer) syncNewBatchesOut(ctx context.Context, networks []string) error {
+	lastScannedBatchId, err := r.db.GetLastScannedBatch()
+	if err != nil {
+		return err
+	}
+	maxBatchId := lastScannedBatchId
+	newBatches := make([]database.Batch, 0)
+
+	for _, network := range networks {
+		res, err := r.qClient.Batches(ctx, &swapmoduletypes.QueryBatchesRequest{
+			Status:  swapmoduletypes.BatchStatusPending,
+			Network: network,
+		})
+		if err != nil {
+			return err
+		}
+		for _, b := range res.Batches {
+			if b.Id > lastScannedBatchId {
+				newBatches = append(newBatches, database.Batch{
+					ShareledgerID: b.Id,
+					Status:        database.Pending,
+					Type:          database.Out,
+					TxHash:        common.Hash{}.String(),
+					Network:       b.Network,
+				})
+			}
+			if maxBatchId < b.Id {
+				maxBatchId = b.Id
+			}
+		}
+	}
+	if err := r.db.InsertBatches(newBatches); err != nil {
+		return err
+	}
+	if err := r.db.UpdateLatestScannedBatchId(maxBatchId); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (r *Relayer) syncFailedBatches(ctx context.Context, networks []string) error {
+	for _, network := range networks {
+		err := func(network string) error {
+			conn, networkConfig, err := r.initConn(network)
+			if err != nil {
+				return err
+			}
+			defer func() {
+				conn.Close()
+			}()
+			info, err := r.Client.Keyring.Key(networkConfig.Signer)
+			if err != nil {
+				return err
+			}
+			pubkey := keyring.PubKeyETH{
+				PubKey: info.GetPubKey(),
+			}
+			commonAdd := common.BytesToAddress(pubkey.Address().Bytes())
+			currentNonce, err := conn.NonceAt(ctx, commonAdd, nil)
+			if err != nil {
+				return err
+			}
+			failedBatches, err := r.db.SearchBatchByStatus(network, database.Failed, currentNonce)
+			if err != nil {
+				return err
+			}
+			if len(failedBatches) == 0 {
+				return nil
+			}
+
+			ids := make([]uint64, 0, len(failedBatches))
+			for _, f := range failedBatches {
+				ids = append(ids, f.ShareledgerID)
+			}
+			_, err = r.msgClient.CancelBatches(ctx, &swapmoduletypes.MsgCancelBatches{
+				Creator: r.Client.GetFromAddress().String(),
+				Ids:     ids,
+			})
+			return err
+		}(network)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
 
 func (r *Relayer) processOut(ctx context.Context, network string) error {
 	batch, err := r.db.GetNextPendingBatchOut(network)
@@ -358,40 +362,39 @@ func (r *Relayer) processOut(ctx context.Context, network string) error {
 		log.Info().Msg("pending batches list is empty")
 		return nil
 	}
-	if len(batch.TxHash) != 0 {
-		err := r.syncDBBatchStatus(ctx, *batch)
-		if err != nil {
-			return err
-		}
+
+	// already submit to sc
+	if batch.Status == database.Submitted {
+		return r.syncDBBatchStatus(ctx, *batch)
 	} else {
 		b, err := r.getBatch(batch.ShareledgerID)
 		if err != nil || b == nil {
 			return err
 		}
-		//return r.submitBatch(ctx, *b)
-		//err := r.submitBatch(context, batch)
+		batchDetail, err := r.getBatchDetail(ctx, *b)
+		if err != nil {
+			return err
+		}
+		txHash, nonce, err := r.submitBatch(ctx, network, batchDetail)
+		batch.Nonce = nonce
+		batch.Status = database.Submitted
+		batch.TxHash = txHash.String()
+		if err != nil {
+			if IsErrBatchProcessed(err) {
+				batch.Status = database.Done
+			} else {
+				batch.Status = database.Failed
+			}
+			r.setLog(batch.ShareledgerID, err.Error())
+		}
+		if err := r.db.SetBatch(*batch); err != nil {
+			return err
+		}
+		if batch.Status == database.Submitted {
+			return r.syncDBBatchStatus(ctx, *batch)
+		}
+		return nil
 	}
-
-	//for {
-	//	time.Sleep(time.Second * 5)
-	//	fmt.Println("checking receipt", network, txHash)
-	//	receipt, err := r.checkTxHash(ctx, network, txHash)
-	//	if err != nil && err.Error() != "not found" {
-	//		return err
-	//	}
-	//	if receipt != nil {
-	//		switch receipt.Status {
-	//		case 1:
-	//			if _, err = r.updateBatchStatus(batch.Id, swapmoduletypes.BatchStatusDone); err != nil {
-	//				return err
-	//			}
-	//		case 0: //FAIL TODO: -> check many case fail. processed -> update done, wrong -> failed
-	//			fmt.Println("wrong")
-	//		}
-	//		break
-	//	}
-	//}
-	//fmt.Println(txHash, err)
 	return err
 }
 
@@ -419,8 +422,6 @@ func (r *Relayer) getBatch(batchId uint64) (*swapmoduletypes.Batch, error) {
 	qClient := swapmoduletypes.NewQueryClient(r.Client)
 	pendingQuery := &swapmoduletypes.QueryBatchesRequest{
 		Ids: []uint64{batchId},
-		//Status:  swapmoduletypes.BatchStatusPending,
-		//Network: network,
 	}
 
 	batchesRes, err := qClient.Batches(context.Background(), pendingQuery)
@@ -513,13 +514,13 @@ func (r *Relayer) isBatchDoneOnSC(network string, digest common.Hash) (done bool
 
 }
 
-func (r *Relayer) submitBatch(ctx context.Context, network string, batchDetail swaputil.BatchDetail) (txHash common.Hash, err error) {
+func (r *Relayer) submitBatch(ctx context.Context, network string, batchDetail swaputil.BatchDetail) (txHash common.Hash, submittedNonce uint64, err error) {
 	if err := batchDetail.Validate(); err != nil {
-		return txHash, err
+		return txHash, 0, err
 	}
 	conn, networkConfig, err := r.initConn(network)
 	if err != nil {
-		return txHash, err
+		return txHash, 0, err
 	}
 	defer func() {
 		conn.Close()
@@ -527,12 +528,12 @@ func (r *Relayer) submitBatch(ctx context.Context, network string, batchDetail s
 
 	swapClient, err := swap.NewSwap(common.HexToAddress(networkConfig.Contract), conn)
 	if err != nil {
-		return txHash, sdkerrors.Wrapf(sdkerrors.ErrLogic, err.Error())
+		return txHash, 0, sdkerrors.Wrapf(sdkerrors.ErrLogic, err.Error())
 	}
 
 	info, err := r.Client.Keyring.Key(networkConfig.Signer)
 	if err != nil {
-		return txHash, err
+		return txHash, 0, err
 	}
 	pubkey := keyring.PubKeyETH{
 		PubKey: info.GetPubKey(),
@@ -542,28 +543,27 @@ func (r *Relayer) submitBatch(ctx context.Context, network string, batchDetail s
 	//it should override pending nonce
 	currentNonce, err := conn.NonceAt(ctx, commonAdd, nil)
 	if err != nil {
-		return txHash, err
+		return txHash, 0, err
 	}
-
+	submittedNonce = currentNonce
 	opts, err := keyring.NewKeyedTransactorWithChainID(r.Client.Keyring, networkConfig.Signer, big.NewInt(networkConfig.ChainId))
 	if err != nil {
-		return txHash, err
+		return txHash, submittedNonce, err
 	}
 	opts.Nonce = big.NewInt(int64(currentNonce))
 	sig, err := hexutil.Decode(batchDetail.Batch.Signature)
 	if err != nil {
-		return txHash, err
+		return txHash, submittedNonce, err
 	}
 	params, err := batchDetail.GetContractParams()
 	if err != nil {
-		return txHash, err
+		return txHash, submittedNonce, err
 	}
 	tx, err := swapClient.Swap(opts, params.TransactionIds, params.DestAddrs, params.Amounts, sig)
-	if err != nil {
-		return txHash, err
+	if tx != nil {
+		txHash = tx.Hash()
 	}
-	txHash = tx.Hash()
-	return txHash, err
+	return txHash, submittedNonce, err
 }
 
 func (r *Relayer) processIn(ctx context.Context, network string) error {

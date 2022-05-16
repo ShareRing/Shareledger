@@ -7,6 +7,7 @@ type Status string
 const (
 	Pending   Status = "pending"
 	Done      Status = "done"
+	Submitted Status = "submitted"
 	Cancelled Status = "cancelled"
 	Failed    Status = "failed"
 )
@@ -27,6 +28,7 @@ type Batch struct {
 	Network       string             `bson:"network" json:"network"`
 	BlockNumber   uint64             `bson:"blockNumber" json:"blockNumber"`
 	Nonce         uint64             `bson:"nonce" json:"nonce"`
+	Signer        string             `bson:"signer" json:"signer"`
 }
 
 type Logs struct {

@@ -125,7 +125,6 @@ func (s *Service) GetSwapCompleteEvent(ctx context.Context, input *EventSwapComp
 		output.TxHash = vLog.TxHash.String()
 
 		events = append(events, output)
-
 	}
 
 	// save last scanned block number to db

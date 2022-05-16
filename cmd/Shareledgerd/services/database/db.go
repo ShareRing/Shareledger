@@ -16,6 +16,21 @@ type DB struct {
 	*mongo.Client
 }
 
+func (c *DB) InsertBatches(batches []Batch) error {
+	//TODO implement me
+	panic("implement me")
+}
+
+func (c *DB) UpdateLatestScannedBatchId(id uint64) error {
+	//TODO implement me
+	panic("implement me")
+}
+
+func (c *DB) GetLastScannedBatch() (uint64, error) {
+	//TODO implement me
+	panic("implement me")
+}
+
 type Collection struct {
 	*mongo.Collection
 }
@@ -149,7 +164,35 @@ func (c *DB) SearchBatchByType(shareledgerID uint64, requestType Type) (*Batch, 
 
 	return &queryResult, nil
 }
+func (c *DB) SearchBatchByStatus(network string, status Status, nonce uint64) ([]Batch, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
 
+	collection := c.GetCollection(ShareRing, BatchCollection)
+
+	var queryResult []Batch
+
+	cursor, err := collection.Find(ctx, bson.M{
+		"network": network,
+		"status":  status,
+		"nonce": bson.M{
+			"$lt": nonce,
+		},
+	}, nil)
+
+	if err != nil {
+		if err == mongo.ErrNoDocuments {
+			return nil, nil
+		}
+		return nil, err
+	}
+
+	if err = cursor.All(ctx, &queryResult); err != nil {
+		return nil, err
+	}
+
+	return queryResult, nil
+}
 func (c *DB) GetBatchByTxHash(txHash string) (Batch, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
