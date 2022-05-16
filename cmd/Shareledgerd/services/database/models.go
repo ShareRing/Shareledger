@@ -40,14 +40,14 @@ type Logs struct {
 type Network string
 
 type Address struct {
-	ShareledgerAddress string  `json:"shareledgerAddress,omitempty" validate:"required"`
-	AccIndex           uint32  `json:"accIndex,omitempty" validate:"required"`
-	MnemonicHash       string  `json:"mnemonicHash,omitempty" validate:"required"`
-	Network            Network `json:"network,omitempty" validate:"required"`
-	Result             string  `json:"result,omitempty" validate:"required"`
+	ShareledgerAddress string  `bson:"shareledgerAddress" validate:"required"`
+	AccIndex           uint32  `bson:"accIndex" validate:"required"`
+	MnemonicHash       string  `bson:"mnemonicHash" validate:"required"`
+	Network            Network `bson:"network" validate:"required"`
+	Result             string  `bson:"result" validate:"required"`
 }
 
 type Setting struct {
-	LastScannedBatchID     uint64            `bson:"lastScannedBatchID"`
-	LastScannedBlockNumber map[string]uint64 `bson:"lastScannedBlockNumber"`
+	LastScannedBatchID     map[Network]uint64 `bson:"lastScannedBatchID"`
+	LastScannedBlockNumber map[string]uint64  `bson:"lastScannedBlockNumber"`
 }

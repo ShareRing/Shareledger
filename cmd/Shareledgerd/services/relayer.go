@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"math/big"
 	"os"
 	"os/signal"
@@ -13,6 +12,8 @@ import (
 	"sync"
 	"syscall"
 	"time"
+
+	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 
 	"github.com/rs/zerolog/log"
 	"gopkg.in/yaml.v3"
@@ -338,7 +339,7 @@ func (r *Relayer) syncNewBatchesOut(ctx context.Context, network string) error {
 	if err := r.db.InsertBatches(newBatches); err != nil {
 		return err
 	}
-	if err := r.db.UpdateLatestScannedBatchId(maxBatchId); err != nil {
+	if err := r.db.UpdateLatestScannedBatchId(maxBatchId, network); err != nil {
 		return err
 	}
 	return nil
