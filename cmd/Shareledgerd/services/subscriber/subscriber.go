@@ -10,8 +10,8 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/sharering/shareledger/cmd/Shareledgerd/services/database"
-	"github.com/sharering/shareledger/cmd/Shareledgerd/services/subscriber/erc20"
-	"github.com/sharering/shareledger/cmd/Shareledgerd/services/subscriber/swapcontract"
+	"github.com/sharering/shareledger/pkg/swap/abi/erc20"
+	"github.com/sharering/shareledger/pkg/swap/abi/swap"
 	"github.com/shopspring/decimal"
 	log "github.com/sirupsen/logrus"
 )
@@ -76,7 +76,7 @@ func New(input *NewInput) (*Service, error) {
 }
 
 func (s *Service) GetSwapCompleteEvent(ctx context.Context, input *EventSwapCompleteInput) (events []EventSwapCompleteOutput, err error) {
-	swapAbi, err := abi.JSON(strings.NewReader(string(swapcontract.SwapcontractMetaData.ABI)))
+	swapAbi, err := abi.JSON(strings.NewReader(string(swap.SwapMetaData.ABI)))
 	if err != nil {
 		return nil, err
 	}
