@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"math/big"
 	"os"
 	"os/signal"
@@ -13,6 +12,8 @@ import (
 	"sync"
 	"syscall"
 	"time"
+
+	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 
 	"github.com/rs/zerolog/log"
 	"gopkg.in/yaml.v3"
@@ -214,17 +215,20 @@ func (r *Relayer) startProcess(ctx context.Context, f processFunc, network strin
 	defer func() {
 		ticker.Stop()
 	}()
+	firstRun := true
 	go func() {
 		for {
 			select {
 			case <-ticker.C:
-				ticker.Stop()
+				if firstRun {
+					ticker.Reset(r.Config.ScanInterval)
+					firstRun = false
+				}
 				err := f(ctx, network)
 				if err != nil {
 					doneChan <- err
 					return
 				}
-				ticker.Reset(r.Config.ScanInterval)
 			case <-ctx.Done():
 				log.Info().Msg("context is done. out process is exiting")
 				doneChan <- nil
@@ -344,7 +348,7 @@ func (r *Relayer) syncNewBatchesOut(ctx context.Context, network string) error {
 	if err := r.db.InsertBatches(newBatches); err != nil {
 		return err
 	}
-	if err := r.db.UpdateLatestScannedBatchId(maxBatchId); err != nil {
+	if err := r.db.UpdateLatestScannedBatchId(maxBatchId, network); err != nil {
 		return err
 	}
 	return nil
@@ -455,8 +459,6 @@ func (r *Relayer) processNextPendingBatchesOut(ctx context.Context, network stri
 	}
 	return nil
 }
-
-var runningLock sync.Mutex
 
 func (r *Relayer) processOut(ctx context.Context, network string) error {
 	if err := r.syncEventSuccessfulBatches(ctx, network); err != nil {
