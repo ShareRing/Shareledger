@@ -91,20 +91,22 @@ func New(input *NewInput) (*Service, error) {
 	}, nil
 }
 
-func (s *Service) GetSwapCompleteEvent(ctx context.Context) (events []EventSwapCompleteOutput, err error) {
+type handlerSwapEvent func(events []EventSwapCompleteOutput) error
+
+func (s *Service) HandlerSwapCompleteEvent(ctx context.Context, fn handlerSwapEvent) (err error) {
 	swapAbi, err := abi.JSON(strings.NewReader(string(swap.SwapMetaData.ABI)))
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	header, err := s.client.HeaderByNumber(ctx, nil)
 	if err != nil {
-		return events, err
+		return err
 	}
 
 	if header.Number.Cmp(s.swapCurrentBlock) == 0 {
 		log.Info("there is no new block")
-		return events, nil
+		return nil
 	}
 
 	log.Debugf("Scanning from block %v to block %v", s.swapCurrentBlock, header.Number)
@@ -121,10 +123,10 @@ func (s *Service) GetSwapCompleteEvent(ctx context.Context) (events []EventSwapC
 
 	logs, err := s.client.FilterLogs(ctx, query)
 	if err != nil {
-		return events, err
+		return err
 	}
 
-	events = make([]EventSwapCompleteOutput, 0, len(logs))
+	events := make([]EventSwapCompleteOutput, 0, len(logs))
 
 	for _, vLog := range logs {
 		output := EventSwapCompleteOutput{}
@@ -142,33 +144,38 @@ func (s *Service) GetSwapCompleteEvent(ctx context.Context) (events []EventSwapC
 
 		events = append(events, output)
 	}
+	if err := fn(events); err != nil {
+		return err
+	}
 
 	// save last scanned block number to db
 	err = s.DBClient.SetLastScannedBlockNumber(s.swapContractAddress, header.Number.Int64())
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	// set current block number = latest + 1 for next tick interval
 	s.swapCurrentBlock.Add(header.Number, big.NewInt(1))
-	return events, nil
+	return nil
 }
 
-func (s *Service) GetTransferEvent(ctx context.Context) (events []EventTransferOutput, err error) {
+type handlerTransferEvent func(events []EventTransferOutput) error
+
+func (s *Service) HandlerTransferEvent(ctx context.Context, fn handlerTransferEvent) (err error) {
 	erc20Abi, err := abi.JSON(strings.NewReader(string(erc20.Erc20MetaData.ABI)))
 	if err != nil {
-		return nil, err
+		return err
 	}
 	header, err := s.client.HeaderByNumber(ctx, nil)
 	// skip if header not found
 	if err != nil {
-		return events, err
+		return err
 	}
 
 	// if head = current => skip
 	if header.Number.Cmp(s.transferCurrentBlock) == 0 {
 		log.Info("there is no new block")
-		return events, nil
+		return nil
 	}
 
 	log.Debugf("Scanning from block %v to block %v", s.transferCurrentBlock, header.Number)
@@ -186,10 +193,10 @@ func (s *Service) GetTransferEvent(ctx context.Context) (events []EventTransferO
 
 	logs, err := s.client.FilterLogs(ctx, query)
 	if err != nil {
-		return events, err
+		return err
 	}
 
-	events = make([]EventTransferOutput, 0, len(logs))
+	events := make([]EventTransferOutput, 0, len(logs))
 
 	for _, vLog := range logs {
 		output := EventTransferOutput{}
@@ -210,15 +217,18 @@ func (s *Service) GetTransferEvent(ctx context.Context) (events []EventTransferO
 		output.BlockNumber = vLog.BlockNumber
 
 		events = append(events, output)
-
 	}
+	if err := fn(events); err != nil {
+		return err
+	}
+
 	// save last scanned block number to db
 	err = s.DBClient.SetLastScannedBlockNumber(s.pegWalletAddress, header.Number.Int64())
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	// set current block number = latest + 1 for next tick interval
 	s.transferCurrentBlock.Add(header.Number, big.NewInt(1))
-	return events, nil
+	return nil
 }

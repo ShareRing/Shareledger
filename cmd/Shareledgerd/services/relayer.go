@@ -244,7 +244,7 @@ func (r *Relayer) setLog(id uint64, msg string) error {
 	return r.db.SetLog(id, msg)
 }
 
-func (r *Relayer) updateDBBatchStatus(ctx context.Context, batch database.Batch) error {
+func (r *Relayer) trackSubmittedBatch(ctx context.Context, batch database.Batch) error {
 	for {
 		log.Info().Msgf("checking receipt, network, %s, txHash, %s", batch.Network, batch.TxHash)
 		fmt.Println("checking receipt", batch.Network, batch.TxHash)
@@ -283,24 +283,27 @@ func (r *Relayer) syncEventSuccessfulBatches(ctx context.Context, network string
 	if !found {
 		return fmt.Errorf("%s network does not have swap event subscrber", network)
 	}
-	events, err := service.GetSwapCompleteEvent(ctx)
+	err := service.HandlerSwapCompleteEvent(ctx, func(events []event.EventSwapCompleteOutput) error {
+		for _, event := range events {
+			batch, err := r.db.GetBatchByTxHash(event.TxHash)
+			if err != nil {
+				return err
+			}
+			batch.Status = database.Done
+			nonce := batch.Nonce
+			if err := r.db.UpdateBatchesOut([]uint64{batch.ShareledgerID}, database.Done); err != nil {
+				return err
+			}
+			if err := r.db.SetBatchesOutFailed(nonce); err != nil {
+				return err
+			}
+		}
+		return nil
+	})
 	if err != nil {
 		return err
 	}
-	for _, event := range events {
-		batch, err := r.db.GetBatchByTxHash(event.TxHash)
-		if err != nil {
-			return err
-		}
-		batch.Status = database.Done
-		nonce := batch.Nonce
-		if err := r.db.UpdateBatchesOut([]uint64{batch.ShareledgerID}, database.Done); err != nil {
-			return err
-		}
-		if err := r.db.SetBatchesOutFailed(nonce); err != nil {
-			return err
-		}
-	}
+
 	return nil
 }
 
@@ -379,7 +382,7 @@ func (r *Relayer) processNextPendingBachOut(ctx context.Context, network string)
 
 	// already submit to sc
 	if batch.Status == database.Submitted {
-		return r.updateDBBatchStatus(ctx, *batch)
+		return r.trackSubmittedBatch(ctx, *batch)
 	} else {
 		b, err := r.getBatch(batch.ShareledgerID)
 		if err != nil || b == nil {
@@ -388,6 +391,18 @@ func (r *Relayer) processNextPendingBachOut(ctx context.Context, network string)
 		batchDetail, err := r.getBatchDetail(ctx, *b)
 		if err != nil {
 			return err
+		}
+		var total sdk.Coin
+		for _, r := range batchDetail.Requests {
+			total = total.Add(*r.Amount)
+		}
+
+		currentBalance, err := r.getBalance(ctx, network)
+		if err != nil {
+			return err
+		}
+		if currentBalance.IsLT(total) {
+			return fmt.Errorf("current %s contract's balances is less than swap amount %s in network %s", currentBalance.String(), total.String(), network)
 		}
 		txHash, nonce, err := r.submitBatch(ctx, network, batchDetail)
 
@@ -406,7 +421,7 @@ func (r *Relayer) processNextPendingBachOut(ctx context.Context, network string)
 			return err
 		}
 		if batch.Status == database.Submitted {
-			return r.updateDBBatchStatus(ctx, *batch)
+			return r.trackSubmittedBatch(ctx, *batch)
 		}
 		return nil
 	}
@@ -606,48 +621,45 @@ func (r *Relayer) processIn(ctx context.Context, network string) error {
 	if !found {
 		return fmt.Errorf("%s does not have event subcriber", network)
 	}
-	events, err := eventService.GetTransferEvent(ctx)
-	if err != nil {
-		return err
-	}
+	err := eventService.HandlerTransferEvent(ctx, func(events []event.EventTransferOutput) error {
+		// check if these event are handle or not in db
+		for _, e := range events {
+			batch, err := r.db.GetBatchByTxHash(e.TxHash)
+			if err != nil {
+				// batch existed, skip processing
+				if batch != (database.Batch{}) && err != mongo.ErrNoDocuments {
+					continue
+				}
 
-	// check if these event are handle or not in db
-	for _, e := range events {
-		batch, err := r.db.GetBatchByTxHash(e.TxHash)
-		if err != nil {
-			// batch existed, skip processing
-			if batch != (database.Batch{}) && err != mongo.ErrNoDocuments {
+				log.Err(err)
+			}
+
+			// get slp3 address from db
+			slp3, err := r.db.GetSLP3Address(e.ToAddress, network)
+			if err != nil {
+				// log error and skip process this request
+				log.Err(err)
 				continue
 			}
 
-			log.Err(err)
+			// call shareledger transaction
+			err = r.initSwapInRequest(
+				ctx,
+				e.ToAddress,
+				slp3,
+				network,
+				e.TxHash,
+				e.BlockNumber,
+				e.Amount.BigInt().Uint64(),
+				15,
+			)
+			if err != nil {
+				log.Err(err)
+			}
 		}
-
-		// get slp3 address from db
-		slp3, err := r.db.GetSLP3Address(e.ToAddress, network)
-		if err != nil {
-			// log error and skip process this request
-			log.Err(err)
-			continue
-		}
-
-		// call shareledger transaction
-		err = r.initSwapInRequest(
-			ctx,
-			e.ToAddress,
-			slp3,
-			network,
-			e.TxHash,
-			e.BlockNumber,
-			e.Amount.BigInt().Uint64(),
-			15,
-		)
-		if err != nil {
-			log.Err(err)
-		}
-	}
-
-	return nil
+		return nil
+	})
+	return err
 }
 
 func (r *Relayer) SubmitSwapIn(ctx context.Context, swap swapmoduletypes.MsgRequestIn) error {
