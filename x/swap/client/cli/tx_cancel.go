@@ -14,7 +14,7 @@ import (
 func CmdCancel() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "cancel [ids]",
-		Short: "Broadcast message cancel",
+		Short: "Broadcast message cancel when the user don't want swap anymore",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 

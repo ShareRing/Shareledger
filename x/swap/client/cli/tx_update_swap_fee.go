@@ -14,8 +14,8 @@ var _ = strconv.Itoa(0)
 
 func CmdUpdateSwapFee() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "update_swap_fee [network]",
-		Short: "Broadcast message updateSwapFee",
+		Use:   "update-swap-fee [network]",
+		Short: "Broadcast message update swapping fee, include in and out fee for specify network. Just accept swap module manager to update",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argNetwork := args[0]

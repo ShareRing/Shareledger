@@ -12,7 +12,7 @@ import (
 func CmdListSchema() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "schemas",
-		Short: "list all schema",
+		Short: "get a list of available network schema",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx := client.GetClientContextFromCmd(cmd)
 
@@ -45,7 +45,7 @@ func CmdListSchema() *cobra.Command {
 func CmdShowFormat() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "schema [network]",
-		Short: "get a format by network name",
+		Short: "get a schema information by network name",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			clientCtx := client.GetClientContextFromCmd(cmd)

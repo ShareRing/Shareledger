@@ -2,12 +2,12 @@ package subscriber
 
 import (
 	"context"
+	"github.com/ethereum/go-ethereum/common"
 	"math/big"
 	"strings"
 
 	eth "github.com/ethereum/go-ethereum"
 	"github.com/ethereum/go-ethereum/accounts/abi"
-	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/sharering/shareledger/cmd/Shareledgerd/services/database"
 	"github.com/sharering/shareledger/pkg/swap/abi/erc20"

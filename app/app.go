@@ -2,6 +2,11 @@ package app
 
 import (
 	"fmt"
+	"io"
+	"net/http"
+	"os"
+	"path/filepath"
+
 	store "github.com/cosmos/cosmos-sdk/store/types"
 	vestingtypes "github.com/cosmos/cosmos-sdk/x/auth/vesting/types"
 	"github.com/cosmos/cosmos-sdk/x/authz"
@@ -11,10 +16,6 @@ import (
 	swapmodule "github.com/sharering/shareledger/x/swap"
 	swapmodulekeeper "github.com/sharering/shareledger/x/swap/keeper"
 	swapmoduletypes "github.com/sharering/shareledger/x/swap/types"
-	"io"
-	"net/http"
-	"os"
-	"path/filepath"
 
 	"github.com/sharering/shareledger/x/ante"
 
@@ -80,7 +81,6 @@ import (
 	upgradekeeper "github.com/cosmos/cosmos-sdk/x/upgrade/keeper"
 	upgradetypes "github.com/cosmos/cosmos-sdk/x/upgrade/types"
 	ica "github.com/cosmos/ibc-go/v3/modules/apps/27-interchain-accounts"
-	icacontrollertypes "github.com/cosmos/ibc-go/v3/modules/apps/27-interchain-accounts/controller/types"
 	icahost "github.com/cosmos/ibc-go/v3/modules/apps/27-interchain-accounts/host"
 	icahostkeeper "github.com/cosmos/ibc-go/v3/modules/apps/27-interchain-accounts/host/keeper"
 	icahosttypes "github.com/cosmos/ibc-go/v3/modules/apps/27-interchain-accounts/host/types"
@@ -730,20 +730,9 @@ func New(
 		upgradeName,
 		func(ctx sdk.Context, _ upgradetypes.Plan, fromVM module.VersionMap) (module.VersionMap, error) {
 
-			fromVM[icatypes.ModuleName] = icaModule.ConsensusVersion()
-			// create ICS27 Controller submodule params
-			controllerParams := icacontrollertypes.Params{}
-			// create ICS27 Host submodule params
-			hostParams := icahosttypes.Params{
-				HostEnabled:   false,
-				AllowMessages: []string{},
-			}
-
-			ctx.Logger().Info("start to init interchainaccount module...")
-			// initialize ICS27 module
-			icaModule.InitModule(ctx, controllerParams, hostParams)
-
-			ctx.Logger().Info("start to run module migrations...")
+			fromVM[swapmoduletypes.ModuleName] = swapmodule.AppModule{}.ConsensusVersion()
+			swapGenState := swapmoduletypes.DefaultGenesis()
+			swapmodule.InitGenesis(ctx, app.SwapKeeper, *swapGenState)
 
 			return app.mm.RunMigrations(ctx, app.configurator, fromVM)
 		},
@@ -756,7 +745,7 @@ func New(
 
 	if upgradeInfo.Name == upgradeName && !app.UpgradeKeeper.IsSkipHeight(upgradeInfo.Height) {
 		storeUpgrades := store.StoreUpgrades{
-			Added: []string{icahosttypes.StoreKey},
+			Added: []string{swapmoduletypes.ModuleName},
 		}
 
 		// configure store loader that checks if version == upgradeHeight and applies store upgrades

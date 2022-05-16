@@ -631,8 +631,6 @@ func (r *Relayer) initSwapInRequest(
 	blockNumber, amount, fee uint64) error {
 	swapAmount := sdk.NewDecCoin(denom.Shr, sdk.NewIntFromUint64(amount))
 	swapFee := sdk.NewDecCoin(denom.Shr, sdk.NewIntFromUint64(fee))
-
-	msgClient := swapmoduletypes.NewMsgClient(r.Client)
 	inMsg := swapmoduletypes.NewMsgRequestIn(
 		r.Client.GetFromAddress().String(),
 		srcAddr,
@@ -641,7 +639,7 @@ func (r *Relayer) initSwapInRequest(
 		swapAmount,
 		swapFee,
 	)
-	response, err := msgClient.RequestIn(ctx, inMsg)
+	response, err := r.msgClient.RequestIn(ctx, inMsg)
 	if err != nil {
 		return err
 	}

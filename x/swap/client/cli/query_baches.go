@@ -16,8 +16,9 @@ var _ = strconv.Itoa(0)
 
 func CmdBatches() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "batches",
-		Short: "Query search_batch",
+		Use:     "batches",
+		Short:   "Query the swapping batches in our blockchain. You must past at least one filter parameter via a flag use flag --help to get all filter flags",
+		Example: fmt.Sprintf("batches --%s 1,2,3 --%s pending", flagSearchIDs, flagSearchStatus),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 
 			clientCtx, err := client.GetClientTxContext(cmd)
@@ -33,13 +34,8 @@ func CmdBatches() *cobra.Command {
 			if err != nil {
 				return err
 			}
-			filterNetwork, err := cmd.Flags().GetString(flagSearchDestNetwork)
-			if err != nil {
-				return err
-			}
 
 			request.Pagination = pageReq
-			request.Network = filterNetwork
 
 			if request.GetStatus() == "" && request.GetNetwork() == "" && len(request.GetIds()) == 0 {
 				return fmt.Errorf("the request parameter is empty")
