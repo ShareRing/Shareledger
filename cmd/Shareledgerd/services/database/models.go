@@ -29,6 +29,12 @@ type Batch struct {
 	Nonce         uint64             `bson:"nonce" json:"nonce"`
 }
 
+type Logs struct {
+	ID      primitive.ObjectID `bson:"_id" json:"id"`
+	BathID  uint64             `bson:"batchID" json:"batchID"`
+	Message string             `bson:"message" json:"message"`
+}
+
 type Network string
 
 type Address struct {
@@ -37,4 +43,9 @@ type Address struct {
 	MnemonicHash       string  `json:"mnemonicHash,omitempty" validate:"required"`
 	Network            Network `json:"network,omitempty" validate:"required"`
 	Result             string  `json:"result,omitempty" validate:"required"`
+}
+
+type Setting struct {
+	LastScannedBatchID     uint64            `bson:"lastScannedBatchID"`
+	LastScannedBlockNumber map[string]uint64 `bson:"lastScannedBlockNumber"`
 }
