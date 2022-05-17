@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"go.uber.org/zap"
 	"math/big"
 	"os"
 	"os/signal"
@@ -15,7 +16,6 @@ import (
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 
-	"github.com/rs/zerolog/log"
 	"gopkg.in/yaml.v3"
 
 	"github.com/cosmos/cosmos-sdk/client"
@@ -38,6 +38,8 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
+var log *zap.SugaredLogger
+
 func GetRelayerCommands(defaultNodeHome string) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "relayer",
@@ -57,6 +59,10 @@ func NewStartCommands(defaultNodeHome string) *cobra.Command {
 		Use:   "start",
 		Short: "start Relayer process",
 		RunE: func(cmd *cobra.Command, args []string) error {
+			logger, _ := zap.NewProduction()
+			defer logger.Sync()
+			log = logger.Sugar()
+
 			clientTx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
@@ -85,7 +91,7 @@ func NewStartCommands(defaultNodeHome string) *cobra.Command {
 
 			defer func() {
 				if err := mgClient.Disconnect(ctx); err != nil {
-					log.Info().Msg("Disconnected from DB")
+					log.Info("Disconnected from DB")
 				}
 			}()
 
@@ -112,10 +118,10 @@ func NewStartCommands(defaultNodeHome string) *cobra.Command {
 					case process := <-processChan:
 						numberProcessing--
 						if process.Err != nil {
-							log.Error().Stack().Err(process.Err).Msg(fmt.Sprintf("process with network %s", process.Network))
+							log.Errorw(fmt.Sprintf("process with network %s", process.Network), "error", process.Err)
 						}
 						if numberProcessing == 0 {
-							log.Info().Msg("all process were quited. Exiting")
+							log.Info("all process were quited. Exiting")
 							cancel()
 							return
 						}
@@ -140,13 +146,14 @@ func NewStartCommands(defaultNodeHome string) *cobra.Command {
 			case "out":
 				for network := range cfg.Network {
 					go func(network string) {
-						processChan <- struct {
+						result := struct {
 							Network string
 							Err     error
 						}{
 							Network: network,
 							Err:     relayerClient.startProcess(ctx, relayerClient.processOut, network),
 						}
+						processChan <- result
 					}(network)
 				}
 			default:
@@ -229,14 +236,14 @@ func (r *Relayer) startProcess(ctx context.Context, f processFunc, network strin
 					return
 				}
 			case <-ctx.Done():
-				log.Info().Msg("context is done. out process is exiting")
+				log.Info("context is done. out process is exiting")
 				doneChan <- nil
 				return
 			}
 		}
 	}()
-
-	return <-doneChan
+	err := <-doneChan
+	return err
 }
 
 func (r *Relayer) setLog(id uint64, msg string) error {
@@ -251,7 +258,7 @@ func (r *Relayer) trackSubmittedBatch(ctx context.Context, batch database.Batch,
 			if time.Now().After(deadTime) {
 				return database.Submitted, nil
 			}
-			log.Info().Msgf("checking receipt, network, %s, txHash, %s", batch.Network, batch.TxHash)
+			log.Info("checking receipt, network, %s, txHash, %s", batch.Network, batch.TxHash)
 			fmt.Println("checking receipt", batch.Network, batch.TxHash)
 			receipt, err := r.checkTxHash(ctx, batch.Network, common.HexToHash(batch.TxHash))
 			if err != nil && err.Error() != "not found" {
@@ -262,7 +269,7 @@ func (r *Relayer) trackSubmittedBatch(ctx context.Context, batch database.Batch,
 					return database.Done, r.db.UpdateBatchesOut([]uint64{batch.ShareledgerID}, database.Done)
 				}
 				if e := r.setLog(batch.ShareledgerID, err.Error()); e != nil {
-					log.Error().Stack().Err(err).Msg(e.Error())
+					log.Errorw("set log error", "original error", err, "log error", e)
 				}
 				return database.Failed, r.db.UpdateBatchesOut([]uint64{batch.ShareledgerID}, database.Failed)
 			}
@@ -273,7 +280,7 @@ func (r *Relayer) trackSubmittedBatch(ctx context.Context, batch database.Batch,
 				case 0:
 					msgLog, _ := json.MarshalIndent(receipt, "", "  ")
 					if e := r.setLog(batch.ShareledgerID, string(msgLog)); e != nil {
-						log.Error().Stack().Err(err).Msg(e.Error())
+						log.Errorw("set log msgLog", "msgLog", msgLog, "log error", e, "raw log", receipt)
 					}
 					return database.Failed, r.db.UpdateBatchesOut([]uint64{batch.ShareledgerID}, database.Failed)
 				default:
@@ -295,15 +302,15 @@ func (r *Relayer) syncEventSuccessfulBatches(ctx context.Context, network string
 		for _, event := range events {
 			batch, err := r.db.GetBatchByTxHash(event.TxHash)
 			if err != nil {
-				return err
+				return errors.Wrapf(err, "get batch by tx hash, %v", event.TxHash)
 			}
 			batch.Status = database.Done
 			nonce := batch.Nonce
 			if err := r.db.UpdateBatchesOut([]uint64{batch.ShareledgerID}, database.Done); err != nil {
-				return err
+				return errors.Wrapf(err, "update batch out. shareledger id %v", batch.ShareledgerID)
 			}
 			if err := r.db.SetBatchesOutFailed(nonce); err != nil {
-				return err
+				return errors.Wrapf(err, "set batches out failed. nonce %v", nonce)
 			}
 		}
 		return nil
@@ -387,7 +394,7 @@ func (r *Relayer) processNextPendingBatchesOut(ctx context.Context, network stri
 			return err
 		}
 		if batch == nil {
-			log.Info().Msg("pending batches list is empty")
+			log.Infow("pending batches list is empty", "network", network)
 			return nil
 		}
 
@@ -409,7 +416,7 @@ func (r *Relayer) processNextPendingBatchesOut(ctx context.Context, network stri
 			return err
 		}
 		if currentBalance.IsLT(total) {
-			log.Warn().Msg(fmt.Sprintf("with batch,%v. Contract's balances,  %s, is less than swap amount %s in network %s", batch.ShareledgerID, currentBalance.String(), total.String(), network))
+			log.Warnw("total balance of current contract is less than swap total", "network", network, "batch", batch.ShareledgerID, "contract_total", currentBalance.String(), "swap_total", total.String())
 			continue
 		}
 
@@ -661,15 +668,14 @@ func (r *Relayer) processIn(ctx context.Context, network string) error {
 				if batch != (database.Batch{}) && err != mongo.ErrNoDocuments {
 					continue
 				}
-
-				log.Err(err)
+				log.Errorw("get batch by tx hash", "err", err, "txHash", e.TxHash)
 			}
 
 			// get slp3 address from db
 			slp3, err := r.db.GetSLP3Address(e.ToAddress, network)
 			if err != nil {
 				// log error and skip process this request
-				log.Err(err)
+				log.Errorw("get slp3 address", "err", err)
 				continue
 			}
 
@@ -685,7 +691,7 @@ func (r *Relayer) processIn(ctx context.Context, network string) error {
 				15,
 			)
 			if err != nil {
-				log.Err(err)
+				log.Errorw("init swap in request", "err", err, "network", network, "txHash", e.TxHash)
 			}
 		}
 		return nil

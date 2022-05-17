@@ -128,7 +128,6 @@ genesis:
             {"types":{"EIP712Domain":[{"name":"name","type":"string"},{"name":"version","type":"string"},{"name":"chainId","type":"uint256"},{"name":"verifyingContract","type":"address"}],"Swap":[{"name":"ids","type":"uint256[]"},{"name":"tos","type":"address[]"},{"name":"amounts","type":"uint256[]"}]},"primaryType":"Swap","domain":{"name":"ShareRingSwap","version":"2.0","chainId":"0x3","verifyingContract":"0x1214696C8A2E207B05019493b10343CFc4e3D231","salt":""}}
       idList: [ ]
       params:
-        outFee: out_fee
       requestCount: '3'
       requestList:
         - amount:

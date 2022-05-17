@@ -9,45 +9,28 @@ import (
 
 var _ paramtypes.ParamSet = (*Params)(nil)
 
-var (
-	KeyOutFee = []byte("OutFee")
-	// TODO: Determine the default value
-	DefaultOutFee string = "out_fee"
-)
-
 // ParamKeyTable the param key table for launch module
 func ParamKeyTable() paramtypes.KeyTable {
 	return paramtypes.NewKeyTable().RegisterParamSet(&Params{})
 }
 
 // NewParams creates a new Params instance
-func NewParams(
-	outFee string,
-) Params {
-	return Params{
-		OutFee: outFee,
-	}
+func NewParams() Params {
+	return Params{}
 }
 
 // DefaultParams returns a default set of parameters
 func DefaultParams() Params {
-	return NewParams(
-		DefaultOutFee,
-	)
+	return NewParams()
 }
 
 // ParamSetPairs get the params.ParamSet
 func (p *Params) ParamSetPairs() paramtypes.ParamSetPairs {
-	return paramtypes.ParamSetPairs{
-		paramtypes.NewParamSetPair(KeyOutFee, &p.OutFee, validateOutFee),
-	}
+	return paramtypes.ParamSetPairs{}
 }
 
 // Validate validates the set of params
 func (p Params) Validate() error {
-	if err := validateOutFee(p.OutFee); err != nil {
-		return err
-	}
 
 	return nil
 }
