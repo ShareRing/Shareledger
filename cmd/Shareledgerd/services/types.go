@@ -2,8 +2,9 @@ package services
 
 import (
 	"context"
-	"github.com/sharering/shareledger/cmd/Shareledgerd/services/subscriber"
 	"time"
+
+	"github.com/sharering/shareledger/cmd/Shareledgerd/services/subscriber"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/sharering/shareledger/cmd/Shareledgerd/services/database"
@@ -34,7 +35,7 @@ type Network struct {
 }
 
 type Retry struct {
-	IntervalRetry   time.Duration `yaml:"intervalRetry"'`
+	IntervalRetry   time.Duration `yaml:"intervalRetry"`
 	MaxRetry        int           `yaml:"maxRetry"`
 	RetryPercentage float64       `yaml:"retryPercentage"`
 }
