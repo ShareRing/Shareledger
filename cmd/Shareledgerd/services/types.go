@@ -25,7 +25,7 @@ type Network struct {
 	Url                                 string `yaml:"url"`
 	ChainId                             int64  `yaml:"chainId"`
 	SwapContract                        string `yaml:"contract"` // swap contract address
-	PegWallet                           string `yaml:"pegWallet"`
+	TokenContract                       string `yaml:"tokenContract"`
 	LastScannedTransferEventBlockNumber int64  `yaml:"lastScannedTransferEventBlockNumber"`
 	LastScannedSwapEventBlockNumber     int64  `yaml:"lastScannedSwapEventBlockNumber"`
 	SwapTopic                           string `yaml:"swapTopic"` // swap topic

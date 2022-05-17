@@ -193,7 +193,7 @@ func initRelayer(client client.Context, cfg RelayerConfig, db database.DBRelayer
 			ProviderURL:          cfg.Url,
 			TransferCurrentBlock: big.NewInt(cfg.LastScannedTransferEventBlockNumber), // config.yaml pre-define before running process
 			SwapCurrentBlock:     big.NewInt(cfg.LastScannedSwapEventBlockNumber),
-			PegWalletAddress:     cfg.PegWallet,
+			PegWalletAddress:     cfg.TokenContract,
 			TransferTopic:        cfg.TransferTopic,
 			SwapContractAddress:  cfg.SwapContract,
 			SwapTopic:            cfg.SwapTopic,
