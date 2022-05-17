@@ -13,6 +13,7 @@ type DBRelayer interface {
 	SearchBatchByStatus(networks string, status Status) ([]Batch, error)
 	GetBatchByTxHash(txHash string) (*Batch, error)
 	SetBatch(request Batch) error
+	SetBatches(batches []Batch) error
 	UpdateBatchesOut(shareledgerIDs []uint64, status Status) error
 	SetBatchesOutFailed(nonceNumber uint64) error
 	SetLastScannedBlockNumber(contractAddress string, lastScannedBlockNumber int64) error
