@@ -351,11 +351,13 @@ func (r *Relayer) syncNewBatchesOut(ctx context.Context, network string) error {
 			maxBatchId = b.Id
 		}
 	}
-	if err := r.db.InsertBatches(newBatches); err != nil {
-		return err
-	}
-	if err := r.db.UpdateLatestScannedBatchId(maxBatchId, network); err != nil {
-		return err
+	if len(newBatches) > 0 {
+		if err := r.db.InsertBatches(newBatches); err != nil {
+			return errors.Wrapf(err, "new batches %+v", newBatches)
+		}
+		if err := r.db.UpdateLatestScannedBatchId(maxBatchId, network); err != nil {
+			return errors.Wrapf(err, "update latest scanned batch id %+v", maxBatchId)
+		}
 	}
 	return nil
 }
