@@ -189,7 +189,7 @@ func initRelayer(client client.Context, cfg RelayerConfig, db database.DBRelayer
 			PegWalletAddress:     cfg.PegWallet,
 			TransferTopic:        cfg.TransferTopic,
 			SwapContractAddress:  cfg.Contract,
-			SwapTopic:            cfg.Topic,
+			SwapTopic:            cfg.SwapTopic,
 			DBClient:             db,
 		})
 		if err != nil {
@@ -215,16 +215,15 @@ func (r *Relayer) startProcess(ctx context.Context, f processFunc, network strin
 	defer func() {
 		ticker.Stop()
 	}()
-	firstRun := true
 	go func() {
 		for {
 			select {
 			case <-ticker.C:
-				if firstRun {
-					ticker.Reset(r.Config.ScanInterval)
-					firstRun = false
-				}
+				ticker.Stop()
 				err := f(ctx, network)
+				if err == nil {
+					ticker.Reset(r.Config.ScanInterval)
+				}
 				if err != nil {
 					doneChan <- err
 					return
@@ -380,7 +379,7 @@ func (r *Relayer) syncFailedBatches(ctx context.Context, network string) error {
 }
 
 func (r *Relayer) processNextPendingBatchesOut(ctx context.Context, network string) error {
-	offset := 0
+	var offset int64
 	for {
 		batch, err := r.db.GetNextPendingBatchOut(network, offset)
 		offset++

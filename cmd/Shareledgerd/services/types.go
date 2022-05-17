@@ -28,7 +28,7 @@ type Network struct {
 	PegWallet                           string `yaml:"pegWallet"`
 	LastScannedTransferEventBlockNumber int64  `yaml:"lastScannedTransferEventBlockNumber"`
 	LastScannedSwapEventBlockNumber     int64  `yaml:"lastScannedSwapEventBlockNumber"`
-	Topic                               string `yaml:"topic"` // swap topic
+	SwapTopic                           string `yaml:"swapTopic"` // swap topic
 	TransferTopic                       string `yaml:"transferTopic"`
 	Retry                               Retry  `yaml:"retry"`
 }
