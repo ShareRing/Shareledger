@@ -292,7 +292,7 @@ func (c *DB) SearchBatchByStatus(network string, status Status) ([]Batch, error)
 
 	return queryResult, nil
 }
-func (c *DB) GetBatchByTxHash(txHash string) (Batch, error) {
+func (c *DB) GetBatchByTxHash(txHash string) (*Batch, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
@@ -303,11 +303,11 @@ func (c *DB) GetBatchByTxHash(txHash string) (Batch, error) {
 	err := collection.FindOne(ctx, bson.M{
 		"txHash": txHash,
 	}).Decode(&queryResult)
-	if err != nil {
-		return Batch{}, errors.Wrapf(err, "decoding query result to struct fail")
+	if err != nil && err != mongo.ErrNoDocuments {
+		return nil, errors.Wrapf(err, "decoding query result to struct fail")
 	}
 
-	return queryResult, nil
+	return nil, nil
 }
 
 func (c *DB) SetBatch(request Batch) error {

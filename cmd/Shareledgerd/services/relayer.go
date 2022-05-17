@@ -36,7 +36,6 @@ import (
 	swapmoduletypes "github.com/sharering/shareledger/x/swap/types"
 	denom "github.com/sharering/shareledger/x/utils/demo"
 	"github.com/spf13/cobra"
-	"go.mongodb.org/mongo-driver/mongo"
 )
 
 var log *zap.SugaredLogger
@@ -122,7 +121,7 @@ func NewStartCommands(defaultNodeHome string) *cobra.Command {
 							log.Errorw(fmt.Sprintf("process with network %s", process.Network), "error", process.Err)
 						}
 						if numberProcessing == 0 {
-							log.Info("all process were quited. Exiting")
+							log.Infof("all process were quited. Exiting")
 							cancel()
 							return
 						}
@@ -305,6 +304,10 @@ func (r *Relayer) syncEventSuccessfulBatches(ctx context.Context, network string
 			batch, err := r.db.GetBatchByTxHash(hash.String())
 			if err != nil {
 				return errors.Wrapf(err, "get batch by tx hash, %v", hash.String())
+			}
+			if batch == nil {
+				log.Infof("get batch by tx hash is empty")
+				continue
 			}
 			batch.Status = database.Done
 			nonce := batch.Nonce
@@ -665,12 +668,12 @@ func (r *Relayer) processIn(ctx context.Context, network string) error {
 			batch, err := r.db.GetBatchByTxHash(e.TxHash)
 			if err != nil {
 				// batch existed, skip processing
-				if batch != (database.Batch{}) && err != mongo.ErrNoDocuments {
-					continue
-				}
 				log.Errorw("get batch by tx hash", "err", err, "txHash", e.TxHash)
 			}
-
+			if batch == nil {
+				log.Infof("get batch by tx has is empty")
+				continue
+			}
 			// get slp3 address from db
 			slp3, err := r.db.GetSLP3Address(e.ToAddress, network)
 			if err != nil {

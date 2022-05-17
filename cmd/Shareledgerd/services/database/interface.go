@@ -11,7 +11,7 @@ type DBRelayer interface {
 	UpdateLatestScannedBatchId(id uint64, network string) error
 	SearchBatchByType(shareledgerID uint64, requestType Type) (*Batch, error)
 	SearchBatchByStatus(networks string, status Status) ([]Batch, error)
-	GetBatchByTxHash(txHash string) (Batch, error)
+	GetBatchByTxHash(txHash string) (*Batch, error)
 	SetBatch(request Batch) error
 	UpdateBatchesOut(shareledgerIDs []uint64, status Status) error
 	SetBatchesOutFailed(nonceNumber uint64) error

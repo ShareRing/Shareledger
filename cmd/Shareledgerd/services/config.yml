@@ -9,7 +9,7 @@ networks:
     url: https://ropsten.infura.io/v3/bf1a5b4c59cb45ea8ebf48497d3295ae
     exponent: 2
     chainId: 3
-    swapContract: 0x1214696C8A2E207B05019493b10343CFc4e3D231
+    swapContract: 0xb05Bd9288fb1426D408a616878047aC8F43665ec
     tokenContract: 0x0362fBA2BdA9Bd05f53d6C8CC72257919899A9Ac
     lastScannedTransferEventBlockNumber: 0
     lastScannedSwapEventBlockNumber: 0
