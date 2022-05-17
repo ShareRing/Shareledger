@@ -736,7 +736,7 @@ func networkWithFormat(t *testing.T, cf *network.Config) {
 	var gen = swapTypes.GenesisState{}
 	require.NoError(t, cf.Codec.UnmarshalJSON(cf.GenesisState[swapTypes.ModuleName], &gen))
 
-	gen.FormatList = []swapTypes.SignSchema{{
+	gen.FormatList = []swapTypes.Schema{{
 		Network: "erc20",
 		Creator: "shareledger1lq9svs76xwekrrzw7uprekyqydf7fp02p8zp8e",
 		Schema:  "{\"types\":{\"EIP712Domain\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"version\",\"type\":\"string\"},{\"name\":\"chainId\",\"type\":\"uint256\"},{\"name\":\"verifyingContract\",\"type\":\"address\"}],\"Swap\":[{\"name\":\"ids\",\"type\":\"uint256[]\"},{\"name\":\"tos\",\"type\":\"address[]\"},{\"name\":\"amounts\",\"type\":\"uint256[]\"}]},\"primaryType\":\"Swap\",\"domain\":{\"name\":\"ShareRingSwap\",\"version\":\"2.0\",\"chainId\":\"0x7a69\",\"verifyingContract\":\"0x0165878a594ca255338adfa4d48449f69242eb8f\",\"salt\":\"\"}}",

@@ -31444,8 +31444,6 @@ paths:
                         format: uint64
                     status:
                       type: string
-                    txHash:
-                      type: string
                     network:
                       type: string
               pagination:
@@ -53579,8 +53577,6 @@ definitions:
           format: uint64
       status:
         type: string
-      txHash:
-        type: string
       network:
         type: string
   shareledger.swap.Fee:
@@ -53768,8 +53764,6 @@ definitions:
                 type: string
                 format: uint64
             status:
-              type: string
-            txHash:
               type: string
             network:
               type: string

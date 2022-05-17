@@ -382,13 +382,12 @@ func (r *Relayer) syncDoneBatches(ctx context.Context, network string) error {
 	if err != nil {
 		return errors.Wrapf(err, "search batches by status %s fail", database.Done)
 	}
-	var sID []uint64
+	sID := make([]uint64, 0, len(batches))
 	for i := range batches {
 		updateMsg := &swapmoduletypes.MsgUpdateBatch{
 			Creator: r.Client.GetFromAddress().String(),
 			BatchId: batches[i].ShareledgerID,
 			Status:  swapmoduletypes.BatchStatusDone,
-			TxHash:  "",
 			Network: network,
 		}
 

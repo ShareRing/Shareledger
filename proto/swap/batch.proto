@@ -8,6 +8,5 @@ message Batch {
   string signature = 2;
   repeated uint64 txIds = 3;
   string status = 4;
-  string txHash = 6;
-  string network = 7;
+  string network = 5;
 }
