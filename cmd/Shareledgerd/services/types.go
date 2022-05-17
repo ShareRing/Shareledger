@@ -24,7 +24,7 @@ type Network struct {
 	Exponent                            int    `yaml:"exponent"`
 	Url                                 string `yaml:"url"`
 	ChainId                             int64  `yaml:"chainId"`
-	Contract                            string `yaml:"contract"` // swap contract address
+	SwapContract                        string `yaml:"contract"` // swap contract address
 	PegWallet                           string `yaml:"pegWallet"`
 	LastScannedTransferEventBlockNumber int64  `yaml:"lastScannedTransferEventBlockNumber"`
 	LastScannedSwapEventBlockNumber     int64  `yaml:"lastScannedSwapEventBlockNumber"`

@@ -11,7 +11,6 @@ import (
 	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/sharering/shareledger/cmd/Shareledgerd/services/database"
 	"github.com/sharering/shareledger/pkg/swap/abi/erc20"
-	"github.com/sharering/shareledger/pkg/swap/abi/swap"
 	"github.com/shopspring/decimal"
 	log "github.com/sirupsen/logrus"
 )
@@ -38,10 +37,6 @@ type EventTransferOutput struct {
 //	SwapContractAddress string
 //	SwapTopic           string
 //}
-
-type EventSwapCompleteOutput struct {
-	TxHash string
-}
 
 type Service struct {
 	client               *ethclient.Client
@@ -91,14 +86,9 @@ func New(input *NewInput) (*Service, error) {
 	}, nil
 }
 
-type handlerSwapEvent func(events []EventSwapCompleteOutput) error
+type handlerSwapEvent func(events []common.Hash) error
 
 func (s *Service) HandlerSwapCompleteEvent(ctx context.Context, fn handlerSwapEvent) (err error) {
-	swapAbi, err := abi.JSON(strings.NewReader(string(swap.SwapMetaData.ABI)))
-	if err != nil {
-		return err
-	}
-
 	header, err := s.client.HeaderByNumber(ctx, nil)
 	if err != nil {
 		return err
@@ -126,23 +116,11 @@ func (s *Service) HandlerSwapCompleteEvent(ctx context.Context, fn handlerSwapEv
 		return err
 	}
 
-	events := make([]EventSwapCompleteOutput, 0, len(logs))
+	events := make([]common.Hash, 0, len(logs))
 
 	for _, vLog := range logs {
-		output := EventSwapCompleteOutput{}
-		var event = struct {
-			Value *big.Int // amount in erc20 contract
-		}{}
 
-		err := swapAbi.UnpackIntoInterface(&event, swapEvent, vLog.Data)
-		if err != nil {
-			log.Errorf("Event unpacking error: %s", err)
-			continue
-		}
-
-		output.TxHash = vLog.TxHash.String()
-
-		events = append(events, output)
+		events = append(events, vLog.TxHash)
 	}
 	if err := fn(events); err != nil {
 		return err

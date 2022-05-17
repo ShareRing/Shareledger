@@ -195,7 +195,7 @@ func initRelayer(client client.Context, cfg RelayerConfig, db database.DBRelayer
 			SwapCurrentBlock:     big.NewInt(cfg.LastScannedSwapEventBlockNumber),
 			PegWalletAddress:     cfg.PegWallet,
 			TransferTopic:        cfg.TransferTopic,
-			SwapContractAddress:  cfg.Contract,
+			SwapContractAddress:  cfg.SwapContract,
 			SwapTopic:            cfg.SwapTopic,
 			DBClient:             db,
 		})
@@ -298,11 +298,11 @@ func (r *Relayer) syncEventSuccessfulBatches(ctx context.Context, network string
 	if !found {
 		return fmt.Errorf("%s network does not have swap event subscrber", network)
 	}
-	err := service.HandlerSwapCompleteEvent(ctx, func(events []event.EventSwapCompleteOutput) error {
-		for _, event := range events {
-			batch, err := r.db.GetBatchByTxHash(event.TxHash)
+	err := service.HandlerSwapCompleteEvent(ctx, func(hashes []common.Hash) error {
+		for _, hash := range hashes {
+			batch, err := r.db.GetBatchByTxHash(hash.String())
 			if err != nil {
-				return errors.Wrapf(err, "get batch by tx hash, %v", event.TxHash)
+				return errors.Wrapf(err, "get batch by tx hash, %v", hash.String())
 			}
 			batch.Status = database.Done
 			nonce := batch.Nonce
@@ -408,7 +408,7 @@ func (r *Relayer) processNextPendingBatchesOut(ctx context.Context, network stri
 		if err != nil {
 			return err
 		}
-		var total sdk.Coin
+		total := sdk.NewCoin(denom.Base, sdk.NewInt(0))
 		for _, r := range batchDetail.Requests {
 			total = total.Add(*r.Amount)
 		}
@@ -486,7 +486,7 @@ func (r *Relayer) processOut(ctx context.Context, network string) error {
 
 func (r *Relayer) getBalance(ctx context.Context, network string) (sdk.Coin, error) {
 	conn, networkConfig, err := r.initConn(network)
-	swapClient, err := swap.NewSwap(common.HexToAddress(networkConfig.Contract), conn)
+	swapClient, err := swap.NewSwap(common.HexToAddress(networkConfig.SwapContract), conn)
 	if err != nil {
 		return sdk.Coin{}, err
 	}
@@ -592,7 +592,7 @@ func (r *Relayer) isBatchDoneOnSC(network string, digest common.Hash) (done bool
 	defer func() {
 		conn.Close()
 	}()
-	swapClient, err := swap.NewSwap(common.HexToAddress(networkConfig.Contract), conn)
+	swapClient, err := swap.NewSwap(common.HexToAddress(networkConfig.SwapContract), conn)
 	if err != nil {
 		return false, sdkerrors.Wrapf(sdkerrors.ErrLogic, err.Error())
 	}
@@ -616,7 +616,7 @@ func (r *Relayer) submitBatch(ctx context.Context, network string, batchDetail s
 		conn.Close()
 	}()
 
-	swapClient, err := swap.NewSwap(common.HexToAddress(networkConfig.Contract), conn)
+	swapClient, err := swap.NewSwap(common.HexToAddress(networkConfig.SwapContract), conn)
 	if err != nil {
 		return tx, sdkerrors.Wrapf(sdkerrors.ErrLogic, err.Error())
 	}

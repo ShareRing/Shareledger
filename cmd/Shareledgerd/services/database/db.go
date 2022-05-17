@@ -293,7 +293,18 @@ func (c *DB) SetBatch(request Batch) error {
 	_, err := collection.UpdateOne(ctx, bson.M{
 		"shareledgerID": request.ShareledgerID,
 		"type":          request.Type,
-	}, request, &options.UpdateOptions{Upsert: &upsert})
+	}, bson.M{
+		"$set": bson.M{
+			"shareledgerID": request.ShareledgerID,
+			"type":          request.Type,
+			"status":        request.Status,
+			"txHash":        request.TxHash,
+			"network":       request.Network,
+			"blockNumber":   request.BlockNumber,
+			"nonce":         request.Nonce,
+			"signer":        request.Signer,
+		},
+	}, &options.UpdateOptions{Upsert: &upsert})
 	if err != nil {
 		return err
 	}
