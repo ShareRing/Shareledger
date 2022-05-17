@@ -72,7 +72,7 @@ func NewStartCommands(defaultNodeHome string) *cobra.Command {
 			if err != nil {
 				return err
 			}
-			mgClient, err := database.NewMongo(cfg.MongoURI)
+			mgClient, err := database.NewMongo(cfg.MongoURI, cfg.DbName)
 			if err != nil {
 				return err
 			}
@@ -363,6 +363,20 @@ func (r *Relayer) syncNewBatchesOut(ctx context.Context, network string) error {
 	return nil
 }
 
+func (r *Relayer) syncFinishedBatches(ctx context.Context, network string) error {
+	if err := r.syncDoneBatches(ctx, network); err != nil {
+		return err
+	}
+	if err := r.syncFailedBatches(ctx, network); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (r *Relayer) syncDoneBatches(ctx context.Context, network string) error {
+	return nil
+}
+
 func (r *Relayer) syncFailedBatches(ctx context.Context, network string) error {
 	failedBatches, err := r.db.SearchBatchByStatus(network, database.Failed)
 	if err != nil {
@@ -471,7 +485,7 @@ func (r *Relayer) processOut(ctx context.Context, network string) error {
 	if err := r.syncEventSuccessfulBatches(ctx, network); err != nil {
 		return errors.Wrapf(err, "sync success event batches fail network=%s", network)
 	}
-	if err := r.syncFailedBatches(ctx, network); err != nil {
+	if err := r.syncFinishedBatches(ctx, network); err != nil {
 		return errors.Wrapf(err, "sync failed batches fail network=%s", network)
 	}
 	if err := r.syncNewBatchesOut(ctx, network); err != nil {
