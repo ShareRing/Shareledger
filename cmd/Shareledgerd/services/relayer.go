@@ -159,7 +159,7 @@ func NewStartCommands(defaultNodeHome string) *cobra.Command {
 				return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "Relayer type is required either in or out")
 			}
 			<-doneChan
-			return nil
+			panic(nil)
 		},
 	}
 
@@ -388,7 +388,7 @@ func (r *Relayer) syncDoneBatches(ctx context.Context, network string) error {
 			Creator: r.Client.GetFromAddress().String(),
 			BatchId: batches[i].ShareledgerID,
 			Status:  swapmoduletypes.BatchStatusDone,
-			TxHash:  batches[i].TxHash,
+			TxHash:  "",
 			Network: network,
 		}
 
@@ -398,9 +398,11 @@ func (r *Relayer) syncDoneBatches(ctx context.Context, network string) error {
 		}
 		sID = append(sID, batches[i].ShareledgerID)
 	}
-	err = r.db.MarkBatchToSynced(sID)
-	if err != nil {
-		return errors.Wrapf(err, "fail to update batch out to synced")
+	if len(sID) > 0 {
+		err = r.db.MarkBatchToSynced(sID)
+		if err != nil {
+			return errors.Wrapf(err, "fail to update batch out to synced")
+		}
 	}
 	return err
 }

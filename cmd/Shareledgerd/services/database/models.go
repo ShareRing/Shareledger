@@ -30,6 +30,7 @@ type Batch struct {
 	BlockNumber   uint64             `bson:"blockNumber" json:"blockNumber"`
 	Nonce         uint64             `bson:"nonce" json:"nonce"`
 	Signer        string             `bson:"signer" json:"signer"`
+	Synced        bool               `bson:"synced" json:"synced"`
 }
 
 type Logs struct {
