@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"go.uber.org/zap"
 	"math/big"
 	"os"
 	"os/signal"
@@ -13,6 +12,8 @@ import (
 	"sync"
 	"syscall"
 	"time"
+
+	"go.uber.org/zap"
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 
@@ -198,6 +199,7 @@ func initRelayer(client client.Context, cfg RelayerConfig, db database.DBRelayer
 			SwapContractAddress:  cfg.SwapContract,
 			SwapTopic:            cfg.SwapTopic,
 			DBClient:             db,
+			Network:              network,
 		})
 		if err != nil {
 			return nil, err

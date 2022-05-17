@@ -49,9 +49,11 @@ type Service struct {
 	transferTopic       string
 	swapContractAddress string
 	swapTopic           string
+	network             string
 }
 
 type NewInput struct {
+	Network              string
 	ProviderURL          string
 	TransferCurrentBlock *big.Int
 	SwapCurrentBlock     *big.Int
@@ -84,12 +86,22 @@ func New(input *NewInput) (*Service, error) {
 		transferTopic:       input.TransferTopic,
 		swapContractAddress: input.SwapContractAddress,
 		swapTopic:           input.SwapTopic,
+		network:             input.Network,
 	}, nil
 }
 
 type handlerSwapEvent func(events []common.Hash) error
 
 func (s *Service) HandlerSwapCompleteEvent(ctx context.Context, fn handlerSwapEvent) (err error) {
+	if s.swapCurrentBlock == big.NewInt(0) {
+		currentBlockNum, err := s.DBClient.GetLastScannedBatch(s.network)
+		if err != nil {
+			return err
+		}
+
+		s.swapCurrentBlock = big.NewInt(int64(currentBlockNum))
+	}
+
 	header, err := s.client.HeaderByNumber(ctx, nil)
 	if err != nil {
 		return err
