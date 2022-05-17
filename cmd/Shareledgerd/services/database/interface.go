@@ -20,4 +20,5 @@ type DBRelayer interface {
 	GetNextPendingBatchOut(network string, offset int64) (*Batch, error)
 	SetLog(batchId uint64, msg string) error
 	GetLastScannedBatch(network string) (uint64, error)
+	GetLastScannedBlockNumber(contractAddr string) (uint64, error)
 }

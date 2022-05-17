@@ -2,9 +2,10 @@ package subscriber
 
 import (
 	"context"
-	"github.com/ethereum/go-ethereum/common"
 	"math/big"
 	"strings"
+
+	"github.com/ethereum/go-ethereum/common"
 
 	eth "github.com/ethereum/go-ethereum"
 	"github.com/ethereum/go-ethereum/accounts/abi"
@@ -166,6 +167,16 @@ func (s *Service) HandlerTransferEvent(ctx context.Context, fn handlerTransferEv
 	if err != nil {
 		return err
 	}
+
+	if s.transferCurrentBlock == big.NewInt(0) {
+		currentBlockNum, err := s.DBClient.GetLastScannedBlockNumber(s.pegWalletAddress)
+		if err != nil {
+			return err
+		}
+
+		s.transferCurrentBlock = big.NewInt(int64(currentBlockNum))
+	}
+
 	header, err := s.client.HeaderByNumber(ctx, nil)
 	// skip if header not found
 	if err != nil {

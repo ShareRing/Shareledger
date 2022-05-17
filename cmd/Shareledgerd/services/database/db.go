@@ -87,6 +87,28 @@ func (c *DB) UpdateLatestScannedBatchId(id uint64, network string) error {
 	return nil
 }
 
+func (c *DB) GetLastScannedBlockNumber(contractAddr string) (uint64, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), timeout)
+	defer cancel()
+
+	collection := c.GetCollection(ShareRing, SettingCollection)
+
+	var queryResult bson.M
+	var setting Setting
+	_ = collection.FindOne(ctx, bson.M{}).Decode(&queryResult)
+	doc, err := bson.Marshal(queryResult["settings"])
+	if err != nil {
+		return 0, err
+	}
+
+	err = bson.Unmarshal(doc, &setting)
+	if err != nil {
+		return 0, err
+	}
+
+	return setting.LastScannedBlockNumber[contractAddr], nil
+}
+
 func (c *DB) GetLastScannedBatch(network string) (uint64, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), timeout)
 	defer cancel()
@@ -102,6 +124,9 @@ func (c *DB) GetLastScannedBatch(network string) (uint64, error) {
 	}
 
 	err = bson.Unmarshal(doc, &setting)
+	if err != nil {
+		return 0, err
+	}
 
 	return setting.LastScannedBatchID[Network(network)], nil
 }
