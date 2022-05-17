@@ -307,7 +307,7 @@ func (c *DB) GetBatchByTxHash(txHash string) (*Batch, error) {
 		return nil, errors.Wrapf(err, "decoding query result to struct fail")
 	}
 
-	return nil, nil
+	return &queryResult, nil
 }
 
 func (c *DB) SetBatches(batches []Batch) error {

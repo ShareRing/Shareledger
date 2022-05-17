@@ -306,7 +306,7 @@ func (r *Relayer) syncEventSuccessfulBatches(ctx context.Context, network string
 				return errors.Wrapf(err, "get batch by tx hash, %v", hash.String())
 			}
 			if batch == nil {
-				log.Infof("get batch by tx hash is empty")
+				log.Infof("get batch by tx hash, %v, is empty", hash.String())
 				continue
 			}
 			batch.Status = database.Done
