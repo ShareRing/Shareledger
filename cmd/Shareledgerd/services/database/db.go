@@ -235,7 +235,7 @@ func (c *DB) getOneBatchStatus(network string, status Status, offset *int64) (*B
 		Skip: offset,
 	}).Decode(&batch)
 	if err != nil {
-		if err != mongo.ErrNoDocuments {
+		if err == mongo.ErrNoDocuments {
 			return nil, nil
 		}
 		return nil, err

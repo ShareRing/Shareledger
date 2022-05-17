@@ -8,6 +8,4 @@ option go_package = "github.com/sharering/shareledger/x/swap/types";
 // Params defines the parameters for the module.
 message Params {
   option (gogoproto.goproto_stringer) = false;
-  
-  string outFee = 1 [(gogoproto.moretags) = "yaml:\"out_fee\""];
 }

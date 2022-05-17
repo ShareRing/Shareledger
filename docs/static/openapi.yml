@@ -31197,9 +31197,6 @@ paths:
               params:
                 description: params holds all the parameters of this module.
                 type: object
-                properties:
-                  outFee:
-                    type: string
             description: >-
               QueryParamsResponse is response type for the Query/Params RPC
               method.
@@ -53661,9 +53658,6 @@ definitions:
         type: string
   shareledger.swap.Params:
     type: object
-    properties:
-      outFee:
-        type: string
     description: Params defines the parameters for the module.
   shareledger.swap.QueryAllSchemasResponse:
     type: object
@@ -53810,9 +53804,6 @@ definitions:
       params:
         description: params holds all the parameters of this module.
         type: object
-        properties:
-          outFee:
-            type: string
     description: QueryParamsResponse is response type for the Query/Params RPC method.
   shareledger.swap.QuerySchemaResponse:
     type: object
