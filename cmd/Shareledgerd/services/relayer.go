@@ -379,12 +379,13 @@ func (r *Relayer) syncFailedBatches(ctx context.Context, network string) error {
 		Creator: r.Client.GetFromAddress().String(),
 		Ids:     ids,
 	})
-	return err
-
 	if err != nil {
 		return err
 	}
-	return nil
+	for i := range failedBatches {
+		failedBatches[i].Status = database.Cancelled
+	}
+	return r.db.SetBatches(failedBatches)
 }
 
 func (r *Relayer) processNextPendingBatchesOut(ctx context.Context, network string) error {

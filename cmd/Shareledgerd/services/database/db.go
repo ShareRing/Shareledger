@@ -309,32 +309,67 @@ func (c *DB) GetBatchByTxHash(txHash string) (Batch, error) {
 	return queryResult, nil
 }
 
+func (c *DB) SetBatches(batches []Batch) error {
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	collection := c.GetCollection(ShareRing, BatchCollection)
+
+	var operations []mongo.WriteModel
+	for _, b := range batches {
+		operations = append(operations, c.buildSetOperations(bson.M{
+			"shareledgerID": bson.M{
+				"$eq": b.ShareledgerID,
+			},
+			"type": bson.M{
+				"$eq": b.Type,
+			},
+		}, b, true,
+		))
+	}
+	_, err := collection.BulkWrite(
+		ctx, operations,
+	)
+	return err
+}
+
+func (c *DB) buildSetOperations(filter bson.M, bach Batch, upsert bool) *mongo.UpdateOneModel {
+	operation := mongo.NewUpdateOneModel()
+	operation.SetFilter(filter)
+	operation.Upsert = &upsert
+	operation.SetUpdate(bson.M{"$set": bson.M{
+		"shareledgerID": bach.ShareledgerID,
+		"type":          bach.Type,
+		"status":        bach.Status,
+		"txHash":        bach.TxHash,
+		"network":       bach.Network,
+		"blockNumber":   bach.BlockNumber,
+		"nonce":         bach.Nonce,
+		"signer":        bach.Signer,
+	}})
+	return operation
+}
+
 func (c *DB) SetBatch(request Batch) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
 	collection := c.GetCollection(ShareRing, BatchCollection)
-	upsert := true
-	_, err := collection.UpdateOne(ctx, bson.M{
-		"shareledgerID": request.ShareledgerID,
-		"type":          request.Type,
-	}, bson.M{
-		"$set": bson.M{
-			"shareledgerID": request.ShareledgerID,
-			"type":          request.Type,
-			"status":        request.Status,
-			"txHash":        request.TxHash,
-			"network":       request.Network,
-			"blockNumber":   request.BlockNumber,
-			"nonce":         request.Nonce,
-			"signer":        request.Signer,
+	operation := c.buildSetOperations(bson.M{
+		"shareledgerID": bson.M{
+			"$eq": request.ShareledgerID,
 		},
-	}, &options.UpdateOptions{Upsert: &upsert})
-	if err != nil {
-		return err
-	}
-
-	return nil
+		"type": bson.M{
+			"$eq": request.Type,
+		},
+	}, request, true)
+	_, err := collection.BulkWrite(
+		ctx,
+		[]mongo.WriteModel{
+			operation,
+		},
+	)
+	return err
 }
 
 func (c *DB) SetLog(batchId uint64, msg string) error {
