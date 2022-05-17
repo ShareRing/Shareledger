@@ -3,6 +3,7 @@ package subscriber
 import (
 	"context"
 	"github.com/ethereum/go-ethereum/common"
+	"github.com/pkg/errors"
 	"math/big"
 	"strings"
 
@@ -75,7 +76,7 @@ func init() {
 func New(input *NewInput) (*Service, error) {
 	client, err := ethclient.Dial(input.ProviderURL)
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "dial to eth fail")
 	}
 
 	return &Service{
@@ -96,17 +97,17 @@ type handlerSwapEvent func(events []EventSwapCompleteOutput) error
 func (s *Service) HandlerSwapCompleteEvent(ctx context.Context, fn handlerSwapEvent) (err error) {
 	swapAbi, err := abi.JSON(strings.NewReader(string(swap.SwapMetaData.ABI)))
 	if err != nil {
-		return err
+		return errors.Wrapf(err, "unmarshal swap abi code fail")
 	}
 
 	header, err := s.client.HeaderByNumber(ctx, nil)
 	if err != nil {
-		return err
+		return errors.Wrapf(err, "get block head fail")
 	}
 
 	if header.Number.Cmp(s.swapCurrentBlock) == 0 {
 		log.Info("there is no new block")
-		return nil
+		return errors.Wrapf(err, "no block")
 	}
 
 	log.Debugf("Scanning from block %v to block %v", s.swapCurrentBlock, header.Number)
@@ -123,7 +124,7 @@ func (s *Service) HandlerSwapCompleteEvent(ctx context.Context, fn handlerSwapEv
 
 	logs, err := s.client.FilterLogs(ctx, query)
 	if err != nil {
-		return err
+		return errors.Wrapf(err, "filter event log by %+v  fail", query)
 	}
 
 	events := make([]EventSwapCompleteOutput, 0, len(logs))
@@ -145,13 +146,13 @@ func (s *Service) HandlerSwapCompleteEvent(ctx context.Context, fn handlerSwapEv
 		events = append(events, output)
 	}
 	if err := fn(events); err != nil {
-		return err
+		return errors.Wrapf(err, "handle event fail")
 	}
 
 	// save last scanned block number to db
 	err = s.DBClient.SetLastScannedBlockNumber(s.swapContractAddress, header.Number.Int64())
 	if err != nil {
-		return err
+		return errors.Wrapf(err, "set the last scanned block into db fail")
 	}
 
 	// set current block number = latest + 1 for next tick interval
@@ -164,7 +165,7 @@ type handlerTransferEvent func(events []EventTransferOutput) error
 func (s *Service) HandlerTransferEvent(ctx context.Context, fn handlerTransferEvent) (err error) {
 	erc20Abi, err := abi.JSON(strings.NewReader(string(erc20.Erc20MetaData.ABI)))
 	if err != nil {
-		return err
+		return errors.Wrapf(err, "unmarshal swap abi code fail")
 	}
 	header, err := s.client.HeaderByNumber(ctx, nil)
 	// skip if header not found
@@ -175,7 +176,7 @@ func (s *Service) HandlerTransferEvent(ctx context.Context, fn handlerTransferEv
 	// if head = current => skip
 	if header.Number.Cmp(s.transferCurrentBlock) == 0 {
 		log.Info("there is no new block")
-		return nil
+		return errors.New("there are no new block")
 	}
 
 	log.Debugf("Scanning from block %v to block %v", s.transferCurrentBlock, header.Number)
@@ -193,7 +194,7 @@ func (s *Service) HandlerTransferEvent(ctx context.Context, fn handlerTransferEv
 
 	logs, err := s.client.FilterLogs(ctx, query)
 	if err != nil {
-		return err
+		return errors.Wrapf(err, "filter event log by %+v  fail", query)
 	}
 
 	events := make([]EventTransferOutput, 0, len(logs))

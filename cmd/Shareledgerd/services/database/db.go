@@ -3,6 +3,7 @@ package database
 import (
 	"context"
 	"fmt"
+	"github.com/pkg/errors"
 	"time"
 
 	"github.com/rs/zerolog/log"
@@ -213,7 +214,7 @@ func (c *DB) getOneBatchStatus(network string, status Status, offset *int64) (*B
 		if err != mongo.ErrNoDocuments {
 			return nil, nil
 		}
-		return nil, err
+		return nil, errors.Wrapf(err, "get one batch by status from mongodb fail")
 	}
 
 	return &batch, err
@@ -235,7 +236,7 @@ func (c *DB) SearchBatchByType(shareledgerID uint64, requestType Type) (*Batch, 
 		if err == mongo.ErrNoDocuments {
 			return nil, nil
 		}
-		return &Batch{}, err
+		return &Batch{}, errors.Wrapf(err, "search batch by batch type from mongodb fail")
 	}
 
 	return &queryResult, nil
@@ -257,11 +258,11 @@ func (c *DB) SearchBatchByStatus(network string, status Status) ([]Batch, error)
 		if err == mongo.ErrNoDocuments {
 			return nil, nil
 		}
-		return nil, err
+		return nil, errors.Wrapf(err, "search batch by status from mongodb fail")
 	}
 
 	if err = cursor.All(ctx, &queryResult); err != nil {
-		return nil, err
+		return nil, errors.Wrapf(err, "decoding query result to struct fail")
 	}
 
 	return queryResult, nil
@@ -278,7 +279,7 @@ func (c *DB) GetBatchByTxHash(txHash string) (Batch, error) {
 		"txHash": txHash,
 	}).Decode(&queryResult)
 	if err != nil {
-		return Batch{}, err
+		return Batch{}, errors.Wrapf(err, "decoding query result to struct fail")
 	}
 
 	return queryResult, nil
@@ -295,7 +296,7 @@ func (c *DB) SetBatch(request Batch) error {
 		"type":          request.Type,
 	}, request, &options.UpdateOptions{Upsert: &upsert})
 	if err != nil {
-		return err
+		return errors.Wrapf(err, "insert batch data into mongodb")
 	}
 
 	return nil
@@ -309,14 +310,14 @@ func (c *DB) SetLog(batchId uint64, msg string) error {
 		BathID:  batchId,
 		Message: msg,
 	})
-	return err
+	return errors.Wrapf(err, "insert log data into mongodb")
 }
 
 func NewMongo(mongoURI string) (DBRelayer, error) {
 	client, err := mongo.NewClient(options.Client().ApplyURI(mongoURI))
 	return &DB{
 		Client: client,
-	}, err
+	}, errors.Wrapf(err, "fail to connect to mongodb")
 }
 
 func (c *DB) ConnectDB(ctx context.Context) error {
@@ -328,7 +329,7 @@ func (c *DB) ConnectDB(ctx context.Context) error {
 	//ping the database
 	err = c.Client.Ping(ctx, nil)
 	if err != nil {
-		return err
+		return errors.Wrapf(err, "testing mongodb connection fail")
 	}
 
 	log.Info().Msg("Connected to MongoDB")
