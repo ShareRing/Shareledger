@@ -33,7 +33,6 @@ func (k msgServer) UpdateBatch(goCtx context.Context, msg *types.MsgUpdateBatch)
 
 	batch.Status = msg.GetStatus()
 	batch.Network = msg.GetNetwork()
-	batch.TxHash = msg.GetTxHash()
 	k.SetBatch(ctx, batch)
 
 	return &types.MsgUpdateBatchResponse{}, nil

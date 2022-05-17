@@ -388,7 +388,6 @@ func (r *Relayer) syncDoneBatches(ctx context.Context, network string) error {
 			Creator: r.Client.GetFromAddress().String(),
 			BatchId: batches[i].ShareledgerID,
 			Status:  swapmoduletypes.BatchStatusDone,
-			TxHash:  batches[i].TxHash,
 			Network: network,
 		}
 
