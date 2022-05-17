@@ -301,7 +301,7 @@ func (c *DB) GetBatchByTxHash(txHash string) (*Batch, error) {
 	var queryResult Batch
 
 	err := collection.FindOne(ctx, bson.M{
-		"txHash": txHash,
+		"txHashes": txHash,
 	}).Decode(&queryResult)
 	if err != nil && err != mongo.ErrNoDocuments {
 		return nil, errors.Wrapf(err, "decoding query result to struct fail")
@@ -342,7 +342,7 @@ func (c *DB) buildSetOperations(filter bson.M, bach Batch, upsert bool) *mongo.U
 		"shareledgerID": bach.ShareledgerID,
 		"type":          bach.Type,
 		"status":        bach.Status,
-		"txHash":        bach.TxHash,
+		"txHashes":      bach.TxHashes,
 		"network":       bach.Network,
 		"blockNumber":   bach.BlockNumber,
 		"nonce":         bach.Nonce,

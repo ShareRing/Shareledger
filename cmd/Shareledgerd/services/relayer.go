@@ -258,33 +258,34 @@ func (r *Relayer) trackSubmittedBatch(ctx context.Context, batch database.Batch,
 			if time.Now().After(deadTime) {
 				return database.Submitted, nil
 			}
-			log.Info("checking receipt, network, %s, txHash, %s", batch.Network, batch.TxHash)
-			fmt.Println("checking receipt", batch.Network, batch.TxHash)
-			receipt, err := r.checkTxHash(ctx, batch.Network, common.HexToHash(batch.TxHash))
-			if err != nil && err.Error() != "not found" {
-				if err.Error() == "not found" { //transaction is still on mem pool
-					continue
-				}
-				if IsErrBatchProcessed(err) {
-					return database.Done, r.db.UpdateBatchesOut([]uint64{batch.ShareledgerID}, database.Done)
-				}
-				if e := r.setLog(batch.ShareledgerID, err.Error()); e != nil {
-					log.Errorw("set log error", "original error", err, "log error", e)
-				}
-				return database.Failed, r.db.UpdateBatchesOut([]uint64{batch.ShareledgerID}, database.Failed)
-			}
-			if receipt != nil {
-				switch receipt.Status {
-				case 1:
-					return database.Done, r.db.UpdateBatchesOut([]uint64{batch.ShareledgerID}, database.Done)
-				case 0:
-					msgLog, _ := json.MarshalIndent(receipt, "", "  ")
-					if e := r.setLog(batch.ShareledgerID, string(msgLog)); e != nil {
-						log.Errorw("set log msgLog", "msgLog", msgLog, "log error", e, "raw log", receipt)
+			log.Infof("checking receipt, network, %s, txHashes, %v", batch.Network, batch.TxHashes)
+			for _, hash := range batch.TxHashes {
+				receipt, err := r.checkTxHash(ctx, batch.Network, common.HexToHash(hash))
+				if err != nil && err.Error() != "not found" {
+					if err.Error() == "not found" { //transaction is still on mem pool
+						continue
+					}
+					if IsErrBatchProcessed(err) {
+						return database.Done, r.db.UpdateBatchesOut([]uint64{batch.ShareledgerID}, database.Done)
+					}
+					if e := r.setLog(batch.ShareledgerID, err.Error()); e != nil {
+						log.Errorw("set log error", "original error", err, "log error", e)
 					}
 					return database.Failed, r.db.UpdateBatchesOut([]uint64{batch.ShareledgerID}, database.Failed)
-				default:
-					return database.Submitted, nil
+				}
+				if receipt != nil {
+					switch receipt.Status {
+					case 1:
+						return database.Done, r.db.UpdateBatchesOut([]uint64{batch.ShareledgerID}, database.Done)
+					case 0:
+						msgLog, _ := json.MarshalIndent(receipt, "", "  ")
+						if e := r.setLog(batch.ShareledgerID, string(msgLog)); e != nil {
+							log.Errorw("set log msgLog", "msgLog", msgLog, "log error", e, "raw log", receipt)
+						}
+						return database.Failed, r.db.UpdateBatchesOut([]uint64{batch.ShareledgerID}, database.Failed)
+					default:
+						return database.Submitted, nil
+					}
 				}
 			}
 		case <-ctx.Done():
@@ -347,7 +348,7 @@ func (r *Relayer) syncNewBatchesOut(ctx context.Context, network string) error {
 				ShareledgerID: b.Id,
 				Status:        database.Pending,
 				Type:          database.Out,
-				TxHash:        common.Hash{}.String(),
+				TxHashes:      []string{},
 				Network:       b.Network,
 			})
 		}
@@ -460,7 +461,7 @@ func (r *Relayer) processNextPendingBatchesOut(ctx context.Context, network stri
 			if tx != nil {
 				batch.Nonce = tx.Nonce()
 				batch.Status = database.Submitted
-				batch.TxHash = tx.Hash().String()
+				batch.TxHashes = append(batch.TxHashes, tx.Hash().String())
 				currentPrice = tx.GasPrice()
 			}
 			if err := r.db.SetBatch(*batch); err != nil {
@@ -748,7 +749,7 @@ func (r *Relayer) initSwapInRequest(
 		Status:        database.Done,
 		Type:          database.In,
 		Network:       network,
-		TxHash:        txHash,
+		TxHashes:      []string{txHash},
 		BlockNumber:   blockNumber,
 	}
 	err = r.db.SetBatch(newBatch)

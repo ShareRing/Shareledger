@@ -24,7 +24,7 @@ type Batch struct {
 	ShareledgerID uint64             `bson:"shareledgerID" json:"shareledgerID"`
 	Status        Status             `bson:"status" json:"status"`
 	Type          Type               `bson:"type"  json:"type"`
-	TxHash        string             `bson:"txHash" json:"txHash"`
+	TxHashes      []string           `bson:"txHashes" json:"txHashes"`
 	Network       string             `bson:"network" json:"network"`
 	BlockNumber   uint64             `bson:"blockNumber" json:"blockNumber"`
 	Nonce         uint64             `bson:"nonce" json:"nonce"`
