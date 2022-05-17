@@ -10,6 +10,7 @@ const (
 	Submitted Status = "submitted"
 	Cancelled Status = "cancelled"
 	Failed    Status = "failed"
+	Synced    Status = "synced"
 )
 
 type Type string

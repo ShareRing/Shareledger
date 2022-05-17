@@ -377,11 +377,35 @@ func (r *Relayer) syncFinishedBatches(ctx context.Context, network string) error
 }
 
 func (r *Relayer) syncDoneBatches(ctx context.Context, network string) error {
-	return nil
+	batches, err := r.db.SearchUnSyncedBatchByStatus(network, database.Done)
+	if err != nil {
+		return errors.Wrapf(err, "search batches by status %s fail", database.Done)
+	}
+	var sID []uint64
+	for i := range batches {
+		updateMsg := &swapmoduletypes.MsgUpdateBatch{
+			Creator: r.Client.GetFromAddress().String(),
+			BatchId: batches[i].ShareledgerID,
+			Status:  swapmoduletypes.BatchStatusDone,
+			TxHash:  batches[i].TxHash,
+			Network: network,
+		}
+
+		_, err := r.msgClient.UpdateBatch(ctx, updateMsg)
+		if err != nil {
+			return errors.Wrapf(err, "update batchID=%d to status done fail", batches[i].ShareledgerID)
+		}
+		sID = append(sID, batches[i].ShareledgerID)
+	}
+	err = r.db.MarkBatchToSynced(sID)
+	if err != nil {
+		return errors.Wrapf(err, "fail to update batch out to synced")
+	}
+	return err
 }
 
 func (r *Relayer) syncFailedBatches(ctx context.Context, network string) error {
-	failedBatches, err := r.db.SearchBatchByStatus(network, database.Failed)
+	failedBatches, err := r.db.SearchUnSyncedBatchByStatus(network, database.Failed)
 	if err != nil {
 		return err
 	}

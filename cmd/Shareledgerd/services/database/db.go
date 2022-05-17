@@ -292,6 +292,33 @@ func (c *DB) SearchBatchByStatus(network string, status Status) ([]Batch, error)
 
 	return queryResult, nil
 }
+func (c *DB) SearchUnSyncedBatchByStatus(network string, status Status) ([]Batch, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	collection := c.GetCollection(c.DBName, BatchCollection)
+
+	var queryResult []Batch
+
+	cursor, err := collection.Find(ctx, bson.M{
+		"network": network,
+		"status":  status,
+		"synced":  false,
+	}, nil)
+
+	if err != nil {
+		if err == mongo.ErrNoDocuments {
+			return nil, nil
+		}
+		return nil, errors.Wrapf(err, "search batch by status from mongodb fail")
+	}
+
+	if err = cursor.All(ctx, &queryResult); err != nil {
+		return nil, errors.Wrapf(err, "decoding query result to struct fail")
+	}
+
+	return queryResult, nil
+}
 func (c *DB) GetBatchByTxHash(txHash string) (*Batch, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
@@ -418,4 +445,26 @@ func (c *DB) GetCollection(dbName, collectionName string) *Collection {
 	return &Collection{
 		Collection: collection,
 	}
+}
+
+//MarkBatchToSynced make the batch synced to true
+func (c *DB) MarkBatchToSynced(sIDs []uint64) error {
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	collection := c.GetCollection(c.DBName, BatchCollection)
+
+	_, err := collection.UpdateMany(ctx, bson.M{
+		"shareledgerID": bson.M{
+			"$in": sIDs,
+		},
+	}, bson.M{
+		"$set": bson.M{
+			"synced": true,
+		},
+	})
+	if err != nil {
+		return errors.Wrapf(err, "update batch fail")
+	}
+	return nil
 }

@@ -11,6 +11,7 @@ type DBRelayer interface {
 	UpdateLatestScannedBatchId(id uint64, network string) error
 	SearchBatchByType(shareledgerID uint64, requestType Type) (*Batch, error)
 	SearchBatchByStatus(networks string, status Status) ([]Batch, error)
+	SearchUnSyncedBatchByStatus(network string, status Status) ([]Batch, error)
 	GetBatchByTxHash(txHash string) (*Batch, error)
 	SetBatch(request Batch) error
 	SetBatches(batches []Batch) error
@@ -22,4 +23,5 @@ type DBRelayer interface {
 	SetLog(batchId uint64, msg string) error
 	GetLastScannedBatch(network string) (uint64, error)
 	GetLastScannedBlockNumber(contractAddr string) (uint64, error)
+	MarkBatchToSynced(sIDs []uint64) error
 }
