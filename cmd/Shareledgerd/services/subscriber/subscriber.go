@@ -12,7 +12,6 @@ import (
 	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/sharering/shareledger/cmd/Shareledgerd/services/database"
 	"github.com/sharering/shareledger/pkg/swap/abi/erc20"
-	"github.com/sharering/shareledger/pkg/swap/abi/swap"
 	"github.com/shopspring/decimal"
 	log "github.com/sirupsen/logrus"
 )
@@ -40,10 +39,6 @@ type EventTransferOutput struct {
 //	SwapTopic           string
 //}
 
-type EventSwapCompleteOutput struct {
-	TxHash string
-}
-
 type Service struct {
 	client               *ethclient.Client
 	transferCurrentBlock *big.Int
@@ -54,9 +49,11 @@ type Service struct {
 	transferTopic       string
 	swapContractAddress string
 	swapTopic           string
+	network             string
 }
 
 type NewInput struct {
+	Network              string
 	ProviderURL          string
 	TransferCurrentBlock *big.Int
 	SwapCurrentBlock     *big.Int
@@ -89,15 +86,20 @@ func New(input *NewInput) (*Service, error) {
 		transferTopic:       input.TransferTopic,
 		swapContractAddress: input.SwapContractAddress,
 		swapTopic:           input.SwapTopic,
+		network:             input.Network,
 	}, nil
 }
 
-type handlerSwapEvent func(events []EventSwapCompleteOutput) error
+type handlerSwapEvent func(events []common.Hash) error
 
 func (s *Service) HandlerSwapCompleteEvent(ctx context.Context, fn handlerSwapEvent) (err error) {
-	swapAbi, err := abi.JSON(strings.NewReader(string(swap.SwapMetaData.ABI)))
-	if err != nil {
-		return errors.Wrapf(err, "unmarshal swap abi code fail")
+	if s.swapCurrentBlock == big.NewInt(0) {
+		currentBlockNum, err := s.DBClient.GetLastScannedBatch(s.network)
+		if err != nil {
+			return errors.Wrapf(err, "unmarshal swap abi code fail")
+		}
+
+		s.swapCurrentBlock = big.NewInt(int64(currentBlockNum))
 	}
 
 	header, err := s.client.HeaderByNumber(ctx, nil)
@@ -127,23 +129,11 @@ func (s *Service) HandlerSwapCompleteEvent(ctx context.Context, fn handlerSwapEv
 		return errors.Wrapf(err, "filter event log by %+v  fail", query)
 	}
 
-	events := make([]EventSwapCompleteOutput, 0, len(logs))
+	events := make([]common.Hash, 0, len(logs))
 
 	for _, vLog := range logs {
-		output := EventSwapCompleteOutput{}
-		var event = struct {
-			Value *big.Int // amount in erc20 contract
-		}{}
 
-		err := swapAbi.UnpackIntoInterface(&event, swapEvent, vLog.Data)
-		if err != nil {
-			log.Errorf("Event unpacking error: %s", err)
-			continue
-		}
-
-		output.TxHash = vLog.TxHash.String()
-
-		events = append(events, output)
+		events = append(events, vLog.TxHash)
 	}
 	if err := fn(events); err != nil {
 		return errors.Wrapf(err, "handle event fail")
@@ -167,10 +157,19 @@ func (s *Service) HandlerTransferEvent(ctx context.Context, fn handlerTransferEv
 	if err != nil {
 		return errors.Wrapf(err, "unmarshal swap abi code fail")
 	}
-	header, err := s.client.HeaderByNumber(ctx, nil)
+
+	if s.transferCurrentBlock == big.NewInt(0) {
+		currentBlockNum, err := s.DBClient.GetLastScannedBlockNumber(s.pegWalletAddress)
+		if err != nil {
+			return errors.Wrapf(err, "get last scanned block number fail")
+		}
+
+		s.transferCurrentBlock = big.NewInt(int64(currentBlockNum))
+	}
 	// skip if header not found
+	header, err := s.client.HeaderByNumber(ctx, nil)
 	if err != nil {
-		return err
+		return errors.Wrapf(err, "get block head fail")
 	}
 
 	// if head = current => skip
@@ -194,7 +193,7 @@ func (s *Service) HandlerTransferEvent(ctx context.Context, fn handlerTransferEv
 
 	logs, err := s.client.FilterLogs(ctx, query)
 	if err != nil {
-		return errors.Wrapf(err, "filter event log by %+v  fail", query)
+		return errors.Wrapf(err, "filter the logs response fail by query %v+", query)
 	}
 
 	events := make([]EventTransferOutput, 0, len(logs))
@@ -220,13 +219,13 @@ func (s *Service) HandlerTransferEvent(ctx context.Context, fn handlerTransferEv
 		events = append(events, output)
 	}
 	if err := fn(events); err != nil {
-		return err
+		return errors.Wrapf(err, "handle the transfer event from ETH smartcontract fail")
 	}
 
 	// save last scanned block number to db
 	err = s.DBClient.SetLastScannedBlockNumber(s.pegWalletAddress, header.Number.Int64())
 	if err != nil {
-		return err
+		return errors.Wrapf(err, "set last scanned block number fail")
 	}
 
 	// set current block number = latest + 1 for next tick interval

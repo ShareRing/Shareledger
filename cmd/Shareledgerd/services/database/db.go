@@ -88,6 +88,28 @@ func (c *DB) UpdateLatestScannedBatchId(id uint64, network string) error {
 	return nil
 }
 
+func (c *DB) GetLastScannedBlockNumber(contractAddr string) (uint64, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), timeout)
+	defer cancel()
+
+	collection := c.GetCollection(ShareRing, SettingCollection)
+
+	var queryResult bson.M
+	var setting Setting
+	_ = collection.FindOne(ctx, bson.M{}).Decode(&queryResult)
+	doc, err := bson.Marshal(queryResult["settings"])
+	if err != nil {
+		return 0, err
+	}
+
+	err = bson.Unmarshal(doc, &setting)
+	if err != nil {
+		return 0, err
+	}
+
+	return setting.LastScannedBlockNumber[contractAddr], nil
+}
+
 func (c *DB) GetLastScannedBatch(network string) (uint64, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), timeout)
 	defer cancel()
@@ -103,6 +125,9 @@ func (c *DB) GetLastScannedBatch(network string) (uint64, error) {
 	}
 
 	err = bson.Unmarshal(doc, &setting)
+	if err != nil {
+		return 0, err
+	}
 
 	return setting.LastScannedBatchID[Network(network)], nil
 }
@@ -211,7 +236,7 @@ func (c *DB) getOneBatchStatus(network string, status Status, offset *int64) (*B
 		Skip: offset,
 	}).Decode(&batch)
 	if err != nil {
-		if err != mongo.ErrNoDocuments {
+		if err == mongo.ErrNoDocuments {
 			return nil, nil
 		}
 		return nil, errors.Wrapf(err, "get one batch by status from mongodb fail")
@@ -294,7 +319,18 @@ func (c *DB) SetBatch(request Batch) error {
 	_, err := collection.UpdateOne(ctx, bson.M{
 		"shareledgerID": request.ShareledgerID,
 		"type":          request.Type,
-	}, request, &options.UpdateOptions{Upsert: &upsert})
+	}, bson.M{
+		"$set": bson.M{
+			"shareledgerID": request.ShareledgerID,
+			"type":          request.Type,
+			"status":        request.Status,
+			"txHash":        request.TxHash,
+			"network":       request.Network,
+			"blockNumber":   request.BlockNumber,
+			"nonce":         request.Nonce,
+			"signer":        request.Signer,
+		},
+	}, &options.UpdateOptions{Upsert: &upsert})
 	if err != nil {
 		return errors.Wrapf(err, "insert batch data into mongodb")
 	}

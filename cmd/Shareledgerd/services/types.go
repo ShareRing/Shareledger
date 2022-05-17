@@ -2,8 +2,9 @@ package services
 
 import (
 	"context"
-	"github.com/sharering/shareledger/cmd/Shareledgerd/services/subscriber"
 	"time"
+
+	"github.com/sharering/shareledger/cmd/Shareledgerd/services/subscriber"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/sharering/shareledger/cmd/Shareledgerd/services/database"
@@ -24,8 +25,8 @@ type Network struct {
 	Exponent                            int    `yaml:"exponent"`
 	Url                                 string `yaml:"url"`
 	ChainId                             int64  `yaml:"chainId"`
-	Contract                            string `yaml:"contract"` // swap contract address
-	PegWallet                           string `yaml:"pegWallet"`
+	SwapContract                        string `yaml:"contract"` // swap contract address
+	TokenContract                       string `yaml:"tokenContract"`
 	LastScannedTransferEventBlockNumber int64  `yaml:"lastScannedTransferEventBlockNumber"`
 	LastScannedSwapEventBlockNumber     int64  `yaml:"lastScannedSwapEventBlockNumber"`
 	SwapTopic                           string `yaml:"swapTopic"` // swap topic
@@ -34,7 +35,7 @@ type Network struct {
 }
 
 type Retry struct {
-	IntervalRetry   time.Duration `yaml:"intervalRetry"'`
+	IntervalRetry   time.Duration `yaml:"intervalRetry"`
 	MaxRetry        int           `yaml:"maxRetry"`
 	RetryPercentage float64       `yaml:"retryPercentage"`
 }

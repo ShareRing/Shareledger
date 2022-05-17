@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"go.uber.org/zap"
 	"math/big"
 	"os"
 	"os/signal"
@@ -13,6 +12,8 @@ import (
 	"sync"
 	"syscall"
 	"time"
+
+	"go.uber.org/zap"
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 
@@ -193,11 +194,12 @@ func initRelayer(client client.Context, cfg RelayerConfig, db database.DBRelayer
 			ProviderURL:          cfg.Url,
 			TransferCurrentBlock: big.NewInt(cfg.LastScannedTransferEventBlockNumber), // config.yaml pre-define before running process
 			SwapCurrentBlock:     big.NewInt(cfg.LastScannedSwapEventBlockNumber),
-			PegWalletAddress:     cfg.PegWallet,
+			PegWalletAddress:     cfg.TokenContract,
 			TransferTopic:        cfg.TransferTopic,
-			SwapContractAddress:  cfg.Contract,
+			SwapContractAddress:  cfg.SwapContract,
 			SwapTopic:            cfg.SwapTopic,
 			DBClient:             db,
+			Network:              network,
 		})
 		if err != nil {
 			return nil, err
@@ -298,11 +300,11 @@ func (r *Relayer) syncEventSuccessfulBatches(ctx context.Context, network string
 	if !found {
 		return fmt.Errorf("%s network does not have swap event subscrber", network)
 	}
-	err := service.HandlerSwapCompleteEvent(ctx, func(events []event.EventSwapCompleteOutput) error {
-		for _, event := range events {
-			batch, err := r.db.GetBatchByTxHash(event.TxHash)
+	err := service.HandlerSwapCompleteEvent(ctx, func(hashes []common.Hash) error {
+		for _, hash := range hashes {
+			batch, err := r.db.GetBatchByTxHash(hash.String())
 			if err != nil {
-				return errors.Wrapf(err, "get batch by tx hash, %v", event.TxHash)
+				return errors.Wrapf(err, "get batch by tx hash, %v", hash.String())
 			}
 			batch.Status = database.Done
 			nonce := batch.Nonce
@@ -351,11 +353,13 @@ func (r *Relayer) syncNewBatchesOut(ctx context.Context, network string) error {
 			maxBatchId = b.Id
 		}
 	}
-	if err := r.db.InsertBatches(newBatches); err != nil {
-		return err
-	}
-	if err := r.db.UpdateLatestScannedBatchId(maxBatchId, network); err != nil {
-		return err
+	if len(newBatches) > 0 {
+		if err := r.db.InsertBatches(newBatches); err != nil {
+			return errors.Wrapf(err, "new batches %+v", newBatches)
+		}
+		if err := r.db.UpdateLatestScannedBatchId(maxBatchId, network); err != nil {
+			return errors.Wrapf(err, "update latest scanned batch id %+v", maxBatchId)
+		}
 	}
 	return nil
 }
@@ -401,7 +405,7 @@ func (r *Relayer) processNextPendingBatchesOut(ctx context.Context, network stri
 		if err != nil {
 			return errors.Wrap(err, "get batch detail fail")
 		}
-		var total sdk.Coin
+		total := sdk.NewCoin(denom.Base, sdk.NewInt(0))
 		for _, r := range batchDetail.Requests {
 			total = total.Add(*r.Amount)
 		}
@@ -479,7 +483,7 @@ func (r *Relayer) processOut(ctx context.Context, network string) error {
 
 func (r *Relayer) getBalance(ctx context.Context, network string) (sdk.Coin, error) {
 	conn, networkConfig, err := r.initConn(network)
-	swapClient, err := swap.NewSwap(common.HexToAddress(networkConfig.Contract), conn)
+	swapClient, err := swap.NewSwap(common.HexToAddress(networkConfig.SwapContract), conn)
 	if err != nil {
 		return sdk.Coin{}, errors.Wrapf(err, "fail to int Swap smartcontract client")
 	}
@@ -508,15 +512,16 @@ func (r *Relayer) getBatch(batchId uint64) (*swapmoduletypes.Batch, error) {
 	}
 
 	batchesRes, err := qClient.Batches(context.Background(), pendingQuery)
-	batches := batchesRes.GetBatches()
-	sort.Sort(BatchSortByIDAscending(batches))
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrapf(err, "getting batches from blockchain fail")
 	}
+	batches := batchesRes.GetBatches()
 	if len(batches) == 0 {
-		return nil, nil
+		return nil, errors.New("batches is empty")
 	}
-	return &batches[0], err
+
+	sort.Sort(BatchSortByIDAscending(batches))
+	return &batches[0], nil
 }
 
 func (r *Relayer) getBatchDetail(ctx context.Context, batch swapmoduletypes.Batch) (detail swaputil.BatchDetail, err error) {
@@ -554,7 +559,7 @@ func (r *Relayer) updateBatch(msg *swapmoduletypes.MsgUpdateBatch) (swapmodulety
 		return swapmoduletypes.Batch{}, errors.Wrapf(err, "geting batch id %d fail", msg.GetBatchId())
 	}
 	if len(batchesRes.GetBatches()) != 0 {
-		return swapmoduletypes.Batch{}, fmt.Errorf("batches response is empty")
+		return swapmoduletypes.Batch{}, errors.New("batches response is empty")
 	}
 	return batchesRes.GetBatches()[0], nil
 }
@@ -585,7 +590,7 @@ func (r *Relayer) isBatchDoneOnSC(network string, digest common.Hash) (done bool
 	defer func() {
 		conn.Close()
 	}()
-	swapClient, err := swap.NewSwap(common.HexToAddress(networkConfig.Contract), conn)
+	swapClient, err := swap.NewSwap(common.HexToAddress(networkConfig.SwapContract), conn)
 	if err != nil {
 		return false, sdkerrors.Wrapf(sdkerrors.ErrLogic, err.Error())
 	}
@@ -603,20 +608,20 @@ func (r *Relayer) submitBatch(ctx context.Context, network string, batchDetail s
 	}
 	conn, networkConfig, err := r.initConn(network)
 	if err != nil {
-		return tx, err
+		return tx, errors.Wrapf(err, "init eth connection")
 	}
 	defer func() {
 		conn.Close()
 	}()
 
-	swapClient, err := swap.NewSwap(common.HexToAddress(networkConfig.Contract), conn)
+	swapClient, err := swap.NewSwap(common.HexToAddress(networkConfig.SwapContract), conn)
 	if err != nil {
 		return tx, sdkerrors.Wrapf(sdkerrors.ErrLogic, err.Error())
 	}
 
 	info, err := r.Client.Keyring.Key(networkConfig.Signer)
 	if err != nil {
-		return tx, err
+		return tx, errors.Wrapf(err, "get keyring instant fail signer=%s", networkConfig.Signer)
 	}
 	pubKey := keyring.PubKeyETH{
 		PubKey: info.GetPubKey(),
@@ -714,7 +719,7 @@ func (r *Relayer) initSwapInRequest(
 	)
 	response, err := r.msgClient.RequestIn(ctx, inMsg)
 	if err != nil {
-		return err
+		return errors.Wrapf(err, "can't make request swap in %s", inMsg.String())
 	}
 
 	// approve in msg
@@ -729,7 +734,7 @@ func (r *Relayer) initSwapInRequest(
 	}
 	err = r.db.SetBatch(newBatch)
 	if err != nil {
-		return err
+		return errors.Wrap(err, "set batch into db fail")
 	}
 
 	return nil
