@@ -440,15 +440,16 @@ func (r *Relayer) processNextPendingBatchesOut(ctx context.Context, network stri
 		}
 
 		retry := r.Config.Network[network].Retry
-		var currentPrice *big.Int
+		var currentTip *big.Int
+		var currentBasePrice *big.Int
 		numberRetry := 0
 		for numberRetry < retry.MaxRetry {
 			numberRetry++
-			if currentPrice != nil {
-				nextPrice := retry.RetryPercentage*float64(currentPrice.Int64())/100 + float64(currentPrice.Int64())
-				currentPrice, _ = big.NewFloat(nextPrice).Int(nil)
+			if currentTip != nil {
+				nextPrice := retry.RetryPercentage*float64(currentTip.Int64())/100 + float64(currentTip.Int64())
+				currentTip, _ = big.NewFloat(nextPrice).Int(nil)
 			}
-			tx, err := r.submitBatch(ctx, network, batchDetail, currentPrice)
+			tx, err := r.submitBatch(ctx, network, batchDetail, currentTip, currentBasePrice)
 			if err != nil {
 				if IsErrBatchProcessed(err) {
 					batch.Status = database.Done
@@ -462,7 +463,8 @@ func (r *Relayer) processNextPendingBatchesOut(ctx context.Context, network stri
 				batch.Nonce = tx.Nonce()
 				batch.Status = database.Submitted
 				batch.TxHashes = append(batch.TxHashes, tx.Hash().String())
-				currentPrice = tx.GasPrice()
+				currentTip = tx.GasTipCap()
+				currentBasePrice = tx.GasFeeCap()
 			}
 			if err := r.db.SetBatch(*batch); err != nil {
 				return errors.Wrapf(err, "insert batch into database %v", *batch)
@@ -622,7 +624,7 @@ func (r *Relayer) isBatchDoneOnSC(network string, digest common.Hash) (done bool
 
 }
 
-func (r *Relayer) submitBatch(ctx context.Context, network string, batchDetail swaputil.BatchDetail, price *big.Int) (tx *types.Transaction, err error) {
+func (r *Relayer) submitBatch(ctx context.Context, network string, batchDetail swaputil.BatchDetail, tip *big.Int, basePrice *big.Int) (tx *types.Transaction, err error) {
 	if err := batchDetail.Validate(); err != nil {
 		return tx, err
 	}
@@ -657,8 +659,9 @@ func (r *Relayer) submitBatch(ctx context.Context, network string, batchDetail s
 	if err != nil {
 		return tx, errors.Wrapf(err, "get eth connection options fail")
 	}
-	if price != nil {
-		opts.GasPrice = price
+	if tip != nil && basePrice != nil {
+		opts.GasTipCap = tip
+		opts.GasFeeCap = basePrice
 	}
 	opts.Nonce = big.NewInt(int64(currentNonce))
 	sig, err := hexutil.Decode(batchDetail.Batch.Signature)
