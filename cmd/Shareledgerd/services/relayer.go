@@ -299,22 +299,43 @@ func (r *Relayer) syncEventSuccessfulBatches(ctx context.Context, network string
 	if !found {
 		return fmt.Errorf("%s network does not have swap event subscrber", network)
 	}
+
 	err := service.HandlerSwapCompleteEvent(ctx, func(hashes []common.Hash) error {
+		var logDatas [][]interface{}
+		defer func() {
+			for _, l := range logDatas {
+				log.Infow("handle swap complete event", l...)
+			}
+		}()
+		var logData []interface{}
 		for _, hash := range hashes {
+			if len(logData) > 0 {
+				logDatas = append(logDatas, logData)
+				logData = []interface{}{}
+			}
+			logData = append(logData, "txHash", hash.String())
 			batch, err := r.db.GetBatchByTxHash(hash.String())
 			if err != nil {
 				return errors.Wrapf(err, "get batch by tx hash, %v", hash.String())
 			}
 			if batch == nil {
+				logData = append(logData, "batch", nil)
 				log.Infof("get batch by tx hash, %v, is empty", hash.String())
 				continue
 			}
 			batch.Status = database.Done
 			nonce := batch.Nonce
+			logData = append(logData, "batch_id", batch.ShareledgerID)
+			logData = append(logData, "nonce", batch.Nonce)
+			logData = append(logData, "batch_status", batch.Status)
+
 			if err := r.db.UpdateBatchesOut([]uint64{batch.ShareledgerID}, database.Done); err != nil {
+				logData = append(logData, "err", err)
 				return errors.Wrapf(err, "update batch out. shareledger id %v", batch.ShareledgerID)
+
 			}
 			if err := r.db.SetBatchesOutFailed(nonce); err != nil {
+				logData = append(logData, "err", err)
 				return errors.Wrapf(err, "set batches out failed. nonce %v", nonce)
 			}
 		}
@@ -328,8 +349,15 @@ func (r *Relayer) syncEventSuccessfulBatches(ctx context.Context, network string
 }
 
 func (r *Relayer) syncNewBatchesOut(ctx context.Context, network string) error {
+	var logData []interface{}
+	defer func() {
+		log.Infow("sync new batches out", logData...)
+	}()
+	logData = append(logData, "network", network)
 	lastScannedBatchId, err := r.db.GetLastScannedBatch(network)
+	logData = append(logData, "network", network, "lastScannedBatchId", lastScannedBatchId)
 	if err != nil {
+		logData = append(logData, "err", err)
 		return err
 	}
 	maxBatchId := lastScannedBatchId
@@ -351,6 +379,7 @@ func (r *Relayer) syncNewBatchesOut(ctx context.Context, network string) error {
 				TxHashes:      []string{},
 				Network:       b.Network,
 			})
+			logData = append(logData, "batch_id", b.Id)
 		}
 		if maxBatchId < b.Id {
 			maxBatchId = b.Id
@@ -358,9 +387,11 @@ func (r *Relayer) syncNewBatchesOut(ctx context.Context, network string) error {
 	}
 	if len(newBatches) > 0 {
 		if err := r.db.InsertBatches(newBatches); err != nil {
+			logData = append(logData, "err_insert_batches", err)
 			return errors.Wrapf(err, "new batches %+v", newBatches)
 		}
 		if err := r.db.UpdateLatestScannedBatchId(maxBatchId, network); err != nil {
+			logData = append(logData, "err_update_latest_scanned_batch", err)
 			return errors.Wrapf(err, "update latest scanned batch id %+v", maxBatchId)
 		}
 	}
@@ -368,12 +399,12 @@ func (r *Relayer) syncNewBatchesOut(ctx context.Context, network string) error {
 }
 
 func (r *Relayer) syncFinishedBatches(ctx context.Context, network string) error {
-	if err := r.syncDoneBatches(ctx, network); err != nil {
-		return err
-	}
-	if err := r.syncFailedBatches(ctx, network); err != nil {
-		return err
-	}
+	//if err := r.syncDoneBatches(ctx, network); err != nil {
+	//	return err
+	//}
+	//if err := r.syncFailedBatches(ctx, network); err != nil {
+	//	return err
+	//}
 	return nil
 }
 
@@ -440,9 +471,21 @@ func (r *Relayer) syncFailedBatches(ctx context.Context, network string) error {
 	return nil
 }
 
+func printOutLog(logData []interface{}) {
+	if len(logData) > 0 {
+		log.Infow("process next pending batches out", logData...)
+	}
+}
+
 func (r *Relayer) processNextPendingBatchesOut(ctx context.Context, network string) error {
 	var offset int64
+	var logData []interface{}
+	defer func() {
+		printOutLog(logData)
+	}()
 	for {
+		printOutLog(logData)
+		logData = []interface{}{}
 		batch, err := r.db.GetNextPendingBatchOut(network, offset)
 		offset++
 		if err != nil {
@@ -452,7 +495,7 @@ func (r *Relayer) processNextPendingBatchesOut(ctx context.Context, network stri
 			log.Infow("pending batches list is empty", "network", network)
 			return nil
 		}
-
+		logData = append(logData, "batch_id", batch.ShareledgerID, "network", batch.Network)
 		b, err := r.getBatch(batch.ShareledgerID)
 		if err != nil || b == nil {
 			return errors.Wrapf(err, "can't get next batch by ID %d", batch.ShareledgerID)
@@ -461,32 +504,50 @@ func (r *Relayer) processNextPendingBatchesOut(ctx context.Context, network stri
 		if err != nil {
 			return errors.Wrap(err, "get batch detail fail")
 		}
+
 		total := sdk.NewCoin(denom.Base, sdk.NewInt(0))
 		for _, r := range batchDetail.Requests {
 			total = total.Add(*r.Amount)
 		}
 
+		logData = append(logData, "batch_total", total.String())
+
 		currentBalance, err := r.getBalance(ctx, network)
 		if err != nil {
 			return errors.Wrap(err, "can't get current balance of swap module")
 		}
+		logData = append(logData, "swap_contract_balance", currentBalance.String())
 		if currentBalance.IsLT(total) {
 			log.Warnw("total balance of current contract is less than swap total", "network", network, "batch", batch.ShareledgerID, "contract_total", currentBalance.String(), "swap_total", total.String())
 			continue
 		}
 
+		var logRetry []interface{}
 		retry := r.Config.Network[network].Retry
+		logRetry = append(logRetry, "retry_config", retry)
 		var currentTip *big.Int
 		var currentBasePrice *big.Int
 		numberRetry := 0
 		for numberRetry < retry.MaxRetry {
+			if len(logRetry) > 0 {
+				logData = append(logData, fmt.Sprintf("retry_data_%v", numberRetry), logRetry)
+				logRetry = []interface{}{}
+			}
+			logRetry = append(logRetry, "number_retry", numberRetry)
 			numberRetry++
 			if currentTip != nil {
 				nextPrice := retry.RetryPercentage*float64(currentTip.Int64())/100 + float64(currentTip.Int64())
 				currentTip, _ = big.NewFloat(nextPrice).Int(nil)
 			}
+			logRetry = append(logRetry,
+				"current_tip", currentTip.String(),
+				"current_base_price", currentBasePrice.String(),
+			)
 			tx, err := r.submitBatch(ctx, network, batchDetail, currentTip, currentBasePrice)
 			if err != nil {
+				logRetry = append(logRetry,
+					"err_submit_batch", err.Error(),
+				)
 				if IsErrBatchProcessed(err) {
 					batch.Status = database.Done
 				} else {
@@ -496,6 +557,12 @@ func (r *Relayer) processNextPendingBatchesOut(ctx context.Context, network stri
 
 			}
 			if tx != nil {
+				logRetry = append(logRetry,
+					"tx_nonce", tx.Nonce(),
+					"tx_hashes", tx.Hash(),
+					"tx_tip", tx.GasTipCap(),
+					"tx_base_price", tx.GasFeeCap(),
+				)
 				batch.Nonce = tx.Nonce()
 				batch.Status = database.Submitted
 				batch.TxHashes = append(batch.TxHashes, tx.Hash().String())
@@ -510,6 +577,7 @@ func (r *Relayer) processNextPendingBatchesOut(ctx context.Context, network stri
 			}
 			if batch.Status == database.Submitted {
 				status, err := r.trackSubmittedBatch(ctx, *batch, retry.IntervalRetry)
+				logRetry = append(logRetry, "tract_submit_status", status)
 				if err != nil {
 					return errors.Wrapf(err, "tracking summited batch at smartcontract fail")
 				}
@@ -520,21 +588,24 @@ func (r *Relayer) processNextPendingBatchesOut(ctx context.Context, network stri
 				continue
 			}
 		}
+		if len(logRetry) > 0 {
+			logData = append(logData, fmt.Sprintf("retry_data_%v", numberRetry), logRetry)
+		}
 	}
 }
 
 func (r *Relayer) processOut(ctx context.Context, network string) error {
 	if err := r.syncEventSuccessfulBatches(ctx, network); err != nil {
-		return errors.Wrapf(err, "sync success event batches fail network=%s", network)
+		return errors.Wrapf(err, "sync success event batches fail network %s", network)
 	}
 	if err := r.syncFinishedBatches(ctx, network); err != nil {
-		return errors.Wrapf(err, "sync failed batches fail network=%s", network)
+		return errors.Wrapf(err, "syncFinishedBatches network %s", network)
 	}
 	if err := r.syncNewBatchesOut(ctx, network); err != nil {
-		return errors.Wrapf(err, "sync failed batches fail network=%s", network)
+		return errors.Wrapf(err, "syncNewBatchesOut network=%s", network)
 	}
 	if err := r.processNextPendingBatchesOut(ctx, network); err != nil {
-		return errors.Wrapf(err, "process pending batch swap out fail network=%s", network)
+		return errors.Wrapf(err, "process pending batch swap out fail network %s", network)
 	}
 	return nil
 }
@@ -579,7 +650,9 @@ func (r *Relayer) getBatch(batchId uint64) (*swapmoduletypes.Batch, error) {
 	}
 
 	sort.Sort(BatchSortByIDAscending(batches))
-	return &batches[0], nil
+	batch := batches[0]
+	batch.Network = "erc20"
+	return &batch, nil
 }
 
 func (r *Relayer) getBatchDetail(ctx context.Context, batch swapmoduletypes.Batch) (detail swaputil.BatchDetail, err error) {
