@@ -25,7 +25,7 @@ func CmdCancelBatches() *cobra.Command {
 				return err
 			}
 			argIDS := strings.Split(args[0], ",")
-			txIds := make([]uint64, 0, len(argIDS))
+			var txIds = make([]uint64, 0, len(argIDS))
 			for _, str := range argIDS {
 				id, err := strconv.ParseUint(str, 10, 64)
 				if err != nil {

@@ -19,10 +19,11 @@ func (k msgServer) UpdateBatch(goCtx context.Context, msg *types.MsgUpdateBatch)
 	var wantedStatus = msg.GetStatus()
 	var requireStatus string
 	switch wantedStatus {
-	case types.BatchStatusDone:
+	case types.BatchStatusDone, types.BatchStatusFail:
 		requireStatus = types.BatchStatusProcessing
 	case types.BatchStatusProcessing:
 		requireStatus = types.BatchStatusPending
+
 	default:
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "the %s status is not supported", wantedStatus)
 	}

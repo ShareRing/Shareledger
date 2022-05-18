@@ -426,7 +426,18 @@ func (r *Relayer) syncFailedBatches(ctx context.Context, network string) error {
 	for i := range failedBatches {
 		failedBatches[i].Status = database.Cancelled
 	}
-	return r.db.SetBatches(failedBatches)
+	err = r.db.SetBatches(failedBatches)
+	if err != nil {
+		return errors.Wrapf(err, "set batches fail")
+	}
+	if len(ids) > 0 {
+		err = r.db.MarkBatchToSynced(ids)
+		if err != nil {
+			return errors.Wrapf(err, "fail to update batch out to synced")
+		}
+	}
+
+	return nil
 }
 
 func (r *Relayer) processNextPendingBatchesOut(ctx context.Context, network string) error {
