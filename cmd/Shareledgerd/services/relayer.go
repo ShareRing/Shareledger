@@ -591,7 +591,6 @@ func (r *Relayer) submitAndTrack(ctx context.Context, batch database.Batch, deta
 				return nil
 			}
 		}
-		return nil
 	}
 }
 
@@ -651,9 +650,7 @@ func (r *Relayer) getBatch(batchId uint64) (*swapmoduletypes.Batch, error) {
 	}
 
 	sort.Sort(BatchSortByIDAscending(batches))
-	batch := batches[0]
-	batch.Network = "erc20"
-	return &batch, nil
+	return &batches[0], nil
 }
 
 func (r *Relayer) getBatchDetail(ctx context.Context, batch swapmoduletypes.Batch) (detail swaputil.BatchDetail, err error) {
