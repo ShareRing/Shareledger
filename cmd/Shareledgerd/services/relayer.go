@@ -251,14 +251,12 @@ func (r *Relayer) setLog(id uint64, msg string) error {
 }
 
 func (r *Relayer) trackSubmittedBatch(ctx context.Context, batch database.Batch, timeout time.Duration) (database.Status, error) {
-	deadTime := time.Now().Add(timeout).Add(time.Millisecond)
 	for {
 		select {
-		case <-time.Tick(timeout / 2):
-			if time.Now().After(deadTime) {
-				return database.Submitted, nil
-			}
-			log.Infof("checking receipt, network, %s, txHashes, %v", batch.Network, batch.TxHashes)
+		case <-time.Tick(timeout):
+			return database.Submitted, nil
+		case <-time.Tick(timeout / 5):
+			log.Infof("checking receipt, batch id, %v, network, %s, txHashes, %v, check time %s", batch.ShareledgerID, batch.Network, batch.TxHashes, time.Now().Format("2006-01-02 15:04:05"))
 			for _, hash := range batch.TxHashes {
 				receipt, err := r.checkTxHash(ctx, batch.Network, common.HexToHash(hash))
 				if err != nil && err.Error() != "not found" {
@@ -268,6 +266,7 @@ func (r *Relayer) trackSubmittedBatch(ctx context.Context, batch database.Batch,
 					if IsErrBatchProcessed(err) {
 						return database.Done, r.db.UpdateBatchesOut([]uint64{batch.ShareledgerID}, database.Done)
 					}
+
 					if e := r.setLog(batch.ShareledgerID, err.Error()); e != nil {
 						log.Errorw("set log error", "original error", err, "log error", e)
 					}
@@ -284,6 +283,7 @@ func (r *Relayer) trackSubmittedBatch(ctx context.Context, batch database.Batch,
 						}
 						return database.Failed, r.db.UpdateBatchesOut([]uint64{batch.ShareledgerID}, database.Failed)
 					default:
+						fmt.Println("default:")
 						return database.Submitted, nil
 					}
 				}
@@ -471,9 +471,9 @@ func (r *Relayer) syncFailedBatches(ctx context.Context, network string) error {
 	return nil
 }
 
-func printOutLog(logData []interface{}) {
+func printOutLog(msg string, logData []interface{}) {
 	if len(logData) > 0 {
-		log.Infow("process next pending batches out", logData...)
+		log.Infow(msg, logData...)
 	}
 }
 
@@ -481,13 +481,12 @@ func (r *Relayer) processNextPendingBatchesOut(ctx context.Context, network stri
 	var offset int64
 	var logData []interface{}
 	defer func() {
-		printOutLog(logData)
+		printOutLog("process next pending batches out", logData)
 	}()
 	for {
-		printOutLog(logData)
+		printOutLog("process next pending batches out", logData)
 		logData = []interface{}{}
 		batch, err := r.db.GetNextPendingBatchOut(network, offset)
-		offset++
 		if err != nil {
 			return err
 		}
@@ -519,78 +518,80 @@ func (r *Relayer) processNextPendingBatchesOut(ctx context.Context, network stri
 		logData = append(logData, "swap_contract_balance", currentBalance.String())
 		if currentBalance.IsLT(total) {
 			log.Warnw("total balance of current contract is less than swap total", "network", network, "batch", batch.ShareledgerID, "contract_total", currentBalance.String(), "swap_total", total.String())
+			// try to the next pending batch
+			offset++
 			continue
 		}
+		if err := r.submitAndTrack(ctx, *batch, batchDetail); err != nil {
+			logData = append(logData, "submit_and_track_err", err)
+		}
 
-		var logRetry []interface{}
 		retry := r.Config.Network[network].Retry
-		logRetry = append(logRetry, "retry_config", retry)
-		var currentTip *big.Int
-		var currentBasePrice *big.Int
-		numberRetry := 0
-		for numberRetry < retry.MaxRetry {
-			if len(logRetry) > 0 {
-				logData = append(logData, fmt.Sprintf("retry_data_%v", numberRetry), logRetry)
-				logRetry = []interface{}{}
-			}
-			logRetry = append(logRetry, "number_retry", numberRetry)
-			numberRetry++
-			if currentTip != nil {
-				nextPrice := retry.RetryPercentage*float64(currentTip.Int64())/100 + float64(currentTip.Int64())
-				currentTip, _ = big.NewFloat(nextPrice).Int(nil)
-			}
-			logRetry = append(logRetry,
-				"current_tip", currentTip.String(),
-				"current_base_price", currentBasePrice.String(),
-			)
-			tx, err := r.submitBatch(ctx, network, batchDetail, currentTip, currentBasePrice)
-			if err != nil {
-				logRetry = append(logRetry,
-					"err_submit_batch", err.Error(),
-				)
-				if IsErrBatchProcessed(err) {
-					batch.Status = database.Done
-				} else {
-					batch.Status = database.Failed
-				}
-				_ = r.setLog(batch.ShareledgerID, err.Error())
+		logData = append(logData, "retry_config", retry)
+	}
+}
 
+func (r *Relayer) submitAndTrack(ctx context.Context, batch database.Batch, detail swaputil.BatchDetail) error {
+	var logRetry []interface{}
+	var currentTip *big.Int
+	rConfig := r.Config.Network[batch.Network].Retry
+	defer func() {
+		printOutLog("submit and track", logRetry)
+	}()
+	for {
+		printOutLog("submit and track", logRetry)
+		logRetry = append(logRetry, "batch_id", batch.ShareledgerID)
+		if currentTip != nil {
+			nextPrice := rConfig.RetryPercentage*float64(currentTip.Int64())/100 + float64(currentTip.Int64())
+			currentTip, _ = big.NewFloat(nextPrice).Int(nil)
+		}
+
+		tx, err := r.submitBatch(ctx, batch.Network, detail, currentTip)
+		if err != nil {
+			logRetry = append(logRetry,
+				"err_submit_batch", err.Error(),
+			)
+			if IsErrBatchProcessed(err) {
+				batch.Status = database.Done
+			} else {
+				batch.Status = database.Failed
 			}
-			if tx != nil {
-				logRetry = append(logRetry,
-					"tx_nonce", tx.Nonce(),
-					"tx_hashes", tx.Hash(),
-					"tx_tip", tx.GasTipCap(),
-					"tx_base_price", tx.GasFeeCap(),
-				)
-				batch.Nonce = tx.Nonce()
-				batch.Status = database.Submitted
-				batch.TxHashes = append(batch.TxHashes, tx.Hash().String())
-				currentTip = tx.GasTipCap()
-				currentBasePrice = tx.GasFeeCap()
+			_ = r.setLog(batch.ShareledgerID, err.Error())
+		}
+		if tx != nil {
+			logRetry = append(logRetry,
+				"tx_nonce", tx.Nonce(),
+				"tx_hashes", tx.Hash(),
+				"tx_tip", tx.GasTipCap(),
+				"tx_base_price", tx.GasFeeCap(),
+			)
+			batch.Nonce = tx.Nonce()
+			batch.Status = database.Submitted
+			batch.TxHashes = append(batch.TxHashes, tx.Hash().String())
+			currentTip = tx.GasTipCap()
+		}
+		if err := r.db.SetBatch(batch); err != nil {
+			return errors.Wrapf(err, "insert batch into database %v", batch)
+		}
+		if batch.Status == database.Done || batch.Status == database.Failed {
+			return nil
+		}
+		if batch.Status == database.Submitted {
+			status, err := r.trackSubmittedBatch(ctx, batch, rConfig.IntervalRetry)
+			logRetry = append(logRetry,
+				"track_submit_status", status,
+				"track_time", time.Now().Format("2006-01-02 15:04:05"),
+			)
+			if err != nil {
+				return errors.Wrapf(err, "tracking summited batch at smartcontract fail")
 			}
-			if err := r.db.SetBatch(*batch); err != nil {
-				return errors.Wrapf(err, "insert batch into database %v", *batch)
-			}
-			if batch.Status == database.Done || batch.Status == database.Failed {
-				break
-			}
-			if batch.Status == database.Submitted {
-				status, err := r.trackSubmittedBatch(ctx, *batch, retry.IntervalRetry)
-				logRetry = append(logRetry, "tract_submit_status", status)
-				if err != nil {
-					return errors.Wrapf(err, "tracking summited batch at smartcontract fail")
-				}
-				if status != database.Submitted {
-					// status will be failed and done which do not need to keep tracking
-					break
-				}
-				continue
+			if status != database.Submitted {
+				// status will be failed and done which do not need to keep tracking
+				// trying to re-submit with higher tip
+				return nil
 			}
 		}
-		if len(logRetry) > 0 {
-			logData = append(logData, fmt.Sprintf("retry_data_%v", numberRetry), logRetry)
-		}
+		return nil
 	}
 }
 
@@ -733,7 +734,7 @@ func (r *Relayer) isBatchDoneOnSC(network string, digest common.Hash) (done bool
 
 }
 
-func (r *Relayer) submitBatch(ctx context.Context, network string, batchDetail swaputil.BatchDetail, tip *big.Int, basePrice *big.Int) (tx *types.Transaction, err error) {
+func (r *Relayer) submitBatch(ctx context.Context, network string, batchDetail swaputil.BatchDetail, tip *big.Int) (tx *types.Transaction, err error) {
 	if err := batchDetail.Validate(); err != nil {
 		return tx, err
 	}
@@ -768,10 +769,10 @@ func (r *Relayer) submitBatch(ctx context.Context, network string, batchDetail s
 	if err != nil {
 		return tx, errors.Wrapf(err, "get eth connection options fail")
 	}
-	if tip != nil && basePrice != nil {
+	if tip != nil {
 		opts.GasTipCap = tip
-		opts.GasFeeCap = basePrice
 	}
+
 	opts.Nonce = big.NewInt(int64(currentNonce))
 	sig, err := hexutil.Decode(batchDetail.Batch.Signature)
 

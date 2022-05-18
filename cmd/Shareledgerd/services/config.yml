@@ -1,7 +1,7 @@
 mongoURI: mongodb+srv://phuong:uIoqBJDBzHn17Khe@cluster0.ol2f7.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
-dbName: "ShareRing"
+dbName: "shareringtesthoai"
 collectionName: "Request"
-scanInterval: 15s
+scanInterval: 20s
 type: out
 networks:
   erc20:
@@ -9,13 +9,12 @@ networks:
     url: https://ropsten.infura.io/v3/bf1a5b4c59cb45ea8ebf48497d3295ae
     exponent: 2
     chainId: 3
-    swapContract: 0xb05Bd9288fb1426D408a616878047aC8F43665ec
+    swapContract: 0x51308a41b43330813eBe44E7F87fd7Bd735d7259
     tokenContract: 0x0362fBA2BdA9Bd05f53d6C8CC72257919899A9Ac
     lastScannedTransferEventBlockNumber: 0
     lastScannedSwapEventBlockNumber: 0
     swapTopic: 0x796a6fb73c9c09afe863a5d1bc7040da846e5aeb2ad3cb42ee36e08a0c0a3e71
     transferTopic: 0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef
     retry:
-      intervalRetry: 10s
-      maxRetry: 3
-      retryPercentage: 10
+      intervalRetry: 30s
+      retryPercentage: 11 #should >= 11% . It will cause replacement transaction underpriced when doing retry

@@ -36,7 +36,6 @@ type Network struct {
 
 type Retry struct {
 	IntervalRetry   time.Duration `yaml:"intervalRetry"`
-	MaxRetry        int           `yaml:"maxRetry"`
 	RetryPercentage float64       `yaml:"retryPercentage"`
 }
 

@@ -58,7 +58,7 @@ func (k Keeper) AppendPendingRequest(
 }
 
 // ChangeStatusRequests change status of requests and move it into respective store
-// The status flow should be: pending -> approved|rejected -> processing -> done.
+// The status flow should be: pending -> approved|rejected -> done.
 // return error if new status is pending or unsupported status
 func (k Keeper) ChangeStatusRequests(ctx sdk.Context, ids []uint64, status string, batchId *uint64, isSwapOut bool) ([]types.Request, error) {
 	if len(ids) == 0 {
