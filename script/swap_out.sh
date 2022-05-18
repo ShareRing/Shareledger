@@ -1,4 +1,4 @@
-#!/opt/homebrew/bin/bash
+#bin/bash
 
 echo "upper two old trip wolf member fruit end coyote stone gospel knee" | shareledger keys add acc3 --recover --hd-path "m/44'/60'/0'/0/0"
 
