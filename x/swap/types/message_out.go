@@ -64,5 +64,10 @@ func (msg *MsgRequestOut) ValidateBasic() error {
 	if coin.AmountOf(denom.Base).IsZero() {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "only nshr or shr is supported")
 	}
+
+	if _, f := SupportedSwapOutNetwork[msg.GetNetwork()]; !f {
+		return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "network is unsupported")
+	}
+
 	return nil
 }

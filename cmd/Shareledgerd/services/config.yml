@@ -4,7 +4,7 @@ collectionName: "Request"
 scanInterval: 20s
 type: out
 networks:
-  erc20:
+  eth:
     signer: acc3
     url: https://ropsten.infura.io/v3/bf1a5b4c59cb45ea8ebf48497d3295ae
     exponent: 2
