@@ -327,12 +327,17 @@ func (r *Relayer) syncEventSuccessfulBatches(ctx context.Context, network string
 				log.Infof("get batch by tx hash, %v, is empty", hash.String())
 				continue
 			}
-			batch.Status = database.Done
+
 			nonce := batch.Nonce
 			logData = append(logData, "batch_id", batch.ShareledgerID)
 			logData = append(logData, "nonce", batch.Nonce)
-			logData = append(logData, "batch_status", batch.Status)
-
+			logData = append(logData, "batch_current_status", batch.Status)
+			if batch.Status == database.Done {
+				// already processed done in other process. Skip
+				logData = append(logData, "msg", "already done")
+				continue
+			}
+			batch.Status = database.Done
 			if err := r.db.UpdateBatchesOut([]uint64{batch.ShareledgerID}, database.Done); err != nil {
 				logData = append(logData, "err", err)
 				return errors.Wrapf(err, "update batch out. shareledger id %v", batch.ShareledgerID)
