@@ -31,7 +31,7 @@ const (
 	//ErrMsgNotRelayerAccount       = "Transaction's Signer is not relayer account"
 	ErrMsgNotSwapManager       = "Transaction's Signer is not swap manager account"
 	ErrMsgNotRelayerOrApprover = "Transaction's Signer is not relayer approver"
-	ErrMsgNotRelayer           = "Transaction's Signer is not relayer approver"
+	ErrMsgNotRelayer           = "Transaction's Signer is not relayer"
 	ErrMsgStatusInvalid        = "Can't update batch to canceled via update function"
 )
 

@@ -13,7 +13,7 @@ func (v BatchSortByIDAscending) Len() int           { return len(v) }
 func (v BatchSortByIDAscending) Swap(i, j int)      { v[i], v[j] = v[j], v[i] }
 func (v BatchSortByIDAscending) Less(i, j int) bool { return v[i].Id < v[j].Id }
 
-const msgBatchProcessed = "digest already exists"
+const msgBatchProcessed = "batch already exists"
 const msgRequestDuplicated = "request already exists"
 
 func IsErrBatchProcessed(err error) bool {

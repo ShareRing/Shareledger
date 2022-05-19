@@ -4,6 +4,8 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/cosmos/cosmos-sdk/client"
+	"github.com/cosmos/cosmos-sdk/client/tx"
 	"go.uber.org/zap"
 	"math/big"
 	"os"
@@ -18,7 +20,6 @@ import (
 
 	"gopkg.in/yaml.v3"
 
-	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/crypto/keyring"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -58,14 +59,10 @@ func NewStartCommands(defaultNodeHome string) *cobra.Command {
 		Use:   "start",
 		Short: "start Relayer process",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			logger, _ := zap.NewProduction()
+			logger, _ := zap.NewDevelopment()
 			defer logger.Sync()
 			log = logger.Sugar()
 
-			clientTx, err := client.GetClientTxContext(cmd)
-			if err != nil {
-				return err
-			}
 			configPath, _ := cmd.Flags().GetString(flagConfigPath)
 			cfg, err := parseConfig(configPath)
 			if err != nil {
@@ -79,11 +76,11 @@ func NewStartCommands(defaultNodeHome string) *cobra.Command {
 			ctx, cancel := context.WithCancel(context.Background())
 			timeoutContext, cancelTimeOut := context.WithTimeout(ctx, time.Second*10)
 			defer cancelTimeOut()
-			relayerClient, err := initRelayer(clientTx, cfg, mgClient)
+			relayerClient, err := initRelayer(cmd, cfg, mgClient)
 			if err != nil {
 				return err
 			}
-			if err := mgClient.ConnectDB(timeoutContext); err != nil {
+			if err := relayerClient.db.ConnectDB(timeoutContext); err != nil {
 				cancel()
 				return err
 			}
@@ -182,9 +179,16 @@ func parseConfig(filePath string) (RelayerConfig, error) {
 	return cfg, err
 }
 
-func initRelayer(client client.Context, cfg RelayerConfig, db database.DBRelayer) (*Relayer, error) {
-	mClient := swapmoduletypes.NewMsgClient(client)
-	qClient := swapmoduletypes.NewQueryClient(client)
+func initRelayer(cmd *cobra.Command, cfg RelayerConfig, db database.DBRelayer) (*Relayer, error) {
+	qClientCtx, err := client.GetClientQueryContext(cmd)
+	if err != nil {
+		return nil, err
+	}
+	txClientCtx, err := client.GetClientTxContext(cmd)
+	if err != nil {
+		return nil, err
+	}
+	qClient := swapmoduletypes.NewQueryClient(qClientCtx)
 
 	events := make(map[string]event.Service)
 	for network, cfg := range cfg.Network {
@@ -206,12 +210,13 @@ func initRelayer(client client.Context, cfg RelayerConfig, db database.DBRelayer
 	}
 
 	return &Relayer{
-		Config:    cfg,
-		Client:    client,
-		db:        db,
-		events:    events,
-		qClient:   qClient,
-		msgClient: mClient,
+		Config:  cfg,
+		Client:  txClientCtx,
+		db:      db,
+		events:  events,
+		cmd:     cmd,
+		qClient: qClient,
+		//msgClient: mClient,
 	}, nil
 }
 
@@ -399,12 +404,12 @@ func (r *Relayer) syncNewBatchesOut(ctx context.Context, network string) error {
 }
 
 func (r *Relayer) syncFinishedBatches(ctx context.Context, network string) error {
-	//if err := r.syncDoneBatches(ctx, network); err != nil {
-	//	return err
-	//}
-	//if err := r.syncFailedBatches(ctx, network); err != nil {
-	//	return err
-	//}
+	if err := r.syncDoneBatches(ctx, network); err != nil {
+		return err
+	}
+	if err := r.syncFailedBatches(ctx, network); err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -416,14 +421,12 @@ func (r *Relayer) syncDoneBatches(ctx context.Context, network string) error {
 	sID := make([]uint64, 0, len(batches))
 	for i := range batches {
 		updateMsg := &swapmoduletypes.MsgUpdateBatch{
-			Creator: r.Client.GetFromAddress().String(),
 			BatchId: batches[i].ShareledgerID,
 			Status:  swapmoduletypes.BatchStatusDone,
 			Network: network,
 		}
 
-		_, err := r.msgClient.UpdateBatch(ctx, updateMsg)
-		if err != nil {
+		if err := r.txUpdateBatch(updateMsg); err != nil {
 			return errors.Wrapf(err, "update batchID=%d to status done fail", batches[i].ShareledgerID)
 		}
 		sID = append(sID, batches[i].ShareledgerID)
@@ -450,10 +453,7 @@ func (r *Relayer) syncFailedBatches(ctx context.Context, network string) error {
 	for _, f := range failedBatches {
 		ids = append(ids, f.ShareledgerID)
 	}
-	_, err = r.msgClient.CancelBatches(ctx, &swapmoduletypes.MsgCancelBatches{
-		Creator: r.Client.GetFromAddress().String(),
-		Ids:     ids,
-	})
+	err = r.txCancelBatches(ids)
 	for i := range failedBatches {
 		failedBatches[i].Status = database.Cancelled
 	}
@@ -635,12 +635,12 @@ func (r *Relayer) checkTxHash(ctx context.Context, network string, txHash common
 }
 
 func (r *Relayer) getBatch(batchId uint64) (*swapmoduletypes.Batch, error) {
-	qClient := swapmoduletypes.NewQueryClient(r.Client)
+	//qClient := swapmoduletypes.NewQueryClient(r.Client)
 	pendingQuery := &swapmoduletypes.QueryBatchesRequest{
 		Ids: []uint64{batchId},
 	}
 
-	batchesRes, err := qClient.Batches(context.Background(), pendingQuery)
+	batchesRes, err := r.qClient.Batches(context.Background(), pendingQuery)
 	if err != nil {
 		return nil, errors.Wrapf(err, "getting batches from blockchain fail")
 	}
@@ -654,52 +654,17 @@ func (r *Relayer) getBatch(batchId uint64) (*swapmoduletypes.Batch, error) {
 }
 
 func (r *Relayer) getBatchDetail(ctx context.Context, batch swapmoduletypes.Batch) (detail swaputil.BatchDetail, err error) {
-	qClient := swapmoduletypes.NewQueryClient(r.Client)
+	//qClient := swapmoduletypes.NewQueryClient(r.Client)
 	// only approved swap requests have batches
-	batchesRes, err := qClient.Swap(ctx, &swapmoduletypes.QuerySwapRequest{Ids: batch.TxIds, Status: swapmoduletypes.SwapStatusApproved})
+	batchesRes, err := r.qClient.Swap(ctx, &swapmoduletypes.QuerySwapRequest{Ids: batch.TxIds, Status: swapmoduletypes.SwapStatusApproved})
 	if err != nil {
 		return detail, errors.Wrapf(err, "get list swap fail")
 	}
-	schema, err := qClient.Schema(ctx, &swapmoduletypes.QueryGetSchemaRequest{Network: batch.Network})
+	schema, err := r.qClient.Schema(ctx, &swapmoduletypes.QueryGetSchemaRequest{Network: batch.Network})
 	if err != nil {
 		return detail, errors.Wrapf(err, "can't get schema")
 	}
 	return swaputil.NewBatchDetail(batch, batchesRes.Swaps, schema.Schema), nil
-}
-
-var lock sync.Mutex
-
-// updateBatch thread safe to avoid running in multiple go routine for multiple network
-func (r *Relayer) updateBatch(msg *swapmoduletypes.MsgUpdateBatch) (swapmoduletypes.Batch, error) {
-	lock.Lock()
-	defer lock.Unlock()
-
-	_, err := r.msgClient.UpdateBatch(context.Background(), msg)
-	if err != nil {
-		return swapmoduletypes.Batch{}, errors.Wrapf(err, "update batch id %d to processing fail", msg.GetBatchId())
-	}
-	batchIdReq := &swapmoduletypes.QueryBatchesRequest{
-		Ids: []uint64{msg.GetBatchId()},
-	}
-
-	batchesRes, err := r.qClient.Batches(context.Background(), batchIdReq)
-
-	if err != nil {
-		return swapmoduletypes.Batch{}, errors.Wrapf(err, "geting batch id %d fail", msg.GetBatchId())
-	}
-	if len(batchesRes.GetBatches()) != 0 {
-		return swapmoduletypes.Batch{}, errors.New("batches response is empty")
-	}
-	return batchesRes.GetBatches()[0], nil
-}
-
-func (r *Relayer) updateBatchStatus(batchId uint64, status string) (b swapmoduletypes.Batch, err error) {
-	updateMsg := &swapmoduletypes.MsgUpdateBatch{
-		Creator: r.Client.GetFromAddress().String(),
-		BatchId: batchId,
-		Status:  status,
-	}
-	return r.updateBatch(updateMsg)
 }
 
 func (r *Relayer) initConn(network string) (*ethclient.Client, Network, error) {
@@ -837,35 +802,76 @@ func (r *Relayer) initSwapInRequest(
 	ctx context.Context,
 	srcAddr, destAddr, network, txHash string,
 	blockNumber, amount, fee uint64) error {
-	swapAmount := sdk.NewDecCoin(denom.Shr, sdk.NewIntFromUint64(amount))
-	swapFee := sdk.NewDecCoin(denom.Shr, sdk.NewIntFromUint64(fee))
-	inMsg := swapmoduletypes.NewMsgRequestIn(
-		r.Client.GetFromAddress().String(),
-		srcAddr,
-		destAddr,
-		network,
-		swapAmount,
-		swapFee,
-	)
-	response, err := r.msgClient.RequestIn(ctx, inMsg)
-	if err != nil {
-		return errors.Wrapf(err, "can't make request swap in %s", inMsg.String())
-	}
-
-	// approve in msg
-
-	newBatch := database.Batch{
-		ShareledgerID: response.Id,
-		Status:        database.Done,
-		Type:          database.In,
-		Network:       network,
-		TxHashes:      []string{txHash},
-		BlockNumber:   blockNumber,
-	}
-	err = r.db.SetBatch(newBatch)
-	if err != nil {
-		return errors.Wrap(err, "set batch into db fail")
-	}
-
-	return nil
+	panic("implement me")
+	//swapAmount := sdk.NewDecCoin(denom.Shr, sdk.NewIntFromUint64(amount))
+	//swapFee := sdk.NewDecCoin(denom.Shr, sdk.NewIntFromUint64(fee))
+	//inMsg := swapmoduletypes.NewMsgRequestIn(
+	//	r.Client.GetFromAddress().String(),
+	//	srcAddr,
+	//	destAddr,
+	//	network,
+	//	swapAmount,
+	//	swapFee,
+	//)
+	//response, err := r.msgClient.RequestIn(ctx, inMsg)
+	//if err != nil {
+	//	return errors.Wrapf(err, "can't make request swap in %s", inMsg.String())
+	//}
+	//
+	//// approve in msg
+	//
+	//newBatch := database.Batch{
+	//	ShareledgerID: response.Id,
+	//	Status:        database.Done,
+	//	Type:          database.In,
+	//	Network:       network,
+	//	TxHashes:      []string{txHash},
+	//	BlockNumber:   blockNumber,
+	//}
+	//err = r.db.SetBatch(newBatch)
+	//if err != nil {
+	//	return errors.Wrap(err, "set batch into db fail")
+	//}
+	//
+	//return nil
 }
+
+//#region shareledger-bc
+var txLock sync.Mutex
+
+func (r *Relayer) txCancelBatches(ids []uint64) error {
+	txLock.Lock()
+	defer txLock.Unlock()
+
+	clientCtx, err := client.GetClientTxContext(r.cmd)
+	if err != nil {
+		return err
+	}
+	clientCtx = clientCtx.WithSkipConfirmation(true).WithBroadcastMode("block")
+	msg := &swapmoduletypes.MsgCancelBatches{
+		Creator: clientCtx.GetFromAddress().String(),
+		Ids:     ids,
+	}
+	if err := msg.ValidateBasic(); err != nil {
+		return err
+	}
+	return tx.GenerateOrBroadcastTxCLI(clientCtx, r.cmd.Flags(), msg)
+}
+
+// txUpdateBatch thread safe to avoid running in multiple go routine for multiple network
+func (r *Relayer) txUpdateBatch(msg *swapmoduletypes.MsgUpdateBatch) error {
+	txLock.Lock()
+	defer txLock.Unlock()
+	clientCtx, err := client.GetClientTxContext(r.cmd)
+	if err != nil {
+		return err
+	}
+	clientCtx = clientCtx.WithSkipConfirmation(true).WithBroadcastMode("block")
+	msg.Creator = clientCtx.GetFromAddress().String()
+	if err := msg.ValidateBasic(); err != nil {
+		return err
+	}
+	return tx.GenerateOrBroadcastTxCLI(clientCtx, r.cmd.Flags(), msg)
+}
+
+//#endregion
