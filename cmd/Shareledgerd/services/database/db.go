@@ -216,7 +216,15 @@ func (c *DB) UpdateBatchesOut(shareledgerIDs []uint64, status Status) error {
 	return nil
 }
 
-func (c *DB) GetNextPendingBatchOut(network string, offset int64) (*Batch, error) {
+func (c *DB) GetNextUnfinishedBatchOut(network string, offset int64) (*Batch, error) {
+	// submitted is preferred to process first
+	submittedBatch, err := c.getOneBatchStatus(network, Submitted, &offset)
+	if err != nil {
+		return nil, err
+	}
+	if submittedBatch != nil {
+		return submittedBatch, nil
+	}
 	return c.getOneBatchStatus(network, Pending, &offset)
 }
 
