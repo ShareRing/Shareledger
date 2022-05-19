@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"encoding/binary"
+	"fmt"
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
@@ -200,6 +201,13 @@ func (k Keeper) MoveRequest(ctx sdk.Context, fromStt, toStt string, reqs []types
 
 		toStore.Set(GetRequestIDBytes(req.Id), k.cdc.MustMarshal(req))
 
+		ctx.EventManager().EmitEvent(
+			sdk.NewEvent(types.EventTypeRequestChangeStatus).
+				AppendAttributes(
+					sdk.NewAttribute(sdk.AttributeKeyModule, types.AttributeValueCategory),
+					sdk.NewAttribute(types.EventTypeChangeRequestStatusNewStatus, toStt),
+					sdk.NewAttribute(types.EventTypeSwapId, fmt.Sprintf("%v", req.Id)),
+				))
 	}
 	return nil
 }

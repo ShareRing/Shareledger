@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+	"fmt"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	denom "github.com/sharering/shareledger/x/utils/demo"
 
@@ -43,5 +44,17 @@ func (k msgServer) Cancel(goCtx context.Context, msg *types.MsgCancel) (*types.M
 	if err = k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, add, bc); err != nil {
 		return nil, err
 	}
+
+	rStatusChange := sdk.NewEvent(types.EventTypeRequestCancelStatus).
+		AppendAttributes(
+			sdk.NewAttribute(sdk.AttributeKeyModule, types.AttributeValueCategory),
+		)
+
+	for i := range requests {
+		ctx.EventManager().EmitEvent(
+			rStatusChange.AppendAttributes(sdk.NewAttribute(types.EventTypeSwapId, fmt.Sprintf("%d", requests[i].GetId()))),
+		)
+	}
+
 	return &types.MsgCancelResponse{}, nil
 }
