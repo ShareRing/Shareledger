@@ -2,11 +2,12 @@ package services
 
 import (
 	"context"
+	"github.com/cosmos/cosmos-sdk/client"
+	"github.com/spf13/cobra"
 	"time"
 
 	"github.com/sharering/shareledger/cmd/Shareledgerd/services/subscriber"
 
-	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/sharering/shareledger/cmd/Shareledgerd/services/database"
 	swapmoduletypes "github.com/sharering/shareledger/x/swap/types"
 )
@@ -54,6 +55,7 @@ type Relayer struct {
 	db     database.DBRelayer
 	events map[string]subscriber.Service
 
-	qClient   swapmoduletypes.QueryClient
-	msgClient swapmoduletypes.MsgClient
+	cmd     *cobra.Command
+	qClient swapmoduletypes.QueryClient
+	//msgClient swapmoduletypes.MsgClient
 }
