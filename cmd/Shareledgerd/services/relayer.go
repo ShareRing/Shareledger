@@ -802,38 +802,28 @@ func (r *Relayer) initSwapInRequest(
 	ctx context.Context,
 	srcAddr, destAddr, network, txHash string,
 	blockNumber, amount, fee uint64) error {
-	panic("implement me")
-	//swapAmount := sdk.NewDecCoin(denom.Shr, sdk.NewIntFromUint64(amount))
-	//swapFee := sdk.NewDecCoin(denom.Shr, sdk.NewIntFromUint64(fee))
-	//inMsg := swapmoduletypes.NewMsgRequestIn(
-	//	r.Client.GetFromAddress().String(),
-	//	srcAddr,
-	//	destAddr,
-	//	network,
-	//	swapAmount,
-	//	swapFee,
-	//)
-	//response, err := r.msgClient.RequestIn(ctx, inMsg)
-	//if err != nil {
-	//	return errors.Wrapf(err, "can't make request swap in %s", inMsg.String())
-	//}
-	//
-	//// approve in msg
-	//
-	//newBatch := database.Batch{
-	//	ShareledgerID: response.Id,
-	//	Status:        database.Done,
-	//	Type:          database.In,
-	//	Network:       network,
-	//	TxHashes:      []string{txHash},
-	//	BlockNumber:   blockNumber,
-	//}
-	//err = r.db.SetBatch(newBatch)
-	//if err != nil {
-	//	return errors.Wrap(err, "set batch into db fail")
-	//}
-	//
-	//return nil
+
+	swapAmount := sdk.NewDecCoin(denom.Shr, sdk.NewIntFromUint64(amount))
+	swapFee := sdk.NewDecCoin(denom.Shr, sdk.NewIntFromUint64(fee))
+	inMsg := swapmoduletypes.NewMsgRequestIn(
+		r.Client.GetFromAddress().String(),
+		srcAddr,
+		destAddr,
+		network,
+		swapAmount,
+		swapFee,
+	)
+	txClient := swapmoduletypes.NewMsgClient(r.Client)
+	response, err := txClient.RequestIn(ctx, inMsg)
+	if err != nil {
+		return errors.Wrapf(err, "can't make request swap in %s", inMsg.String())
+	}
+
+	_, err = txClient.ApproveIn(ctx, swapmoduletypes.NewMsgApproveIn(r.Client.GetFromAddress().String(), []uint64{response.GetId()}))
+	if err != nil {
+		return errors.Wrapf(err, "fail when approve the swap in request for ID %d", response.GetId())
+	}
+	return nil
 }
 
 //#region shareledger-bc
