@@ -141,17 +141,12 @@ func (a Auth) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate bool, next sdk.Ant
 			if !a.rk.IsSwapManager(ctx, signer) && !a.rk.IsTreasurer(ctx, signer) {
 				return ctx, sdkerrors.Wrapf(sdkerrors.ErrUnauthorized, ErrMsgNotSwapManager)
 			}
-		case *swapmoduletypes.MsgCancelBatches:
+		case *swapmoduletypes.MsgCancelBatches,
+			*swapmoduletypes.MsgUpdateBatch:
 			if !a.rk.IsRelayer(ctx, signer) && !a.rk.IsApprover(ctx, signer) {
 				return ctx, sdkerrors.Wrapf(sdkerrors.ErrUnauthorized, ErrMsgNotRelayerOrApprover)
 			}
-		case *swapmoduletypes.MsgUpdateBatch:
-			if msg.Status == swapmoduletypes.BatchStatusCanceled {
-				return ctx, sdkerrors.Wrapf(sdkerrors.ErrUnauthorized, ErrMsgStatusInvalid)
-			}
-			if !a.rk.IsRelayer(ctx, signer) {
-				return ctx, sdkerrors.Wrapf(sdkerrors.ErrUnauthorized, ErrMsgNotRelayer)
-			}
+
 		}
 	}
 

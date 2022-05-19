@@ -15,23 +15,9 @@ func (k msgServer) UpdateBatch(goCtx context.Context, msg *types.MsgUpdateBatch)
 	if !found {
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrNotFound, "batch id=%s not found", msg.GetBatchId())
 	}
-
-	//var wantedStatus = msg.GetStatus()
-	//var requireStatus string
-	//switch wantedStatus {
-	//case types.BatchStatusDone, types.BatchStatusFail:
-	//	requireStatus = types.BatchStatusProcessing
-	//case types.BatchStatusProcessing:
-	//	requireStatus = types.BatchStatusPending
-	//
-	//default:
-	//	return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "the %s status is not supported", wantedStatus)
-	//}
-	//
-	//if batch.GetStatus() != requireStatus {
-	//	return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "updating batch status [%s] => [%s] is not allowed", batch.GetStatus(), msg.GetStatus())
-	//}
-
+	if msg.GetStatus() != types.BatchStatusPending && msg.GetStatus() != types.BatchStatusDone {
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "status %s is not valid in blockchain", msg.GetStatus())
+	}
 	batch.Status = msg.GetStatus()
 	batch.Network = msg.GetNetwork()
 	k.SetBatch(ctx, batch)

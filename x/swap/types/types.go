@@ -26,11 +26,8 @@ var SupportedSwapStatuses = map[string]struct{}{
 }
 
 const (
-	BatchStatusPending    = "pending"
-	BatchStatusProcessing = "processing"
-	BatchStatusDone       = "done"
-	BatchStatusFail       = "failed"
-	BatchStatusCanceled   = "canceled"
+	BatchStatusPending = "pending"
+	BatchStatusDone    = "done"
 )
 
 func SwapStatusSupported(status string) bool {
