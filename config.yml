@@ -17,12 +17,6 @@ accounts:
   - name: user
     coins: [ "1000000000000000nshr" ]
     mnemonic: "bright payment cash tomato tragic impulse perfect jacket matter jelly artist pulse will cinnamon erase middle elevator away clinic razor rotate tide unfair trigger"
-  - name: approver
-    coins: ["100000000000nshr"]
-    mnemonic: "spend people immense ill property hungry craft corn quote once hand clarify adapt disorder airport balance alley wisdom physical appear debris awake pencil skate"
-  - name: "relayer"
-    coins: ["100000000000nshr"]
-    mnemonic : "indoor donate grid ostrich tree swamp cactus common piano buzz version world second try garage squirrel alert fork december control bind spoon taste essay"
   - name: "swap_manager"
     coins: ["100000000000nshr"]
     mnemonic: "logic fade bike misery female father false speak code immune improve key food enter night timber kick spare amused miss expire bottom walk century"
@@ -84,11 +78,11 @@ genesis:
         - key: votershareledger18pf3zdwqjntd9wkvfcjvmdc7hua6c0q2eck5h5
           address: shareledger18pf3zdwqjntd9wkvfcjvmdc7hua6c0q2eck5h5
           status: active
-        - key: approvershareledger1j4ndn4qed0ukulc0a6a5fxe6yxmnm7wh59pwpn
-          address: shareledger1j4ndn4qed0ukulc0a6a5fxe6yxmnm7wh59pwpn
+        - key: approvershareledger16p5u57wpd30j4k2kpg2rpxg3ye4m77lmjug4fq
+          address: shareledger16p5u57wpd30j4k2kpg2rpxg3ye4m77lmjug4fq
           status: active
-        - key: relayershareledger16k53l0v5fr93u2kpe7ek2lc3tm37k4954zalvv
-          address: shareledger16k53l0v5fr93u2kpe7ek2lc3tm37k4954zalvv
+        - key: relayershareledger16p5u57wpd30j4k2kpg2rpxg3ye4m77lmjug4fq
+          address: shareledger16p5u57wpd30j4k2kpg2rpxg3ye4m77lmjug4fq
           status: active
         - key: swapManagershareledger1yfwgejzj4nmkp6es6q3xea9uwexy5xwjs9rpcx
           address: shareledger1yfwgejzj4nmkp6es6q3xea9uwexy5xwjs9rpcx
@@ -123,9 +117,9 @@ genesis:
             out:
               amount: '20000000000'
               denom: nshr
-          network: erc20
+          network: eth
           schema: >-
-            {"types":{"EIP712Domain":[{"name":"name","type":"string"},{"name":"version","type":"string"},{"name":"chainId","type":"uint256"},{"name":"verifyingContract","type":"address"}],"Swap":[{"name":"ids","type":"uint256[]"},{"name":"tos","type":"address[]"},{"name":"amounts","type":"uint256[]"}]},"primaryType":"Swap","domain":{"name":"ShareRingSwap","version":"2.0","chainId":"0x3","verifyingContract":"0xC6c42B7284920dF6b644D854B6D88C4c000768cA","salt":""}}
+            {"types":{"EIP712Domain":[{"name":"name","type":"string"},{"name":"version","type":"string"},{"name":"chainId","type":"uint256"},{"name":"verifyingContract","type":"address"}],"Swap":[{"name":"ids","type":"uint256[]"},{"name":"tos","type":"address[]"},{"name":"amounts","type":"uint256[]"}]},"primaryType":"Swap","domain":{"name":"ShareRingSwap","version":"2.0","chainId":"0x3","verifyingContract":"0x3AE875a6e8E8EB6fa4a0748156CE6b9030E4a560","salt":""}}
       idList: [ ]
       params:
       requestCount: '3'
@@ -136,7 +130,7 @@ genesis:
           batchId: '0'
           createdAt: '1652348033'
           destAddr: '0x97B98D335c28F9aD9c123E344a78F00C84146431'
-          destNetwork: erc20
+          destNetwork: eth
           fee:
             amount: '2000000000'
             denom: nshr
@@ -150,7 +144,7 @@ genesis:
           batchId: '0'
           createdAt: '1652348037'
           destAddr: '0x97B98D335c28F9aD9c123E344a78F00C84146431'
-          destNetwork: erc20
+          destNetwork: eth
           fee:
             amount: '2000000000'
             denom: nshr
