@@ -5,7 +5,7 @@ scanInterval: 20s
 type: out
 networks:
   erc20:
-    signer: acc3
+    signer: eth_signer
     url: https://ropsten.infura.io/v3/bf1a5b4c59cb45ea8ebf48497d3295ae
     exponent: 2
     chainId: 3
@@ -16,5 +16,5 @@ networks:
     swapTopic: 0x796a6fb73c9c09afe863a5d1bc7040da846e5aeb2ad3cb42ee36e08a0c0a3e71
     transferTopic: 0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef
     retry:
-      intervalRetry: 30s
+      intervalRetry: 20s
       retryPercentage: 11 #should >= 11% . It will cause replacement transaction underpriced when doing retry
