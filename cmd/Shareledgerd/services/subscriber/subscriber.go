@@ -164,63 +164,72 @@ func (s *Service) HandlerTransferEvent(ctx context.Context, fn handlerTransferEv
 		return errors.Wrapf(err, "get block head fail")
 	}
 
-	// if head = current => skip
-	if header.Number.Cmp(s.transferCurrentBlock) == 0 {
+	if header.Number.Cmp(s.transferCurrentBlock) < 0 {
 		log.Info("there is no new block")
-		return errors.New("there are no new block")
+		return errors.Wrapf(err, "no block")
 	}
 
-	log.Debugf("Scanning from block %v to block %v", s.transferCurrentBlock, header.Number)
-	any := []common.Hash{}
-	query := eth.FilterQuery{
-		FromBlock: s.transferCurrentBlock,
-		ToBlock:   header.Number,
-		Addresses: []common.Address{common.HexToAddress(s.pegWalletAddress)},
-		Topics: [][]common.Hash{
-			[]common.Hash{common.HexToHash(s.transferTopic)},
-			any,
-			any,
-		},
-	}
+	for header.Number.Cmp(s.transferCurrentBlock) > 0 {
+		currentHeaderNumber := header.Number
 
-	logs, err := s.client.FilterLogs(ctx, query)
-	if err != nil {
-		return errors.Wrapf(err, "filter the logs response fail by query %v+", query)
-	}
-
-	events := make([]EventTransferOutput, 0, len(logs))
-
-	for _, vLog := range logs {
-		output := EventTransferOutput{}
-		var event = struct {
-			Value *big.Int // amount in erc20 contract
-		}{}
-
-		err := erc20Abi.UnpackIntoInterface(&event, transferEvent, vLog.Data)
-		if err != nil {
-			log.Errorf("Event unpacking error: %s", err)
-			continue
+		toBlock := big.NewInt(s.swapCurrentBlock.Int64() + 4500)
+		if toBlock.Cmp(currentHeaderNumber) > 0 {
+			toBlock = big.NewInt(currentHeaderNumber.Int64())
 		}
 
-		output.Amount = decimal.NewFromBigInt(event.Value, 0)
-		output.FromAddress = common.BytesToAddress(vLog.Topics[1].Bytes()).String()
-		output.ToAddress = common.BytesToAddress(vLog.Topics[2].Bytes()).String()
-		output.TxHash = vLog.TxHash.String()
-		output.BlockNumber = vLog.BlockNumber
+		log.Debugf("Scanning from block %v to block %v", s.transferCurrentBlock, toBlock.Int64())
+		any := []common.Hash{}
+		query := eth.FilterQuery{
+			FromBlock: s.transferCurrentBlock,
+			ToBlock:   toBlock,
+			Addresses: []common.Address{common.HexToAddress(s.pegWalletAddress)},
+			Topics: [][]common.Hash{
+				[]common.Hash{common.HexToHash(s.transferTopic)},
+				any,
+				any,
+			},
+		}
 
-		events = append(events, output)
-	}
-	if err := fn(events); err != nil {
-		return errors.Wrapf(err, "handle the transfer event from ETH smartcontract fail")
+		logs, err := s.client.FilterLogs(ctx, query)
+		if err != nil {
+			return errors.Wrapf(err, "filter the logs response fail by query %v+", query)
+		}
+
+		events := make([]EventTransferOutput, 0, len(logs))
+
+		for _, vLog := range logs {
+			output := EventTransferOutput{}
+			var event = struct {
+				Value *big.Int // amount in erc20 contract
+			}{}
+
+			err := erc20Abi.UnpackIntoInterface(&event, transferEvent, vLog.Data)
+			if err != nil {
+				log.Errorf("Event unpacking error: %s", err)
+				continue
+			}
+
+			output.Amount = decimal.NewFromBigInt(event.Value, 0)
+			output.FromAddress = common.BytesToAddress(vLog.Topics[1].Bytes()).String()
+			output.ToAddress = common.BytesToAddress(vLog.Topics[2].Bytes()).String()
+			output.TxHash = vLog.TxHash.String()
+			output.BlockNumber = vLog.BlockNumber
+
+			events = append(events, output)
+		}
+		if err := fn(events); err != nil {
+			return errors.Wrapf(err, "handle the transfer event from ETH smartcontract fail")
+		}
+
+		// save last scanned block number to db
+		err = s.DBClient.SetLastScannedBlockNumber(s.network, s.pegWalletAddress, toBlock.Int64())
+		if err != nil {
+			return errors.Wrapf(err, "set last scanned block number fail")
+		}
+
+		// set current block number = latest + 1 for next tick interval
+		s.transferCurrentBlock.Add(toBlock, big.NewInt(1))
 	}
 
-	// save last scanned block number to db
-	err = s.DBClient.SetLastScannedBlockNumber(s.network, s.pegWalletAddress, header.Number.Int64())
-	if err != nil {
-		return errors.Wrapf(err, "set last scanned block number fail")
-	}
-
-	// set current block number = latest + 1 for next tick interval
-	s.transferCurrentBlock.Add(header.Number, big.NewInt(1))
 	return nil
 }
