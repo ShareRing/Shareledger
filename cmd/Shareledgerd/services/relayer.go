@@ -73,6 +73,11 @@ func NewStartCommands(defaultNodeHome string) *cobra.Command {
 				return err
 			}
 
+			relayerClient, err := initRelayer(cmd, cfg, mgClient)
+			if err != nil {
+				return err
+			}
+
 			ctx, cancel := context.WithCancel(context.Background())
 			defer cancel()
 			timeoutContext, cancelTimeOut := context.WithTimeout(ctx, time.Second*10)
@@ -192,12 +197,25 @@ func initRelayer(cmd *cobra.Command, cfg RelayerConfig, db database.DBRelayer) (
 	if err != nil {
 		return nil, err
 	}
+
+	// init keyrings for relayer's auto sign
 	txClientCtx, err := client.GetClientTxContext(cmd)
+
+	cKeyRing := cachedKeyRing{
+		Keyring: txClientCtx.Keyring,
+	}
+	uids := make([]string, 0, len(cfg.Network)+1)
+	uids = append(uids, txClientCtx.GetFromName())
+	for _, n := range cfg.Network {
+		uids = append(uids, n.Signer)
+	}
+	cKeyRing.InitCaches(uids)
+	txClientCtx = txClientCtx.WithSkipConfirmation(true).WithBroadcastMode("block").WithKeyring(cKeyRing)
+
 	if err != nil {
 		return nil, err
 	}
 	qClient := swapmoduletypes.NewQueryClient(qClientCtx)
-
 	events := make(map[string]event.Service)
 	for network, cfg := range cfg.Network {
 		e, err := event.New(&event.NewInput{
@@ -218,13 +236,12 @@ func initRelayer(cmd *cobra.Command, cfg RelayerConfig, db database.DBRelayer) (
 	}
 
 	return &Relayer{
-		Config:  cfg,
-		Client:  txClientCtx,
-		db:      db,
-		events:  events,
-		cmd:     cmd,
-		qClient: qClient,
-		//msgClient: mClient,
+		Config:   cfg,
+		clientTx: txClientCtx,
+		db:       db,
+		events:   events,
+		cmd:      cmd,
+		qClient:  qClient,
 	}, nil
 }
 
@@ -264,11 +281,17 @@ func (r *Relayer) setLog(id uint64, msg string) error {
 }
 
 func (r *Relayer) trackSubmittedBatch(ctx context.Context, batch database.Batch, timeout time.Duration) (database.Status, error) {
+	tickerTimeout := time.NewTicker(timeout)
+	scanPeriod := time.NewTicker(timeout / 3)
+	defer func() {
+		tickerTimeout.Stop()
+		scanPeriod.Stop()
+	}()
 	for {
 		select {
-		case <-time.Tick(timeout):
+		case <-tickerTimeout.C:
 			return database.Submitted, nil
-		case <-time.Tick(timeout / 5):
+		case <-scanPeriod.C:
 			for _, hash := range batch.TxHashes {
 				receipt, err := r.checkTxHash(ctx, batch.Network, common.HexToHash(hash))
 				if err != nil && err.Error() != "not found" {
@@ -745,7 +768,7 @@ func (r *Relayer) submitBatch(ctx context.Context, network string, batchDetail s
 		return tx, sdkerrors.Wrapf(sdkerrors.ErrLogic, err.Error())
 	}
 
-	info, err := r.Client.Keyring.Key(networkConfig.Signer)
+	info, err := r.clientTx.Keyring.Key(networkConfig.Signer)
 	if err != nil {
 		return tx, errors.Wrapf(err, "get keyring instant fail signer=%s", networkConfig.Signer)
 	}
@@ -759,7 +782,7 @@ func (r *Relayer) submitBatch(ctx context.Context, network string, batchDetail s
 	if err != nil {
 		return tx, errors.Wrapf(err, "can't overide pending nonce for address %s", commonAdd.String())
 	}
-	opts, err := keyring.NewKeyedTransactorWithChainID(r.Client.Keyring, networkConfig.Signer, big.NewInt(networkConfig.ChainId))
+	opts, err := keyring.NewKeyedTransactorWithChainID(r.clientTx.Keyring, networkConfig.Signer, big.NewInt(networkConfig.ChainId))
 	if err != nil {
 		return tx, errors.Wrapf(err, "get eth connection options fail")
 	}
@@ -840,7 +863,7 @@ func (r *Relayer) initSwapInRequest(
 	swapFee := sdk.NewDecCoin(denom.Shr, sdk.NewIntFromUint64(fee))
 
 	inMsg := swapmoduletypes.NewMsgRequestIn(
-		r.Client.GetFromAddress().String(),
+		r.clientTx.GetFromAddress().String(),
 		srcAddr,
 		destAddr,
 		network,
@@ -850,12 +873,7 @@ func (r *Relayer) initSwapInRequest(
 	if err := inMsg.ValidateBasic(); err != nil {
 		return err
 	}
-	clientCtx, err := client.GetClientTxContext(r.cmd)
-	if err != nil {
-		return errors.Wrapf(err, "can't get the client tx context")
-	}
-	clientCtx = clientCtx.WithSkipConfirmation(true).WithBroadcastMode(flags.BroadcastBlock)
-	err = tx.GenerateOrBroadcastTxCLI(clientCtx, r.cmd.Flags(), inMsg)
+	err := tx.GenerateOrBroadcastTxCLI(r.clientTx, r.cmd.Flags(), inMsg)
 	if err != nil {
 		return errors.Wrapf(err, "can't request swap in msg:%s", inMsg.String())
 	}
@@ -873,11 +891,11 @@ func (r *Relayer) initSwapInRequest(
 		rInIds = append(rInIds, rq.GetId())
 	}
 
-	approveMsg := swapmoduletypes.NewMsgApproveIn(r.Client.GetFromAddress().String(), rInIds)
+	approveMsg := swapmoduletypes.NewMsgApproveIn(r.clientTx.GetFromAddress().String(), rInIds)
 	if err := approveMsg.ValidateBasic(); err != nil {
 		return errors.Wrap(err, "message approve in is invalid")
 	}
-	err = tx.GenerateOrBroadcastTxCLI(clientCtx, r.cmd.Flags(), approveMsg)
+	err = tx.GenerateOrBroadcastTxCLI(r.clientTx, r.cmd.Flags(), approveMsg)
 	if err != nil {
 		return errors.Wrap(err, "approve swap fail")
 	}
@@ -897,29 +915,26 @@ func (r *Relayer) txCancelBatches(ids []uint64) error {
 	}
 	clientCtx = clientCtx.WithSkipConfirmation(true).WithBroadcastMode(flags.BroadcastBlock)
 	msg := &swapmoduletypes.MsgCancelBatches{
-		Creator: clientCtx.GetFromAddress().String(),
+		Creator: r.clientTx.GetFromAddress().String(),
 		Ids:     ids,
 	}
 	if err := msg.ValidateBasic(); err != nil {
 		return err
 	}
-	return tx.GenerateOrBroadcastTxCLI(clientCtx, r.cmd.Flags(), msg)
+	return tx.GenerateOrBroadcastTxCLI(r.clientTx, r.cmd.Flags(), msg)
 }
 
 // txUpdateBatch thread safe to avoid running in multiple go routine for multiple network
 func (r *Relayer) txUpdateBatch(msg *swapmoduletypes.MsgUpdateBatch) error {
 	txLock.Lock()
 	defer txLock.Unlock()
-	clientCtx, err := client.GetClientTxContext(r.cmd)
-	if err != nil {
-		return err
-	}
-	clientCtx = clientCtx.WithSkipConfirmation(true).WithBroadcastMode("block")
-	msg.Creator = clientCtx.GetFromAddress().String()
+
+	msg.Creator = r.clientTx.GetFromAddress().String()
 	if err := msg.ValidateBasic(); err != nil {
 		return err
 	}
-	err = tx.GenerateOrBroadcastTxCLI(clientCtx, r.cmd.Flags(), msg)
+
+	err = tx.GenerateOrBroadcastTxCLI(r.clientTx, r.cmd.Flags(), msg)
 	return err
 }
 

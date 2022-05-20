@@ -84,11 +84,11 @@ genesis:
         - key: votershareledger18pf3zdwqjntd9wkvfcjvmdc7hua6c0q2eck5h5
           address: shareledger18pf3zdwqjntd9wkvfcjvmdc7hua6c0q2eck5h5
           status: active
-        - key: approvershareledger1j4ndn4qed0ukulc0a6a5fxe6yxmnm7wh59pwpn
-          address: shareledger1j4ndn4qed0ukulc0a6a5fxe6yxmnm7wh59pwpn
+        - key: approvershareledger16p5u57wpd30j4k2kpg2rpxg3ye4m77lmjug4fq
+          address: shareledger16p5u57wpd30j4k2kpg2rpxg3ye4m77lmjug4fq
           status: active
-        - key: relayershareledger16k53l0v5fr93u2kpe7ek2lc3tm37k4954zalvv
-          address: shareledger16k53l0v5fr93u2kpe7ek2lc3tm37k4954zalvv
+        - key: relayershareledger16p5u57wpd30j4k2kpg2rpxg3ye4m77lmjug4fq
+          address: shareledger16p5u57wpd30j4k2kpg2rpxg3ye4m77lmjug4fq
           status: active
         - key: swapManagershareledger1yfwgejzj4nmkp6es6q3xea9uwexy5xwjs9rpcx
           address: shareledger1yfwgejzj4nmkp6es6q3xea9uwexy5xwjs9rpcx
@@ -128,7 +128,36 @@ genesis:
             {"types":{"EIP712Domain":[{"name":"name","type":"string"},{"name":"version","type":"string"},{"name":"chainId","type":"uint256"},{"name":"verifyingContract","type":"address"}],"Swap":[{"name":"ids","type":"uint256[]"},{"name":"tos","type":"address[]"},{"name":"amounts","type":"uint256[]"}]},"primaryType":"Swap","domain":{"name":"ShareRingSwap","version":"2.0","chainId":"0x3","verifyingContract":"0x3AE875a6e8E8EB6fa4a0748156CE6b9030E4a560","salt":""}}
       idList: [ ]
       params:
-      requestCount: '4000'
+      requestCount: '3'
+      requestList:
+        - amount:
+            amount: '10000000000'
+            denom: nshr
+          batchId: '0'
+          createdAt: '1652348033'
+          destAddr: '0x97B98D335c28F9aD9c123E344a78F00C84146431'
+          destNetwork: eth
+          fee:
+            amount: '2000000000'
+            denom: nshr
+          id: '1'
+          srcAddr: shareledger1t3g4570e23h96h5hm5gdtfrjprmvk9qwmrglfr
+          srcNetwork: slp3
+          status: pending
+        - amount:
+            amount: '10000000000'
+            denom: nshr
+          batchId: '0'
+          createdAt: '1652348037'
+          destAddr: '0x97B98D335c28F9aD9c123E344a78F00C84146431'
+          destNetwork: eth
+          fee:
+            amount: '2000000000'
+            denom: nshr
+          id: '2'
+          srcAddr: shareledger1t3g4570e23h96h5hm5gdtfrjprmvk9qwmrglfr
+          srcNetwork: slp3
+          status: pending
 
 init:
   client:

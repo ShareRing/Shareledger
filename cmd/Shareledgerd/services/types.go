@@ -51,11 +51,10 @@ type RelayerConfig struct {
 
 type Relayer struct {
 	Config RelayerConfig
-	Client client.Context
 	db     database.DBRelayer
 	events map[string]subscriber.Service
 
-	cmd     *cobra.Command
-	qClient swapmoduletypes.QueryClient
-	//msgClient swapmoduletypes.MsgClient
+	cmd      *cobra.Command
+	qClient  swapmoduletypes.QueryClient
+	clientTx client.Context
 }
