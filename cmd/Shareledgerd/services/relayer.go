@@ -270,11 +270,17 @@ func (r *Relayer) setLog(id uint64, msg string) error {
 }
 
 func (r *Relayer) trackSubmittedBatch(ctx context.Context, batch database.Batch, timeout time.Duration) (database.Status, error) {
+	tickerTimeout := time.NewTicker(timeout)
+	scanPeriod := time.NewTicker(timeout / 3)
+	defer func() {
+		tickerTimeout.Stop()
+		scanPeriod.Stop()
+	}()
 	for {
 		select {
-		case <-time.Tick(timeout):
+		case <-tickerTimeout.C:
 			return database.Submitted, nil
-		case <-time.Tick(timeout / 5):
+		case <-scanPeriod.C:
 			for _, hash := range batch.TxHashes {
 				receipt, err := r.checkTxHash(ctx, batch.Network, common.HexToHash(hash))
 				if err != nil && err.Error() != "not found" {
