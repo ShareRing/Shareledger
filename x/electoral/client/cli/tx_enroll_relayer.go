@@ -13,9 +13,9 @@ var _ = strconv.Itoa(0)
 
 func CmdEnrollRelayers() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:     "enroll_relayer [addresses]",
-		Short:   "Broadcast message enroll_relayer",
-		Example: "enroll_replayer shareledger1mmaefaaxyfd2rctt9cev52xlda77df49pdyquk shareledger1fja6aazgvw6zfrh59xjc6w0jdpfhdkharz72lr",
+		Use:     "enroll-relayer [addresses]",
+		Short:   "Broadcast message enroll-relayer",
+		Example: "enroll_r-eplayer shareledger1mmaefaaxyfd2rctt9cev52xlda77df49pdyquk shareledger1fja6aazgvw6zfrh59xjc6w0jdpfhdkharz72lr",
 		Args:    cobra.MinimumNArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			clientCtx, err := client.GetClientTxContext(cmd)

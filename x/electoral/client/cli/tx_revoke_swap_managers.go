@@ -14,8 +14,8 @@ var _ = strconv.Itoa(0)
 
 func CmdRevokeSwapManagers() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "revoke_swap_managers [addresses]",
-		Short: "Broadcast message revoke_swap_managers",
+		Use:   "revoke-swap-managers [addresses]",
+		Short: "Broadcast message revoke-swap-managers",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 

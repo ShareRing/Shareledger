@@ -82,10 +82,7 @@ func NewStartCommands(defaultNodeHome string) *cobra.Command {
 			defer cancel()
 			timeoutContext, cancelTimeOut := context.WithTimeout(ctx, time.Second*10)
 			defer cancelTimeOut()
-			relayerClient, err := initRelayer(cmd, cfg, mgClient)
-			if err != nil {
-				return err
-			}
+
 			if err := relayerClient.db.ConnectDB(timeoutContext); err != nil {
 				return err
 			}
@@ -934,7 +931,7 @@ func (r *Relayer) txUpdateBatch(msg *swapmoduletypes.MsgUpdateBatch) error {
 		return err
 	}
 
-	err = tx.GenerateOrBroadcastTxCLI(r.clientTx, r.cmd.Flags(), msg)
+	err := tx.GenerateOrBroadcastTxCLI(r.clientTx, r.cmd.Flags(), msg)
 	return err
 }
 

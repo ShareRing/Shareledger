@@ -14,8 +14,8 @@ var _ = strconv.Itoa(0)
 
 func CmdEnrollSwapManagers() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "enroll_swap_managers [addresses]",
-		Short: "Broadcast message enroll_swap_manager address_1 address_2",
+		Use:   "enroll-swap-managers [addresses]",
+		Short: "Broadcast message enroll-swap-manager address_1 address_2",
 		Args:  cobra.MinimumNArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 
