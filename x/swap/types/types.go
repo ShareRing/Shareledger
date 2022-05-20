@@ -6,7 +6,9 @@ const (
 )
 
 const (
-	NetworkNameShareLedger = "slp3"
+	NetworkNameShareLedger       = "shareledger"
+	NetworkNameEthereum          = "eth"
+	NetworkNameBinanceSmartChain = "bsc"
 )
 
 // pending -> approved|rejected
@@ -18,6 +20,10 @@ const (
 	SwapStatusDone     = "done"
 )
 
+var SupportedSwapOutNetwork = map[string]struct{}{
+	NetworkNameEthereum:          {},
+	NetworkNameBinanceSmartChain: {},
+}
 var SupportedSwapStatuses = map[string]struct{}{
 	SwapStatusPending:  {},
 	SwapStatusApproved: {},

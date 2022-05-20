@@ -837,9 +837,11 @@ func (r *Relayer) initSwapInRequest(
 	ctx context.Context,
 	srcAddr, destAddr, network, txHash string,
 	blockNumber, amount, fee uint64) error {
-
+	txLock.Lock()
+	defer txLock.Unlock()
 	swapAmount := sdk.NewDecCoin(denom.Shr, sdk.NewIntFromUint64(amount))
 	swapFee := sdk.NewDecCoin(denom.Shr, sdk.NewIntFromUint64(fee))
+
 	inMsg := swapmoduletypes.NewMsgRequestIn(
 		r.clientTx.GetFromAddress().String(),
 		srcAddr,
@@ -848,15 +850,34 @@ func (r *Relayer) initSwapInRequest(
 		swapAmount,
 		swapFee,
 	)
-	txClient := swapmoduletypes.NewMsgClient(r.clientTx)
-	response, err := txClient.RequestIn(ctx, inMsg)
+	if err := inMsg.ValidateBasic(); err != nil {
+		return err
+	}
+	err := tx.GenerateOrBroadcastTxCLI(r.clientTx, r.cmd.Flags(), inMsg)
 	if err != nil {
-		return errors.Wrapf(err, "can't make request swap in %s", inMsg.String())
+		return errors.Wrapf(err, "can't request swap in msg:%s", inMsg.String())
 	}
 
-	_, err = txClient.ApproveIn(ctx, swapmoduletypes.NewMsgApproveIn(r.clientTx.GetFromAddress().String(), []uint64{response.GetId()}))
+	swapsRes, err := r.qClient.Swap(ctx, &swapmoduletypes.QuerySwapRequest{
+		Status:      swapmoduletypes.SwapStatusPending,
+		SrcAddr:     srcAddr,
+		DestNetwork: network,
+	})
 	if err != nil {
-		return errors.Wrapf(err, "fail when approve the swap in request for ID %d", response.GetId())
+		return errors.Wrapf(err, "fail to query the swap in request pending")
+	}
+	var rInIds = make([]uint64, 0, len(swapsRes.GetSwaps()))
+	for _, rq := range swapsRes.Swaps {
+		rInIds = append(rInIds, rq.GetId())
+	}
+
+	approveMsg := swapmoduletypes.NewMsgApproveIn(r.clientTx.GetFromAddress().String(), rInIds)
+	if err := approveMsg.ValidateBasic(); err != nil {
+		return errors.Wrap(err, "message approve in is invalid")
+	}
+	err = tx.GenerateOrBroadcastTxCLI(r.clientTx, r.cmd.Flags(), approveMsg)
+	if err != nil {
+		return errors.Wrap(err, "approve swap fail")
 	}
 	return nil
 }
@@ -868,6 +889,11 @@ func (r *Relayer) txCancelBatches(ids []uint64) error {
 	txLock.Lock()
 	defer txLock.Unlock()
 
+	clientCtx, err := client.GetClientTxContext(r.cmd)
+	if err != nil {
+		return err
+	}
+	clientCtx = clientCtx.WithSkipConfirmation(true).WithBroadcastMode(flags.BroadcastBlock)
 	msg := &swapmoduletypes.MsgCancelBatches{
 		Creator: r.clientTx.GetFromAddress().String(),
 		Ids:     ids,

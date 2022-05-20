@@ -56,8 +56,13 @@ func (msg *MsgRequestIn) ValidateBasic() error {
 	if strings.TrimSpace(msg.GetDestAddress()) == "" {
 		return sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "destination address can't empty")
 	}
+
 	if strings.TrimSpace(msg.GetSrcAddress()) == "" {
 		return sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "source address empty")
 	}
+	if strings.TrimSpace(msg.GetDestAddress()) != NetworkNameShareLedger {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid network %s", msg.GetDestAddress())
+	}
+
 	return nil
 }
