@@ -671,7 +671,7 @@ func (r *Relayer) getBalance(ctx context.Context, network string) (sdk.Coin, err
 		Pending: false,
 		Context: ctx,
 	})
-	return denom.ExponentToBase(sdk.NewInt(value.Int64()), r.Config.Network[network].Exponent), err
+	return denom.ExponentToBase(sdk.NewIntFromBigInt(value), r.Config.Network[network].Exponent), err
 }
 
 func (r *Relayer) checkTxHash(ctx context.Context, network string, txHash common.Hash) (*types.Receipt, error) {
