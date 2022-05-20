@@ -5,7 +5,7 @@ scanInterval: 20s
 type: out
 networks:
   eth:
-    signer: eth_signer
+    signer: khang
     url: https://ropsten.infura.io/v3/bf1a5b4c59cb45ea8ebf48497d3295ae
     exponent: 2
     chainId: 3

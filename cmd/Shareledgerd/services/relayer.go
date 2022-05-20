@@ -79,11 +79,11 @@ func NewStartCommands(defaultNodeHome string) *cobra.Command {
 			}
 
 			ctx, cancel := context.WithCancel(context.Background())
+			defer cancel()
 			timeoutContext, cancelTimeOut := context.WithTimeout(ctx, time.Second*10)
 			defer cancelTimeOut()
 
 			if err := relayerClient.db.ConnectDB(timeoutContext); err != nil {
-				cancel()
 				return err
 			}
 
@@ -157,8 +157,16 @@ func NewStartCommands(defaultNodeHome string) *cobra.Command {
 			default:
 				return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "Relayer type is required either in or out")
 			}
+
+			from, _ := cmd.Flags().GetString(flags.FlagFrom)
+			logger.With(
+				zap.String("started_at", time.Now().String()),
+				zap.String("running_cosmos_key", from),
+				zap.String("db_uri", cfg.MongoURI),
+			).
+				Info("Shareledger RELAYER processor is stared successfully")
 			<-doneChan
-			panic(nil)
+			return nil
 		},
 	}
 
@@ -487,6 +495,9 @@ func (r *Relayer) syncFailedBatches(ctx context.Context, network string) error {
 		ids = append(ids, f.ShareledgerID)
 	}
 	err = r.txCancelBatches(ids)
+	if err != nil {
+		return errors.Wrapf(err, "can't cancel batches")
+	}
 	for i := range failedBatches {
 		failedBatches[i].Status = database.Cancelled
 	}
@@ -928,7 +939,9 @@ func (r *Relayer) txUpdateBatch(msg *swapmoduletypes.MsgUpdateBatch) error {
 	if err := msg.ValidateBasic(); err != nil {
 		return err
 	}
-	return tx.GenerateOrBroadcastTxCLI(r.clientTx, r.cmd.Flags(), msg)
+
+	err := tx.GenerateOrBroadcastTxCLI(r.clientTx, r.cmd.Flags(), msg)
+	return err
 }
 
 //#endregion

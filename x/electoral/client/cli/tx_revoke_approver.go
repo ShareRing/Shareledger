@@ -14,7 +14,7 @@ var _ = strconv.Itoa(0)
 
 func CmdRevokeApprover() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "revoke_approver [addresses]",
+		Use:   "revoke-approver [addresses]",
 		Short: "Broadcast message revoke_approver",
 		Args:  cobra.MinimumNArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
