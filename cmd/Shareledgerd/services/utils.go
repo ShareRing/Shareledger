@@ -18,6 +18,11 @@ const msgBatchProcessed = "batch already exists"
 const msgRequestDuplicated = "request already exists"
 const msgUnderPrice = "replacement transaction underpriced"
 const msgAlreadyKnown = "already known"
+const msgNotFound = "not found"
+
+func IsErrNotFound(err error) bool {
+	return strings.Contains(err.Error(), msgNotFound)
+}
 
 func IsErrBatchProcessed(err error) bool {
 	return strings.Contains(err.Error(), msgBatchProcessed)

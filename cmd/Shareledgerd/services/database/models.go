@@ -49,7 +49,8 @@ type Address struct {
 	Result             string  `bson:"result" validate:"required"`
 }
 
-type Setting struct {
-	LastScannedBatchID     map[Network]uint64 `bson:"lastScannedBatchID"`
-	LastScannedBlockNumber map[string]uint64  `bson:"lastScannedBlockNumber"`
+type RelayerNetworkState struct {
+	Network                      string            `bson:"network"`
+	LastScannedEventBlockNumbers map[string]uint64 `bson:"lastScannedEventBlockNumbers"` //[Contract]uint
+	LastScannedBatchID           uint64            `bson:"lastScannedBatchID"'`
 }

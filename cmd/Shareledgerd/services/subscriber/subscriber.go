@@ -140,7 +140,7 @@ func (s *Service) HandlerSwapCompleteEvent(ctx context.Context, fn handlerSwapEv
 	}
 
 	// save last scanned block number to db
-	err = s.DBClient.SetLastScannedBlockNumber(s.swapContractAddress, header.Number.Int64())
+	err = s.DBClient.SetLastScannedBlockNumber(s.network, s.swapContractAddress, header.Number.Int64())
 	if err != nil {
 		return errors.Wrapf(err, "set the last scanned block into db fail")
 	}
@@ -158,14 +158,6 @@ func (s *Service) HandlerTransferEvent(ctx context.Context, fn handlerTransferEv
 		return errors.Wrapf(err, "unmarshal swap abi code fail")
 	}
 
-	if s.transferCurrentBlock == big.NewInt(0) {
-		currentBlockNum, err := s.DBClient.GetLastScannedBlockNumber(s.pegWalletAddress)
-		if err != nil {
-			return errors.Wrapf(err, "get last scanned block number fail")
-		}
-
-		s.transferCurrentBlock = big.NewInt(int64(currentBlockNum))
-	}
 	// skip if header not found
 	header, err := s.client.HeaderByNumber(ctx, nil)
 	if err != nil {
@@ -223,7 +215,7 @@ func (s *Service) HandlerTransferEvent(ctx context.Context, fn handlerTransferEv
 	}
 
 	// save last scanned block number to db
-	err = s.DBClient.SetLastScannedBlockNumber(s.pegWalletAddress, header.Number.Int64())
+	err = s.DBClient.SetLastScannedBlockNumber(s.network, s.pegWalletAddress, header.Number.Int64())
 	if err != nil {
 		return errors.Wrapf(err, "set last scanned block number fail")
 	}
