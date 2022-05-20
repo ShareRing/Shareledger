@@ -22,17 +22,15 @@ var supportedTypes = map[string]struct{}{
 type processFunc func(ctx context.Context, network string) error
 
 type Network struct {
-	Signer                              string `yaml:"signer"`
-	Exponent                            int    `yaml:"exponent"`
-	Url                                 string `yaml:"url"`
-	ChainId                             int64  `yaml:"chainId"`
-	SwapContract                        string `yaml:"swapContract"` // swap contract address
-	TokenContract                       string `yaml:"tokenContract"`
-	LastScannedTransferEventBlockNumber int64  `yaml:"lastScannedTransferEventBlockNumber"`
-	LastScannedSwapEventBlockNumber     int64  `yaml:"lastScannedSwapEventBlockNumber"`
-	SwapTopic                           string `yaml:"swapTopic"` // swap topic
-	TransferTopic                       string `yaml:"transferTopic"`
-	Retry                               Retry  `yaml:"retry"`
+	Signer        string `yaml:"signer"`
+	Exponent      int    `yaml:"exponent"`
+	Url           string `yaml:"url"`
+	ChainId       int64  `yaml:"chainId"`
+	SwapContract  string `yaml:"swapContract"` // swap contract address
+	TokenContract string `yaml:"tokenContract"`
+	SwapTopic     string `yaml:"swapTopic"` // swap topic
+	TransferTopic string `yaml:"transferTopic"`
+	Retry         Retry  `yaml:"retry"`
 }
 
 type Retry struct {

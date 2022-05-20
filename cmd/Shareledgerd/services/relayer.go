@@ -216,10 +216,19 @@ func initRelayer(cmd *cobra.Command, cfg RelayerConfig, db database.DBRelayer) (
 	qClient := swapmoduletypes.NewQueryClient(qClientCtx)
 	events := make(map[string]event.Service)
 	for network, cfg := range cfg.Network {
+		eventTransferCurrentBlock, err := db.GetLastScannedBlockNumber(network, cfg.TokenContract)
+		if err != nil {
+			return nil, err
+		}
+		eventSwapCurrentBlock, err := db.GetLastScannedBlockNumber(network, cfg.SwapContract)
+		if err != nil {
+			return nil, err
+		}
+
 		e, err := event.New(&event.NewInput{
 			ProviderURL:          cfg.Url,
-			TransferCurrentBlock: big.NewInt(cfg.LastScannedTransferEventBlockNumber), // config.yaml pre-define before running process
-			SwapCurrentBlock:     big.NewInt(cfg.LastScannedSwapEventBlockNumber),
+			TransferCurrentBlock: big.NewInt(int64(eventTransferCurrentBlock)),
+			SwapCurrentBlock:     big.NewInt(int64(eventSwapCurrentBlock)),
 			PegWalletAddress:     cfg.TokenContract,
 			TransferTopic:        cfg.TransferTopic,
 			SwapContractAddress:  cfg.SwapContract,
@@ -280,7 +289,7 @@ func (r *Relayer) setLog(id uint64, msg string) error {
 
 func (r *Relayer) trackSubmittedBatch(ctx context.Context, batch database.Batch, timeout time.Duration) (database.Status, error) {
 	tickerTimeout := time.NewTicker(timeout)
-	scanPeriod := time.NewTicker(timeout / 3)
+	scanPeriod := time.NewTicker(timeout / 5)
 	defer func() {
 		tickerTimeout.Stop()
 		scanPeriod.Stop()
@@ -292,8 +301,8 @@ func (r *Relayer) trackSubmittedBatch(ctx context.Context, batch database.Batch,
 		case <-scanPeriod.C:
 			for _, hash := range batch.TxHashes {
 				receipt, err := r.checkTxHash(ctx, batch.Network, common.HexToHash(hash))
-				if err != nil && err.Error() != "not found" {
-					if err.Error() == "not found" { //transaction is still on mem pool
+				if err != nil {
+					if IsErrNotFound(err) { //transaction is still on mem pool
 						continue
 					}
 					if IsErrBatchProcessed(err) {

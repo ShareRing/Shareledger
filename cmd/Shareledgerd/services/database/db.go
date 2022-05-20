@@ -65,22 +65,24 @@ func (c *DB) UpdateLatestScannedBatchId(id uint64, network string) error {
 	ctx, cancel := context.WithTimeout(context.Background(), timeout)
 	defer cancel()
 
-	collection := c.GetCollection(c.DBName, SettingCollection)
-
+	collection := c.GetCollection(c.DBName, StateCollection)
+	upsert := true
 	_, err := collection.UpdateMany(
 		ctx,
-		bson.M{},
+		bson.M{
+			"network": network,
+		},
 		bson.D{
 			{
 				Key: "$set",
 				Value: bson.D{
 					{
-						Key:   fmt.Sprintf("settings.lastScannedBatchID.%s", network),
+						Key:   "lastScannedBatchID",
 						Value: id,
 					},
 				},
 			},
-		})
+		}, &options.UpdateOptions{Upsert: &upsert})
 
 	if err != nil {
 		return err
@@ -89,48 +91,49 @@ func (c *DB) UpdateLatestScannedBatchId(id uint64, network string) error {
 	return nil
 }
 
-func (c *DB) GetLastScannedBlockNumber(contractAddr string) (uint64, error) {
+func (c *DB) GetLastScannedBlockNumber(network string, contractAddr string) (uint64, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), timeout)
 	defer cancel()
 
-	collection := c.GetCollection(c.DBName, SettingCollection)
+	collection := c.GetCollection(c.DBName, StateCollection)
 
-	var queryResult bson.M
-	var setting Setting
-	_ = collection.FindOne(ctx, bson.M{}).Decode(&queryResult)
-	doc, err := bson.Marshal(queryResult["settings"])
+	var state RelayerNetworkState
+	err := collection.FindOne(ctx, bson.M{
+		"network": network,
+	}).Decode(&state)
 	if err != nil {
+		if err == mongo.ErrNoDocuments {
+			return 0, nil
+		}
 		return 0, err
 	}
 
-	err = bson.Unmarshal(doc, &setting)
-	if err != nil {
-		return 0, err
-	}
-
-	return setting.LastScannedBlockNumber[contractAddr], nil
+	return state.LastScannedEventBlockNumbers[contractAddr], nil
 }
 
 func (c *DB) GetLastScannedBatch(network string) (uint64, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), timeout)
 	defer cancel()
 
-	collection := c.GetCollection(c.DBName, SettingCollection)
+	collection := c.GetCollection(c.DBName, StateCollection)
 
-	var queryResult bson.M
-	var setting Setting
-	_ = collection.FindOne(ctx, bson.M{}).Decode(&queryResult)
-	doc, err := bson.Marshal(queryResult["settings"])
+	var state RelayerNetworkState
+	err := collection.FindOne(ctx, bson.M{
+		"network": network,
+	}).Decode(&state)
+
+	if err != nil {
+		if err == mongo.ErrNoDocuments {
+			return 0, nil
+		}
+		return 0, err
+	}
+
 	if err != nil {
 		return 0, err
 	}
 
-	err = bson.Unmarshal(doc, &setting)
-	if err != nil {
-		return 0, err
-	}
-
-	return setting.LastScannedBatchID[Network(network)], nil
+	return state.LastScannedBatchID, nil
 }
 
 type Collection struct {
@@ -140,8 +143,8 @@ type Collection struct {
 const (
 	RequestCollection = "requests"
 	BatchCollection   = "batches"
-	SettingCollection = "settings"
 	AddressCollection = "addresses"
+	StateCollection   = "states"
 	LogsCollection    = "logs"
 	timeout           = 10 * time.Second
 )
@@ -164,26 +167,28 @@ func (c *DB) GetSLP3Address(erc20Addr, network string) (string, error) {
 	return queryResult.ShareledgerAddress, nil
 }
 
-func (c *DB) SetLastScannedBlockNumber(contractAddress string, lastScannedBlockNumber int64) error {
+func (c *DB) SetLastScannedBlockNumber(network string, contractAddress string, lastScannedBlockNumber int64) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
-	collection := c.GetCollection(c.DBName, SettingCollection)
-
+	collection := c.GetCollection(c.DBName, StateCollection)
+	upsert := true
 	_, err := collection.UpdateMany(
 		ctx,
-		bson.M{},
+		bson.M{
+			"network": network,
+		},
 		bson.D{
 			{
 				Key: "$set",
 				Value: bson.D{
 					{
-						Key:   fmt.Sprintf("settings.lastScannedBlockNumber.%s", contractAddress),
+						Key:   fmt.Sprintf("lastScannedBlockNumber.%s", contractAddress),
 						Value: lastScannedBlockNumber,
 					},
 				},
 			},
-		})
+		}, &options.UpdateOptions{Upsert: &upsert})
 
 	if err != nil {
 		return err
