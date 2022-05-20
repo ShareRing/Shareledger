@@ -206,7 +206,8 @@ func initRelayer(cmd *cobra.Command, cfg RelayerConfig, db database.DBRelayer) (
 	for _, n := range cfg.Network {
 		uids = append(uids, n.Signer)
 	}
-	cKeyRing.InitCaches(uids)
+	_ = cKeyRing.InitCaches(uids)
+
 	txClientCtx = txClientCtx.WithSkipConfirmation(true).WithBroadcastMode("block").WithKeyring(cKeyRing)
 
 	if err != nil {
@@ -576,7 +577,7 @@ func (r *Relayer) submitAndTrack(ctx context.Context, batch database.Batch, deta
 		logSubmit = append(logSubmit, "batch_id", batch.ShareledgerID)
 		currentTip = CalculateNextFee(currentTip, rConfig.RetryPercentage)
 
-		tx, err := r.submitBatch(ctx, batch.Network, detail, currentTip)
+		txRes, signerAddr, err := r.submitBatch(ctx, batch.Network, detail, currentTip)
 		if err != nil {
 			logSubmit = append(logSubmit,
 				"err_submit_batch", err.Error(),
@@ -597,17 +598,19 @@ func (r *Relayer) submitAndTrack(ctx context.Context, batch database.Batch, deta
 			}
 			_ = r.setLog(batch.ShareledgerID, err.Error())
 		}
-		if tx != nil {
+		if txRes != nil {
 			logSubmit = append(logSubmit,
-				"tx_nonce", tx.Nonce(),
-				"tx_hashes", tx.Hash(),
-				"tx_tip", tx.GasTipCap(),
-				"tx_base_price", tx.GasFeeCap(),
+				"tx_nonce", txRes.Nonce(),
+				"tx_hashes", txRes.Hash(),
+				"tx_tip", txRes.GasTipCap(),
+				"tx_base_price", txRes.GasFeeCap(),
 			)
-			batch.Nonce = tx.Nonce()
+			batch.Signer = signerAddr
+			batch.Nonce = txRes.Nonce()
 			batch.Status = database.Submitted
-			batch.TxHashes = append(batch.TxHashes, tx.Hash().String())
-			currentTip = tx.GasTipCap()
+			batch.TxHashes = append(batch.TxHashes, txRes.Hash().String())
+
+			currentTip = txRes.GasTipCap()
 		}
 		printOutLog("submitted batch", logSubmit)
 		logSubmit = []interface{}{}
@@ -748,13 +751,13 @@ func (r *Relayer) SuggestGasTip(ctx context.Context, network string) (*big.Int, 
 	return conn.SuggestGasTipCap(ctx)
 }
 
-func (r *Relayer) submitBatch(ctx context.Context, network string, batchDetail swaputil.BatchDetail, tip *big.Int) (tx *types.Transaction, err error) {
+func (r *Relayer) submitBatch(ctx context.Context, network string, batchDetail swaputil.BatchDetail, tip *big.Int) (tx *types.Transaction, signerAddr string, err error) {
 	if err := batchDetail.Validate(); err != nil {
-		return tx, err
+		return tx, signerAddr, err
 	}
 	conn, networkConfig, err := r.initConn(network)
 	if err != nil {
-		return tx, errors.Wrapf(err, "init eth connection")
+		return tx, signerAddr, errors.Wrapf(err, "init eth connection")
 	}
 	defer func() {
 		conn.Close()
@@ -762,26 +765,27 @@ func (r *Relayer) submitBatch(ctx context.Context, network string, batchDetail s
 
 	swapClient, err := swap.NewSwap(common.HexToAddress(networkConfig.SwapContract), conn)
 	if err != nil {
-		return tx, sdkerrors.Wrapf(sdkerrors.ErrLogic, err.Error())
+		return tx, signerAddr, sdkerrors.Wrapf(sdkerrors.ErrLogic, err.Error())
 	}
 
 	info, err := r.clientTx.Keyring.Key(networkConfig.Signer)
 	if err != nil {
-		return tx, errors.Wrapf(err, "get keyring instant fail signer=%s", networkConfig.Signer)
+		return tx, signerAddr, errors.Wrapf(err, "get keyring instant fail signer=%s", networkConfig.Signer)
 	}
 	pubKey := keyring.PubKeyETH{
 		PubKey: info.GetPubKey(),
 	}
+	signerAddr = pubKey.Address().String()
 	commonAdd := common.BytesToAddress(pubKey.Address().Bytes())
 
 	//it should override pending nonce
 	currentNonce, err := conn.NonceAt(ctx, commonAdd, nil)
 	if err != nil {
-		return tx, errors.Wrapf(err, "can't overide pending nonce for address %s", commonAdd.String())
+		return tx, signerAddr, errors.Wrapf(err, "can't overide pending nonce for address %s", commonAdd.String())
 	}
 	opts, err := keyring.NewKeyedTransactorWithChainID(r.clientTx.Keyring, networkConfig.Signer, big.NewInt(networkConfig.ChainId))
 	if err != nil {
-		return tx, errors.Wrapf(err, "get eth connection options fail")
+		return tx, signerAddr, errors.Wrapf(err, "get eth connection options fail")
 	}
 	if tip != nil {
 		opts.GasTipCap = tip
@@ -791,14 +795,14 @@ func (r *Relayer) submitBatch(ctx context.Context, network string, batchDetail s
 	sig, err := hexutil.Decode(batchDetail.Batch.Signature)
 
 	if err != nil {
-		return tx, errors.Wrapf(err, "decoding singature fail")
+		return tx, signerAddr, errors.Wrapf(err, "decoding singature fail")
 	}
 	params, err := batchDetail.GetContractParams()
 	if err != nil {
-		return tx, err
+		return tx, signerAddr, err
 	}
 	tx, err = swapClient.Swap(opts, params.TransactionIds, params.DestAddrs, params.Amounts, sig)
-	return tx, errors.Wrapf(err, "swapping at smart contract fail")
+	return tx, signerAddr, errors.Wrapf(err, "swapping at smart contract fail")
 }
 
 func (r *Relayer) processIn(ctx context.Context, network string) error {
@@ -930,9 +934,18 @@ func (r *Relayer) txUpdateBatch(msg *swapmoduletypes.MsgUpdateBatch) error {
 	if err := msg.ValidateBasic(); err != nil {
 		return err
 	}
-
 	err := tx.GenerateOrBroadcastTxCLI(r.clientTx, r.cmd.Flags(), msg)
-	return err
+
+	batchRes, err := r.qClient.Batches(context.Background(), &swapmoduletypes.QueryBatchesRequest{Ids: []uint64{msg.GetBatchId()}})
+	if err != nil || len(batchRes.GetBatches()) == 0 {
+		return errors.Wrapf(err, "recheck the batch id %d fail", msg.GetBatchId())
+	}
+
+	if batchRes.GetBatches()[0].GetStatus() != msg.GetStatus() {
+		return errors.New("update the batch status fail")
+	}
+
+	return nil
 }
 
 //#endregion
