@@ -112,7 +112,7 @@ genesis:
           controller_enabled: true
         ports: []
     swap:
-      batchCount: '2000'
+      batchCount: '2'
       formatList:
         - contractExponent: 2
           creator: shareledger1lq9svs76xwekrrzw7uprekyqydf7fp02p8zp8e
@@ -126,6 +126,18 @@ genesis:
           network: eth
           schema: >-
             {"types":{"EIP712Domain":[{"name":"name","type":"string"},{"name":"version","type":"string"},{"name":"chainId","type":"uint256"},{"name":"verifyingContract","type":"address"}],"Swap":[{"name":"ids","type":"uint256[]"},{"name":"tos","type":"address[]"},{"name":"amounts","type":"uint256[]"}]},"primaryType":"Swap","domain":{"name":"ShareRingSwap","version":"2.0","chainId":"0x3","verifyingContract":"0x3AE875a6e8E8EB6fa4a0748156CE6b9030E4a560","salt":""}}
+        - contractExponent: 18
+          creator: shareledger1lq9svs76xwekrrzw7uprekyqydf7fp02p8zp8e
+          fee:
+            in:
+              amount: '10000000000'
+              denom: nshr
+            out:
+              amount: '20000000000'
+              denom: nshr
+          network: eth
+          schema: >-
+            {"types":{"EIP712Domain":[{"name":"name","type":"string"},{"name":"version","type":"string"},{"name":"chainId","type":"uint256"},{"name":"verifyingContract","type":"address"}],"Swap":[{"name":"ids","type":"uint256[]"},{"name":"tos","type":"address[]"},{"name":"amounts","type":"uint256[]"}]},"primaryType":"Swap","domain":{"name":"ShareRingSwap","version":"2.0","chainId":"0x61","verifyingContract":"0x04ebff566170c907b29Fc33E9Cf0691faB87a168","salt":""}}
       idList: [ ]
       params:
       requestCount: '3'

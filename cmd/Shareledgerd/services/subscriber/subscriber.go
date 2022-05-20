@@ -93,60 +93,60 @@ func New(input *NewInput) (*Service, error) {
 type handlerSwapEvent func(events []common.Hash) error
 
 func (s *Service) HandlerSwapCompleteEvent(ctx context.Context, fn handlerSwapEvent) (err error) {
-	if s.swapCurrentBlock == big.NewInt(0) {
-		currentBlockNum, err := s.DBClient.GetLastScannedBatch(s.network)
-		if err != nil {
-			return errors.Wrapf(err, "unmarshal swap abi code fail")
-		}
-
-		s.swapCurrentBlock = big.NewInt(int64(currentBlockNum))
-	}
-
 	header, err := s.client.HeaderByNumber(ctx, nil)
 	if err != nil {
 		return errors.Wrapf(err, "get block head fail")
 	}
-
-	if header.Number.Cmp(s.swapCurrentBlock) == 0 {
+	if header.Number.Cmp(s.swapCurrentBlock) < 0 {
 		log.Info("there is no new block")
 		return errors.Wrapf(err, "no block")
 	}
 
-	log.Debugf("Scanning from block %v to block %v", s.swapCurrentBlock, header.Number)
-	any := []common.Hash{}
-	query := eth.FilterQuery{
-		FromBlock: s.swapCurrentBlock,
-		ToBlock:   header.Number,
-		Addresses: []common.Address{common.HexToAddress(s.swapContractAddress)},
-		Topics: [][]common.Hash{
-			[]common.Hash{common.HexToHash(s.swapTopic)},
-			any,
-		},
+	for header.Number.Cmp(s.swapCurrentBlock) > 0 {
+		currentHeaderNumber := header.Number
+
+		toBlock := big.NewInt(s.swapCurrentBlock.Int64() + 4500)
+		if toBlock.Cmp(currentHeaderNumber) > 0 {
+			toBlock = big.NewInt(currentHeaderNumber.Int64())
+		}
+
+		log.Debugf("Scanning from block %v to block %v", s.swapCurrentBlock, toBlock)
+		any := []common.Hash{}
+		query := eth.FilterQuery{
+			FromBlock: s.swapCurrentBlock,
+			ToBlock:   toBlock,
+			Addresses: []common.Address{common.HexToAddress(s.swapContractAddress)},
+			Topics: [][]common.Hash{
+				[]common.Hash{common.HexToHash(s.swapTopic)},
+				any,
+			},
+		}
+
+		logs, err := s.client.FilterLogs(ctx, query)
+		if err != nil {
+			return errors.Wrapf(err, "filter event log by %+v  fail", query)
+		}
+
+		events := make([]common.Hash, 0, len(logs))
+
+		for _, vLog := range logs {
+
+			events = append(events, vLog.TxHash)
+		}
+		if err := fn(events); err != nil {
+			return errors.Wrapf(err, "handle event fail")
+		}
+
+		// save last scanned block number to db
+		err = s.DBClient.SetLastScannedBlockNumber(s.network, s.swapContractAddress, toBlock.Int64())
+		if err != nil {
+			return errors.Wrapf(err, "set the last scanned block into db fail")
+		}
+
+		// set current block number = latest + 1 for next tick interval
+		s.swapCurrentBlock.Add(toBlock, big.NewInt(1))
 	}
 
-	logs, err := s.client.FilterLogs(ctx, query)
-	if err != nil {
-		return errors.Wrapf(err, "filter event log by %+v  fail", query)
-	}
-
-	events := make([]common.Hash, 0, len(logs))
-
-	for _, vLog := range logs {
-
-		events = append(events, vLog.TxHash)
-	}
-	if err := fn(events); err != nil {
-		return errors.Wrapf(err, "handle event fail")
-	}
-
-	// save last scanned block number to db
-	err = s.DBClient.SetLastScannedBlockNumber(s.network, s.swapContractAddress, header.Number.Int64())
-	if err != nil {
-		return errors.Wrapf(err, "set the last scanned block into db fail")
-	}
-
-	// set current block number = latest + 1 for next tick interval
-	s.swapCurrentBlock.Add(header.Number, big.NewInt(1))
 	return nil
 }
 

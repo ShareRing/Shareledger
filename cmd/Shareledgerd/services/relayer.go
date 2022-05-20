@@ -66,25 +66,19 @@ func NewStartCommands(defaultNodeHome string) *cobra.Command {
 			configPath, _ := cmd.Flags().GetString(flagConfigPath)
 			cfg, err := parseConfig(configPath)
 			if err != nil {
-				return err
+				return errors.Wrapf(err, "parse config")
 			}
 			mgClient, err := database.NewMongo(cfg.MongoURI, cfg.DbName)
 			if err != nil {
-				return err
-			}
-
-			relayerClient, err := initRelayer(cmd, cfg, mgClient)
-			if err != nil {
-				return err
+				return errors.Wrapf(err, "new mongodb")
 			}
 
 			ctx, cancel := context.WithCancel(context.Background())
 			defer cancel()
-			timeoutContext, cancelTimeOut := context.WithTimeout(ctx, time.Second*10)
-			defer cancelTimeOut()
 
-			if err := relayerClient.db.ConnectDB(timeoutContext); err != nil {
-				return err
+			relayerClient, err := initRelayer(ctx, cmd, cfg, mgClient)
+			if err != nil {
+				return errors.Wrapf(err, "init relayer")
 			}
 
 			defer func() {
@@ -189,7 +183,7 @@ func parseConfig(filePath string) (RelayerConfig, error) {
 	return cfg, err
 }
 
-func initRelayer(cmd *cobra.Command, cfg RelayerConfig, db database.DBRelayer) (*Relayer, error) {
+func initRelayer(ctx context.Context, cmd *cobra.Command, cfg RelayerConfig, db database.DBRelayer) (*Relayer, error) {
 	qClientCtx, err := client.GetClientQueryContext(cmd)
 	if err != nil {
 		return nil, err
@@ -209,9 +203,13 @@ func initRelayer(cmd *cobra.Command, cfg RelayerConfig, db database.DBRelayer) (
 	cKeyRing.InitCaches(uids)
 	txClientCtx = txClientCtx.WithSkipConfirmation(true).WithBroadcastMode("block").WithKeyring(cKeyRing)
 
-	if err != nil {
+	timeoutContext, cancelTimeOut := context.WithTimeout(ctx, time.Second*10)
+	defer cancelTimeOut()
+
+	if err := db.ConnectDB(timeoutContext); err != nil {
 		return nil, err
 	}
+
 	qClient := swapmoduletypes.NewQueryClient(qClientCtx)
 	events := make(map[string]event.Service)
 	for network, cfg := range cfg.Network {
