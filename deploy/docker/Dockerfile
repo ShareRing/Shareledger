@@ -14,6 +14,9 @@ RUN make build
 
 FROM alpine:3.14
 WORKDIR /app
+
+RUN apk add --no-cache libc6-compat
+
 COPY --from=build /app/build/* ./
 RUN chmod +x ./shareledger
 RUN mv ./shareledger /bin
