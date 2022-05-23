@@ -40,7 +40,7 @@ func IsErrAlreadyKnown(err error) bool {
 	return strings.Contains(err.Error(), msgAlreadyKnown)
 }
 
-func CalculateNextFee(current *big.Int, percentage float64) *big.Int {
+func CalculatePercentage(current *big.Int, percentage float64) *big.Int {
 	if current == nil {
 		return nil
 	}
