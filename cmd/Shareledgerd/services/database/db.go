@@ -183,7 +183,7 @@ func (c *DB) SetLastScannedBlockNumber(network string, contractAddress string, l
 				Key: "$set",
 				Value: bson.D{
 					{
-						Key:   fmt.Sprintf("lastScannedBlockNumber.%s", contractAddress),
+						Key:   fmt.Sprintf("lastScannedEventBlockNumbers.%s", contractAddress),
 						Value: lastScannedBlockNumber,
 					},
 				},
