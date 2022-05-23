@@ -21,8 +21,8 @@ const (
 func CmdCreateSchema() *cobra.Command { //...
 	cmd := &cobra.Command{
 		Use:     "schema [network] [data] [feeIn] [feeOut] [contractExponent]",
-		Short:   "Create a new schema following eip712 format.\n\t[network] network name\n\t[data] json format for eip712 data \n\t the in and out fee are swapping fee the address must be pay for swapping.",
-		Example: `schema eth '{"types":{"EIP712Domain":[{"name":"name","type":"string"},{"name":"version","type":"string"},{"name":"chainId","type":"uint256"},{"name":"verifyingContract","type":"address"}],"Swap":[{"name":"ids","type":"uint256[]"},{"name":"tos","type":"address[]"},{"name":"amounts","type":"uint256[]"}]},"primaryType":"Swap","domain":{"name":"ShareRingSwap","version":"2.0","chainId":"0x7a69","verifyingContract":"0x0165878a594ca255338adfa4d48449f69242eb8f","salt":""}}'' 50shr 100shr 2`,
+		Short:   "Create a new schema following eip712 format.\n\t\t[network] network name\n\t\t[data] json format for eip712 data \n\t\t the in and out fee are swapping fee the address must be pay for swapping.",
+		Example: `schema eth '{"types":{"EIP712Domain":[{"name":"name","type":"string"},{"name":"version","type":"string"},{"name":"chainId","type":"uint256"},{"name":"verifyingContract","type":"address"}],"Swap":[{"name":"ids","type":"uint256[]"},{"name":"tos","type":"address[]"},{"name":"amounts","type":"uint256[]"}]},"primaryType":"Swap","domain":{"name":"ShareRingSwap","version":"2.0","chainId":"0x7a69","verifyingContract":"0x0165878a594ca255338adfa4d48449f69242eb8f","salt":""}}' 50shr 100shr 2`,
 		Args:    cobra.ExactArgs(5),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			// Get indexes
