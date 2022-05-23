@@ -91,7 +91,7 @@ func (AppModule) GenerateGenesisState(simState *module.SimulationState) {
 	}
 	swapGenesis := types.GenesisState{
 		Params: types.DefaultParams(),
-		FormatList: []types.Schema{
+		Schemas: []types.Schema{
 			{
 				Creator: sample.AccAddress(),
 				Network: "0",

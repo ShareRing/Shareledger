@@ -19,6 +19,6 @@ message GenesisState {
   uint64 requestCount = 4;
   repeated Batch batchList = 5 [(gogoproto.nullable) = false];
   uint64 batchCount = 6;
-  repeated Schema formatList = 7 [(gogoproto.nullable) = false];
+  repeated Schema schemas = 7 [(gogoproto.nullable) = false];
   // this line is used by starport scaffolding # genesis/proto/state
 }
