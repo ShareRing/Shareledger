@@ -33,8 +33,8 @@ ddownswap:
 
 ddown:
 	cd ./deploy && \
-    docker-compose down && \
-    docker-compose -f docker-compose-relayer.yaml down
+    docker-compose -f docker-compose-relayer.yaml down && \
+    docker-compose down
 
 
 duprefresh: dinit dup dupswap
