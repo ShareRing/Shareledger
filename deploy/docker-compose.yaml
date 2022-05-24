@@ -133,3 +133,5 @@ services:
       - /root/.Shareledger/config.yml
       - --node
       - tcp://nginx:26657
+      - --from
+      - relayer
