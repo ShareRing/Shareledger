@@ -19,6 +19,7 @@ dinit:
 	cp ./deploy/testnet/genesis.json ./deploy/testnet/node1/config && \
 	cp ./deploy/testnet/genesis.json ./deploy/testnet/node2/config && \
 	cp ./deploy/testnet/genesis.json ./deploy/testnet/node3/config
+
 dup:
 	cd ./deploy && \
     docker-compose up -d --remove-orphans

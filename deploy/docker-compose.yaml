@@ -104,3 +104,32 @@ services:
       - ${NODE1ID}@${NODE1IP}:26656,${NODE2ID}@${NODE2IP}:26656,${NODE0ID}@${NODE0IP}:26656
       - --rpc.laddr
       - tcp://0.0.0.0:26657
+  mongo:
+    image: mongo:5.0.8
+    container_name: mongo
+    hostname: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: 123
+    volumes:
+      - ./testnet/mongo/data/db:/data/db
+      - ./testnet_config/script/mongoinit.sh:/docker-entrypoint-initdb.d/mongoinit.sh:ro
+  relayer:
+    container_name: relayer
+    image: "sharering/shareledger:latest"
+    restart: always
+    hostname: relayer
+    depends_on:
+      - mongo
+      - snode0
+    volumes:
+      - ./testnet/relayer:/root/.Shareledger
+    command:
+      - shareledger
+      - relayer
+      - start
+      - --config
+      - /root/.Shareledger/config.yml
+      - --node
+      - tcp://nginx:26657
