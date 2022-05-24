@@ -1,5 +1,5 @@
-mongoURI: mongodb+srv://phuong:uIoqBJDBzHn17Khe@cluster0.ol2f7.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
-dbName: "hoai2"
+mongoURI: mongodb://root:123@mongo:27017/Relayer?authSource=admin&retryWrites=true&w=majority
+dbName: "Relayer"
 collectionName: "Request"
 scanInterval: 20s
 type: out

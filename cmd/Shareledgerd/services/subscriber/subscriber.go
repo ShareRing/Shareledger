@@ -110,7 +110,7 @@ func (s *Service) HandlerSwapCompleteEvent(ctx context.Context, fn handlerSwapEv
 			toBlock = big.NewInt(currentHeaderNumber.Int64())
 		}
 
-		log.Debugf("Scanning from block %v to block %v", s.swapCurrentBlock, toBlock)
+		log.Debugf("Scanning from block %v to block %v, network, %s", s.swapCurrentBlock, toBlock, s.network)
 		any := []common.Hash{}
 		query := eth.FilterQuery{
 			FromBlock: s.swapCurrentBlock,

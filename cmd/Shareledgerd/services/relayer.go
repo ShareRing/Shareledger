@@ -576,15 +576,19 @@ func (r *Relayer) processNextPendingBatchesOut(ctx context.Context, network stri
 func (r *Relayer) submitAndTrack(ctx context.Context, batch database.Batch, detail swaputil.BatchDetail) error {
 	var logSubmit []interface{}
 	var currentTip *big.Int
+	var currentPrice *big.Int
 	rConfig := r.Config.Network[batch.Network].Retry
 	defer func() {
+		logSubmit = append(logSubmit, "batch_id", batch.ShareledgerID, "network", batch.Network, "batch_status", batch.Status)
 		printOutLog("submit and track end", logSubmit)
 	}()
 	for {
 		logSubmit = append(logSubmit, "batch_id", batch.ShareledgerID)
-		currentTip = CalculateNextFee(currentTip, rConfig.RetryPercentage)
+		currentTip = CalculatePercentage(currentTip, rConfig.RetryPercentage)
+		currentPrice = CalculatePercentage(currentPrice, rConfig.RetryPercentage)
 
-		txRes, signerAddr, err := r.submitBatch(ctx, batch.Network, detail, currentTip)
+		txRes, signerAddr, err := r.submitBatch(ctx, batch.Network, detail, currentTip, currentPrice, false)
+
 		if err != nil {
 			logSubmit = append(logSubmit,
 				"err_submit_batch", err.Error(),
@@ -593,8 +597,16 @@ func (r *Relayer) submitAndTrack(ctx context.Context, batch database.Batch, deta
 				batch.Status = database.Done
 			} else if IsErrUnderPrice(err) || IsErrAlreadyKnown(err) {
 				// retry with higher tip.
-				if currentTip == nil {
-					currentTip, err = r.SuggestGasTip(ctx, batch.Network)
+				if currentTip == nil && currentPrice == nil {
+					legacy, err := r.isLegacy(ctx, batch.Network, detail)
+					if err != nil {
+						return errors.Wrapf(err, "check tx legacy")
+					}
+					if legacy {
+						currentPrice, err = r.SuggestGasPrice(ctx, batch.Network)
+					} else {
+						currentTip, err = r.SuggestGasTip(ctx, batch.Network)
+					}
 					if err != nil {
 						return err
 					}
@@ -618,7 +630,16 @@ func (r *Relayer) submitAndTrack(ctx context.Context, batch database.Batch, deta
 			batch.TxHashes = append(batch.TxHashes, txRes.Hash().String())
 
 			currentTip = txRes.GasTipCap()
+			currentPrice = txRes.GasPrice()
+
+			if currentPrice.Cmp(currentTip) == 0 {
+				// this is a legacy transaction. We use gas price.
+				currentTip = nil
+			} else {
+				currentPrice = nil
+			}
 		}
+		logSubmit = append(logSubmit, "network", batch.Network)
 		printOutLog("submitted batch", logSubmit)
 		logSubmit = []interface{}{}
 		if err := r.db.SetBatch(batch); err != nil {
@@ -757,8 +778,33 @@ func (r *Relayer) SuggestGasTip(ctx context.Context, network string) (*big.Int, 
 	}()
 	return conn.SuggestGasTipCap(ctx)
 }
+func (r *Relayer) SuggestGasPrice(ctx context.Context, network string) (*big.Int, error) {
+	conn, _, err := r.initConn(network)
+	if err != nil {
+		return nil, errors.Wrapf(err, "init eth connection")
+	}
+	defer func() {
+		conn.Close()
+	}()
+	return conn.SuggestGasPrice(ctx)
+}
 
-func (r *Relayer) submitBatch(ctx context.Context, network string, batchDetail swaputil.BatchDetail, tip *big.Int) (tx *types.Transaction, signerAddr string, err error) {
+// isLegacy check tx is support dynamic or legacy
+// legacy transaction will return tip from gas price property.
+// dynamic transaction, eip-1559, will return tip from tip and gas price from GasFeeCap.
+// since the internal tx does not hav public field to determine types of transactions, we need to cmp to work around this.
+func (r *Relayer) isLegacy(ctx context.Context, network string, batchDetail swaputil.BatchDetail) (bool, error) {
+	tx, _, err := r.submitBatch(ctx, network, batchDetail, nil, nil, true)
+	if err != nil {
+		return false, err
+	}
+	return tx.GasTipCap().Cmp(tx.GasPrice()) != 0, nil
+}
+
+func (r *Relayer) submitBatch(ctx context.Context, network string, batchDetail swaputil.BatchDetail, tip *big.Int, gasPrice *big.Int, noSend bool) (tx *types.Transaction, signerAddr string, err error) {
+	if tip != nil && gasPrice != nil {
+		return nil, "", errors.New("tip and gas price should not have value at same time")
+	}
 	if err := batchDetail.Validate(); err != nil {
 		return tx, signerAddr, err
 	}
@@ -794,9 +840,9 @@ func (r *Relayer) submitBatch(ctx context.Context, network string, batchDetail s
 	if err != nil {
 		return tx, signerAddr, errors.Wrapf(err, "get eth connection options fail")
 	}
-	if tip != nil {
-		opts.GasTipCap = tip
-	}
+	opts.GasTipCap = tip
+	opts.GasPrice = gasPrice
+	opts.NoSend = noSend
 
 	opts.Nonce = big.NewInt(int64(currentNonce))
 	sig, err := hexutil.Decode(batchDetail.Batch.Signature)

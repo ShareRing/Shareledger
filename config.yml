@@ -23,10 +23,6 @@ accounts:
   - name: "relayer"
     coins: ["100000000000nshr"]
     mnemonic : "indoor donate grid ostrich tree swamp cactus common piano buzz version world second try garage squirrel alert fork december control bind spoon taste essay"
-  - name: "swap_manager"
-    coins: ["100000000000nshr"]
-    mnemonic: "logic fade bike misery female father false speak code immune improve key food enter night timber kick spare amused miss expire bottom walk century"
-
 validator:
   name: validator
   staked: "100000000000000000nshr"
@@ -90,9 +86,6 @@ genesis:
         - key: relayershareledger16p5u57wpd30j4k2kpg2rpxg3ye4m77lmjug4fq
           address: shareledger16p5u57wpd30j4k2kpg2rpxg3ye4m77lmjug4fq
           status: active
-        - key: swapManagershareledger1yfwgejzj4nmkp6es6q3xea9uwexy5xwjs9rpcx
-          address: shareledger1yfwgejzj4nmkp6es6q3xea9uwexy5xwjs9rpcx
-          status: active
       authority:
         address: shareledger1lq9svs76xwekrrzw7uprekyqydf7fp02p8zp8e
       treasurer:
@@ -112,65 +105,10 @@ genesis:
           controller_enabled: true
         ports: []
     swap:
-      batchCount: '2'
-      formatList:
-        - contractExponent: 2
-          creator: shareledger1lq9svs76xwekrrzw7uprekyqydf7fp02p8zp8e
-          fee:
-            in:
-              amount: '10000000000'
-              denom: nshr
-            out:
-              amount: '20000000000'
-              denom: nshr
-          network: eth
-          schema: >-
-            {"types":{"EIP712Domain":[{"name":"name","type":"string"},{"name":"version","type":"string"},{"name":"chainId","type":"uint256"},{"name":"verifyingContract","type":"address"}],"Swap":[{"name":"ids","type":"uint256[]"},{"name":"tos","type":"address[]"},{"name":"amounts","type":"uint256[]"}]},"primaryType":"Swap","domain":{"name":"ShareRingSwap","version":"2.0","chainId":"0x3","verifyingContract":"0x3AE875a6e8E8EB6fa4a0748156CE6b9030E4a560","salt":""}}
-        - contractExponent: 18
-          creator: shareledger1lq9svs76xwekrrzw7uprekyqydf7fp02p8zp8e
-          fee:
-            in:
-              amount: '10000000000'
-              denom: nshr
-            out:
-              amount: '20000000000'
-              denom: nshr
-          network: eth
-          schema: >-
-            {"types":{"EIP712Domain":[{"name":"name","type":"string"},{"name":"version","type":"string"},{"name":"chainId","type":"uint256"},{"name":"verifyingContract","type":"address"}],"Swap":[{"name":"ids","type":"uint256[]"},{"name":"tos","type":"address[]"},{"name":"amounts","type":"uint256[]"}]},"primaryType":"Swap","domain":{"name":"ShareRingSwap","version":"2.0","chainId":"0x61","verifyingContract":"0x04ebff566170c907b29Fc33E9Cf0691faB87a168","salt":""}}
+      batchCount: '1'
       idList: [ ]
       params:
-      requestCount: '3'
-      requestList:
-        - amount:
-            amount: '10000000000'
-            denom: nshr
-          batchId: '0'
-          createdAt: '1652348033'
-          destAddr: '0x97B98D335c28F9aD9c123E344a78F00C84146431'
-          destNetwork: eth
-          fee:
-            amount: '2000000000'
-            denom: nshr
-          id: '1'
-          srcAddr: shareledger1t3g4570e23h96h5hm5gdtfrjprmvk9qwmrglfr
-          srcNetwork: slp3
-          status: pending
-        - amount:
-            amount: '10000000000'
-            denom: nshr
-          batchId: '0'
-          createdAt: '1652348037'
-          destAddr: '0x97B98D335c28F9aD9c123E344a78F00C84146431'
-          destNetwork: eth
-          fee:
-            amount: '2000000000'
-            denom: nshr
-          id: '2'
-          srcAddr: shareledger1t3g4570e23h96h5hm5gdtfrjprmvk9qwmrglfr
-          srcNetwork: slp3
-          status: pending
-
+      requestCount: '1'
 init:
   client:
     chain-id: "ShareRing-VoyagerNet"
