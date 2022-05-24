@@ -112,11 +112,9 @@ func NewStartCommands(defaultNodeHome string) *cobra.Command {
 						if process.Err != nil {
 							log.Errorw(fmt.Sprintf("process with network %s", process.Network), "error", process.Err)
 						}
-						if numberProcessing == 0 {
-							log.Infof("all process were quited. Exiting")
-							cancel()
-							return
-						}
+						log.Infof("Application exiting")
+						cancel()
+						return
 					}
 				}
 			}()
