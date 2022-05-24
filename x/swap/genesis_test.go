@@ -40,7 +40,7 @@ func TestGenesis(t *testing.T) {
 			},
 		},
 		BatchCount: 2,
-		FormatList: []types.Format{
+		Schemas: []types.Schema{
 			{
 				Network: "0",
 			},
@@ -64,6 +64,6 @@ func TestGenesis(t *testing.T) {
 	require.Equal(t, genesisState.RequestCount, got.RequestCount)
 	require.ElementsMatch(t, genesisState.BatchList, got.BatchList)
 	require.Equal(t, genesisState.BatchCount, got.BatchCount)
-	require.ElementsMatch(t, genesisState.FormatList, got.FormatList)
+	require.ElementsMatch(t, genesisState.Schemas, got.Schemas)
 	// this line is used by starport scaffolding # genesis/test/assert
 }

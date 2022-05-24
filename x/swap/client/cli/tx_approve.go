@@ -60,10 +60,6 @@ func CmdApprove() *cobra.Command {
 				return err
 			}
 
-			//var signFormatData apitypes.TypedData
-			//if err := json.Unmarshal([]byte(formatRes.GetSchema().Schema), &signFormatData); err != nil {
-			//	return err
-			//}
 			signDetail := swap.NewSignDetail(res.Swaps, formatRes.GetSchema())
 			signedHash, err := signApprovedSwap(clientCtx, signer, signDetail)
 			if err != nil {
@@ -86,47 +82,7 @@ func CmdApprove() *cobra.Command {
 }
 
 func signApprovedSwap(ctx client.Context, signer string, signData swap.SignDetail) (string, error) {
-	//signerData := apitypes.TypedData{
-	//	Domain: apitypes.TypedDataDomain{
-	//		Name:              "ShareRingSwap",
-	//		Version:           "2.0",
-	//		VerifyingContract: "0x0165878a594ca255338adfa4d48449f69242eb8f",
-	//		ChainId:           math.NewHexOrDecimal256(31337),
-	//	},
-	//	Types: apitypes.Types{
-	//		"EIP712Domain": {
-	//			{Name: "name", Type: "string"},
-	//			{Name: "version", Type: "string"},
-	//			{Name: "chainId", Type: "uint256"},
-	//			{Name: "verifyingContract", Type: "address"},
-	//		},
-	//		"Swap": {
-	//			{
-	//				Name: "ids",
-	//				Type: "uint256[]",
-	//			},
-	//			{
-	//				Name: "tos",
-	//				Type: "address[]",
-	//			},
-	//			{
-	//				Name: "amounts",
-	//				Type: "uint256[]",
-	//			},
-	//		},
-	//	},
-	//	PrimaryType: "Swap",
-	//}
-	//fmt.Println(json.Marshal(signer))
 
-	//signData, err := swap.buildTypedData(signFormatData, requests)
-	//if err != nil {
-	//	return "", err
-	//}
-	//signHash, err := crypto2.Keccak256HashEIP712(signData)
-	//if err != nil {
-	//	return "", err
-	//}
 	digest, err := signData.Digest()
 	if err != nil {
 		return "", err

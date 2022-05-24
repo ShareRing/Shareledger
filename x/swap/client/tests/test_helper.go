@@ -33,8 +33,8 @@ func CmdCancel(clientCtx client.Context, ids string, extraFlags ...string) (test
 
 	return clitestutil.ExecTestCLICmd(clientCtx, cli.CmdCancel(), args)
 }
-func CmdOut(clientCtx client.Context, dest, network, amount, fee string, extraFlags ...string) (testutil.BufferWriter, error) {
-	args := []string{dest, network, amount, fee}
+func CmdOut(clientCtx client.Context, dest, network, amount string, extraFlags ...string) (testutil.BufferWriter, error) {
+	args := []string{dest, network, amount}
 	args = append(args, extraFlags...)
 
 	return clitestutil.ExecTestCLICmd(clientCtx, cli.CmdOut(), args)
@@ -66,4 +66,22 @@ func CmdReject(clientCtx client.Context, sign, reqIds string, extraFlags ...stri
 	args = append(args, extraFlags...)
 
 	return clitestutil.ExecTestCLICmd(clientCtx, cli.CmdReject(), args)
+}
+
+func CmdCreateFeeSchema(clientCtx client.Context, network, data, in, out, ce string, extraFlags ...string) (testutil.BufferWriter, error) {
+	args := []string{network, data, in, out, ce}
+	args = append(args, extraFlags...)
+
+	return clitestutil.ExecTestCLICmd(clientCtx, cli.CmdCreateSchema(), args)
+}
+
+func CmdGetSchema(clientCtx client.Context, net string, extraFlags ...string) (testutil.BufferWriter, error) {
+	args := []string{net}
+	args = append(args, extraFlags...)
+	return clitestutil.ExecTestCLICmd(clientCtx, cli.CmdShowSchema(), args)
+}
+
+func CmdGetBatches(clientCtx client.Context, extraFlags ...string) (testutil.BufferWriter, error) {
+
+	return clitestutil.ExecTestCLICmd(clientCtx, cli.CmdBatches(), extraFlags)
 }

@@ -1,10 +1,15 @@
 package tests
 
 import (
+	"fmt"
+	"github.com/cosmos/cosmos-sdk/crypto/keyring"
 	"github.com/cosmos/cosmos-sdk/testutil/network"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	"github.com/ethereum/go-ethereum/common/hexutil"
+	"github.com/sharering/shareledger/pkg/swap"
 	netutilts "github.com/sharering/shareledger/testutil/network"
+	electoralmoduletypes "github.com/sharering/shareledger/x/electoral/types"
 	"github.com/sharering/shareledger/x/gentlemint/client/tests"
 	swapTypes "github.com/sharering/shareledger/x/swap/types"
 	denom "github.com/sharering/shareledger/x/utils/demo"
@@ -29,9 +34,11 @@ func NewSwapIntegrationTestSuite(cfg network.Config) *SwapIntegrationTestSuite {
 
 func (s *SwapIntegrationTestSuite) SetupSuite() {
 	s.T().Log("setting up integration test suite for swap module")
-	networkWithFormat(s.T(), &s.cfg)
+
 	kb, dir := netutilts.GetTestingGenesis(s.T(), &s.cfg)
 	s.dir = dir
+
+	networkWithSchema(s.T(), &s.cfg)
 
 	s.network = network.New(s.T(), s.cfg)
 	_, err := s.network.WaitForHeight(1)
@@ -280,11 +287,16 @@ func (s *SwapIntegrationTestSuite) TestCancel() {
 	type (
 		swapArg struct {
 			wAmount string
-			wFee    string
 			id      string
 		}
 		Num struct {
 			D int64
+		}
+
+		feeSchema struct {
+			net    string
+			inFee  string
+			outFee string
 		}
 
 		// cancelArgs mean we will take the element from list of swap request id [f:t]
@@ -296,6 +308,7 @@ func (s *SwapIntegrationTestSuite) TestCancel() {
 		cancelSuite struct {
 			description    string
 			initSwapOut    []swapArg
+			initFeeSchema  []feeSchema
 			approve        int // we will approve first approve number request ID result of initSwapOut func
 			cancelArg      cancelArgs
 			iTxCreatorSwap string
@@ -312,40 +325,37 @@ func (s *SwapIntegrationTestSuite) TestCancel() {
 	)
 	cliCtx := s.network.Validators[0].ClientCtx
 	cancelCase := []cancelSuite{
-		//{
-		//	description: "In case cancel success",
-		//	initSwapOut: []swapArg{
-		//		{
-		//			wAmount: "20shr",
-		//			wFee:    "5shr",
-		//		},
-		//	},
-		//	approve: 0,
-		//	cancelArg: cancelArgs{
-		//		f: 0,
-		//		t: 1,
-		//	},
-		//	iTxCreatorSwap:      netutilts.KeyAccount1,
-		//	iTxCreatorCancel:    netutilts.KeyAccount1,
-		//	iTxFee:              netutilts.SHRFee2,
-		//	oRes:                &sdk.TxResponse{Code: netutilts.ShareLedgerSuccessCode},
-		//	expectCreatorChange: &Num{D: -4}, //expect the creator just must pay 4shr for txn fee
-		//	expectModuleChange:  &Num{D: 0},  // expect module amount doest change cause
-		//},
+		{
+			description: "In case cancel success",
+			initSwapOut: []swapArg{
+				{
+					wAmount: "20shr",
+				},
+			},
+
+			approve: 0,
+			cancelArg: cancelArgs{
+				f: 0,
+				t: 1,
+			},
+			iTxCreatorSwap:      netutilts.KeyAccount1,
+			iTxCreatorCancel:    netutilts.KeyAccount1,
+			iTxFee:              netutilts.SHRFee2,
+			oRes:                &sdk.TxResponse{Code: netutilts.ShareLedgerSuccessCode},
+			expectCreatorChange: &Num{D: -4}, //expect the creator just must pay 4shr for txn fee
+			expectModuleChange:  &Num{D: 0},  // expect module amount doest change cause
+		},
 		{
 			description: "In case can not cancel cause there are some swap request was approved",
 			initSwapOut: []swapArg{
 				{
 					wAmount: "20shr",
-					wFee:    "5shr",
 				},
 				{
 					wAmount: "30shr",
-					wFee:    "2shr",
 				},
 				{
 					wAmount: "10shr",
-					wFee:    "5shr",
 				},
 			},
 			approve: 2,
@@ -357,37 +367,34 @@ func (s *SwapIntegrationTestSuite) TestCancel() {
 			iTxCreatorCancel:    netutilts.KeyAccount1,
 			iTxFee:              netutilts.SHRFee2,
 			oRes:                &sdk.TxResponse{Code: sdkerrors.ErrInvalidRequest.ABCICode()},
-			expectCreatorChange: &Num{D: -80}, //expect the creator just must pay 4shr for txn fee
-			expectModuleChange:  &Num{D: 72},  // expect module amount doest change cause
+			expectCreatorChange: &Num{D: -128}, //expect the creator just must pay 4shr for txn fee //swap fee constantly 20shr for eth network
+			expectModuleChange:  &Num{D: 120},  // expect module amount doest change cause
 		},
-		//{
-		//	description: "In case can not cancel cause the tx creator isn't owner of this request",
-		//	initSwapOut: []swapArg{
-		//		{
-		//			wAmount: "20shr",
-		//			wFee:    "5shr",
-		//		},
-		//		{
-		//			wAmount: "30shr",
-		//			wFee:    "2shr",
-		//		},
-		//		{
-		//			wAmount: "10shr",
-		//			wFee:    "5shr",
-		//		},
-		//	},
-		//	approve: 0,
-		//	cancelArg: cancelArgs{
-		//		f: 0,
-		//		t: 2,
-		//	},
-		//	iTxCreatorSwap:      netutilts.KeyAccount1,
-		//	iTxCreatorCancel:    netutilts.KeyAccount2,
-		//	iTxFee:              netutilts.SHRFee2,
-		//	oRes:                &sdk.TxResponse{Code: sdkerrors.ErrUnauthorized.ABCICode()},
-		//	expectCreatorChange: &Num{D: -78}, //expect the creator just must pay 4shr for txn fee
-		//	expectModuleChange:  &Num{D: 72},  // expect module amount doest change cause
-		//},
+		{
+			description: "In case can not cancel cause the tx creator isn't owner of this request",
+			initSwapOut: []swapArg{
+				{
+					wAmount: "20shr",
+				},
+				{
+					wAmount: "30shr",
+				},
+				{
+					wAmount: "10shr",
+				},
+			},
+			approve: 0,
+			cancelArg: cancelArgs{
+				f: 0,
+				t: 2,
+			},
+			iTxCreatorSwap:      netutilts.KeyAccount1,
+			iTxCreatorCancel:    netutilts.KeyAccount2,
+			iTxFee:              netutilts.SHRFee2,
+			oRes:                &sdk.TxResponse{Code: sdkerrors.ErrUnauthorized.ABCICode()},
+			expectCreatorChange: &Num{D: -126}, //expect the creator just must pay 4shr for txn fee
+			expectModuleChange:  &Num{D: 120},  // expect module amount doest change cause
+		},
 	}
 
 	for _, ts := range cancelCase {
@@ -411,12 +418,12 @@ func (s *SwapIntegrationTestSuite) TestCancel() {
 				out := tests.CmdQueryBalance(s.T(), cliCtx, netutilts.Accounts[ts.iTxCreatorSwap])
 				balanceCreatorBefore = sdk.NewDecCoinsFromCoins(out.Balances...)
 			}
+
 			for _, sw := range ts.initSwapOut {
 				out, err := CmdOut(cliCtx,
 					"0x7b9039bd633411b48a5a5c4262b5b1a16546d209",
-					"etherium",
+					"eth",
 					sw.wAmount,
-					sw.wFee,
 					ts.iTxFee,
 					netutilts.SkipConfirmation,
 					netutilts.BlockBroadcast,
@@ -442,7 +449,7 @@ func (s *SwapIntegrationTestSuite) TestCancel() {
 					netutilts.SHRFee2,
 					netutilts.SkipConfirmation,
 					netutilts.BlockBroadcast,
-					netutilts.MakeByAccount(netutilts.KeyTreasurer))
+					netutilts.MakeByAccount(netutilts.KeyApproverRelayer))
 				if err != nil {
 					s.Fail("fail when approve the swap out request", err)
 				}
@@ -545,7 +552,6 @@ func (s *SwapIntegrationTestSuite) TestReject() {
 			initSwapOut: []swapArg{
 				{
 					wAmount: "20shr",
-					wFee:    "5shr",
 				},
 			},
 			approve: 0,
@@ -554,7 +560,7 @@ func (s *SwapIntegrationTestSuite) TestReject() {
 				t: 1,
 			},
 			iTxCreatorSwap:      netutilts.KeyAccount1,
-			iTxCreatorReject:    netutilts.KeyTreasurer,
+			iTxCreatorReject:    netutilts.KeyApproverRelayer,
 			iTxFee:              netutilts.SHRFee2,
 			oRes:                &sdk.TxResponse{Code: netutilts.ShareLedgerSuccessCode},
 			expectCreatorChange: &Num{D: -2},
@@ -565,15 +571,12 @@ func (s *SwapIntegrationTestSuite) TestReject() {
 			initSwapOut: []swapArg{
 				{
 					wAmount: "20shr",
-					wFee:    "5shr",
 				},
 				{
 					wAmount: "30shr",
-					wFee:    "2shr",
 				},
 				{
 					wAmount: "10shr",
-					wFee:    "5shr",
 				},
 			},
 			approve: 2,
@@ -582,40 +585,37 @@ func (s *SwapIntegrationTestSuite) TestReject() {
 				t: 2,
 			},
 			iTxCreatorSwap:      netutilts.KeyAccount1,
-			iTxCreatorReject:    netutilts.KeyAuthority,
+			iTxCreatorReject:    netutilts.KeyApproverRelayer,
 			iTxFee:              netutilts.SHRFee2,
 			oRes:                &sdk.TxResponse{Code: sdkerrors.ErrInvalidRequest.ABCICode()},
-			expectCreatorChange: &Num{D: -78},
-			expectModuleChange:  &Num{D: 72}, // expect module amount doest change cause
+			expectCreatorChange: &Num{D: -126},
+			expectModuleChange:  &Num{D: 120}, // expect module amount doest change cause
 		},
-		//{ //TODO test it later
-		//	description: "In case can not reject cause the tx creator isn't authorizer",
-		//	initSwapOut: []swapArg{
-		//		{
-		//			wAmount: "20shr",
-		//			wFee:    "5shr",
-		//		},
-		//		{
-		//			wAmount: "30shr",
-		//			wFee:    "2shr",
-		//		},
-		//		{
-		//			wAmount: "10shr",
-		//			wFee:    "5shr",
-		//		},
-		//	},
-		//	approve: 0,
-		//	rejectArg: rejectArgs{
-		//		f: 0,
-		//		t: 2,
-		//	},
-		//	iTxCreatorSwap:      netutilts.KeyAccount1,
-		//	iTxCreatorReject:    netutilts.KeyAccount2,
-		//	iTxFee:              netutilts.SHRFee2,
-		//	oRes:                &sdk.TxResponse{Code: sdkerrors.ErrUnauthorized.ABCICode()},
-		//	expectCreatorChange: &Num{D: -78}, //expect the creator just must pay 4shr for txn fee
-		//	expectModuleChange:  &Num{D: 72},  // expect module amount doest change cause
-		//},
+		{
+			description: "In case can not reject cause the tx creator isn't authorizer",
+			initSwapOut: []swapArg{
+				{
+					wAmount: "20shr",
+				},
+				{
+					wAmount: "30shr",
+				},
+				{
+					wAmount: "10shr",
+				},
+			},
+			approve: 0,
+			rejectArg: rejectArgs{
+				f: 0,
+				t: 2,
+			},
+			iTxCreatorSwap:      netutilts.KeyAccount1,
+			iTxCreatorReject:    netutilts.KeyAccount2,
+			iTxFee:              netutilts.SHRFee2,
+			oRes:                &sdk.TxResponse{Code: sdkerrors.ErrUnauthorized.ABCICode()},
+			expectCreatorChange: nil, //expect the creator just must pay 4shr for txn fee
+			expectModuleChange:  nil, // expect module amount doest change cause
+		},
 	}
 
 	for _, ts := range cancelCase {
@@ -643,9 +643,8 @@ func (s *SwapIntegrationTestSuite) TestReject() {
 			for _, sw := range ts.initSwapOut {
 				out, err := CmdOut(cliCtx,
 					"0x7b9039bd633411b48a5a5c4262b5b1a16546d209",
-					"etherium",
+					"eth",
 					sw.wAmount,
-					sw.wFee,
 					ts.iTxFee,
 					netutilts.SkipConfirmation,
 					netutilts.BlockBroadcast,
@@ -671,7 +670,7 @@ func (s *SwapIntegrationTestSuite) TestReject() {
 					netutilts.SHRFee2,
 					netutilts.SkipConfirmation,
 					netutilts.BlockBroadcast,
-					netutilts.MakeByAccount(netutilts.KeyTreasurer))
+					netutilts.MakeByAccount(netutilts.KeyApproverRelayer))
 				if err != nil {
 					s.Fail("fail when init the swap out request", err)
 				}
@@ -697,8 +696,8 @@ func (s *SwapIntegrationTestSuite) TestReject() {
 			txRes := netutilts.ParseStdOut(s.T(), out.Bytes())
 
 			if ts.oRes != nil {
+				s.Require().Equalf(ts.oRes.Code, txRes.Code, "cancel error code not equal")
 				if txRes.Code != ts.oRes.Code {
-					s.Failf("fail when cancel request", "require cancel code must equal with test case %s", txRes.String())
 				}
 			}
 
@@ -731,17 +730,150 @@ func (s *SwapIntegrationTestSuite) TestReject() {
 	}
 }
 
-func networkWithFormat(t *testing.T, cf *network.Config) {
+func (s *SwapIntegrationTestSuite) TestApprove() {
+	cliCtx := s.network.Validators[0].ClientCtx
+
+	swapInfoResOut, err := CmdSearch(cliCtx, "pending", fmt.Sprintf("--ids=3000,3001"), netutilts.JSONFlag)
+	if err != nil {
+		s.Failf("get swap fail fail", "err %s res %s", err, swapInfoResOut.String())
+	}
+
+	swapRes := swapTypes.QuerySwapResponse{}
+
+	err = cliCtx.Codec.UnmarshalJSON(swapInfoResOut.Bytes(), &swapRes)
+	if err != nil {
+		s.Fail("fail to get back swap", "err %s out %s", err, swapInfoResOut.String())
+	}
+
+	out, err := CmdApprove(cliCtx, netutilts.KeyAccountTestSign, "3000,3001", "eth", netutilts.SkipConfirmation, netutilts.BlockBroadcast, netutilts.MakeByAccount(netutilts.KeyApproverRelayer))
+	if err != nil {
+		s.Fail("approve fail", "out %s", out.String())
+	}
+	txRes := netutilts.ParseStdOut(s.T(), out.Bytes())
+	if txRes.Code != netutilts.ShareLedgerSuccessCode {
+		s.Fail("fail when approve request", "response %s", txRes.String())
+	}
+
+	log := netutilts.ParseRawLogGetEvent(s.T(), txRes.RawLog)[0]
+	attr := log.Events.GetEventByType(s.T(), swapTypes.EventTypeSwapApprove)
+	batchID := attr.Get(s.T(), swapTypes.EventTypeBatchId).Value
+
+	outReader, err := CmdGetBatches(cliCtx, fmt.Sprintf("--ids=%s", batchID), netutilts.JSONFlag)
+	if err != nil {
+		s.Fail("fail to get back batch", "err %s", err)
+	}
+
+	batchesRes := swapTypes.QueryBatchesResponse{}
+
+	err = cliCtx.Codec.UnmarshalJSON(outReader.Bytes(), &batchesRes)
+	if err != nil {
+		s.Fail("fail to get back batch", "err %s", err)
+	}
+
+	//re calculate digest
+	schemaResOut, err := CmdGetSchema(cliCtx, "eth")
+	if err != nil {
+		s.Fail("fail to schema back batch", "err %s", err)
+	}
+	schemaRes := swapTypes.QuerySchemaResponse{}
+	err = cliCtx.Codec.UnmarshalJSON(schemaResOut.Bytes(), &schemaRes)
+	if err != nil {
+		s.Fail("fail to get schema batch", "err %s", err)
+	}
+
+	signDetail := swap.NewSignDetail(swapRes.Swaps, schemaRes.GetSchema())
+	digest, err := signDetail.Digest()
+	if err != nil {
+		s.Fail("fail to get digest", "err %s", err)
+	}
+	b := batchesRes.GetBatches()[0]
+
+	ks := keyring.NewKeyRingETH(cliCtx.Keyring)
+	_, npk, err := ks.Sign(netutilts.KeyAccountTestSign, digest.Bytes())
+	if err != nil {
+		s.Fail("fail to get signer", "err %s", err)
+	}
+
+	sig, _ := hexutil.Decode(b.Signature)
+	s.Equalf(true, npk.VerifySignature(digest.Bytes(), sig), "verify sign fail")
+	s.Equalf("0xd9a5705095d8c83fc051fde2dda2e47fb81d16ee23f11f9322c0656e6020ee9001f73fd951ad0d1d7d36a59900d2bd481c47477d01fbd1a2a6da5c7f6d78129d1c", b.GetSignature(), "eip sign not same")
+	s.Equalf("0xb63b8aa6f75b29271051d9069070d0555f4e6cdaf35e72d69ffcb366a4d47a08", digest.String(), "digest not equal")
+}
+
+func networkWithSchema(t *testing.T, cf *network.Config) {
 	t.Helper()
 	var gen = swapTypes.GenesisState{}
 	require.NoError(t, cf.Codec.UnmarshalJSON(cf.GenesisState[swapTypes.ModuleName], &gen))
 
-	gen.FormatList = []swapTypes.Schema{{
-		Network: "eth",
-		Creator: "shareledger1lq9svs76xwekrrzw7uprekyqydf7fp02p8zp8e",
-		Schema:  "{\"types\":{\"EIP712Domain\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"version\",\"type\":\"string\"},{\"name\":\"chainId\",\"type\":\"uint256\"},{\"name\":\"verifyingContract\",\"type\":\"address\"}],\"Swap\":[{\"name\":\"ids\",\"type\":\"uint256[]\"},{\"name\":\"tos\",\"type\":\"address[]\"},{\"name\":\"amounts\",\"type\":\"uint256[]\"}]},\"primaryType\":\"Swap\",\"domain\":{\"name\":\"ShareRingSwap\",\"version\":\"2.0\",\"chainId\":\"0x7a69\",\"verifyingContract\":\"0x0165878a594ca255338adfa4d48449f69242eb8f\",\"salt\":\"\"}}",
-	}}
+	elector := electoralmoduletypes.GenesisState{}
+	require.NoError(t, cf.Codec.UnmarshalJSON(cf.GenesisState[electoralmoduletypes.ModuleName], &elector))
+
+	elector.AccStateList = []electoralmoduletypes.AccState{
+		{
+			Key:     "approver" + netutilts.Accounts[netutilts.KeyApproverRelayer].String(),
+			Address: netutilts.Accounts[netutilts.KeyApproverRelayer].String(),
+			Status:  "active",
+		},
+		{
+			Key:     "relayer" + netutilts.Accounts[netutilts.KeyApproverRelayer].String(),
+			Address: netutilts.Accounts[netutilts.KeyApproverRelayer].String(),
+			Status:  "active",
+		},
+	}
+	bufEl, err := cf.Codec.MarshalJSON(&elector)
+	require.NoError(t, err)
+
+	feeInCoin := sdk.NewCoin(denom.Base, sdk.NewInt(10000000000))
+	feeOutCoin := sdk.NewCoin(denom.Base, sdk.NewInt(20000000000))
+
+	gen.Schemas = []swapTypes.Schema{
+		{
+			Network:          "eth",
+			ContractExponent: 2,
+			Fee: &swapTypes.Fee{
+				In:  &feeInCoin,
+				Out: &feeOutCoin,
+			},
+			Schema: `{"types":{"EIP712Domain":[{"name":"name","type":"string"},{"name":"version","type":"string"},{"name":"chainId","type":"uint256"},{"name":"verifyingContract","type":"address"}],"Swap":[{"name":"ids","type":"uint256[]"},{"name":"tos","type":"address[]"},{"name":"amounts","type":"uint256[]"}]},"primaryType":"Swap","domain":{"name":"ShareRingSwap","version":"2.0","chainId":"0x3","verifyingContract":"0x3AE875a6e8E8EB6fa4a0748156CE6b9030E4a560","salt":""}}`,
+		},
+		{
+			Network: "bsc",
+			Fee: &swapTypes.Fee{
+				In:  &feeInCoin,
+				Out: &feeOutCoin,
+			},
+			ContractExponent: 2,
+			Schema:           `{"types":{"EIP712Domain":[{"name":"name","type":"string"},{"name":"version","type":"string"},{"name":"chainId","type":"uint256"},{"name":"verifyingContract","type":"address"}],"Swap":[{"name":"ids","type":"uint256[]"},{"name":"tos","type":"address[]"},{"name":"amounts","type":"uint256[]"}]},"primaryType":"Swap","domain":{"name":"ShareRingSwap","version":"2.0","chainId":"0x3","verifyingContract":"0x3AE875a6e8E8EB6fa4a0748156CE6b9030E4a560","salt":""}}`,
+		},
+	}
+	gen.RequestCount = 4000
+
+	gen.RequestList = []swapTypes.Request{
+		{
+			Id:       3000,
+			DestAddr: "0x97b98d335c28f9ad9c123e344a78f00c84146431",
+			Amount: &sdk.Coin{
+				Denom:  denom.Base,
+				Amount: sdk.NewInt(3455000000000), //3455 shr
+			},
+			Status:     "pending",
+			SrcNetwork: "shareledger",
+			BatchId:    0,
+		}, {
+			Id:       3001,
+			DestAddr: "0x97b98d335c28f9ad9c123e344a78f00c84146431",
+			Amount: &sdk.Coin{
+				Denom:  denom.Base,
+				Amount: sdk.NewInt(6733000000000), //6733 shr
+			},
+			Status:     "pending",
+			SrcNetwork: "shareledger",
+			BatchId:    0,
+		},
+	}
+
 	buf, err := cf.Codec.MarshalJSON(&gen)
 	require.NoError(t, err)
 	cf.GenesisState[swapTypes.ModuleName] = buf
+	cf.GenesisState[electoralmoduletypes.ModuleName] = bufEl
 }

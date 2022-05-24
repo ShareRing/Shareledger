@@ -108,7 +108,7 @@ func (s *ElectoralIntegrationTestSuite) setupTestMaterial() {
 }
 
 func (s *ElectoralIntegrationTestSuite) SetupSuite() {
-	s.T().Log("setting up integration test suite for document module")
+	s.T().Log("setting up integration test suite for electoral module")
 	kb, dir := netutilts.GetTestingGenesis(s.T(), &s.cfg)
 	s.dir = dir
 

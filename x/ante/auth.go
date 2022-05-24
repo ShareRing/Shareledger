@@ -27,12 +27,12 @@ const (
 	ErrMsgNotOperatorAccount      = "Transaction's Signer is not operator account"
 	ErrMsgNotVoterAccount         = "Transaction's Signer is not voter account"
 	ErrMsgNotAuthorityAndTreasure = "Transaction's Signer is not authority OR treasure account"
-	//ErrMsgNotApproverAccount      = "Transaction's Signer is not approver account"
-	//ErrMsgNotRelayerAccount       = "Transaction's Signer is not relayer account"
-	ErrMsgNotSwapManager       = "Transaction's Signer is not swap manager account"
-	ErrMsgNotRelayerOrApprover = "Transaction's Signer is not relayer approver"
-	ErrMsgNotRelayer           = "Transaction's Signer is not relayer"
-	ErrMsgStatusInvalid        = "Can't update batch to canceled via update function"
+	ErrMsgNotApproverAccount      = "Transaction's Signer is not approver account"
+	ErrMsgNotRelayerAccount       = "Transaction's Signer is not relayer account"
+	ErrMsgNotSwapManager          = "Transaction's Signer is not swap manager account"
+	ErrMsgNotRelayerOrApprover    = "Transaction's Signer is not relayer approver"
+	ErrMsgNotRelayer              = "Transaction's Signer is not relayer"
+	ErrMsgStatusInvalid           = "Can't update batch to canceled via update function"
 )
 
 func NewAuthDecorator(rk RoleKeeper, ik IDKeeper) Auth {
@@ -128,15 +128,15 @@ func (a Auth) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate bool, next sdk.Ant
 			if !a.rk.IsAuthority(ctx, signer) && !a.rk.IsTreasurer(ctx, signer) {
 				return ctx, sdkerrors.Wrapf(sdkerrors.ErrUnauthorized, ErrMsgNotAuthorityAndTreasure)
 			}
-		//TODO uncomment this block to active authorization in swap module
-		//case *swapmoduletypes.MsgApprove:
-		//	if !a.rk.IsApprover(ctx, signer) {
-		//		return ctx, sdkerrors.Wrapf(sdkerrors.ErrUnauthorized, ErrMsgNotApproverAccount)
-		//	}
-		//case *swapmoduletypes.MsgApproveIn, *swapmoduletypes.MsgIn:
-		//	if !a.rk.IsRelayer(ctx, signer) {
-		//		return ctx, sdkerrors.Wrapf(sdkerrors.ErrUnauthorized, ErrMsgNotRelayerAccount)
-		//	}
+
+		case *swapmoduletypes.MsgApproveOut, *swapmoduletypes.MsgReject:
+			if !a.rk.IsApprover(ctx, signer) {
+				return ctx, sdkerrors.Wrapf(sdkerrors.ErrUnauthorized, ErrMsgNotApproverAccount)
+			}
+		case *swapmoduletypes.MsgApproveIn, *swapmoduletypes.MsgRequestIn:
+			if !a.rk.IsRelayer(ctx, signer) {
+				return ctx, sdkerrors.Wrapf(sdkerrors.ErrUnauthorized, ErrMsgNotRelayerAccount)
+			}
 		case *swapmoduletypes.MsgUpdateSwapFee:
 			if !a.rk.IsSwapManager(ctx, signer) && !a.rk.IsTreasurer(ctx, signer) {
 				return ctx, sdkerrors.Wrapf(sdkerrors.ErrUnauthorized, ErrMsgNotSwapManager)

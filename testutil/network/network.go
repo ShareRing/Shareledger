@@ -114,11 +114,16 @@ func GetTestingGenesis(t *testing.T, config *network.Config) (keyring.Keyring, s
 		{Key: KeyAccount6, Balance: OneThousandSHROneHundredSHRPCoins},
 		{Key: KeyAccount7, Balance: OneThousandSHROneHundredSHRPCoins},
 		{Key: KeyAccount8, Balance: OneThousandSHROneHundredSHRPCoins},
+		{Key: KeyApproverRelayer, Balance: OneThousandSHROneHundredSHRPCoins},
 	}
 
 	for _, u := range users {
 		accountBuilder.InitUser(u.Key, u.Balance)
 	}
+
+	accountBuilder.GenBSCSigner(KeyAccountSwapBSC, OneThousandSHROneHundredSHRPCoins)
+	accountBuilder.GenETHSigner(KeyAccountSwapETH, OneThousandSHROneHundredSHRPCoins)
+	accountBuilder.NewAccountToSign()
 
 	newKeyringService, genAccounts, genBalances := accountBuilder.BuildGenesis()
 

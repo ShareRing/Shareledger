@@ -10,6 +10,11 @@ import (
 	"testing"
 )
 
+const (
+	KeyPathETH = `m/44'/60'/0'/0/0`
+	KeyPathBSC = `m/44'/714'/0'/0`
+)
+
 type (
 	KeyRingBuilder struct {
 		t           *testing.T
@@ -33,7 +38,10 @@ func (kb *KeyRingBuilder) BuildGenesis() (keyring.Keyring, []authtypes.GenesisAc
 }
 
 func (kb *KeyRingBuilder) InitUser(id string, coins sdk.Coins) {
-	info, _, err := kb.kb.NewMnemonic(id, keyring.English, sdk.FullFundraiserPath, keyring.DefaultBIP39Passphrase, hd.Secp256k1)
+	kb.InitUserByHDPath(id, coins, sdk.FullFundraiserPath)
+}
+func (kb *KeyRingBuilder) InitUserByHDPath(id string, coins sdk.Coins, path string) {
+	info, _, err := kb.kb.NewMnemonic(id, keyring.English, path, keyring.DefaultBIP39Passphrase, hd.Secp256k1)
 	require.NoError(kb.t, err, "init fail")
 	Accounts[id] = info.GetAddress()
 
@@ -42,5 +50,24 @@ func (kb *KeyRingBuilder) InitUser(id string, coins sdk.Coins) {
 		Address: info.GetAddress().String(),
 		Coins:   coins,
 	})
+}
 
+func (kb *KeyRingBuilder) GenETHSigner(id string, coins sdk.Coins) {
+	kb.InitUserByHDPath(id, coins, KeyPathETH) //ETH hd path
+}
+func (kb *KeyRingBuilder) GenBSCSigner(id string, coins sdk.Coins) {
+	kb.InitUserByHDPath(id, coins, KeyPathBSC) //ETH hd path
+}
+
+func (kb *KeyRingBuilder) NewAccountToSign() {
+
+	info, err := kb.kb.NewAccount(KeyAccountTestSign, SignMnemonic, keyring.DefaultBIP39Passphrase, KeyPathETH, hd.Secp256k1)
+	require.NoError(kb.t, err, "init fail")
+	Accounts[KeyAccountTestSign] = info.GetAddress()
+
+	kb.accGens = append(kb.accGens, authtypes.NewBaseAccount(info.GetAddress(), info.GetPubKey(), 0, 0))
+	kb.genBalances = append(kb.genBalances, banktypes.Balance{
+		Address: info.GetAddress().String(),
+		Coins:   OneThousandSHROneHundredSHRPCoins,
+	})
 }

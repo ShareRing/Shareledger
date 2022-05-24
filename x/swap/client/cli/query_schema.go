@@ -42,7 +42,7 @@ func CmdListSchema() *cobra.Command {
 	return cmd
 }
 
-func CmdShowFormat() *cobra.Command {
+func CmdShowSchema() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "schema [network]",
 		Short: "get a schema information by network name",

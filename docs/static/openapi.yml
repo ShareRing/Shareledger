@@ -30649,6 +30649,176 @@ paths:
           type: string
       tags:
         - Query
+  '/sharering/shareledger/electoral/approver/{address}':
+    get:
+      summary: Queries a list of Approver items.
+      operationId: ShareledgerElectoralApprover
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              accState:
+                type: object
+                properties:
+                  key:
+                    type: string
+                  address:
+                    type: string
+                  status:
+                    type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: address
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  /sharering/shareledger/electoral/approves:
+    get:
+      summary: Queries a list of Approves items.
+      operationId: ShareledgerElectoralApprovers
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              approvers:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    key:
+                      type: string
+                    address:
+                      type: string
+                    status:
+                      type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
+  '/sharering/shareledger/electoral/relayer/{address}':
+    get:
+      summary: Queries a list of Relayer items.
+      operationId: ShareledgerElectoralRelayer
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              accState:
+                type: object
+                properties:
+                  key:
+                    type: string
+                  address:
+                    type: string
+                  status:
+                    type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: address
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  /sharering/shareledger/electoral/relayers:
+    get:
+      summary: Queries a list of Relayers items.
+      operationId: ShareledgerElectoralRelayers
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              relayers:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    key:
+                      type: string
+                    address:
+                      type: string
+                    status:
+                      type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
   /shareledger/gentlemint/actionLevelFee:
     get:
       summary: Queries a list of actionLevelFee items.
@@ -53163,6 +53333,32 @@ definitions:
               type: string
             status:
               type: string
+  shareledger.electoral.QueryApproverResponse:
+    type: object
+    properties:
+      accState:
+        type: object
+        properties:
+          key:
+            type: string
+          address:
+            type: string
+          status:
+            type: string
+  shareledger.electoral.QueryApproversResponse:
+    type: object
+    properties:
+      approvers:
+        type: array
+        items:
+          type: object
+          properties:
+            key:
+              type: string
+            address:
+              type: string
+            status:
+              type: string
   shareledger.electoral.QueryDocumentIssuerResponse:
     type: object
     properties:
@@ -53231,6 +53427,32 @@ definitions:
     type: object
     properties:
       loaders:
+        type: array
+        items:
+          type: object
+          properties:
+            key:
+              type: string
+            address:
+              type: string
+            status:
+              type: string
+  shareledger.electoral.QueryRelayerResponse:
+    type: object
+    properties:
+      accState:
+        type: object
+        properties:
+          key:
+            type: string
+          address:
+            type: string
+          status:
+            type: string
+  shareledger.electoral.QueryRelayersResponse:
+    type: object
+    properties:
+      relayers:
         type: array
         items:
           type: object
