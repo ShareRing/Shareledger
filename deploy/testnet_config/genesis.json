@@ -51028,7 +51028,7 @@
     "upgrade": {},
     "vesting": {}
   },
-  "chain_id": "ShareRing-LifeStyle",
+  "chain_id": "ShareRing-Lifestyle",
   "consensus_params": {
     "block": {
       "max_bytes": "22020096",
