@@ -4,6 +4,8 @@ services:
   nginx:
     container_name: snginx
     image: nginx:alpine
+    networks:
+      - proxynet
     restart: always
     depends_on:
       - snode0
@@ -19,6 +21,8 @@ services:
     container_name: snode0
     image: "sharering/shareledger:latest"
     restart: always
+    networks:
+      - proxynet
     hostname: snode0
     expose:
       - 26656
@@ -42,6 +46,8 @@ services:
     container_name: snode1
     restart: always
     hostname: snode1
+    networks:
+      - proxynet
     image: "sharering/shareledger:latest"
     expose:
       - 26656
@@ -64,6 +70,8 @@ services:
     container_name: snode2
     restart: always
     hostname: snode2
+    networks:
+      - proxynet
     image: "sharering/shareledger:latest"
     expose:
       - 26656
@@ -87,6 +95,8 @@ services:
     image: "sharering/shareledger:latest"
     restart: always
     hostname: snode3
+    networks:
+      - proxynet
     expose:
       - 26656
       - 26657
@@ -104,34 +114,6 @@ services:
       - ${NODE1ID}@${NODE1IP}:26656,${NODE2ID}@${NODE2IP}:26656,${NODE0ID}@${NODE0IP}:26656
       - --rpc.laddr
       - tcp://0.0.0.0:26657
-  mongo:
-    image: mongo:5.0.8
-    container_name: mongo
-    hostname: mongo
-    restart: always
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: 123
-    volumes:
-      - ./testnet/mongo/data/db:/data/db
-      - ./testnet_config/script/mongoinit.sh:/docker-entrypoint-initdb.d/mongoinit.sh:ro
-  relayer:
-    container_name: relayer
-    image: "sharering/shareledger:latest"
-    restart: always
-    hostname: relayer
-    depends_on:
-      - mongo
-      - snode0
-    volumes:
-      - ./testnet/relayer:/root/.Shareledger
-    command:
-      - shareledger
-      - relayer
-      - start
-      - --config
-      - /root/.Shareledger/config.yml
-      - --node
-      - tcp://nginx:26657
-      - --from
-      - relayer
+networks:
+  proxynet:
+    name: shareledgerNetwork
