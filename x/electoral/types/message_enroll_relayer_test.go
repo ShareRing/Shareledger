@@ -11,18 +11,18 @@ import (
 func TestMsgEnrollRelayer_ValidateBasic(t *testing.T) {
 	tests := []struct {
 		name string
-		msg  MsgEnrollRelayer
+		msg  MsgEnrollRelayers
 		err  error
 	}{
 		{
 			name: "invalid address",
-			msg: MsgEnrollRelayer{
+			msg: MsgEnrollRelayers{
 				Creator: "invalid_address",
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
-			msg: MsgEnrollRelayer{
+			msg: MsgEnrollRelayers{
 				Creator: sample.AccAddress(),
 			},
 		},

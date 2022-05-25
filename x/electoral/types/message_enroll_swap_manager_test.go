@@ -11,18 +11,18 @@ import (
 func TestMsgEnrollSwapManager_ValidateBasic(t *testing.T) {
 	tests := []struct {
 		name string
-		msg  MsgEnrollSwapManager
+		msg  MsgEnrollSwapManagers
 		err  error
 	}{
 		{
 			name: "invalid address",
-			msg: MsgEnrollSwapManager{
+			msg: MsgEnrollSwapManagers{
 				Creator: "invalid_address",
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
-			msg: MsgEnrollSwapManager{
+			msg: MsgEnrollSwapManagers{
 				Creator: sample.AccAddress(),
 			},
 		},

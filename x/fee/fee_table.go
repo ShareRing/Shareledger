@@ -1,7 +1,14 @@
+/*Fee package helps the authority take
+control how much transaction for each state change message
+*/
+
 package fee
 
 import (
 	"fmt"
+	"reflect"
+	"sync"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 	distributiontypes "github.com/cosmos/cosmos-sdk/x/distribution/types"
@@ -16,8 +23,23 @@ import (
 	gentlemintmoduletypes "github.com/sharering/shareledger/x/gentlemint/types"
 	idmoduletypes "github.com/sharering/shareledger/x/id/types"
 	swapmoduletypes "github.com/sharering/shareledger/x/swap/types"
-	"reflect"
-	"sync"
+)
+
+const (
+	FeeAcctionNameSwapIn        = "swap_request-in"
+	FeeAcctionNameSwapOut       = "swap_request-out"
+	FeeAcctionNameApproveIn     = "swap_approve-in"
+	FeeAcctionNameApproveOut    = "swap_approve-out"
+	FeeAcctionNameCancel        = "swap_cancel"
+	FeeAcctionNameReject        = "swap_reject"
+	FeeAcctionNameDeposit       = "swap_deposit"
+	FeeAcctionNameWithdraw      = "swap_withdraw"
+	FeeAcctionNameCreateSchema  = "swap_create-schema"
+	FeeAcctionNameUpdateSchema  = "swap_update-schema"
+	FeeAcctionNameDeleteSchema  = "swap_delete-schema"
+	FeeAcctionNameCancelBatches = "swap_cancel-batches"
+	FeeAcctionNameUpdateBatch   = "swap_update-batch"
+	FeeAcctionNameUpdateSwapFee = "swap_update-swap-fee"
 )
 
 func init() {
@@ -99,9 +121,23 @@ var mapActions = map[reflect.Type]string{
 	reflect.ValueOf(&stakingmoduletypes.MsgBeginRedelegate{}).Type(): "staking_redelegate",
 	reflect.ValueOf(&stakingmoduletypes.MsgUndelegate{}).Type():      "staking_unbond",
 
-	//swap
-	reflect.ValueOf(&swapmoduletypes.MsgDeposit{}).Type():  "swap_deposit",
-	reflect.ValueOf(&swapmoduletypes.MsgWithdraw{}).Type(): "swap_withdraw",
+	/*------------x/swap module---------------- start */
+	reflect.ValueOf(&swapmoduletypes.MsgRequestIn{}).Type():     FeeAcctionNameSwapIn,
+	reflect.ValueOf(&swapmoduletypes.MsgRequestOut{}).Type():    FeeAcctionNameSwapOut,
+	reflect.ValueOf(&swapmoduletypes.MsgApproveIn{}).Type():     FeeAcctionNameApproveIn,
+	reflect.ValueOf(&swapmoduletypes.MsgApproveOut{}).Type():    FeeAcctionNameApproveOut,
+	reflect.ValueOf(&swapmoduletypes.MsgCancel{}).Type():        FeeAcctionNameCancel,
+	reflect.ValueOf(&swapmoduletypes.MsgReject{}).Type():        FeeAcctionNameReject,
+	reflect.ValueOf(&swapmoduletypes.MsgReject{}).Type():        FeeAcctionNameReject,
+	reflect.ValueOf(&swapmoduletypes.MsgDeposit{}).Type():       FeeAcctionNameDeposit,
+	reflect.ValueOf(&swapmoduletypes.MsgWithdraw{}).Type():      FeeAcctionNameWithdraw,
+	reflect.ValueOf(&swapmoduletypes.MsgCreateSchema{}).Type():  FeeAcctionNameCreateSchema,
+	reflect.ValueOf(&swapmoduletypes.MsgUpdateSchema{}).Type():  FeeAcctionNameUpdateSchema,
+	reflect.ValueOf(&swapmoduletypes.MsgDeleteSchema{}).Type():  FeeAcctionNameDeleteSchema,
+	reflect.ValueOf(&swapmoduletypes.MsgCancelBatches{}).Type(): FeeAcctionNameCancelBatches,
+	reflect.ValueOf(&swapmoduletypes.MsgUpdateBatch{}).Type():   FeeAcctionNameUpdateBatch,
+	reflect.ValueOf(&swapmoduletypes.MsgUpdateSwapFee{}).Type(): FeeAcctionNameUpdateSwapFee,
+	/*------------x/swap module------------- end */
 }
 
 func GetActionKey(msg sdk.Msg) string {

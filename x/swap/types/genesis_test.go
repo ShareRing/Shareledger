@@ -48,7 +48,7 @@ func TestGenesisState_Validate(t *testing.T) {
 					},
 				},
 				BatchCount: 2,
-				FormatList: []types.Format{
+				Schemas: []types.Schema{
 					{
 						Network: "0",
 					},
@@ -129,7 +129,7 @@ func TestGenesisState_Validate(t *testing.T) {
 		{
 			desc: "duplicated format",
 			genState: &types.GenesisState{
-				FormatList: []types.Format{
+				Schemas: []types.Schema{
 					{
 						Network: "0",
 					},
