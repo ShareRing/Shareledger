@@ -4,6 +4,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"math"
+	"math/big"
 )
 
 func CheckSupport(denom string) error {
@@ -153,13 +154,13 @@ func ExponentToBase(value sdk.Int, exponent int) (coin sdk.Coin) {
 }
 
 // ShrCoinsToExponent only shr and nshr are allowed. others will be ignored.
-func ShrCoinsToExponent(coins sdk.DecCoins, exponent int, roundUp bool) (total int64, err error) {
+func ShrCoinsToExponent(coins sdk.DecCoins, exponent int, roundUp bool) (total *big.Int, err error) {
 	baseCoins, err := NormalizeToBaseCoins(coins, roundUp)
 	if err != nil {
-		return 0, err
+		return nil, err
 	}
 	totalBaseCoin := baseCoins.AmountOf(Base)
-	return totalBaseCoin.Mul(sdk.NewInt(int64(math.Pow10(exponent)))).Quo(sdk.NewInt(ShrExponent)).Int64(), nil
+	return totalBaseCoin.Mul(sdk.NewInt(int64(math.Pow10(exponent)))).Quo(sdk.NewInt(ShrExponent)).BigInt(), nil
 }
 
 func To(coins sdk.DecCoins, dest string, usdRate sdk.Dec) (coin sdk.DecCoin, err error) {
