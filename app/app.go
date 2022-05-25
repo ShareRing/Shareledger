@@ -528,8 +528,8 @@ func New(
 	documentModule := documentmodule.NewAppModule(appCodec, app.DocumentKeeper)
 
 	app.SwapKeeper = *swapmodulekeeper.NewKeeper(appCodec,
-		keys[documentmoduletypes.StoreKey],
-		keys[documentmoduletypes.MemStoreKey],
+		keys[swapmoduletypes.StoreKey],
+		keys[swapmoduletypes.MemStoreKey],
 		app.GetSubspace(swapmoduletypes.ModuleName),
 		app.BankKeeper, app.AccountKeeper)
 
