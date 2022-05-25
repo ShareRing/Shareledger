@@ -1,0 +1,9 @@
+syntax = "proto3";
+package shareledger.swap;
+
+option go_package = "github.com/sharering/shareledger/x/swap/types";
+
+message RequestedIn {
+  string address = 1; 
+  repeated string txHashes = 2;
+}
