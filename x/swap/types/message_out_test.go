@@ -11,18 +11,18 @@ import (
 func TestMsgOut_ValidateBasic(t *testing.T) {
 	tests := []struct {
 		name string
-		msg  MsgOut
+		msg  MsgRequestOut
 		err  error
 	}{
 		{
 			name: "invalid address",
-			msg: MsgOut{
+			msg: MsgRequestOut{
 				Creator: "invalid_address",
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
-			msg: MsgOut{
+			msg: MsgRequestOut{
 				Creator: sample.AccAddress(),
 			},
 		},

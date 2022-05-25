@@ -11,18 +11,18 @@ import (
 func TestMsgRevokeApprover_ValidateBasic(t *testing.T) {
 	tests := []struct {
 		name string
-		msg  MsgRevokeApprover
+		msg  MsgRevokeApprovers
 		err  error
 	}{
 		{
 			name: "invalid address",
-			msg: MsgRevokeApprover{
+			msg: MsgRevokeApprovers{
 				Creator: "invalid_address",
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
-			msg: MsgRevokeApprover{
+			msg: MsgRevokeApprovers{
 				Creator: sample.AccAddress(),
 			},
 		},

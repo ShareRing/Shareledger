@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -21,6 +22,11 @@ func (k msgServer) UpdateBatch(goCtx context.Context, msg *types.MsgUpdateBatch)
 	batch.Status = msg.GetStatus()
 	batch.Network = msg.GetNetwork()
 	k.SetBatch(ctx, batch)
+
+	//The batch is done we detele the swap request
+	if batch.GetStatus() == types.SwapStatusDone {
+		k.RemoveRequestFromStore(ctx, batch.GetTxIds())
+	}
 
 	return &types.MsgUpdateBatchResponse{}, nil
 }

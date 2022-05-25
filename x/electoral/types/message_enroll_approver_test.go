@@ -11,18 +11,18 @@ import (
 func TestMsgEnrollApprover_ValidateBasic(t *testing.T) {
 	tests := []struct {
 		name string
-		msg  MsgEnrollApprover
+		msg  MsgEnrollApprovers
 		err  error
 	}{
 		{
 			name: "invalid address",
-			msg: MsgEnrollApprover{
+			msg: MsgEnrollApprovers{
 				Creator: "invalid_address",
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
-			msg: MsgEnrollApprover{
+			msg: MsgEnrollApprovers{
 				Creator: sample.AccAddress(),
 			},
 		},

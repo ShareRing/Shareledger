@@ -3,6 +3,7 @@ package keeper
 import (
 	"encoding/binary"
 	"fmt"
+
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
@@ -323,4 +324,13 @@ func (k Keeper) SendCoinToAddr(ctx sdk.Context, c map[string]sdk.DecCoins) error
 	}
 
 	return nil
+}
+
+func (k Keeper) RemoveRequestFromStore(ctx sdk.Context, ids []uint64) {
+
+	approvedStore := k.GetStoreRequestMap(ctx)[types.SwapStatusApproved]
+
+	for i := range ids {
+		approvedStore.Delete(GetRequestIDBytes(ids[i]))
+	}
 }

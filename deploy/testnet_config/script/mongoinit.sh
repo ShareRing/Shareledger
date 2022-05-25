@@ -1,6 +1,6 @@
 mongo -- "$MONGO_INITDB_DATABASE" <<EOF
 db = db.getSiblingDB("admin");
-db.auth("root", "123");
+db.auth("root", "ShareRingiscaring!");
 
 db = db.getSiblingDB('Relayer');
 db.states.insert({

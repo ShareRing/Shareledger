@@ -23,6 +23,10 @@ accounts:
   - name: "relayer"
     coins: ["100000000000nshr"]
     mnemonic : "indoor donate grid ostrich tree swamp cactus common piano buzz version world second try garage squirrel alert fork december control bind spoon taste essay"
+  - name: "swap_manager"
+    coins: ["100000000000nshr"]
+    mnemonic: "logic fade bike misery female father false speak code immune improve key food enter night timber kick spare amused miss expire bottom walk century"
+
 validator:
   name: validator
   staked: "100000000000000000nshr"
@@ -80,11 +84,14 @@ genesis:
         - key: votershareledger18pf3zdwqjntd9wkvfcjvmdc7hua6c0q2eck5h5
           address: shareledger18pf3zdwqjntd9wkvfcjvmdc7hua6c0q2eck5h5
           status: active
-        - key: approvershareledger16p5u57wpd30j4k2kpg2rpxg3ye4m77lmjug4fq
-          address: shareledger16p5u57wpd30j4k2kpg2rpxg3ye4m77lmjug4fq
+        - key: approvershareledger1j4ndn4qed0ukulc0a6a5fxe6yxmnm7wh59pwpn
+          address: shareledger1j4ndn4qed0ukulc0a6a5fxe6yxmnm7wh59pwpn
           status: active
-        - key: relayershareledger16p5u57wpd30j4k2kpg2rpxg3ye4m77lmjug4fq
-          address: shareledger16p5u57wpd30j4k2kpg2rpxg3ye4m77lmjug4fq
+        - key: relayershareledger16k53l0v5fr93u2kpe7ek2lc3tm37k4954zalvv
+          address: shareledger16k53l0v5fr93u2kpe7ek2lc3tm37k4954zalvv
+          status: active
+        - key: swapManagershareledger1yfwgejzj4nmkp6es6q3xea9uwexy5xwjs9rpcx
+          address: shareledger1yfwgejzj4nmkp6es6q3xea9uwexy5xwjs9rpcx
           status: active
       authority:
         address: shareledger1lq9svs76xwekrrzw7uprekyqydf7fp02p8zp8e

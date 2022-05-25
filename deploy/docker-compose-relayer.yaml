@@ -10,7 +10,7 @@ services:
     restart: always
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: 123
+      MONGO_INITDB_ROOT_PASSWORD: ShareRingiscaring!
     volumes:
       - ./testnet/mongo/data/db:/data/db
       - ./testnet_config/script/mongoinit.sh:/docker-entrypoint-initdb.d/mongoinit.sh:ro
