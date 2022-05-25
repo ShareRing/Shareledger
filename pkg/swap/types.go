@@ -94,7 +94,7 @@ func (b SignDetail) GetContractParams() (params SwapParams, err error) {
 		if err != nil {
 			return SwapParams{}, err
 		}
-		params.Amounts = append(params.Amounts, big.NewInt(total))
+		params.Amounts = append(params.Amounts, total)
 	}
 	return
 }
