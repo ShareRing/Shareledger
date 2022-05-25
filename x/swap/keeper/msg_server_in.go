@@ -36,7 +36,7 @@ func (k msgServer) RequestIn(goCtx context.Context, msg *types.MsgRequestIn) (*t
 		Fee:         &insertFeeCoin,
 		Status:      types.SwapStatusPending,
 		TxHashes:    msg.TxHashes,
-		CreatedAt:   uint64(tn),
+		CreatedAt:   0,
 	})
 	if err != nil {
 		return nil, err
