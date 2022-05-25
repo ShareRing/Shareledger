@@ -129,11 +129,11 @@ func (a Auth) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate bool, next sdk.Ant
 				return ctx, sdkerrors.Wrapf(sdkerrors.ErrUnauthorized, ErrMsgNotAuthorityAndTreasure)
 			}
 
-		case *swapmoduletypes.MsgApproveOut, *swapmoduletypes.MsgReject:
+		case *swapmoduletypes.MsgApproveOut, *swapmoduletypes.MsgReject, *swapmoduletypes.MsgApproveIn:
 			if !a.rk.IsApprover(ctx, signer) {
 				return ctx, sdkerrors.Wrapf(sdkerrors.ErrUnauthorized, ErrMsgNotApproverAccount)
 			}
-		case *swapmoduletypes.MsgApproveIn, *swapmoduletypes.MsgRequestIn:
+		case *swapmoduletypes.MsgRequestIn:
 			if !a.rk.IsRelayer(ctx, signer) {
 				return ctx, sdkerrors.Wrapf(sdkerrors.ErrUnauthorized, ErrMsgNotRelayerAccount)
 			}

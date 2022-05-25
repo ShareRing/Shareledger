@@ -87,7 +87,6 @@ func NewStartCommands(defaultNodeHome string) *cobra.Command {
 				}
 			}()
 
-			numberProcessing := len(cfg.Network)
 			processChan := make(chan struct {
 				Network string
 				Err     error
@@ -108,7 +107,6 @@ func NewStartCommands(defaultNodeHome string) *cobra.Command {
 						cancel()
 						return
 					case process := <-processChan:
-						numberProcessing--
 						if process.Err != nil {
 							log.Errorw(fmt.Sprintf("process with network %s", process.Network), "error", process.Err)
 						}
@@ -283,7 +281,7 @@ func (r *Relayer) setLog(id uint64, msg string) error {
 	return r.db.SetLog(id, msg)
 }
 
-func (r *Relayer) trackSubmittedBatch(ctx context.Context, batch database.Batch, timeout time.Duration) (database.Status, error) {
+func (r *Relayer) trackSubmittedBatch(ctx context.Context, batch database.Batch, timeout time.Duration) (database.BatchStatus, error) {
 	tickerTimeout := time.NewTicker(timeout)
 	scanPeriod := time.NewTicker(timeout / 5)
 	defer func() {
@@ -418,7 +416,7 @@ func (r *Relayer) syncNewBatchesOut(ctx context.Context, network string) error {
 			newBatches = append(newBatches, database.Batch{
 				ShareledgerID: b.Id,
 				Status:        database.Pending,
-				Type:          database.Out,
+				Type:          database.BatchOut,
 				TxHashes:      []string{},
 				Network:       b.Network,
 			})
@@ -857,6 +855,7 @@ func (r *Relayer) submitBatch(ctx context.Context, network string, batchDetail s
 }
 
 func (r *Relayer) processIn(ctx context.Context, network string) error {
+	panic("implementing..")
 	eventService, found := r.events[network]
 	if !found {
 		return fmt.Errorf("%s does not have event subcriber", network)
@@ -919,6 +918,7 @@ func (r *Relayer) initSwapInRequest(
 		srcAddr,
 		destAddr,
 		network,
+		[]string{},
 		swapAmount,
 		swapFee,
 	)
@@ -935,6 +935,7 @@ func (r *Relayer) initSwapInRequest(
 		SrcAddr:     srcAddr,
 		DestNetwork: network,
 	})
+
 	if err != nil {
 		return errors.Wrapf(err, "fail to query the swap in request pending")
 	}

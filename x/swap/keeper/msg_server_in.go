@@ -11,6 +11,7 @@ import (
 )
 
 func (k msgServer) RequestIn(goCtx context.Context, msg *types.MsgRequestIn) (*types.MsgSwapInResponse, error) {
+	msg.ValidateBasic()
 	ctx := sdk.UnwrapSDKContext(goCtx)
 	tn := time.Now().Unix()
 	amount, err := denom.NormalizeToBaseCoins(sdk.NewDecCoins(*msg.GetAmount()), true)
@@ -34,6 +35,7 @@ func (k msgServer) RequestIn(goCtx context.Context, msg *types.MsgRequestIn) (*t
 		Amount:      &insertAmountCoin,
 		Fee:         &insertFeeCoin,
 		Status:      types.SwapStatusPending,
+		TxHashes:    msg.TxHashes,
 		CreatedAt:   uint64(tn),
 	})
 	if err != nil {

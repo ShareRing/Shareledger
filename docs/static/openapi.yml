@@ -31454,6 +31454,10 @@ paths:
                     createdAt:
                       type: string
                       format: uint64
+                    txHashes:
+                      type: array
+                      items:
+                        type: string
               pagination:
                 type: object
                 properties:
@@ -54126,6 +54130,10 @@ definitions:
             createdAt:
               type: string
               format: uint64
+            txHashes:
+              type: array
+              items:
+                type: string
       pagination:
         type: object
         properties:
@@ -54197,6 +54205,10 @@ definitions:
       createdAt:
         type: string
         format: uint64
+      txHashes:
+        type: array
+        items:
+          type: string
   shareledger.swap.Schema:
     type: object
     properties:

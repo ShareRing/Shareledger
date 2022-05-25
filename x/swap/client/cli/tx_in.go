@@ -8,19 +8,34 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/sharering/shareledger/x/swap/types"
 	"github.com/spf13/cobra"
+	"strings"
 )
 
 func CmdIn() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "in [src_address] [dest_address] [src_network] [amount] [fee]",
+		Use:   "in [src_address] [dest_address] [src_network] [txHashes] [amount] [fee]",
 		Short: "Broadcast message in, to create the swap in request",
-		Args:  cobra.ExactArgs(5),
+		Long: `
+			[dest_address] should be shareledger address in shareledger
+			[txHashes] <hash1>,<hash2>.... : tx Hashes list is required.
+		`,
+		Args: cobra.ExactArgs(5),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argSrcAddress := args[0]
 			argDesAddress := args[1]
 			argSrcNetwork := args[2]
-			argAmount := args[3]
-			argFee := args[4]
+			hashes := strings.Split(args[3], ",")
+			txHashes := make([]string, 0, len(hashes))
+
+			for i := range hashes {
+				h := strings.TrimSpace(hashes[i])
+				if h != "" {
+					txHashes = append(txHashes, h)
+				}
+			}
+
+			argAmount := args[4]
+			argFee := args[5]
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -41,6 +56,7 @@ func CmdIn() *cobra.Command {
 				argSrcAddress,
 				argDesAddress,
 				argSrcNetwork,
+				txHashes,
 				sAmount,
 				sFee,
 			)

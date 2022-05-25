@@ -4,6 +4,8 @@ import (
 	"context"
 	"fmt"
 	"github.com/pkg/errors"
+	"go.mongodb.org/mongo-driver/bson/primitive"
+	"math/big"
 	"time"
 
 	"github.com/rs/zerolog/log"
@@ -16,6 +18,115 @@ import (
 type DB struct {
 	*mongo.Client
 	DBName string
+}
+
+func (c *DB) GetPendingBatchesIn(ctx context.Context) ([]Batch, error) {
+	//TODO implement me
+	panic("implement me")
+}
+
+func (c *DB) InsertRequestIn(request RequestsIn) error {
+	rCol := c.GetCollection(c.DBName, RequestInCollection)
+	ctx, cancel := context.WithTimeout(context.Background(), timeout)
+	defer cancel()
+	_, err := rCol.InsertOne(ctx, request)
+	return err
+}
+
+func (c *DB) GetRequestIn(txHash string) (*RequestsIn, error) {
+	rCol := c.GetCollection(c.DBName, RequestInCollection)
+	ctx, cancel := context.WithTimeout(context.Background(), timeout)
+	defer cancel()
+	var req RequestsIn
+	err := rCol.FindOne(ctx, bson.M{
+		"txHash": txHash,
+	}).Decode(&req)
+	if err != nil {
+		if err != mongo.ErrNoDocuments {
+			return nil, err
+		}
+		return nil, nil
+	}
+	return &req, nil
+}
+
+func (c *DB) GetPendingRequestsIn(network string, destAddress string) ([]RequestsIn, error) {
+	rCol := c.GetCollection(c.DBName, RequestInCollection)
+	ctx, cancel := context.WithTimeout(context.Background(), timeout)
+	defer cancel()
+	var requests []RequestsIn
+	r, err := rCol.Find(ctx, bson.M{"network": network, "status": RequestInPending, "destAddress": destAddress}, nil)
+	if err != nil {
+		return nil, err
+	}
+	err = r.All(ctx, &requests)
+	return requests, err
+}
+
+func (c *DB) TryToBatchPendingSwapIn(network string, destAddress string, minFee *big.Int) error {
+	pendingRequests, err := c.GetPendingRequestsIn(network, destAddress)
+	if err != nil {
+		return err
+	}
+	if len(pendingRequests) == 0 {
+		return nil
+	}
+	ctx, cancel := context.WithTimeout(context.Background(), timeout)
+	defer cancel()
+
+	totalSwapIn := big.NewInt(0)
+	ids := make([]primitive.ObjectID, 0, len(pendingRequests))
+	for _, pr := range pendingRequests {
+		t := new(big.Int)
+		t, ok := t.SetString(pr.BaseAmount, 10)
+		if !ok {
+			return errors.New(fmt.Sprintf("pending request, txHash, %x, does not have correct amount value", pr.TxHash))
+		}
+		totalSwapIn = totalSwapIn.Add(totalSwapIn, t)
+		ids = append(ids, pr.ID)
+	}
+	if totalSwapIn.Cmp(minFee) > 0 {
+		// skip this destAddr for next time.
+		return nil
+	}
+	return c.Client.UseSession(ctx, func(sCtx mongo.SessionContext) (err error) {
+		err = sCtx.StartTransaction()
+		if err != nil {
+			return err
+		}
+		defer func() {
+			if err != nil {
+				sCtx.AbortTransaction(sCtx)
+			}
+		}()
+		bCol := c.GetCollection(c.DBName, BatchInCollection)
+		ires, err := bCol.InsertOne(sCtx, BatchIn{
+			Network:    network,
+			Status:     BatchesInPending,
+			BaseAmount: totalSwapIn.String(),
+			BaseFee:    minFee.String(),
+		})
+		if err != nil {
+			return err
+		}
+
+		inCol := c.GetCollection(c.DBName, RequestInCollection)
+		uFilter := bson.M{
+			"_id": bson.M{
+				"$in": ids,
+			},
+		}
+		_, err = inCol.UpdateMany(sCtx, uFilter, bson.M{
+			"$set": bson.M{
+				"status":  RequestInBatched,
+				"batchID": ires.InsertedID,
+			},
+		})
+		if err != nil {
+			return err
+		}
+		return sCtx.CommitTransaction(sCtx)
+	})
 }
 
 func (c *DB) SetBatchesOutFailed(nonceNumber uint64) error {
@@ -141,6 +252,9 @@ type Collection struct {
 }
 
 const (
+	RequestInCollection = "requestsIn"
+	BatchInCollection   = "batchesIn"
+
 	RequestCollection = "requests"
 	BatchCollection   = "batches"
 	AddressCollection = "addresses"
@@ -156,14 +270,20 @@ func (c *DB) GetSLP3Address(erc20Addr, network string) (string, error) {
 	collection := c.GetCollection(c.DBName, AddressCollection)
 
 	var queryResult Address
-	err := collection.FindOne(ctx, bson.M{
+	result := collection.FindOne(ctx, bson.M{
 		"result":  erc20Addr,
 		"network": network,
-	}).Decode(&queryResult)
+	})
+	if err := result.Err(); err != nil {
+		if err != mongo.ErrNoDocuments {
+			return "", err
+		}
+		return "", err
+	}
+	err := result.Decode(&queryResult)
 	if err != nil {
 		return "", err
 	}
-
 	return queryResult.ShareledgerAddress, nil
 }
 
@@ -197,7 +317,7 @@ func (c *DB) SetLastScannedBlockNumber(network string, contractAddress string, l
 	return nil
 }
 
-func (c *DB) UpdateBatchesOut(shareledgerIDs []uint64, status Status) error {
+func (c *DB) UpdateBatchesOut(shareledgerIDs []uint64, status BatchStatus) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
@@ -233,7 +353,7 @@ func (c *DB) GetNextUnfinishedBatchOut(network string, offset int64) (*Batch, er
 	return c.getOneBatchStatus(network, Pending, &offset)
 }
 
-func (c *DB) getOneBatchStatus(network string, status Status, offset *int64) (*Batch, error) {
+func (c *DB) getOneBatchStatus(network string, status BatchStatus, offset *int64) (*Batch, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	collection := c.GetCollection(c.DBName, BatchCollection)
@@ -258,7 +378,7 @@ func (c *DB) getOneBatchStatus(network string, status Status, offset *int64) (*B
 	return &batch, err
 }
 
-func (c *DB) SearchBatchByType(shareledgerID uint64, requestType Type) (*Batch, error) {
+func (c *DB) SearchBatchByType(shareledgerID uint64, requestType BatchType) (*Batch, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
@@ -279,7 +399,7 @@ func (c *DB) SearchBatchByType(shareledgerID uint64, requestType Type) (*Batch, 
 
 	return &queryResult, nil
 }
-func (c *DB) SearchBatchByStatus(network string, status Status) ([]Batch, error) {
+func (c *DB) SearchBatchByStatus(network string, status BatchStatus) ([]Batch, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
@@ -305,7 +425,7 @@ func (c *DB) SearchBatchByStatus(network string, status Status) ([]Batch, error)
 
 	return queryResult, nil
 }
-func (c *DB) SearchUnSyncedBatchByStatus(network string, status Status) ([]Batch, error) {
+func (c *DB) SearchUnSyncedBatchByStatus(network string, status BatchStatus) ([]Batch, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
@@ -343,8 +463,11 @@ func (c *DB) GetBatchByTxHash(txHash string) (*Batch, error) {
 	err := collection.FindOne(ctx, bson.M{
 		"txHashes": txHash,
 	}).Decode(&queryResult)
-	if err != nil && err != mongo.ErrNoDocuments {
-		return nil, errors.Wrapf(err, "decoding query result to struct fail")
+	if err != nil {
+		if err != mongo.ErrNoDocuments {
+			return nil, errors.Wrapf(err, "decoding query result to struct fail")
+		}
+		return nil, nil
 	}
 
 	return &queryResult, nil

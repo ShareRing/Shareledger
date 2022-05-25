@@ -1,36 +1,72 @@
 package database
 
-import "go.mongodb.org/mongo-driver/bson/primitive"
-
-type Status string
-
-const (
-	Pending   Status = "pending"
-	Done      Status = "done"
-	Submitted Status = "submitted"
-	Cancelled Status = "cancelled"
-	Failed    Status = "failed"
-	Synced    Status = "synced"
+import (
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-type Type string
+type BatchStatus string
 
 const (
-	In  Type = "in"
-	Out Type = "out"
+	Pending   BatchStatus = "pending"
+	Done      BatchStatus = "done"
+	Submitted BatchStatus = "submitted"
+	Cancelled BatchStatus = "cancelled"
+	Failed    BatchStatus = "failed"
+)
+
+type BatchType string
+
+const (
+	BatchOut BatchType = "out"
 )
 
 type Batch struct {
 	ID            primitive.ObjectID `bson:"_id,omitempty" json:"id"`
 	ShareledgerID uint64             `bson:"shareledgerID" json:"shareledgerID"`
-	Status        Status             `bson:"status" json:"status"`
-	Type          Type               `bson:"type"  json:"type"`
+	Status        BatchStatus        `bson:"status" json:"status"`
+	Type          BatchType          `bson:"type"  json:"type"`
 	TxHashes      []string           `bson:"txHashes" json:"txHashes"`
 	Network       string             `bson:"network" json:"network"`
 	BlockNumber   uint64             `bson:"blockNumber" json:"blockNumber"`
 	Nonce         uint64             `bson:"nonce" json:"nonce"`
 	Signer        string             `bson:"signer" json:"signer"`
 	Synced        bool               `bson:"synced" json:"synced"`
+}
+
+type RequestInStatus string
+
+const (
+	RequestInPending RequestInStatus = "pending"
+	RequestInBatched RequestInStatus = "batched"
+)
+
+type RequestsIn struct {
+	ID          primitive.ObjectID  `bson:"_id,omitempty" json:"id"`
+	Status      RequestInStatus     `bson:"status" json:"status"`
+	TxHash      string              `bson:"txHash"`
+	Network     string              `bson:"network"`
+	DestAddress string              `bson:"destAddress"`
+	SrcAddress  string              `bson:"srcAddress"`
+	BaseAmount  string              `bson:"baseAmount"`
+	BatchID     *primitive.ObjectID `bson:"batchID,omitempty"`
+}
+
+type BatchesInStatus string
+
+const (
+	BatchesInPending   BatchesInStatus = "pending"
+	BatchesInSubmitted BatchesInStatus = "submitted"
+	BatchesInDone      BatchesInStatus = "done"
+)
+
+type BatchIn struct {
+	ID            primitive.ObjectID `bson:"_id,omitempty" json:"id"`
+	Status        BatchesInStatus    `bson:"status"`
+	ShareledgerID uint64             `bson:"ShareledgerID"`
+	BaseAmount    string             `bson:"baseAmount"`
+	BaseFee       string             `bson:"baseFee"`
+	Submitter     string             `bson:"submitter"`
+	Network       string             `bson:"network"`
 }
 
 type Logs struct {

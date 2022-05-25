@@ -3,6 +3,7 @@ package denom
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stretchr/testify/require"
+	"math/big"
 	"testing"
 )
 
@@ -92,5 +93,28 @@ func TestToDisplayCoins(t *testing.T) {
 	for _, tc := range tcs {
 		r := ToDisplayCoins(tc.i)
 		require.Equal(t, tc.o, r, tc.d)
+	}
+}
+
+func TestExponentToBase(t *testing.T) {
+	testCases := []struct {
+		amount   *big.Int
+		exponent int
+		result   sdk.Coin
+	}{
+		{
+			amount:   big.NewInt(9000000000000000000), //9shr - bsc
+			exponent: 18,
+			result:   sdk.NewCoin(Base, sdk.NewInt(9000000000)), //9shr - shr
+		},
+		{
+			amount:   big.NewInt(900), // 9shr - eth
+			exponent: 2,
+			result:   sdk.NewCoin(Base, sdk.NewInt(9000000000)),
+		},
+	}
+	for _, tc := range testCases {
+		r := ExponentToBase(sdk.NewIntFromBigInt(tc.amount), tc.exponent)
+		require.Equal(t, tc.result, r)
 	}
 }

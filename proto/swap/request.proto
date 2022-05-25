@@ -16,4 +16,5 @@ message Request {
   string status = 8;
   uint64 batchId = 9;
   uint64 createdAt = 10;
+  repeated string txHashes = 11;
 }

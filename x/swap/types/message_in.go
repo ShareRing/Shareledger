@@ -10,13 +10,14 @@ const TypeMsgRequestIn = "in"
 
 var _ sdk.Msg = &MsgRequestIn{}
 
-func NewMsgRequestIn(creator string, srcAddress string, desAddress string, srcNetwork string, amount, fee sdk.DecCoin) *MsgRequestIn {
+func NewMsgRequestIn(creator string, srcAddress string, desAddress string, srcNetwork string, txHashes []string, amount, fee sdk.DecCoin) *MsgRequestIn {
 	return &MsgRequestIn{
 		Creator:     creator,
 		SrcAddress:  srcAddress,
 		DestAddress: desAddress,
 		Network:     srcNetwork,
 		Amount:      &amount,
+		TxHashes:    txHashes,
 		Fee:         &fee,
 	}
 }
@@ -56,7 +57,9 @@ func (msg *MsgRequestIn) ValidateBasic() error {
 	if strings.TrimSpace(msg.GetDestAddress()) == "" {
 		return sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "destination address can't empty")
 	}
-
+	if len(msg.TxHashes) == 0 {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "tx hashes are required")
+	}
 	if strings.TrimSpace(msg.GetSrcAddress()) == "" {
 		return sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "source address empty")
 	}
