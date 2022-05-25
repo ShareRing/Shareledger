@@ -1,4 +1,4 @@
-mongoURI: mongodb://root:123@mongo:27017/Relayer?authSource=admin&retryWrites=true&w=majority
+mongoURI: mongodb://root:ShareRingiscaring!@mongo:27017/Relayer?authSource=admin&retryWrites=true&w=majority
 dbName: "Relayer"
 collectionName: "Request"
 scanInterval: 20s
