@@ -186,6 +186,7 @@ var (
 		gentlemintmodule.AppModuleBasic{},
 		electoralmodule.AppModuleBasic{},
 		swapmodule.AppModuleBasic{},
+		ica.AppModuleBasic{},
 		// this line is used by starport scaffolding # stargate/app/moduleBasic
 	)
 
