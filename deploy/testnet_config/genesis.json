@@ -33398,6 +33398,14 @@
     "genutil": {
       "gen_txs": []
     },
+    "swap": {
+      "idList": [],
+      "requestList": [],
+      "batchList": [],
+      "schemas": [],
+      "requestCount": 0,
+      "batchCount": 0
+    },
     "gov": {
       "deposit_params": {
         "max_deposit_period": "600s",
