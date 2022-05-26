@@ -20,12 +20,12 @@ type DB struct {
 	DBName string
 }
 
-func (c *DB) GetPendingBatchesIn(ctx context.Context) ([]BatchOut, error) {
+func (c *DB) GetPendingBatchesIn(ctx context.Context) ([]BatchIn, error) {
 	rCol := c.GetCollection(c.DBName, BatchInCollection)
 	ctx, cancel := context.WithTimeout(context.Background(), timeout)
 	defer cancel()
-	var requests []BatchOut
-	r, err := rCol.Find(ctx, bson.M{"status": BatchesInPending}, nil)
+	var requests []BatchIn
+	r, err := rCol.Find(ctx, bson.M{"status": BatchStatusPending, "type": BatchTypeIn}, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -109,8 +109,11 @@ func (c *DB) TryToBatchPendingSwapIn(network string, destAddress string, minFee 
 		}()
 		bCol := c.GetCollection(c.DBName, BatchInCollection)
 		ires, err := bCol.InsertOne(sCtx, BatchIn{
-			Network:    network,
-			Status:     BatchesInPending,
+			Batch: Batch{
+				Status:  BatchStatusPending,
+				Type:    BatchTypeIn,
+				Network: network,
+			},
 			BaseAmount: totalSwapIn.String(),
 			BaseFee:    minFee.String(),
 		})
@@ -150,10 +153,10 @@ func (c *DB) SetBatchesOutFailed(nonceNumber uint64) error {
 				"$lte": nonceNumber,
 			},
 			"type":   "out",
-			"status": Submitted,
+			"status": BatchStatusSubmitted,
 		},
 		bson.D{
-			{Key: "$set", Value: bson.D{{Key: "status", Value: Failed}}},
+			{Key: "$set", Value: bson.D{{Key: "status", Value: BatchStatusFailed}}},
 		},
 	)
 	if err != nil {
@@ -351,14 +354,14 @@ func (c *DB) UpdateBatchesOut(shareledgerIDs []uint64, status BatchStatus) error
 
 func (c *DB) GetNextUnfinishedBatchOut(network string, offset int64) (*BatchOut, error) {
 	// submitted is preferred to process first
-	submittedBatch, err := c.getOneBatchStatus(network, Submitted, &offset)
+	submittedBatch, err := c.getOneBatchStatus(network, BatchStatusSubmitted, &offset)
 	if err != nil {
 		return nil, err
 	}
 	if submittedBatch != nil {
 		return submittedBatch, nil
 	}
-	return c.getOneBatchStatus(network, Pending, &offset)
+	return c.getOneBatchStatus(network, BatchStatusPending, &offset)
 }
 
 func (c *DB) getOneBatchStatus(network string, status BatchStatus, offset *int64) (*BatchOut, error) {

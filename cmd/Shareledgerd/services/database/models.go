@@ -7,11 +7,11 @@ import (
 type BatchStatus string
 
 const (
-	Pending   BatchStatus = "pending"
-	Done      BatchStatus = "done"
-	Submitted BatchStatus = "submitted"
-	Cancelled BatchStatus = "cancelled"
-	Failed    BatchStatus = "failed"
+	BatchStatusPending   BatchStatus = "pending"
+	BatchStatusDone      BatchStatus = "done"
+	BatchStatusSubmitted BatchStatus = "submitted"
+	BatchStatusCancelled BatchStatus = "cancelled"
+	BatchStatusFailed    BatchStatus = "failed"
 )
 
 type BatchType string
@@ -21,6 +21,10 @@ const (
 	BatchTypeIn  BatchType = "in"
 )
 
+type IBatch interface {
+	BatchType() BatchType
+}
+
 type Batch struct {
 	ID            primitive.ObjectID `bson:"_id,omitempty" json:"id"`
 	ShareledgerID uint64             `bson:"shareledgerID" json:"shareledgerID"`
@@ -28,14 +32,46 @@ type Batch struct {
 	Type          BatchType          `bson:"type"  json:"type"`
 	TxHashes      []string           `bson:"txHashes" json:"txHashes"`
 	Network       string             `bson:"network" json:"network"`
+	Signer        string             `bson:"signer" json:"signer"`
+	Synced        bool               `bson:"synced" json:"synced"`
+}
+
+func InitBatch(b Batch) IBatch {
+	switch b.batchType() {
+	case BatchTypeOut:
+		return BatchOut{
+			Batch: b,
+		}
+	case BatchTypeIn:
+		return BatchIn{
+			Batch: b,
+		}
+	}
+	return nil
+}
+
+func (b Batch) batchType() BatchType {
+	return b.Type
 }
 
 type BatchOut struct {
 	Batch       `bson:",inline"`
 	BlockNumber uint64 `bson:"blockNumber" json:"blockNumber"`
 	Nonce       uint64 `bson:"nonce" json:"nonce"`
-	Signer      string `bson:"signer" json:"signer"`
-	Synced      bool   `bson:"synced" json:"synced"`
+}
+
+func (b BatchOut) BatchType() BatchType {
+	return b.Batch.batchType()
+}
+
+type BatchIn struct {
+	Batch      `bson:",inline"`
+	BaseAmount string `bson:"baseAmount"`
+	BaseFee    string `bson:"baseFee"`
+}
+
+func (b BatchIn) BatchType() BatchType {
+	return b.Batch.batchType()
 }
 
 type RequestInStatus string
@@ -56,23 +92,22 @@ type RequestsIn struct {
 	BatchID     *primitive.ObjectID `bson:"batchID,omitempty"`
 }
 
-type BatchesInStatus string
+//type BatchesInStatus string
 
-const (
-	BatchesInPending   BatchesInStatus = "pending"
-	BatchesInSubmitted BatchesInStatus = "submitted"
-	BatchesInDone      BatchesInStatus = "done"
-)
+//const (
+//	BatchesInPending   BatchesInStatus = "pending"
+//	BatchesInSubmitted BatchesInStatus = "submitted"
+//	BatchesInDone      BatchesInStatus = "done"
+//)
 
-type BatchIn struct {
-	ID            primitive.ObjectID `bson:"_id,omitempty" json:"id"`
-	Status        BatchesInStatus    `bson:"status"`
-	ShareledgerID uint64             `bson:"ShareledgerID"`
-	BaseAmount    string             `bson:"baseAmount"`
-	BaseFee       string             `bson:"baseFee"`
-	Submitter     string             `bson:"submitter"`
-	Network       string             `bson:"network"`
-}
+//type BatchIn struct {
+//	ID            primitive.ObjectID `bson:"_id,omitempty" json:"id"`
+//	Status        BatchesInStatus    `bson:"status"`
+//	ShareledgerID uint64             `bson:"ShareledgerID"`
+
+//	Submitter     string             `bson:"submitter"`
+//	Network       string             `bson:"network"`
+//}
 
 type Logs struct {
 	ID      primitive.ObjectID `bson:"_id,omitempty" json:"id"`

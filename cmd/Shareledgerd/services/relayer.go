@@ -291,7 +291,7 @@ func (r *Relayer) trackSubmittedBatch(ctx context.Context, batch database.BatchO
 	for {
 		select {
 		case <-tickerTimeout.C:
-			return database.Submitted, nil
+			return database.BatchStatusSubmitted, nil
 		case <-scanPeriod.C:
 			for _, hash := range batch.TxHashes {
 				receipt, err := r.checkTxHash(ctx, batch.Network, common.HexToHash(hash))
@@ -300,32 +300,32 @@ func (r *Relayer) trackSubmittedBatch(ctx context.Context, batch database.BatchO
 						continue
 					}
 					if IsErrBatchProcessed(err) {
-						return database.Done, r.db.UpdateBatchesOut([]uint64{batch.ShareledgerID}, database.Done)
+						return database.BatchStatusDone, r.db.UpdateBatchesOut([]uint64{batch.ShareledgerID}, database.BatchStatusDone)
 					}
 
 					if e := r.setLog(batch.ShareledgerID, err.Error()); e != nil {
 						log.Errorw("set log error", "original error", err, "log error", e)
 					}
-					return database.Failed, r.db.UpdateBatchesOut([]uint64{batch.ShareledgerID}, database.Failed)
+					return database.BatchStatusFailed, r.db.UpdateBatchesOut([]uint64{batch.ShareledgerID}, database.BatchStatusFailed)
 				}
 				if receipt != nil {
 					switch receipt.Status {
 					case 1:
-						return database.Done, r.db.UpdateBatchesOut([]uint64{batch.ShareledgerID}, database.Done)
+						return database.BatchStatusDone, r.db.UpdateBatchesOut([]uint64{batch.ShareledgerID}, database.BatchStatusDone)
 					case 0:
 						msgLog, _ := json.MarshalIndent(receipt, "", "  ")
 						if e := r.setLog(batch.ShareledgerID, string(msgLog)); e != nil {
 							log.Errorw("set log msgLog", "msgLog", msgLog, "log error", e, "raw log", receipt)
 						}
-						return database.Failed, r.db.UpdateBatchesOut([]uint64{batch.ShareledgerID}, database.Failed)
+						return database.BatchStatusFailed, r.db.UpdateBatchesOut([]uint64{batch.ShareledgerID}, database.BatchStatusFailed)
 					default:
 						fmt.Println("default:")
-						return database.Submitted, nil
+						return database.BatchStatusSubmitted, nil
 					}
 				}
 			}
 		case <-ctx.Done():
-			return database.Submitted, nil
+			return database.BatchStatusSubmitted, nil
 		}
 	}
 }
@@ -364,13 +364,13 @@ func (r *Relayer) syncEventSuccessfulBatches(ctx context.Context, network string
 			logData = append(logData, "batch_id", batch.ShareledgerID)
 			logData = append(logData, "nonce", batch.Nonce)
 			logData = append(logData, "batch_current_status", batch.Status)
-			if batch.Status == database.Done {
+			if batch.Status == database.BatchStatusDone {
 				// already processed done in other process. Skip
 				logData = append(logData, "msg", "already done")
 				continue
 			}
-			batch.Status = database.Done
-			if err := r.db.UpdateBatchesOut([]uint64{batch.ShareledgerID}, database.Done); err != nil {
+			batch.Status = database.BatchStatusDone
+			if err := r.db.UpdateBatchesOut([]uint64{batch.ShareledgerID}, database.BatchStatusDone); err != nil {
 				logData = append(logData, "err", err)
 				return errors.Wrapf(err, "update batch out. shareledger id %v", batch.ShareledgerID)
 
@@ -416,7 +416,7 @@ func (r *Relayer) syncNewBatchesOut(ctx context.Context, network string) error {
 			newBatches = append(newBatches, database.BatchOut{
 				Batch: database.Batch{
 					ShareledgerID: b.Id,
-					Status:        database.Pending,
+					Status:        database.BatchStatusPending,
 					Type:          database.BatchTypeOut,
 					TxHashes:      []string{},
 					Network:       b.Network,
@@ -452,9 +452,9 @@ func (r *Relayer) syncFinishedBatches(ctx context.Context, network string) error
 }
 
 func (r *Relayer) syncDoneBatches(ctx context.Context, network string) error {
-	batches, err := r.db.SearchUnSyncedBatchByStatus(network, database.Done)
+	batches, err := r.db.SearchUnSyncedBatchByStatus(network, database.BatchStatusDone)
 	if err != nil {
-		return errors.Wrapf(err, "search batches by status %s fail", database.Done)
+		return errors.Wrapf(err, "search batches by status %s fail", database.BatchStatusDone)
 	}
 	sID := make([]uint64, 0, len(batches))
 	for i := range batches {
@@ -479,7 +479,7 @@ func (r *Relayer) syncDoneBatches(ctx context.Context, network string) error {
 }
 
 func (r *Relayer) syncFailedBatches(ctx context.Context, network string) error {
-	failedBatches, err := r.db.SearchUnSyncedBatchByStatus(network, database.Failed)
+	failedBatches, err := r.db.SearchUnSyncedBatchByStatus(network, database.BatchStatusFailed)
 	if err != nil {
 		return err
 	}
@@ -496,7 +496,7 @@ func (r *Relayer) syncFailedBatches(ctx context.Context, network string) error {
 		return errors.Wrapf(err, "can't cancel batches")
 	}
 	for i := range failedBatches {
-		failedBatches[i].Status = database.Cancelled
+		failedBatches[i].Status = database.BatchStatusCancelled
 	}
 	err = r.db.SetBatches(failedBatches)
 	if err != nil {
@@ -592,7 +592,7 @@ func (r *Relayer) submitAndTrack(ctx context.Context, batch database.BatchOut, d
 				"err_submit_batch", err.Error(),
 			)
 			if IsErrBatchProcessed(err) {
-				batch.Status = database.Done
+				batch.Status = database.BatchStatusDone
 			} else if IsErrUnderPrice(err) || IsErrAlreadyKnown(err) {
 				// retry with higher tip.
 				if currentTip == nil && currentPrice == nil {
@@ -611,7 +611,7 @@ func (r *Relayer) submitAndTrack(ctx context.Context, batch database.BatchOut, d
 				}
 				continue
 			} else {
-				batch.Status = database.Failed
+				batch.Status = database.BatchStatusFailed
 			}
 			_ = r.setLog(batch.ShareledgerID, err.Error())
 		}
@@ -624,7 +624,7 @@ func (r *Relayer) submitAndTrack(ctx context.Context, batch database.BatchOut, d
 			)
 			batch.Signer = signerAddr
 			batch.Nonce = txRes.Nonce()
-			batch.Status = database.Submitted
+			batch.Status = database.BatchStatusSubmitted
 			batch.TxHashes = append(batch.TxHashes, txRes.Hash().String())
 
 			currentTip = txRes.GasTipCap()
@@ -643,10 +643,10 @@ func (r *Relayer) submitAndTrack(ctx context.Context, batch database.BatchOut, d
 		if err := r.db.SetBatch(batch); err != nil {
 			return errors.Wrapf(err, "insert batch into database %v", batch)
 		}
-		if batch.Status == database.Done || batch.Status == database.Failed {
+		if batch.Status == database.BatchStatusDone || batch.Status == database.BatchStatusFailed {
 			return nil
 		}
-		if batch.Status == database.Submitted {
+		if batch.Status == database.BatchStatusSubmitted {
 			status, err := r.trackSubmittedBatch(ctx, batch, rConfig.IntervalRetry)
 			logSubmit = append(logSubmit,
 				"track_submit_status", status,
@@ -655,7 +655,7 @@ func (r *Relayer) submitAndTrack(ctx context.Context, batch database.BatchOut, d
 			if err != nil {
 				return errors.Wrapf(err, "tracking summited batch at smartcontract fail")
 			}
-			if status != database.Submitted {
+			if status != database.BatchStatusSubmitted {
 				// status will be failed and done which do not need to keep tracking
 				// trying to re-submit with higher tip
 				return nil

@@ -29,5 +29,5 @@ type DBRelayer interface {
 	GetPendingRequestsIn(network string, destAddress string) ([]RequestsIn, error)
 	TryToBatchPendingSwapIn(network string, destAddress string, minFee *big.Int) error
 	GetRequestIn(txHash string) (*RequestsIn, error)
-	GetPendingBatchesIn(ctx context.Context) ([]BatchOut, error)
+	GetPendingBatchesIn(ctx context.Context) ([]BatchIn, error)
 }
