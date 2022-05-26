@@ -7,6 +7,7 @@ import "cosmos/base/query/v1beta1/pagination.proto";
 import "cosmos/base/v1beta1/coin.proto";
 import "swap/params.proto";
 import "swap/request.proto";
+import "swap/requested_in.proto";
 import "swap/batch.proto";
 import "swap/schema.proto";
 // this line is used by starport scaffolding # 1
@@ -43,6 +44,11 @@ service Query {
 // Queries a list of SearchBatch items.
 	rpc Batches(QueryBatchesRequest) returns (QueryBatchesResponse) {
 		option (google.api.http).get = "/sharering/shareledger/swap/search_batches";
+	}
+
+// Queries a list of RequestedIns items.
+	rpc RequestedIns(QueryRequestedInsRequest) returns (QueryRequestedInsResponse) {
+		option (google.api.http).get = "/sharering/shareledger/swap/requested_ins/{address}";
 	}
 
 // this line is used by starport scaffolding # 2
@@ -109,5 +115,13 @@ message QueryBatchesRequest {
 cosmos.base.query.v1beta1.PageRequest pagination = 4;
 }
 
+
+message QueryRequestedInsRequest {
+  string address = 1;
+}
+
+message QueryRequestedInsResponse {
+		RequestedIn requestedIn = 1;
+}
 
 // this line is used by starport scaffolding # 3
