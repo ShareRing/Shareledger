@@ -20,9 +20,17 @@ type DB struct {
 	DBName string
 }
 
-func (c *DB) GetPendingBatchesIn(ctx context.Context) ([]Batch, error) {
-	//TODO implement me
-	panic("implement me")
+func (c *DB) GetPendingBatchesIn(ctx context.Context) ([]BatchOut, error) {
+	rCol := c.GetCollection(c.DBName, BatchInCollection)
+	ctx, cancel := context.WithTimeout(context.Background(), timeout)
+	defer cancel()
+	var requests []BatchOut
+	r, err := rCol.Find(ctx, bson.M{"status": BatchesInPending}, nil)
+	if err != nil {
+		return nil, err
+	}
+	err = r.All(ctx, &requests)
+	return requests, err
 }
 
 func (c *DB) InsertRequestIn(request RequestsIn) error {
@@ -154,7 +162,7 @@ func (c *DB) SetBatchesOutFailed(nonceNumber uint64) error {
 	return nil
 }
 
-func (c *DB) InsertBatches(batches []Batch) error {
+func (c *DB) InsertBatches(batches []BatchOut) error {
 	ctx, cancel := context.WithTimeout(context.Background(), timeout)
 	defer cancel()
 
@@ -341,7 +349,7 @@ func (c *DB) UpdateBatchesOut(shareledgerIDs []uint64, status BatchStatus) error
 	return nil
 }
 
-func (c *DB) GetNextUnfinishedBatchOut(network string, offset int64) (*Batch, error) {
+func (c *DB) GetNextUnfinishedBatchOut(network string, offset int64) (*BatchOut, error) {
 	// submitted is preferred to process first
 	submittedBatch, err := c.getOneBatchStatus(network, Submitted, &offset)
 	if err != nil {
@@ -353,12 +361,12 @@ func (c *DB) GetNextUnfinishedBatchOut(network string, offset int64) (*Batch, er
 	return c.getOneBatchStatus(network, Pending, &offset)
 }
 
-func (c *DB) getOneBatchStatus(network string, status BatchStatus, offset *int64) (*Batch, error) {
+func (c *DB) getOneBatchStatus(network string, status BatchStatus, offset *int64) (*BatchOut, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	collection := c.GetCollection(c.DBName, BatchCollection)
 
-	var batch Batch
+	var batch BatchOut
 	err := collection.FindOne(ctx, bson.M{
 		"status":  status,
 		"network": network,
@@ -378,13 +386,13 @@ func (c *DB) getOneBatchStatus(network string, status BatchStatus, offset *int64
 	return &batch, err
 }
 
-func (c *DB) SearchBatchByType(shareledgerID uint64, requestType BatchType) (*Batch, error) {
+func (c *DB) SearchBatchByType(shareledgerID uint64, requestType BatchType) (*BatchOut, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
 	collection := c.GetCollection(c.DBName, BatchCollection)
 
-	var queryResult Batch
+	var queryResult BatchOut
 
 	err := collection.FindOne(ctx, bson.M{
 		"shareledgerID": shareledgerID,
@@ -394,18 +402,18 @@ func (c *DB) SearchBatchByType(shareledgerID uint64, requestType BatchType) (*Ba
 		if err == mongo.ErrNoDocuments {
 			return nil, nil
 		}
-		return &Batch{}, errors.Wrapf(err, "search batch by batch type from mongodb fail")
+		return &BatchOut{}, errors.Wrapf(err, "search batch by batch type from mongodb fail")
 	}
 
 	return &queryResult, nil
 }
-func (c *DB) SearchBatchByStatus(network string, status BatchStatus) ([]Batch, error) {
+func (c *DB) SearchBatchByStatus(network string, status BatchStatus) ([]BatchOut, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
 	collection := c.GetCollection(c.DBName, BatchCollection)
 
-	var queryResult []Batch
+	var queryResult []BatchOut
 
 	cursor, err := collection.Find(ctx, bson.M{
 		"network": network,
@@ -425,13 +433,13 @@ func (c *DB) SearchBatchByStatus(network string, status BatchStatus) ([]Batch, e
 
 	return queryResult, nil
 }
-func (c *DB) SearchUnSyncedBatchByStatus(network string, status BatchStatus) ([]Batch, error) {
+func (c *DB) SearchUnSyncedBatchByStatus(network string, status BatchStatus) ([]BatchOut, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
 	collection := c.GetCollection(c.DBName, BatchCollection)
 
-	var queryResult []Batch
+	var queryResult []BatchOut
 
 	cursor, err := collection.Find(ctx, bson.M{
 		"network": network,
@@ -452,13 +460,13 @@ func (c *DB) SearchUnSyncedBatchByStatus(network string, status BatchStatus) ([]
 
 	return queryResult, nil
 }
-func (c *DB) GetBatchByTxHash(txHash string) (*Batch, error) {
+func (c *DB) GetBatchByTxHash(txHash string) (*BatchOut, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
 	collection := c.GetCollection(c.DBName, BatchCollection)
 
-	var queryResult Batch
+	var queryResult BatchOut
 
 	err := collection.FindOne(ctx, bson.M{
 		"txHashes": txHash,
@@ -473,7 +481,7 @@ func (c *DB) GetBatchByTxHash(txHash string) (*Batch, error) {
 	return &queryResult, nil
 }
 
-func (c *DB) SetBatches(batches []Batch) error {
+func (c *DB) SetBatches(batches []BatchOut) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
@@ -497,7 +505,7 @@ func (c *DB) SetBatches(batches []Batch) error {
 	return err
 }
 
-func (c *DB) buildSetOperations(filter bson.M, bach Batch, upsert bool) *mongo.UpdateOneModel {
+func (c *DB) buildSetOperations(filter bson.M, bach BatchOut, upsert bool) *mongo.UpdateOneModel {
 	operation := mongo.NewUpdateOneModel()
 	operation.SetFilter(filter)
 	operation.Upsert = &upsert
@@ -514,7 +522,7 @@ func (c *DB) buildSetOperations(filter bson.M, bach Batch, upsert bool) *mongo.U
 	return operation
 }
 
-func (c *DB) SetBatch(request Batch) error {
+func (c *DB) SetBatch(request BatchOut) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 

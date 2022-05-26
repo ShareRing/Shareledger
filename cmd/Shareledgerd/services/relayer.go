@@ -281,7 +281,7 @@ func (r *Relayer) setLog(id uint64, msg string) error {
 	return r.db.SetLog(id, msg)
 }
 
-func (r *Relayer) trackSubmittedBatch(ctx context.Context, batch database.Batch, timeout time.Duration) (database.BatchStatus, error) {
+func (r *Relayer) trackSubmittedBatch(ctx context.Context, batch database.BatchOut, timeout time.Duration) (database.BatchStatus, error) {
 	tickerTimeout := time.NewTicker(timeout)
 	scanPeriod := time.NewTicker(timeout / 5)
 	defer func() {
@@ -402,7 +402,7 @@ func (r *Relayer) syncNewBatchesOut(ctx context.Context, network string) error {
 		return err
 	}
 	maxBatchId := lastScannedBatchId
-	newBatches := make([]database.Batch, 0)
+	newBatches := make([]database.BatchOut, 0)
 
 	res, err := r.qClient.Batches(ctx, &swapmoduletypes.QueryBatchesRequest{
 		Status:  swapmoduletypes.BatchStatusPending,
@@ -413,7 +413,7 @@ func (r *Relayer) syncNewBatchesOut(ctx context.Context, network string) error {
 	}
 	for _, b := range res.Batches {
 		if b.Id > lastScannedBatchId {
-			newBatches = append(newBatches, database.Batch{
+			newBatches = append(newBatches, database.BatchOut{
 				ShareledgerID: b.Id,
 				Status:        database.Pending,
 				Type:          database.BatchOut,
@@ -569,7 +569,7 @@ func (r *Relayer) processNextPendingBatchesOut(ctx context.Context, network stri
 	}
 }
 
-func (r *Relayer) submitAndTrack(ctx context.Context, batch database.Batch, detail swaputil.BatchDetail) error {
+func (r *Relayer) submitAndTrack(ctx context.Context, batch database.BatchOut, detail swaputil.BatchDetail) error {
 	var logSubmit []interface{}
 	var currentTip *big.Int
 	var currentPrice *big.Int

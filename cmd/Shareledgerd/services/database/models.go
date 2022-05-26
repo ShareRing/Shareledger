@@ -17,10 +17,11 @@ const (
 type BatchType string
 
 const (
-	BatchOut BatchType = "out"
+	BatchTypeOut BatchType = "out"
+	BatchTypeIn  BatchType = "in"
 )
 
-type Batch struct {
+type BatchOut struct {
 	ID            primitive.ObjectID `bson:"_id,omitempty" json:"id"`
 	ShareledgerID uint64             `bson:"shareledgerID" json:"shareledgerID"`
 	Status        BatchStatus        `bson:"status" json:"status"`
