@@ -162,7 +162,7 @@ func (c *DB) SetBatchesOutFailed(nonceNumber uint64) error {
 	return nil
 }
 
-func (c *DB) InsertBatches(batches []BatchOut) error {
+func (c *DB) InsertBatchesOut(batches []BatchOut) error {
 	ctx, cancel := context.WithTimeout(context.Background(), timeout)
 	defer cancel()
 

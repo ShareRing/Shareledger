@@ -414,11 +414,13 @@ func (r *Relayer) syncNewBatchesOut(ctx context.Context, network string) error {
 	for _, b := range res.Batches {
 		if b.Id > lastScannedBatchId {
 			newBatches = append(newBatches, database.BatchOut{
-				ShareledgerID: b.Id,
-				Status:        database.Pending,
-				Type:          database.BatchOut,
-				TxHashes:      []string{},
-				Network:       b.Network,
+				Batch: database.Batch{
+					ShareledgerID: b.Id,
+					Status:        database.Pending,
+					Type:          database.BatchTypeOut,
+					TxHashes:      []string{},
+					Network:       b.Network,
+				},
 			})
 			logData = append(logData, "batch_id", b.Id)
 		}
@@ -427,7 +429,7 @@ func (r *Relayer) syncNewBatchesOut(ctx context.Context, network string) error {
 		}
 	}
 	if len(newBatches) > 0 {
-		if err := r.db.InsertBatches(newBatches); err != nil {
+		if err := r.db.InsertBatchesOut(newBatches); err != nil {
 			logData = append(logData, "err_insert_batches", err)
 			return errors.Wrapf(err, "new batches %+v", newBatches)
 		}

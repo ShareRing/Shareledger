@@ -106,12 +106,13 @@ func (r *Relayer) ProcessPendingRequestsIn(ctx context.Context, network string, 
 	return nil
 }
 
-func (r *Relayer) ProcessPendingBatchIn(ctx context.Context) error {
+func (r *Relayer) ApprovePendingBatchesIn(ctx context.Context) error {
 	pendingBatchesIn, err := r.db.GetPendingBatchesIn(ctx)
 	if err != nil {
 		return err
 	}
 	for _ = range pendingBatchesIn {
+		//batch.TxHashes
 	}
 	return nil
 }

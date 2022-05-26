@@ -21,17 +21,21 @@ const (
 	BatchTypeIn  BatchType = "in"
 )
 
-type BatchOut struct {
+type Batch struct {
 	ID            primitive.ObjectID `bson:"_id,omitempty" json:"id"`
 	ShareledgerID uint64             `bson:"shareledgerID" json:"shareledgerID"`
 	Status        BatchStatus        `bson:"status" json:"status"`
 	Type          BatchType          `bson:"type"  json:"type"`
 	TxHashes      []string           `bson:"txHashes" json:"txHashes"`
 	Network       string             `bson:"network" json:"network"`
-	BlockNumber   uint64             `bson:"blockNumber" json:"blockNumber"`
-	Nonce         uint64             `bson:"nonce" json:"nonce"`
-	Signer        string             `bson:"signer" json:"signer"`
-	Synced        bool               `bson:"synced" json:"synced"`
+}
+
+type BatchOut struct {
+	Batch       `bson:",inline"`
+	BlockNumber uint64 `bson:"blockNumber" json:"blockNumber"`
+	Nonce       uint64 `bson:"nonce" json:"nonce"`
+	Signer      string `bson:"signer" json:"signer"`
+	Synced      bool   `bson:"synced" json:"synced"`
 }
 
 type RequestInStatus string

@@ -8,7 +8,7 @@ import (
 type DBRelayer interface {
 	ConnectDB(ctx context.Context) error
 	Disconnect(ctx context.Context) error
-	InsertBatches([]BatchOut) error
+	InsertBatchesOut([]BatchOut) error
 	UpdateLatestScannedBatchId(id uint64, network string) error
 	SearchBatchByType(shareledgerID uint64, requestType BatchType) (*BatchOut, error)
 	SearchBatchByStatus(networks string, status BatchStatus) ([]BatchOut, error)
