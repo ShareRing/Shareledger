@@ -350,7 +350,7 @@ func (r *Relayer) syncEventSuccessfulBatches(ctx context.Context, network string
 				logData = []interface{}{}
 			}
 			logData = append(logData, "txHash", hash.String())
-			batch, err := r.db.GetBatchByTxHash(hash.String())
+			batch, err := r.db.GetBatchOutByTxHash(hash.String())
 			if err != nil {
 				return errors.Wrapf(err, "get batch by tx hash, %v", hash.String())
 			}
@@ -452,7 +452,7 @@ func (r *Relayer) syncFinishedBatches(ctx context.Context, network string) error
 }
 
 func (r *Relayer) syncDoneBatches(ctx context.Context, network string) error {
-	batches, err := r.db.SearchUnSyncedBatchByStatus(network, database.BatchStatusDone)
+	batches, err := r.db.SearchUnSyncedBatchOutByStatus(network, database.BatchStatusDone)
 	if err != nil {
 		return errors.Wrapf(err, "search batches by status %s fail", database.BatchStatusDone)
 	}
@@ -479,7 +479,7 @@ func (r *Relayer) syncDoneBatches(ctx context.Context, network string) error {
 }
 
 func (r *Relayer) syncFailedBatches(ctx context.Context, network string) error {
-	failedBatches, err := r.db.SearchUnSyncedBatchByStatus(network, database.BatchStatusFailed)
+	failedBatches, err := r.db.SearchUnSyncedBatchOutByStatus(network, database.BatchStatusFailed)
 	if err != nil {
 		return err
 	}
@@ -495,10 +495,13 @@ func (r *Relayer) syncFailedBatches(ctx context.Context, network string) error {
 	if err != nil {
 		return errors.Wrapf(err, "can't cancel batches")
 	}
+	var ifailed []database.IBatch
 	for i := range failedBatches {
 		failedBatches[i].Status = database.BatchStatusCancelled
+		ifailed = append(ifailed, failedBatches[i])
 	}
-	err = r.db.SetBatches(failedBatches)
+
+	err = r.db.SetBatches(ifailed)
 	if err != nil {
 		return errors.Wrapf(err, "set batches fail")
 	}
@@ -865,7 +868,7 @@ func (r *Relayer) processIn(ctx context.Context, network string) error {
 	err := eventService.HandlerTransferEvent(ctx, func(events []event.EventTransferOutput) error {
 		// check if these event are handle or not in db
 		for _, e := range events {
-			batch, err := r.db.GetBatchByTxHash(e.TxHash)
+			batch, err := r.db.GetBatchOutByTxHash(e.TxHash)
 			if err != nil {
 				// batch existed, skip processing
 				log.Errorw("get batch by tx hash", "err", err, "txHash", e.TxHash)

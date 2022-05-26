@@ -436,7 +436,7 @@ func (c *DB) SearchBatchByStatus(network string, status BatchStatus) ([]BatchOut
 
 	return queryResult, nil
 }
-func (c *DB) SearchUnSyncedBatchByStatus(network string, status BatchStatus) ([]BatchOut, error) {
+func (c *DB) SearchUnSyncedBatchOutByStatus(network string, status BatchStatus) ([]BatchOut, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
@@ -448,6 +448,7 @@ func (c *DB) SearchUnSyncedBatchByStatus(network string, status BatchStatus) ([]
 		"network": network,
 		"status":  status,
 		"synced":  false,
+		"type":    BatchTypeOut,
 	}, nil)
 
 	if err != nil {
@@ -463,7 +464,7 @@ func (c *DB) SearchUnSyncedBatchByStatus(network string, status BatchStatus) ([]
 
 	return queryResult, nil
 }
-func (c *DB) GetBatchByTxHash(txHash string) (*BatchOut, error) {
+func (c *DB) GetBatchOutByTxHash(txHash string) (*BatchOut, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
@@ -473,6 +474,7 @@ func (c *DB) GetBatchByTxHash(txHash string) (*BatchOut, error) {
 
 	err := collection.FindOne(ctx, bson.M{
 		"txHashes": txHash,
+		"type":     BatchTypeOut,
 	}).Decode(&queryResult)
 	if err != nil {
 		if err != mongo.ErrNoDocuments {
@@ -484,7 +486,7 @@ func (c *DB) GetBatchByTxHash(txHash string) (*BatchOut, error) {
 	return &queryResult, nil
 }
 
-func (c *DB) SetBatches(batches []BatchOut) error {
+func (c *DB) SetBatches(batches []IBatch) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
@@ -492,15 +494,16 @@ func (c *DB) SetBatches(batches []BatchOut) error {
 
 	var operations []mongo.WriteModel
 	for _, b := range batches {
-		operations = append(operations, c.buildSetOperations(bson.M{
-			"shareledgerID": bson.M{
-				"$eq": b.ShareledgerID,
-			},
-			"type": bson.M{
-				"$eq": b.Type,
-			},
-		}, b, true,
-		))
+		operations = append(operations,
+			b.SetOperator(bson.M{
+				"shareledgerID": bson.M{
+					"$eq": b.GetShareledgerID(),
+				},
+				"type": bson.M{
+					"$eq": b.GetType(),
+				},
+			}, true),
+		)
 	}
 	_, err := collection.BulkWrite(
 		ctx, operations,
@@ -508,36 +511,23 @@ func (c *DB) SetBatches(batches []BatchOut) error {
 	return err
 }
 
-func (c *DB) buildSetOperations(filter bson.M, bach BatchOut, upsert bool) *mongo.UpdateOneModel {
-	operation := mongo.NewUpdateOneModel()
-	operation.SetFilter(filter)
-	operation.Upsert = &upsert
-	operation.SetUpdate(bson.M{"$set": bson.M{
-		"shareledgerID": bach.ShareledgerID,
-		"type":          bach.Type,
-		"status":        bach.Status,
-		"txHashes":      bach.TxHashes,
-		"network":       bach.Network,
-		"blockNumber":   bach.BlockNumber,
-		"nonce":         bach.Nonce,
-		"signer":        bach.Signer,
-	}})
-	return operation
-}
-
-func (c *DB) SetBatch(request BatchOut) error {
+func (c *DB) SetBatch(batch IBatch) error {
+	if err := batch.Validate(); err != nil {
+		return err
+	}
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
 	collection := c.GetCollection(c.DBName, BatchCollection)
-	operation := c.buildSetOperations(bson.M{
+	operation := batch.SetOperator(bson.M{
 		"shareledgerID": bson.M{
-			"$eq": request.ShareledgerID,
+			"$eq": batch.GetShareledgerID(),
 		},
 		"type": bson.M{
-			"$eq": request.Type,
+			"$eq": batch.GetType(),
 		},
-	}, request, true)
+	}, true)
+
 	_, err := collection.BulkWrite(
 		ctx,
 		[]mongo.WriteModel{

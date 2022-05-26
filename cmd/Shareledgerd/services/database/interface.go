@@ -10,12 +10,12 @@ type DBRelayer interface {
 	Disconnect(ctx context.Context) error
 	InsertBatchesOut([]BatchOut) error
 	UpdateLatestScannedBatchId(id uint64, network string) error
-	SearchBatchByType(shareledgerID uint64, requestType BatchType) (*BatchOut, error)
-	SearchBatchByStatus(networks string, status BatchStatus) ([]BatchOut, error)
-	SearchUnSyncedBatchByStatus(network string, status BatchStatus) ([]BatchOut, error)
-	GetBatchByTxHash(txHash string) (*BatchOut, error)
-	SetBatch(request BatchOut) error
-	SetBatches(batches []BatchOut) error
+	//SearchBatchByType(shareledgerID uint64, requestType BatchType) (*BatchOut, error)
+	//SearchBatchByStatus(networks string, status BatchStatus) ([]BatchOut, error)
+	SearchUnSyncedBatchOutByStatus(network string, status BatchStatus) ([]BatchOut, error)
+	GetBatchOutByTxHash(txHash string) (*BatchOut, error)
+	SetBatch(request IBatch) error
+	SetBatches(batches []IBatch) error
 	UpdateBatchesOut(shareledgerIDs []uint64, status BatchStatus) error
 	SetBatchesOutFailed(nonceNumber uint64) error
 	GetSLP3Address(erc20Addr, network string) (string, error)

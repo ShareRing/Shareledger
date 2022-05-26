@@ -1,7 +1,10 @@
 package database
 
 import (
+	"github.com/pkg/errors"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
 type BatchStatus string
@@ -22,7 +25,10 @@ const (
 )
 
 type IBatch interface {
-	BatchType() BatchType
+	GetType() BatchType
+	Validate() error
+	SetOperator(filter bson.M, upsert bool) *mongo.UpdateOneModel
+	GetShareledgerID() uint64
 }
 
 type Batch struct {
@@ -36,22 +42,46 @@ type Batch struct {
 	Synced        bool               `bson:"synced" json:"synced"`
 }
 
-func InitBatch(b Batch) IBatch {
-	switch b.batchType() {
-	case BatchTypeOut:
-		return BatchOut{
-			Batch: b,
-		}
-	case BatchTypeIn:
-		return BatchIn{
-			Batch: b,
-		}
-	}
-	return nil
+//
+//func InitBatch(b Batch) IBatch {
+//	switch b.batchType() {
+//	case BatchTypeOut:
+//		return BatchOut{
+//			Batch: b,
+//		}
+//	case BatchTypeIn:
+//		return BatchIn{
+//			Batch: b,
+//		}
+//	}
+//	return nil
+//}
+
+func (b Batch) GetShareledgerID() uint64 {
+	return b.ShareledgerID
 }
 
 func (b Batch) batchType() BatchType {
 	return b.Type
+}
+
+func (b Batch) Validate() error {
+	if b.Type != BatchTypeIn && b.Type != BatchTypeOut {
+		return errors.New("batch type is required with values: in/out")
+	}
+	return nil
+}
+
+func (b Batch) SetOperator() bson.M {
+	return bson.M{
+		"shareledgerID": b.ShareledgerID,
+		"type":          b.Type,
+		"status":        b.Status,
+		"txHashes":      b.TxHashes,
+		"network":       b.Network,
+		"signer":        b.Signer,
+		"synced":        b.Synced,
+	}
 }
 
 type BatchOut struct {
@@ -60,8 +90,29 @@ type BatchOut struct {
 	Nonce       uint64 `bson:"nonce" json:"nonce"`
 }
 
-func (b BatchOut) BatchType() BatchType {
+func (b BatchOut) GetType() BatchType {
 	return b.Batch.batchType()
+}
+func (b BatchOut) Validate() error {
+	return b.Batch.Validate()
+}
+func (b BatchOut) GetShareledgerID() uint64 {
+	return b.Batch.GetShareledgerID()
+}
+
+func (b BatchOut) SetOperator(filter bson.M, upsert bool) *mongo.UpdateOneModel {
+	operation := mongo.NewUpdateOneModel()
+	operation.SetFilter(filter)
+	operation.Upsert = &upsert
+	batchOperator := b.Batch.SetOperator()
+	setOperator := make(bson.M)
+	for k, v := range batchOperator {
+		setOperator[k] = v
+	}
+	setOperator["blockNumber"] = b.BlockNumber
+	setOperator["nonce"] = b.Nonce
+	operation.SetUpdate(bson.M{"$set": setOperator})
+	return operation
 }
 
 type BatchIn struct {
@@ -70,8 +121,29 @@ type BatchIn struct {
 	BaseFee    string `bson:"baseFee"`
 }
 
-func (b BatchIn) BatchType() BatchType {
+func (b BatchIn) GetShareledgerID() uint64 {
+	return b.Batch.GetShareledgerID()
+}
+
+func (b BatchIn) GetType() BatchType {
 	return b.Batch.batchType()
+}
+func (b BatchIn) Validate() error {
+	return b.Batch.Validate()
+}
+func (b BatchIn) SetOperator(filter bson.M, upsert bool) *mongo.UpdateOneModel {
+	operation := mongo.NewUpdateOneModel()
+	operation.SetFilter(filter)
+	operation.Upsert = &upsert
+	batchOperator := b.Batch.SetOperator()
+	setOperator := make(bson.M)
+	for k, v := range batchOperator {
+		setOperator[k] = v
+	}
+	setOperator["baseAmount"] = b.BaseAmount
+	setOperator["baseFee"] = b.BaseFee
+	operation.SetUpdate(bson.M{"$set": setOperator})
+	return operation
 }
 
 type RequestInStatus string
