@@ -2,18 +2,15 @@ package keeper
 
 import (
 	"context"
-	denom "github.com/sharering/shareledger/x/utils/demo"
-	"strconv"
-	"time"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/sharering/shareledger/x/swap/types"
+	denom "github.com/sharering/shareledger/x/utils/demo"
+	"strconv"
 )
 
 func (k msgServer) RequestIn(goCtx context.Context, msg *types.MsgRequestIn) (*types.MsgSwapInResponse, error) {
 	msg.ValidateBasic()
 	ctx := sdk.UnwrapSDKContext(goCtx)
-	tn := time.Now().Unix()
 	amount, err := denom.NormalizeToBaseCoins(sdk.NewDecCoins(*msg.GetAmount()), true)
 	if err != nil {
 		return nil, err
@@ -36,7 +33,7 @@ func (k msgServer) RequestIn(goCtx context.Context, msg *types.MsgRequestIn) (*t
 		Fee:         &insertFeeCoin,
 		Status:      types.SwapStatusPending,
 		TxHashes:    msg.TxHashes,
-		CreatedAt:   uint64(tn),
+		CreatedAt:   0,
 	})
 	if err != nil {
 		return nil, err
