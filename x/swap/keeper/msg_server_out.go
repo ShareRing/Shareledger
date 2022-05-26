@@ -2,9 +2,9 @@ package keeper
 
 import (
 	"context"
-	denom "github.com/sharering/shareledger/x/utils/demo"
 	"strconv"
-	"time"
+
+	denom "github.com/sharering/shareledger/x/utils/demo"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/sharering/shareledger/x/swap/types"
@@ -34,7 +34,6 @@ func (k msgServer) RequestOut(goCtx context.Context, msg *types.MsgRequestOut) (
 	insertFeeCoin = sdk.NewCoin(denom.Base, fee.AmountOf(denom.Base))
 	insertAmountCoin = sdk.NewCoin(denom.Base, amount.AmountOf(denom.Base))
 
-	tn := time.Now().Unix()
 	req, err := k.AppendPendingRequest(ctx, types.Request{
 		SrcAddr:     msg.Creator,
 		DestAddr:    msg.DestAddress,
@@ -43,7 +42,6 @@ func (k msgServer) RequestOut(goCtx context.Context, msg *types.MsgRequestOut) (
 		Amount:      &insertAmountCoin,
 		Fee:         &insertFeeCoin,
 		Status:      types.SwapStatusPending,
-		CreatedAt:   uint64(tn),
 	})
 
 	if err == nil {
