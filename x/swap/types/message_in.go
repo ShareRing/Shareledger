@@ -48,22 +48,26 @@ func (msg *MsgRequestIn) ValidateBasic() error {
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
 	}
-	if err := msg.GetAmount().Validate(); err != nil {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid swap amount (%s)", err)
+	if msg.Amount == nil || msg.Amount.Validate() != nil {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid swap amount")
 	}
-	if err := msg.GetFee().Validate(); err != nil {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid swap fee (%s)", err)
+	if msg.Fee == nil || msg.Fee.Validate() != nil {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid swap fee")
 	}
-	if strings.TrimSpace(msg.GetDestAddress()) == "" {
-		return sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "destination address can't empty")
+
+	if _, err := sdk.AccAddressFromBech32(msg.GetDestAddress()); err != nil {
+		return sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, err.Error())
 	}
+
 	if len(msg.TxHashes) == 0 {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "tx hashes are required")
 	}
+
 	if strings.TrimSpace(msg.GetSrcAddress()) == "" {
 		return sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "source address empty")
 	}
-	if strings.TrimSpace(msg.GetDestAddress()) != NetworkNameShareLedger {
+
+	if strings.TrimSpace(msg.GetNetwork()) == NetworkNameShareLedger {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid network %s", msg.GetDestAddress())
 	}
 

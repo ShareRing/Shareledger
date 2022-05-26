@@ -45,6 +45,7 @@ const (
 	EventTypeSwapApprove         = "swap_approve"
 	EventTypeSwapReject          = "swap_reject"
 	EventTypeSwapOut             = "swap_out"
+	EventTypeSwapIn              = "swap_int"
 	EventTypeDeposit             = "swap_deposit"
 	EventTypeWithDraw            = "swap_withdraw"
 	EventTypeRequestChangeStatus = "swap_request_change_status"

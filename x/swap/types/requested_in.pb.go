@@ -6,6 +6,7 @@ package types
 import (
 	fmt "fmt"
 	proto "github.com/gogo/protobuf/proto"
+	types "github.com/sharering/shareledger/x/common/types"
 	io "io"
 	math "math"
 	math_bits "math/bits"
@@ -23,8 +24,8 @@ var _ = math.Inf
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
 type RequestedIn struct {
-	Address  string   `protobuf:"bytes,1,opt,name=address,proto3" json:"address,omitempty"`
-	TxHashes []string `protobuf:"bytes,2,rep,name=txHashes,proto3" json:"txHashes,omitempty"`
+	Address  string                  `protobuf:"bytes,1,opt,name=address,proto3" json:"address,omitempty"`
+	TxHashes map[string]*types.Empty `protobuf:"bytes,2,rep,name=txHashes,proto3" json:"txHashes,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
 }
 
 func (m *RequestedIn) Reset()         { *m = RequestedIn{} }
@@ -67,7 +68,7 @@ func (m *RequestedIn) GetAddress() string {
 	return ""
 }
 
-func (m *RequestedIn) GetTxHashes() []string {
+func (m *RequestedIn) GetTxHashes() map[string]*types.Empty {
 	if m != nil {
 		return m.TxHashes
 	}
@@ -76,24 +77,30 @@ func (m *RequestedIn) GetTxHashes() []string {
 
 func init() {
 	proto.RegisterType((*RequestedIn)(nil), "shareledger.swap.RequestedIn")
+	proto.RegisterMapType((map[string]*types.Empty)(nil), "shareledger.swap.RequestedIn.TxHashesEntry")
 }
 
 func init() { proto.RegisterFile("swap/requested_in.proto", fileDescriptor_c5637cd166377aa0) }
 
 var fileDescriptor_c5637cd166377aa0 = []byte{
-	// 180 bytes of a gzipped FileDescriptorProto
+	// 260 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x12, 0x2f, 0x2e, 0x4f, 0x2c,
 	0xd0, 0x2f, 0x4a, 0x2d, 0x2c, 0x4d, 0x2d, 0x2e, 0x49, 0x4d, 0x89, 0xcf, 0xcc, 0xd3, 0x2b, 0x28,
 	0xca, 0x2f, 0xc9, 0x17, 0x12, 0x28, 0xce, 0x48, 0x2c, 0x4a, 0xcd, 0x49, 0x4d, 0x49, 0x4f, 0x2d,
-	0xd2, 0x03, 0x29, 0x52, 0x72, 0xe6, 0xe2, 0x0e, 0x82, 0xa9, 0xf3, 0xcc, 0x13, 0x92, 0xe0, 0x62,
-	0x4f, 0x4c, 0x49, 0x29, 0x4a, 0x2d, 0x2e, 0x96, 0x60, 0x54, 0x60, 0xd4, 0xe0, 0x0c, 0x82, 0x71,
-	0x85, 0xa4, 0xb8, 0x38, 0x4a, 0x2a, 0x3c, 0x12, 0x8b, 0x33, 0x52, 0x8b, 0x25, 0x98, 0x14, 0x98,
-	0x35, 0x38, 0x83, 0xe0, 0x7c, 0x27, 0xf7, 0x13, 0x8f, 0xe4, 0x18, 0x2f, 0x3c, 0x92, 0x63, 0x7c,
-	0xf0, 0x48, 0x8e, 0x71, 0xc2, 0x63, 0x39, 0x86, 0x0b, 0x8f, 0xe5, 0x18, 0x6e, 0x3c, 0x96, 0x63,
-	0x88, 0xd2, 0x4d, 0xcf, 0x2c, 0xc9, 0x28, 0x4d, 0xd2, 0x4b, 0xce, 0xcf, 0xd5, 0x07, 0xdb, 0x5d,
-	0x94, 0x99, 0x97, 0xae, 0x8f, 0xe4, 0x0a, 0xfd, 0x0a, 0x7d, 0xb0, 0x63, 0x4b, 0x2a, 0x0b, 0x52,
-	0x8b, 0x93, 0xd8, 0xc0, 0xce, 0x34, 0x06, 0x04, 0x00, 0x00, 0xff, 0xff, 0x81, 0x50, 0x2b, 0xee,
-	0xc1, 0x00, 0x00, 0x00,
+	0xd2, 0x03, 0x29, 0x92, 0x12, 0x4e, 0xce, 0xcf, 0xcd, 0xcd, 0xcf, 0xd3, 0x87, 0x50, 0x10, 0x65,
+	0x4a, 0x27, 0x18, 0xb9, 0xb8, 0x83, 0x60, 0xba, 0x3d, 0xf3, 0x84, 0x24, 0xb8, 0xd8, 0x13, 0x53,
+	0x52, 0x8a, 0x52, 0x8b, 0x8b, 0x25, 0x18, 0x15, 0x18, 0x35, 0x38, 0x83, 0x60, 0x5c, 0x21, 0x77,
+	0x2e, 0x8e, 0x92, 0x0a, 0x8f, 0xc4, 0xe2, 0x8c, 0xd4, 0x62, 0x09, 0x26, 0x05, 0x66, 0x0d, 0x6e,
+	0x23, 0x6d, 0x3d, 0x74, 0x3b, 0xf4, 0x90, 0x8c, 0xd2, 0x0b, 0x81, 0xaa, 0x76, 0xcd, 0x2b, 0x29,
+	0xaa, 0x0c, 0x82, 0x6b, 0x96, 0x0a, 0xe3, 0xe2, 0x45, 0x91, 0x12, 0x12, 0xe0, 0x62, 0xce, 0x4e,
+	0xad, 0x84, 0xda, 0x07, 0x62, 0x0a, 0xe9, 0x73, 0xb1, 0x96, 0x25, 0xe6, 0x94, 0xa6, 0x4a, 0x30,
+	0x29, 0x30, 0x6a, 0x70, 0x1b, 0x49, 0xa2, 0x58, 0x04, 0x75, 0xbf, 0x6b, 0x6e, 0x41, 0x49, 0x65,
+	0x10, 0x44, 0x9d, 0x15, 0x93, 0x05, 0xa3, 0x93, 0xfb, 0x89, 0x47, 0x72, 0x8c, 0x17, 0x1e, 0xc9,
+	0x31, 0x3e, 0x78, 0x24, 0xc7, 0x38, 0xe1, 0xb1, 0x1c, 0xc3, 0x85, 0xc7, 0x72, 0x0c, 0x37, 0x1e,
+	0xcb, 0x31, 0x44, 0xe9, 0xa6, 0x67, 0x96, 0x64, 0x94, 0x26, 0x81, 0x74, 0xea, 0x83, 0x4d, 0x2a,
+	0xca, 0xcc, 0x4b, 0xd7, 0x47, 0x32, 0x53, 0xbf, 0x42, 0x1f, 0x1c, 0x8e, 0x25, 0x95, 0x05, 0xa9,
+	0xc5, 0x49, 0x6c, 0xe0, 0xa0, 0x31, 0x06, 0x04, 0x00, 0x00, 0xff, 0xff, 0x07, 0x2d, 0x4e, 0x38,
+	0x5c, 0x01, 0x00, 0x00,
 }
 
 func (m *RequestedIn) Marshal() (dAtA []byte, err error) {
@@ -117,10 +124,27 @@ func (m *RequestedIn) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	var l int
 	_ = l
 	if len(m.TxHashes) > 0 {
-		for iNdEx := len(m.TxHashes) - 1; iNdEx >= 0; iNdEx-- {
-			i -= len(m.TxHashes[iNdEx])
-			copy(dAtA[i:], m.TxHashes[iNdEx])
-			i = encodeVarintRequestedIn(dAtA, i, uint64(len(m.TxHashes[iNdEx])))
+		for k := range m.TxHashes {
+			v := m.TxHashes[k]
+			baseI := i
+			if v != nil {
+				{
+					size, err := v.MarshalToSizedBuffer(dAtA[:i])
+					if err != nil {
+						return 0, err
+					}
+					i -= size
+					i = encodeVarintRequestedIn(dAtA, i, uint64(size))
+				}
+				i--
+				dAtA[i] = 0x12
+			}
+			i -= len(k)
+			copy(dAtA[i:], k)
+			i = encodeVarintRequestedIn(dAtA, i, uint64(len(k)))
+			i--
+			dAtA[i] = 0xa
+			i = encodeVarintRequestedIn(dAtA, i, uint64(baseI-i))
 			i--
 			dAtA[i] = 0x12
 		}
@@ -157,9 +181,16 @@ func (m *RequestedIn) Size() (n int) {
 		n += 1 + l + sovRequestedIn(uint64(l))
 	}
 	if len(m.TxHashes) > 0 {
-		for _, s := range m.TxHashes {
-			l = len(s)
-			n += 1 + l + sovRequestedIn(uint64(l))
+		for k, v := range m.TxHashes {
+			_ = k
+			_ = v
+			l = 0
+			if v != nil {
+				l = v.Size()
+				l += 1 + sovRequestedIn(uint64(l))
+			}
+			mapEntrySize := 1 + len(k) + sovRequestedIn(uint64(len(k))) + l
+			n += mapEntrySize + 1 + sovRequestedIn(uint64(mapEntrySize))
 		}
 	}
 	return n
@@ -236,7 +267,7 @@ func (m *RequestedIn) Unmarshal(dAtA []byte) error {
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field TxHashes", wireType)
 			}
-			var stringLen uint64
+			var msglen int
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowRequestedIn
@@ -246,23 +277,120 @@ func (m *RequestedIn) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
+				msglen |= int(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
+			if msglen < 0 {
 				return ErrInvalidLengthRequestedIn
 			}
-			postIndex := iNdEx + intStringLen
+			postIndex := iNdEx + msglen
 			if postIndex < 0 {
 				return ErrInvalidLengthRequestedIn
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.TxHashes = append(m.TxHashes, string(dAtA[iNdEx:postIndex]))
+			if m.TxHashes == nil {
+				m.TxHashes = make(map[string]*types.Empty)
+			}
+			var mapkey string
+			var mapvalue *types.Empty
+			for iNdEx < postIndex {
+				entryPreIndex := iNdEx
+				var wire uint64
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return ErrIntOverflowRequestedIn
+					}
+					if iNdEx >= l {
+						return io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					wire |= uint64(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				fieldNum := int32(wire >> 3)
+				if fieldNum == 1 {
+					var stringLenmapkey uint64
+					for shift := uint(0); ; shift += 7 {
+						if shift >= 64 {
+							return ErrIntOverflowRequestedIn
+						}
+						if iNdEx >= l {
+							return io.ErrUnexpectedEOF
+						}
+						b := dAtA[iNdEx]
+						iNdEx++
+						stringLenmapkey |= uint64(b&0x7F) << shift
+						if b < 0x80 {
+							break
+						}
+					}
+					intStringLenmapkey := int(stringLenmapkey)
+					if intStringLenmapkey < 0 {
+						return ErrInvalidLengthRequestedIn
+					}
+					postStringIndexmapkey := iNdEx + intStringLenmapkey
+					if postStringIndexmapkey < 0 {
+						return ErrInvalidLengthRequestedIn
+					}
+					if postStringIndexmapkey > l {
+						return io.ErrUnexpectedEOF
+					}
+					mapkey = string(dAtA[iNdEx:postStringIndexmapkey])
+					iNdEx = postStringIndexmapkey
+				} else if fieldNum == 2 {
+					var mapmsglen int
+					for shift := uint(0); ; shift += 7 {
+						if shift >= 64 {
+							return ErrIntOverflowRequestedIn
+						}
+						if iNdEx >= l {
+							return io.ErrUnexpectedEOF
+						}
+						b := dAtA[iNdEx]
+						iNdEx++
+						mapmsglen |= int(b&0x7F) << shift
+						if b < 0x80 {
+							break
+						}
+					}
+					if mapmsglen < 0 {
+						return ErrInvalidLengthRequestedIn
+					}
+					postmsgIndex := iNdEx + mapmsglen
+					if postmsgIndex < 0 {
+						return ErrInvalidLengthRequestedIn
+					}
+					if postmsgIndex > l {
+						return io.ErrUnexpectedEOF
+					}
+					mapvalue = &types.Empty{}
+					if err := mapvalue.Unmarshal(dAtA[iNdEx:postmsgIndex]); err != nil {
+						return err
+					}
+					iNdEx = postmsgIndex
+				} else {
+					iNdEx = entryPreIndex
+					skippy, err := skipRequestedIn(dAtA[iNdEx:])
+					if err != nil {
+						return err
+					}
+					if (skippy < 0) || (iNdEx+skippy) < 0 {
+						return ErrInvalidLengthRequestedIn
+					}
+					if (iNdEx + skippy) > postIndex {
+						return io.ErrUnexpectedEOF
+					}
+					iNdEx += skippy
+				}
+			}
+			m.TxHashes[mapkey] = mapvalue
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex

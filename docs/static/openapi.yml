@@ -31451,9 +31451,6 @@ paths:
                     batchId:
                       type: string
                       format: uint64
-                    createdAt:
-                      type: string
-                      format: uint64
                     txHashes:
                       type: array
                       items:
@@ -54127,9 +54124,6 @@ definitions:
             batchId:
               type: string
               format: uint64
-            createdAt:
-              type: string
-              format: uint64
             txHashes:
               type: array
               items:
@@ -54200,9 +54194,6 @@ definitions:
       status:
         type: string
       batchId:
-        type: string
-        format: uint64
-      createdAt:
         type: string
         format: uint64
       txHashes:

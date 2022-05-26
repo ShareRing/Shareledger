@@ -4,11 +4,11 @@ import (
 	"strconv"
 	"testing"
 
-	"github.com/sharering/shareledger/x/swap/keeper"
-	"github.com/sharering/shareledger/x/swap/types"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	keepertest "github.com/sharering/shareledger/testutil/keeper"
 	"github.com/sharering/shareledger/testutil/nullify"
-	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/sharering/shareledger/x/swap/keeper"
+	"github.com/sharering/shareledger/x/swap/types"
 	"github.com/stretchr/testify/require"
 )
 
@@ -18,9 +18,7 @@ var _ = strconv.IntSize
 func createNRequestedIn(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.RequestedIn {
 	items := make([]types.RequestedIn, n)
 	for i := range items {
-		items[i].Address = strconv.Itoa(i)
-        
-		keeper.SetRequestedIn(ctx, items[i])
+		keeper.SetRequestedIn(ctx, sdk.AccAddress{}, []string{strconv.Itoa(i)})
 	}
 	return items
 }
@@ -30,8 +28,7 @@ func TestRequestedInGet(t *testing.T) {
 	items := createNRequestedIn(keeper, ctx, 10)
 	for _, item := range items {
 		rst, found := keeper.GetRequestedIn(ctx,
-		    item.Address,
-            
+			item.Address,
 		)
 		require.True(t, found)
 		require.Equal(t,
@@ -45,12 +42,10 @@ func TestRequestedInRemove(t *testing.T) {
 	items := createNRequestedIn(keeper, ctx, 10)
 	for _, item := range items {
 		keeper.RemoveRequestedIn(ctx,
-		    item.Address,
-            
+			item.Address,
 		)
 		_, found := keeper.GetRequestedIn(ctx,
-		    item.Address,
-            
+			item.Address,
 		)
 		require.False(t, found)
 	}

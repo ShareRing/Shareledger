@@ -15,6 +15,5 @@ message Request {
   cosmos.base.v1beta1.Coin fee = 7;
   string status = 8;
   uint64 batchId = 9;
-  uint64 createdAt = 10;
   repeated string txHashes = 11;
 }
