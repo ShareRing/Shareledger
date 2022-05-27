@@ -2,8 +2,8 @@ package database
 
 import (
 	"context"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	"go.mongodb.org/mongo-driver/bson/primitive"
-	"math/big"
 )
 
 type DBRelayer interface {
@@ -28,8 +28,9 @@ type DBRelayer interface {
 	MarkBatchToSynced(sIDs []uint64) error
 	InsertRequestIn(request RequestsIn) error
 	GetPendingRequestsIn(network string, destAddress string) ([]RequestsIn, error)
-	TryToBatchPendingSwapIn(network string, destAddress string, minFee *big.Int) error
+	TryToBatchPendingSwapIn(network string, destAddress string, minFee sdk.Coin) error
 	GetRequestIn(txHash string) (*RequestsIn, error)
 	GetPendingBatchesIn(ctx context.Context) ([]BatchIn, error)
 	GetRequestsInByBatchID(batchID primitive.ObjectID) ([]RequestsIn, error)
+	GetSubmittedBatchesIn(network string) ([]BatchIn, error)
 }

@@ -5,12 +5,15 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/cosmos/cosmos-sdk/client"
+	"github.com/ethereum/go-ethereum/accounts/abi"
+	"github.com/sharering/shareledger/pkg/swap/abi/sharetoken"
 	"go.uber.org/zap"
 	"math/big"
 	"os"
 	"os/signal"
 	"path/filepath"
 	"sort"
+	"strings"
 	"syscall"
 	"time"
 
@@ -699,6 +702,53 @@ func (r *Relayer) checkTxHash(ctx context.Context, network string, txHash common
 		conn.Close()
 	}()
 	return conn.TransactionReceipt(ctx, txHash)
+}
+
+func (r *Relayer) getConfirmedTXTransfer(ctx context.Context, network string, txHash common.Hash) (toAddr common.Address, amount *sdk.Coin, err error) {
+	erc20Abi, err := abi.JSON(strings.NewReader(sharetoken.SharetokenMetaData.ABI))
+	if err != nil {
+		return [20]byte{}, nil, errors.Wrapf(err, "unmarshal swap abi code fail")
+	}
+	conn, _, err := r.initConn(network)
+	if err != nil {
+		return [20]byte{}, nil, errors.Wrapf(err, "initConn")
+	}
+
+	tx, pending, err := conn.TransactionByHash(ctx, txHash)
+	if pending {
+		return [20]byte{}, nil, errors.New("the transaction is still in pending")
+	}
+
+	data, err := decodeTxParams(erc20Abi, tx.Data())
+	if err != nil {
+		return [20]byte{}, nil, errors.Wrapf(err, "decode tx, %s", tx.Hash())
+	}
+	if len(data) < 2 {
+		return [20]byte{}, nil, errors.New(fmt.Sprintf("data len is not exected, %v", data))
+	}
+	av, ok := data["amount"].(*big.Int)
+	if !ok {
+		return [20]byte{}, nil, errors.New(fmt.Sprintf("%v is not in correct format of big.Int", data["amount"]))
+	}
+	ba := denom.ExponentToBase(sdk.NewIntFromBigInt(av), r.Config.Network[network].Exponent)
+	amount = &ba
+	toAddr, ok = data["to"].(common.Address)
+	if !ok {
+		return [20]byte{}, nil, errors.New(fmt.Sprintf("%v is not in correct format of common.Address", data["to"]))
+	}
+	return toAddr, amount, nil
+}
+
+func decodeTxParams(abi abi.ABI, data []byte) (map[string]interface{}, error) {
+	v := make(map[string]interface{})
+	m, err := abi.MethodById(data[:4])
+	if err != nil {
+		return map[string]interface{}{}, err
+	}
+	if err := m.Inputs.UnpackIntoMap(v, data[4:]); err != nil {
+		return map[string]interface{}{}, err
+	}
+	return v, nil
 }
 
 func (r *Relayer) getBatch(batchId uint64) (*swapmoduletypes.Batch, error) {

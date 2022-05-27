@@ -28,6 +28,7 @@ func (k Keeper) Balance(goCtx context.Context, req *types.QueryBalanceRequest) (
 	for _, c := range dCoin {
 		if c.Denom == denom.Shr {
 			balance = c
+			break
 		}
 	}
 

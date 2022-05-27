@@ -21,11 +21,11 @@ func (k msgServer) CreateSchema(goCtx context.Context, msg *types.MsgCreateSchem
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "index already set")
 	}
 
-	inF, err := denom.NormalizeToBaseCoin(denom.Base, sdk.NewDecCoins(*msg.In), sdk.NewDec(0), false)
+	inF, err := denom.NormalizeToBaseCoin(denom.Base, sdk.NewDecCoins(*msg.In), sdk.NewDec(1), false)
 	if err != nil {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "invalid fee")
 	}
-	outF, err := denom.NormalizeToBaseCoin(denom.Base, sdk.NewDecCoins(*msg.Out), sdk.NewDec(0), false)
+	outF, err := denom.NormalizeToBaseCoin(denom.Base, sdk.NewDecCoins(*msg.Out), sdk.NewDec(1), false)
 	if err != nil {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "invalid fee")
 	}

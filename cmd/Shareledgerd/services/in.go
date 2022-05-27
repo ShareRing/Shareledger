@@ -4,12 +4,88 @@ import (
 	"context"
 	"fmt"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/ethereum/go-ethereum/common"
 	"github.com/pkg/errors"
 	"github.com/sharering/shareledger/cmd/Shareledgerd/services/database"
 	event "github.com/sharering/shareledger/cmd/Shareledgerd/services/subscriber"
 	"github.com/sharering/shareledger/x/swap/types"
 	denom "github.com/sharering/shareledger/x/utils/demo"
 )
+
+func (r *Relayer) ProcessApproveSubmittedBatchesIn(ctx context.Context, network string) error {
+	var logData []interface{}
+	defer func() {
+		log.Infow("process approving submitted batches in", logData)
+	}()
+
+	res, err := r.qClient.Swap(ctx, &types.QuerySwapRequest{
+		Status:      types.SwapStatusPending,
+		DestNetwork: types.NetworkNameShareLedger,
+	})
+	if err != nil {
+		return err
+	}
+	logData = append(logData, "number pending swap in", len(res.Swaps))
+
+	batches, err := r.db.GetSubmittedBatchesIn(network)
+	logData = append(logData, "submitted_batches", len(batches))
+	if err != nil {
+		logData = append(logData, "get submitted batches in", err.Error())
+	}
+	for _, swap := range res.Swaps {
+		logData = append(logData, "swap_id", swap.Id)
+		res, err := r.qClient.Balance(ctx, &types.QueryBalanceRequest{})
+		if err != nil {
+			return errors.Wrapf(err, "check balances of swap module")
+		}
+		moduleBalances, err := denom.NormalizeToBaseCoins(sdk.NewDecCoins(*res.Balance), false)
+		if err != nil {
+			log.Errorw("parse coin swap module", "err", errors.Wrapf(err, "normalize %s", res.Balance.String()))
+			continue
+		}
+
+		if !moduleBalances.IsAllGTE(sdk.NewCoins(*swap.Amount)) {
+			logData = append(logData, "skip approve since lacking swap balances", fmt.Sprintf("swap in amount, %s, module balance, %s", swap.Amount, moduleBalances.String()))
+			continue
+		}
+
+		batchLog := database.BatchIn{
+			Batch: database.Batch{
+				ShareledgerID: swap.Id,
+				Status:        database.BatchStatusPending,
+				Type:          database.BatchTypeIn,
+				TxHashes:      swap.TxHashes,
+				Network:       swap.SrcNetwork,
+			},
+			BaseAmount: swap.Amount.String(),
+			BaseFee:    swap.Fee.String(),
+			DestAddr:   swap.DestAddr,
+		}
+
+		fullBatchDone := true
+		var txAmount sdk.Coin
+		for _, txHash := range swap.TxHashes {
+			_, amount, err := r.getConfirmedTXTransfer(ctx, network, common.HexToHash(txHash))
+			if err != nil {
+				fullBatchDone = false
+				log.Errorw("check tx hash", "err", errors.Wrapf(err, "swap_id, %s, txHash, %s", swap.Id, txHash))
+				r.db.SetLog(batchLog, err.Error())
+				//should not happen this case in real life...
+				break
+			}
+			txAmount.Add(*amount)
+		}
+		// cover rounding number between chains.
+		if !fullBatchDone || !txAmount.Amount.Sub(swap.Amount.Amount.Add(swap.Fee.Amount)).Abs().LTE(sdk.NewInt(1)) {
+			// TODO: khang un - batch..
+			err := errors.Errorf("amount batched requests, %s, is not match with contracts data, %s", swap.Amount.Add(*swap.Fee).String(), txAmount.String())
+			r.db.SetLog(batchLog, err.Error())
+			continue
+		}
+
+	}
+	return nil
+}
 
 func (r *Relayer) aProcessIn(ctx context.Context, network string) error {
 	eventService, found := r.events[network]
@@ -35,7 +111,7 @@ func (r *Relayer) aProcessIn(ctx context.Context, network string) error {
 			if exponentNetwork == 0 {
 				return errors.New(fmt.Sprintf("network %s does not have exponent config", network))
 			}
-			shrAmount := denom.ExponentToBase(sdk.NewIntFromBigInt(e.Amount.BigInt()), exponentNetwork)
+			baseAmount := denom.ExponentToBase(sdk.NewIntFromBigInt(e.Amount.BigInt()), exponentNetwork)
 
 			slp3, err := r.db.GetSLP3Address(e.ToAddress, network)
 			if err != nil {
@@ -53,7 +129,7 @@ func (r *Relayer) aProcessIn(ctx context.Context, network string) error {
 				TxHash:      e.TxHash,
 				DestAddress: slp3,
 				SrcAddress:  e.ToAddress, // ToAddress is user's ETH/BSC wallet
-				BaseAmount:  shrAmount.Amount.String(),
+				BaseAmount:  baseAmount.String(),
 				BatchID:     nil,
 				Network:     network,
 			}
@@ -99,11 +175,37 @@ func (r *Relayer) ProcessPendingRequestsIn(ctx context.Context, network string, 
 		} else {
 			processedMap[request.DestAddress] = struct{}{}
 		}
-		if err := r.db.TryToBatchPendingSwapIn(network, request.DestAddress, schema.Schema.Fee.In.Amount.BigInt()); err != nil {
+		if err := r.db.TryToBatchPendingSwapIn(network, request.DestAddress, *schema.Schema.Fee.In); err != nil {
 			return err
 		}
 	}
 	return nil
+}
+
+// IsSubmitted check request in is submitted or not
+// 0 not yet
+// 1 processed partial
+// 2 processed full
+func (r *Relayer) IsSubmitted(ctx context.Context, batch database.BatchIn) (status int, submittedTxHash []string, err error) {
+	processedRequests, err := r.qClient.RequestedIns(ctx, &types.QueryRequestedInsRequest{
+		Address: batch.DestAddr,
+	})
+	if err != nil {
+		return 0, nil, err
+	}
+	submittedTxHash = make([]string, 0, len(batch.TxHashes))
+	for _, txHash := range batch.TxHashes {
+		if _, found := processedRequests.RequestedIn.TxHashes[txHash]; found {
+			submittedTxHash = append(submittedTxHash, txHash)
+		}
+	}
+	if len(submittedTxHash) > 0 {
+		status = 1
+	}
+	if len(submittedTxHash) == len(batch.TxHashes) {
+		status = 2
+	}
+	return status, submittedTxHash, nil
 }
 
 func (r *Relayer) SubmitPendingBatchesIn(ctx context.Context) error {
@@ -112,29 +214,49 @@ func (r *Relayer) SubmitPendingBatchesIn(ctx context.Context) error {
 		return err
 	}
 	for _, req := range pendingBatchesIn {
-		bAmount, err := sdk.NewDecFromStr(req.BaseAmount)
+		status, submittedTxHash, err := r.IsSubmitted(ctx, req)
+		fmt.Println("submittedTxHash", submittedTxHash)
 		if err != nil {
-			return err
+			log.Errorw("check submitted batch in", "err", err.Error())
+			continue
 		}
-		cAmount := sdk.NewDecCoinFromDec(denom.Base, bAmount)
+		switch status {
+		case 1: // there are some txHash already submitted
+			// Unbatch the request
+			// Update requests have submitted txHash to Batched ( already)
+			// Update requests haven't submitted to pending
+			// TODO: Khang
+			continue
+		case 2: //already submitted this full batch.
+			req.Status = database.BatchStatusSubmitted
+			r.db.SetBatch(req)
+			continue
+		}
 
-		bFee, err := sdk.NewDecFromStr(req.BaseFee)
+		bAmount, err := sdk.ParseCoinNormalized(req.BaseAmount)
 		if err != nil {
 			return err
 		}
-		cFee := sdk.NewDecCoinFromDec(denom.Base, bFee)
+		dAmount := sdk.NewDecCoinFromCoin(bAmount)
+
+		bFee, err := sdk.ParseCoinNormalized(req.BaseFee)
+		if err != nil {
+			return err
+		}
+		dFee := sdk.NewDecCoinFromCoin(bFee)
+
 		err = r.txSubmitRequestIn(types.MsgRequestIn{
 			DestAddress: req.DestAddr,
 			Network:     req.Network,
-			Amount:      &cAmount,
-			Fee:         &cFee,
+			Amount:      &dAmount,
+			Fee:         &dFee,
 			TxHashes:    req.TxHashes,
 		})
 		if err != nil {
 			if e := r.db.SetLog(req, err.Error()); e != nil {
 				log.Errorw("set log error", "logerr", e, "error", err)
 			} else {
-				log.Errorw("submite request in error", "error", err)
+				log.Errorw("submit request has error", "error", err)
 			}
 			continue
 		}

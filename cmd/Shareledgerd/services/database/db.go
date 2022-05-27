@@ -3,9 +3,9 @@ package database
 import (
 	"context"
 	"fmt"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/pkg/errors"
 	"go.mongodb.org/mongo-driver/bson/primitive"
-	"math/big"
 	"time"
 
 	"github.com/rs/zerolog/log"
@@ -18,6 +18,11 @@ import (
 type DB struct {
 	*mongo.Client
 	DBName string
+}
+
+func (c *DB) GetSubmittedBatchesIn(network string) ([]BatchIn, error) {
+	//TODO implement me khang
+	panic("implement me")
 }
 
 func (c *DB) GetPendingBatchesIn(ctx context.Context) ([]BatchIn, error) {
@@ -71,7 +76,7 @@ func (c *DB) GetPendingRequestsIn(network string, destAddress string) ([]Request
 	return requests, err
 }
 
-func (c *DB) TryToBatchPendingSwapIn(network string, destAddress string, minFee *big.Int) error {
+func (c *DB) TryToBatchPendingSwapIn(network string, destAddress string, minFee sdk.Coin) error {
 	pendingRequests, err := c.GetPendingRequestsIn(network, destAddress)
 	if err != nil {
 		return err
@@ -82,20 +87,19 @@ func (c *DB) TryToBatchPendingSwapIn(network string, destAddress string, minFee 
 	ctx, cancel := context.WithTimeout(context.Background(), timeout)
 	defer cancel()
 
-	totalSwapIn := big.NewInt(0)
+	var totalSwapIn sdk.Coin
 	ids := make([]primitive.ObjectID, 0, len(pendingRequests))
 	txHashes := make([]string, 0, len(pendingRequests))
 	for _, pr := range pendingRequests {
-		t := new(big.Int)
-		t, ok := t.SetString(pr.BaseAmount, 10)
-		if !ok {
-			return errors.New(fmt.Sprintf("pending request, txHash, %x, does not have correct amount value", pr.TxHash))
+		coin, err := sdk.ParseCoinNormalized(pr.BaseAmount)
+		if err != nil {
+			return errors.New(fmt.Sprintf("pending request, txHash, %x, does not have correct amount value, %s", pr.TxHash, pr.BaseAmount))
 		}
-		totalSwapIn = totalSwapIn.Add(totalSwapIn, t)
+		totalSwapIn = totalSwapIn.Add(coin)
 		ids = append(ids, pr.ID)
 		txHashes = append(txHashes, pr.TxHash)
 	}
-	if totalSwapIn.Cmp(minFee) > 0 {
+	if totalSwapIn.IsLT(minFee) {
 		// skip this destAddr for next time.
 		return nil
 	}
@@ -117,7 +121,7 @@ func (c *DB) TryToBatchPendingSwapIn(network string, destAddress string, minFee 
 				Network:  network,
 				TxHashes: txHashes,
 			},
-			BaseAmount: totalSwapIn.Sub(totalSwapIn, minFee).String(),
+			BaseAmount: totalSwapIn.Sub(minFee).String(),
 			BaseFee:    minFee.String(),
 			DestAddr:   destAddress,
 		})
