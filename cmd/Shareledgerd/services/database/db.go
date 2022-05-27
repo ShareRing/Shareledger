@@ -21,10 +21,24 @@ type DB struct {
 }
 
 func (c *DB) GetSubmittedBatchesIn(network string) ([]BatchIn, error) {
-	//TODO implement me khang
-	// type : in
-	// status: submitted
-	panic("implement me")
+	ctx, cancel := context.WithTimeout(context.Background(), timeout)
+	defer cancel()
+	bCol := c.GetCollection(c.DBName, BatchCollection)
+	var batches []BatchIn
+	cur, err := bCol.Find(ctx, bson.M{
+		"type":    "in",
+		"status":  "submitted",
+		"network": network,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	err = cur.All(context.Background(), &batches)
+	if err != nil {
+		return nil, err
+	}
+	return batches, nil
 }
 
 func (c *DB) UnBatchRequestIn(network string, txHashes []string) error {
@@ -36,7 +50,55 @@ func (c *DB) UnBatchRequestIn(network string, txHashes []string) error {
 	// requests
 	// set batched requests to pending, batchID= nil
 	// set batched requests hav same txHash -> failed, batchID= nil
-	return nil
+	ctx, cancel := context.WithTimeout(context.Background(), timeout)
+	defer cancel()
+	return c.Client.UseSession(ctx, func(sessionContext mongo.SessionContext) error {
+		err := sessionContext.StartTransaction()
+		defer func() {
+			if err != nil {
+				_ = sessionContext.AbortTransaction(sessionContext)
+			}
+		}()
+		bCol := c.GetCollection(c.DBName, BatchCollection)
+		_, err = bCol.UpdateMany(sessionContext, bson.M{
+			"type":    "in",
+			"network": network,
+			"txHash": bson.M{
+				"$in": txHashes,
+			},
+		}, bson.M{
+			"$set": bson.M{"status": BatchStatusFailed},
+		})
+		if err != nil {
+			return err
+		}
+		rCol := c.GetCollection(c.DBName, RequestInCollection)
+		_, err = rCol.UpdateMany(sessionContext, bson.M{
+			"batchID": bson.M{
+				"$exists": false,
+			},
+			"network": network,
+		}, bson.M{
+			"$set": bson.M{"status": RequestInPending},
+		})
+		if err != nil {
+			return err
+		}
+
+		_, err = rCol.UpdateMany(sessionContext, bson.M{
+			"txHash": bson.M{
+				"$in": txHashes,
+			},
+			"network": network,
+		}, bson.M{
+			"$set": bson.M{"status": RequestInPending},
+		})
+		if err != nil {
+			return err
+		}
+		return sessionContext.CommitTransaction(sessionContext)
+
+	})
 }
 
 func (c *DB) GetPendingBatchesIn(ctx context.Context) ([]BatchIn, error) {
