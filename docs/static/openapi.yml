@@ -53902,6 +53902,14 @@ definitions:
         format: uint64
   shareledger.swap.MsgRejectResponse:
     type: object
+  shareledger.swap.MsgRequestInsResponse:
+    type: object
+    properties:
+      id:
+        type: array
+        items:
+          type: string
+          format: uint64
   shareledger.swap.MsgSwapInResponse:
     type: object
     properties:
@@ -54250,6 +54258,39 @@ definitions:
       batchId:
         type: string
         format: uint64
+      txHash:
+        type: string
+  shareledger.swap.RequestIn:
+    type: object
+    properties:
+      srcAddress:
+        type: string
+      network:
+        type: string
+      amount:
+        type: object
+        properties:
+          denom:
+            type: string
+          amount:
+            type: string
+        description: |-
+          DecCoin defines a token with a denomination and a decimal amount.
+
+          NOTE: The amount field is an Dec which implements the custom method
+          signatures required by gogoproto.
+      fee:
+        type: object
+        properties:
+          denom:
+            type: string
+          amount:
+            type: string
+        description: |-
+          DecCoin defines a token with a denomination and a decimal amount.
+
+          NOTE: The amount field is an Dec which implements the custom method
+          signatures required by gogoproto.
       txHash:
         type: string
   shareledger.swap.RequestedIn:
