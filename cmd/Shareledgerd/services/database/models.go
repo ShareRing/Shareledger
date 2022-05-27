@@ -119,6 +119,7 @@ type BatchIn struct {
 	Batch      `bson:",inline"`
 	BaseAmount string `bson:"baseAmount"`
 	BaseFee    string `bson:"baseFee"`
+	DestAddr   string `bson:"destAddr"`
 }
 
 func (b BatchIn) GetShareledgerID() uint64 {
@@ -142,6 +143,7 @@ func (b BatchIn) SetOperator(filter bson.M, upsert bool) *mongo.UpdateOneModel {
 	}
 	setOperator["baseAmount"] = b.BaseAmount
 	setOperator["baseFee"] = b.BaseFee
+	setOperator["destAddr"] = b.DestAddr
 	operation.SetUpdate(bson.M{"$set": setOperator})
 	return operation
 }
@@ -183,7 +185,7 @@ type RequestsIn struct {
 
 type Logs struct {
 	ID      primitive.ObjectID `bson:"_id,omitempty" json:"id"`
-	BathID  uint64             `bson:"batchID" json:"batchID"`
+	Batch   IBatch             `bson:"batch"`
 	Message string             `bson:"message" json:"message"`
 }
 

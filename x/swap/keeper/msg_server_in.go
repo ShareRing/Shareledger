@@ -50,7 +50,6 @@ func (k msgServer) RequestIn(goCtx context.Context, msg *types.MsgRequestIn) (*t
 
 	k.SetRequestedIn(ctx, slpAddress, msg.TxHashes)
 	req, err := k.AppendPendingRequest(ctx, types.Request{
-		SrcAddr:     msg.SrcAddress,
 		DestAddr:    msg.DestAddress,
 		SrcNetwork:  msg.Network,
 		DestNetwork: types.NetworkNameShareLedger,
@@ -71,7 +70,6 @@ func (k msgServer) RequestIn(goCtx context.Context, msg *types.MsgRequestIn) (*t
 			sdk.NewAttribute(types.EventTypeSwapFee, msg.Fee.String()),
 			sdk.NewAttribute(types.EventTypeSwapId, strconv.FormatUint(req.Id, 10)),
 			sdk.NewAttribute(types.EventTypeSwapDestAddr, msg.DestAddress),
-			sdk.NewAttribute(types.EventTypeSwapSrcAddr, msg.SrcAddress),
 			sdk.NewAttribute(types.EventTypeSwapDestNetwork, types.NetworkNameShareLedger),
 			sdk.NewAttribute(types.EventTypeSwapSrcNetwork, msg.Network),
 		),

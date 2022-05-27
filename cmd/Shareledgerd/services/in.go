@@ -106,13 +106,40 @@ func (r *Relayer) ProcessPendingRequestsIn(ctx context.Context, network string, 
 	return nil
 }
 
-func (r *Relayer) ApprovePendingBatchesIn(ctx context.Context) error {
+func (r *Relayer) SubmitPendingBatchesIn(ctx context.Context) error {
 	pendingBatchesIn, err := r.db.GetPendingBatchesIn(ctx)
 	if err != nil {
 		return err
 	}
-	for _ = range pendingBatchesIn {
-		//batch.TxHashes
+	for _, req := range pendingBatchesIn {
+		bAmount, err := sdk.NewDecFromStr(req.BaseAmount)
+		if err != nil {
+			return err
+		}
+		cAmount := sdk.NewDecCoinFromDec(denom.Base, bAmount)
+
+		bFee, err := sdk.NewDecFromStr(req.BaseFee)
+		if err != nil {
+			return err
+		}
+		cFee := sdk.NewDecCoinFromDec(denom.Base, bFee)
+		err = r.txSubmitRequestIn(types.MsgRequestIn{
+			DestAddress: req.DestAddr,
+			Network:     req.Network,
+			Amount:      &cAmount,
+			Fee:         &cFee,
+			TxHashes:    req.TxHashes,
+		})
+		if err != nil {
+			if e := r.db.SetLog(req, err.Error()); e != nil {
+				log.Errorw("set log error", "logerr", e, "error", err)
+			} else {
+				log.Errorw("submite request in error", "error", err)
+			}
+			continue
+		}
+		req.Status = database.BatchStatusSubmitted
+		r.db.SetBatch(req)
 	}
 	return nil
 }

@@ -5,14 +5,12 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/cosmos/cosmos-sdk/client"
-	"github.com/cosmos/cosmos-sdk/client/tx"
 	"go.uber.org/zap"
 	"math/big"
 	"os"
 	"os/signal"
 	"path/filepath"
 	"sort"
-	"sync"
 	"syscall"
 	"time"
 
@@ -277,10 +275,6 @@ func (r *Relayer) startProcess(ctx context.Context, f processFunc, network strin
 	return err
 }
 
-func (r *Relayer) setLog(id uint64, msg string) error {
-	return r.db.SetLog(id, msg)
-}
-
 func (r *Relayer) trackSubmittedBatch(ctx context.Context, batch database.BatchOut, timeout time.Duration) (database.BatchStatus, error) {
 	tickerTimeout := time.NewTicker(timeout)
 	scanPeriod := time.NewTicker(timeout / 5)
@@ -303,7 +297,7 @@ func (r *Relayer) trackSubmittedBatch(ctx context.Context, batch database.BatchO
 						return database.BatchStatusDone, r.db.UpdateBatchesOut([]uint64{batch.ShareledgerID}, database.BatchStatusDone)
 					}
 
-					if e := r.setLog(batch.ShareledgerID, err.Error()); e != nil {
+					if e := r.db.SetLog(batch, err.Error()); e != nil {
 						log.Errorw("set log error", "original error", err, "log error", e)
 					}
 					return database.BatchStatusFailed, r.db.UpdateBatchesOut([]uint64{batch.ShareledgerID}, database.BatchStatusFailed)
@@ -314,7 +308,7 @@ func (r *Relayer) trackSubmittedBatch(ctx context.Context, batch database.BatchO
 						return database.BatchStatusDone, r.db.UpdateBatchesOut([]uint64{batch.ShareledgerID}, database.BatchStatusDone)
 					case 0:
 						msgLog, _ := json.MarshalIndent(receipt, "", "  ")
-						if e := r.setLog(batch.ShareledgerID, string(msgLog)); e != nil {
+						if e := r.db.SetLog(batch, string(msgLog)); e != nil {
 							log.Errorw("set log msgLog", "msgLog", msgLog, "log error", e, "raw log", receipt)
 						}
 						return database.BatchStatusFailed, r.db.UpdateBatchesOut([]uint64{batch.ShareledgerID}, database.BatchStatusFailed)
@@ -616,7 +610,7 @@ func (r *Relayer) submitAndTrack(ctx context.Context, batch database.BatchOut, d
 			} else {
 				batch.Status = database.BatchStatusFailed
 			}
-			_ = r.setLog(batch.ShareledgerID, err.Error())
+			_ = r.db.SetLog(batch, err.Error())
 		}
 		if txRes != nil {
 			logSubmit = append(logSubmit,
@@ -913,96 +907,50 @@ func (r *Relayer) initSwapInRequest(
 	ctx context.Context,
 	srcAddr, destAddr, network, txHash string,
 	blockNumber, amount, fee uint64) error {
-	txLock.Lock()
-	defer txLock.Unlock()
-	swapAmount := sdk.NewDecCoin(denom.Shr, sdk.NewIntFromUint64(amount))
-	swapFee := sdk.NewDecCoin(denom.Shr, sdk.NewIntFromUint64(fee))
-
-	inMsg := swapmoduletypes.NewMsgRequestIn(
-		r.clientTx.GetFromAddress().String(),
-		srcAddr,
-		destAddr,
-		network,
-		[]string{},
-		swapAmount,
-		swapFee,
-	)
-	if err := inMsg.ValidateBasic(); err != nil {
-		return err
-	}
-	err := tx.GenerateOrBroadcastTxCLI(r.clientTx, r.cmd.Flags(), inMsg)
-	if err != nil {
-		return errors.Wrapf(err, "can't request swap in msg:%s", inMsg.String())
-	}
-
-	swapsRes, err := r.qClient.Swap(ctx, &swapmoduletypes.QuerySwapRequest{
-		Status:      swapmoduletypes.SwapStatusPending,
-		SrcAddr:     srcAddr,
-		DestNetwork: network,
-	})
-
-	if err != nil {
-		return errors.Wrapf(err, "fail to query the swap in request pending")
-	}
-	var rInIds = make([]uint64, 0, len(swapsRes.GetSwaps()))
-	for _, rq := range swapsRes.Swaps {
-		rInIds = append(rInIds, rq.GetId())
-	}
-
-	approveMsg := swapmoduletypes.NewMsgApproveIn(r.clientTx.GetFromAddress().String(), rInIds)
-	if err := approveMsg.ValidateBasic(); err != nil {
-		return errors.Wrap(err, "message approve in is invalid")
-	}
-	err = tx.GenerateOrBroadcastTxCLI(r.clientTx, r.cmd.Flags(), approveMsg)
-	if err != nil {
-		return errors.Wrap(err, "approve swap fail")
-	}
-	return nil
+	panic("gaga not")
+	//txLock.Lock()
+	//defer txLock.Unlock()
+	//swapAmount := sdk.NewDecCoin(denom.Shr, sdk.NewIntFromUint64(amount))
+	//swapFee := sdk.NewDecCoin(denom.Shr, sdk.NewIntFromUint64(fee))
+	//
+	//inMsg := swapmoduletypes.NewMsgRequestIn(
+	//	r.clientTx.GetFromAddress().String(),
+	//	srcAddr,
+	//	destAddr,
+	//	network,
+	//	[]string{},
+	//	swapAmount,
+	//	swapFee,
+	//)
+	//if err := inMsg.ValidateBasic(); err != nil {
+	//	return err
+	//}
+	//err := tx.GenerateOrBroadcastTxCLI(r.clientTx, r.cmd.Flags(), inMsg)
+	//if err != nil {
+	//	return errors.Wrapf(err, "can't request swap in msg:%s", inMsg.String())
+	//}
+	//
+	//swapsRes, err := r.qClient.Swap(ctx, &swapmoduletypes.QuerySwapRequest{
+	//	Status:      swapmoduletypes.SwapStatusPending,
+	//	SrcAddr:     srcAddr,
+	//	DestNetwork: network,
+	//})
+	//
+	//if err != nil {
+	//	return errors.Wrapf(err, "fail to query the swap in request pending")
+	//}
+	//var rInIds = make([]uint64, 0, len(swapsRes.GetSwaps()))
+	//for _, rq := range swapsRes.Swaps {
+	//	rInIds = append(rInIds, rq.GetId())
+	//}
+	//
+	//approveMsg := swapmoduletypes.NewMsgApproveIn(r.clientTx.GetFromAddress().String(), rInIds)
+	//if err := approveMsg.ValidateBasic(); err != nil {
+	//	return errors.Wrap(err, "message approve in is invalid")
+	//}
+	//err = tx.GenerateOrBroadcastTxCLI(r.clientTx, r.cmd.Flags(), approveMsg)
+	//if err != nil {
+	//	return errors.Wrap(err, "approve swap fail")
+	//}
+	//return nil
 }
-
-//#region shareledger-bc
-var txLock sync.Mutex
-
-func (r *Relayer) txCancelBatches(ids []uint64) error {
-	txLock.Lock()
-	defer txLock.Unlock()
-
-	clientCtx, err := client.GetClientTxContext(r.cmd)
-	if err != nil {
-		return err
-	}
-	clientCtx = clientCtx.WithSkipConfirmation(true).WithBroadcastMode(flags.BroadcastBlock)
-	msg := &swapmoduletypes.MsgCancelBatches{
-		Creator: r.clientTx.GetFromAddress().String(),
-		Ids:     ids,
-	}
-	if err := msg.ValidateBasic(); err != nil {
-		return err
-	}
-	return tx.GenerateOrBroadcastTxCLI(r.clientTx, r.cmd.Flags(), msg)
-}
-
-// txUpdateBatch thread safe to avoid running in multiple go routine for multiple network
-func (r *Relayer) txUpdateBatch(msg *swapmoduletypes.MsgUpdateBatch) error {
-	txLock.Lock()
-	defer txLock.Unlock()
-
-	msg.Creator = r.clientTx.GetFromAddress().String()
-	if err := msg.ValidateBasic(); err != nil {
-		return err
-	}
-	err := tx.GenerateOrBroadcastTxCLI(r.clientTx, r.cmd.Flags(), msg)
-
-	batchRes, err := r.qClient.Batches(context.Background(), &swapmoduletypes.QueryBatchesRequest{Ids: []uint64{msg.GetBatchId()}})
-	if err != nil || len(batchRes.GetBatches()) == 0 {
-		return errors.Wrapf(err, "recheck the batch id %d fail", msg.GetBatchId())
-	}
-
-	if batchRes.GetBatches()[0].GetStatus() != msg.GetStatus() {
-		return errors.New("update the batch status fail")
-	}
-
-	return nil
-}
-
-//#endregion

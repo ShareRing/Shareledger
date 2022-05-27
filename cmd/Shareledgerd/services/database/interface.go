@@ -2,6 +2,7 @@ package database
 
 import (
 	"context"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"math/big"
 )
 
@@ -20,7 +21,7 @@ type DBRelayer interface {
 	SetBatchesOutFailed(nonceNumber uint64) error
 	GetSLP3Address(erc20Addr, network string) (string, error)
 	GetNextUnfinishedBatchOut(network string, offset int64) (*BatchOut, error)
-	SetLog(batchId uint64, msg string) error
+	SetLog(batch IBatch, msg string) error
 	SetLastScannedBlockNumber(network string, contractAddress string, lastScannedBlockNumber int64) error
 	GetLastScannedBatch(network string) (uint64, error)
 	GetLastScannedBlockNumber(network string, contractAddr string) (uint64, error)
@@ -30,4 +31,5 @@ type DBRelayer interface {
 	TryToBatchPendingSwapIn(network string, destAddress string, minFee *big.Int) error
 	GetRequestIn(txHash string) (*RequestsIn, error)
 	GetPendingBatchesIn(ctx context.Context) ([]BatchIn, error)
+	GetRequestsInByBatchID(batchID primitive.ObjectID) ([]RequestsIn, error)
 }
