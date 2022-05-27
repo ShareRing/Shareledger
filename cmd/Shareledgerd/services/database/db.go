@@ -21,7 +21,7 @@ type DB struct {
 }
 
 func (c *DB) GetPendingBatchesIn(ctx context.Context) ([]BatchIn, error) {
-	rCol := c.GetCollection(c.DBName, BatchInCollection)
+	rCol := c.GetCollection(c.DBName, BatchCollection)
 	ctx, cancel := context.WithTimeout(context.Background(), timeout)
 	defer cancel()
 	var requests []BatchIn
@@ -31,6 +31,26 @@ func (c *DB) GetPendingBatchesIn(ctx context.Context) ([]BatchIn, error) {
 	}
 	err = r.All(ctx, &requests)
 	return requests, err
+}
+
+func (c *DB) GetRequestsInByBatchID(batchID primitive.ObjectID) ([]RequestsIn, error) {
+	rCol := c.GetCollection(c.DBName, RequestInCollection)
+	ctx, cancel := context.WithTimeout(context.Background(), timeout)
+	defer cancel()
+	var result []RequestsIn
+	cursor, err := rCol.Find(ctx, bson.M{
+		"batchID": batchID,
+	})
+	if err != nil {
+		return nil, err
+	}
+	if cursor.Err() == mongo.ErrNoDocuments {
+		return nil, nil
+	}
+	if err := cursor.All(ctx, &result); err != nil {
+		return nil, err
+	}
+	return result, nil
 }
 
 func (c *DB) InsertRequestIn(request RequestsIn) error {
@@ -72,7 +92,7 @@ func (c *DB) GetPendingRequestsIn(network string, destAddress string) ([]Request
 }
 
 func (c *DB) TryToBatchPendingSwapIn(network string, destAddress string, minFee *big.Int) error {
-	pendingRequests, err := c.GetPendingRequestsIn(network, destAddress)
+	pendingRequests, err := c.GetPendingRequestsIn(network, destAddress) //slp3 address
 	if err != nil {
 		return err
 	}
@@ -84,6 +104,7 @@ func (c *DB) TryToBatchPendingSwapIn(network string, destAddress string, minFee 
 
 	totalSwapIn := big.NewInt(0)
 	ids := make([]primitive.ObjectID, 0, len(pendingRequests))
+	txHashes := make([]string, 0, len(pendingRequests))
 	for _, pr := range pendingRequests {
 		t := new(big.Int)
 		t, ok := t.SetString(pr.BaseAmount, 10)
@@ -92,12 +113,14 @@ func (c *DB) TryToBatchPendingSwapIn(network string, destAddress string, minFee 
 		}
 		totalSwapIn = totalSwapIn.Add(totalSwapIn, t)
 		ids = append(ids, pr.ID)
+		txHashes = append(txHashes, pr.TxHash)
 	}
 	if totalSwapIn.Cmp(minFee) > 0 {
 		// skip this destAddr for next time.
 		return nil
 	}
 	return c.Client.UseSession(ctx, func(sCtx mongo.SessionContext) (err error) {
+
 		err = sCtx.StartTransaction()
 		if err != nil {
 			return err
@@ -107,14 +130,15 @@ func (c *DB) TryToBatchPendingSwapIn(network string, destAddress string, minFee 
 				sCtx.AbortTransaction(sCtx)
 			}
 		}()
-		bCol := c.GetCollection(c.DBName, BatchInCollection)
+		bCol := c.GetCollection(c.DBName, BatchCollection)
 		ires, err := bCol.InsertOne(sCtx, BatchIn{
 			Batch: Batch{
-				Status:  BatchStatusPending,
-				Type:    BatchTypeIn,
-				Network: network,
+				Status:   BatchStatusPending,
+				Type:     BatchTypeIn,
+				Network:  network,
+				TxHashes: txHashes,
 			},
-			BaseAmount: totalSwapIn.String(),
+			BaseAmount: totalSwapIn.Sub(totalSwapIn, minFee).String(),
 			BaseFee:    minFee.String(),
 		})
 		if err != nil {
@@ -264,7 +288,7 @@ type Collection struct {
 
 const (
 	RequestInCollection = "requestsIn"
-	BatchInCollection   = "batchesIn"
+	//BatchInCollection   = "batchesIn"
 
 	RequestCollection = "requests"
 	BatchCollection   = "batches"

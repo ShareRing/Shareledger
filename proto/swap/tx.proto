@@ -18,6 +18,7 @@ service Msg {
   rpc Cancel(MsgCancel) returns (MsgCancelResponse);
   rpc Reject(MsgReject) returns (MsgRejectResponse);
   rpc RequestIn(MsgRequestIn) returns (MsgSwapInResponse);
+//  rpc RequestIns(MsgRequestIns) returns (MsgRequestInsResponse);
   rpc ApproveIn(MsgApproveIn) returns (MsgApproveInResponse);
   rpc UpdateBatch(MsgUpdateBatch) returns (MsgUpdateBatchResponse);
   rpc UpdateSwapFee(MsgUpdateSwapFee) returns (MsgUpdateSwapFeeResponse);
@@ -116,11 +117,29 @@ message MsgRequestIn {
   string network = 4;
   cosmos.base.v1beta1.DecCoin amount = 5;
   cosmos.base.v1beta1.DecCoin fee = 6;
-  repeated string txHashes = 7;
+  string txHash = 7;
 }
 
 message MsgSwapInResponse {
   uint64 id = 1;
+}
+
+message MsgRequestIns {
+  string creator = 1;
+  string destAddress = 2;
+  repeated RequestIn requests = 3;
+}
+
+message MsgRequestInsResponse {
+  repeated uint64 id = 1;
+}
+
+message RequestIn {
+  string srcAddress = 1;
+  string network = 2;
+  cosmos.base.v1beta1.DecCoin amount = 3;
+  cosmos.base.v1beta1.DecCoin fee = 4;
+  string txHash = 5;
 }
 
 message MsgApproveIn {
