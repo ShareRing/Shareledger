@@ -3,6 +3,7 @@ package services
 import (
 	"context"
 	"fmt"
+	"github.com/cosmos/cosmos-sdk/client/tx"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/pkg/errors"
@@ -76,13 +77,23 @@ func (r *Relayer) ProcessApproveSubmittedBatchesIn(ctx context.Context, network 
 			txAmount.Add(*amount)
 		}
 		// cover rounding number between chains.
-		if !fullBatchDone || !txAmount.Amount.Sub(swap.Amount.Amount.Add(swap.Fee.Amount)).Abs().LTE(sdk.NewInt(1)) {
-			// TODO: khang un - batch..
+		if !fullBatchDone || !txAmount.Amount.Sub(swap.Amount.Amount.Add(swap.Fee.Amount)).LTE(sdk.NewInt(1)) {
 			err := errors.Errorf("amount batched requests, %s, is not match with contracts data, %s", swap.Amount.Add(*swap.Fee).String(), txAmount.String())
 			r.db.SetLog(batchLog, err.Error())
 			continue
 		}
 
+		approveMsg := types.NewMsgApproveIn(r.clientTx.GetFromAddress().String(), []uint64{swap.Id})
+		if err := approveMsg.ValidateBasic(); err != nil {
+			return errors.Wrap(err, "message approve in is invalid")
+		}
+		err = tx.GenerateOrBroadcastTxCLI(r.clientTx, r.cmd.Flags(), approveMsg)
+		if err != nil {
+			log.Errorw("approve swap in", "error", err.Error())
+			r.db.SetLog(batchLog, err.Error())
+			logData = append(logData, "error", err)
+			continue
+		}
 	}
 	return nil
 }
