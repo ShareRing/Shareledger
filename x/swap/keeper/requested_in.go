@@ -8,7 +8,7 @@ import (
 )
 
 // SetRequestedIn set a specific requestedIn in the store from its index
-func (k Keeper) SetRequestedIn(ctx sdk.Context, destAddress sdk.Address, txHash string) {
+func (k Keeper) SetRequestedIn(ctx sdk.Context, destAddress sdk.Address, txHashes []string) {
 	insertingData := types.RequestedIn{
 		Address: destAddress.String(),
 	}
@@ -21,7 +21,9 @@ func (k Keeper) SetRequestedIn(ctx sdk.Context, destAddress sdk.Address, txHash 
 	if insertingData.TxHashes == nil {
 		insertingData.TxHashes = make(map[string]*commontypes.Empty)
 	}
-	insertingData.TxHashes[txHash] = &commontypes.Empty{}
+	for _, hash := range txHashes {
+		insertingData.TxHashes[hash] = &commontypes.Empty{}
+	}
 	b := k.cdc.MustMarshal(&insertingData)
 	store.Set(types.RequestedInKey(
 		destAddress.String(),

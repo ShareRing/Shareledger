@@ -11,11 +11,13 @@ import (
 
 func (k msgServer) RequestIn(goCtx context.Context, msg *types.MsgRequestIn) (*types.MsgSwapInResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
-	msg.ValidateBasic()
+
 	reqHistory, found := k.GetRequestedIn(ctx, msg.DestAddress)
 	if found {
-		if _, processed := reqHistory.TxHashes[msg.TxHash]; processed {
-			return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "tx hash was already processed")
+		for _, hash := range msg.TxHashes {
+			if _, processed := reqHistory.TxHashes[hash]; processed {
+				return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "tx hash was already processed")
+			}
 		}
 	}
 
@@ -25,16 +27,15 @@ func (k msgServer) RequestIn(goCtx context.Context, msg *types.MsgRequestIn) (*t
 	}
 	baseFee := sdk.NewCoin(denom.Base, fee.AmountOf(denom.Base))
 
-	//TODO: Hoai move to approve swap in
-	//schema, found := k.GetSchema(ctx, msg.Network)
-	//if !found {
-	//	return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "network, %s, is not supported", msg.Network)
-	//}
-	//if schema.Fee != nil && schema.Fee.In != nil && baseFee.IsLT(*schema.Fee.In) {
-	//	return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "required fee for swap in is expected %s, but got %s", baseFee.String(), baseFee.String())
-	//}
+	schema, found := k.GetSchema(ctx, msg.Network)
+	if !found {
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "network, %s, is not supported", msg.Network)
+	}
+	if schema.Fee != nil && schema.Fee.In != nil && baseFee.IsLT(*schema.Fee.In) {
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "required fee for swap in is expected %s, but got %s", baseFee.String(), baseFee.String())
+	}
 
-	amount, err := denom.NormalizeToBaseCoins(sdk.NewDecCoins(*msg.GetAmount()), false)
+	amount, err := denom.NormalizeToBaseCoins(sdk.NewDecCoins(*msg.GetAmount()), true)
 	if err != nil {
 		return nil, err
 	}
@@ -47,7 +48,7 @@ func (k msgServer) RequestIn(goCtx context.Context, msg *types.MsgRequestIn) (*t
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, err.Error())
 	}
 
-	k.SetRequestedIn(ctx, slpAddress, msg.TxHash)
+	k.SetRequestedIn(ctx, slpAddress, msg.TxHashes)
 	req, err := k.AppendPendingRequest(ctx, types.Request{
 		SrcAddr:     msg.SrcAddress,
 		DestAddr:    msg.DestAddress,
@@ -56,7 +57,7 @@ func (k msgServer) RequestIn(goCtx context.Context, msg *types.MsgRequestIn) (*t
 		Amount:      &insertAmountCoin,
 		Fee:         &baseFee,
 		Status:      types.SwapStatusPending,
-		TxHash:      msg.TxHash,
+		TxHashes:    msg.TxHashes,
 	})
 	if err != nil {
 		return nil, err

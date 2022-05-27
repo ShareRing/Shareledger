@@ -2,7 +2,6 @@ package database
 
 import (
 	"context"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 	"math/big"
 )
 
@@ -31,5 +30,4 @@ type DBRelayer interface {
 	TryToBatchPendingSwapIn(network string, destAddress string, minFee *big.Int) error
 	GetRequestIn(txHash string) (*RequestsIn, error)
 	GetPendingBatchesIn(ctx context.Context) ([]BatchIn, error)
-	GetRequestsInByBatchID(batchID primitive.ObjectID) ([]RequestsIn, error)
 }

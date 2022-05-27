@@ -31495,8 +31495,10 @@ paths:
                     batchId:
                       type: string
                       format: uint64
-                    txHash:
-                      type: string
+                    txHashes:
+                      type: array
+                      items:
+                        type: string
               pagination:
                 type: object
                 properties:
@@ -54180,8 +54182,10 @@ definitions:
             batchId:
               type: string
               format: uint64
-            txHash:
-              type: string
+            txHashes:
+              type: array
+              items:
+                type: string
       pagination:
         type: object
         properties:
@@ -54250,8 +54254,10 @@ definitions:
       batchId:
         type: string
         format: uint64
-      txHash:
-        type: string
+      txHashes:
+        type: array
+        items:
+          type: string
   shareledger.swap.RequestedIn:
     type: object
     properties:
