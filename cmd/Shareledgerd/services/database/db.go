@@ -22,7 +22,21 @@ type DB struct {
 
 func (c *DB) GetSubmittedBatchesIn(network string) ([]BatchIn, error) {
 	//TODO implement me khang
+	// type : in
+	// status: submitted
 	panic("implement me")
+}
+
+func (c *DB) UnBatchRequestIn(network string, txHashes []string) error {
+	//return c.Client.UseSession(ctx, func(sCtx mongo.SessionContext) (err error) {
+
+	// batch
+	// set batches have txHash -> BatchStatusFailed
+
+	// requests
+	// set batched requests to pending, batchID= nil
+	// set batched requests hav same txHash -> failed, batchID= nil
+	return nil
 }
 
 func (c *DB) GetPendingBatchesIn(ctx context.Context) ([]BatchIn, error) {

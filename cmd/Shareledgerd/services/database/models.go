@@ -153,6 +153,7 @@ type RequestInStatus string
 const (
 	RequestInPending RequestInStatus = "pending"
 	RequestInBatched RequestInStatus = "batched"
+	RequestInFailed  RequestInStatus = "failed"
 )
 
 type RequestsIn struct {
