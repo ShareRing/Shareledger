@@ -11,6 +11,11 @@ import (
 	denom "github.com/sharering/shareledger/x/utils/demo"
 )
 
+// Swap in
+// User -> txs -> eth wallets
+// eventService (eth wallets) -> tx - > Mongodb - requestsIn
+// [requests]'s total > Schema's Fee In. -> gom txs -> request's total = SUM(txs's total) - FEE, requests's fee = FEE IN
+
 func (r *Relayer) aProcessIn(ctx context.Context, network string) error {
 	eventService, found := r.events[network]
 	if !found {
@@ -106,13 +111,41 @@ func (r *Relayer) ProcessPendingRequestsIn(ctx context.Context, network string, 
 	return nil
 }
 
-func (r *Relayer) ApprovePendingBatchesIn(ctx context.Context) error {
+func (r *Relayer) SubmitTxPendingBatchesIn(ctx context.Context) error {
 	pendingBatchesIn, err := r.db.GetPendingBatchesIn(ctx)
 	if err != nil {
 		return err
 	}
 	for _ = range pendingBatchesIn {
-		//batch.TxHashes
+		//requests, err := r.db.GetRequestsInByBatchID(b.ID)
+		//if err != nil {
+		//	log.Errorw("get pending requests in", "err", err.Error(), "batchID", b.ID.String())
+		//	continue
+		//}
+
+		//
+		// Amount > min Fee
+		// tx swap in []list transactions. submit 1 lan. tang gas.
+		//	insert batch into db.
+
+		// SubmitTxPendingBatchesIn
+		// Approver:
+		// Get Pending Batches In
+		// ????
+		// DONE? list swaps in from shareledger -> check all done?
+		// loop -> get list swaps in from shareledger -> approve list ids -> if check done.
+
+		// Shareledger.
+		// approve: send money to users, ko tru fee cua swap module -> update DB pending batches => DONE.
 	}
+	return nil
+}
+
+func (r *Relayer) ApprovePendingSwapIn(ctx context.Context) error {
+	// GET LIST SUBMITTED BATCHES
+
+	// job -> approver role ->
+	// scan pending swap in ...
+	// check txHashes compare total swap in trong shareledger -
 	return nil
 }
