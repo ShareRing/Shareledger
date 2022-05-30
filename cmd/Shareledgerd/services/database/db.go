@@ -5,6 +5,7 @@ import (
 	"fmt"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/pkg/errors"
+	denom "github.com/sharering/shareledger/x/utils/demo"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"time"
 
@@ -186,7 +187,7 @@ func (c *DB) TryToBatchPendingSwapIn(network string, destAddress string, minFee 
 	ctx, cancel := context.WithTimeout(context.Background(), timeout)
 	defer cancel()
 
-	var totalSwapIn sdk.Coin
+	totalSwapIn := sdk.NewCoin(denom.Base, sdk.NewInt(0))
 	ids := make([]primitive.ObjectID, 0, len(pendingRequests))
 	txHashes := make([]string, 0, len(pendingRequests))
 	for _, pr := range pendingRequests {
@@ -377,7 +378,7 @@ const (
 	AddressCollection = "addresses"
 	StateCollection   = "states"
 	LogsCollection    = "logs"
-	timeout           = 10 * time.Second
+	timeout           = 100 * time.Second
 )
 
 func (c *DB) GetRequestsInByBatchID(batchID primitive.ObjectID) ([]RequestsIn, error) {

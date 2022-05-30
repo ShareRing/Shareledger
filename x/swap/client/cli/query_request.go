@@ -52,6 +52,7 @@ func CmdSwap() *cobra.Command {
 	}
 	addFilterFlagsToCmd(cmd)
 	flags.AddQueryFlagsToCmd(cmd)
+	flags.AddPaginationFlagsToCmd(cmd, "requests")
 
 	return cmd
 }

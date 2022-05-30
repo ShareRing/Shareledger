@@ -3,7 +3,6 @@ package services
 import (
 	"context"
 	"fmt"
-	"github.com/cosmos/cosmos-sdk/client/tx"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/pkg/errors"
@@ -17,10 +16,11 @@ import (
 func (r *Relayer) approvingSubmittedBatchesIn(ctx context.Context, network string) error {
 	var logData []interface{}
 	defer func() {
-		log.Infow("process approving submitted batches in", logData...)
+		log.Infow(fmt.Sprintf("%s process approving submitted batches in", network), logData...)
 	}()
 
 	res, err := r.qClient.Swap(ctx, &types.QuerySwapRequest{
+		SrcNetwork:  network,
 		Status:      types.SwapStatusPending,
 		DestNetwork: types.NetworkNameShareLedger,
 	})
@@ -42,7 +42,7 @@ func (r *Relayer) approvingSubmittedBatchesIn(ctx context.Context, network strin
 		}
 
 		if !moduleBalances.IsAllGTE(sdk.NewCoins(*swap.Amount)) {
-			logData = append(logData, "skip approve since lacking swap balances", fmt.Sprintf("swap in amount, %s, module balance, %s", swap.Amount, moduleBalances.String()))
+			logData = append(logData, "skip_approve", fmt.Sprintf("lacking swap module's balance. swap in amount, %s, module balance, %s", swap.Amount, moduleBalances.String()))
 			continue
 		}
 
@@ -76,12 +76,7 @@ func (r *Relayer) approvingSubmittedBatchesIn(ctx context.Context, network strin
 			r.db.SetLog(batch, err.Error())
 			continue
 		}
-
-		approveMsg := types.NewMsgApproveIn(r.clientTx.GetFromAddress().String(), []uint64{swap.Id})
-		if err := approveMsg.ValidateBasic(); err != nil {
-			return errors.Wrap(err, "message approve in is invalid")
-		}
-		err = tx.GenerateOrBroadcastTxCLI(r.clientTx, r.cmd.Flags(), approveMsg)
+		err = r.txApproveIn([]uint64{swap.Id})
 		if err != nil {
 			log.Errorw("approve swap in", "error", err.Error())
 			r.db.SetLog(batch, err.Error())
@@ -213,11 +208,8 @@ func (r *Relayer) SubmitPendingBatchesIn(ctx context.Context, network string) er
 			continue
 		}
 		switch status {
-		case 1: // there are some txHash already submitted
-			// Unbatch the request
-			// Update requests have submitted txHash to Batched ( already)
-			// Update requests haven't submitted to pending
-			// TODO: Khang
+		case 1:
+			r.db.UnBatchRequestIn(network, submittedTxHash)
 			continue
 		case 2: //already submitted this full batch.
 			req.Status = database.BatchStatusSubmitted
@@ -270,7 +262,12 @@ func (r *Relayer) IsSubmitted(ctx context.Context, batch database.BatchIn) (stat
 	if err != nil {
 		return 0, nil, err
 	}
+
 	submittedTxHash = make([]string, 0, len(batch.TxHashes))
+	if processedRequests == nil || processedRequests.RequestedIn == nil || processedRequests.RequestedIn.TxHashes == nil {
+		return 0, submittedTxHash, nil
+	}
+
 	for _, txHash := range batch.TxHashes {
 		if _, found := processedRequests.RequestedIn.TxHashes[txHash]; found {
 			submittedTxHash = append(submittedTxHash, txHash)

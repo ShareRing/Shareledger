@@ -2,8 +2,6 @@ package services
 
 import (
 	"context"
-	"github.com/cosmos/cosmos-sdk/client"
-	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
 	"github.com/pkg/errors"
 	swapmoduletypes "github.com/sharering/shareledger/x/swap/types"
@@ -12,15 +10,21 @@ import (
 
 var txLock sync.Mutex
 
+func (r *Relayer) txApproveIn(swapIds []uint64) error {
+	txLock.Lock()
+	defer txLock.Unlock()
+
+	approveMsg := swapmoduletypes.NewMsgApproveIn(r.clientTx.GetFromAddress().String(), swapIds)
+	if err := approveMsg.ValidateBasic(); err != nil {
+		return errors.Wrap(err, "message approve in is invalid")
+	}
+	return tx.GenerateOrBroadcastTxCLI(r.clientTx, r.cmd.Flags(), approveMsg)
+}
+
 func (r *Relayer) txCancelBatches(ids []uint64) error {
 	txLock.Lock()
 	defer txLock.Unlock()
 
-	clientCtx, err := client.GetClientTxContext(r.cmd)
-	if err != nil {
-		return err
-	}
-	clientCtx = clientCtx.WithSkipConfirmation(true).WithBroadcastMode(flags.BroadcastBlock)
 	msg := &swapmoduletypes.MsgCancelBatches{
 		Creator: r.clientTx.GetFromAddress().String(),
 		Ids:     ids,
