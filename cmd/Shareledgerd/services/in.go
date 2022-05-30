@@ -27,7 +27,7 @@ func (r *Relayer) approvingSubmittedBatchesIn(ctx context.Context, network strin
 	if err != nil {
 		return err
 	}
-	logData = append(logData, "number pending swap in", len(res.Swaps))
+	logData = append(logData, "swap_len", len(res.Swaps))
 
 	for _, swap := range res.Swaps {
 		logData = append(logData, "swap_id", swap.Id)
@@ -58,14 +58,14 @@ func (r *Relayer) approvingSubmittedBatchesIn(ctx context.Context, network strin
 		batch.ShareledgerID = swap.Id
 
 		fullBatchDone := true
-		var txAmount sdk.Coin
+		txAmount := sdk.NewCoin(denom.Base, sdk.NewInt(0))
 		for _, txHash := range swap.TxHashes {
 			_, amount, err := r.getConfirmedTXTransfer(ctx, network, common.HexToHash(txHash))
 			if err != nil {
 				fullBatchDone = false
 				log.Errorw("check tx hash", "err", errors.Wrapf(err, "swap_id, %s, txHash, %s", swap.Id, txHash))
 				r.db.SetLog(batch, err.Error())
-				// TODO: handling with wrong data
+				// TODO: handling with wrong data or network down.
 				break
 			}
 			txAmount.Add(*amount)
@@ -123,7 +123,9 @@ func (r *Relayer) processIn(ctx context.Context, network string) error {
 			// already handler
 			if request != nil {
 				// some case, the relayer was restarted, so this will scan again. In order to re-trigger processing request.
-				handledRequests = append(handledRequests, *request)
+				if request.Status == database.RequestInPending {
+					handledRequests = append(handledRequests, *request)
+				}
 				log.Warnw("request was already handled into db.", "request", request)
 				continue
 			}
@@ -202,7 +204,6 @@ func (r *Relayer) SubmitPendingBatchesIn(ctx context.Context, network string) er
 	}
 	for _, req := range pendingBatchesIn {
 		status, submittedTxHash, err := r.IsSubmitted(ctx, req)
-		fmt.Println("submittedTxHash", submittedTxHash)
 		if err != nil {
 			log.Errorw("check submitted batch in", "err", err.Error())
 			continue

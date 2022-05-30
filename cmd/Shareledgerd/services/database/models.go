@@ -29,6 +29,7 @@ type IBatch interface {
 	Validate() error
 	SetOperator(filter bson.M, upsert bool) *mongo.UpdateOneModel
 	GetShareledgerID() uint64
+	GetID() primitive.ObjectID
 }
 
 type Batch struct {
@@ -42,22 +43,7 @@ type Batch struct {
 	Synced        bool               `bson:"synced" json:"synced"`
 }
 
-//
-//func InitBatch(b Batch) IBatch {
-//	switch b.batchType() {
-//	case BatchTypeOut:
-//		return BatchOut{
-//			Batch: b,
-//		}
-//	case BatchTypeIn:
-//		return BatchIn{
-//			Batch: b,
-//		}
-//	}
-//	return nil
-//}
-
-func (b Batch) GetShareledgerID() uint64 {
+func (b Batch) getShareledgerID() uint64 {
 	return b.ShareledgerID
 }
 
@@ -65,7 +51,11 @@ func (b Batch) batchType() BatchType {
 	return b.Type
 }
 
-func (b Batch) Validate() error {
+func (b Batch) getID() primitive.ObjectID {
+	return b.ID
+}
+
+func (b Batch) validate() error {
 	if b.Type != BatchTypeIn && b.Type != BatchTypeOut {
 		return errors.New("batch type is required with values: in/out")
 	}
@@ -94,10 +84,14 @@ func (b BatchOut) GetType() BatchType {
 	return b.Batch.batchType()
 }
 func (b BatchOut) Validate() error {
-	return b.Batch.Validate()
+	return b.Batch.validate()
 }
 func (b BatchOut) GetShareledgerID() uint64 {
-	return b.Batch.GetShareledgerID()
+	return b.Batch.getShareledgerID()
+}
+
+func (b BatchOut) GetID() primitive.ObjectID {
+	return b.Batch.getID()
 }
 
 func (b BatchOut) SetOperator(filter bson.M, upsert bool) *mongo.UpdateOneModel {
@@ -123,14 +117,18 @@ type BatchIn struct {
 }
 
 func (b BatchIn) GetShareledgerID() uint64 {
-	return b.Batch.GetShareledgerID()
+	return b.Batch.getShareledgerID()
+}
+
+func (b BatchIn) GetID() primitive.ObjectID {
+	return b.Batch.getID()
 }
 
 func (b BatchIn) GetType() BatchType {
 	return b.Batch.batchType()
 }
 func (b BatchIn) Validate() error {
-	return b.Batch.Validate()
+	return b.Batch.validate()
 }
 func (b BatchIn) SetOperator(filter bson.M, upsert bool) *mongo.UpdateOneModel {
 	operation := mongo.NewUpdateOneModel()
@@ -166,23 +164,6 @@ type RequestsIn struct {
 	BaseAmount  string              `bson:"baseAmount"`
 	BatchID     *primitive.ObjectID `bson:"batchID,omitempty"`
 }
-
-//type BatchesInStatus string
-
-//const (
-//	BatchesInPending   BatchesInStatus = "pending"
-//	BatchesInSubmitted BatchesInStatus = "submitted"
-//	BatchesInDone      BatchesInStatus = "done"
-//)
-
-//type BatchIn struct {
-//	ID            primitive.ObjectID `bson:"_id,omitempty" json:"id"`
-//	Status        BatchesInStatus    `bson:"status"`
-//	ShareledgerID uint64             `bson:"ShareledgerID"`
-
-//	Submitter     string             `bson:"submitter"`
-//	Network       string             `bson:"network"`
-//}
 
 type Logs struct {
 	ID      primitive.ObjectID `bson:"_id,omitempty" json:"id"`

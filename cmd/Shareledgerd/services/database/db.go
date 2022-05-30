@@ -624,12 +624,7 @@ func (c *DB) SetBatches(batches []IBatch) error {
 	for _, b := range batches {
 		operations = append(operations,
 			b.SetOperator(bson.M{
-				"shareledgerID": bson.M{
-					"$eq": b.GetShareledgerID(),
-				},
-				"type": bson.M{
-					"$eq": b.GetType(),
-				},
+				"_id": b.GetID(),
 			}, true),
 		)
 	}
@@ -648,12 +643,7 @@ func (c *DB) SetBatch(batch IBatch) error {
 
 	collection := c.GetCollection(c.DBName, BatchCollection)
 	operation := batch.SetOperator(bson.M{
-		"shareledgerID": bson.M{
-			"$eq": batch.GetShareledgerID(),
-		},
-		"type": bson.M{
-			"$eq": batch.GetType(),
-		},
+		"_id": batch.GetID(),
 	}, true)
 
 	_, err := collection.BulkWrite(
