@@ -120,6 +120,15 @@ func NewStartCommands(defaultNodeHome string) *cobra.Command {
 							Err:     relayerClient.startProcess(ctx, relayerClient.processIn, network),
 						}
 					}(network)
+					go func(network string) {
+						processChan <- struct {
+							Network string
+							Err     error
+						}{
+							Network: network,
+							Err:     relayerClient.startProcess(ctx, relayerClient.processApprovingIn, network),
+						}
+					}(network)
 				}
 
 			case "out":
@@ -258,7 +267,7 @@ func (r *Relayer) startProcess(ctx context.Context, f processFunc, network strin
 					return
 				}
 			case <-ctx.Done():
-				log.Info("context is done. out process is exiting")
+				log.Info("context is done. processes are exiting")
 				doneChan <- nil
 				return
 			}
@@ -671,7 +680,6 @@ func (r *Relayer) processOut(ctx context.Context, network string) error {
 }
 
 func (r *Relayer) getBatch(batchId uint64) (*swapmoduletypes.Batch, error) {
-	//qClient := swapmoduletypes.NewQueryClient(r.Client)
 	pendingQuery := &swapmoduletypes.QueryBatchesRequest{
 		Ids: []uint64{batchId},
 	}
@@ -690,7 +698,6 @@ func (r *Relayer) getBatch(batchId uint64) (*swapmoduletypes.Batch, error) {
 }
 
 func (r *Relayer) getBatchDetail(ctx context.Context, batch swapmoduletypes.Batch) (detail swaputil.BatchDetail, err error) {
-	//qClient := swapmoduletypes.NewQueryClient(r.Client)
 	// only approved swap requests have batches
 	batchesRes, err := r.qClient.Swap(ctx, &swapmoduletypes.QuerySwapRequest{Ids: batch.TxIds, Status: swapmoduletypes.SwapStatusApproved})
 	if err != nil {
@@ -701,64 +708,4 @@ func (r *Relayer) getBatchDetail(ctx context.Context, batch swapmoduletypes.Batc
 		return detail, errors.Wrapf(err, "can't get schema")
 	}
 	return swaputil.NewBatchDetail(batch, batchesRes.Swaps, schema.Schema), nil
-}
-
-func (r *Relayer) processIn(ctx context.Context, network string) error {
-	panic("implementing..")
-}
-
-func (r *Relayer) SubmitSwapIn(ctx context.Context, swap swapmoduletypes.MsgRequestIn) error {
-	return nil
-}
-
-func (r *Relayer) initSwapInRequest(
-	ctx context.Context,
-	srcAddr, destAddr, network, txHash string,
-	blockNumber, amount, fee uint64) error {
-	panic("gaga not")
-	//txLock.Lock()
-	//defer txLock.Unlock()
-	//swapAmount := sdk.NewDecCoin(denom.Shr, sdk.NewIntFromUint64(amount))
-	//swapFee := sdk.NewDecCoin(denom.Shr, sdk.NewIntFromUint64(fee))
-	//
-	//inMsg := swapmoduletypes.NewMsgRequestIn(
-	//	r.clientTx.GetFromAddress().String(),
-	//	srcAddr,
-	//	destAddr,
-	//	network,
-	//	[]string{},
-	//	swapAmount,
-	//	swapFee,
-	//)
-	//if err := inMsg.ValidateBasic(); err != nil {
-	//	return err
-	//}
-	//err := tx.GenerateOrBroadcastTxCLI(r.clientTx, r.cmd.Flags(), inMsg)
-	//if err != nil {
-	//	return errors.Wrapf(err, "can't request swap in msg:%s", inMsg.String())
-	//}
-	//
-	//swapsRes, err := r.qClient.Swap(ctx, &swapmoduletypes.QuerySwapRequest{
-	//	Status:      swapmoduletypes.SwapStatusPending,
-	//	SrcAddr:     srcAddr,
-	//	DestNetwork: network,
-	//})
-	//
-	//if err != nil {
-	//	return errors.Wrapf(err, "fail to query the swap in request pending")
-	//}
-	//var rInIds = make([]uint64, 0, len(swapsRes.GetSwaps()))
-	//for _, rq := range swapsRes.Swaps {
-	//	rInIds = append(rInIds, rq.GetId())
-	//}
-	//
-	//approveMsg := swapmoduletypes.NewMsgApproveIn(r.clientTx.GetFromAddress().String(), rInIds)
-	//if err := approveMsg.ValidateBasic(); err != nil {
-	//	return errors.Wrap(err, "message approve in is invalid")
-	//}
-	//err = tx.GenerateOrBroadcastTxCLI(r.clientTx, r.cmd.Flags(), approveMsg)
-	//if err != nil {
-	//	return errors.Wrap(err, "approve swap fail")
-	//}
-	//return nil
 }

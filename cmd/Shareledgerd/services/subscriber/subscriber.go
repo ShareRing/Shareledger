@@ -109,8 +109,7 @@ func (s *Service) HandlerSwapCompleteEvent(ctx context.Context, fn handlerSwapEv
 		if toBlock.Cmp(currentHeaderNumber) > 0 {
 			toBlock = big.NewInt(currentHeaderNumber.Int64())
 		}
-
-		log.Debugf("Scanning from block %v to block %v, network, %s", s.swapCurrentBlock, toBlock, s.network)
+		log.Debugf("Network, %s, scanning from block %v to block %v", s.network, s.swapCurrentBlock, toBlock.Int64())
 		any := []common.Hash{}
 		query := eth.FilterQuery{
 			FromBlock: s.swapCurrentBlock,
@@ -172,12 +171,12 @@ func (s *Service) HandlerTransferEvent(ctx context.Context, fn handlerTransferEv
 	for header.Number.Cmp(s.transferCurrentBlock) > 0 {
 		currentHeaderNumber := header.Number
 
-		toBlock := big.NewInt(s.swapCurrentBlock.Int64() + 4500)
+		toBlock := big.NewInt(s.transferCurrentBlock.Int64() + 4500)
 		if toBlock.Cmp(currentHeaderNumber) > 0 {
 			toBlock = big.NewInt(currentHeaderNumber.Int64())
 		}
 
-		log.Debugf("Scanning from block %v to block %v", s.transferCurrentBlock, toBlock.Int64())
+		log.Debugf("Network, %s, scanning from block %v to block %v", s.network, s.transferCurrentBlock, toBlock.Int64())
 		any := []common.Hash{}
 		query := eth.FilterQuery{
 			FromBlock: s.transferCurrentBlock,

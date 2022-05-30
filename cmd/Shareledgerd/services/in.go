@@ -14,10 +14,10 @@ import (
 	"strings"
 )
 
-func (r *Relayer) ApprovingSubmittedBatchesIn(ctx context.Context, network string) error {
+func (r *Relayer) approvingSubmittedBatchesIn(ctx context.Context, network string) error {
 	var logData []interface{}
 	defer func() {
-		log.Infow("process approving submitted batches in", logData)
+		log.Infow("process approving submitted batches in", logData...)
 	}()
 
 	res, err := r.qClient.Swap(ctx, &types.QuerySwapRequest{
@@ -97,7 +97,11 @@ func (r *Relayer) ApprovingSubmittedBatchesIn(ctx context.Context, network strin
 	return nil
 }
 
-func (r *Relayer) aProcessIn(ctx context.Context, network string) error {
+func (r *Relayer) processApprovingIn(ctx context.Context, network string) error {
+	return r.approvingSubmittedBatchesIn(ctx, network)
+}
+
+func (r *Relayer) processIn(ctx context.Context, network string) error {
 	eventService, found := r.events[network]
 	if !found {
 		return fmt.Errorf("%s does not have event subcriber", network)
@@ -105,6 +109,18 @@ func (r *Relayer) aProcessIn(ctx context.Context, network string) error {
 	handledRequests := make([]database.RequestsIn, 0)
 	errEvent := eventService.HandlerTransferEvent(ctx, func(events []event.EventTransferOutput) error {
 		for _, e := range events {
+
+			slp3, err := r.db.GetSLP3Address(e.ToAddress, network)
+			if err != nil {
+				// log error and skip process this request
+				log.Infow("get slp3 address", "errEvent", err, "event", e)
+				continue
+			}
+			if slp3 == "" {
+				log.Infow("slp3 address is not found", "eth_address", e.ToAddress, "event", e)
+				continue
+			}
+
 			request, err := r.db.GetRequestIn(network, e.TxHash)
 			if err != nil {
 				return errors.Wrapf(err, fmt.Sprintf("get request by txHash, %s", e.TxHash))
@@ -122,17 +138,6 @@ func (r *Relayer) aProcessIn(ctx context.Context, network string) error {
 				return errors.New(fmt.Sprintf("network %s does not have exponent config", network))
 			}
 			baseAmount := denom.ExponentToBase(sdk.NewIntFromBigInt(e.Amount.BigInt()), exponentNetwork)
-
-			slp3, err := r.db.GetSLP3Address(e.ToAddress, network)
-			if err != nil {
-				// log error and skip process this request
-				log.Errorw("get slp3 address", "errEvent", err, "event", e)
-				continue
-			}
-			if slp3 == "" {
-				log.Errorw("slp3 address is not found", "eth_address", e.ToAddress, "event", e)
-				continue
-			}
 
 			ri := database.RequestsIn{
 				Status:      database.RequestInPending,
@@ -160,6 +165,9 @@ func (r *Relayer) aProcessIn(ctx context.Context, network string) error {
 	var errProcessing error
 	if len(handledRequests) > 0 {
 		errProcessing = r.ProcessPendingRequestsIn(ctx, network, handledRequests)
+	}
+	if errProcessing == nil {
+		errProcessing = r.SubmitPendingBatchesIn(ctx, network)
 	}
 	return errProcessing
 }

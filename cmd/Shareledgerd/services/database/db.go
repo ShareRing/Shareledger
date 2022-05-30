@@ -122,7 +122,11 @@ func (c *DB) GetPendingBatchesIn(ctx context.Context, network string) ([]BatchIn
 	ctx, cancel := context.WithTimeout(context.Background(), timeout)
 	defer cancel()
 	var requests []BatchIn
-	r, err := rCol.Find(ctx, bson.M{"status": BatchStatusPending, "type": BatchTypeIn}, nil)
+	r, err := rCol.Find(ctx, bson.M{
+		"status":  BatchStatusPending,
+		"type":    BatchTypeIn,
+		"network": network,
+	}, nil)
 	if err != nil {
 		return nil, err
 	}
