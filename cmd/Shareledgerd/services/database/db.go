@@ -57,15 +57,7 @@ func (c *DB) GetBatchInByTxHashes(network string, txHashes []string) (*BatchIn, 
 	return &request, err
 }
 
-func (c *DB) UnBatchRequestIn(network string, txHashes []string) error {
-	//return c.Client.UseSession(ctx, func(sCtx mongo.SessionContext) (err error) {
-
-	// batch
-	// set batches have txHash -> BatchStatusFailed
-
-	// requests
-	// set batched requests to pending, batchID= nil
-	// set batched requests hav same txHash -> failed, batchID= nil
+func (c *DB) UnBatchRequestIn(network string, submittedTxHashes []string) error {
 	ctx, cancel := context.WithTimeout(context.Background(), timeout)
 	defer cancel()
 	return c.Client.UseSession(ctx, func(sessionContext mongo.SessionContext) error {
@@ -76,11 +68,27 @@ func (c *DB) UnBatchRequestIn(network string, txHashes []string) error {
 			}
 		}()
 		bCol := c.GetCollection(c.DBName, BatchCollection)
-		_, err = bCol.UpdateMany(sessionContext, bson.M{
-			"type":    "in",
+		cursor, err := bCol.Find(ctx, bson.M{
+			"type":    BatchTypeIn,
 			"network": network,
-			"txHash": bson.M{
-				"$in": txHashes,
+			"txHashes": bson.M{
+				"$in": submittedTxHashes,
+			},
+		})
+		if err != nil {
+			return err
+		}
+		var batches []BatchIn
+		if err := cursor.Decode(&batches); err != nil {
+			return err
+		}
+		unBatchID := make([]primitive.ObjectID, 0, len(batches))
+		for i := range batches {
+			unBatchID = append(unBatchID, batches[i].ID)
+		}
+		_, err = bCol.UpdateMany(sessionContext, bson.M{
+			"_id": bson.M{
+				"$in": unBatchID,
 			},
 		}, bson.M{
 			"$set": bson.M{"status": BatchStatusFailed},
@@ -88,32 +96,26 @@ func (c *DB) UnBatchRequestIn(network string, txHashes []string) error {
 		if err != nil {
 			return err
 		}
+
 		rCol := c.GetCollection(c.DBName, RequestInCollection)
 		_, err = rCol.UpdateMany(sessionContext, bson.M{
+			"network": network,
 			"batchID": bson.M{
-				"$exists": false,
+				"$in": unBatchID,
 			},
-			"network": network,
-		}, bson.M{
-			"$set": bson.M{"status": RequestInPending},
-		})
-		if err != nil {
-			return err
-		}
-
-		_, err = rCol.UpdateMany(sessionContext, bson.M{
 			"txHash": bson.M{
-				"$in": txHashes,
+				"$nin": submittedTxHashes,
 			},
-			"network": network,
 		}, bson.M{
-			"$set": bson.M{"status": RequestInPending},
+			"$set": bson.M{
+				"status":  RequestInPending,
+				"batchID": nil,
+			},
 		})
 		if err != nil {
 			return err
 		}
 		return sessionContext.CommitTransaction(sessionContext)
-
 	})
 }
 

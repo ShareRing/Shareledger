@@ -31,6 +31,6 @@ type DBRelayer interface {
 	GetPendingBatchesIn(ctx context.Context, network string) ([]BatchIn, error)
 	GetRequestsInByBatchID(batchID primitive.ObjectID) ([]RequestsIn, error)
 	GetSubmittedBatchesIn(network string) ([]BatchIn, error)
-	UnBatchRequestIn(network string, txHashes []string) error
+	UnBatchRequestIn(network string, submittedTxHashes []string) error
 	GetBatchInByTxHashes(network string, txHashes []string) (*BatchIn, error)
 }
