@@ -38,6 +38,7 @@ func (r *Relayer) txSubmitRequestIn(msg swapmoduletypes.MsgRequestIn) error {
 	if err := msg.ValidateBasic(); err != nil {
 		return err
 	}
+
 	err := tx.GenerateOrBroadcastTxCLI(r.clientTx, r.cmd.Flags(), &msg)
 	return err
 }

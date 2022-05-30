@@ -5,35 +5,25 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/cosmos/cosmos-sdk/client"
-	"github.com/ethereum/go-ethereum/accounts/abi"
-	"github.com/sharering/shareledger/pkg/swap/abi/sharetoken"
 	"go.uber.org/zap"
 	"math/big"
 	"os"
 	"os/signal"
 	"path/filepath"
 	"sort"
-	"strings"
 	"syscall"
 	"time"
-
-	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 
 	"gopkg.in/yaml.v3"
 
 	"github.com/cosmos/cosmos-sdk/client/flags"
-	"github.com/cosmos/cosmos-sdk/crypto/keyring"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/common/hexutil"
-	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/pkg/errors"
 	"github.com/sharering/shareledger/cmd/Shareledgerd/services/database"
 	event "github.com/sharering/shareledger/cmd/Shareledgerd/services/subscriber"
 	swaputil "github.com/sharering/shareledger/pkg/swap"
-	"github.com/sharering/shareledger/pkg/swap/abi/swap"
 	swapmoduletypes "github.com/sharering/shareledger/x/swap/types"
 	denom "github.com/sharering/shareledger/x/utils/demo"
 	"github.com/spf13/cobra"
@@ -347,7 +337,7 @@ func (r *Relayer) syncEventSuccessfulBatches(ctx context.Context, network string
 				logData = []interface{}{}
 			}
 			logData = append(logData, "txHash", hash.String())
-			batch, err := r.db.GetBatchOutByTxHash(hash.String())
+			batch, err := r.db.GetBatchOutByTxHash(network, hash.String())
 			if err != nil {
 				return errors.Wrapf(err, "get batch by tx hash, %v", hash.String())
 			}
@@ -372,7 +362,7 @@ func (r *Relayer) syncEventSuccessfulBatches(ctx context.Context, network string
 				return errors.Wrapf(err, "update batch out. shareledger id %v", batch.ShareledgerID)
 
 			}
-			if err := r.db.SetBatchesOutFailed(nonce); err != nil {
+			if err := r.db.SetBatchesOutFailed(network, nonce); err != nil {
 				logData = append(logData, "err", err)
 				return errors.Wrapf(err, "set batches out failed. nonce %v", nonce)
 			}
@@ -680,77 +670,6 @@ func (r *Relayer) processOut(ctx context.Context, network string) error {
 	return nil
 }
 
-func (r *Relayer) getBalance(ctx context.Context, network string) (sdk.Coin, error) {
-	conn, networkConfig, err := r.initConn(network)
-	swapClient, err := swap.NewSwap(common.HexToAddress(networkConfig.SwapContract), conn)
-	if err != nil {
-		return sdk.Coin{}, errors.Wrapf(err, "fail to int Swap smartcontract client")
-	}
-	value, err := swapClient.TokensAvailable(&bind.CallOpts{
-		Pending: false,
-		Context: ctx,
-	})
-	return denom.ExponentToBase(sdk.NewIntFromBigInt(value), r.Config.Network[network].Exponent), err
-}
-
-func (r *Relayer) checkTxHash(ctx context.Context, network string, txHash common.Hash) (*types.Receipt, error) {
-	conn, _, err := r.initConn(network)
-	if err != nil {
-		return nil, errors.Wrapf(err, "fail to int ETH network conection")
-	}
-	defer func() {
-		conn.Close()
-	}()
-	return conn.TransactionReceipt(ctx, txHash)
-}
-
-func (r *Relayer) getConfirmedTXTransfer(ctx context.Context, network string, txHash common.Hash) (toAddr common.Address, amount *sdk.Coin, err error) {
-	erc20Abi, err := abi.JSON(strings.NewReader(sharetoken.SharetokenMetaData.ABI))
-	if err != nil {
-		return [20]byte{}, nil, errors.Wrapf(err, "unmarshal swap abi code fail")
-	}
-	conn, _, err := r.initConn(network)
-	if err != nil {
-		return [20]byte{}, nil, errors.Wrapf(err, "initConn")
-	}
-
-	tx, pending, err := conn.TransactionByHash(ctx, txHash)
-	if pending {
-		return [20]byte{}, nil, errors.New("the transaction is still in pending")
-	}
-
-	data, err := decodeTxParams(erc20Abi, tx.Data())
-	if err != nil {
-		return [20]byte{}, nil, errors.Wrapf(err, "decode tx, %s", tx.Hash())
-	}
-	if len(data) < 2 {
-		return [20]byte{}, nil, errors.New(fmt.Sprintf("data len is not exected, %v", data))
-	}
-	av, ok := data["amount"].(*big.Int)
-	if !ok {
-		return [20]byte{}, nil, errors.New(fmt.Sprintf("%v is not in correct format of big.Int", data["amount"]))
-	}
-	ba := denom.ExponentToBase(sdk.NewIntFromBigInt(av), r.Config.Network[network].Exponent)
-	amount = &ba
-	toAddr, ok = data["to"].(common.Address)
-	if !ok {
-		return [20]byte{}, nil, errors.New(fmt.Sprintf("%v is not in correct format of common.Address", data["to"]))
-	}
-	return toAddr, amount, nil
-}
-
-func decodeTxParams(abi abi.ABI, data []byte) (map[string]interface{}, error) {
-	v := make(map[string]interface{})
-	m, err := abi.MethodById(data[:4])
-	if err != nil {
-		return map[string]interface{}{}, err
-	}
-	if err := m.Inputs.UnpackIntoMap(v, data[4:]); err != nil {
-		return map[string]interface{}{}, err
-	}
-	return v, nil
-}
-
 func (r *Relayer) getBatch(batchId uint64) (*swapmoduletypes.Batch, error) {
 	//qClient := swapmoduletypes.NewQueryClient(r.Client)
 	pendingQuery := &swapmoduletypes.QueryBatchesRequest{
@@ -784,169 +703,8 @@ func (r *Relayer) getBatchDetail(ctx context.Context, batch swapmoduletypes.Batc
 	return swaputil.NewBatchDetail(batch, batchesRes.Swaps, schema.Schema), nil
 }
 
-func (r *Relayer) initConn(network string) (*ethclient.Client, Network, error) {
-	networkConfig, found := r.Config.Network[network]
-	if !found {
-		return nil, networkConfig, sdkerrors.Wrapf(sdkerrors.ErrLogic, "network, %s, is not supported", network)
-	}
-	conn, err := ethclient.Dial(networkConfig.Url)
-	return conn, networkConfig, err
-}
-
-func (r *Relayer) isBatchDoneOnSC(network string, digest common.Hash) (done bool, err error) {
-	conn, networkConfig, err := r.initConn(network)
-	if err != nil {
-		return false, err
-	}
-	defer func() {
-		conn.Close()
-	}()
-	swapClient, err := swap.NewSwap(common.HexToAddress(networkConfig.SwapContract), conn)
-	if err != nil {
-		return false, sdkerrors.Wrapf(sdkerrors.ErrLogic, err.Error())
-	}
-	res, err := swapClient.Batch(nil, digest)
-	if len(res.Signature) > 0 {
-		done = true
-	}
-	return done, err
-
-}
-
-func (r *Relayer) SuggestGasTip(ctx context.Context, network string) (*big.Int, error) {
-	conn, _, err := r.initConn(network)
-	if err != nil {
-		return nil, errors.Wrapf(err, "init eth connection")
-	}
-	defer func() {
-		conn.Close()
-	}()
-	return conn.SuggestGasTipCap(ctx)
-}
-func (r *Relayer) SuggestGasPrice(ctx context.Context, network string) (*big.Int, error) {
-	conn, _, err := r.initConn(network)
-	if err != nil {
-		return nil, errors.Wrapf(err, "init eth connection")
-	}
-	defer func() {
-		conn.Close()
-	}()
-	return conn.SuggestGasPrice(ctx)
-}
-
-// isLegacy check tx is support dynamic or legacy
-// legacy transaction will return tip from gas price property.
-// dynamic transaction, eip-1559, will return tip from tip and gas price from GasFeeCap.
-// since the internal tx does not hav public field to determine types of transactions, we need to cmp to work around this.
-func (r *Relayer) isLegacy(ctx context.Context, network string, batchDetail swaputil.BatchDetail) (bool, error) {
-	tx, _, err := r.submitBatch(ctx, network, batchDetail, nil, nil, true)
-	if err != nil {
-		return false, err
-	}
-	return tx.GasTipCap().Cmp(tx.GasPrice()) != 0, nil
-}
-
-func (r *Relayer) submitBatch(ctx context.Context, network string, batchDetail swaputil.BatchDetail, tip *big.Int, gasPrice *big.Int, noSend bool) (tx *types.Transaction, signerAddr string, err error) {
-	if tip != nil && gasPrice != nil {
-		return nil, "", errors.New("tip and gas price should not have value at same time")
-	}
-	if err := batchDetail.Validate(); err != nil {
-		return tx, signerAddr, err
-	}
-	conn, networkConfig, err := r.initConn(network)
-	if err != nil {
-		return tx, signerAddr, errors.Wrapf(err, "init eth connection")
-	}
-	defer func() {
-		conn.Close()
-	}()
-
-	swapClient, err := swap.NewSwap(common.HexToAddress(networkConfig.SwapContract), conn)
-	if err != nil {
-		return tx, signerAddr, sdkerrors.Wrapf(sdkerrors.ErrLogic, err.Error())
-	}
-
-	info, err := r.clientTx.Keyring.Key(networkConfig.Signer)
-	if err != nil {
-		return tx, signerAddr, errors.Wrapf(err, "get keyring instant fail signer=%s", networkConfig.Signer)
-	}
-	pubKey := keyring.PubKeyETH{
-		PubKey: info.GetPubKey(),
-	}
-	signerAddr = pubKey.Address().String()
-	commonAdd := common.BytesToAddress(pubKey.Address().Bytes())
-
-	//it should override pending nonce
-	currentNonce, err := conn.NonceAt(ctx, commonAdd, nil)
-	if err != nil {
-		return tx, signerAddr, errors.Wrapf(err, "can't overide pending nonce for address %s", commonAdd.String())
-	}
-	opts, err := keyring.NewKeyedTransactorWithChainID(r.clientTx.Keyring, networkConfig.Signer, big.NewInt(networkConfig.ChainId))
-	if err != nil {
-		return tx, signerAddr, errors.Wrapf(err, "get eth connection options fail")
-	}
-	opts.GasTipCap = tip
-	opts.GasPrice = gasPrice
-	opts.NoSend = noSend
-
-	opts.Nonce = big.NewInt(int64(currentNonce))
-	sig, err := hexutil.Decode(batchDetail.Batch.Signature)
-
-	if err != nil {
-		return tx, signerAddr, errors.Wrapf(err, "decoding singature fail")
-	}
-	params, err := batchDetail.GetContractParams()
-	if err != nil {
-		return tx, signerAddr, err
-	}
-	tx, err = swapClient.Swap(opts, params.TransactionIds, params.DestAddrs, params.Amounts, sig)
-	return tx, signerAddr, errors.Wrapf(err, "swapping at smart contract fail")
-}
-
 func (r *Relayer) processIn(ctx context.Context, network string) error {
 	panic("implementing..")
-	eventService, found := r.events[network]
-	if !found {
-		return fmt.Errorf("%s does not have event subcriber", network)
-	}
-	err := eventService.HandlerTransferEvent(ctx, func(events []event.EventTransferOutput) error {
-		// check if these event are handle or not in db
-		for _, e := range events {
-			batch, err := r.db.GetBatchOutByTxHash(e.TxHash)
-			if err != nil {
-				// batch existed, skip processing
-				log.Errorw("get batch by tx hash", "err", err, "txHash", e.TxHash)
-			}
-			if batch == nil {
-				log.Infof("get batch by tx has is empty")
-				continue
-			}
-			// get slp3 address from db
-			slp3, err := r.db.GetSLP3Address(e.ToAddress, network)
-			if err != nil {
-				// log error and skip process this request
-				log.Errorw("get slp3 address", "err", err)
-				continue
-			}
-
-			// call shareledger transaction
-			err = r.initSwapInRequest(
-				ctx,
-				e.ToAddress,
-				slp3,
-				network,
-				e.TxHash,
-				e.BlockNumber,
-				e.Amount.BigInt().Uint64(),
-				15,
-			)
-			if err != nil {
-				log.Errorw("init swap in request", "err", err, "network", network, "txHash", e.TxHash)
-			}
-		}
-		return nil
-	})
-	return err
 }
 
 func (r *Relayer) SubmitSwapIn(ctx context.Context, swap swapmoduletypes.MsgRequestIn) error {

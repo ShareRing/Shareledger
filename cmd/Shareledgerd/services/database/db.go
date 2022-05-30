@@ -27,6 +27,22 @@ func (c *DB) GetSubmittedBatchesIn(network string) ([]BatchIn, error) {
 	panic("implement me")
 }
 
+func (c *DB) GetBatchInByTxHashes(network string, txHashes []string) (*BatchIn, error) {
+	rCol := c.GetCollection(c.DBName, BatchCollection)
+	ctx, cancel := context.WithTimeout(context.Background(), timeout)
+	defer cancel()
+	var request BatchIn
+	result := rCol.FindOne(ctx, bson.M{"txHashes": txHashes, "network": network}, nil)
+	if result.Err() != nil {
+		if result.Err() == mongo.ErrNoDocuments {
+			return nil, nil
+		}
+		return nil, result.Err()
+	}
+	err := result.Decode(&request)
+	return &request, err
+}
+
 func (c *DB) UnBatchRequestIn(network string, txHashes []string) error {
 	//return c.Client.UseSession(ctx, func(sCtx mongo.SessionContext) (err error) {
 
@@ -39,7 +55,7 @@ func (c *DB) UnBatchRequestIn(network string, txHashes []string) error {
 	return nil
 }
 
-func (c *DB) GetPendingBatchesIn(ctx context.Context) ([]BatchIn, error) {
+func (c *DB) GetPendingBatchesIn(ctx context.Context, network string) ([]BatchIn, error) {
 	rCol := c.GetCollection(c.DBName, BatchCollection)
 	ctx, cancel := context.WithTimeout(context.Background(), timeout)
 	defer cancel()
@@ -60,13 +76,14 @@ func (c *DB) InsertRequestIn(request RequestsIn) error {
 	return err
 }
 
-func (c *DB) GetRequestIn(txHash string) (*RequestsIn, error) {
+func (c *DB) GetRequestIn(network string, txHash string) (*RequestsIn, error) {
 	rCol := c.GetCollection(c.DBName, RequestInCollection)
 	ctx, cancel := context.WithTimeout(context.Background(), timeout)
 	defer cancel()
 	var req RequestsIn
 	err := rCol.FindOne(ctx, bson.M{
-		"txHash": txHash,
+		"txHash":  txHash,
+		"network": network,
 	}).Decode(&req)
 	if err != nil {
 		if err != mongo.ErrNoDocuments {
@@ -162,7 +179,7 @@ func (c *DB) TryToBatchPendingSwapIn(network string, destAddress string, minFee 
 	})
 }
 
-func (c *DB) SetBatchesOutFailed(nonceNumber uint64) error {
+func (c *DB) SetBatchesOutFailed(network string, nonceNumber uint64) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
@@ -174,8 +191,9 @@ func (c *DB) SetBatchesOutFailed(nonceNumber uint64) error {
 			"nonce": bson.M{
 				"$lte": nonceNumber,
 			},
-			"type":   "out",
-			"status": BatchStatusSubmitted,
+			"type":    "out",
+			"status":  BatchStatusSubmitted,
+			"network": network,
 		},
 		bson.D{
 			{Key: "$set", Value: bson.D{{Key: "status", Value: BatchStatusFailed}}},
@@ -504,7 +522,7 @@ func (c *DB) SearchUnSyncedBatchOutByStatus(network string, status BatchStatus) 
 
 	return queryResult, nil
 }
-func (c *DB) GetBatchOutByTxHash(txHash string) (*BatchOut, error) {
+func (c *DB) GetBatchOutByTxHash(network string, txHash string) (*BatchOut, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
@@ -515,6 +533,7 @@ func (c *DB) GetBatchOutByTxHash(txHash string) (*BatchOut, error) {
 	err := collection.FindOne(ctx, bson.M{
 		"txHashes": txHash,
 		"type":     BatchTypeOut,
+		"network":  network,
 	}).Decode(&queryResult)
 	if err != nil {
 		if err != mongo.ErrNoDocuments {

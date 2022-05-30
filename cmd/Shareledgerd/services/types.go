@@ -3,6 +3,7 @@ package services
 import (
 	"context"
 	"github.com/cosmos/cosmos-sdk/client"
+	"github.com/cosmos/cosmos-sdk/client/tx"
 	"github.com/spf13/cobra"
 	"time"
 
@@ -52,7 +53,8 @@ type Relayer struct {
 	db     database.DBRelayer
 	events map[string]subscriber.Service
 
-	cmd      *cobra.Command
-	qClient  swapmoduletypes.QueryClient
-	clientTx client.Context
+	cmd                *cobra.Command
+	qClient            swapmoduletypes.QueryClient
+	clientTx           client.Context
+	preRunBroadcastTxs []tx.PreRunBroadcastTx
 }

@@ -11,14 +11,12 @@ type DBRelayer interface {
 	Disconnect(ctx context.Context) error
 	InsertBatchesOut([]BatchOut) error
 	UpdateLatestScannedBatchId(id uint64, network string) error
-	//SearchBatchByType(shareledgerID uint64, requestType BatchType) (*BatchOut, error)
-	//SearchBatchByStatus(networks string, status BatchStatus) ([]BatchOut, error)
 	SearchUnSyncedBatchOutByStatus(network string, status BatchStatus) ([]BatchOut, error)
-	GetBatchOutByTxHash(txHash string) (*BatchOut, error)
+	GetBatchOutByTxHash(network string, txHash string) (*BatchOut, error)
 	SetBatch(request IBatch) error
 	SetBatches(batches []IBatch) error
 	UpdateBatchesOut(shareledgerIDs []uint64, status BatchStatus) error
-	SetBatchesOutFailed(nonceNumber uint64) error
+	SetBatchesOutFailed(network string, nonceNumber uint64) error
 	GetSLP3Address(erc20Addr, network string) (string, error)
 	GetNextUnfinishedBatchOut(network string, offset int64) (*BatchOut, error)
 	SetLog(batch IBatch, msg string) error
@@ -29,9 +27,10 @@ type DBRelayer interface {
 	InsertRequestIn(request RequestsIn) error
 	GetPendingRequestsIn(network string, destAddress string) ([]RequestsIn, error)
 	TryToBatchPendingSwapIn(network string, destAddress string, minFee sdk.Coin) error
-	GetRequestIn(txHash string) (*RequestsIn, error)
-	GetPendingBatchesIn(ctx context.Context) ([]BatchIn, error)
+	GetRequestIn(network string, txHash string) (*RequestsIn, error)
+	GetPendingBatchesIn(ctx context.Context, network string) ([]BatchIn, error)
 	GetRequestsInByBatchID(batchID primitive.ObjectID) ([]RequestsIn, error)
 	GetSubmittedBatchesIn(network string) ([]BatchIn, error)
 	UnBatchRequestIn(network string, txHashes []string) error
+	GetBatchInByTxHashes(network string, txHashes []string) (*BatchIn, error)
 }
