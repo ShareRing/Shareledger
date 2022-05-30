@@ -1,9 +1,9 @@
-mongoURI: mongodb+srv://phuong:uIoqBJDBzHn17Khe@cluster0.ol2f7.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
-dbName: "hoai2"
+mongoURI: mongodb://root:ShareRingiscaring!@mongo:27017/Relayer?authSource=admin&retryWrites=true&w=majority
+dbName: "Relayer"
 collectionName: "Request"
 scanInterval: 20s
-type: in # out in approver-in
-autoApprove: true # auto-approve only run with type: in and the --from <signer> should be in role relayer and approver
+type: in
+autoApprove: false
 networks:
   eth:
     signer: eth_signer

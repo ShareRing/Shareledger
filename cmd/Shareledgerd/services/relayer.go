@@ -120,17 +120,18 @@ func NewStartCommands(defaultNodeHome string) *cobra.Command {
 							Err:     relayerClient.startProcess(ctx, relayerClient.processIn, network),
 						}
 					}(network)
-					go func(network string) {
-						processChan <- struct {
-							Network string
-							Err     error
-						}{
-							Network: network,
-							Err:     relayerClient.startProcess(ctx, relayerClient.processApprovingIn, network),
-						}
-					}(network)
+					if cfg.AutoApprove {
+						go func(network string) {
+							processChan <- struct {
+								Network string
+								Err     error
+							}{
+								Network: network,
+								Err:     relayerClient.startProcess(ctx, relayerClient.processApprovingIn, network),
+							}
+						}(network)
+					}
 				}
-
 			case "out":
 				for network := range cfg.Network {
 					go func(network string) {
@@ -142,6 +143,18 @@ func NewStartCommands(defaultNodeHome string) *cobra.Command {
 							Err:     relayerClient.startProcess(ctx, relayerClient.processOut, network),
 						}
 						processChan <- result
+					}(network)
+				}
+			case "approver-in":
+				for network := range cfg.Network {
+					go func(network string) {
+						processChan <- struct {
+							Network string
+							Err     error
+						}{
+							Network: network,
+							Err:     relayerClient.startProcess(ctx, relayerClient.processApprovingIn, network),
+						}
 					}(network)
 				}
 			default:
@@ -236,14 +249,18 @@ func initRelayer(ctx context.Context, cmd *cobra.Command, cfg RelayerConfig, db 
 		events[network] = *e
 	}
 
-	return &Relayer{
+	relayer := Relayer{
 		Config:   cfg,
 		clientTx: txClientCtx,
 		db:       db,
 		events:   events,
 		cmd:      cmd,
 		qClient:  qClient,
-	}, nil
+	}
+	if err := relayer.Validate(); err != nil {
+		return nil, err
+	}
+	return &relayer, nil
 }
 
 func (r *Relayer) startProcess(ctx context.Context, f processFunc, network string) error {
