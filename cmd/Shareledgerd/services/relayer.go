@@ -554,7 +554,9 @@ func (r *Relayer) processNextPendingBatchesOut(ctx context.Context, network stri
 		logData = append(logData, "batch_id", batch.ShareledgerID, "network", batch.Network)
 		b, err := r.getBatch(batch.ShareledgerID)
 		if err != nil || b == nil {
-			return errors.Wrapf(err, "can't get next batch by ID %d", batch.ShareledgerID)
+			offset++
+			log.Errorw("get submitted batch", "err", err, "batch", batch)
+			continue
 		}
 		batchDetail, err := r.getBatchDetail(ctx, *b)
 		if err != nil {

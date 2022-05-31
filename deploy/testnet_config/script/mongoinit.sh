@@ -22,15 +22,15 @@ db.states.insert({
 db.addresses.insert({
   "shareledgerAddress": "shareledger1006gjsnd449qy9mhmat7xwzqday0d7vsl24ur6",
   "AccIndex": 2,
-  "mnemonicHash": "abc",
+  "mnemonicHash": "swap_user",
   "network": "eth",
-  "result": "0x97B98D335c28F9aD9c123E344a78F00C84146431"
+  "result": "0x479d23Eef3b1Bb7F0D8c383CF5DC62B1936C0E5b"
 });
 db.addresses.insert({
   "shareledgerAddress": "shareledger1006gjsnd449qy9mhmat7xwzqday0d7vsl24ur6",
   "AccIndex": 3,
-  "mnemonicHash": "abcd",
+  "mnemonicHash": "swap_user",
   "network": "bsc",
-  "result": "0x97B98D335c28F9aD9c123E344a78F00C84146431"
+  "result": "0x479d23Eef3b1Bb7F0D8c383CF5DC62B1936C0E5b"
 });
 EOF
