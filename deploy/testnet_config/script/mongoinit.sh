@@ -26,4 +26,11 @@ db.addresses.insert({
   "network": "eth",
   "result": "0x97B98D335c28F9aD9c123E344a78F00C84146431"
 });
+db.addresses.insert({
+  "shareledgerAddress": "shareledger1006gjsnd449qy9mhmat7xwzqday0d7vsl24ur6",
+  "AccIndex": 3,
+  "mnemonicHash": "abcd",
+  "network": "bsc",
+  "result": "0x97B98D335c28F9aD9c123E344a78F00C84146431"
+});
 EOF

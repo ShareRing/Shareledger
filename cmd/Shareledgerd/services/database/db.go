@@ -61,63 +61,52 @@ func (c *DB) GetBatchInByTxHashes(network string, txHashes []string) (*BatchIn, 
 func (c *DB) UnBatchRequestIn(network string, submittedTxHashes []string) error {
 	ctx, cancel := context.WithTimeout(context.Background(), timeout)
 	defer cancel()
-	return c.Client.UseSession(ctx, func(sessionContext mongo.SessionContext) error {
-		err := sessionContext.StartTransaction()
-		defer func() {
-			if err != nil {
-				_ = sessionContext.AbortTransaction(sessionContext)
-			}
-		}()
-		bCol := c.GetCollection(c.DBName, BatchCollection)
-		cursor, err := bCol.Find(ctx, bson.M{
-			"type":    BatchTypeIn,
-			"network": network,
-			"txHashes": bson.M{
-				"$in": submittedTxHashes,
-			},
-		})
-		if err != nil {
-			return err
-		}
-		var batches []BatchIn
-		if err := cursor.Decode(&batches); err != nil {
-			return err
-		}
-		unBatchID := make([]primitive.ObjectID, 0, len(batches))
-		for i := range batches {
-			unBatchID = append(unBatchID, batches[i].ID)
-		}
-		_, err = bCol.UpdateMany(sessionContext, bson.M{
-			"_id": bson.M{
-				"$in": unBatchID,
-			},
-		}, bson.M{
-			"$set": bson.M{"status": BatchStatusFailed},
-		})
-		if err != nil {
-			return err
-		}
-
-		rCol := c.GetCollection(c.DBName, RequestInCollection)
-		_, err = rCol.UpdateMany(sessionContext, bson.M{
-			"network": network,
-			"batchID": bson.M{
-				"$in": unBatchID,
-			},
-			"txHash": bson.M{
-				"$nin": submittedTxHashes,
-			},
-		}, bson.M{
-			"$set": bson.M{
-				"status":  RequestInPending,
-				"batchID": nil,
-			},
-		})
-		if err != nil {
-			return err
-		}
-		return sessionContext.CommitTransaction(sessionContext)
+	bCol := c.GetCollection(c.DBName, BatchCollection)
+	cursor, err := bCol.Find(ctx, bson.M{
+		"type":    BatchTypeIn,
+		"network": network,
+		"txHashes": bson.M{
+			"$in": submittedTxHashes,
+		},
 	})
+	if err != nil {
+		return err
+	}
+	var batches []BatchIn
+	if err := cursor.Decode(&batches); err != nil {
+		return err
+	}
+	unBatchID := make([]primitive.ObjectID, 0, len(batches))
+	for i := range batches {
+		unBatchID = append(unBatchID, batches[i].ID)
+	}
+	_, err = bCol.UpdateMany(ctx, bson.M{
+		"_id": bson.M{
+			"$in": unBatchID,
+		},
+	}, bson.M{
+		"$set": bson.M{"status": BatchStatusFailed},
+	})
+	if err != nil {
+		return err
+	}
+
+	rCol := c.GetCollection(c.DBName, RequestInCollection)
+	_, err = rCol.UpdateMany(ctx, bson.M{
+		"network": network,
+		"batchID": bson.M{
+			"$in": unBatchID,
+		},
+		"txHash": bson.M{
+			"$nin": submittedTxHashes,
+		},
+	}, bson.M{
+		"$set": bson.M{
+			"status":  RequestInPending,
+			"batchID": nil,
+		},
+	})
+	return err
 }
 
 func (c *DB) GetPendingBatchesIn(ctx context.Context, network string) ([]BatchIn, error) {
@@ -203,49 +192,35 @@ func (c *DB) TryToBatchPendingSwapIn(network string, destAddress string, minFee 
 		// skip this destAddr for next time.
 		return nil
 	}
-	return c.Client.UseSession(ctx, func(sCtx mongo.SessionContext) (err error) {
-		err = sCtx.StartTransaction()
-		if err != nil {
-			return err
-		}
-		defer func() {
-			if err != nil {
-				sCtx.AbortTransaction(sCtx)
-			}
-		}()
-		bCol := c.GetCollection(c.DBName, BatchCollection)
-		ires, err := bCol.InsertOne(sCtx, BatchIn{
-			Batch: Batch{
-				Status:   BatchStatusPending,
-				Type:     BatchTypeIn,
-				Network:  network,
-				TxHashes: txHashes,
-			},
-			BaseAmount: totalSwapIn.Sub(minFee).String(),
-			BaseFee:    minFee.String(),
-			DestAddr:   destAddress,
-		})
-		if err != nil {
-			return err
-		}
-
-		inCol := c.GetCollection(c.DBName, RequestInCollection)
-		uFilter := bson.M{
-			"_id": bson.M{
-				"$in": ids,
-			},
-		}
-		_, err = inCol.UpdateMany(sCtx, uFilter, bson.M{
-			"$set": bson.M{
-				"status":  RequestInBatched,
-				"batchID": ires.InsertedID,
-			},
-		})
-		if err != nil {
-			return err
-		}
-		return sCtx.CommitTransaction(sCtx)
+	bCol := c.GetCollection(c.DBName, BatchCollection)
+	ires, err := bCol.InsertOne(ctx, BatchIn{
+		Batch: Batch{
+			Status:   BatchStatusPending,
+			Type:     BatchTypeIn,
+			Network:  network,
+			TxHashes: txHashes,
+		},
+		BaseAmount: totalSwapIn.Sub(minFee).String(),
+		BaseFee:    minFee.String(),
+		DestAddr:   destAddress,
 	})
+	if err != nil {
+		return err
+	}
+
+	inCol := c.GetCollection(c.DBName, RequestInCollection)
+	uFilter := bson.M{
+		"_id": bson.M{
+			"$in": ids,
+		},
+	}
+	_, err = inCol.UpdateMany(ctx, uFilter, bson.M{
+		"$set": bson.M{
+			"status":  RequestInBatched,
+			"batchID": ires.InsertedID,
+		},
+	})
+	return err
 }
 
 func (c *DB) SetBatchesOutFailed(network string, nonceNumber uint64) error {

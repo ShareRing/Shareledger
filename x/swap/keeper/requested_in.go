@@ -3,7 +3,6 @@ package keeper
 import (
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	commontypes "github.com/sharering/shareledger/x/common/types"
 	"github.com/sharering/shareledger/x/swap/types"
 )
 
@@ -19,10 +18,10 @@ func (k Keeper) SetRequestedIn(ctx sdk.Context, destAddress sdk.Address, txHashe
 	}
 
 	if insertingData.TxHashes == nil {
-		insertingData.TxHashes = make(map[string]*commontypes.Empty)
+		insertingData.TxHashes = make(map[string]bool)
 	}
 	for _, hash := range txHashes {
-		insertingData.TxHashes[hash] = &commontypes.Empty{}
+		insertingData.TxHashes[hash] = false
 	}
 	b := k.cdc.MustMarshal(&insertingData)
 	store.Set(types.RequestedInKey(

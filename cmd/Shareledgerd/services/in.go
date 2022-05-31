@@ -31,6 +31,7 @@ func (r *Relayer) approvingSubmittedBatchesIn(ctx context.Context, network strin
 
 	for _, swap := range res.Swaps {
 		logData = append(logData, "swap_id", swap.Id)
+
 		res, err := r.qClient.Balance(ctx, &types.QueryBalanceRequest{})
 		if err != nil {
 			return errors.Wrapf(err, "check balances of swap module")
