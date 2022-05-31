@@ -42,7 +42,7 @@ func (r *Relayer) approvingSubmittedBatchesIn(ctx context.Context, network strin
 			continue
 		}
 
-		if !moduleBalances.IsAllGTE(sdk.NewCoins(*swap.Amount)) {
+		if !moduleBalances.IsAllGTE(sdk.NewCoins(swap.Amount)) {
 			logData = append(logData, "skip_approve", fmt.Sprintf("lacking swap module's balance. swap in amount, %s, module balance, %s", swap.Amount, moduleBalances.String()))
 			continue
 		}
@@ -73,7 +73,7 @@ func (r *Relayer) approvingSubmittedBatchesIn(ctx context.Context, network strin
 		}
 		// cover rounding number between chains.
 		if !fullBatchDone || !txAmount.Amount.Sub(swap.Amount.Amount.Add(swap.Fee.Amount)).LTE(sdk.NewInt(1)) {
-			err := errors.Errorf("amount batched requests, %s, is not match with contracts data, %s", swap.Amount.Add(*swap.Fee).String(), txAmount.String())
+			err := errors.Errorf("amount batched requests, %s, is not match with contracts data, %s", swap.Amount.Add(swap.Fee).String(), txAmount.String())
 			r.db.SetLog(batch, err.Error())
 			continue
 		}
@@ -269,9 +269,13 @@ func (r *Relayer) IsSubmitted(ctx context.Context, batch database.BatchIn) (stat
 	if processedRequests == nil || processedRequests.RequestedIn == nil || processedRequests.RequestedIn.TxHashes == nil {
 		return 0, submittedTxHash, nil
 	}
+	txHashMap := make(map[string]struct{})
+	for _, h := range processedRequests.RequestedIn.TxHashes {
+		txHashMap[h] = struct{}{}
+	}
 
 	for _, txHash := range batch.TxHashes {
-		if _, found := processedRequests.RequestedIn.TxHashes[txHash]; found {
+		if _, found := txHashMap[txHash]; found {
 			submittedTxHash = append(submittedTxHash, txHash)
 		}
 	}

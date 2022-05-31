@@ -563,7 +563,7 @@ func (r *Relayer) processNextPendingBatchesOut(ctx context.Context, network stri
 
 		total := sdk.NewCoin(denom.Base, sdk.NewInt(0))
 		for _, r := range batchDetail.Requests {
-			total = total.Add(*r.Amount)
+			total = total.Add(r.Amount)
 		}
 
 		logData = append(logData, "batch_total", total.String())

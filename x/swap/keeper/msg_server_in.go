@@ -11,11 +11,14 @@ import (
 
 func (k msgServer) RequestIn(goCtx context.Context, msg *types.MsgRequestIn) (*types.MsgSwapInResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
-
 	reqHistory, found := k.GetRequestedIn(ctx, msg.DestAddress)
+	txHashes := make(map[string]struct{})
+	for _, h := range reqHistory.TxHashes {
+		txHashes[h] = struct{}{}
+	}
 	if found {
 		for _, hash := range msg.TxHashes {
-			if _, processed := reqHistory.TxHashes[hash]; processed {
+			if _, processed := txHashes[hash]; processed {
 				return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "tx hash was already processed")
 			}
 		}
@@ -35,7 +38,7 @@ func (k msgServer) RequestIn(goCtx context.Context, msg *types.MsgRequestIn) (*t
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "required fee for swap in is expected %s, but got %s", baseFee.String(), baseFee.String())
 	}
 
-	amount, err := denom.NormalizeToBaseCoins(sdk.NewDecCoins(*msg.GetAmount()), true)
+	amount, err := denom.NormalizeToBaseCoins(sdk.NewDecCoins(*msg.GetAmount()), false)
 	if err != nil {
 		return nil, err
 	}
@@ -53,8 +56,8 @@ func (k msgServer) RequestIn(goCtx context.Context, msg *types.MsgRequestIn) (*t
 		DestAddr:    msg.DestAddress,
 		SrcNetwork:  msg.Network,
 		DestNetwork: types.NetworkNameShareLedger,
-		Amount:      &insertAmountCoin,
-		Fee:         &baseFee,
+		Amount:      insertAmountCoin,
+		Fee:         baseFee,
 		Status:      types.SwapStatusPending,
 		TxHashes:    msg.TxHashes,
 	})

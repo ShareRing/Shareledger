@@ -30,7 +30,7 @@ func (k msgServer) Cancel(goCtx context.Context, msg *types.MsgCancel) (*types.M
 	for i := range requests {
 		rq := requests[i]
 		pendingStore.Delete(GetRequestIDBytes(rq.GetId()))
-		refund = refund.Add(sdk.NewDecCoinFromCoin(*rq.GetAmount())).Add(sdk.NewDecCoinFromCoin(*rq.GetFee()))
+		refund = refund.Add(sdk.NewDecCoinFromCoin(rq.GetAmount())).Add(sdk.NewDecCoinFromCoin(rq.GetFee()))
 	}
 
 	add, err := sdk.AccAddressFromBech32(txCreator)

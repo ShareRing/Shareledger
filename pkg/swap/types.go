@@ -90,7 +90,7 @@ func (b SignDetail) GetContractParams() (params SwapParams, err error) {
 		}
 		params.TransactionIds = append(params.TransactionIds, big.NewInt(int64(r.Id)))
 		params.DestAddrs = append(params.DestAddrs, common.HexToAddress(r.DestAddr))
-		total, err := denom.ShrCoinsToExponent(sdk.NewDecCoinsFromCoins(*r.Amount), int(b.SignSchema.ContractExponent), false)
+		total, err := denom.ShrCoinsToExponent(sdk.NewDecCoinsFromCoins(r.Amount), int(b.SignSchema.ContractExponent), false)
 		if err != nil {
 			return SwapParams{}, err
 		}
