@@ -65,9 +65,5 @@ func (r *Relayer) txUpdateBatch(msg *swapmoduletypes.MsgUpdateBatch) error {
 		return errors.Wrapf(err, "recheck the batch id %d fail", msg.GetBatchId())
 	}
 
-	if batchRes.GetBatches()[0].GetStatus() != msg.GetStatus() {
-		return errors.New("update the batch status fail")
-	}
-
 	return nil
 }

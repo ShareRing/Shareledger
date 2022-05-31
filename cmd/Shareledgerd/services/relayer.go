@@ -469,7 +469,7 @@ func (r *Relayer) syncDoneBatches(ctx context.Context, network string) error {
 	if err != nil {
 		return errors.Wrapf(err, "search batches by status %s fail", database.BatchStatusDone)
 	}
-	sID := make([]uint64, 0, len(batches))
+	doneID := make([]uint64, 0, len(batches))
 	for i := range batches {
 		updateMsg := &swapmoduletypes.MsgUpdateBatch{
 			BatchId: batches[i].ShareledgerID,
@@ -477,13 +477,27 @@ func (r *Relayer) syncDoneBatches(ctx context.Context, network string) error {
 			Network: network,
 		}
 
-		if err := r.txUpdateBatch(updateMsg); err != nil {
-			return errors.Wrapf(err, "update batchID=%d to status done fail", batches[i].ShareledgerID)
+		if updateMsg.BatchId > 0 {
+			cBatches, err := r.qClient.Batches(context.Background(), &swapmoduletypes.QueryBatchesRequest{Ids: []uint64{updateMsg.BatchId}})
+			if err != nil || cBatches == nil || len(cBatches.Batches) == 0 {
+				log.Errorw("get batch detail",
+					"err", errors.Wrapf(err, "qClient"),
+					"is_not_found", cBatches == nil || len(cBatches.Batches) == 0,
+					"batch", batches[i])
+				continue
+			}
+			if cBatches.Batches[0].GetStatus() == swapmoduletypes.BatchStatusDone {
+				doneID = append(doneID, batches[i].ShareledgerID)
+				continue
+			}
 		}
-		sID = append(sID, batches[i].ShareledgerID)
+
+		if err := r.txUpdateBatch(updateMsg); err != nil {
+			return errors.Wrapf(err, "update batchID=%d to status done", batches[i].ShareledgerID)
+		}
 	}
-	if len(sID) > 0 {
-		err = r.db.MarkBatchToSynced(sID)
+	if len(doneID) > 0 {
+		err = r.db.MarkBatchToSynced(doneID)
 		if err != nil {
 			return errors.Wrapf(err, "fail to update batch out to synced")
 		}

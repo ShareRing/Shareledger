@@ -22,7 +22,7 @@ dinit:
 
 dup:
 	cd ./deploy && \
-    docker-compose up -d --remove-orphans
+    docker-compose up -d
 
 dupswap:
 	cd ./deploy && \

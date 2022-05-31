@@ -66,7 +66,6 @@ func (r *Relayer) approvingSubmittedBatchesIn(ctx context.Context, network strin
 				fullBatchDone = false
 				log.Errorw("check tx hash", "err", errors.Wrapf(err, "swap_id, %s, txHash, %s", swap.Id, txHash))
 				r.db.SetLog(batch, err.Error())
-				// TODO: handling with wrong data or network down.
 				break
 			}
 			txAmount.Add(*amount)
