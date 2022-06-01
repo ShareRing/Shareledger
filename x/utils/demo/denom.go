@@ -148,9 +148,9 @@ func ToDisplayCoins(coins sdk.Coins) sdk.DecCoins {
 }
 
 // ExponentToBase convert value to base coin with given exponent
-func ExponentToBase(value sdk.Int, exponent int) (coin sdk.Coin) {
-	baseCoin := value.Quo(sdk.NewInt(int64(math.Pow10(exponent)))).Mul(sdk.NewInt(ShrExponent))
-	return sdk.NewCoin(Base, baseCoin)
+func ExponentToBase(value sdk.Dec, exponent int) (coin sdk.Coin) {
+	baseCoin := value.Quo(sdk.NewDec(int64(math.Pow10(exponent)))).Mul(sdk.NewDec(ShrExponent))
+	return sdk.NewCoin(Base, baseCoin.TruncateInt())
 }
 
 // ShrCoinsToExponent only shr and nshr are allowed. others will be ignored.

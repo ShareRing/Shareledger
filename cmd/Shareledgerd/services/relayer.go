@@ -211,7 +211,11 @@ func initRelayer(ctx context.Context, cmd *cobra.Command, cfg RelayerConfig, db 
 	}
 	_ = cKeyRing.InitCaches(uids)
 
-	txClientCtx = txClientCtx.WithSkipConfirmation(true).WithBroadcastMode("block").WithKeyring(cKeyRing)
+	txClientCtx = txClientCtx.
+		WithSkipConfirmation(true).
+		WithBroadcastMode("block").
+		WithKeyring(cKeyRing).
+		WithOutputFormat("json")
 
 	timeoutContext, cancelTimeOut := context.WithTimeout(ctx, time.Second*10)
 	defer cancelTimeOut()
