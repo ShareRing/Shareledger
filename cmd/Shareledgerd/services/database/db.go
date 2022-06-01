@@ -456,17 +456,17 @@ func (c *DB) UpdateBatchesOut(shareledgerIDs []uint64, status BatchStatus) error
 
 func (c *DB) GetNextUnfinishedBatchOut(network string, offset int64) (*BatchOut, error) {
 	// submitted is preferred to process first
-	submittedBatch, err := c.getOneBatchStatus(network, BatchStatusSubmitted, &offset)
+	submittedBatch, err := c.getOneBatchStatus(network, BatchStatusSubmitted, BatchTypeOut, &offset)
 	if err != nil {
 		return nil, err
 	}
 	if submittedBatch != nil {
 		return submittedBatch, nil
 	}
-	return c.getOneBatchStatus(network, BatchStatusPending, &offset)
+	return c.getOneBatchStatus(network, BatchStatusPending, BatchTypeOut, &offset)
 }
 
-func (c *DB) getOneBatchStatus(network string, status BatchStatus, offset *int64) (*BatchOut, error) {
+func (c *DB) getOneBatchStatus(network string, status BatchStatus, bType BatchType, offset *int64) (*BatchOut, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	collection := c.GetCollection(c.DBName, BatchCollection)
@@ -475,6 +475,7 @@ func (c *DB) getOneBatchStatus(network string, status BatchStatus, offset *int64
 	err := collection.FindOne(ctx, bson.M{
 		"status":  status,
 		"network": network,
+		"type":    bType,
 	}, &options.FindOneOptions{
 		Sort: bson.M{
 			"shareledgerID": 1,
