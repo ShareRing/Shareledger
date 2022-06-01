@@ -210,11 +210,15 @@ func (r *Relayer) SubmitPendingBatchesIn(ctx context.Context, network string) er
 		}
 		switch status {
 		case 1:
-			r.db.UnBatchRequestIn(network, submittedTxHash)
+			if err := r.db.UnBatchRequestIn(network, submittedTxHash); err != nil {
+				log.Errorw("unbatch request in", "err", err)
+			}
 			continue
 		case 2: //already submitted this full batch.
 			req.Status = database.BatchStatusSubmitted
-			r.db.SetBatch(req)
+			if err := r.db.SetBatch(req); err != nil {
+				log.Errorw("set batch", "batch", req, "err", err)
+			}
 			continue
 		}
 
@@ -229,7 +233,6 @@ func (r *Relayer) SubmitPendingBatchesIn(ctx context.Context, network string) er
 			return err
 		}
 		dFee := sdk.NewDecCoinFromCoin(bFee)
-
 		err = r.txSubmitRequestIn(types.MsgRequestIn{
 			DestAddress: req.DestAddr,
 			Network:     req.Network,
