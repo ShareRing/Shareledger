@@ -30,7 +30,7 @@ func CmdWithdraw() *cobra.Command {
 			msg := types.NewMsgWithdraw(
 				clientCtx.GetFromAddress().String(),
 				argReceiver,
-				&decCoins,
+				decCoins,
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err

@@ -59,7 +59,7 @@ message MsgDepositResponse {
 message MsgWithdraw {
   string creator = 1;
   string receiver = 2;
-  cosmos.base.v1beta1.DecCoin amount = 3;
+  cosmos.base.v1beta1.DecCoin amount = 3 [(gogoproto.nullable) = false];
 }
 
 message MsgWithdrawResponse {
