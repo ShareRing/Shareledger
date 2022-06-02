@@ -730,13 +730,22 @@ func New(
 
 	app.UpgradeKeeper.SetUpgradeHandler(
 		upgradeName,
-		func(ctx sdk.Context, _ upgradetypes.Plan, _ module.VersionMap) (module.VersionMap, error) {
+		func(ctx sdk.Context, _ upgradetypes.Plan, fromVM module.VersionMap) (module.VersionMap, error) {
 
-			fromVM := make(map[string]uint64)
-			for moduleName := range app.mm.Modules {
+			shareledgerModules := []string{
+				assetmoduletypes.ModuleName,
+				bookingmoduletypes.ModuleName,
+				documentmoduletypes.ModuleName,
+				electoralmoduletypes.ModuleName,
+				gentlemintmoduletypes.ModuleName,
+				idmoduletypes.ModuleName,
+			}
+
+			for _, moduleName := range shareledgerModules {
 				fromVM[moduleName] = 1
 			}
 
+			// run custom init function for ica module
 			fromVM[icatypes.ModuleName] = icaModule.ConsensusVersion()
 			// create ICS27 Controller submodule params
 			controllerParams := icacontrollertypes.Params{}
@@ -790,7 +799,7 @@ func New(
 
 	if upgradeInfo.Name == upgradeName && !app.UpgradeKeeper.IsSkipHeight(upgradeInfo.Height) {
 		storeUpgrades := store.StoreUpgrades{
-			Added: []string{swapmoduletypes.ModuleName, icahosttypes.StoreKey},
+			Added: []string{swapmoduletypes.ModuleName, icahosttypes.StoreKey, authz.ModuleName},
 		}
 
 		// configure store loader that checks if version == upgradeHeight and applies store upgrades
