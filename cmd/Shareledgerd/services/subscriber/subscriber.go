@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/pkg/errors"
+	"github.com/sharering/shareledger/cmd/Shareledgerd/services/log"
 	"math/big"
 	"strings"
 
@@ -13,7 +14,6 @@ import (
 	"github.com/sharering/shareledger/cmd/Shareledgerd/services/database"
 	"github.com/sharering/shareledger/pkg/swap/abi/erc20"
 	"github.com/shopspring/decimal"
-	log "github.com/sirupsen/logrus"
 )
 
 const (
@@ -66,10 +66,6 @@ type NewInput struct {
 	DBClient database.DBRelayer
 }
 
-func init() {
-	log.SetLevel(log.DebugLevel)
-}
-
 func New(input *NewInput) (*Service, error) {
 	client, err := ethclient.Dial(input.ProviderURL)
 	if err != nil {
@@ -98,8 +94,8 @@ func (s *Service) HandlerSwapCompleteEvent(ctx context.Context, fn handlerSwapEv
 		return errors.Wrapf(err, "get block head fail")
 	}
 	if header.Number.Cmp(s.swapCurrentBlock) < 0 {
-		log.Info("there is no new block")
-		return errors.Wrapf(err, "no block")
+		log.Log.Infow("there is no new block", "network", s.network)
+		return nil
 	}
 
 	for header.Number.Cmp(s.swapCurrentBlock) > 0 {
@@ -109,15 +105,15 @@ func (s *Service) HandlerSwapCompleteEvent(ctx context.Context, fn handlerSwapEv
 		if toBlock.Cmp(currentHeaderNumber) > 0 {
 			toBlock = big.NewInt(currentHeaderNumber.Int64())
 		}
-		log.Debugf("Network, %s, scanning from block %v to block %v", s.network, s.swapCurrentBlock, toBlock.Int64())
-		any := []common.Hash{}
+		log.Log.Infow("scanning blocks", "network", s.network, "from_block", s.swapCurrentBlock, "to_block", toBlock)
+		anyHashes := []common.Hash{}
 		query := eth.FilterQuery{
 			FromBlock: s.swapCurrentBlock,
 			ToBlock:   toBlock,
 			Addresses: []common.Address{common.HexToAddress(s.swapContractAddress)},
 			Topics: [][]common.Hash{
 				[]common.Hash{common.HexToHash(s.swapTopic)},
-				any,
+				anyHashes,
 			},
 		}
 
@@ -164,8 +160,8 @@ func (s *Service) HandlerTransferEvent(ctx context.Context, fn handlerTransferEv
 	}
 
 	if header.Number.Cmp(s.transferCurrentBlock) < 0 {
-		log.Info("there is no new block")
-		return errors.Wrapf(err, "no block")
+		log.Log.Infow("there is no new block", "event", "transfer", "network", s.network)
+		return nil
 	}
 
 	for header.Number.Cmp(s.transferCurrentBlock) > 0 {
@@ -176,16 +172,16 @@ func (s *Service) HandlerTransferEvent(ctx context.Context, fn handlerTransferEv
 			toBlock = big.NewInt(currentHeaderNumber.Int64())
 		}
 
-		log.Debugf("Network, %s, scanning from block %v to block %v", s.network, s.transferCurrentBlock, toBlock.Int64())
-		any := []common.Hash{}
+		log.Log.Infow("scanning blocks", "network", s.network, "from_block", s.swapCurrentBlock, "to_block", toBlock)
+		anyHashes := []common.Hash{}
 		query := eth.FilterQuery{
 			FromBlock: s.transferCurrentBlock,
 			ToBlock:   toBlock,
 			Addresses: []common.Address{common.HexToAddress(s.pegWalletAddress)},
 			Topics: [][]common.Hash{
 				[]common.Hash{common.HexToHash(s.transferTopic)},
-				any,
-				any,
+				anyHashes,
+				anyHashes,
 			},
 		}
 
@@ -204,7 +200,10 @@ func (s *Service) HandlerTransferEvent(ctx context.Context, fn handlerTransferEv
 
 			err := erc20Abi.UnpackIntoInterface(&event, transferEvent, vLog.Data)
 			if err != nil {
-				log.Errorf("Event unpacking error: %s", err)
+				log.Log.Errorw("event unpacking error",
+					"network", s.network,
+					"err", err,
+				)
 				continue
 			}
 

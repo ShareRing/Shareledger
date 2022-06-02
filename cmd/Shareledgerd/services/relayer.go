@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/cosmos/cosmos-sdk/client"
+	slog "github.com/sharering/shareledger/cmd/Shareledgerd/services/log"
 	"go.uber.org/zap"
 	"math/big"
 	"os"
@@ -29,8 +30,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var log *zap.SugaredLogger
-
 func GetRelayerCommands(defaultNodeHome string) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "relayer",
@@ -44,15 +43,16 @@ func GetRelayerCommands(defaultNodeHome string) *cobra.Command {
 
 //const flagType = "type" // in/out
 //const flagSignerKeyName = "network-signers"
+var log *zap.SugaredLogger
 
 func NewStartCommands(defaultNodeHome string) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "start",
 		Short: "start Relayer process",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			logger, _ := zap.NewDevelopment()
-			defer logger.Sync()
-			log = logger.Sugar()
+			slog.Init()
+			defer slog.Log.Sync()
+			log = slog.Log
 
 			configPath, _ := cmd.Flags().GetString(flagConfigPath)
 			cfg, err := parseConfig(configPath)
@@ -162,7 +162,7 @@ func NewStartCommands(defaultNodeHome string) *cobra.Command {
 			}
 
 			from, _ := cmd.Flags().GetString(flags.FlagFrom)
-			logger.With(
+			log.With(
 				zap.String("started_at", time.Now().String()),
 				zap.String("running_cosmos_key", from),
 				zap.String("db_uri", cfg.MongoURI),
