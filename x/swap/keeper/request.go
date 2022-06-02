@@ -80,7 +80,7 @@ func (k Keeper) ChangeStatusRequests(ctx sdk.Context, ids []uint64, status strin
 	switch status {
 	case types.SwapStatusApproved, types.SwapStatusRejected:
 		requiredStatus = types.SwapStatusPending
-	case types.BatchStatusPending: // the request just gone to pending when this status was approved. In case we cancel the swap batch
+	case types.SwapStatusPending: // the request just gone to pending when this status was approved. In case we cancel the swap batch
 		requiredStatus = types.SwapStatusApproved
 	default:
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "%s is not supported", status)
@@ -152,9 +152,7 @@ func (k Keeper) swapIn(_ sdk.Context, stt string, reqs []types.Request) map[stri
 			if !found {
 				total = sdk.NewDecCoins()
 			}
-			total.Add(sdk.NewDecCoinFromCoin(*reqs[i].GetAmount()))
-
-			transfers[reqs[i].DestAddr] = total
+			transfers[reqs[i].DestAddr] = total.Add(sdk.NewDecCoinFromCoin(reqs[i].GetAmount()))
 		}
 	}
 	return transfers
@@ -169,7 +167,7 @@ func (k Keeper) swapOut(_ sdk.Context, stt string, reqs []types.Request) map[str
 				total = sdk.NewDecCoins()
 			}
 
-			total = total.Add(sdk.NewDecCoinFromCoin(*reqs[i].GetAmount())).Add(sdk.NewDecCoinFromCoin(*reqs[i].GetFee()))
+			total = total.Add(sdk.NewDecCoinFromCoin(reqs[i].GetAmount())).Add(sdk.NewDecCoinFromCoin(reqs[i].GetFee()))
 			refunds[reqs[i].SrcAddr] = total
 		}
 	}

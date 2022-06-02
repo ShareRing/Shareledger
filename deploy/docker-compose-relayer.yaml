@@ -14,8 +14,8 @@ services:
     volumes:
       - ./testnet/mongo/data/db:/data/db
       - ./testnet_config/script/mongoinit.sh:/docker-entrypoint-initdb.d/mongoinit.sh:ro
-  relayer:
-    container_name: relayer
+  relayer_out:
+    container_name: relayer_out
     image: "sharering/shareledger:latest"
     networks:
       - proxyNetwork
@@ -30,7 +30,41 @@ services:
     command:
       - |
         sh /app/script/setup_key.sh
-        shareledger relayer start --config /root/.Shareledger/config.yml --node tcp://nginx:26657 --from relayer
+        shareledger relayer start --config /root/.Shareledger/config_out.yml --node tcp://nginx:26657 --from relayer
+  relayer_in:
+    container_name: relayer_in
+    image: "sharering/shareledger:latest"
+    networks:
+      - proxyNetwork
+    restart: always
+    hostname: relayer
+    depends_on:
+      - mongo
+    entrypoint: [ "/bin/sh","-c" ]
+    volumes:
+      - ./testnet/relayer:/root/.Shareledger
+      - ./testnet_config/script:/app/script:ro
+    command:
+      - |
+        sh /app/script/setup_key.sh
+        shareledger relayer start --config /root/.Shareledger/config_in.yml --node tcp://nginx:26657 --from relayer
+  relayer_approver:
+    container_name: relayer_approver
+    image: "sharering/shareledger:latest"
+    networks:
+      - proxyNetwork
+    restart: always
+    hostname: relayer
+    depends_on:
+      - mongo
+    entrypoint: [ "/bin/sh","-c" ]
+    volumes:
+      - ./testnet/relayer:/root/.Shareledger
+      - ./testnet_config/script:/app/script:ro
+    command:
+      - |
+        sh /app/script/setup_key.sh
+        shareledger relayer start --config /root/.Shareledger/config_approver.yml --node tcp://nginx:26657 --from relayer
 networks:
   proxyNetwork:
     external:

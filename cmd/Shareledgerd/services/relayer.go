@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/cosmos/cosmos-sdk/client"
+	slog "github.com/sharering/shareledger/cmd/Shareledgerd/services/log"
 	"go.uber.org/zap"
 	"math/big"
 	"os"
@@ -29,8 +30,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var log *zap.SugaredLogger
-
 func GetRelayerCommands(defaultNodeHome string) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "relayer",
@@ -44,15 +43,16 @@ func GetRelayerCommands(defaultNodeHome string) *cobra.Command {
 
 //const flagType = "type" // in/out
 //const flagSignerKeyName = "network-signers"
+var log *zap.SugaredLogger
 
 func NewStartCommands(defaultNodeHome string) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "start",
 		Short: "start Relayer process",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			logger, _ := zap.NewDevelopment()
-			defer logger.Sync()
-			log = logger.Sugar()
+			slog.Init()
+			defer slog.Log.Sync()
+			log = slog.Log
 
 			configPath, _ := cmd.Flags().GetString(flagConfigPath)
 			cfg, err := parseConfig(configPath)
@@ -120,17 +120,18 @@ func NewStartCommands(defaultNodeHome string) *cobra.Command {
 							Err:     relayerClient.startProcess(ctx, relayerClient.processIn, network),
 						}
 					}(network)
-					go func(network string) {
-						processChan <- struct {
-							Network string
-							Err     error
-						}{
-							Network: network,
-							Err:     relayerClient.startProcess(ctx, relayerClient.processApprovingIn, network),
-						}
-					}(network)
+					if cfg.AutoApprove {
+						go func(network string) {
+							processChan <- struct {
+								Network string
+								Err     error
+							}{
+								Network: network,
+								Err:     relayerClient.startProcess(ctx, relayerClient.processApprovingIn, network),
+							}
+						}(network)
+					}
 				}
-
 			case "out":
 				for network := range cfg.Network {
 					go func(network string) {
@@ -144,12 +145,24 @@ func NewStartCommands(defaultNodeHome string) *cobra.Command {
 						processChan <- result
 					}(network)
 				}
+			case "approver-in":
+				for network := range cfg.Network {
+					go func(network string) {
+						processChan <- struct {
+							Network string
+							Err     error
+						}{
+							Network: network,
+							Err:     relayerClient.startProcess(ctx, relayerClient.processApprovingIn, network),
+						}
+					}(network)
+				}
 			default:
 				return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "Relayer type is required either in or out")
 			}
 
 			from, _ := cmd.Flags().GetString(flags.FlagFrom)
-			logger.With(
+			log.With(
 				zap.String("started_at", time.Now().String()),
 				zap.String("running_cosmos_key", from),
 				zap.String("db_uri", cfg.MongoURI),
@@ -198,7 +211,11 @@ func initRelayer(ctx context.Context, cmd *cobra.Command, cfg RelayerConfig, db 
 	}
 	_ = cKeyRing.InitCaches(uids)
 
-	txClientCtx = txClientCtx.WithSkipConfirmation(true).WithBroadcastMode("block").WithKeyring(cKeyRing)
+	txClientCtx = txClientCtx.
+		WithSkipConfirmation(true).
+		WithBroadcastMode("block").
+		WithKeyring(cKeyRing).
+		WithOutputFormat("json")
 
 	timeoutContext, cancelTimeOut := context.WithTimeout(ctx, time.Second*10)
 	defer cancelTimeOut()
@@ -236,14 +253,18 @@ func initRelayer(ctx context.Context, cmd *cobra.Command, cfg RelayerConfig, db 
 		events[network] = *e
 	}
 
-	return &Relayer{
+	relayer := Relayer{
 		Config:   cfg,
 		clientTx: txClientCtx,
 		db:       db,
 		events:   events,
 		cmd:      cmd,
 		qClient:  qClient,
-	}, nil
+	}
+	if err := relayer.Validate(); err != nil {
+		return nil, err
+	}
+	return &relayer, nil
 }
 
 func (r *Relayer) startProcess(ctx context.Context, f processFunc, network string) error {
@@ -452,7 +473,7 @@ func (r *Relayer) syncDoneBatches(ctx context.Context, network string) error {
 	if err != nil {
 		return errors.Wrapf(err, "search batches by status %s fail", database.BatchStatusDone)
 	}
-	sID := make([]uint64, 0, len(batches))
+	doneID := make([]uint64, 0, len(batches))
 	for i := range batches {
 		updateMsg := &swapmoduletypes.MsgUpdateBatch{
 			BatchId: batches[i].ShareledgerID,
@@ -460,13 +481,27 @@ func (r *Relayer) syncDoneBatches(ctx context.Context, network string) error {
 			Network: network,
 		}
 
-		if err := r.txUpdateBatch(updateMsg); err != nil {
-			return errors.Wrapf(err, "update batchID=%d to status done fail", batches[i].ShareledgerID)
+		if updateMsg.BatchId > 0 {
+			cBatches, err := r.qClient.Batches(context.Background(), &swapmoduletypes.QueryBatchesRequest{Ids: []uint64{updateMsg.BatchId}})
+			if err != nil || cBatches == nil || len(cBatches.Batches) == 0 {
+				log.Errorw("get batch detail",
+					"err", errors.Wrapf(err, "qClient"),
+					"is_not_found", cBatches == nil || len(cBatches.Batches) == 0,
+					"batch", batches[i])
+				continue
+			}
+			if cBatches.Batches[0].GetStatus() == swapmoduletypes.BatchStatusDone {
+				doneID = append(doneID, batches[i].ShareledgerID)
+				continue
+			}
 		}
-		sID = append(sID, batches[i].ShareledgerID)
+
+		if err := r.txUpdateBatch(updateMsg); err != nil {
+			return errors.Wrapf(err, "update batchID=%d to status done", batches[i].ShareledgerID)
+		}
 	}
-	if len(sID) > 0 {
-		err = r.db.MarkBatchToSynced(sID)
+	if len(doneID) > 0 {
+		err = r.db.MarkBatchToSynced(doneID)
 		if err != nil {
 			return errors.Wrapf(err, "fail to update batch out to synced")
 		}
@@ -537,7 +572,9 @@ func (r *Relayer) processNextPendingBatchesOut(ctx context.Context, network stri
 		logData = append(logData, "batch_id", batch.ShareledgerID, "network", batch.Network)
 		b, err := r.getBatch(batch.ShareledgerID)
 		if err != nil || b == nil {
-			return errors.Wrapf(err, "can't get next batch by ID %d", batch.ShareledgerID)
+			offset++
+			log.Errorw("get submitted batch", "err", err, "batch", batch)
+			continue
 		}
 		batchDetail, err := r.getBatchDetail(ctx, *b)
 		if err != nil {
@@ -546,7 +583,7 @@ func (r *Relayer) processNextPendingBatchesOut(ctx context.Context, network stri
 
 		total := sdk.NewCoin(denom.Base, sdk.NewInt(0))
 		for _, r := range batchDetail.Requests {
-			total = total.Add(*r.Amount)
+			total = total.Add(r.Amount)
 		}
 
 		logData = append(logData, "batch_total", total.String())

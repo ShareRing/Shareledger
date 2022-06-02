@@ -3,26 +3,29 @@ package keeper
 import (
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	commontypes "github.com/sharering/shareledger/x/common/types"
 	"github.com/sharering/shareledger/x/swap/types"
 )
 
 // SetRequestedIn set a specific requestedIn in the store from its index
 func (k Keeper) SetRequestedIn(ctx sdk.Context, destAddress sdk.Address, txHashes []string) {
 	insertingData := types.RequestedIn{
-		Address: destAddress.String(),
+		Address:  destAddress.String(),
+		TxHashes: make([]string, 0, len(txHashes)),
 	}
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.RequestedInKeyPrefix))
 	currentData, found := k.GetRequestedIn(ctx, destAddress.String())
+	txHashMap := make(map[string]struct{})
 	if found {
-		insertingData = currentData
+		insertingData.TxHashes = currentData.TxHashes
+		for _, h := range currentData.TxHashes {
+			txHashMap[h] = struct{}{}
+		}
 	}
 
-	if insertingData.TxHashes == nil {
-		insertingData.TxHashes = make(map[string]*commontypes.Empty)
-	}
 	for _, hash := range txHashes {
-		insertingData.TxHashes[hash] = &commontypes.Empty{}
+		if _, found := txHashMap[hash]; !found {
+			insertingData.TxHashes = append(insertingData.TxHashes, hash)
+		}
 	}
 	b := k.cdc.MustMarshal(&insertingData)
 	store.Set(types.RequestedInKey(

@@ -4,14 +4,13 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	denom "github.com/sharering/shareledger/x/utils/demo"
-	"strings"
 )
 
 const TypeMsgWithdraw = "withdraw"
 
 var _ sdk.Msg = &MsgWithdraw{}
 
-func NewMsgWithdraw(creator string, receiver string, amount *sdk.DecCoin) *MsgWithdraw {
+func NewMsgWithdraw(creator string, receiver string, amount sdk.DecCoin) *MsgWithdraw {
 	return &MsgWithdraw{
 		Creator:  creator,
 		Receiver: receiver,
@@ -51,11 +50,13 @@ func (msg *MsgWithdraw) ValidateBasic() error {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid receiver address (%s)", err)
 	}
 
-	if strings.ToLower(msg.Amount.GetDenom()) != denom.Shr {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "withdraw message invalid must be shr (%s)", err)
+	if err := msg.Amount.Validate(); err != nil {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "withdraw amount isn't valid")
 	}
-	if err := msg.GetAmount().Validate(); err != nil {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "withdraw amount isn't valid", err)
+
+	if denom.IsShrOrBase(msg.Amount) {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "withdraw message invalid must be shr or nshr")
 	}
+
 	return nil
 }

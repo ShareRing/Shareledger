@@ -18,7 +18,7 @@ func NewMsgCreateSchema(
 	creator string,
 	network string,
 	dataType string,
-	inFee, outFee *sdk.DecCoin,
+	inFee, outFee sdk.DecCoin,
 	contractExponent int32,
 ) *MsgCreateSchema {
 	return &MsgCreateSchema{
@@ -67,48 +67,15 @@ func (msg *MsgCreateSchema) ValidateBasic() error {
 	if err := msg.In.Validate(); err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid swap in fee (%s)", err)
 	}
-	if !denom.IsShrOrBase(*msg.In) {
+	if !denom.IsShrOrBase(msg.In) {
 		return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "invalid swap in fee")
 	}
-	if !denom.IsShrOrBase(*msg.Out) {
+	if !denom.IsShrOrBase(msg.Out) {
 		return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "invalid swap out fee")
 	}
 	return nil
 
-	//return validateEIP712Data(msg.Network, msg.DataType)
 }
-
-//func validateEIP712Data(network string, data *EIP712DataType) error {
-//	if len(network) == 0 {
-//		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "network is required")
-//	}
-//	if data == nil {
-//		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "eip712 data is required")
-//	}
-//	if len(data.PrimaryType) == 0 {
-//		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "eip712 data primary type is required")
-//	}
-//	if data.Domain == nil {
-//		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "eip712 data domain is required")
-//	}
-//	if len(data.Domain.Name) == 0 {
-//		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "eip712 data domain name is required")
-//	}
-//	if len(data.Domain.Version) == 0 {
-//		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "eip712 data domain version is required")
-//	}
-//	if len(data.Domain.ChainId) == 0 {
-//		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "eip712 data domain chainId is required")
-//	}
-//	var hexOrDecimal math.HexOrDecimal256
-//	if err := hexOrDecimal.UnmarshalText([]byte(data.Domain.ChainId)); err != nil {
-//		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "eip712 data domain chainId should be hex or decimal string. %+v", err)
-//	}
-//	if len(data.Domain.VerifyingContract) == 0 {
-//		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "eip712 data domain verifying contract is required")
-//	}
-//	return nil
-//}
 
 var _ sdk.Msg = &MsgUpdateSchema{}
 
@@ -156,6 +123,17 @@ func (msg *MsgUpdateSchema) ValidateBasic() error {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
 	}
 
+	if msg.Network == "" {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "network name is required")
+	}
+
+	if (msg.In == nil || msg.In.IsZero()) &&
+		(msg.Out == nil || msg.Out.IsZero()) &&
+		msg.Schema == "" &&
+		msg.ContractExponent == 0 {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "update schema should require at least one params on the list of [fee-in, fee-out, exp, schema]")
+	}
+
 	return nil
 }
 
@@ -196,6 +174,9 @@ func (msg *MsgDeleteSchema) ValidateBasic() error {
 	_, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
+	}
+	if msg.Network == "" {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "network name is required")
 	}
 	return nil
 }

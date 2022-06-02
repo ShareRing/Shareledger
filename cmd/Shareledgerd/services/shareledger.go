@@ -1,8 +1,11 @@
 package services
 
 import (
+	"bytes"
 	"context"
+	"fmt"
 	"github.com/cosmos/cosmos-sdk/client/tx"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/pkg/errors"
 	swapmoduletypes "github.com/sharering/shareledger/x/swap/types"
 	"sync"
@@ -43,8 +46,21 @@ func (r *Relayer) txSubmitRequestIn(msg swapmoduletypes.MsgRequestIn) error {
 		return err
 	}
 
-	err := tx.GenerateOrBroadcastTxCLI(r.clientTx, r.cmd.Flags(), &msg)
-	return err
+	buf := new(bytes.Buffer)
+	ctx := r.clientTx.WithOutput(buf)
+
+	err := tx.GenerateOrBroadcastTxCLI(ctx, r.cmd.Flags(), &msg)
+	if err != nil {
+		return err
+	}
+	var response sdk.TxResponse
+	if err := ctx.Codec.UnmarshalJSON(buf.Bytes(), &response); err != nil {
+		return err
+	}
+	if response.Code != 0 {
+		return errors.New(fmt.Sprintf("response code, %v, with transaction data %+v", response.Code, response))
+	}
+	return nil
 }
 
 // txUpdateBatch thread safe to avoid running in multiple go routine for multiple network
@@ -63,10 +79,6 @@ func (r *Relayer) txUpdateBatch(msg *swapmoduletypes.MsgUpdateBatch) error {
 	batchRes, err := r.qClient.Batches(context.Background(), &swapmoduletypes.QueryBatchesRequest{Ids: []uint64{msg.GetBatchId()}})
 	if err != nil || len(batchRes.GetBatches()) == 0 {
 		return errors.Wrapf(err, "recheck the batch id %d fail", msg.GetBatchId())
-	}
-
-	if batchRes.GetBatches()[0].GetStatus() != msg.GetStatus() {
-		return errors.New("update the batch status fail")
 	}
 
 	return nil

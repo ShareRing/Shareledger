@@ -19,7 +19,7 @@ func CmdIn() *cobra.Command {
 			[dest_address] should be shareledger address in shareledger
 			[txHashes] <hash1>,<hash2>.... : tx Hashes list is required.
 		`,
-		Args: cobra.ExactArgs(4),
+		Args: cobra.ExactArgs(5),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argDesAddress := args[1]
 			argSrcNetwork := args[2]

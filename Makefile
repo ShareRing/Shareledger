@@ -22,11 +22,12 @@ dinit:
 
 dup:
 	cd ./deploy && \
-    docker-compose up -d --remove-orphans
+    docker-compose up -d
 
 dupswap:
 	cd ./deploy && \
 	docker-compose -f docker-compose-relayer.yaml up -d
+
 ddownswap:
 	cd ./deploy && \
 	docker-compose -f docker-compose-relayer.yaml down
@@ -35,8 +36,7 @@ ddown:
 	cd ./deploy && \
     docker-compose down
 
-
-duprefresh: dinit dup dupswap
+duprefreshall: ddownswap ddown dinit dup dupswap
 
 test:
 	go test ./... -v

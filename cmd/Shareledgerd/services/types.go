@@ -2,8 +2,10 @@ package services
 
 import (
 	"context"
+	"fmt"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/tx"
+	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 	"time"
 
@@ -16,8 +18,9 @@ import (
 const flagConfigPath = "config"
 
 var supportedTypes = map[string]struct{}{
-	"in":  {},
-	"out": {},
+	"in":          {},
+	"out":         {},
+	"approver-in": {},
 }
 
 type processFunc func(ctx context.Context, network string) error
@@ -42,6 +45,7 @@ type Retry struct {
 type RelayerConfig struct {
 	Network        map[string]Network `yaml:"networks"`
 	Type           string             `yaml:"type"`
+	AutoApprove    bool               `yaml:"autoApprove"`
 	ScanInterval   time.Duration      `yaml:"scanInterval"`
 	MongoURI       string             `yaml:"mongoURI"`
 	DbName         string             `yaml:"dbName"`
@@ -57,4 +61,11 @@ type Relayer struct {
 	qClient            swapmoduletypes.QueryClient
 	clientTx           client.Context
 	preRunBroadcastTxs []tx.PreRunBroadcastTx
+}
+
+func (r *Relayer) Validate() error {
+	if _, found := supportedTypes[r.Config.Type]; !found {
+		return errors.New(fmt.Sprintf("type, %s, relayer is not supported", r.Config.Type))
+	}
+	return nil
 }

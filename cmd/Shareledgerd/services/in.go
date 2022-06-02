@@ -27,10 +27,11 @@ func (r *Relayer) approvingSubmittedBatchesIn(ctx context.Context, network strin
 	if err != nil {
 		return err
 	}
-	logData = append(logData, "number pending swap in", len(res.Swaps))
+	logData = append(logData, "swap_len", len(res.Swaps))
 
 	for _, swap := range res.Swaps {
 		logData = append(logData, "swap_id", swap.Id)
+
 		res, err := r.qClient.Balance(ctx, &types.QueryBalanceRequest{})
 		if err != nil {
 			return errors.Wrapf(err, "check balances of swap module")
@@ -41,7 +42,7 @@ func (r *Relayer) approvingSubmittedBatchesIn(ctx context.Context, network strin
 			continue
 		}
 
-		if !moduleBalances.IsAllGTE(sdk.NewCoins(*swap.Amount)) {
+		if !moduleBalances.IsAllGTE(sdk.NewCoins(swap.Amount)) {
 			logData = append(logData, "skip_approve", fmt.Sprintf("lacking swap module's balance. swap in amount, %s, module balance, %s", swap.Amount, moduleBalances.String()))
 			continue
 		}
@@ -58,21 +59,20 @@ func (r *Relayer) approvingSubmittedBatchesIn(ctx context.Context, network strin
 		batch.ShareledgerID = swap.Id
 
 		fullBatchDone := true
-		var txAmount sdk.Coin
+		txAmount := sdk.NewCoin(denom.Base, sdk.NewInt(0))
 		for _, txHash := range swap.TxHashes {
 			_, amount, err := r.getConfirmedTXTransfer(ctx, network, common.HexToHash(txHash))
 			if err != nil {
 				fullBatchDone = false
 				log.Errorw("check tx hash", "err", errors.Wrapf(err, "swap_id, %s, txHash, %s", swap.Id, txHash))
 				r.db.SetLog(batch, err.Error())
-				// TODO: handling with wrong data
 				break
 			}
-			txAmount.Add(*amount)
+			txAmount = txAmount.Add(*amount)
 		}
 		// cover rounding number between chains.
-		if !fullBatchDone || !txAmount.Amount.Sub(swap.Amount.Amount.Add(swap.Fee.Amount)).LTE(sdk.NewInt(1)) {
-			err := errors.Errorf("amount batched requests, %s, is not match with contracts data, %s", swap.Amount.Add(*swap.Fee).String(), txAmount.String())
+		if !fullBatchDone || !txAmount.Amount.Sub(swap.Amount.Amount.Add(swap.Fee.Amount)).Abs().LTE(sdk.NewInt(1)) {
+			err := errors.Errorf("amount batched requests, %s, is not match with contracts data, %s", swap.Amount.Add(swap.Fee).String(), txAmount.String())
 			r.db.SetLog(batch, err.Error())
 			continue
 		}
@@ -123,7 +123,9 @@ func (r *Relayer) processIn(ctx context.Context, network string) error {
 			// already handler
 			if request != nil {
 				// some case, the relayer was restarted, so this will scan again. In order to re-trigger processing request.
-				handledRequests = append(handledRequests, *request)
+				if request.Status == database.RequestInPending {
+					handledRequests = append(handledRequests, *request)
+				}
 				log.Warnw("request was already handled into db.", "request", request)
 				continue
 			}
@@ -132,7 +134,7 @@ func (r *Relayer) processIn(ctx context.Context, network string) error {
 			if exponentNetwork == 0 {
 				return errors.New(fmt.Sprintf("network %s does not have exponent config", network))
 			}
-			baseAmount := denom.ExponentToBase(sdk.NewIntFromBigInt(e.Amount.BigInt()), exponentNetwork)
+			baseAmount := denom.ExponentToBase(sdk.MustNewDecFromStr(e.Amount.String()), exponentNetwork)
 
 			ri := database.RequestsIn{
 				Status:      database.RequestInPending,
@@ -201,19 +203,22 @@ func (r *Relayer) SubmitPendingBatchesIn(ctx context.Context, network string) er
 		return err
 	}
 	for _, req := range pendingBatchesIn {
-		status, submittedTxHash, err := r.IsSubmitted(ctx, req)
-		fmt.Println("submittedTxHash", submittedTxHash)
+		status, submittedTxHash, err := r.IsSubmitted(ctx, req.DestAddr, req.TxHashes)
 		if err != nil {
 			log.Errorw("check submitted batch in", "err", err.Error())
 			continue
 		}
 		switch status {
 		case 1:
-			r.db.UnBatchRequestIn(network, submittedTxHash)
+			if err := r.db.UnBatchRequestIn(network, submittedTxHash); err != nil {
+				log.Errorw("unbatch request in", "err", err)
+			}
 			continue
 		case 2: //already submitted this full batch.
 			req.Status = database.BatchStatusSubmitted
-			r.db.SetBatch(req)
+			if err := r.db.SetBatch(req); err != nil {
+				log.Errorw("set batch", "batch", req, "err", err)
+			}
 			continue
 		}
 
@@ -228,7 +233,6 @@ func (r *Relayer) SubmitPendingBatchesIn(ctx context.Context, network string) er
 			return err
 		}
 		dFee := sdk.NewDecCoinFromCoin(bFee)
-
 		err = r.txSubmitRequestIn(types.MsgRequestIn{
 			DestAddress: req.DestAddr,
 			Network:     req.Network,
@@ -238,7 +242,7 @@ func (r *Relayer) SubmitPendingBatchesIn(ctx context.Context, network string) er
 		})
 		if err != nil {
 			if e := r.db.SetLog(req, err.Error()); e != nil {
-				log.Errorw("set log error", "logerr", e, "error", err)
+				log.Errorw("set log", "log_err", e, "logged_err", err)
 			} else {
 				log.Errorw("submit request has error", "error", err)
 			}
@@ -255,28 +259,32 @@ func (r *Relayer) SubmitPendingBatchesIn(ctx context.Context, network string) er
 // 0 not yet
 // 1 processed partial
 // 2 processed full
-func (r *Relayer) IsSubmitted(ctx context.Context, batch database.BatchIn) (status int, submittedTxHash []string, err error) {
+func (r *Relayer) IsSubmitted(ctx context.Context, destAddress string, txHashes []string) (status int, submittedTxHash []string, err error) {
 	processedRequests, err := r.qClient.RequestedIns(ctx, &types.QueryRequestedInsRequest{
-		Address: batch.DestAddr,
+		Address: destAddress,
 	})
 	if err != nil {
 		return 0, nil, err
 	}
 
-	submittedTxHash = make([]string, 0, len(batch.TxHashes))
+	submittedTxHash = make([]string, 0, len(txHashes))
 	if processedRequests == nil || processedRequests.RequestedIn == nil || processedRequests.RequestedIn.TxHashes == nil {
 		return 0, submittedTxHash, nil
 	}
+	txHashMap := make(map[string]struct{})
+	for _, h := range processedRequests.RequestedIn.TxHashes {
+		txHashMap[h] = struct{}{}
+	}
 
-	for _, txHash := range batch.TxHashes {
-		if _, found := processedRequests.RequestedIn.TxHashes[txHash]; found {
+	for _, txHash := range txHashes {
+		if _, found := txHashMap[txHash]; found {
 			submittedTxHash = append(submittedTxHash, txHash)
 		}
 	}
 	if len(submittedTxHash) > 0 {
 		status = 1
 	}
-	if len(submittedTxHash) == len(batch.TxHashes) {
+	if len(submittedTxHash) == len(txHashes) {
 		status = 2
 	}
 	return status, submittedTxHash, nil

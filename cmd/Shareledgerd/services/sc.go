@@ -132,7 +132,7 @@ func (r *Relayer) getConfirmedTXTransfer(ctx context.Context, network string, tx
 	if !ok {
 		return [20]byte{}, nil, errors.New(fmt.Sprintf("%v is not in correct format of big.Int", data["amount"]))
 	}
-	ba := denom.ExponentToBase(sdk.NewIntFromBigInt(av), r.Config.Network[network].Exponent)
+	ba := denom.ExponentToBase(sdk.NewDecFromBigInt(av), r.Config.Network[network].Exponent)
 	amount = &ba
 	toAddr, ok = data["to"].(common.Address)
 	if !ok {
@@ -196,7 +196,7 @@ func (r *Relayer) getBalance(ctx context.Context, network string) (sdk.Coin, err
 		Pending: false,
 		Context: ctx,
 	})
-	return denom.ExponentToBase(sdk.NewIntFromBigInt(value), r.Config.Network[network].Exponent), err
+	return denom.ExponentToBase(sdk.NewDecFromBigInt(value), r.Config.Network[network].Exponent), err
 }
 
 func (r *Relayer) checkTxHash(ctx context.Context, network string, txHash common.Hash) (*types.Receipt, error) {

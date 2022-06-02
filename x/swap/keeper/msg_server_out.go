@@ -39,8 +39,8 @@ func (k msgServer) RequestOut(goCtx context.Context, msg *types.MsgRequestOut) (
 		DestAddr:    msg.DestAddress,
 		SrcNetwork:  types.NetworkNameShareLedger,
 		DestNetwork: msg.Network,
-		Amount:      &insertAmountCoin,
-		Fee:         &insertFeeCoin,
+		Amount:      insertAmountCoin,
+		Fee:         insertFeeCoin,
 		Status:      types.SwapStatusPending,
 	})
 
