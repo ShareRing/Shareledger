@@ -18,16 +18,16 @@ func (k msgServer) CreateSchema(goCtx context.Context, msg *types.MsgCreateSchem
 		msg.Network,
 	)
 	if isFound {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "index already set")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "network name already exists")
 	}
 
-	inF, err := denom.NormalizeToBaseCoin(denom.Base, sdk.NewDecCoins(*msg.In), sdk.NewDec(1), false)
+	inF, err := denom.NormalizeToBaseCoin(denom.Base, sdk.NewDecCoins(msg.In), sdk.NewDec(1), false)
 	if err != nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "invalid fee")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "invalid fee in")
 	}
-	outF, err := denom.NormalizeToBaseCoin(denom.Base, sdk.NewDecCoins(*msg.Out), sdk.NewDec(1), false)
+	outF, err := denom.NormalizeToBaseCoin(denom.Base, sdk.NewDecCoins(msg.Out), sdk.NewDec(1), false)
 	if err != nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "invalid fee")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "invalid fee out")
 	}
 
 	var signSchema = types.Schema{
@@ -57,12 +57,7 @@ func (k msgServer) UpdateSchema(goCtx context.Context, msg *types.MsgUpdateSchem
 		msg.Network,
 	)
 	if !isFound {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "index not set")
-	}
-
-	// Checks if the the msg creator is the same as the current owner
-	if msg.Creator != valFound.Creator {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "incorrect owner")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "network does not exist")
 	}
 
 	var schema = types.Schema{
@@ -71,11 +66,12 @@ func (k msgServer) UpdateSchema(goCtx context.Context, msg *types.MsgUpdateSchem
 		Schema:  valFound.Schema,
 		Fee:     valFound.Fee,
 	}
+	msg.ValidateBasic()
 	if msg.Schema != "" {
 		schema.Schema = msg.Schema
 	}
 
-	if !msg.Out.IsZero() {
+	if msg.Out != nil && !msg.Out.IsZero() {
 		outF, err := denom.NormalizeToBaseCoin(denom.Base, sdk.NewDecCoins(*msg.Out), sdk.NewDec(0), false)
 		if err != nil {
 			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "invalid fee")
@@ -83,7 +79,7 @@ func (k msgServer) UpdateSchema(goCtx context.Context, msg *types.MsgUpdateSchem
 		schema.Fee.Out = &outF
 
 	}
-	if !msg.In.IsZero() {
+	if msg.In != nil && !msg.In.IsZero() {
 		inF, err := denom.NormalizeToBaseCoin(denom.Base, sdk.NewDecCoins(*msg.In), sdk.NewDec(0), false)
 		if err != nil {
 			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "invalid fee")
@@ -104,17 +100,12 @@ func (k msgServer) DeleteSchema(goCtx context.Context, msg *types.MsgDeleteSchem
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	// Check if the value exists
-	valFound, isFound := k.GetSchema(
+	_, isFound := k.GetSchema(
 		ctx,
 		msg.Network,
 	)
 	if !isFound {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "index not set")
-	}
-
-	// Checks if the the msg creator is the same as the current owner
-	if msg.Creator != valFound.Creator {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "incorrect owner")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "network does not exist")
 	}
 
 	k.RemoveSchema(

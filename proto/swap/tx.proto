@@ -1,7 +1,7 @@
 syntax = "proto3";
 package shareledger.swap;
 import "cosmos/base/v1beta1/coin.proto";
-
+import "gogoproto/gogo.proto";
 // this line is used by starport scaffolding # proto/tx/import
 
 option go_package = "github.com/sharering/shareledger/x/swap/types";
@@ -70,8 +70,8 @@ message MsgCreateSchema {
   string creator = 1;
   string network = 2;
   string schema = 3;
-  cosmos.base.v1beta1.DecCoin in = 4;
-  cosmos.base.v1beta1.DecCoin out = 5;
+  cosmos.base.v1beta1.DecCoin in = 4 [(gogoproto.nullable) = false];
+  cosmos.base.v1beta1.DecCoin out = 5 [(gogoproto.nullable) = false];
   int32 contractExponent = 6;
 
 }

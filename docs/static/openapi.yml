@@ -31406,9 +31406,9 @@ paths:
                   address:
                     type: string
                   txHashes:
-                    type: object
-                    additionalProperties:
-                      type: object
+                    type: array
+                    items:
+                      type: string
         default:
           description: An unexpected error response.
           schema:
@@ -53829,8 +53829,6 @@ definitions:
                 type: string
               extraData:
                 type: string
-  shareledger.common.Empty:
-    type: object
   shareledger.swap.Batch:
     type: object
     properties:
@@ -54077,9 +54075,9 @@ definitions:
           address:
             type: string
           txHashes:
-            type: object
-            additionalProperties:
-              type: object
+            type: array
+            items:
+              type: string
   shareledger.swap.QuerySchemaResponse:
     type: object
     properties:
@@ -54264,9 +54262,9 @@ definitions:
       address:
         type: string
       txHashes:
-        type: object
-        additionalProperties:
-          type: object
+        type: array
+        items:
+          type: string
   shareledger.swap.Schema:
     type: object
     properties:
