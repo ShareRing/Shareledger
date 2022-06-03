@@ -23,7 +23,7 @@ func (k msgServer) Reject(goCtx context.Context, msg *types.MsgReject) (*types.M
 		reqIds = append(reqIds, fmt.Sprintf("%v", r.Id))
 	}
 	ctx.EventManager().EmitEvent(
-		sdk.NewEvent(types.EventTypeSwapApprove,
+		sdk.NewEvent(types.EventTypeSwapReject,
 			sdk.NewAttribute(sdk.AttributeKeyModule, types.AttributeValueCategory),
 			sdk.NewAttribute(types.EventTypeApproverAction, types.SwapStatusRejected),
 			sdk.NewAttribute(types.EventTypeRejectArr, msg.Creator),
