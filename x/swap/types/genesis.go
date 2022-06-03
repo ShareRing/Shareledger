@@ -10,12 +10,10 @@ const DefaultIndex uint64 = 1
 // DefaultGenesis returns the default Capability genesis state
 func DefaultGenesis() *GenesisState {
 	return &GenesisState{
-		IdList:       []Id{},
-		RequestList:  []Request{},
-		BatchList:    []Batch{},
-		Schemas:      []Schema{},
-		RequestCount: 0,
-		BatchCount:   0,
+		IdList:      []Id{},
+		RequestList: []Request{},
+		BatchList:   []Batch{},
+		Schemas:     []Schema{},
 		// this line is used by starport scaffolding # genesis/types/default
 		Params: DefaultParams(),
 	}

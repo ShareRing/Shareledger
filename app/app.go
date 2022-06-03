@@ -745,6 +745,13 @@ func New(
 				fromVM[moduleName] = 1
 			}
 
+			fromVM[swapmoduletypes.ModuleName] = swapModule.ConsensusVersion()
+			swapParams := swapmoduletypes.DefaultGenesis()
+
+			ctx.Logger().Info("start to init swap module...")
+			// initialize ICS27 module
+			swapmodule.InitGenesis(ctx, app.SwapKeeper, *swapParams)
+
 			// run custom init function for ica module
 			fromVM[icatypes.ModuleName] = icaModule.ConsensusVersion()
 			// create ICS27 Controller submodule params
