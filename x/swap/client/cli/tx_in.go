@@ -18,6 +18,8 @@ func CmdIn() *cobra.Command {
 		Long: `
 			[dest_address] should be shareledger address in shareledger
 			[txHashes] <hash1>,<hash2>.... : tx Hashes list is required.
+			[amount] the total of all external transactions' amount minus swap fee.
+			[fee] the fee for swap in which is configured in schema data.
 		`,
 		Args: cobra.ExactArgs(5),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {

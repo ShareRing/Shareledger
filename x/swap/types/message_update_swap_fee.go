@@ -3,6 +3,7 @@ package types
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	denom "github.com/sharering/shareledger/x/utils/demo"
 )
 
 const TypeMsgUpdateSwapFee = "update_swap_fee"
@@ -43,6 +44,21 @@ func (msg *MsgUpdateSwapFee) ValidateBasic() error {
 	_, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
+	}
+
+	if msg.In == nil && msg.Out == nil {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "at least one fee type should be specified")
+	}
+	if msg.In != nil {
+		if !denom.IsShrOrBase(*msg.In) {
+			return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "only shr or nshr is supported")
+		}
+	}
+
+	if msg.Out != nil {
+		if !denom.IsShrOrBase(*msg.Out) {
+			return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "only shr or nshr is supported")
+		}
 	}
 
 	return nil

@@ -25,23 +25,6 @@ import (
 	swapmoduletypes "github.com/sharering/shareledger/x/swap/types"
 )
 
-const (
-	FeeAcctionNameSwapIn        = "swap_request-in"
-	FeeAcctionNameSwapOut       = "swap_request-out"
-	FeeAcctionNameApproveIn     = "swap_approve-in"
-	FeeAcctionNameApproveOut    = "swap_approve-out"
-	FeeAcctionNameCancel        = "swap_cancel"
-	FeeAcctionNameReject        = "swap_reject"
-	FeeAcctionNameDeposit       = "swap_deposit"
-	FeeAcctionNameWithdraw      = "swap_withdraw"
-	FeeAcctionNameCreateSchema  = "swap_create-schema"
-	FeeAcctionNameUpdateSchema  = "swap_update-schema"
-	FeeAcctionNameDeleteSchema  = "swap_delete-schema"
-	FeeAcctionNameCancelBatches = "swap_cancel-batches"
-	FeeAcctionNameUpdateBatch   = "swap_update-batch"
-	FeeAcctionNameUpdateSwapFee = "swap_update-swap-fee"
-)
-
 func init() {
 	// init map action string _ msg type
 	doOnce.Do(func() {
@@ -122,21 +105,20 @@ var mapActions = map[reflect.Type]string{
 	reflect.ValueOf(&stakingmoduletypes.MsgUndelegate{}).Type():      "staking_unbond",
 
 	/*------------x/swap module---------------- start */
-	reflect.ValueOf(&swapmoduletypes.MsgRequestIn{}).Type():     FeeAcctionNameSwapIn,
-	reflect.ValueOf(&swapmoduletypes.MsgRequestOut{}).Type():    FeeAcctionNameSwapOut,
-	reflect.ValueOf(&swapmoduletypes.MsgApproveIn{}).Type():     FeeAcctionNameApproveIn,
-	reflect.ValueOf(&swapmoduletypes.MsgApproveOut{}).Type():    FeeAcctionNameApproveOut,
-	reflect.ValueOf(&swapmoduletypes.MsgCancel{}).Type():        FeeAcctionNameCancel,
-	reflect.ValueOf(&swapmoduletypes.MsgReject{}).Type():        FeeAcctionNameReject,
-	reflect.ValueOf(&swapmoduletypes.MsgReject{}).Type():        FeeAcctionNameReject,
-	reflect.ValueOf(&swapmoduletypes.MsgDeposit{}).Type():       FeeAcctionNameDeposit,
-	reflect.ValueOf(&swapmoduletypes.MsgWithdraw{}).Type():      FeeAcctionNameWithdraw,
-	reflect.ValueOf(&swapmoduletypes.MsgCreateSchema{}).Type():  FeeAcctionNameCreateSchema,
-	reflect.ValueOf(&swapmoduletypes.MsgUpdateSchema{}).Type():  FeeAcctionNameUpdateSchema,
-	reflect.ValueOf(&swapmoduletypes.MsgDeleteSchema{}).Type():  FeeAcctionNameDeleteSchema,
-	reflect.ValueOf(&swapmoduletypes.MsgCancelBatches{}).Type(): FeeAcctionNameCancelBatches,
-	reflect.ValueOf(&swapmoduletypes.MsgUpdateBatch{}).Type():   FeeAcctionNameUpdateBatch,
-	reflect.ValueOf(&swapmoduletypes.MsgUpdateSwapFee{}).Type(): FeeAcctionNameUpdateSwapFee,
+	reflect.ValueOf(&swapmoduletypes.MsgRequestIn{}).Type():     "swap_request-in",
+	reflect.ValueOf(&swapmoduletypes.MsgRequestOut{}).Type():    "swap_request-out",
+	reflect.ValueOf(&swapmoduletypes.MsgApproveIn{}).Type():     "swap_approve-in",
+	reflect.ValueOf(&swapmoduletypes.MsgApproveOut{}).Type():    "swap_approve-out",
+	reflect.ValueOf(&swapmoduletypes.MsgCancel{}).Type():        "swap_cancel",
+	reflect.ValueOf(&swapmoduletypes.MsgReject{}).Type():        "swap_reject",
+	reflect.ValueOf(&swapmoduletypes.MsgDeposit{}).Type():       "swap_deposit",
+	reflect.ValueOf(&swapmoduletypes.MsgWithdraw{}).Type():      "swap_withdraw",
+	reflect.ValueOf(&swapmoduletypes.MsgCreateSchema{}).Type():  "swap_create-schema",
+	reflect.ValueOf(&swapmoduletypes.MsgUpdateSchema{}).Type():  "swap_update-schema",
+	reflect.ValueOf(&swapmoduletypes.MsgDeleteSchema{}).Type():  "swap_delete-schema",
+	reflect.ValueOf(&swapmoduletypes.MsgCancelBatches{}).Type(): "swap_cancel-batches",
+	reflect.ValueOf(&swapmoduletypes.MsgUpdateBatch{}).Type():   "swap_update-batch",
+	reflect.ValueOf(&swapmoduletypes.MsgUpdateSwapFee{}).Type(): "swap_update-swap-fee",
 	/*------------x/swap module------------- end */
 }
 

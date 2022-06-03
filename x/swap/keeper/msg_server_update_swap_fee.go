@@ -16,7 +16,7 @@ func (k msgServer) UpdateSwapFee(goCtx context.Context, msg *types.MsgUpdateSwap
 	if !found {
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrKeyNotFound, "the network %s schema is not found", msg.GetNetwork())
 	}
-	if !msg.Out.IsZero() {
+	if msg.Out != nil && !msg.Out.IsZero() {
 		outF, err := denom.NormalizeToBaseCoin(denom.Base, sdk.NewDecCoins(*msg.Out), sdk.NewDec(0), false)
 		if err != nil {
 			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "invalid fee")
@@ -24,7 +24,7 @@ func (k msgServer) UpdateSwapFee(goCtx context.Context, msg *types.MsgUpdateSwap
 		v.Fee.Out = &outF
 
 	}
-	if !msg.In.IsZero() {
+	if msg.In != nil && !msg.In.IsZero() {
 		inF, err := denom.NormalizeToBaseCoin(denom.Base, sdk.NewDecCoins(*msg.In), sdk.NewDec(0), false)
 		if err != nil {
 			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "invalid fee")

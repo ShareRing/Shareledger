@@ -16,10 +16,10 @@ func (k msgServer) ApproveIn(goCtx context.Context, msg *types.MsgApproveIn) (*t
 	if err != nil {
 		return nil, err
 	}
-	total := sdk.NewDecCoins()
+	total := sdk.NewCoins()
 	reqIds := make([]string, 0, len(reqs))
 	for _, r := range reqs {
-		total = total.Add(sdk.NewDecCoinFromCoin(r.Amount))
+		total = total.Add(r.Amount)
 		reqIds = append(reqIds, fmt.Sprintf("%v", r.Id))
 	}
 

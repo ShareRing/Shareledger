@@ -20,7 +20,6 @@ func (k msgServer) UpdateBatch(goCtx context.Context, msg *types.MsgUpdateBatch)
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "status %s is not valid in blockchain", msg.GetStatus())
 	}
 	batch.Status = msg.GetStatus()
-	batch.Network = msg.GetNetwork()
 	k.SetBatch(ctx, batch)
 
 	//The batch is done we detele the swap request

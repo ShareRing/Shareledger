@@ -478,7 +478,6 @@ func (r *Relayer) syncDoneBatches(ctx context.Context, network string) error {
 		updateMsg := &swapmoduletypes.MsgUpdateBatch{
 			BatchId: batches[i].ShareledgerID,
 			Status:  swapmoduletypes.BatchStatusDone,
-			Network: network,
 		}
 
 		if updateMsg.BatchId > 0 {
@@ -494,10 +493,9 @@ func (r *Relayer) syncDoneBatches(ctx context.Context, network string) error {
 				doneID = append(doneID, batches[i].ShareledgerID)
 				continue
 			}
-		}
-
-		if err := r.txUpdateBatch(updateMsg); err != nil {
-			return errors.Wrapf(err, "update batchID=%d to status done", batches[i].ShareledgerID)
+			if err := r.txUpdateBatch(updateMsg); err != nil {
+				return errors.Wrapf(err, "update batchID=%d to status done", batches[i].ShareledgerID)
+			}
 		}
 	}
 	if len(doneID) > 0 {

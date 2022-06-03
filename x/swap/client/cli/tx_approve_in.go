@@ -13,8 +13,8 @@ import (
 
 func CmdApproveIn() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "approve-in [txnIds]",
-		Short: "Broadcast message approve_in",
+		Use:   "approve-in [requests' ID]",
+		Short: "approve list of swap requests in",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argTxnIDs := args[0]
