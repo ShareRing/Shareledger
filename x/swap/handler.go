@@ -50,8 +50,8 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
 		case *types.MsgDeleteSchema:
 			res, err := msgServer.DeleteSchema(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgUpdateBatch:
-			res, err := msgServer.UpdateBatch(sdk.WrapSDKContext(ctx), msg)
+		case *types.MsgSetBatchDone:
+			res, err := msgServer.SetBatchDone(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
 		case *types.MsgUpdateSwapFee:
 			res, err := msgServer.UpdateSwapFee(sdk.WrapSDKContext(ctx), msg)

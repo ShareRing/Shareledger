@@ -18,12 +18,12 @@ func SimulateMsgUpdateBatch(
 	return func(r *rand.Rand, app *baseapp.BaseApp, ctx sdk.Context, accs []simtypes.Account, chainID string,
 	) (simtypes.OperationMsg, []simtypes.FutureOperation, error) {
 		simAccount, _ := simtypes.RandomAcc(r, accs)
-		msg := &types.MsgUpdateBatch{
+		msg := &types.MsgSetBatchDone{
 			Creator: simAccount.Address.String(),
 		}
 
-		// TODO: Handling the UpdateBatch simulation
+		// TODO: Handling the SetBatchDone simulation
 
-		return simtypes.NoOpMsg(types.ModuleName, msg.Type(), "UpdateBatch simulation not implemented"), nil, nil
+		return simtypes.NoOpMsg(types.ModuleName, msg.Type(), "SetBatchDone simulation not implemented"), nil, nil
 	}
 }

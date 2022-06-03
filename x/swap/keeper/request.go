@@ -316,10 +316,3 @@ func GetRequestIDBytes(id uint64) []byte {
 	binary.BigEndian.PutUint64(bz, id)
 	return bz
 }
-func (k Keeper) RemoveRequestFromStore(ctx sdk.Context, ids []uint64) {
-	approvedStore := k.GetStoreRequestMap(ctx)[types.SwapStatusApproved]
-
-	for i := range ids {
-		approvedStore.Delete(GetRequestIDBytes(ids[i]))
-	}
-}

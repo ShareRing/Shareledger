@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+	"fmt"
 
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 
@@ -9,23 +10,25 @@ import (
 	"github.com/sharering/shareledger/x/swap/types"
 )
 
-func (k msgServer) UpdateBatch(goCtx context.Context, msg *types.MsgUpdateBatch) (*types.MsgUpdateBatchResponse, error) {
+func (k msgServer) SetBatchDone(goCtx context.Context, msg *types.MsgSetBatchDone) (*types.MsgSetBatchDoneResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	batch, found := k.GetBatch(ctx, msg.GetBatchId())
 	if !found {
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrNotFound, "batch id=%s not found", msg.GetBatchId())
 	}
-	if msg.GetStatus() != types.BatchStatusPending && msg.GetStatus() != types.BatchStatusDone {
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "status %s is not valid in blockchain", msg.GetStatus())
+	k.RemoveBatch(ctx, batch.Id)
+	requests, err := k.getRequestsFromIds(ctx, batch.TxIds, types.SwapStatusApproved)
+	if err != nil {
+		return nil, err
 	}
-	batch.Status = msg.GetStatus()
-	k.SetBatch(ctx, batch)
+	k.MoveRequest(ctx, types.SwapStatusApproved, types.SwapStatusDone, requests, nil, true)
 
-	//The batch is done we detele the swap request
-	if batch.GetStatus() == types.BatchStatusDone {
-		k.RemoveRequestFromStore(ctx, batch.GetTxIds())
-	}
-
-	return &types.MsgUpdateBatchResponse{}, nil
+	ctx.EventManager().EmitEvent(
+		sdk.NewEvent(types.EventTypeBatchDone).
+			AppendAttributes(
+				sdk.NewAttribute(sdk.AttributeKeyModule, types.AttributeValueCategory),
+				sdk.NewAttribute(types.EventTypeAttrBatchID, fmt.Sprintf("%v", batch.Id)),
+			))
+	return &types.MsgSetBatchDoneResponse{}, nil
 }

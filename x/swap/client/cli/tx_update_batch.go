@@ -14,13 +14,12 @@ var _ = strconv.Itoa(0)
 
 func CmdUpdateBatch() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "update-batch [batch-id] [status]",
+		Use:   "batch-done [batch-id]",
 		Short: "Broadcast message update-batch",
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 
 			argBatchId := args[0]
-			argStatus := args[1]
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -31,7 +30,6 @@ func CmdUpdateBatch() *cobra.Command {
 			msg := types.NewMsgUpdateBatch(
 				clientCtx.GetFromAddress().String(),
 				batchID,
-				argStatus,
 			)
 
 			if err := msg.ValidateBasic(); err != nil {

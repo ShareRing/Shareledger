@@ -50,6 +50,8 @@ const (
 	EventTypeWithDraw            = "swap_withdraw"
 	EventTypeRequestChangeStatus = "swap_request_change_status"
 	EventTypeRequestCancelStatus = "swap_cancel_request"
+
+	EventTypeBatchDone = "batch_done"
 )
 
 const (
@@ -70,6 +72,8 @@ const (
 	EventTypeDepositAddr                  = "sender"
 	EventTypeWithdrawReceiver             = "receiver"
 	EventTypeChangeRequestStatusNewStatus = "new_status"
+
+	EventTypeAttrBatchID = "batch_id"
 )
 
 const (

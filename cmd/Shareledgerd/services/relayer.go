@@ -475,13 +475,12 @@ func (r *Relayer) syncDoneBatches(ctx context.Context, network string) error {
 	}
 	doneID := make([]uint64, 0, len(batches))
 	for i := range batches {
-		updateMsg := &swapmoduletypes.MsgUpdateBatch{
+		setDone := &swapmoduletypes.MsgSetBatchDone{
 			BatchId: batches[i].ShareledgerID,
-			Status:  swapmoduletypes.BatchStatusDone,
 		}
 
-		if updateMsg.BatchId > 0 {
-			cBatches, err := r.qClient.Batches(context.Background(), &swapmoduletypes.QueryBatchesRequest{Ids: []uint64{updateMsg.BatchId}})
+		if setDone.BatchId > 0 {
+			cBatches, err := r.qClient.Batches(context.Background(), &swapmoduletypes.QueryBatchesRequest{Ids: []uint64{setDone.BatchId}})
 			if err != nil || cBatches == nil || len(cBatches.Batches) == 0 {
 				log.Errorw("get batch detail",
 					"err", errors.Wrapf(err, "qClient"),
@@ -493,7 +492,7 @@ func (r *Relayer) syncDoneBatches(ctx context.Context, network string) error {
 				doneID = append(doneID, batches[i].ShareledgerID)
 				continue
 			}
-			if err := r.txUpdateBatch(updateMsg); err != nil {
+			if err := r.txUpdateBatch(setDone); err != nil {
 				return errors.Wrapf(err, "update batchID=%d to status done", batches[i].ShareledgerID)
 			}
 		}

@@ -19,7 +19,7 @@ service Msg {
   rpc Reject(MsgReject) returns (MsgRejectResponse);
   rpc RequestIn(MsgRequestIn) returns (MsgSwapInResponse);
   rpc ApproveIn(MsgApproveIn) returns (MsgApproveInResponse);
-  rpc UpdateBatch(MsgUpdateBatch) returns (MsgUpdateBatchResponse);
+  rpc SetBatchDone(MsgSetBatchDone) returns (MsgSetBatchDoneResponse);
   rpc UpdateSwapFee(MsgUpdateSwapFee) returns (MsgUpdateSwapFeeResponse);
   rpc CancelBatches(MsgCancelBatches) returns (MsgCancelBatchesResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
@@ -130,13 +130,12 @@ message MsgApproveIn {
 message MsgApproveInResponse {
 }
 
-message MsgUpdateBatch {
+message MsgSetBatchDone {
   string creator = 1;
   uint64 batchId = 2;
-  string status = 3;
 }
 
-message MsgUpdateBatchResponse {
+message MsgSetBatchDoneResponse {
 }
 
 message MsgUpdateSwapFee {

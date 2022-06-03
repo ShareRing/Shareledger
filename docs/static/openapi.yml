@@ -30819,6 +30819,91 @@ paths:
                   additionalProperties: {}
       tags:
         - Query
+  /sharering/shareledger/electoral/swap_manager:
+    get:
+      summary: Queries a list of SwapManager items.
+      operationId: ShareledgerElectoralSwapManager
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              accState:
+                type: object
+                properties:
+                  key:
+                    type: string
+                  address:
+                    type: string
+                  status:
+                    type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: address
+          in: query
+          required: false
+          type: string
+      tags:
+        - Query
+  /sharering/shareledger/electoral/swap_managers:
+    get:
+      summary: Queries a list of SwapManagers items.
+      operationId: ShareledgerElectoralSwapManagers
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              swapManagers:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    key:
+                      type: string
+                    address:
+                      type: string
+                    status:
+                      type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
   /shareledger/gentlemint/actionLevelFee:
     get:
       summary: Queries a list of actionLevelFee items.
@@ -53508,6 +53593,32 @@ definitions:
               type: string
             status:
               type: string
+  shareledger.electoral.QuerySwapManagerResponse:
+    type: object
+    properties:
+      accState:
+        type: object
+        properties:
+          key:
+            type: string
+          address:
+            type: string
+          status:
+            type: string
+  shareledger.electoral.QuerySwapManagersResponse:
+    type: object
+    properties:
+      swapManagers:
+        type: array
+        items:
+          type: object
+          properties:
+            key:
+              type: string
+            address:
+              type: string
+            status:
+              type: string
   shareledger.electoral.QueryVoterResponse:
     type: object
     properties:
@@ -53902,14 +54013,14 @@ definitions:
         format: uint64
   shareledger.swap.MsgRejectResponse:
     type: object
+  shareledger.swap.MsgSetBatchDoneResponse:
+    type: object
   shareledger.swap.MsgSwapInResponse:
     type: object
     properties:
       id:
         type: string
         format: uint64
-  shareledger.swap.MsgUpdateBatchResponse:
-    type: object
   shareledger.swap.MsgUpdateSchemaResponse:
     type: object
   shareledger.swap.MsgUpdateSwapFeeResponse:
