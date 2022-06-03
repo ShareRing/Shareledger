@@ -93,6 +93,16 @@ service Query {
 		option (google.api.http).get = "/sharering/shareledger/electoral/approves";
 	}
 
+// Queries a list of SwapManager items.
+	rpc SwapManager(QuerySwapManagerRequest) returns (QuerySwapManagerResponse) {
+		option (google.api.http).get = "/sharering/shareledger/electoral/swap_manager";
+	}
+
+// Queries a list of SwapManagers items.
+	rpc SwapManagers(QuerySwapManagersRequest) returns (QuerySwapManagersResponse) {
+		option (google.api.http).get = "/sharering/shareledger/electoral/swap_managers";
+	}
+
 // this line is used by starport scaffolding # 2
 }
 
@@ -217,6 +227,21 @@ message QueryApproversRequest {
 
 message QueryApproversResponse {
 	repeated AccState approvers = 1;
+}
+
+message QuerySwapManagerRequest {
+	string address = 1;
+}
+
+message QuerySwapManagerResponse {
+	AccState accState = 1 [(gogoproto.nullable) = false];
+}
+
+message QuerySwapManagersRequest {
+}
+
+message QuerySwapManagersResponse {
+	repeated AccState swapManagers = 1;
 }
 
 // this line is used by starport scaffolding # 3
