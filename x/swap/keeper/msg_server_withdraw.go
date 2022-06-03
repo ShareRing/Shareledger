@@ -23,7 +23,7 @@ func (k msgServer) Withdraw(goCtx context.Context, msg *types.MsgWithdraw) (*typ
 	senderAddr := k.accountKeeper.GetModuleAddress(types.ModuleName)
 
 	spendableCoin := k.bankKeeper.SpendableCoins(ctx, senderAddr)
-	if spendableCoin.IsAllLT(baseCoins) {
+	if !spendableCoin.IsAllGTE(baseCoins) {
 		return &types.MsgWithdrawResponse{Status: types.TxnStatusFail}, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "module does not have enough balance")
 	}
 
