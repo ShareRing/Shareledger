@@ -19,8 +19,13 @@ import (
 func CmdApprove() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "approve [txIDs] [signer_name] [network_name]",
-		Short: "Approve batch of swap out transactions. \n [txIDs] format ID1,ID2,ID3 \n [signer_name] approver key name for signing swapping batch\n[network] that applied data format from",
-		Args:  cobra.ExactArgs(3),
+		Short: "approve batch of swap out transactions. The approved requests will be batched and sent as a batch by relayer",
+		Long: `
+		 	[txIDs] format ID1,ID2,ID3 
+			[signer_name] approver key name for signing swapping batch. The key name should be imported with HD-PATH corresponding to destination network
+			[network] that applied data schema for singing EIP712. The network should exist in schema data`,
+		Example: `approve 1,2,3 eth_signer eth`,
+		Args:    cobra.ExactArgs(3),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argIDS := strings.Split(args[0], ",")
 			txIds := make([]uint64, 0, len(argIDS))
