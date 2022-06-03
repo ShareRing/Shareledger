@@ -13,8 +13,8 @@ import (
 
 func CmdReject() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "reject [txnIds]",
-		Short: "Broadcast message reject the swapping request base on request_id \n [txnIds] format ID1,ID2,ID3",
+		Use:   "reject [requests' IDs]",
+		Short: "Reject pending swap requests IN",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 
