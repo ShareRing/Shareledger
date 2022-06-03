@@ -23,7 +23,7 @@ func (k msgServer) UpdateBatch(goCtx context.Context, msg *types.MsgUpdateBatch)
 	k.SetBatch(ctx, batch)
 
 	//The batch is done we detele the swap request
-	if batch.GetStatus() == types.SwapStatusDone {
+	if batch.GetStatus() == types.BatchStatusDone {
 		k.RemoveRequestFromStore(ctx, batch.GetTxIds())
 	}
 
