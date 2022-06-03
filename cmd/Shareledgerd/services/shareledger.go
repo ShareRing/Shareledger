@@ -35,7 +35,21 @@ func (r *Relayer) txCancelBatches(ids []uint64) error {
 	if err := msg.ValidateBasic(); err != nil {
 		return err
 	}
-	return tx.GenerateOrBroadcastTxCLI(r.clientTx, r.cmd.Flags(), msg)
+
+	buf := new(bytes.Buffer)
+	ctx := r.clientTx.WithOutput(buf)
+
+	if err := tx.GenerateOrBroadcastTxCLI(ctx, r.cmd.Flags(), msg); err != nil {
+		return err
+	}
+	var response sdk.TxResponse
+	if err := ctx.Codec.UnmarshalJSON(buf.Bytes(), &response); err != nil {
+		return err
+	}
+	if response.Code != 0 {
+		return errors.New(fmt.Sprintf("response code, %v, with transaction data %+v", response.Code, response))
+	}
+	return nil
 }
 
 func (r *Relayer) txSubmitRequestIn(msg swapmoduletypes.MsgRequestIn) error {

@@ -33,7 +33,6 @@ var SupportedSwapStatuses = map[string]struct{}{
 
 const (
 	BatchStatusPending = "pending"
-	BatchStatusDone    = "done"
 )
 
 func SwapStatusSupported(status string) bool {
@@ -51,7 +50,8 @@ const (
 	EventTypeRequestChangeStatus = "swap_request_change_status"
 	EventTypeRequestCancelStatus = "swap_cancel_request"
 
-	EventTypeBatchDone = "batch_done"
+	EventTypeBatchDone   = "batch_done"
+	EventTypeBatchCancel = "batch_cancel"
 )
 
 const (

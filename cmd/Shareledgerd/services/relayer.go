@@ -475,21 +475,18 @@ func (r *Relayer) syncDoneBatches(ctx context.Context, network string) error {
 	}
 	doneID := make([]uint64, 0, len(batches))
 	for i := range batches {
-		setDone := &swapmoduletypes.MsgSetBatchDone{
-			BatchId: batches[i].ShareledgerID,
-		}
-
-		if setDone.BatchId > 0 {
+		if batches[i].ShareledgerID > 0 {
+			setDone := &swapmoduletypes.MsgSetBatchDone{
+				BatchId: batches[i].ShareledgerID,
+			}
+			// mark sync done to avoid it runs multiple times when there is any wrong with sync process
+			doneID = append(doneID, setDone.BatchId)
 			cBatches, err := r.qClient.Batches(context.Background(), &swapmoduletypes.QueryBatchesRequest{Ids: []uint64{setDone.BatchId}})
 			if err != nil || cBatches == nil || len(cBatches.Batches) == 0 {
 				log.Errorw("get batch detail",
 					"err", errors.Wrapf(err, "qClient"),
 					"is_not_found", cBatches == nil || len(cBatches.Batches) == 0,
 					"batch", batches[i])
-				continue
-			}
-			if cBatches.Batches[0].GetStatus() == swapmoduletypes.BatchStatusDone {
-				doneID = append(doneID, batches[i].ShareledgerID)
 				continue
 			}
 			if err := r.txUpdateBatch(setDone); err != nil {

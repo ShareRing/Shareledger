@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+	"fmt"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/sharering/shareledger/x/swap/types"
@@ -13,10 +14,6 @@ func (k msgServer) CancelBatches(goCtx context.Context, msg *types.MsgCancelBatc
 	batches := k.GetBatchesByIDs(ctx, msg.GetIds())
 	var requestIDs []uint64
 	for _, batch := range batches {
-		if batch.GetStatus() == types.BatchStatusDone {
-			return &types.MsgCancelBatchesResponse{},
-				sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "batch_id %d status %s is invalid for canceling", batch.GetId(), batch.GetStatus())
-		}
 		k.RemoveBatch(ctx, batch.GetId())
 		requestIDs = append(requestIDs, batch.GetTxIds()...)
 	}
@@ -27,5 +24,11 @@ func (k msgServer) CancelBatches(goCtx context.Context, msg *types.MsgCancelBatc
 		return &types.MsgCancelBatchesResponse{},
 			sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "can't change request to pending %s", err)
 	}
+	ctx.EventManager().EmitEvent(
+		sdk.NewEvent(types.EventTypeBatchCancel).
+			AppendAttributes(
+				sdk.NewAttribute(sdk.AttributeKeyModule, types.AttributeValueCategory),
+				sdk.NewAttribute(types.EventTypeAttrBatchID, fmt.Sprintf("%v", msg.Ids)),
+			))
 	return &types.MsgCancelBatchesResponse{}, nil
 }
