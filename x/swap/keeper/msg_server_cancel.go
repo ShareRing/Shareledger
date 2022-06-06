@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	denom "github.com/sharering/shareledger/x/utils/demo"
 	"strings"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -27,31 +26,31 @@ func (k msgServer) Cancel(goCtx context.Context, msg *types.MsgCancel) (*types.M
 		}
 	}
 
-	refund := sdk.NewDecCoins()
+	refund := sdk.NewCoins()
 	reqIds := make([]string, 0, len(requests))
 	for i := range requests {
 		rq := requests[i]
 		pendingStore.Delete(GetRequestIDBytes(rq.GetId()))
-		refund = refund.Add(sdk.NewDecCoinFromCoin(rq.GetAmount())).Add(sdk.NewDecCoinFromCoin(rq.GetFee()))
+		refund = refund.Add(rq.GetAmount()).Add(rq.GetFee())
 		reqIds = append(reqIds, fmt.Sprintf("%v", rq.Id))
 	}
 
-	add, err := sdk.AccAddressFromBech32(txCreator)
+	addr, err := sdk.AccAddressFromBech32(txCreator)
 	if err != nil {
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "%+v", err)
 	}
-	bc, err := denom.NormalizeToBaseCoins(refund, false)
+
 	if err != nil {
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrLogic, "%v", err)
 	}
-	if err = k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, add, bc); err != nil {
+	if err = k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, addr, refund); err != nil {
 		return nil, err
 	}
 
 	events := sdk.NewEvent(types.EventTypeSwapCancel,
 		sdk.NewAttribute(sdk.AttributeKeyModule, types.AttributeValueCategory),
 		sdk.NewAttribute(types.EventAttrCancelAddr, msg.Creator),
-		sdk.NewAttribute(types.EventAttrSwapAmount, bc.String()),
+		sdk.NewAttribute(types.EventAttrSwapAmount, refund.String()),
 		sdk.NewAttribute(types.EventAttrSwapIds, strings.Join(reqIds, ",")),
 	)
 
