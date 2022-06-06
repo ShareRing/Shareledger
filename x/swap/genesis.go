@@ -34,7 +34,6 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 	genesis := types.DefaultGenesis()
 	genesis.Params = k.GetParams(ctx)
 
-	genesis.IdList = k.GetAllId(ctx)
 	genesis.RequestList = k.GetAllRequest(ctx)
 	genesis.RequestCount = k.GetRequestCount(ctx)
 	genesis.BatchList = k.GetAllBatch(ctx)
