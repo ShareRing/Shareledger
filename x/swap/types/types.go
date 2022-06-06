@@ -31,6 +31,11 @@ var SupportedSwapStatuses = map[string]struct{}{
 	SwapStatusDone:     {},
 }
 
+var SupportedSwapStatusesStores = map[string]struct{}{
+	SwapStatusPending:  {},
+	SwapStatusApproved: {},
+}
+
 const (
 	BatchStatusPending = "pending"
 )
@@ -73,7 +78,8 @@ const (
 	EventTypeWithdrawReceiver             = "receiver"
 	EventTypeChangeRequestStatusNewStatus = "new_status"
 
-	EventTypeAttrBatchID = "batch_id"
+	EventTypeAttrBatchID    = "batch_id"
+	EventTypeAttrBatchTxIDs = "batch_TxIDs"
 )
 
 const (

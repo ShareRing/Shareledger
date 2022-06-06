@@ -2,7 +2,6 @@ package keeper
 
 import (
 	"context"
-	"fmt"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/sharering/shareledger/x/swap/types"
@@ -24,11 +23,6 @@ func (k msgServer) CancelBatches(goCtx context.Context, msg *types.MsgCancelBatc
 		return &types.MsgCancelBatchesResponse{},
 			sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "can't change request to pending %s", err)
 	}
-	ctx.EventManager().EmitEvent(
-		sdk.NewEvent(types.EventTypeBatchCancel).
-			AppendAttributes(
-				sdk.NewAttribute(sdk.AttributeKeyModule, types.AttributeValueCategory),
-				sdk.NewAttribute(types.EventTypeAttrBatchID, fmt.Sprintf("%v", msg.Ids)),
-			))
+
 	return &types.MsgCancelBatchesResponse{}, nil
 }

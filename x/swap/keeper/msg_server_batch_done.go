@@ -22,6 +22,7 @@ func (k msgServer) SetBatchDone(goCtx context.Context, msg *types.MsgSetBatchDon
 	if err != nil {
 		return nil, err
 	}
+
 	k.MoveRequest(ctx, types.SwapStatusApproved, types.SwapStatusDone, requests, nil, true)
 
 	ctx.EventManager().EmitEvent(
@@ -29,6 +30,7 @@ func (k msgServer) SetBatchDone(goCtx context.Context, msg *types.MsgSetBatchDon
 			AppendAttributes(
 				sdk.NewAttribute(sdk.AttributeKeyModule, types.AttributeValueCategory),
 				sdk.NewAttribute(types.EventTypeAttrBatchID, fmt.Sprintf("%v", batch.Id)),
+				sdk.NewAttribute(types.EventTypeAttrBatchTxIDs, fmt.Sprintf("%v", batch.TxIds)),
 			))
 	return &types.MsgSetBatchDoneResponse{}, nil
 }

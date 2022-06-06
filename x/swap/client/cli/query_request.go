@@ -14,7 +14,7 @@ import (
 func CmdSwap() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "requests [status]",
-		Short: "search swap request, status is required for searching. Supported status: pending, approved, rejected, processing, done",
+		Short: "search swap request, status is required for searching. Supported status: pending, approved",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			reqStatus := args[0]

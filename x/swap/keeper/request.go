@@ -144,7 +144,6 @@ func (k Keeper) changeStatusSwapIn(ctx sdk.Context, ids []uint64, fromStatus str
 	}
 	if toStatus == types.SwapStatusApproved {
 		// Done after sending coin to destination address in Shareledger
-		toStatus = types.SwapStatusDone
 
 		transfers := make(map[string]sdk.Coins)
 		for i := range reqs {
@@ -169,6 +168,7 @@ func (k Keeper) changeStatusSwapIn(ctx sdk.Context, ids []uint64, fromStatus str
 	if err := k.MoveRequest(ctx, fromStatus, toStatus, reqs, nil, false); err != nil {
 		return nil, err
 	}
+
 	return reqs, nil
 }
 
@@ -207,12 +207,30 @@ func (k Keeper) ChangeStatusRequests(ctx sdk.Context, ids []uint64, status strin
 	}
 }
 
-//MoveRequest move the request to the store base on status
-//Delete request form store and add this request to store. This action also update batch ID if it's existed
+func (k Keeper) RemoveRequests(ctx sdk.Context, currentStatus string, reqs []types.Request) error {
+	currentStore, found := k.GetStoreRequestMap(ctx)[currentStatus]
+	if !found {
+		return sdkerrors.Wrapf(sdkerrors.ErrLogic, "store not found")
+	}
+	for i := range reqs {
+		req := &reqs[i]
+		currentStore.Delete(GetRequestIDBytes(req.Id))
+	}
+	return nil
+}
+
+// MoveRequest move the request to the store base on status
+// Delete request fromStt store and add this request to store. This action also update batch ID if it's existed
+// If toStt == Done || Rejected, the function will only delete from fromStt store.
 func (k Keeper) MoveRequest(ctx sdk.Context, fromStt, toStt string, reqs []types.Request, batchID *uint64, isOut bool) error {
+	// There is no need to store done/rejected swap requests in keeper
+	if toStt == types.SwapStatusDone || toStt == types.SwapStatusRejected {
+		return k.RemoveRequests(ctx, fromStt, reqs)
+	}
 
 	storeMap := k.GetStoreRequestMap(ctx)
 	fromStore, found := storeMap[fromStt]
+
 	if !found {
 		return sdkerrors.Wrapf(sdkerrors.ErrLogic, "store not found")
 	}
@@ -231,14 +249,6 @@ func (k Keeper) MoveRequest(ctx sdk.Context, fromStt, toStt string, reqs []types
 		}
 
 		toStore.Set(GetRequestIDBytes(req.Id), k.cdc.MustMarshal(req))
-
-		ctx.EventManager().EmitEvent(
-			sdk.NewEvent(types.EventTypeRequestChangeStatus).
-				AppendAttributes(
-					sdk.NewAttribute(sdk.AttributeKeyModule, types.AttributeValueCategory),
-					sdk.NewAttribute(types.EventTypeChangeRequestStatusNewStatus, toStt),
-					sdk.NewAttribute(types.EventTypeSwapId, fmt.Sprintf("%v", req.Id)),
-				))
 	}
 	return nil
 }
