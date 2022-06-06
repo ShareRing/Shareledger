@@ -5,6 +5,7 @@ import (
 	"fmt"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	denom "github.com/sharering/shareledger/x/utils/demo"
+	"strings"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/sharering/shareledger/x/swap/types"
@@ -27,10 +28,12 @@ func (k msgServer) Cancel(goCtx context.Context, msg *types.MsgCancel) (*types.M
 	}
 
 	refund := sdk.NewDecCoins()
+	reqIds := make([]string, 0, len(requests))
 	for i := range requests {
 		rq := requests[i]
 		pendingStore.Delete(GetRequestIDBytes(rq.GetId()))
 		refund = refund.Add(sdk.NewDecCoinFromCoin(rq.GetAmount())).Add(sdk.NewDecCoinFromCoin(rq.GetFee()))
+		reqIds = append(reqIds, fmt.Sprintf("%v", rq.Id))
 	}
 
 	add, err := sdk.AccAddressFromBech32(txCreator)
@@ -45,16 +48,16 @@ func (k msgServer) Cancel(goCtx context.Context, msg *types.MsgCancel) (*types.M
 		return nil, err
 	}
 
-	rStatusChange := sdk.NewEvent(types.EventTypeRequestCancelStatus).
-		AppendAttributes(
-			sdk.NewAttribute(sdk.AttributeKeyModule, types.AttributeValueCategory),
-		)
+	events := sdk.NewEvent(types.EventTypeSwapCancel,
+		sdk.NewAttribute(sdk.AttributeKeyModule, types.AttributeValueCategory),
+		sdk.NewAttribute(types.EventAttrCancelAddr, msg.Creator),
+		sdk.NewAttribute(types.EventAttrSwapAmount, bc.String()),
+		sdk.NewAttribute(types.EventAttrSwapIds, strings.Join(reqIds, ",")),
+	)
 
-	for i := range requests {
-		ctx.EventManager().EmitEvent(
-			rStatusChange.AppendAttributes(sdk.NewAttribute(types.EventTypeSwapId, fmt.Sprintf("%d", requests[i].GetId()))),
-		)
-	}
+	ctx.EventManager().EmitEvent(
+		events,
+	)
 
 	return &types.MsgCancelResponse{}, nil
 }

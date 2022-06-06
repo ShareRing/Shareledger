@@ -2,8 +2,7 @@ package keeper
 
 import (
 	"context"
-	"strconv"
-
+	"fmt"
 	denom "github.com/sharering/shareledger/x/utils/demo"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -49,13 +48,13 @@ func (k msgServer) RequestOut(goCtx context.Context, msg *types.MsgRequestOut) (
 			sdk.NewEvent(
 				types.EventTypeSwapOut,
 				sdk.NewAttribute(sdk.AttributeKeyModule, types.AttributeValueCategory),
-				sdk.NewAttribute(types.EventTypeSwapAmount, amount.String()),
-				sdk.NewAttribute(types.EventTypeSwapFee, fee.String()),
-				sdk.NewAttribute(types.EventTypeSwapId, strconv.FormatUint(req.Id, 10)),
-				sdk.NewAttribute(types.EventTypeSwapDestAddr, req.DestAddr),
-				sdk.NewAttribute(types.EventTypeSwapSrcAddr, req.SrcAddr),
-				sdk.NewAttribute(types.EventTypeSwapDestNetwork, req.DestNetwork),
-				sdk.NewAttribute(types.EventTypeSwapSrcNetwork, req.SrcNetwork),
+				sdk.NewAttribute(types.EventAttrSwapAmount, amount.String()),
+				sdk.NewAttribute(types.EventAttrSwapFee, fee.String()),
+				sdk.NewAttribute(types.EventAttrSwapId, fmt.Sprintf("%v", req.Id)),
+				sdk.NewAttribute(types.EventAttrSwapDestAddr, req.DestAddr),
+				sdk.NewAttribute(types.EventAttrSwapSrcAddr, req.SrcAddr),
+				sdk.NewAttribute(types.EventAttrSwapDestNetwork, req.DestNetwork),
+				sdk.NewAttribute(types.EventAttrSwapSrcNetwork, req.SrcNetwork),
 			),
 		)
 	}

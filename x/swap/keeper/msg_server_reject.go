@@ -25,10 +25,10 @@ func (k msgServer) Reject(goCtx context.Context, msg *types.MsgReject) (*types.M
 	ctx.EventManager().EmitEvent(
 		sdk.NewEvent(types.EventTypeSwapReject,
 			sdk.NewAttribute(sdk.AttributeKeyModule, types.AttributeValueCategory),
-			sdk.NewAttribute(types.EventTypeApproverAction, types.SwapStatusRejected),
-			sdk.NewAttribute(types.EventTypeRejectArr, msg.Creator),
-			sdk.NewAttribute(types.EventTypeBatchTotal, total.String()),
-			sdk.NewAttribute(types.EventTypeSwapId, strings.Join(reqIds, ",")),
+			sdk.NewAttribute(types.EventAttrApproverAction, types.SwapStatusRejected),
+			sdk.NewAttribute(types.EventAttrRejectArr, msg.Creator),
+			sdk.NewAttribute(types.EventAttrBatchTotal, total.String()),
+			sdk.NewAttribute(types.EventAttrSwapId, strings.Join(reqIds, ",")),
 		),
 	)
 

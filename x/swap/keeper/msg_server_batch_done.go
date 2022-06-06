@@ -3,8 +3,8 @@ package keeper
 import (
 	"context"
 	"fmt"
-
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	"strings"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/sharering/shareledger/x/swap/types"
@@ -23,14 +23,22 @@ func (k msgServer) SetBatchDone(goCtx context.Context, msg *types.MsgSetBatchDon
 		return nil, err
 	}
 
-	k.MoveRequest(ctx, types.SwapStatusApproved, types.SwapStatusDone, requests, nil, true)
+	if err := k.MoveRequest(ctx, types.SwapStatusApproved, types.SwapStatusDone, requests, nil, true); err != nil {
+		return nil, err
+	}
+	reqIds := make([]string, 0, len(requests))
+	for _, r := range requests {
+		reqIds = append(reqIds, fmt.Sprintf("%v", r.Id))
+	}
 
+	events := sdk.NewEvent(types.EventTypeBatchDone,
+		sdk.NewAttribute(sdk.AttributeKeyModule, types.AttributeValueCategory),
+		sdk.NewAttribute(types.EventAttrBatchId, fmt.Sprintf("%v", batch.Id)),
+		sdk.NewAttribute(types.EventAttrBatchNetwork, batch.Network),
+		sdk.NewAttribute(types.EventAttrBatchTxIDs, strings.Join(reqIds, ",")),
+	)
 	ctx.EventManager().EmitEvent(
-		sdk.NewEvent(types.EventTypeBatchDone).
-			AppendAttributes(
-				sdk.NewAttribute(sdk.AttributeKeyModule, types.AttributeValueCategory),
-				sdk.NewAttribute(types.EventTypeAttrBatchID, fmt.Sprintf("%v", batch.Id)),
-				sdk.NewAttribute(types.EventTypeAttrBatchTxIDs, fmt.Sprintf("%v", batch.TxIds)),
-			))
+		events,
+	)
 	return &types.MsgSetBatchDoneResponse{}, nil
 }

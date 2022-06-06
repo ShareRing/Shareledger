@@ -2,11 +2,11 @@ package keeper
 
 import (
 	"context"
+	"fmt"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/sharering/shareledger/x/swap/types"
 	denom "github.com/sharering/shareledger/x/utils/demo"
-	"strconv"
 )
 
 func (k msgServer) RequestIn(goCtx context.Context, msg *types.MsgRequestIn) (*types.MsgSwapInResponse, error) {
@@ -69,12 +69,12 @@ func (k msgServer) RequestIn(goCtx context.Context, msg *types.MsgRequestIn) (*t
 		sdk.NewEvent(
 			types.EventTypeSwapIn,
 			sdk.NewAttribute(sdk.AttributeKeyModule, types.AttributeValueCategory),
-			sdk.NewAttribute(types.EventTypeSwapAmount, msg.Amount.String()),
-			sdk.NewAttribute(types.EventTypeSwapFee, msg.Fee.String()),
-			sdk.NewAttribute(types.EventTypeSwapId, strconv.FormatUint(req.Id, 10)),
-			sdk.NewAttribute(types.EventTypeSwapDestAddr, msg.DestAddress),
-			sdk.NewAttribute(types.EventTypeSwapDestNetwork, types.NetworkNameShareLedger),
-			sdk.NewAttribute(types.EventTypeSwapSrcNetwork, msg.Network),
+			sdk.NewAttribute(types.EventAttrSwapAmount, msg.Amount.String()),
+			sdk.NewAttribute(types.EventAttrSwapFee, msg.Fee.String()),
+			sdk.NewAttribute(types.EventAttrSwapId, fmt.Sprintf("%v", req.Id)),
+			sdk.NewAttribute(types.EventAttrSwapDestAddr, msg.DestAddress),
+			sdk.NewAttribute(types.EventAttrSwapDestNetwork, types.NetworkNameShareLedger),
+			sdk.NewAttribute(types.EventAttrSwapSrcNetwork, msg.Network),
 		),
 	)
 

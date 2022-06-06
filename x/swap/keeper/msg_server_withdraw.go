@@ -36,8 +36,8 @@ func (k msgServer) Withdraw(goCtx context.Context, msg *types.MsgWithdraw) (*typ
 		sdk.NewEvent(
 			types.EventTypeWithDraw,
 			sdk.NewAttribute(sdk.AttributeKeyModule, types.AttributeValueCategory),
-			sdk.NewAttribute(types.EventTypeWithdrawReceiver, msg.GetReceiver()),
-			sdk.NewAttribute(types.EventTypeDepositAmount, msg.GetAmount().String()),
+			sdk.NewAttribute(types.EventAttrWithdrawReceiver, msg.GetReceiver()),
+			sdk.NewAttribute(types.EventAttrWithdrawAmount, msg.GetAmount().String()),
 		),
 	)
 	return &types.MsgWithdrawResponse{Status: types.TxnStatusSuccess}, nil

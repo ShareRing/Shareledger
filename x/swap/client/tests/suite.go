@@ -756,7 +756,7 @@ func (s *SwapIntegrationTestSuite) TestApprove() {
 
 	log := netutilts.ParseRawLogGetEvent(s.T(), txRes.RawLog)[0]
 	attr := log.Events.GetEventByType(s.T(), swapTypes.EventTypeSwapApprove)
-	batchID := attr.Get(s.T(), swapTypes.EventTypeBatchId).Value
+	batchID := attr.Get(s.T(), swapTypes.EventAttrBatchId).Value
 
 	outReader, err := CmdGetBatches(cliCtx, fmt.Sprintf("--ids=%s", batchID), netutilts.JSONFlag)
 	if err != nil {

@@ -48,38 +48,47 @@ func SwapStatusSupported(status string) bool {
 const (
 	EventTypeSwapApprove         = "swap_approve"
 	EventTypeSwapReject          = "swap_reject"
+	EventTypeSwapCancel          = "swap_cancel"
 	EventTypeSwapOut             = "swap_out"
 	EventTypeSwapIn              = "swap_int"
 	EventTypeDeposit             = "swap_deposit"
 	EventTypeWithDraw            = "swap_withdraw"
 	EventTypeRequestChangeStatus = "swap_request_change_status"
-	EventTypeRequestCancelStatus = "swap_cancel_request"
 
 	EventTypeBatchDone   = "batch_done"
 	EventTypeBatchCancel = "batch_cancel"
 )
 
 const (
-	AttributeValueCategory                = ModuleName
-	EventTypeSwapAmount                   = "amount"
-	EventTypeSwapFee                      = "fee"
-	EventTypeSwapDestAddr                 = "dest_addr"
-	EventTypeSwapSrcAddr                  = "src_addr"
-	EventTypeSwapDestNetwork              = "dest_network"
-	EventTypeSwapSrcNetwork               = "src_network"
-	EventTypeSwapId                       = "swap_id"
-	EventTypeBatchId                      = "batch_id"
-	EventTypeBatchTotal                   = "batch_total"
-	EventTypeApproverAction               = "approver_action"
-	EventTypeRejectArr                    = "reject_addr"
-	EventTypeApproverAddr                 = "approver_addr"
-	EventTypeDepositAmount                = EventTypeSwapAmount
-	EventTypeDepositAddr                  = "sender"
-	EventTypeWithdrawReceiver             = "receiver"
-	EventTypeChangeRequestStatusNewStatus = "new_status"
+	SwapTypeIn  = "in"
+	SwapTypeOut = "out"
+)
 
-	EventTypeAttrBatchID    = "batch_id"
-	EventTypeAttrBatchTxIDs = "batch_TxIDs"
+const (
+	AttributeValueCategory   = ModuleName
+	EventAttrSwapAmount      = "amount"
+	EventAttrSwapFee         = "fee"
+	EventAttrSwapDestAddr    = "dest_addr"
+	EventAttrSwapSrcAddr     = "src_addr"
+	EventAttrSwapDestNetwork = "dest_network"
+	EventAttrSwapSrcNetwork  = "src_network"
+	EventAttrSwapId          = "swap_id"
+	EventAttrSwapIds         = "swap_ids"
+	EventAttrSwapType        = "swap_type"
+
+	EventAttrBatchId      = "batch_id"
+	EventAttrBatchIds     = "batch_ids"
+	EventAttrBatchTotal   = "batch_total"
+	EventAttrBatchTxIDs   = "batch_txs"
+	EventAttrBatchNetwork = "batch_network"
+
+	EventAttrApproverAction   = "approver_action"
+	EventAttrRejectArr        = "reject_addr"
+	EventAttrApproverAddr     = "approver_addr"
+	EventAttrDepositAmount    = "deposit_amount"
+	EventAttrWithdrawAmount   = "withdraw_amount"
+	EventAttrWithdrawReceiver = "withdraw_receiver"
+	EventAttrCancelAddr       = "cancel_addr"
 )
 
 const (

@@ -25,8 +25,7 @@ func (k msgServer) Deposit(goCtx context.Context, msg *types.MsgDeposit) (*types
 		sdk.NewEvent(
 			types.EventTypeDeposit,
 			sdk.NewAttribute(sdk.AttributeKeyModule, types.AttributeValueCategory),
-			sdk.NewAttribute(types.EventTypeDepositAddr, msg.GetSigners()[0].String()),
-			sdk.NewAttribute(types.EventTypeDepositAmount, msg.GetAmount().String()),
+			sdk.NewAttribute(types.EventAttrDepositAmount, msg.GetAmount().String()),
 		),
 	)
 
