@@ -115,7 +115,7 @@ func (r *Relayer) processIn(ctx context.Context, network string) error {
 				log.Infow("slp3 address is not found", "eth_address", e.ToAddress, "event", e)
 				continue
 			}
-
+			log.Infow("slp3 address is found", "network", network, "eth_address", e.ToAddress, "slpe_address", slp3)
 			request, err := r.db.GetRequestIn(network, e.TxHash)
 			if err != nil {
 				return errors.Wrapf(err, fmt.Sprintf("get request by txHash, %s", e.TxHash))
