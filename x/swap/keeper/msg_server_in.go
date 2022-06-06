@@ -7,20 +7,20 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/sharering/shareledger/x/swap/types"
 	denom "github.com/sharering/shareledger/x/utils/demo"
+	"sort"
 )
 
 func (k msgServer) RequestIn(goCtx context.Context, msg *types.MsgRequestIn) (*types.MsgSwapInResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 	reqHistory, found := k.GetRequestedIn(ctx, msg.DestAddress)
-	txHashes := make(map[string]struct{})
-	for _, h := range reqHistory.TxHashes {
-		txHashes[h] = struct{}{}
-	}
-	if found {
-		for _, hash := range msg.TxHashes {
-			if _, processed := txHashes[hash]; processed {
-				return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "tx hash was already processed")
-			}
+
+	for _, hash := range msg.TxHashes {
+		index := sort.Search(len(reqHistory.TxHashes), func(i int) bool {
+			return reqHistory.TxHashes[i] == hash
+		})
+		// hash already processed
+		if index != len(reqHistory.TxHashes) {
+			return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "tx hash was already processed")
 		}
 	}
 

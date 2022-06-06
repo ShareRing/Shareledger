@@ -4,30 +4,31 @@ import (
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/sharering/shareledger/x/swap/types"
+	"sort"
 )
 
 // SetRequestedIn set a specific requestedIn in the store from its index
 func (k Keeper) SetRequestedIn(ctx sdk.Context, destAddress sdk.Address, txHashes []string) {
-	insertingData := types.RequestedIn{
-		Address:  destAddress.String(),
-		TxHashes: make([]string, 0, len(txHashes)),
-	}
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.RequestedInKeyPrefix))
 	currentData, found := k.GetRequestedIn(ctx, destAddress.String())
-	txHashMap := make(map[string]struct{})
-	if found {
-		insertingData.TxHashes = currentData.TxHashes
-		for _, h := range currentData.TxHashes {
-			txHashMap[h] = struct{}{}
-		}
+
+	if !found {
+		currentData.Address = destAddress.String()
+		currentData.TxHashes = make([]string, 0, len(txHashes))
+	}
+	if !sort.StringsAreSorted(currentData.TxHashes) {
+		sort.Strings(currentData.TxHashes)
 	}
 
-	for _, hash := range txHashes {
-		if _, found := txHashMap[hash]; !found {
-			insertingData.TxHashes = append(insertingData.TxHashes, hash)
-		}
+	for _, txHash := range txHashes {
+		// should store as sorted slice of strings  ascending order.
+		insertIndex := sort.SearchStrings(currentData.TxHashes, txHash)
+		currentData.TxHashes = append(currentData.TxHashes, "")
+		copy(currentData.TxHashes[insertIndex+1:], currentData.TxHashes[insertIndex:])
+		currentData.TxHashes[insertIndex] = txHash
 	}
-	b := k.cdc.MustMarshal(&insertingData)
+
+	b := k.cdc.MustMarshal(&currentData)
 	store.Set(types.RequestedInKey(
 		destAddress.String(),
 	), b)
@@ -49,6 +50,7 @@ func (k Keeper) GetRequestedIn(
 	}
 
 	k.cdc.MustUnmarshal(b, &val)
+
 	return val, true
 }
 
