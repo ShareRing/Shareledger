@@ -31,11 +31,6 @@ func (k Keeper) Batches(goCtx context.Context, req *types.QueryBatchesRequest) (
 		if err := k.cdc.Unmarshal(value, &val); err != nil {
 			return false, err
 		}
-		if req.GetStatus() != "" {
-			if val.Status != req.GetStatus() {
-				return false, nil
-			}
-		}
 
 		if req.GetNetwork() != "" {
 			if val.Network != req.GetNetwork() {

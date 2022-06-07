@@ -109,7 +109,6 @@ message QueryAllSchemasResponse {
 }
 
 message QueryBatchesRequest {
-	string status = 1;
 	string network = 2;
 	repeated  uint64 ids = 3;
 cosmos.base.query.v1beta1.PageRequest pagination = 4;

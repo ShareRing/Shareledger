@@ -422,7 +422,6 @@ func (r *Relayer) syncNewBatchesOut(ctx context.Context, network string) error {
 	newBatches := make([]database.BatchOut, 0)
 
 	res, err := r.qClient.Batches(ctx, &swapmoduletypes.QueryBatchesRequest{
-		Status:  swapmoduletypes.BatchStatusPending,
 		Network: network,
 	})
 	if err != nil {

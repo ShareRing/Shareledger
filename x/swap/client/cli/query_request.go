@@ -63,7 +63,6 @@ const (
 	flagSearchDestAddr    = "dest_addr"
 	flagSearchSrcNetwork  = "src_network"
 	flagSearchDestNetwork = "dest_network"
-	flagSearchStatus      = "status"
 )
 
 func addFilterFlagsToCmd(cmd *cobra.Command) {
