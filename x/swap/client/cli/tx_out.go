@@ -41,7 +41,7 @@ func CmdOut() *cobra.Command {
 
 			res, err := queryClient.Schema(context.Background(), params)
 			if err != nil {
-				return err
+				return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, err.Error())
 			}
 			if res.Schema.Fee == nil || res.Schema.Fee.Out == nil {
 				return sdkerrors.Wrapf(sdkerrors.ErrLogic, "fee config was empty")

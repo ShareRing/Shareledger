@@ -57,7 +57,7 @@ func (k Keeper) AppendPendingRequest(
 	return request, nil
 }
 
-func (k Keeper) changeStatusSwapOut(ctx sdk.Context, ids []uint64, fromStatus string, toStatus string, batchID uint64) ([]types.Request, error) {
+func (k Keeper) changeStatusSwapOut(ctx sdk.Context, ids []uint64, fromStatus string, toStatus string, batchID *uint64) ([]types.Request, error) {
 	reqs, err := k.getRequestsFromIds(ctx, ids, fromStatus)
 	if err != nil {
 		return nil, err
@@ -74,7 +74,10 @@ func (k Keeper) changeStatusSwapOut(ctx sdk.Context, ids []uint64, fromStatus st
 	}
 
 	if toStatus == types.SwapStatusApproved {
-		b, f := k.GetBatch(ctx, batchID)
+		if batchID == nil {
+			return nil, sdkerrors.Wrapf(sdkerrors.ErrLogic, "%s required batchID", toStatus)
+		}
+		b, f := k.GetBatch(ctx, *batchID)
 		if !f {
 			return nil, sdkerrors.Wrapf(sdkerrors.ErrLogic, "fail to set batch network")
 		}
@@ -82,27 +85,7 @@ func (k Keeper) changeStatusSwapOut(ctx sdk.Context, ids []uint64, fromStatus st
 		k.SetBatch(ctx, b)
 	}
 
-	refunds := make(map[string]sdk.Coins)
-	if toStatus == types.SwapStatusRejected {
-		for i := range reqs {
-			total, found := refunds[reqs[i].SrcAddr]
-			if !found {
-				total = sdk.NewCoins()
-			}
-			total = total.Add(reqs[i].Amount).Add(reqs[i].Fee)
-			refunds[reqs[i].SrcAddr] = total
-		}
-	}
-	for receipt, refund := range refunds {
-		rAddr, err := sdk.AccAddressFromBech32(receipt)
-		if err != nil {
-			return nil, err
-		}
-		if err := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, rAddr, refund); err != nil {
-			return nil, err
-		}
-	}
-	if err := k.MoveRequest(ctx, fromStatus, toStatus, reqs, &batchID, true); err != nil {
+	if err := k.MoveRequest(ctx, fromStatus, toStatus, reqs, batchID, true); err != nil {
 		return nil, err
 	}
 
@@ -201,7 +184,7 @@ func (k Keeper) ChangeStatusRequests(ctx sdk.Context, ids []uint64, status strin
 	}
 
 	if isSwapOut {
-		return k.changeStatusSwapOut(ctx, ids, requiredStatus, status, *batchId)
+		return k.changeStatusSwapOut(ctx, ids, requiredStatus, status, batchId)
 	} else {
 		return k.changeStatusSwapIn(ctx, ids, requiredStatus, status)
 	}
