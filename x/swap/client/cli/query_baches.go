@@ -37,10 +37,6 @@ func CmdBatches() *cobra.Command {
 
 			request.Pagination = pageReq
 
-			if request.GetNetwork() == "" && len(request.GetIds()) == 0 {
-				return fmt.Errorf("the request parameter is empty")
-			}
-
 			res, err := queryClient.Batches(cmd.Context(), request)
 			if err != nil {
 				return err
@@ -51,6 +47,7 @@ func CmdBatches() *cobra.Command {
 	}
 
 	flags.AddQueryFlagsToCmd(cmd)
+	flags.AddPaginationFlagsToCmd(cmd, "batches")
 	cmd.Flags().String(flagSearchDestNetwork, "", "the destination network you want to get")
 	cmd.Flags().String(flagSearchIDs, "", "the list of batch ids")
 

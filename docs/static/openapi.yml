@@ -31792,10 +31792,6 @@ paths:
                       type: string
                   additionalProperties: {}
       parameters:
-        - name: status
-          in: query
-          required: false
-          type: string
         - name: network
           in: query
           required: false
