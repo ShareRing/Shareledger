@@ -22,11 +22,11 @@ dinit:
 
 dup:
 	cd ./deploy && \
-    docker-compose up -d
+    docker-compose up -d --force-recreate
 
 dupswap:
 	cd ./deploy && \
-	docker-compose -f docker-compose-relayer.yaml up -d
+	docker-compose -f docker-compose-relayer.yaml up -d --force-recreate
 
 ddownswap:
 	cd ./deploy && \
