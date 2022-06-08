@@ -43,13 +43,12 @@ type Retry struct {
 }
 
 type RelayerConfig struct {
-	Network        map[string]Network `yaml:"networks"`
-	Type           string             `yaml:"type"`
-	AutoApprove    bool               `yaml:"autoApprove"`
-	ScanInterval   time.Duration      `yaml:"scanInterval"`
-	MongoURI       string             `yaml:"mongoURI"`
-	DbName         string             `yaml:"dbName"`
-	CollectionName string             `yaml:"collectionName"`
+	Network      map[string]Network `yaml:"networks"`
+	Type         string             `yaml:"type"`
+	AutoApprove  bool               `yaml:"autoApprove"`
+	ScanInterval time.Duration      `yaml:"scanInterval"`
+	MongoURI     string             `yaml:"mongoURI"`
+	DbName       string             `yaml:"dbName"`
 }
 
 type Relayer struct {

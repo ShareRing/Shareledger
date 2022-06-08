@@ -45,7 +45,7 @@ func CmdApprove() *cobra.Command {
 			}
 
 			var filter types.QuerySwapRequest
-			filter.Status = types.BatchStatusPending
+			filter.Status = types.SwapStatusPending
 			filter.Ids = txIds[:]
 			filter.Pagination = &query.PageRequest{
 				Offset: 0,

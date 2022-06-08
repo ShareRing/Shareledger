@@ -31,7 +31,6 @@ type SignDetail struct {
 
 func NewSignDetail(requests []swapmoduletypes.Request, signSchema swapmoduletypes.Schema) SignDetail {
 	return SignDetail{
-		//Batch:      batch,
 		Requests:   requests,
 		SignSchema: signSchema,
 	}
