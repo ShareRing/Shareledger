@@ -10,7 +10,7 @@ import (
 	"github.com/sharering/shareledger/x/swap/types"
 )
 
-func (k msgServer) SetBatchDone(goCtx context.Context, msg *types.MsgSetBatchDone) (*types.MsgSetBatchDoneResponse, error) {
+func (k msgServer) CompleteBatch(goCtx context.Context, msg *types.MsgCompleteBatch) (*types.MsgCompleteBatchResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	batch, found := k.GetBatch(ctx, msg.GetBatchId())
@@ -40,5 +40,5 @@ func (k msgServer) SetBatchDone(goCtx context.Context, msg *types.MsgSetBatchDon
 	ctx.EventManager().EmitEvent(
 		events,
 	)
-	return &types.MsgSetBatchDoneResponse{}, nil
+	return &types.MsgCompleteBatchResponse{}, nil
 }

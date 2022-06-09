@@ -16,7 +16,7 @@ func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgReject{}, "swap/Reject", nil)
 	cdc.RegisterConcrete(&MsgRequestIn{}, "swap/MsgRequestIn", nil)
 	cdc.RegisterConcrete(&MsgApproveIn{}, "swap/MsgApproveIn", nil)
-	cdc.RegisterConcrete(&MsgSetBatchDone{}, "swap/SetBatchDone", nil)
+	cdc.RegisterConcrete(&MsgCompleteBatch{}, "swap/MsgCompleteBatch", nil)
 	cdc.RegisterConcrete(&MsgUpdateSwapFee{}, "swap/UpdateSwapFee", nil)
 	cdc.RegisterConcrete(&MsgCancelBatches{}, "swap/CancelBatches", nil)
 	// this line is used by starport scaffolding # 2
@@ -52,7 +52,7 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 		&MsgApproveIn{},
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
-		&MsgSetBatchDone{},
+		&MsgCompleteBatch{},
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgUpdateSwapFee{},

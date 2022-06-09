@@ -117,7 +117,7 @@ var mapActions = map[reflect.Type]string{
 	reflect.ValueOf(&swapmoduletypes.MsgUpdateSchema{}).Type():  "swap_update-schema",
 	reflect.ValueOf(&swapmoduletypes.MsgDeleteSchema{}).Type():  "swap_delete-schema",
 	reflect.ValueOf(&swapmoduletypes.MsgCancelBatches{}).Type(): "swap_cancel-batches",
-	reflect.ValueOf(&swapmoduletypes.MsgSetBatchDone{}).Type():  "swap_update-batch-done",
+	reflect.ValueOf(&swapmoduletypes.MsgCompleteBatch{}).Type(): "swap_update-batch-done",
 	reflect.ValueOf(&swapmoduletypes.MsgUpdateSwapFee{}).Type(): "swap_update-swap-fee",
 	/*------------x/swap module------------- end */
 }

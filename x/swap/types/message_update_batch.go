@@ -7,24 +7,24 @@ import (
 
 const TypeMsgUpdateBatch = "update_batch"
 
-var _ sdk.Msg = &MsgSetBatchDone{}
+var _ sdk.Msg = &MsgCompleteBatch{}
 
-func NewMsgUpdateBatch(creator string, batchId uint64) *MsgSetBatchDone {
-	return &MsgSetBatchDone{
+func NewMsgCompleteBatch(creator string, batchId uint64) *MsgCompleteBatch {
+	return &MsgCompleteBatch{
 		Creator: creator,
 		BatchId: batchId,
 	}
 }
 
-func (msg *MsgSetBatchDone) Route() string {
+func (msg *MsgCompleteBatch) Route() string {
 	return RouterKey
 }
 
-func (msg *MsgSetBatchDone) Type() string {
+func (msg *MsgCompleteBatch) Type() string {
 	return TypeMsgUpdateBatch
 }
 
-func (msg *MsgSetBatchDone) GetSigners() []sdk.AccAddress {
+func (msg *MsgCompleteBatch) GetSigners() []sdk.AccAddress {
 	creator, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		panic(err)
@@ -32,12 +32,12 @@ func (msg *MsgSetBatchDone) GetSigners() []sdk.AccAddress {
 	return []sdk.AccAddress{creator}
 }
 
-func (msg *MsgSetBatchDone) GetSignBytes() []byte {
+func (msg *MsgCompleteBatch) GetSignBytes() []byte {
 	bz := ModuleCdc.MustMarshalJSON(msg)
 	return sdk.MustSortJSON(bz)
 }
 
-func (msg *MsgSetBatchDone) ValidateBasic() error {
+func (msg *MsgCompleteBatch) ValidateBasic() error {
 	_, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)

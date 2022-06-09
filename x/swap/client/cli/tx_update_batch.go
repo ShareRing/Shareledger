@@ -16,7 +16,7 @@ func CmdUpdateBatch() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "batch-done [batch-id]",
 		Short: "Broadcast message update-batch",
-		Args:  cobra.ExactArgs(2),
+		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 
 			argBatchId := args[0]
@@ -27,7 +27,7 @@ func CmdUpdateBatch() *cobra.Command {
 			}
 
 			batchID, _ := strconv.ParseUint(argBatchId, 10, 64)
-			msg := types.NewMsgUpdateBatch(
+			msg := types.NewMsgCompleteBatch(
 				clientCtx.GetFromAddress().String(),
 				batchID,
 			)

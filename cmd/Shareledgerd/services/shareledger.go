@@ -78,7 +78,7 @@ func (r *Relayer) txSubmitRequestIn(msg swapmoduletypes.MsgRequestIn) error {
 }
 
 // txUpdateBatch thread safe to avoid running in multiple go routine for multiple network
-func (r *Relayer) txUpdateBatch(msg *swapmoduletypes.MsgSetBatchDone) error {
+func (r *Relayer) txUpdateBatch(msg *swapmoduletypes.MsgCompleteBatch) error {
 	txLock.Lock()
 	defer txLock.Unlock()
 

@@ -475,7 +475,7 @@ func (r *Relayer) syncDoneBatches(ctx context.Context, network string) error {
 	doneID := make([]uint64, 0, len(batches))
 	for i := range batches {
 		if batches[i].ShareledgerID > 0 {
-			setDone := &swapmoduletypes.MsgSetBatchDone{
+			setDone := &swapmoduletypes.MsgCompleteBatch{
 				BatchId: batches[i].ShareledgerID,
 			}
 			// mark sync done to avoid it runs multiple times when there is any wrong with sync process
