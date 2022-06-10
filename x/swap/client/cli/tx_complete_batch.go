@@ -12,10 +12,10 @@ import (
 
 var _ = strconv.Itoa(0)
 
-func CmdUpdateBatch() *cobra.Command {
+func CmdCompleteBatch() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "batch-done [batch-id]",
-		Short: "Broadcast message update-batch",
+		Short: "Broadcast message complete-batch",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 
