@@ -1,5 +1,5 @@
 shareledger config keyring-backend test
-shareledger config chain-id ShareRing-Lifestyle
+shareledger config chain-id ShareRing-VoyagerNet
 
 echo 'work like grass pyramid august topic exit wood reunion until retire frown bean cherry stage attack shed oxygen chronic return kiss hint hat future' | shareledger keys add authority --recover --index 0
 echo 'bird pizza tobacco omit cricket noodle hold wagon opinion shiver scout nature discover almost permit ceiling endless total sight cattle crisp calm popular flat' | shareledger keys add treasurer --recover --index 0

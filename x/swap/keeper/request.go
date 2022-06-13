@@ -227,9 +227,14 @@ func (k Keeper) MoveRequest(ctx sdk.Context, fromStt, toStt string, reqs []types
 		fromStore.Delete(GetRequestIDBytes(req.Id))
 		req.Status = toStt
 		// just needing the batch ID in case of approve swap out
-		if isOut && batchID != nil && toStt == types.SwapStatusApproved {
+
+		if batchID != nil {
 			req.BatchId = *batchID
 		}
+
+		//if isOut && batchID != nil && toStt == types.SwapStatusApproved {
+		//	req.BatchId = *batchID
+		//}
 
 		toStore.Set(GetRequestIDBytes(req.Id), k.cdc.MustMarshal(req))
 	}

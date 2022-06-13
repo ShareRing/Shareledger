@@ -53992,6 +53992,8 @@ definitions:
     type: object
   shareledger.swap.MsgCancelResponse:
     type: object
+  shareledger.swap.MsgCompleteBatchResponse:
+    type: object
   shareledger.swap.MsgCreateSchemaResponse:
     type: object
   shareledger.swap.MsgDeleteSchemaResponse:
@@ -54008,8 +54010,6 @@ definitions:
         type: string
         format: uint64
   shareledger.swap.MsgRejectResponse:
-    type: object
-  shareledger.swap.MsgSetBatchDoneResponse:
     type: object
   shareledger.swap.MsgSwapInResponse:
     type: object

@@ -24,13 +24,6 @@ var SupportedSwapOutNetwork = map[string]struct{}{
 	NetworkNameEthereum:          {},
 	NetworkNameBinanceSmartChain: {},
 }
-var SupportedSwapStatuses = map[string]struct{}{
-	SwapStatusPending:  {},
-	SwapStatusApproved: {},
-	SwapStatusRejected: {},
-	SwapStatusDone:     {},
-}
-
 var SupportedSwapStatusesStores = map[string]struct{}{
 	SwapStatusPending:  {},
 	SwapStatusApproved: {},
@@ -41,7 +34,7 @@ const (
 )
 
 func SwapStatusSupported(status string) bool {
-	_, found := SupportedSwapStatuses[status]
+	_, found := SupportedSwapStatusesStores[status]
 	return found
 }
 
