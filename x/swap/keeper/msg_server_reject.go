@@ -3,12 +3,10 @@ package keeper
 import (
 	"context"
 	"fmt"
-	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	denom "github.com/sharering/shareledger/x/utils/demo"
-	"strings"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/sharering/shareledger/x/swap/types"
+	denom "github.com/sharering/shareledger/x/utils/demo"
 )
 
 func (k msgServer) Reject(goCtx context.Context, msg *types.MsgReject) (*types.MsgRejectResponse, error) {
@@ -43,13 +41,7 @@ func (k msgServer) Reject(goCtx context.Context, msg *types.MsgReject) (*types.M
 	}
 
 	ctx.EventManager().EmitEvent(
-		sdk.NewEvent(types.EventTypeSwapReject,
-			sdk.NewAttribute(sdk.AttributeKeyModule, types.AttributeValueCategory),
-			sdk.NewAttribute(types.EventAttrApproverAction, types.SwapStatusRejected),
-			sdk.NewAttribute(types.EventAttrRejectArr, msg.Creator),
-			sdk.NewAttribute(types.EventAttrBatchTotal, total.String()),
-			sdk.NewAttribute(types.EventAttrSwapId, strings.Join(reqIds, ",")),
-		),
+		types.NewRejectRequestsEvent(msg.Creator, reqIds, total),
 	)
 
 	return &types.MsgRejectResponse{}, nil

@@ -207,16 +207,13 @@ func (k Keeper) RemoveRequests(ctx sdk.Context, currentStatus string, reqs []typ
 // If toStt == Done || Rejected, the function will only delete from fromStt store.
 func (k Keeper) MoveRequest(ctx sdk.Context, fromStt, toStt string, reqs []types.Request, batchID *uint64, isOut bool) error {
 	// There is no need to store done/rejected swap requests in keeper
-	if toStt == types.SwapStatusDone || toStt == types.SwapStatusRejected {
-		return k.RemoveRequests(ctx, fromStt, reqs)
+
+	err := k.RemoveRequests(ctx, fromStt, reqs)
+	if err != nil {
+		return sdkerrors.Wrapf(err, "fail to remove request from %s store", fromStt)
 	}
 
 	storeMap := k.GetStoreRequestMap(ctx)
-	fromStore, found := storeMap[fromStt]
-
-	if !found {
-		return sdkerrors.Wrapf(sdkerrors.ErrLogic, "store not found")
-	}
 	toStore, found := storeMap[toStt]
 	if !found {
 		return sdkerrors.Wrapf(sdkerrors.ErrLogic, "store not found")
@@ -224,20 +221,20 @@ func (k Keeper) MoveRequest(ctx sdk.Context, fromStt, toStt string, reqs []types
 
 	for i := range reqs {
 		req := &reqs[i]
-		fromStore.Delete(GetRequestIDBytes(req.Id))
 		req.Status = toStt
-		// just needing the batch ID in case of approve swap out
-
 		if batchID != nil {
 			req.BatchId = *batchID
 		}
+		//Just insert to store if
+		if toStt != types.SwapStatusDone && toStt != types.SwapStatusRejected {
+			toStore.Set(GetRequestIDBytes(req.Id), k.cdc.MustMarshal(req))
+		}
+		ctx.EventManager().EmitEvent(
+			types.NewChangeRequestStatusEvent(req.Id, toStt),
+		)
 
-		//if isOut && batchID != nil && toStt == types.SwapStatusApproved {
-		//	req.BatchId = *batchID
-		//}
-
-		toStore.Set(GetRequestIDBytes(req.Id), k.cdc.MustMarshal(req))
 	}
+
 	return nil
 }
 

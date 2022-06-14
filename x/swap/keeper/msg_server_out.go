@@ -2,7 +2,6 @@ package keeper
 
 import (
 	"context"
-	"fmt"
 	denom "github.com/sharering/shareledger/x/utils/demo"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -45,17 +44,7 @@ func (k msgServer) RequestOut(goCtx context.Context, msg *types.MsgRequestOut) (
 
 	if err == nil {
 		ctx.EventManager().EmitEvent(
-			sdk.NewEvent(
-				types.EventTypeSwapOut,
-				sdk.NewAttribute(sdk.AttributeKeyModule, types.AttributeValueCategory),
-				sdk.NewAttribute(types.EventAttrSwapAmount, amount.String()),
-				sdk.NewAttribute(types.EventAttrSwapFee, fee.String()),
-				sdk.NewAttribute(types.EventAttrSwapId, fmt.Sprintf("%v", req.Id)),
-				sdk.NewAttribute(types.EventAttrSwapDestAddr, req.DestAddr),
-				sdk.NewAttribute(types.EventAttrSwapSrcAddr, req.SrcAddr),
-				sdk.NewAttribute(types.EventAttrSwapDestNetwork, req.DestNetwork),
-				sdk.NewAttribute(types.EventAttrSwapSrcNetwork, req.SrcNetwork),
-			),
+			types.NewCreateRequestsEvent(msg.GetCreator(), req.Id, amount, fee, req.SrcAddr, req.SrcNetwork, req.DestAddr, req.DestNetwork),
 		)
 	}
 	return &types.MsgOutSwapResponse{

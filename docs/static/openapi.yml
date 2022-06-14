@@ -31737,7 +31737,7 @@ paths:
                       format: uint64
                     signature:
                       type: string
-                    txIds:
+                    reqIDs:
                       type: array
                       items:
                         type: string
@@ -53944,7 +53944,7 @@ definitions:
         format: uint64
       signature:
         type: string
-      txIds:
+      reqIDs:
         type: array
         items:
           type: string
@@ -54132,7 +54132,7 @@ definitions:
               format: uint64
             signature:
               type: string
-            txIds:
+            reqIDs:
               type: array
               items:
                 type: string

@@ -34,7 +34,7 @@ func (k msgServer) Withdraw(goCtx context.Context, msg *types.MsgWithdraw) (*typ
 
 	ctx.EventManager().EmitEvent(
 		sdk.NewEvent(
-			types.EventTypeWithDraw,
+			types.EventTypeWithdraw,
 			sdk.NewAttribute(sdk.AttributeKeyModule, types.AttributeValueCategory),
 			sdk.NewAttribute(types.EventAttrWithdrawReceiver, msg.GetReceiver()),
 			sdk.NewAttribute(types.EventAttrWithdrawAmount, msg.GetAmount().String()),

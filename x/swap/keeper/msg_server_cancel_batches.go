@@ -6,7 +6,6 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/sharering/shareledger/x/swap/types"
-	"strings"
 )
 
 func (k msgServer) CancelBatches(goCtx context.Context, msg *types.MsgCancelBatches) (*types.MsgCancelBatchesResponse, error) {
@@ -17,7 +16,7 @@ func (k msgServer) CancelBatches(goCtx context.Context, msg *types.MsgCancelBatc
 	batchIDs := make([]string, 0, len(batches))
 	for _, batch := range batches {
 		k.RemoveBatch(ctx, batch.GetId())
-		requestIDs = append(requestIDs, batch.GetTxIds()...)
+		requestIDs = append(requestIDs, batch.GetReqIDs()...)
 		batchIDs = append(batchIDs, fmt.Sprintf("%x", batch.Id))
 	}
 
@@ -32,14 +31,8 @@ func (k msgServer) CancelBatches(goCtx context.Context, msg *types.MsgCancelBatc
 		reqIDs = append(reqIDs, fmt.Sprintf("%v", i))
 	}
 
-	events := sdk.NewEvent(types.EventTypeBatchCancel,
-		sdk.NewAttribute(sdk.AttributeKeyModule, types.AttributeValueCategory),
-		sdk.NewAttribute(types.EventAttrBatchIds, strings.Join(batchIDs, ",")),
-		sdk.NewAttribute(types.EventAttrBatchTxIDs, strings.Join(reqIDs, ",")),
-	)
-
 	ctx.EventManager().EmitEvent(
-		events,
+		types.NewCancelBatchEvent(msg.Creator, batchIDs, reqIDs),
 	)
 
 	return &types.MsgCancelBatchesResponse{}, nil

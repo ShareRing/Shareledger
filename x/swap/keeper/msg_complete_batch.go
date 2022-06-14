@@ -3,10 +3,8 @@ package keeper
 import (
 	"context"
 	"fmt"
-	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	"strings"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/sharering/shareledger/x/swap/types"
 )
 
@@ -18,7 +16,7 @@ func (k msgServer) CompleteBatch(goCtx context.Context, msg *types.MsgCompleteBa
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrNotFound, "batch id=%s not found", msg.GetBatchId())
 	}
 	k.RemoveBatch(ctx, batch.Id)
-	requests, err := k.getRequestsFromIds(ctx, batch.TxIds, types.SwapStatusApproved)
+	requests, err := k.getRequestsFromIds(ctx, batch.ReqIDs, types.SwapStatusApproved)
 	if err != nil {
 		return nil, err
 	}
@@ -31,14 +29,8 @@ func (k msgServer) CompleteBatch(goCtx context.Context, msg *types.MsgCompleteBa
 		reqIds = append(reqIds, fmt.Sprintf("%v", r.Id))
 	}
 
-	events := sdk.NewEvent(types.EventTypeBatchDone,
-		sdk.NewAttribute(sdk.AttributeKeyModule, types.AttributeValueCategory),
-		sdk.NewAttribute(types.EventAttrBatchId, fmt.Sprintf("%v", batch.Id)),
-		sdk.NewAttribute(types.EventAttrBatchNetwork, batch.Network),
-		sdk.NewAttribute(types.EventAttrBatchTxIDs, strings.Join(reqIds, ",")),
-	)
 	ctx.EventManager().EmitEvent(
-		events,
+		types.NewCompleteBatchEvent(msg.Creator, batch.Id, reqIds),
 	)
 	return &types.MsgCompleteBatchResponse{}, nil
 }
