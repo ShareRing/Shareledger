@@ -48,6 +48,8 @@ func (k msgServer) Cancel(goCtx context.Context, msg *types.MsgCancel) (*types.M
 	ctx.EventManager().EmitEvent(
 		types.NewCancelRequestEvent(msg.Creator, reqIds),
 	)
+	ctx.EventManager().EmitEvent(
+		types.NewChangeRequestStatusesEvent(reqIds, types.SwapStatusCanceled))
 
 	return &types.MsgCancelResponse{}, nil
 }

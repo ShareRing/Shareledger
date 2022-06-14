@@ -227,8 +227,8 @@ func (k Keeper) MoveRequest(ctx sdk.Context, fromStt, toStt string, reqs []types
 				return sdkerrors.Wrapf(sdkerrors.ErrLogic, "store not found")
 			}
 			toStore.Set(GetRequestIDBytes(req.Id), k.cdc.MustMarshal(req))
-			idsStr = append(idsStr, fmt.Sprintf("%v", req.Id))
 		}
+		idsStr = append(idsStr, fmt.Sprintf("%v", req.Id))
 
 	}
 	ctx.EventManager().EmitEvent(

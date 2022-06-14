@@ -18,6 +18,7 @@ const (
 	SwapStatusApproved = "approved"
 	SwapStatusRejected = "rejected"
 	SwapStatusDone     = "done"
+	SwapStatusCanceled = "cancelled"
 )
 
 var SupportedSwapOutNetwork = map[string]struct{}{
