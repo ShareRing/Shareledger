@@ -15,7 +15,7 @@ const (
 	EventTypeCompleteBatch       = "complete_batch"
 	EventTypeCancelBatch         = "cancel_batch"
 	EventTypeCreateRequest       = "create_request"
-	EventTypeChangeStatusRequest = "change_status_request"
+	EventTypeChangeRequestStatus = "change_request_status"
 
 	EventTypeDeposit  = "deposit"
 	EventTypeWithdraw = "withdraw"
@@ -123,12 +123,12 @@ func NewCancelBatchEvent(creator string, batchIDs, reqID []string) sdk.Event {
 	)
 }
 
-// NewChangeRequestStatusEvent  constructs a new change status sdk.Event
-func NewChangeRequestStatusEvent(reqID uint64, status string) sdk.Event {
+// NewChangeRequestStatusesEvent  constructs a new change status sdk.Event
+func NewChangeRequestStatusesEvent(reqID []string, status string) sdk.Event {
 	return sdk.NewEvent(
-		EventTypeChangeStatusRequest,
+		EventTypeChangeRequestStatus,
 		sdk.NewAttribute(sdk.AttributeKeyModule, AttributeValueCategory),
-		sdk.NewAttribute(EventAttrSwapIds, fmt.Sprintf("%v", reqID)),
+		sdk.NewAttribute(EventAttrSwapIds, strings.Join(reqID, ",")),
 		sdk.NewAttribute(EventAttrStatus, status),
 	)
 }
