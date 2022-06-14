@@ -729,7 +729,7 @@ func (r *Relayer) getBatch(batchId uint64) (*swapmoduletypes.Batch, error) {
 
 func (r *Relayer) getBatchDetail(ctx context.Context, batch swapmoduletypes.Batch) (detail swaputil.BatchDetail, err error) {
 	// only approved swap requests have batches
-	batchesRes, err := r.qClient.Swap(ctx, &swapmoduletypes.QuerySwapRequest{Ids: batch.ReqIDs, Status: swapmoduletypes.SwapStatusApproved})
+	batchesRes, err := r.qClient.Swap(ctx, &swapmoduletypes.QuerySwapRequest{Ids: batch.RequestIds, Status: swapmoduletypes.SwapStatusApproved})
 	if err != nil {
 		return detail, errors.Wrapf(err, "get list swap fail")
 	}

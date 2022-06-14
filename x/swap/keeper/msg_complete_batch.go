@@ -16,7 +16,7 @@ func (k msgServer) CompleteBatch(goCtx context.Context, msg *types.MsgCompleteBa
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrNotFound, "batch id=%s not found", msg.GetBatchId())
 	}
 	k.RemoveBatch(ctx, batch.Id)
-	requests, err := k.getRequestsFromIds(ctx, batch.ReqIDs, types.SwapStatusApproved)
+	requests, err := k.getRequestsFromIds(ctx, batch.GetRequestIds(), types.SwapStatusApproved)
 	if err != nil {
 		return nil, err
 	}

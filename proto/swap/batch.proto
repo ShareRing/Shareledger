@@ -6,7 +6,7 @@ option go_package = "github.com/sharering/shareledger/x/swap/types";
 message Batch {
   uint64 id = 1;
   string signature = 2;
-  repeated uint64 reqIDs = 3;
+  repeated uint64 requestIds = 3;
   string status = 4;
   string network = 5;
 }

@@ -16,7 +16,7 @@ func (k msgServer) CancelBatches(goCtx context.Context, msg *types.MsgCancelBatc
 	batchIDs := make([]string, 0, len(batches))
 	for _, batch := range batches {
 		k.RemoveBatch(ctx, batch.GetId())
-		requestIDs = append(requestIDs, batch.GetReqIDs()...)
+		requestIDs = append(requestIDs, batch.GetRequestIds()...)
 		batchIDs = append(batchIDs, fmt.Sprintf("%x", batch.Id))
 	}
 
