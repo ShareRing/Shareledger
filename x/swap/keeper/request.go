@@ -212,12 +212,7 @@ func (k Keeper) MoveRequest(ctx sdk.Context, fromStt, toStt string, reqs []types
 	if err != nil {
 		return sdkerrors.Wrapf(err, "fail to remove request from %s store", fromStt)
 	}
-
 	storeMap := k.GetStoreRequestMap(ctx)
-	toStore, found := storeMap[toStt]
-	if !found {
-		return sdkerrors.Wrapf(sdkerrors.ErrLogic, "store not found")
-	}
 
 	for i := range reqs {
 		req := &reqs[i]
@@ -227,6 +222,10 @@ func (k Keeper) MoveRequest(ctx sdk.Context, fromStt, toStt string, reqs []types
 		}
 		//Just insert to store if
 		if toStt != types.SwapStatusDone && toStt != types.SwapStatusRejected {
+			toStore, found := storeMap[toStt]
+			if !found {
+				return sdkerrors.Wrapf(sdkerrors.ErrLogic, "store not found")
+			}
 			toStore.Set(GetRequestIDBytes(req.Id), k.cdc.MustMarshal(req))
 		}
 		ctx.EventManager().EmitEvent(
