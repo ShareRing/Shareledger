@@ -68,7 +68,6 @@ func CompileGenesis(t *testing.T, config *network.Config, genesisState map[strin
 	if err != nil {
 		t.Errorf("init test fail %v", err)
 	}
-
 	genElectoralBz := config.Codec.MustMarshalJSON(&elGen)
 	if err != nil {
 		t.Errorf("init test fail %v", err)

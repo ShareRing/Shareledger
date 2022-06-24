@@ -2,6 +2,10 @@ package tests
 
 import (
 	"fmt"
+	"os"
+	"strings"
+	"testing"
+
 	"github.com/cosmos/cosmos-sdk/crypto/keyring"
 	"github.com/cosmos/cosmos-sdk/testutil/network"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -15,9 +19,6 @@ import (
 	denom "github.com/sharering/shareledger/x/utils/demo"
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
-	"os"
-	"strings"
-	"testing"
 )
 
 type SwapIntegrationTestSuite struct {
@@ -755,7 +756,7 @@ func (s *SwapIntegrationTestSuite) TestApprove() {
 	}
 
 	log := netutilts.ParseRawLogGetEvent(s.T(), txRes.RawLog)[0]
-	attr := log.Events.GetEventByType(s.T(), swapTypes.EventTypeSwapApprove)
+	attr := log.Events.GetEventByType(s.T(), swapTypes.EventTypeApproveRequests)
 	batchID := attr.Get(s.T(), swapTypes.EventAttrBatchId).Value
 
 	outReader, err := CmdGetBatches(cliCtx, fmt.Sprintf("--ids=%s", batchID), netutilts.JSONFlag)
