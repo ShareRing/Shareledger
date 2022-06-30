@@ -3,11 +3,12 @@ package services
 import (
 	"context"
 	"fmt"
+	"time"
+
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/tx"
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
-	"time"
 
 	"github.com/sharering/shareledger/cmd/Shareledgerd/services/subscriber"
 
@@ -28,27 +29,27 @@ type processFunc func(ctx context.Context, network string) error
 type Network struct {
 	Signer        string `yaml:"signer"`
 	Exponent      int    `yaml:"exponent"`
-	Url           string `yaml:"url"`
-	ChainId       int64  `yaml:"chainId"`
-	SwapContract  string `yaml:"swapContract"` // swap contract address
-	TokenContract string `yaml:"tokenContract"`
-	SwapTopic     string `yaml:"swapTopic"` // swap topic
-	TransferTopic string `yaml:"transferTopic"`
+	Url           string `yaml:"rpc_url"`
+	ChainId       int64  `yaml:"chain_id"`
+	SwapContract  string `yaml:"swap_contract_address"` // swap contract address
+	TokenContract string `yaml:"token_contract_address"`
+	SwapTopic     string `yaml:"swap_topic"` // swap topic
+	TransferTopic string `yaml:"transfer_topic"`
 	Retry         Retry  `yaml:"retry"`
 }
 
 type Retry struct {
-	IntervalRetry   time.Duration `yaml:"intervalRetry"`
-	RetryPercentage float64       `yaml:"retryPercentage"`
+	IntervalRetry   time.Duration `yaml:"interval_retry"`
+	RetryPercentage float64       `yaml:"retry_percentage"`
 }
 
 type RelayerConfig struct {
-	Network      map[string]Network `yaml:"networks"`
+	Network      map[string]Network `yaml:"network"`
 	Type         string             `yaml:"type"`
-	AutoApprove  bool               `yaml:"autoApprove"`
-	ScanInterval time.Duration      `yaml:"scanInterval"`
-	MongoURI     string             `yaml:"mongoURI"`
-	DbName       string             `yaml:"dbName"`
+	AutoApprove  bool               `yaml:"auto_approve"`
+	ScanInterval time.Duration      `yaml:"scan_interval"`
+	MongoURI     string             `yaml:"mongo_url"`
+	DbName       string             `yaml:"database_name"`
 }
 
 type Relayer struct {

@@ -1,30 +1,30 @@
-mongoURI: mongodb+srv://phuong:uIoqBJDBzHn17Khe@cluster0.ol2f7.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
-dbName: "hoai2"
-scanInterval: 20s
+mongo_url: mongodb+srv://phuong:uIoqBJDBzHn17Khe@cluster0.ol2f7.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
+database_name: "hoai2"
+scan_interval: 20s
 type: in # out in approver-in
-autoApprove: true # auto-approve only run with type: in and the --from <signer> should be in role relayer and approver
-networks:
+auto_approve: true # auto-approve only run with type: in and the --from <signer> should be in role relayer and approver
+network:
   eth:
     signer: eth_signer
-    url: https://ropsten.infura.io/v3/bf1a5b4c59cb45ea8ebf48497d3295ae
+    rpc_url: https://ropsten.infura.io/v3/bf1a5b4c59cb45ea8ebf48497d3295ae
     exponent: 2
-    chainId: 3
-    swapContract: 0x3AE875a6e8E8EB6fa4a0748156CE6b9030E4a560
-    tokenContract: 0x0362fBA2BdA9Bd05f53d6C8CC72257919899A9Ac
-    swapTopic: 0x796a6fb73c9c09afe863a5d1bc7040da846e5aeb2ad3cb42ee36e08a0c0a3e71
-    transferTopic: 0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef
+    chain_id: 3
+    swap_contract_address: 0x3AE875a6e8E8EB6fa4a0748156CE6b9030E4a560
+    token_contract_address: 0x0362fBA2BdA9Bd05f53d6C8CC72257919899A9Ac
+    swap_topic: 0x796a6fb73c9c09afe863a5d1bc7040da846e5aeb2ad3cb42ee36e08a0c0a3e71
+    transfer_topic: 0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef
     retry:
-      intervalRetry: 60s
-      retryPercentage: 11 #should >= 11% . It will avoid the error, replacement transaction underpriced, when doing retry
+      interval_retry: 60s
+      retry_percentage: 11 #should >= 11% . It will avoid the error, replacement transaction underpriced, when doing retry
   bsc:
     signer: eth_signer
-    url: https://data-seed-prebsc-1-s1.binance.org:8545
+    rpc_url: https://data-seed-prebsc-1-s1.binance.org:8545
     exponent: 18
-    chainId: 97
-    swapContract: 0x04ebff566170c907b29Fc33E9Cf0691faB87a168
-    tokenContract: 0x9C83317a358dFDbe1e9B376A0E1CAB179C2c38AF
-    swapTopic: 0x796a6fb73c9c09afe863a5d1bc7040da846e5aeb2ad3cb42ee36e08a0c0a3e71
-    transferTopic: 0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef
+    chain_id: 97
+    swap_contract_address: 0x04ebff566170c907b29Fc33E9Cf0691faB87a168
+    token_contract_address: 0x9C83317a358dFDbe1e9B376A0E1CAB179C2c38AF
+    swap_topic: 0x796a6fb73c9c09afe863a5d1bc7040da846e5aeb2ad3cb42ee36e08a0c0a3e71
+    transfer_topic: 0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef
     retry:
-      intervalRetry: 60s
-      retryPercentage: 11 #should >= 11% . It will avoid the error, replacement transaction underpriced, when doing retry
+      interval_retry: 60s
+      retry_percentage: 11 #should >= 11% . It will avoid the error, replacement transaction underpriced, when doing retry
