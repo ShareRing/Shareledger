@@ -61,12 +61,12 @@ func (k msgServer) UpdateSchema(goCtx context.Context, msg *types.MsgUpdateSchem
 	}
 
 	var schema = types.Schema{
-		Creator: msg.Creator,
-		Network: msg.Network,
-		Schema:  valFound.Schema,
-		Fee:     valFound.Fee,
+		Creator:          msg.Creator,
+		Network:          msg.Network,
+		Schema:           valFound.Schema,
+		Fee:              valFound.Fee,
+		ContractExponent: valFound.ContractExponent,
 	}
-	msg.ValidateBasic()
 	if msg.Schema != "" {
 		schema.Schema = msg.Schema
 	}
