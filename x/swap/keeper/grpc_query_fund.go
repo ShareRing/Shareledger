@@ -22,15 +22,15 @@ func (k Keeper) Balance(goCtx context.Context, req *types.QueryBalanceRequest) (
 		return nil, status.Error(codes.InvalidArgument, "can't get the module address")
 	}
 	coins := k.bankKeeper.SpendableCoins(ctx, moduleAddr)
-	dCoin := denom.ToDisplayCoins(coins)
 
-	balance := sdk.DecCoin{}
-	for _, c := range dCoin {
-		if c.Denom == denom.Shr {
-			balance = c
+	balances := sdk.NewDecCoinsFromCoins(coins...)
+	var b sdk.DecCoin
+	for _, c := range balances {
+		if c.Denom == denom.Base {
+			b = c
 			break
 		}
 	}
 
-	return &types.QueryBalanceResponse{Balance: &balance}, nil
+	return &types.QueryBalanceResponse{Balance: &b}, nil
 }

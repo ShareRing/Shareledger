@@ -853,7 +853,7 @@ func networkWithSchema(t *testing.T, cf *network.Config) {
 		{
 			Id:       3000,
 			DestAddr: "0x97b98d335c28f9ad9c123e344a78f00c84146431",
-			Amount: &sdk.Coin{
+			Amount: sdk.Coin{
 				Denom:  denom.Base,
 				Amount: sdk.NewInt(3455000000000), //3455 shr
 			},
@@ -863,7 +863,7 @@ func networkWithSchema(t *testing.T, cf *network.Config) {
 		}, {
 			Id:       3001,
 			DestAddr: "0x97b98d335c28f9ad9c123e344a78f00c84146431",
-			Amount: &sdk.Coin{
+			Amount: sdk.Coin{
 				Denom:  denom.Base,
 				Amount: sdk.NewInt(6733000000000), //6733 shr
 			},
