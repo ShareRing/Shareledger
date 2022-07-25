@@ -23,9 +23,8 @@ func (k Keeper) Balance(goCtx context.Context, req *types.QueryBalanceRequest) (
 	}
 	coins := k.bankKeeper.SpendableCoins(ctx, moduleAddr)
 
-	balances := sdk.NewDecCoinsFromCoins(coins...)
-	var b sdk.DecCoin
-	for _, c := range balances {
+	var b sdk.Coin
+	for _, c := range coins {
 		if c.Denom == denom.Base {
 			b = c
 			break
