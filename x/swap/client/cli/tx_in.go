@@ -23,9 +23,9 @@ func CmdIn() *cobra.Command {
 		`,
 		Args: cobra.ExactArgs(5),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			argDesAddress := args[1]
-			argSrcNetwork := args[2]
-			hashes := strings.Split(args[3], ",")
+			argDesAddress := args[0]
+			argSrcNetwork := args[1]
+			hashes := strings.Split(args[2], ",")
 			txHashes := make([]string, 0, len(hashes))
 
 			for i := range hashes {
@@ -35,8 +35,8 @@ func CmdIn() *cobra.Command {
 				}
 			}
 
-			argAmount := args[4]
-			argFee := args[5]
+			argAmount := args[3]
+			argFee := args[4]
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
