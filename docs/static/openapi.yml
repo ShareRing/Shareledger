@@ -31482,7 +31482,7 @@ paths:
                   additionalProperties: {}
       tags:
         - Query
-  '/sharering/shareledger/swap/requested_ins/{address}':
+  '/sharering/shareledger/swap/requested_ins/{txHash}':
     get:
       summary: Queries a list of RequestedIns items.
       operationId: ShareledgerSwapRequestedIns
@@ -31495,12 +31495,10 @@ paths:
               requestedIn:
                 type: object
                 properties:
-                  address:
+                  slp3Address:
                     type: string
-                  txHashes:
-                    type: array
-                    items:
-                      type: string
+                  erc20Address:
+                    type: string
         default:
           description: An unexpected error response.
           schema:
@@ -31520,7 +31518,7 @@ paths:
                       type: string
                   additionalProperties: {}
       parameters:
-        - name: address
+        - name: txHash
           in: path
           required: true
           type: string
@@ -54186,12 +54184,10 @@ definitions:
       requestedIn:
         type: object
         properties:
-          address:
+          slp3Address:
             type: string
-          txHashes:
-            type: array
-            items:
-              type: string
+          erc20Address:
+            type: string
   shareledger.swap.QuerySchemaResponse:
     type: object
     properties:
@@ -54373,12 +54369,10 @@ definitions:
   shareledger.swap.RequestedIn:
     type: object
     properties:
-      address:
+      slp3Address:
         type: string
-      txHashes:
-        type: array
-        items:
-          type: string
+      erc20Address:
+        type: string
   shareledger.swap.Schema:
     type: object
     properties:

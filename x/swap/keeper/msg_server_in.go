@@ -6,20 +6,15 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/sharering/shareledger/x/swap/types"
 	denom "github.com/sharering/shareledger/x/utils/demo"
-	"sort"
 )
 
 func (k msgServer) RequestIn(goCtx context.Context, msg *types.MsgRequestIn) (*types.MsgSwapInResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
-	reqHistory, found := k.GetRequestedIn(ctx, msg.DestAddress)
 
 	for _, hash := range msg.TxHashes {
-		index := sort.Search(len(reqHistory.TxHashes), func(i int) bool {
-			return reqHistory.TxHashes[i] == hash
-		})
-		// hash already processed
-		if index != len(reqHistory.TxHashes) {
-			return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "tx hash was already processed")
+		_, found := k.GetRequestedIn(ctx, hash)
+		if found {
+			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "tx hash was processed in blockchain")
 		}
 	}
 
@@ -50,7 +45,7 @@ func (k msgServer) RequestIn(goCtx context.Context, msg *types.MsgRequestIn) (*t
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, err.Error())
 	}
 
-	k.SetRequestedIn(ctx, slpAddress, msg.TxHashes)
+	k.SetRequestedIn(ctx, slpAddress, msg.SrcAddress, msg.TxHashes)
 	req, err := k.AppendPendingRequest(ctx, types.Request{
 		DestAddr:    msg.DestAddress,
 		SrcNetwork:  msg.Network,

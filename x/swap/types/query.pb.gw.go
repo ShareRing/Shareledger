@@ -388,15 +388,15 @@ func request_Query_RequestedIns_0(ctx context.Context, marshaler runtime.Marshal
 		_   = err
 	)
 
-	val, ok = pathParams["address"]
+	val, ok = pathParams["txHash"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "address")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "txHash")
 	}
 
-	protoReq.Address, err = runtime.String(val)
+	protoReq.TxHash, err = runtime.String(val)
 
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "address", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "txHash", err)
 	}
 
 	msg, err := client.RequestedIns(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
@@ -415,15 +415,15 @@ func local_request_Query_RequestedIns_0(ctx context.Context, marshaler runtime.M
 		_   = err
 	)
 
-	val, ok = pathParams["address"]
+	val, ok = pathParams["txHash"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "address")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "txHash")
 	}
 
-	protoReq.Address, err = runtime.String(val)
+	protoReq.TxHash, err = runtime.String(val)
 
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "address", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "txHash", err)
 	}
 
 	msg, err := server.RequestedIns(ctx, &protoReq)
@@ -795,7 +795,7 @@ var (
 
 	pattern_Query_Batches_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"sharering", "shareledger", "swap", "search_batches"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_RequestedIns_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"sharering", "shareledger", "swap", "requested_ins", "address"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_RequestedIns_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"sharering", "shareledger", "swap", "requested_ins", "txHash"}, "", runtime.AssumeColonVerbOpt(true)))
 )
 
 var (

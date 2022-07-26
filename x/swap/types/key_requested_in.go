@@ -11,13 +11,12 @@ const (
 
 // RequestedInKey returns the store key to retrieve a RequestedIn from the index fields
 func RequestedInKey(
-	address string,
+	txHash string,
 ) []byte {
 	var key []byte
 
-	addressBytes := []byte(address)
-	key = append(key, addressBytes...)
+	txHashBytes := []byte(txHash)
+	key = append(key, txHashBytes...)
 	key = append(key, []byte("/")...)
-
 	return key
 }

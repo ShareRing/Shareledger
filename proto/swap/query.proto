@@ -48,7 +48,7 @@ service Query {
 
 // Queries a list of RequestedIns items.
 	rpc RequestedIns(QueryRequestedInsRequest) returns (QueryRequestedInsResponse) {
-		option (google.api.http).get = "/sharering/shareledger/swap/requested_ins/{address}";
+		option (google.api.http).get = "/sharering/shareledger/swap/requested_ins/{txHash}";
 	}
 
 // this line is used by starport scaffolding # 2
@@ -116,7 +116,7 @@ cosmos.base.query.v1beta1.PageRequest pagination = 4;
 
 
 message QueryRequestedInsRequest {
-  string address = 1;
+  string txHash = 1;
 }
 
 message QueryRequestedInsResponse {

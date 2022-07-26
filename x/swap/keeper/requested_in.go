@@ -4,46 +4,33 @@ import (
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/sharering/shareledger/x/swap/types"
-	"sort"
 )
 
 // SetRequestedIn set a specific requestedIn in the store from its index
-func (k Keeper) SetRequestedIn(ctx sdk.Context, destAddress sdk.Address, txHashes []string) {
+func (k Keeper) SetRequestedIn(ctx sdk.Context, destAddress sdk.Address, srcAddr string, txHashes []string) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.RequestedInKeyPrefix))
-	currentData, found := k.GetRequestedIn(ctx, destAddress.String())
-
-	if !found {
-		currentData.Address = destAddress.String()
-		currentData.TxHashes = make([]string, 0, len(txHashes))
-	}
-	if !sort.StringsAreSorted(currentData.TxHashes) {
-		sort.Strings(currentData.TxHashes)
-	}
 
 	for _, txHash := range txHashes {
-		// should store as sorted slice of strings  ascending order.
-		insertIndex := sort.SearchStrings(currentData.TxHashes, txHash)
-		currentData.TxHashes = append(currentData.TxHashes, "")
-		copy(currentData.TxHashes[insertIndex+1:], currentData.TxHashes[insertIndex:])
-		currentData.TxHashes[insertIndex] = txHash
+		addressPair := types.RequestedIn{
+			Slp3Address:  destAddress.String(),
+			Erc20Address: srcAddr,
+		}
+		b := k.cdc.MustMarshal(&addressPair)
+		store.Set(types.RequestedInKey(txHash), b)
 	}
 
-	b := k.cdc.MustMarshal(&currentData)
-	store.Set(types.RequestedInKey(
-		destAddress.String(),
-	), b)
 }
 
 // GetRequestedIn returns a requestedIn from its index
 func (k Keeper) GetRequestedIn(
 	ctx sdk.Context,
-	address string,
+	txHash string,
 
 ) (val types.RequestedIn, found bool) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.RequestedInKeyPrefix))
 
 	b := store.Get(types.RequestedInKey(
-		address,
+		txHash,
 	))
 	if b == nil {
 		return val, false
@@ -57,12 +44,12 @@ func (k Keeper) GetRequestedIn(
 // RemoveRequestedIn removes a requestedIn from the store
 func (k Keeper) RemoveRequestedIn(
 	ctx sdk.Context,
-	address string,
+	txHash string,
 
 ) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.RequestedInKeyPrefix))
 	store.Delete(types.RequestedInKey(
-		address,
+		txHash,
 	))
 }
 

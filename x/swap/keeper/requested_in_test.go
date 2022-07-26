@@ -8,17 +8,17 @@ import (
 	keepertest "github.com/sharering/shareledger/testutil/keeper"
 	"github.com/sharering/shareledger/testutil/nullify"
 	"github.com/sharering/shareledger/x/swap/keeper"
-	"github.com/sharering/shareledger/x/swap/types"
 	"github.com/stretchr/testify/require"
 )
 
 // Prevent strconv unused error
 var _ = strconv.IntSize
 
-func createNRequestedIn(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.RequestedIn {
-	items := make([]types.RequestedIn, n)
-	for i := range items {
-		keeper.SetRequestedIn(ctx, sdk.AccAddress{}, []string{strconv.Itoa(i)})
+func createNRequestedIn(keeper *keeper.Keeper, ctx sdk.Context, n int) []string {
+	items := make([]string, n)
+	for i := 0; i <= n; i++ {
+		keeper.SetRequestedIn(ctx, sdk.AccAddress{}, "", []string{strconv.Itoa(i)})
+		items[i] = strconv.Itoa(i)
 	}
 	return items
 }
@@ -28,7 +28,7 @@ func TestRequestedInGet(t *testing.T) {
 	items := createNRequestedIn(keeper, ctx, 10)
 	for _, item := range items {
 		rst, found := keeper.GetRequestedIn(ctx,
-			item.Address,
+			item,
 		)
 		require.True(t, found)
 		require.Equal(t,
@@ -42,10 +42,10 @@ func TestRequestedInRemove(t *testing.T) {
 	items := createNRequestedIn(keeper, ctx, 10)
 	for _, item := range items {
 		keeper.RemoveRequestedIn(ctx,
-			item.Address,
+			item,
 		)
 		_, found := keeper.GetRequestedIn(ctx,
-			item.Address,
+			item,
 		)
 		require.False(t, found)
 	}
