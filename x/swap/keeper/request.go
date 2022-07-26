@@ -147,6 +147,7 @@ func (k Keeper) changeStatusSwapIn(ctx sdk.Context, ids []uint64, fromStatus str
 				return nil, err
 			}
 		}
+		toStatus = types.SwapStatusDone
 	}
 	if err := k.MoveRequest(ctx, fromStatus, toStatus, reqs, nil, false); err != nil {
 		return nil, err
