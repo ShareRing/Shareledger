@@ -33,7 +33,7 @@ func (k msgServer) RequestOut(goCtx context.Context, msg *types.MsgRequestOut) (
 	insertAmountCoin = sdk.NewCoin(denom.Base, amount.AmountOf(denom.Base))
 
 	req, err := k.AppendPendingRequest(ctx, types.Request{
-		SrcAddr:     msg.Creator,
+		SrcAddr:     msg.SrcAddress,
 		DestAddr:    msg.DestAddress,
 		SrcNetwork:  types.NetworkNameShareLedger,
 		DestNetwork: msg.Network,

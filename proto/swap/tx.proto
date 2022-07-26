@@ -27,10 +27,11 @@ service Msg {
 
 message MsgRequestOut {
   string creator = 1;
-  string destAddress = 2;
-  string network = 3;
-  cosmos.base.v1beta1.DecCoin amount = 4;
-  cosmos.base.v1beta1.DecCoin fee = 5;
+  string srcAddress = 2;
+  string destAddress = 3;
+  string network = 4;
+  cosmos.base.v1beta1.DecCoin amount = 5;
+  cosmos.base.v1beta1.DecCoin fee = 6;
 }
 
 message MsgOutSwapResponse {
@@ -111,6 +112,7 @@ message MsgRejectResponse {
 
 message MsgRequestIn {
   string creator = 1;
+  string srcAddress = 2;
   string destAddress = 3;
   string network = 4;
   cosmos.base.v1beta1.DecCoin amount = 5;

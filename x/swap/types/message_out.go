@@ -13,6 +13,7 @@ var _ sdk.Msg = &MsgRequestOut{}
 func NewMsgRequestOut(creator string, destAddr string, network string, amount sdk.DecCoin, fee sdk.DecCoin) *MsgRequestOut {
 	return &MsgRequestOut{
 		Creator:     creator,
+		SrcAddress:  creator,
 		DestAddress: destAddr,
 		Network:     network,
 		Amount:      &amount,

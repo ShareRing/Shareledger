@@ -10,9 +10,10 @@ const TypeMsgRequestIn = "in"
 
 var _ sdk.Msg = &MsgRequestIn{}
 
-func NewMsgRequestIn(creator string, desAddress string, srcNetwork string, txHashes []string, amount, fee sdk.DecCoin) *MsgRequestIn {
+func NewMsgRequestIn(creator, desAddress, srcNetwork string, txHashes []string, amount, fee sdk.DecCoin) *MsgRequestIn {
 	return &MsgRequestIn{
 		Creator:     creator,
+		SrcAddress:  creator,
 		DestAddress: desAddress,
 		Network:     srcNetwork,
 		Amount:      &amount,

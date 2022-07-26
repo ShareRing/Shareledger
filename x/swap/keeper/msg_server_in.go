@@ -59,6 +59,7 @@ func (k msgServer) RequestIn(goCtx context.Context, msg *types.MsgRequestIn) (*t
 		Fee:         baseFee,
 		Status:      types.SwapStatusPending,
 		TxHashes:    msg.TxHashes,
+		SrcAddr:     msg.SrcAddress,
 	})
 	if err != nil {
 		return nil, err
@@ -70,7 +71,7 @@ func (k msgServer) RequestIn(goCtx context.Context, msg *types.MsgRequestIn) (*t
 			req.Id,
 			amount,
 			fee,
-			"",
+			msg.SrcAddress,
 			msg.Network,
 			msg.DestAddress, types.NetworkNameShareLedger),
 	)
