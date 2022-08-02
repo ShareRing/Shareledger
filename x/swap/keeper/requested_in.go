@@ -7,10 +7,10 @@ import (
 )
 
 // SetRequestedIn set a specific requestedIn in the store from its index
-func (k Keeper) SetRequestedIn(ctx sdk.Context, destAddress sdk.Address, srcAddr string, txHashes []string) {
+func (k Keeper) SetRequestedIn(ctx sdk.Context, destAddress sdk.Address, srcAddr string, txEventHashes []string) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.RequestedInKeyPrefix))
 
-	for _, txHash := range txHashes {
+	for _, txHash := range txEventHashes {
 		addressPair := types.RequestedIn{
 			Slp3Address:  destAddress.String(),
 			Erc20Address: srcAddr,

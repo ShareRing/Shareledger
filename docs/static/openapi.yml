@@ -31585,7 +31585,7 @@ paths:
                     batchId:
                       type: string
                       format: uint64
-                    txHashes:
+                    txEventHashes:
                       type: array
                       items:
                         type: string
@@ -54290,7 +54290,7 @@ definitions:
             batchId:
               type: string
               format: uint64
-            txHashes:
+            txEventHashes:
               type: array
               items:
                 type: string
@@ -54362,7 +54362,7 @@ definitions:
       batchId:
         type: string
         format: uint64
-      txHashes:
+      txEventHashes:
         type: array
         items:
           type: string

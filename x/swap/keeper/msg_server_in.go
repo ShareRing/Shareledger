@@ -11,7 +11,7 @@ import (
 func (k msgServer) RequestIn(goCtx context.Context, msg *types.MsgRequestIn) (*types.MsgSwapInResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	for _, hash := range msg.TxHashes {
+	for _, hash := range msg.TxEventHashes {
 		_, found := k.GetRequestedIn(ctx, hash)
 		if found {
 			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "tx hash was processed in blockchain")
@@ -45,16 +45,16 @@ func (k msgServer) RequestIn(goCtx context.Context, msg *types.MsgRequestIn) (*t
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, err.Error())
 	}
 
-	k.SetRequestedIn(ctx, slpAddress, msg.SrcAddress, msg.TxHashes)
+	k.SetRequestedIn(ctx, slpAddress, msg.SrcAddress, msg.TxEventHashes)
 	req, err := k.AppendPendingRequest(ctx, types.Request{
-		DestAddr:    msg.DestAddress,
-		SrcNetwork:  msg.Network,
-		DestNetwork: types.NetworkNameShareLedger,
-		Amount:      insertAmountCoin,
-		Fee:         baseFee,
-		Status:      types.SwapStatusPending,
-		TxHashes:    msg.TxHashes,
-		SrcAddr:     msg.SrcAddress,
+		DestAddr:      msg.DestAddress,
+		SrcNetwork:    msg.Network,
+		DestNetwork:   types.NetworkNameShareLedger,
+		Amount:        insertAmountCoin,
+		Fee:           baseFee,
+		Status:        types.SwapStatusPending,
+		TxEventHashes: msg.TxEventHashes,
+		SrcAddr:       msg.SrcAddress,
 	})
 	if err != nil {
 		return nil, err

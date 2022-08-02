@@ -12,13 +12,13 @@ var _ sdk.Msg = &MsgRequestIn{}
 
 func NewMsgRequestIn(creator, desAddress, srcNetwork string, txHashes []string, amount, fee sdk.DecCoin) *MsgRequestIn {
 	return &MsgRequestIn{
-		Creator:     creator,
-		SrcAddress:  creator,
-		DestAddress: desAddress,
-		Network:     srcNetwork,
-		Amount:      &amount,
-		TxHashes:    txHashes,
-		Fee:         &fee,
+		Creator:       creator,
+		SrcAddress:    creator,
+		DestAddress:   desAddress,
+		Network:       srcNetwork,
+		Amount:        &amount,
+		TxEventHashes: txHashes,
+		Fee:           &fee,
 	}
 }
 
@@ -59,7 +59,7 @@ func (msg *MsgRequestIn) ValidateBasic() error {
 		return sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, err.Error())
 	}
 
-	if len(msg.TxHashes) == 0 {
+	if len(msg.TxEventHashes) == 0 {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "tx hashes are required")
 	}
 
