@@ -14,7 +14,7 @@ func (k msgServer) RequestIn(goCtx context.Context, msg *types.MsgRequestIn) (*t
 	for _, hash := range msg.TxEventHashes {
 		_, found := k.GetRequestedIn(ctx, hash)
 		if found {
-			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "tx hash was processed in blockchain")
+			return nil, sdkerrors.Wrap(types.ErrDuplicatedSwapIn, "tx hash was processed in blockchain")
 		}
 	}
 

@@ -8,5 +8,5 @@ import (
 
 // x/swap module sentinel errors
 var (
-	ErrSample = sdkerrors.Register(ModuleName, 1100, "sample error")
+	ErrDuplicatedSwapIn = sdkerrors.Register(ModuleName, 1100, "the request in is processed in blockchain")
 )
