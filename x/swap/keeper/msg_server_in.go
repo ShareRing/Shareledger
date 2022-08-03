@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/sharering/shareledger/x/swap/types"
@@ -10,13 +11,6 @@ import (
 
 func (k msgServer) RequestIn(goCtx context.Context, msg *types.MsgRequestIn) (*types.MsgSwapInResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
-
-	for _, hash := range msg.TxEventHashes {
-		_, found := k.GetRequestedIn(ctx, hash)
-		if found {
-			return nil, sdkerrors.Wrap(types.ErrDuplicatedSwapIn, "tx hash was processed in blockchain")
-		}
-	}
 
 	fee, err := denom.NormalizeToBaseCoins(sdk.NewDecCoins(*msg.Fee), true)
 	if err != nil {
