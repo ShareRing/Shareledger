@@ -7,16 +7,16 @@ import (
 )
 
 // SetRequestedIn set a specific requestedIn in the store from its index
-func (k Keeper) SetRequestedIn(ctx sdk.Context, destAddress sdk.Address, srcAddr string, txEventHashes []string) {
+func (k Keeper) SetRequestedIn(ctx sdk.Context, destAddress sdk.Address, srcAddr string, ercEventHashes []*types.ERCHash) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.RequestedInKeyPrefix))
 
-	for _, txHash := range txEventHashes {
+	for _, ercHash := range ercEventHashes {
 		addressPair := types.RequestedIn{
 			Slp3Address:  destAddress.String(),
 			Erc20Address: srcAddr,
 		}
 		b := k.cdc.MustMarshal(&addressPair)
-		store.Set(types.RequestedInKey(txHash), b)
+		store.Set(types.RequestedInKey(ercHash.TxHash, ercHash.LogEventIdx), b)
 	}
 
 }
@@ -25,12 +25,14 @@ func (k Keeper) SetRequestedIn(ctx sdk.Context, destAddress sdk.Address, srcAddr
 func (k Keeper) GetRequestedIn(
 	ctx sdk.Context,
 	txHash string,
+	eventLong uint64,
 
 ) (val types.RequestedIn, found bool) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.RequestedInKeyPrefix))
 
 	b := store.Get(types.RequestedInKey(
 		txHash,
+		eventLong,
 	))
 	if b == nil {
 		return val, false
@@ -45,11 +47,13 @@ func (k Keeper) GetRequestedIn(
 func (k Keeper) RemoveRequestedIn(
 	ctx sdk.Context,
 	txHash string,
+	logEvent uint64,
 
 ) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.RequestedInKeyPrefix))
 	store.Delete(types.RequestedInKey(
 		txHash,
+		logEvent,
 	))
 }
 

@@ -8,6 +8,7 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/sharering/shareledger/x/swap/types"
 	"github.com/spf13/cobra"
+	"strconv"
 	"strings"
 )
 
@@ -17,7 +18,7 @@ func CmdIn() *cobra.Command {
 		Short: "Broadcast message in, to create the swap in request",
 		Long: `
 			[dest_address] should be shareledger address in shareledger
-			[txHashes] <hash1>,<hash2>.... : tx Hashes list is required.
+			[txHashes] <hash1>:<sender>:<logIndex>,<hash2>:<sender>:<logIndex>.... : tx Hashes list is required.
 			[amount] the total of all external transactions' amount minus swap fee.
 			[fee] the fee for swap in which is configured in schema data.
 		`,
@@ -25,13 +26,24 @@ func CmdIn() *cobra.Command {
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argDesAddress := args[0]
 			argSrcNetwork := args[1]
-			hashes := strings.Split(args[2], ",")
-			txHashes := make([]string, 0, len(hashes))
+			hashesLog := strings.Split(args[2], ",")
+			txHashes := make([]*types.ERCHash, 0, len(hashesLog))
 
-			for i := range hashes {
-				h := strings.TrimSpace(hashes[i])
-				if h != "" {
-					txHashes = append(txHashes, h)
+			for i := range hashesLog {
+				hl := strings.TrimSpace(hashesLog[i])
+
+				newHL := strings.Split(hl, ":")
+
+				if len(newHL) > 0 {
+					logIdx, err := strconv.ParseUint(newHL[2], 10, 64)
+					if err != nil {
+						return err
+					}
+					txHashes = append(txHashes, &types.ERCHash{
+						TxHash:      newHL[0],
+						Sender:      newHL[1],
+						LogEventIdx: logIdx,
+					})
 				}
 			}
 

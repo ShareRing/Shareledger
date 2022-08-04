@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+	"fmt"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
@@ -39,21 +40,26 @@ func (k msgServer) RequestIn(goCtx context.Context, msg *types.MsgRequestIn) (*t
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, err.Error())
 	}
 
-	k.SetRequestedIn(ctx, slpAddress, msg.SrcAddress, msg.TxEventHashes)
+	k.SetRequestedIn(ctx, slpAddress, msg.SrcAddress, msg.TxHashes)
 	req, err := k.AppendPendingRequest(ctx, types.Request{
-		DestAddr:      msg.DestAddress,
-		SrcNetwork:    msg.Network,
-		DestNetwork:   types.NetworkNameShareLedger,
-		Amount:        insertAmountCoin,
-		Fee:           baseFee,
-		Status:        types.SwapStatusPending,
-		TxEventHashes: msg.TxEventHashes,
-		SrcAddr:       msg.SrcAddress,
+		DestAddr:    msg.DestAddress,
+		SrcNetwork:  msg.Network,
+		DestNetwork: types.NetworkNameShareLedger,
+		Amount:      insertAmountCoin,
+		Fee:         baseFee,
+		Status:      types.SwapStatusPending,
+		TxHashes:    msg.TxHashes,
+		SrcAddr:     msg.SrcAddress,
 	})
 	if err != nil {
 		return nil, err
 	}
 
+	hashEvent := make(map[string]string)
+
+	for i, e := range msg.TxHashes {
+		hashEvent[fmt.Sprintf("tx_%d", i)] = fmt.Sprintf("%s:%s:%d", e.TxHash, e.Sender, e.LogEventIdx)
+	}
 	ctx.EventManager().EmitEvent(
 		types.NewCreateRequestsEvent(
 			msg.GetCreator(),
@@ -62,7 +68,9 @@ func (k msgServer) RequestIn(goCtx context.Context, msg *types.MsgRequestIn) (*t
 			fee,
 			msg.SrcAddress,
 			msg.Network,
-			msg.DestAddress, types.NetworkNameShareLedger),
+			msg.DestAddress, types.NetworkNameShareLedger,
+			hashEvent,
+		),
 	)
 
 	return &types.MsgSwapInResponse{Id: req.Id}, nil

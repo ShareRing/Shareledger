@@ -52,8 +52,8 @@ func NewApproveRequestsEvent(creator string, batchId uint64, reqID []string, tot
 }
 
 // NewCreateRequestsEvent  constructs a new reject list of  a swap request sdk.Event
-func NewCreateRequestsEvent(creator string, reqID uint64, totalAmount, fee sdk.Coins, srcAddr, srcNet, destAddr, destNet string) sdk.Event {
-	return sdk.NewEvent(
+func NewCreateRequestsEvent(creator string, reqID uint64, totalAmount, fee sdk.Coins, srcAddr, srcNet, destAddr, destNet string, txHashIn map[string]string) sdk.Event {
+	event := sdk.NewEvent(
 		EventTypeCreateRequest,
 		sdk.NewAttribute(sdk.AttributeKeyModule, AttributeValueCategory),
 		sdk.NewAttribute(EventAttrSwapId, fmt.Sprintf("%v", reqID)),
@@ -65,6 +65,15 @@ func NewCreateRequestsEvent(creator string, reqID uint64, totalAmount, fee sdk.C
 		sdk.NewAttribute(EventAttrSwapSrcNetwork, srcNet),
 		sdk.NewAttribute(EventAttrSwapDestNetwork, destNet),
 	)
+
+	if len(txHashIn) != 0 {
+		// append here
+		for k, v := range txHashIn {
+			event = event.AppendAttributes(sdk.NewAttribute(k, v))
+		}
+
+	}
+	return event
 }
 
 // NewRejectRequestsEvent  constructs a new reject sdk.Event

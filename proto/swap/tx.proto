@@ -2,6 +2,7 @@ syntax = "proto3";
 package shareledger.swap;
 import "cosmos/base/v1beta1/coin.proto";
 import "gogoproto/gogo.proto";
+import "swap/request.proto";
 // this line is used by starport scaffolding # proto/tx/import
 
 option go_package = "github.com/sharering/shareledger/x/swap/types";
@@ -117,7 +118,7 @@ message MsgRequestIn {
   string network = 4;
   cosmos.base.v1beta1.DecCoin amount = 5;
   cosmos.base.v1beta1.DecCoin fee = 6;
-  repeated string txEventHashes = 7;
+  repeated ERCHash txHashes = 7;
 }
 
 message MsgSwapInResponse {

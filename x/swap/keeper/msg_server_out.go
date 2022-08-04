@@ -44,7 +44,7 @@ func (k msgServer) RequestOut(goCtx context.Context, msg *types.MsgRequestOut) (
 
 	if err == nil {
 		ctx.EventManager().EmitEvent(
-			types.NewCreateRequestsEvent(msg.GetCreator(), req.Id, amount, fee, req.SrcAddr, req.SrcNetwork, req.DestAddr, req.DestNetwork),
+			types.NewCreateRequestsEvent(msg.GetCreator(), req.Id, amount, fee, req.SrcAddr, req.SrcNetwork, req.DestAddr, req.DestNetwork, nil),
 		)
 	}
 	return &types.MsgOutSwapResponse{

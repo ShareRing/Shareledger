@@ -31522,6 +31522,11 @@ paths:
           in: path
           required: true
           type: string
+        - name: logEventIndex
+          in: query
+          required: false
+          type: string
+          format: uint64
       tags:
         - Query
   '/sharering/shareledger/swap/search/{status}/{ids}/{srcAddr}/{destAddr}/{srcNetwork}/{destNetwork}':
@@ -31585,10 +31590,18 @@ paths:
                     batchId:
                       type: string
                       format: uint64
-                    txEventHashes:
+                    txHashes:
                       type: array
                       items:
-                        type: string
+                        type: object
+                        properties:
+                          txHash:
+                            type: string
+                          sender:
+                            type: string
+                          logEventIdx:
+                            type: string
+                            format: uint64
               pagination:
                 type: object
                 properties:
@@ -53958,6 +53971,16 @@ definitions:
         type: string
       network:
         type: string
+  shareledger.swap.ERCHash:
+    type: object
+    properties:
+      txHash:
+        type: string
+      sender:
+        type: string
+      logEventIdx:
+        type: string
+        format: uint64
   shareledger.swap.Fee:
     type: object
     properties:
@@ -54290,10 +54313,18 @@ definitions:
             batchId:
               type: string
               format: uint64
-            txEventHashes:
+            txHashes:
               type: array
               items:
-                type: string
+                type: object
+                properties:
+                  txHash:
+                    type: string
+                  sender:
+                    type: string
+                  logEventIdx:
+                    type: string
+                    format: uint64
       pagination:
         type: object
         properties:
@@ -54362,10 +54393,18 @@ definitions:
       batchId:
         type: string
         format: uint64
-      txEventHashes:
+      txHashes:
         type: array
         items:
-          type: string
+          type: object
+          properties:
+            txHash:
+              type: string
+            sender:
+              type: string
+            logEventIdx:
+              type: string
+              format: uint64
   shareledger.swap.RequestedIn:
     type: object
     properties:

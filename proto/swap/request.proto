@@ -16,5 +16,10 @@ message Request {
   cosmos.base.v1beta1.Coin fee = 7 [(gogoproto.nullable) = false];
   string status = 8;
   uint64 batchId = 9;
-  repeated string txEventHashes = 11;
+  repeated ERCHash txHashes = 11;
+}
+message ERCHash {
+  string txHash  = 1;
+  string sender = 2;
+  uint64 logEventIdx = 3;
 }

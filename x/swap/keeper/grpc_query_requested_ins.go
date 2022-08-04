@@ -16,7 +16,7 @@ func (k Keeper) RequestedIns(goCtx context.Context, req *types.QueryRequestedIns
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	r, found := k.GetRequestedIn(ctx, req.TxHash)
+	r, found := k.GetRequestedIn(ctx, req.TxHash, req.LogEventIndex)
 	if !found {
 		return &types.QueryRequestedInsResponse{}, nil
 	}

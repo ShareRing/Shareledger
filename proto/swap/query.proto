@@ -117,6 +117,7 @@ cosmos.base.query.v1beta1.PageRequest pagination = 4;
 
 message QueryRequestedInsRequest {
   string txHash = 1;
+	uint64 logEventIndex = 2;
 }
 
 message QueryRequestedInsResponse {
