@@ -63,6 +63,16 @@ func (msg *MsgRequestIn) ValidateBasic() error {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "tx hashes are required")
 	}
 
+	for _, h := range msg.TxHashes {
+		if h.TxHash == "" {
+			return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "tx hashes are required")
+		}
+		if h.Sender == "" {
+			return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "sender is required")
+		}
+
+	}
+
 	if strings.TrimSpace(msg.GetNetwork()) == NetworkNameShareLedger {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid network %s", msg.GetDestAddress())
 	}
