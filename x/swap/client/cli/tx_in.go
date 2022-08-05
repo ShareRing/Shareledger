@@ -1,6 +1,9 @@
 package cli
 
 import (
+	"strconv"
+	"strings"
+
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
@@ -8,8 +11,6 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/sharering/shareledger/x/swap/types"
 	"github.com/spf13/cobra"
-	"strconv"
-	"strings"
 )
 
 func CmdIn() *cobra.Command {
@@ -27,7 +28,7 @@ func CmdIn() *cobra.Command {
 			argDesAddress := args[0]
 			argSrcNetwork := args[1]
 			hashesLog := strings.Split(args[2], ",")
-			txHashes := make([]*types.ERCHash, 0, len(hashesLog))
+			txHashes := make([]*types.TxEvent, 0, len(hashesLog))
 
 			for i := range hashesLog {
 				hl := strings.TrimSpace(hashesLog[i])
@@ -35,14 +36,14 @@ func CmdIn() *cobra.Command {
 				newHL := strings.Split(hl, ":")
 
 				if len(newHL) > 0 {
-					logIdx, err := strconv.ParseUint(newHL[2], 10, 64)
+					logIndex, err := strconv.ParseUint(newHL[2], 10, 64)
 					if err != nil {
 						return err
 					}
-					txHashes = append(txHashes, &types.ERCHash{
-						TxHash:      newHL[0],
-						Sender:      newHL[1],
-						LogEventIdx: logIdx,
+					txHashes = append(txHashes, &types.TxEvent{
+						TxHash:   newHL[0],
+						Sender:   newHL[1],
+						LogIndex: logIndex,
 					})
 				}
 			}
@@ -59,6 +60,7 @@ func CmdIn() *cobra.Command {
 			if err != nil {
 				return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid swap amount %s err %", argAmount, err)
 			}
+
 			sFee, err := sdk.ParseDecCoin(argFee)
 			if err != nil {
 				return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid swap amount %s err %", argFee, err)

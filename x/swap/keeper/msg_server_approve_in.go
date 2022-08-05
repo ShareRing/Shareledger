@@ -14,8 +14,8 @@ func (k msgServer) ApproveIn(goCtx context.Context, msg *types.MsgApproveIn) (*t
 
 	requests, err := k.getRequestsFromIds(ctx, msg.GetIds(), types.SwapStatusPending)
 	for _, r := range requests {
-		for _, hash := range r.TxHashes {
-			_, found := k.GetRequestedIn(ctx, hash.TxHash, hash.LogEventIdx)
+		for _, hash := range r.TxEvents {
+			_, found := k.GetPastTxEvent(ctx, hash.TxHash, hash.LogIndex)
 			if found {
 				return nil, sdkerrors.Wrap(types.ErrDuplicatedSwapIn, "tx hash was processed in blockchain")
 			}

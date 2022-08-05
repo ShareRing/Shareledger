@@ -3,11 +3,12 @@ package keeper
 import (
 	"context"
 	"fmt"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/sharering/shareledger/x/swap/types"
 )
 
-func (k msgServer) ApproveOut(goCtx context.Context, msg *types.MsgApproveOut) (*types.MsgApproveResponse, error) {
+func (k msgServer) ApproveOut(goCtx context.Context, msg *types.MsgApproveOut) (*types.MsgApproveOutResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 	batchId := k.AppendBatch(ctx, types.Batch{
 		Signature:  msg.Signature,
@@ -30,7 +31,7 @@ func (k msgServer) ApproveOut(goCtx context.Context, msg *types.MsgApproveOut) (
 		types.NewApproveRequestsEvent(msg.Creator, batchId, reqIds, total),
 	)
 
-	return &types.MsgApproveResponse{
+	return &types.MsgApproveOutResponse{
 		BatchId: batchId,
 	}, nil
 }

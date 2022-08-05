@@ -6,33 +6,33 @@ import (
 	"github.com/sharering/shareledger/x/swap/types"
 )
 
-// SetRequestedIn set a specific requestedIn in the store from its index
-func (k Keeper) SetRequestedIn(ctx sdk.Context, destAddress sdk.Address, srcAddr string, ercEventHashes []*types.ERCHash) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.RequestedInKeyPrefix))
+// SetPastTxEvent set a specific requestedIn in the store from its index
+func (k Keeper) SetPastTxEvent(ctx sdk.Context, destAddr sdk.Address, srcAddr string, ercEventHashes []*types.TxEvent) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.PastTxEventsKeyPrefix))
 
 	for _, ercHash := range ercEventHashes {
-		addressPair := types.RequestedIn{
-			Slp3Address:  destAddress.String(),
-			Erc20Address: srcAddr,
+		addressPair := types.PastTxEvent{
+			SrcAddr:  srcAddr,
+			DestAddr: destAddr.String(),
 		}
 		b := k.cdc.MustMarshal(&addressPair)
-		store.Set(types.RequestedInKey(ercHash.TxHash, ercHash.LogEventIdx), b)
+		store.Set(types.PastTxEventKey(ercHash.TxHash, ercHash.LogIndex), b)
 	}
 
 }
 
-// GetRequestedIn returns a requestedIn from its index
-func (k Keeper) GetRequestedIn(
+// GetPastTxEvent returns a requestedIn from its index
+func (k Keeper) GetPastTxEvent(
 	ctx sdk.Context,
 	txHash string,
-	eventLong uint64,
+	logIndex uint64,
 
-) (val types.RequestedIn, found bool) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.RequestedInKeyPrefix))
+) (val types.PastTxEvent, found bool) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.PastTxEventsKeyPrefix))
 
-	b := store.Get(types.RequestedInKey(
+	b := store.Get(types.PastTxEventKey(
 		txHash,
-		eventLong,
+		logIndex,
 	))
 	if b == nil {
 		return val, false
@@ -43,31 +43,47 @@ func (k Keeper) GetRequestedIn(
 	return val, true
 }
 
-// RemoveRequestedIn removes a requestedIn from the store
-func (k Keeper) RemoveRequestedIn(
+// RemovePastTxEvent removes a requestedIn from the store
+func (k Keeper) RemovePastTxEvent(
 	ctx sdk.Context,
 	txHash string,
-	logEvent uint64,
+	logIndex uint64,
 
 ) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.RequestedInKeyPrefix))
-	store.Delete(types.RequestedInKey(
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.PastTxEventsKeyPrefix))
+	store.Delete(types.PastTxEventKey(
 		txHash,
-		logEvent,
+		logIndex,
 	))
 }
 
-// GetAllRequestedIn returns all requestedIn
-func (k Keeper) GetAllRequestedIn(ctx sdk.Context) (list []types.RequestedIn) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.RequestedInKeyPrefix))
-	iterator := sdk.KVStorePrefixIterator(store, []byte{})
+// GetPastTxEvents returns all requestedIn
+func (k Keeper) GetPastTxEvents(ctx sdk.Context) (list []types.PastTxEvent) {
+	store := ctx.KVStore(k.storeKey)
+	iterator := sdk.KVStorePrefixIterator(store, types.KeyPrefix(types.PastTxEventsKeyPrefix))
 
 	defer iterator.Close()
 
 	for ; iterator.Valid(); iterator.Next() {
-		var val types.RequestedIn
+		var val types.PastTxEvent
 		k.cdc.MustUnmarshal(iterator.Value(), &val)
 		list = append(list, val)
+	}
+
+	return
+}
+
+// GetPastTxEventsByTxHash
+func (k Keeper) GetPastTxEventsByTxHash(ctx sdk.Context, txHash string) (events []*types.PastTxEvent) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.PastTxEventsKeyPrefix))
+	iterator := sdk.KVStorePrefixIterator(store, types.PastTxEventByTxHashKey(txHash))
+
+	defer iterator.Close()
+
+	for ; iterator.Valid(); iterator.Next() {
+		var val types.PastTxEvent
+		k.cdc.MustUnmarshal(iterator.Value(), &val)
+		events = append(events, &val)
 	}
 
 	return

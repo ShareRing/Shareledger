@@ -8,21 +8,30 @@ import (
 var _ binary.ByteOrder
 
 const (
-	// RequestedInKeyPrefix is the prefix to retrieve all RequestedIn
-	RequestedInKeyPrefix = "RequestedIn/value/"
+	// PastTxEventsKeyPrefix is the prefix to retrieve all PastTxEvent
+	PastTxEventsKeyPrefix = "PastTxEvents/"
 )
 
-// RequestedInKey returns the store key to retrieve a RequestedIn from the index fields
-func RequestedInKey(
-	txHashEventInx string,
+// PastTxEventKey returns the store key to retrieve a PastTxEvent from the index fields
+// txhash/logindex/ -> value
+func PastTxEventKey(
+	txHash string,
 	logIndex uint64,
 ) []byte {
-	var key []byte
+	key := []byte{}
 
-	txHashBytes := []byte(txHashEventInx)
-	key = append(key, txHashBytes...)
-	key = append(key, []byte("/")...)
+	key = append(key, []byte(Seperator)...)
 	key = append(key, []byte(fmt.Sprintf("%d", logIndex))...)
-	key = append(key, []byte("/")...)
+	key = append([]byte(txHash), key...)
+
+	return key
+}
+
+func PastTxEventByTxHashKey(txHash string) []byte {
+	key := []byte{}
+
+	key = append(key, []byte(Seperator)...)
+	key = append([]byte(txHash), key...)
+
 	return key
 }

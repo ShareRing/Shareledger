@@ -2,6 +2,9 @@ package cli
 
 import (
 	"fmt"
+	"strconv"
+	"strings"
+
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
@@ -12,8 +15,6 @@ import (
 	"github.com/sharering/shareledger/pkg/swap"
 	"github.com/sharering/shareledger/x/swap/types"
 	"github.com/spf13/cobra"
-	"strconv"
-	"strings"
 )
 
 func CmdApprove() *cobra.Command {
@@ -60,7 +61,7 @@ func CmdApprove() *cobra.Command {
 				return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "the swapping requests ids list does not match with current pending requests")
 			}
 
-			formatRes, err := queryClient.Schema(cmd.Context(), &types.QueryGetSchemaRequest{Network: networkName})
+			formatRes, err := queryClient.Schema(cmd.Context(), &types.QuerySchemaRequest{Network: networkName})
 			if err != nil {
 				return err
 			}

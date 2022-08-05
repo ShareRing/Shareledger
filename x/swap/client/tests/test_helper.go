@@ -50,7 +50,7 @@ func CmdApprove(clientCtx client.Context, signName, reqIds, netName string, extr
 func CmdSearch(clientCtx client.Context, status string, extraFlags ...string) (testutil.BufferWriter, error) {
 	args := []string{status}
 	args = append(args, extraFlags...)
-	return clitestutil.ExecTestCLICmd(clientCtx, cli.CmdSwap(), args)
+	return clitestutil.ExecTestCLICmd(clientCtx, cli.CmdRequests(), args)
 }
 
 func ParseSearchResponse(cdc codec.Codec, sRes []byte) (types.QuerySwapResponse, error) {

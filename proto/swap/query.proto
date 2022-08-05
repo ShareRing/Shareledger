@@ -7,7 +7,7 @@ import "cosmos/base/query/v1beta1/pagination.proto";
 import "cosmos/base/v1beta1/coin.proto";
 import "swap/params.proto";
 import "swap/request.proto";
-import "swap/requested_in.proto";
+import "swap/past_tx_event.proto";
 import "swap/batch.proto";
 import "swap/schema.proto";
 // this line is used by starport scaffolding # 1
@@ -23,32 +23,42 @@ service Query {
 
 	// Queries a list of Search items.
 	rpc Swap(QuerySwapRequest) returns (QuerySwapResponse) {
-		option (google.api.http).get = "/sharering/shareledger/swap/search/{status}/{ids}/{srcAddr}/{destAddr}/{srcNetwork}/{destNetwork}";
+		option (google.api.http).get = "/sharering/shareledger/swap/requests/{status}/{ids}/{srcAddr}/{destAddr}/{srcNetwork}/{destNetwork}";
 	}
 
-// Queries a list of Fund items.
+	// Queries a list of Fund items.
 	rpc Balance(QueryBalanceRequest) returns (QueryBalanceResponse) {
 		option (google.api.http).get = "/sharering/shareledger/swap/balance";
 	}
 
-// Queries a Format by index.
-	rpc Schema(QueryGetSchemaRequest) returns (QuerySchemaResponse) {
-		option (google.api.http).get = "/sharering/shareledger/swap/sign_schema/{network}";
+	// Queries a Format by index.
+	rpc Schema(QuerySchemaRequest) returns (QuerySchemaResponse) {
+		option (google.api.http).get = "/sharering/shareledger/swap/schemas/{network}";
 	}
 
 	// Queries a list of Format items.
-	rpc AllSchemas(QueryAllSchemasRequest) returns (QueryAllSchemasResponse) {
-		option (google.api.http).get = "/sharering/shareledger/swap/sign_schema";
+	rpc Schemas(QuerySchemasRequest) returns (QuerySchemasResponse) {
+		option (google.api.http).get = "/sharering/shareledger/swap/schemas";
 	}
 
-// Queries a list of SearchBatch items.
+	// Queries a list of SearchBatch items.
 	rpc Batches(QueryBatchesRequest) returns (QueryBatchesResponse) {
-		option (google.api.http).get = "/sharering/shareledger/swap/search_batches";
+		option (google.api.http).get = "/sharering/shareledger/swap/batches";
 	}
 
-// Queries a list of RequestedIns items.
-	rpc RequestedIns(QueryRequestedInsRequest) returns (QueryRequestedInsResponse) {
-		option (google.api.http).get = "/sharering/shareledger/swap/requested_ins/{txHash}";
+	// Queries a list of PastTxEvent items.
+	rpc PastTxEvent(QueryPastTxEventRequest) returns (QueryPastTxEventResponse) {
+		option (google.api.http).get = "/sharering/shareledger/swap/past_tx_events/{txHash}/{logIndex}";
+	}
+
+	// Queries a list of PastTxEvents by txHash items.
+	rpc PastTxEventsByTxHash(QueryPastTxEventsByTxHashRequest) returns (QueryPastTxEventsByTxHashResponse) {
+		option (google.api.http).get = "/sharering/shareledger/swap/past_tx_events/{txHash}";
+	}
+
+	// Queries all PastTxEvents
+	rpc PastTxEvents(QueryPastTxEventsRequest) returns (QueryPastTxEventsResponse) {
+		option (google.api.http).get = "/sharering/shareledger/swap/past_tx_events";
 	}
 
 // this line is used by starport scaffolding # 2
@@ -90,7 +100,7 @@ message QueryBalanceResponse {
 	cosmos.base.v1beta1.Coin balance = 1;
 }
 
-message QueryGetSchemaRequest {
+message QuerySchemaRequest {
 	  string network = 1;
 
 }
@@ -99,11 +109,11 @@ message QuerySchemaResponse {
 	Schema schema = 1 [(gogoproto.nullable) = false];
 }
 
-message QueryAllSchemasRequest {
+message QuerySchemasRequest {
 	cosmos.base.query.v1beta1.PageRequest pagination = 1;
 }
 
-message QueryAllSchemasResponse {
+message QuerySchemasResponse {
 	repeated Schema schemas = 1 [(gogoproto.nullable) = false];
 	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
@@ -111,17 +121,35 @@ message QueryAllSchemasResponse {
 message QueryBatchesRequest {
 	string network = 2;
 	repeated  uint64 ids = 3;
-cosmos.base.query.v1beta1.PageRequest pagination = 4;
+	cosmos.base.query.v1beta1.PageRequest pagination = 4;
 }
 
 
-message QueryRequestedInsRequest {
+message QueryPastTxEventRequest {
   string txHash = 1;
-	uint64 logEventIndex = 2;
+	uint64 logIndex = 2;
 }
 
-message QueryRequestedInsResponse {
-		RequestedIn requestedIn = 1;
+message QueryPastTxEventResponse {
+	PastTxEvent event = 1;
 }
+
+message QueryPastTxEventsByTxHashRequest {
+	string txHash = 1;
+}
+
+message QueryPastTxEventsByTxHashResponse {
+	repeated PastTxEvent events = 1;
+}
+
+message QueryPastTxEventsRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryPastTxEventsResponse {
+	repeated PastTxEvent events = 1;
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
 
 // this line is used by starport scaffolding # 3

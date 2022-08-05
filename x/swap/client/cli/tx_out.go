@@ -2,6 +2,7 @@ package cli
 
 import (
 	"context"
+
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
@@ -35,7 +36,7 @@ func CmdOut() *cobra.Command {
 			if err != nil {
 				return err
 			}
-			params := &types.QueryGetSchemaRequest{
+			params := &types.QuerySchemaRequest{
 				Network: argNetwork,
 			}
 

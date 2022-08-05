@@ -1,9 +1,10 @@
 package cli
 
 import (
-	"github.com/spf13/pflag"
 	"strconv"
 	"strings"
+
+	"github.com/spf13/pflag"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
@@ -11,7 +12,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func CmdSwap() *cobra.Command {
+func CmdRequests() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "requests [status]",
 		Short: "search swap request, status is required for searching. Supported status: pending, approved",

@@ -10,10 +10,8 @@ const DefaultIndex uint64 = 1
 // DefaultGenesis returns the default Capability genesis state
 func DefaultGenesis() *GenesisState {
 	return &GenesisState{
-		IdList:      []Id{},
-		RequestList: []Request{},
-		BatchList:   []Batch{},
-		Schemas:     []Schema{},
+		Requests: []Request{},
+		Schemas:  []Schema{},
 		// this line is used by starport scaffolding # genesis/types/default
 		Params: DefaultParams(),
 	}
@@ -22,20 +20,10 @@ func DefaultGenesis() *GenesisState {
 // Validate performs basic genesis state validation returning an error upon any
 // failure.
 func (gs GenesisState) Validate() error {
-	// Check for duplicated index in id
-	idIndexMap := make(map[string]struct{})
-
-	for _, elem := range gs.IdList {
-		index := string(IdKey(elem.IDType))
-		if _, ok := idIndexMap[index]; ok {
-			return fmt.Errorf("duplicated index for id")
-		}
-		idIndexMap[index] = struct{}{}
-	}
 	// Check for duplicated ID in request
 	requestIdMap := make(map[uint64]bool)
 	requestCount := gs.GetRequestCount()
-	for _, elem := range gs.RequestList {
+	for _, elem := range gs.Requests {
 		if _, ok := requestIdMap[elem.Id]; ok {
 			return fmt.Errorf("duplicated id for request")
 		}
@@ -44,18 +32,7 @@ func (gs GenesisState) Validate() error {
 		}
 		requestIdMap[elem.Id] = true
 	}
-	// Check for duplicated ID in batch
-	batchIdMap := make(map[uint64]bool)
-	batchCount := gs.GetBatchCount()
-	for _, elem := range gs.BatchList {
-		if _, ok := batchIdMap[elem.Id]; ok {
-			return fmt.Errorf("duplicated id for batch")
-		}
-		if elem.Id >= batchCount {
-			return fmt.Errorf("batch id should be lower or equal than the last id")
-		}
-		batchIdMap[elem.Id] = true
-	}
+
 	// Check for duplicated index in format
 	formatIndexMap := make(map[string]struct{})
 

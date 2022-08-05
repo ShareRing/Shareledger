@@ -17,7 +17,6 @@ func NewMsgRequestOut(creator string, destAddr string, network string, amount sd
 		DestAddress: destAddr,
 		Network:     network,
 		Amount:      &amount,
-		Fee:         &fee,
 	}
 }
 
@@ -48,14 +47,11 @@ func (msg *MsgRequestOut) ValidateBasic() error {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
 	}
 
-	if msg.Amount == nil || msg.Fee == nil || len(msg.Network) == 0 {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid valid amount,%s, or fee, %s, or network, %s", msg.Amount, msg.Fee, msg.Network)
+	if msg.Amount == nil || len(msg.Network) == 0 {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid valid amount, %s, or network, %s", msg.Amount, msg.Network)
 	}
 
 	if err := denom.CheckSupportedCoins(sdk.NewDecCoins(*msg.Amount), nil); err != nil {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, err.Error())
-	}
-	if err := denom.CheckSupportedCoins(sdk.NewDecCoins(*msg.Fee), nil); err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, err.Error())
 	}
 	coin, err := denom.NormalizeToBaseCoins(sdk.NewDecCoins(*msg.GetAmount()), false)

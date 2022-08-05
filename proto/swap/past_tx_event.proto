@@ -3,8 +3,8 @@ package shareledger.swap;
 
 option go_package = "github.com/sharering/shareledger/x/swap/types";
 
-message Id {
-  string IDType = 1;
-  uint64 value = 2;
+// RequestedIns
+message PastTxEvent {
+  string srcAddr = 1; // erc20
+  string destAddr = 2; // slp3
 }
-

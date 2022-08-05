@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
@@ -9,7 +10,7 @@ import (
 	"github.com/sharering/shareledger/x/swap/types"
 )
 
-func (k Keeper) AllSchemas(c context.Context, req *types.QueryAllSchemasRequest) (*types.QueryAllSchemasResponse, error) {
+func (k Keeper) Schemas(c context.Context, req *types.QuerySchemasRequest) (*types.QuerySchemasResponse, error) {
 	var schemas []types.Schema
 	ctx := sdk.UnwrapSDKContext(c)
 
@@ -30,10 +31,10 @@ func (k Keeper) AllSchemas(c context.Context, req *types.QueryAllSchemasRequest)
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrLogic, err.Error())
 	}
 
-	return &types.QueryAllSchemasResponse{Schemas: schemas, Pagination: pageRes}, nil
+	return &types.QuerySchemasResponse{Schemas: schemas, Pagination: pageRes}, nil
 }
 
-func (k Keeper) Schema(c context.Context, req *types.QueryGetSchemaRequest) (*types.QuerySchemaResponse, error) {
+func (k Keeper) Schema(c context.Context, req *types.QuerySchemaRequest) (*types.QuerySchemaResponse, error) {
 	ctx := sdk.UnwrapSDKContext(c)
 
 	val, found := k.GetSchema(

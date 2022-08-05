@@ -1,11 +1,6 @@
 package types
 
 const (
-	IDTypeTransaction = "transaction"
-	IDTypeBatch       = "batch"
-)
-
-const (
 	NetworkNameShareLedger       = "shareledger"
 	NetworkNameEthereum          = "eth"
 	NetworkNameBinanceSmartChain = "bsc"

@@ -10,21 +10,12 @@ import (
 	denom "github.com/sharering/shareledger/x/utils/demo"
 )
 
-func (k msgServer) RequestIn(goCtx context.Context, msg *types.MsgRequestIn) (*types.MsgSwapInResponse, error) {
+func (k msgServer) RequestIn(goCtx context.Context, msg *types.MsgRequestIn) (*types.MsgRequestInResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
-
-	fee, err := denom.NormalizeToBaseCoins(sdk.NewDecCoins(*msg.Fee), true)
-	if err != nil {
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, err.Error())
-	}
-	baseFee := sdk.NewCoin(denom.Base, fee.AmountOf(denom.Base))
 
 	schema, found := k.GetSchema(ctx, msg.Network)
 	if !found {
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "network, %s, is not supported", msg.Network)
-	}
-	if schema.Fee != nil && schema.Fee.In != nil && baseFee.IsLT(*schema.Fee.In) {
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "required fee for swap in is expected %s, but got %s", baseFee.String(), baseFee.String())
 	}
 
 	amount, err := denom.NormalizeToBaseCoins(sdk.NewDecCoins(*msg.GetAmount()), false)
@@ -40,15 +31,15 @@ func (k msgServer) RequestIn(goCtx context.Context, msg *types.MsgRequestIn) (*t
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, err.Error())
 	}
 
-	k.SetRequestedIn(ctx, slpAddress, msg.SrcAddress, msg.TxHashes)
+	k.SetPastTxEvent(ctx, slpAddress, msg.SrcAddress, msg.TxEvents)
 	req, err := k.AppendPendingRequest(ctx, types.Request{
 		DestAddr:    msg.DestAddress,
 		SrcNetwork:  msg.Network,
 		DestNetwork: types.NetworkNameShareLedger,
 		Amount:      insertAmountCoin,
-		Fee:         baseFee,
+		Fee:         *schema.Fee.In,
 		Status:      types.SwapStatusPending,
-		TxHashes:    msg.TxHashes,
+		TxEvents:    msg.TxEvents,
 		SrcAddr:     msg.SrcAddress,
 	})
 	if err != nil {
@@ -57,15 +48,15 @@ func (k msgServer) RequestIn(goCtx context.Context, msg *types.MsgRequestIn) (*t
 
 	hashEvent := make(map[string]string)
 
-	for i, e := range msg.TxHashes {
-		hashEvent[fmt.Sprintf("tx_%d", i)] = fmt.Sprintf("%s:%s:%d", e.TxHash, e.Sender, e.LogEventIdx)
+	for i, e := range msg.TxEvents {
+		hashEvent[fmt.Sprintf("tx_%d", i)] = fmt.Sprintf("%s:%s:%d", e.TxHash, e.Sender, e.LogIndex)
 	}
 	ctx.EventManager().EmitEvent(
 		types.NewCreateRequestsEvent(
 			msg.GetCreator(),
 			req.Id,
-			amount,
-			fee,
+			insertAmountCoin,
+			*schema.Fee.In,
 			msg.SrcAddress,
 			msg.Network,
 			msg.DestAddress, types.NetworkNameShareLedger,
@@ -73,5 +64,5 @@ func (k msgServer) RequestIn(goCtx context.Context, msg *types.MsgRequestIn) (*t
 		),
 	)
 
-	return &types.MsgSwapInResponse{Id: req.Id}, nil
+	return &types.MsgRequestInResponse{Id: req.Id}, nil
 }

@@ -9,8 +9,8 @@ option go_package = "github.com/sharering/shareledger/x/swap/types";
 
 // Msg defines the Msg service.
 service Msg {
-  rpc RequestOut(MsgRequestOut) returns (MsgOutSwapResponse);
-  rpc ApproveOut(MsgApproveOut) returns (MsgApproveResponse);
+  rpc RequestOut(MsgRequestOut) returns (MsgRequestOutResponse);
+  rpc ApproveOut(MsgApproveOut) returns (MsgApproveOutResponse);
   rpc Deposit(MsgDeposit) returns (MsgDepositResponse);
   rpc Withdraw(MsgWithdraw) returns (MsgWithdrawResponse);
   rpc CreateSchema(MsgCreateSchema) returns (MsgCreateSchemaResponse);
@@ -18,7 +18,7 @@ service Msg {
   rpc DeleteSchema(MsgDeleteSchema) returns (MsgDeleteSchemaResponse);
   rpc Cancel(MsgCancel) returns (MsgCancelResponse);
   rpc Reject(MsgReject) returns (MsgRejectResponse);
-  rpc RequestIn(MsgRequestIn) returns (MsgSwapInResponse);
+  rpc RequestIn(MsgRequestIn) returns (MsgRequestInResponse);
   rpc ApproveIn(MsgApproveIn) returns (MsgApproveInResponse);
   rpc CompleteBatch(MsgCompleteBatch) returns (MsgCompleteBatchResponse);
   rpc UpdateSwapFee(MsgUpdateSwapFee) returns (MsgUpdateSwapFeeResponse);
@@ -32,10 +32,9 @@ message MsgRequestOut {
   string destAddress = 3;
   string network = 4;
   cosmos.base.v1beta1.DecCoin amount = 5;
-  cosmos.base.v1beta1.DecCoin fee = 6;
 }
 
-message MsgOutSwapResponse {
+message MsgRequestOutResponse {
   uint64 id = 1;
 }
 
@@ -45,7 +44,7 @@ message MsgApproveOut {
   repeated uint64 ids = 3;
 }
 
-message MsgApproveResponse {
+message MsgApproveOutResponse {
   uint64 batchId = 1;
 }
 
@@ -117,11 +116,10 @@ message MsgRequestIn {
   string destAddress = 3;
   string network = 4;
   cosmos.base.v1beta1.DecCoin amount = 5;
-  cosmos.base.v1beta1.DecCoin fee = 6;
-  repeated ERCHash txHashes = 7;
+  repeated TxEvent txEvents = 6;
 }
 
-message MsgSwapInResponse {
+message MsgRequestInResponse {
   uint64 id = 1;
 }
 

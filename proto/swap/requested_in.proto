@@ -1,9 +1,0 @@
-syntax = "proto3";
-package shareledger.swap;
-
-option go_package = "github.com/sharering/shareledger/x/swap/types";
-
-message RequestedIn {
-  string slp3Address = 1;
-  string erc20Address = 2;
-}

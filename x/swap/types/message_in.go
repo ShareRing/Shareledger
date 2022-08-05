@@ -1,24 +1,24 @@
 package types
 
 import (
+	"strings"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	"strings"
 )
 
 const TypeMsgRequestIn = "in"
 
 var _ sdk.Msg = &MsgRequestIn{}
 
-func NewMsgRequestIn(creator, desAddress, srcNetwork string, txHashes []*ERCHash, amount, fee sdk.DecCoin) *MsgRequestIn {
+func NewMsgRequestIn(creator, desAddress, srcNetwork string, txEvents []*TxEvent, amount, fee sdk.DecCoin) *MsgRequestIn {
 	return &MsgRequestIn{
 		Creator:     creator,
 		SrcAddress:  creator,
 		DestAddress: desAddress,
 		Network:     srcNetwork,
 		Amount:      &amount,
-		TxHashes:    txHashes,
-		Fee:         &fee,
+		TxEvents:    txEvents,
 	}
 }
 
@@ -51,19 +51,16 @@ func (msg *MsgRequestIn) ValidateBasic() error {
 	if msg.Amount == nil || msg.Amount.Validate() != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid swap amount")
 	}
-	if msg.Fee == nil || msg.Fee.Validate() != nil {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid swap fee")
-	}
 
 	if _, err := sdk.AccAddressFromBech32(msg.GetDestAddress()); err != nil {
 		return sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, err.Error())
 	}
 
-	if len(msg.TxHashes) == 0 {
+	if len(msg.TxEvents) == 0 {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "tx hashes are required")
 	}
 
-	for _, h := range msg.TxHashes {
+	for _, h := range msg.TxEvents {
 		if h.TxHash == "" {
 			return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "tx hashes are required")
 		}
