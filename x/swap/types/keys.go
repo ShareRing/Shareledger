@@ -1,6 +1,11 @@
 package types
 
-import "fmt"
+import (
+	"encoding/binary"
+	"fmt"
+)
+
+var _ binary.ByteOrder
 
 const (
 	// ModuleName defines the module name
@@ -25,15 +30,57 @@ func KeyPrefix(p string) []byte {
 	return []byte(p)
 }
 
-const (
-	RequestCountKey = "Request-count-"
-)
-
 func RequestKey(status string) string {
 	return fmt.Sprintf("Request-%s-value-", status)
 }
 
 const (
-	BatchKey      = "Batch-value-"
-	BatchCountKey = "Batch-count-"
+	RequestCountKey = "Request-count-"
+	BatchKey        = "Batch-value-"
+	BatchCountKey   = "Batch-count-"
+
+	// SignSchemaKeyPrefix is the prefix to retrieve all Format
+	SignSchemaKeyPrefix = "Schemas/"
+
+	// PastTxEventsKeyPrefix is the prefix to retrieve all PastTxEvent
+	PastTxEventsKeyPrefix = "PastTxEvents/"
 )
+
+// FormatKey returns the store key to retrieve a Format from the index fields
+// network/ -> value
+func FormatKey(
+	network string,
+) []byte {
+	key := []byte{}
+
+	key = append(key, []byte(Seperator)...)
+	key = append([]byte(network), key...)
+
+	return key
+}
+
+// PastTxEventKey returns the store key to retrieve a PastTxEvent from the index fields
+// txhash/logindex/ -> value
+func PastTxEventKey(
+	txHash string,
+	logIndex uint64,
+) []byte {
+	key := []byte{}
+
+	key = append(key, []byte(Seperator)...)
+	key = append(key, []byte(fmt.Sprintf("%d", logIndex))...)
+	key = append(key, []byte(Seperator)...)
+	key = append([]byte(txHash), key...)
+
+	return key
+}
+
+// filter value by txhash
+func PastTxEventByTxHashKey(txHash string) []byte {
+	key := []byte{}
+
+	key = append(key, []byte(Seperator)...)
+	key = append([]byte(txHash), key...)
+
+	return key
+}

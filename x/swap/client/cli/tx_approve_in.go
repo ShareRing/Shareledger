@@ -13,7 +13,7 @@ import (
 
 func CmdApproveIn() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "approve-in [requests' ID]",
+		Use:   "in [requests' ID]",
 		Short: "approve list of swap requests in",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {

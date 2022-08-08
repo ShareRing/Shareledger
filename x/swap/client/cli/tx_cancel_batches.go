@@ -15,7 +15,7 @@ var _ = strconv.Itoa(0)
 
 func CmdCancelBatches() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "cancel-batches [ids]",
+		Use:   "cancel [ids]",
 		Short: "Broadcast message cancel batches",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {

@@ -2,6 +2,8 @@ package cli
 
 import (
 	"fmt"
+	"strconv"
+
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
@@ -9,7 +11,6 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/sharering/shareledger/x/swap/types"
 	"github.com/spf13/cobra"
-	"strconv"
 )
 
 const (
@@ -21,7 +22,7 @@ const (
 
 func CmdCreateSchema() *cobra.Command { //...
 	cmd := &cobra.Command{
-		Use:   "schema [network] [data] [feeIn] [feeOut] [contractExponent]",
+		Use:   "create [network] [data] [feeIn] [feeOut] [contractExponent]",
 		Short: "Create Schema for signing EIP712 to external chain and set fee to swap actions between Shareledger and external chains",
 		Long: `
 			[network]: corresponding external network name for this schema
@@ -30,7 +31,7 @@ func CmdCreateSchema() *cobra.Command { //...
 			[feeOut]: fee for swap OUT from Shareledfe to the external network
 			[contractExponent]: base coin's exponent - supported decimal number of deployed token contract on the external network 
 			`,
-		Example: `schema eth '{"types":{"EIP712Domain":[{"name":"name","type":"string"},{"name":"version","type":"string"},{"name":"chainId","type":"uint256"},{"name":"verifyingContract","type":"address"}],"Swap":[{"name":"ids","type":"uint256[]"},{"name":"tos","type":"address[]"},{"name":"amounts","type":"uint256[]"}]},"primaryType":"Swap","domain":{"name":"ShareRingSwap","version":"2.0","chainId":"0x7a69","verifyingContract":"0x0165878a594ca255338adfa4d48449f69242eb8f","salt":""}}' 50shr 100shr 2`,
+		Example: `create eth '{"types":{"EIP712Domain":[{"name":"name","type":"string"},{"name":"version","type":"string"},{"name":"chainId","type":"uint256"},{"name":"verifyingContract","type":"address"}],"Swap":[{"name":"ids","type":"uint256[]"},{"name":"tos","type":"address[]"},{"name":"amounts","type":"uint256[]"}]},"primaryType":"Swap","domain":{"name":"ShareRingSwap","version":"2.0","chainId":"0x7a69","verifyingContract":"0x0165878a594ca255338adfa4d48449f69242eb8f","salt":""}}' 50shr 100shr 2`,
 		Args:    cobra.ExactArgs(5),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			// Get indexes
@@ -80,9 +81,9 @@ func CmdCreateSchema() *cobra.Command { //...
 
 func CmdUpdateSchema() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:     "update-schema [network]",
+		Use:     "update [network]",
 		Short:   "Update a [network] data schema",
-		Example: fmt.Sprintf(`update_schema eth --%s '{"types":{"EIP712Domain":[{"name":"name","type":"string"},{"name":"version","type":"string"},{"name":"chainId","type":"uint256"},{"name":"verifyingContract","type":"address"}],"Swap":[{"name":"ids","type":"uint256[]"},{"name":"tos","type":"address[]"},{"name":"amounts","type":"uint256[]"}]},"primaryType":"Swap","domain":{"name":"ShareRingSwap","version":"2.0","chainId":"0x7a69","verifyingContract":"0x0165878a594ca255338adfa4d48449f69242eb8f","salt":""}}' --%s 10shr --%s 200shr --%s 9`, FlagsSchema, FlagsFeeIn, FlagsFeeOut, FlagsContractExponent),
+		Example: fmt.Sprintf(`update eth --%s '{"types":{"EIP712Domain":[{"name":"name","type":"string"},{"name":"version","type":"string"},{"name":"chainId","type":"uint256"},{"name":"verifyingContract","type":"address"}],"Swap":[{"name":"ids","type":"uint256[]"},{"name":"tos","type":"address[]"},{"name":"amounts","type":"uint256[]"}]},"primaryType":"Swap","domain":{"name":"ShareRingSwap","version":"2.0","chainId":"0x7a69","verifyingContract":"0x0165878a594ca255338adfa4d48449f69242eb8f","salt":""}}' --%s 10shr --%s 200shr --%s 9`, FlagsSchema, FlagsFeeIn, FlagsFeeOut, FlagsContractExponent),
 		Args:    cobra.ExactArgs(1),
 
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
@@ -121,7 +122,7 @@ func CmdUpdateSchema() *cobra.Command {
 
 func CmdDeleteSchema() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "delete-schema [network]",
+		Use:   "delete [network]",
 		Short: "Delete a schema",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {

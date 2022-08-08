@@ -7,16 +7,16 @@ import (
 )
 
 // SetPastTxEvent set a specific requestedIn in the store from its index
-func (k Keeper) SetPastTxEvent(ctx sdk.Context, destAddr sdk.Address, srcAddr string, ercEventHashes []*types.TxEvent) {
+func (k Keeper) SetPastTxEvent(ctx sdk.Context, destAddr sdk.Address, srcAddr string, txEvents []*types.TxEvent) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.PastTxEventsKeyPrefix))
 
-	for _, ercHash := range ercEventHashes {
+	for _, txEvent := range txEvents {
 		addressPair := types.PastTxEvent{
 			SrcAddr:  srcAddr,
 			DestAddr: destAddr.String(),
 		}
 		b := k.cdc.MustMarshal(&addressPair)
-		store.Set(types.PastTxEventKey(ercHash.TxHash, ercHash.LogIndex), b)
+		store.Set(types.PastTxEventKey(txEvent.TxHash, txEvent.LogIndex), b)
 	}
 
 }
@@ -57,21 +57,21 @@ func (k Keeper) RemovePastTxEvent(
 	))
 }
 
-// GetPastTxEvents returns all requestedIn
-func (k Keeper) GetPastTxEvents(ctx sdk.Context) (list []types.PastTxEvent) {
-	store := ctx.KVStore(k.storeKey)
-	iterator := sdk.KVStorePrefixIterator(store, types.KeyPrefix(types.PastTxEventsKeyPrefix))
+// // GetPastTxEvents returns all requestedIn
+// func (k Keeper) GetPastTxEvents(ctx sdk.Context) (list []*types.PastTxEvent) {
+// 	store := ctx.KVStore(k.storeKey)
+// 	iterator := sdk.KVStorePrefixIterator(store, types.KeyPrefix(types.PastTxEventsKeyPrefix))
 
-	defer iterator.Close()
+// 	defer iterator.Close()
 
-	for ; iterator.Valid(); iterator.Next() {
-		var val types.PastTxEvent
-		k.cdc.MustUnmarshal(iterator.Value(), &val)
-		list = append(list, val)
-	}
+// 	for ; iterator.Valid(); iterator.Next() {
+// 		var val types.PastTxEvent
+// 		k.cdc.MustUnmarshal(iterator.Value(), &val)
+// 		list = append(list, &val)
+// 	}
 
-	return
-}
+// 	return
+// }
 
 // GetPastTxEventsByTxHash
 func (k Keeper) GetPastTxEventsByTxHash(ctx sdk.Context, txHash string) (events []*types.PastTxEvent) {

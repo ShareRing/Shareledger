@@ -19,8 +19,8 @@ import (
 
 func CmdApprove() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "approve [txIDs] [signer_name] [network_name]",
-		Short: "approve batch of swap out transactions. The approved requests will be batched and sent as a batch by relayer",
+		Use:   "out [txIDs] [signer_name] [network_name]",
+		Short: "out batch of swap out transactions. The approved requests will be batched and sent as a batch by relayer",
 		Long: `
 		 	[txIDs] format ID1,ID2,ID3 
 			[signer_name] approver key name for signing swapping batch. The key name should be imported with HD-PATH corresponding to destination network

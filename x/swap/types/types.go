@@ -9,11 +9,11 @@ const (
 // pending -> approved|rejected
 // this value should be synced with the map below
 const (
-	SwapStatusPending  = "pending"
-	SwapStatusApproved = "approved"
-	SwapStatusRejected = "rejected"
-	SwapStatusDone     = "done"
-	SwapStatusCanceled = "cancelled"
+	SwapStatusPending   = "pending"
+	SwapStatusApproved  = "approved"
+	SwapStatusRejected  = "rejected"
+	SwapStatusDone      = "done"
+	SwapStatusCancelled = "cancelled"
 )
 
 var SupportedSwapOutNetwork = map[string]struct{}{

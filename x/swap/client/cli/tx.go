@@ -30,22 +30,57 @@ func GetTxCmd() *cobra.Command {
 		RunE:                       client.ValidateCmd,
 	}
 
+	cmd.AddCommand(CmdIn())
 	cmd.AddCommand(CmdOut())
-	cmd.AddCommand(CmdApprove())
-	cmd.AddCommand(CmdDeposit())
-	cmd.AddCommand(CmdWithdraw())
-	cmd.AddCommand(CmdCreateSchema())
-	cmd.AddCommand(CmdUpdateSchema())
-	cmd.AddCommand(CmdDeleteSchema())
-	cmd.AddCommand(CmdUpdateSwapFee())
-	cmd.AddCommand(CmdCancelBatches())
-	// this line is used by starport scaffolding # 1
 	cmd.AddCommand(CmdCancel())
 	cmd.AddCommand(CmdReject())
-	cmd.AddCommand(CmdIn())
-	cmd.AddCommand(CmdApproveIn())
-	cmd.AddCommand(CmdCompleteBatch())
+	cmd.AddCommand(CmdWithdraw())
+	cmd.AddCommand(CmdDeposit())
+	cmd.AddCommand(
+		getApproveCmd(),
+		getBatchCmd(),
+		getSchemaCmd(),
+	)
+
 	// this line is used by starport scaffolding # 1
 
+	return cmd
+}
+
+func getApproveCmd() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "approve",
+		Short: "Approve subcommand from swap module",
+	}
+	cmd.AddCommand(
+		CmdApproveIn(),
+		CmdApprove(),
+	)
+	return cmd
+}
+
+func getBatchCmd() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "batch",
+		Short: "Batch subcommand from swap module",
+	}
+	cmd.AddCommand(
+		CmdCancelBatches(),
+		CmdCompleteBatch(),
+	)
+	return cmd
+}
+
+func getSchemaCmd() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "schema",
+		Short: "Schema subcommand from swap module",
+	}
+	cmd.AddCommand(
+		CmdCreateSchema(),
+		CmdUpdateSchema(),
+		CmdDeleteSchema(),
+		CmdUpdateSwapFee(),
+	)
 	return cmd
 }

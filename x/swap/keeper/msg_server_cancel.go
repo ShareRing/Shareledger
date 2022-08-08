@@ -3,6 +3,7 @@ package keeper
 import (
 	"context"
 	"fmt"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/sharering/shareledger/x/swap/types"
@@ -49,7 +50,7 @@ func (k msgServer) Cancel(goCtx context.Context, msg *types.MsgCancel) (*types.M
 		types.NewCancelRequestEvent(msg.Creator, reqIds),
 	)
 	ctx.EventManager().EmitEvent(
-		types.NewChangeRequestStatusesEvent(reqIds, types.SwapStatusCanceled))
+		types.NewChangeRequestStatusesEvent(reqIds, types.SwapStatusCancelled))
 
 	return &types.MsgCancelResponse{}, nil
 }
