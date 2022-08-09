@@ -19,6 +19,12 @@ func (k msgServer) ApproveIn(goCtx context.Context, msg *types.MsgApproveIn) (*t
 			if found {
 				return nil, sdkerrors.Wrap(types.ErrDuplicatedSwapIn, "tx hash was processed in blockchain")
 			}
+			slpAddress, err := sdk.AccAddressFromBech32(r.DestAddr)
+			if err != nil {
+				return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, err.Error())
+			}
+
+			k.SetPastTxEvent(ctx, slpAddress, r.SrcAddr, r.TxEvents)
 		}
 	}
 
