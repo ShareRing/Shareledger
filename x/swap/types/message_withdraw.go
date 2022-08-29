@@ -54,7 +54,7 @@ func (msg *MsgWithdraw) ValidateBasic() error {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "withdraw amount isn't valid")
 	}
 
-	if denom.IsShrOrBase(msg.Amount) {
+	if !denom.IsShrOrBase(msg.Amount) {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "withdraw message invalid must be shr or nshr")
 	}
 

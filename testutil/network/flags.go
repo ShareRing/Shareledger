@@ -20,6 +20,10 @@ func SHRFee(number int) string {
 	return fmt.Sprintf("--%s=%dshr", flags.FlagFees, number)
 }
 
+func AccountSeq(i int) string {
+	return fmt.Sprintf("--%s=%d", flags.FlagSequence, i)
+}
+
 func MakeByAccount(k string) string {
 	return fmt.Sprintf("--%s=%s", flags.FlagFrom, k)
 }
