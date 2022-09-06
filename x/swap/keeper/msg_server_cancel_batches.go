@@ -21,7 +21,7 @@ func (k msgServer) CancelBatches(goCtx context.Context, msg *types.MsgCancelBatc
 	}
 
 	var zeroBatchNum uint64 = 0
-	_, err := k.ChangeStatusRequests(ctx, requestIDs, types.BatchStatusPending, &zeroBatchNum, true)
+	_, err := k.ChangeStatusRequests(ctx, requestIDs, types.SwapStatusPending, &zeroBatchNum, true)
 	if err != nil {
 		return &types.MsgCancelBatchesResponse{},
 			sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "can't change request to pending %s", err)
