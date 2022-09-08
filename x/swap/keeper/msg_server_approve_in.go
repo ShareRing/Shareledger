@@ -17,9 +17,14 @@ func (k msgServer) ApproveIn(goCtx context.Context, msg *types.MsgApproveIn) (*t
 		for _, hash := range r.TxEvents {
 			_, found := k.GetPastTxEvent(ctx, hash.TxHash, hash.LogIndex)
 			if found {
-				return nil, sdkerrors.Wrap(types.ErrDuplicatedSwapIn, "tx hash was processed in blockchain")
+				return nil, sdkerrors.Wrapf(types.ErrDuplicatedSwapIn, "tx hash was processed in blockchain %")
 			}
 		}
+		slpAddress, err := sdk.AccAddressFromBech32(r.DestAddr)
+		if err != nil {
+			return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, err.Error())
+		}
+		k.SetPastTxEvent(ctx, slpAddress, r.SrcAddr, r.TxEvents)
 	}
 
 	reqs, err := k.ChangeStatusRequests(ctx, msg.GetIds(), types.SwapStatusApproved, nil, false)

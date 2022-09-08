@@ -139,6 +139,7 @@ func (s *AssetIntegrationTestSuite) TestCreateAsset() {
 			out, err := ExCmdCreateAsset(s.network.Validators[0].ClientCtx, tc.iAssetID, tc.iAssetHash, tc.iAssetStatus, tc.iShrPFee,
 				netutilts.SHRFee(tc.iTxFee),
 				netutilts.JSONFlag,
+				netutilts.AccountSeq(43),
 				netutilts.MakeByAccount(tc.iAcc),
 			)
 

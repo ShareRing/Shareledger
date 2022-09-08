@@ -26,12 +26,6 @@ func (k msgServer) RequestIn(goCtx context.Context, msg *types.MsgRequestIn) (*t
 	var insertAmountCoin sdk.Coin
 	insertAmountCoin = sdk.NewCoin(denom.Base, amount.AmountOf(denom.Base))
 
-	slpAddress, err := sdk.AccAddressFromBech32(msg.DestAddress)
-	if err != nil {
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, err.Error())
-	}
-
-	k.SetPastTxEvent(ctx, slpAddress, msg.SrcAddress, msg.TxEvents)
 	req, err := k.AppendPendingRequest(ctx, types.Request{
 		DestAddr:    msg.DestAddress,
 		SrcNetwork:  msg.Network,
