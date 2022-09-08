@@ -113,7 +113,6 @@ genesis:
         ports: []
     swap:
       batchCount: '1'
-      idList: [ ]
       params:
       requestCount: '1'
 init:

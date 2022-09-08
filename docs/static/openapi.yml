@@ -31446,296 +31446,7 @@ paths:
                   additionalProperties: {}
       tags:
         - Query
-  /sharering/shareledger/swap/params:
-    get:
-      summary: Parameters queries the parameters of the module.
-      operationId: ShareledgerSwapParams
-      responses:
-        '200':
-          description: A successful response.
-          schema:
-            type: object
-            properties:
-              params:
-                description: params holds all the parameters of this module.
-                type: object
-            description: >-
-              QueryParamsResponse is response type for the Query/Params RPC
-              method.
-        default:
-          description: An unexpected error response.
-          schema:
-            type: object
-            properties:
-              code:
-                type: integer
-                format: int32
-              message:
-                type: string
-              details:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    '@type':
-                      type: string
-                  additionalProperties: {}
-      tags:
-        - Query
-  '/sharering/shareledger/swap/requested_ins/{txHash}':
-    get:
-      summary: Queries a list of RequestedIns items.
-      operationId: ShareledgerSwapRequestedIns
-      responses:
-        '200':
-          description: A successful response.
-          schema:
-            type: object
-            properties:
-              requestedIn:
-                type: object
-                properties:
-                  slp3Address:
-                    type: string
-                  erc20Address:
-                    type: string
-        default:
-          description: An unexpected error response.
-          schema:
-            type: object
-            properties:
-              code:
-                type: integer
-                format: int32
-              message:
-                type: string
-              details:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    '@type':
-                      type: string
-                  additionalProperties: {}
-      parameters:
-        - name: txHash
-          in: path
-          required: true
-          type: string
-        - name: logEventIndex
-          in: query
-          required: false
-          type: string
-          format: uint64
-      tags:
-        - Query
-  '/sharering/shareledger/swap/search/{status}/{ids}/{srcAddr}/{destAddr}/{srcNetwork}/{destNetwork}':
-    get:
-      summary: Queries a list of Search items.
-      operationId: ShareledgerSwapSwap
-      responses:
-        '200':
-          description: A successful response.
-          schema:
-            type: object
-            properties:
-              swaps:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    id:
-                      type: string
-                      format: uint64
-                    srcAddr:
-                      type: string
-                    destAddr:
-                      type: string
-                    srcNetwork:
-                      type: string
-                    destNetwork:
-                      type: string
-                    amount:
-                      type: object
-                      properties:
-                        denom:
-                          type: string
-                        amount:
-                          type: string
-                      description: >-
-                        Coin defines a token with a denomination and an amount.
-
-
-                        NOTE: The amount field is an Int which implements the
-                        custom method
-
-                        signatures required by gogoproto.
-                    fee:
-                      type: object
-                      properties:
-                        denom:
-                          type: string
-                        amount:
-                          type: string
-                      description: >-
-                        Coin defines a token with a denomination and an amount.
-
-
-                        NOTE: The amount field is an Int which implements the
-                        custom method
-
-                        signatures required by gogoproto.
-                    status:
-                      type: string
-                    batchId:
-                      type: string
-                      format: uint64
-                    txHashes:
-                      type: array
-                      items:
-                        type: object
-                        properties:
-                          txHash:
-                            type: string
-                          sender:
-                            type: string
-                          logEventIdx:
-                            type: string
-                            format: uint64
-              pagination:
-                type: object
-                properties:
-                  next_key:
-                    type: string
-                    format: byte
-                    title: |-
-                      next_key is the key to be passed to PageRequest.key to
-                      query the next page most efficiently
-                  total:
-                    type: string
-                    format: uint64
-                    title: >-
-                      total is total number of results available if
-                      PageRequest.count_total
-
-                      was set, its value is undefined otherwise
-                description: >-
-                  PageResponse is to be embedded in gRPC response messages where
-                  the
-
-                  corresponding request message has used PageRequest.
-
-                   message SomeResponse {
-                           repeated Bar results = 1;
-                           PageResponse page = 2;
-                   }
-        default:
-          description: An unexpected error response.
-          schema:
-            type: object
-            properties:
-              code:
-                type: integer
-                format: int32
-              message:
-                type: string
-              details:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    '@type':
-                      type: string
-                  additionalProperties: {}
-      parameters:
-        - name: status
-          in: path
-          required: true
-          type: string
-        - name: ids
-          in: path
-          required: true
-          type: array
-          items:
-            type: string
-            format: uint64
-          collectionFormat: csv
-          minItems: 1
-        - name: srcAddr
-          in: path
-          required: true
-          type: string
-        - name: destAddr
-          in: path
-          required: true
-          type: string
-        - name: srcNetwork
-          in: path
-          required: true
-          type: string
-        - name: destNetwork
-          in: path
-          required: true
-          type: string
-        - name: pagination.key
-          description: |-
-            key is a value returned in PageResponse.next_key to begin
-            querying the next page most efficiently. Only one of offset or key
-            should be set.
-          in: query
-          required: false
-          type: string
-          format: byte
-        - name: pagination.offset
-          description: >-
-            offset is a numeric offset that can be used when key is unavailable.
-
-            It is less efficient than using key. Only one of offset or key
-            should
-
-            be set.
-          in: query
-          required: false
-          type: string
-          format: uint64
-        - name: pagination.limit
-          description: >-
-            limit is the total number of results to be returned in the result
-            page.
-
-            If left empty it will default to a value to be set by each app.
-          in: query
-          required: false
-          type: string
-          format: uint64
-        - name: pagination.count_total
-          description: >-
-            count_total is set to true  to indicate that the result set should
-            include
-
-            a count of the total number of items available for pagination in
-            UIs.
-
-            count_total is only respected when offset is used. It is ignored
-            when key
-
-            is set.
-          in: query
-          required: false
-          type: boolean
-        - name: pagination.reverse
-          description: >-
-            reverse is set to true if results are to be returned in the
-            descending order.
-
-
-            Since: cosmos-sdk 0.43
-          in: query
-          required: false
-          type: boolean
-      tags:
-        - Query
-  /sharering/shareledger/swap/search_batches:
+  /sharering/shareledger/swap/batches:
     get:
       summary: Queries a list of SearchBatch items.
       operationId: ShareledgerSwapBatches
@@ -31880,10 +31591,469 @@ paths:
           type: boolean
       tags:
         - Query
-  /sharering/shareledger/swap/sign_schema:
+  /sharering/shareledger/swap/params:
+    get:
+      summary: Parameters queries the parameters of the module.
+      operationId: ShareledgerSwapParams
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              params:
+                description: params holds all the parameters of this module.
+                type: object
+            description: >-
+              QueryParamsResponse is response type for the Query/Params RPC
+              method.
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
+  /sharering/shareledger/swap/past_tx_events:
+    get:
+      summary: Queries all PastTxEvents
+      operationId: ShareledgerSwapPastTxEvents
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              events:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    srcAddr:
+                      type: string
+                    destAddr:
+                      type: string
+                  title: RequestedIns
+              pagination:
+                type: object
+                properties:
+                  next_key:
+                    type: string
+                    format: byte
+                    title: |-
+                      next_key is the key to be passed to PageRequest.key to
+                      query the next page most efficiently
+                  total:
+                    type: string
+                    format: uint64
+                    title: >-
+                      total is total number of results available if
+                      PageRequest.count_total
+
+                      was set, its value is undefined otherwise
+                description: >-
+                  PageResponse is to be embedded in gRPC response messages where
+                  the
+
+                  corresponding request message has used PageRequest.
+
+                   message SomeResponse {
+                           repeated Bar results = 1;
+                           PageResponse page = 2;
+                   }
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: pagination.key
+          description: |-
+            key is a value returned in PageResponse.next_key to begin
+            querying the next page most efficiently. Only one of offset or key
+            should be set.
+          in: query
+          required: false
+          type: string
+          format: byte
+        - name: pagination.offset
+          description: >-
+            offset is a numeric offset that can be used when key is unavailable.
+
+            It is less efficient than using key. Only one of offset or key
+            should
+
+            be set.
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.limit
+          description: >-
+            limit is the total number of results to be returned in the result
+            page.
+
+            If left empty it will default to a value to be set by each app.
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.count_total
+          description: >-
+            count_total is set to true  to indicate that the result set should
+            include
+
+            a count of the total number of items available for pagination in
+            UIs.
+
+            count_total is only respected when offset is used. It is ignored
+            when key
+
+            is set.
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+
+
+            Since: cosmos-sdk 0.43
+          in: query
+          required: false
+          type: boolean
+      tags:
+        - Query
+  '/sharering/shareledger/swap/past_tx_events/{txHash}':
+    get:
+      summary: Queries a list of PastTxEvents by txHash items.
+      operationId: ShareledgerSwapPastTxEventsByTxHash
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              events:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    srcAddr:
+                      type: string
+                    destAddr:
+                      type: string
+                  title: RequestedIns
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: txHash
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  '/sharering/shareledger/swap/past_tx_events/{txHash}/{logIndex}':
+    get:
+      summary: Queries a list of PastTxEvent items.
+      operationId: ShareledgerSwapPastTxEvent
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              event:
+                type: object
+                properties:
+                  srcAddr:
+                    type: string
+                  destAddr:
+                    type: string
+                title: RequestedIns
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: txHash
+          in: path
+          required: true
+          type: string
+        - name: logIndex
+          in: path
+          required: true
+          type: string
+          format: uint64
+      tags:
+        - Query
+  '/sharering/shareledger/swap/requests/{status}/{ids}/{srcAddr}/{destAddr}/{srcNetwork}/{destNetwork}':
+    get:
+      summary: Queries a list of Search items.
+      operationId: ShareledgerSwapSwap
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              swaps:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      format: uint64
+                    srcAddr:
+                      type: string
+                    destAddr:
+                      type: string
+                    srcNetwork:
+                      type: string
+                    destNetwork:
+                      type: string
+                    amount:
+                      type: object
+                      properties:
+                        denom:
+                          type: string
+                        amount:
+                          type: string
+                      description: >-
+                        Coin defines a token with a denomination and an amount.
+
+
+                        NOTE: The amount field is an Int which implements the
+                        custom method
+
+                        signatures required by gogoproto.
+                    fee:
+                      type: object
+                      properties:
+                        denom:
+                          type: string
+                        amount:
+                          type: string
+                      description: >-
+                        Coin defines a token with a denomination and an amount.
+
+
+                        NOTE: The amount field is an Int which implements the
+                        custom method
+
+                        signatures required by gogoproto.
+                    status:
+                      type: string
+                    batchId:
+                      type: string
+                      format: uint64
+                    txEvents:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          txHash:
+                            type: string
+                          sender:
+                            type: string
+                          logIndex:
+                            type: string
+                            format: uint64
+              pagination:
+                type: object
+                properties:
+                  next_key:
+                    type: string
+                    format: byte
+                    title: |-
+                      next_key is the key to be passed to PageRequest.key to
+                      query the next page most efficiently
+                  total:
+                    type: string
+                    format: uint64
+                    title: >-
+                      total is total number of results available if
+                      PageRequest.count_total
+
+                      was set, its value is undefined otherwise
+                description: >-
+                  PageResponse is to be embedded in gRPC response messages where
+                  the
+
+                  corresponding request message has used PageRequest.
+
+                   message SomeResponse {
+                           repeated Bar results = 1;
+                           PageResponse page = 2;
+                   }
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: status
+          in: path
+          required: true
+          type: string
+        - name: ids
+          in: path
+          required: true
+          type: array
+          items:
+            type: string
+            format: uint64
+          collectionFormat: csv
+          minItems: 1
+        - name: srcAddr
+          in: path
+          required: true
+          type: string
+        - name: destAddr
+          in: path
+          required: true
+          type: string
+        - name: srcNetwork
+          in: path
+          required: true
+          type: string
+        - name: destNetwork
+          in: path
+          required: true
+          type: string
+        - name: pagination.key
+          description: |-
+            key is a value returned in PageResponse.next_key to begin
+            querying the next page most efficiently. Only one of offset or key
+            should be set.
+          in: query
+          required: false
+          type: string
+          format: byte
+        - name: pagination.offset
+          description: >-
+            offset is a numeric offset that can be used when key is unavailable.
+
+            It is less efficient than using key. Only one of offset or key
+            should
+
+            be set.
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.limit
+          description: >-
+            limit is the total number of results to be returned in the result
+            page.
+
+            If left empty it will default to a value to be set by each app.
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.count_total
+          description: >-
+            count_total is set to true  to indicate that the result set should
+            include
+
+            a count of the total number of items available for pagination in
+            UIs.
+
+            count_total is only respected when offset is used. It is ignored
+            when key
+
+            is set.
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+
+
+            Since: cosmos-sdk 0.43
+          in: query
+          required: false
+          type: boolean
+      tags:
+        - Query
+  /sharering/shareledger/swap/schemas:
     get:
       summary: Queries a list of Format items.
-      operationId: ShareledgerSwapAllSchemas
+      operationId: ShareledgerSwapSchemas
       responses:
         '200':
           description: A successful response.
@@ -32043,7 +32213,7 @@ paths:
           type: boolean
       tags:
         - Query
-  '/sharering/shareledger/swap/sign_schema/{network}':
+  '/sharering/shareledger/swap/schemas/{network}':
     get:
       summary: Queries a Format by index.
       operationId: ShareledgerSwapSchema
@@ -53971,16 +54141,6 @@ definitions:
         type: string
       network:
         type: string
-  shareledger.swap.ERCHash:
-    type: object
-    properties:
-      txHash:
-        type: string
-      sender:
-        type: string
-      logEventIdx:
-        type: string
-        format: uint64
   shareledger.swap.Fee:
     type: object
     properties:
@@ -54010,7 +54170,7 @@ definitions:
           signatures required by gogoproto.
   shareledger.swap.MsgApproveInResponse:
     type: object
-  shareledger.swap.MsgApproveResponse:
+  shareledger.swap.MsgApproveOutResponse:
     type: object
     properties:
       batchId:
@@ -54031,15 +54191,15 @@ definitions:
     properties:
       status:
         type: string
-  shareledger.swap.MsgOutSwapResponse:
+  shareledger.swap.MsgRejectResponse:
+    type: object
+  shareledger.swap.MsgRequestInResponse:
     type: object
     properties:
       id:
         type: string
         format: uint64
-  shareledger.swap.MsgRejectResponse:
-    type: object
-  shareledger.swap.MsgSwapInResponse:
+  shareledger.swap.MsgRequestOutResponse:
     type: object
     properties:
       id:
@@ -54057,7 +54217,194 @@ definitions:
   shareledger.swap.Params:
     type: object
     description: Params defines the parameters for the module.
-  shareledger.swap.QueryAllSchemasResponse:
+  shareledger.swap.PastTxEvent:
+    type: object
+    properties:
+      srcAddr:
+        type: string
+      destAddr:
+        type: string
+    title: RequestedIns
+  shareledger.swap.QueryBalanceResponse:
+    type: object
+    properties:
+      balance:
+        type: object
+        properties:
+          denom:
+            type: string
+          amount:
+            type: string
+        description: |-
+          Coin defines a token with a denomination and an amount.
+
+          NOTE: The amount field is an Int which implements the custom method
+          signatures required by gogoproto.
+  shareledger.swap.QueryBatchesResponse:
+    type: object
+    properties:
+      batches:
+        type: array
+        items:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uint64
+            signature:
+              type: string
+            requestIds:
+              type: array
+              items:
+                type: string
+                format: uint64
+            status:
+              type: string
+            network:
+              type: string
+      pagination:
+        type: object
+        properties:
+          next_key:
+            type: string
+            format: byte
+            title: |-
+              next_key is the key to be passed to PageRequest.key to
+              query the next page most efficiently
+          total:
+            type: string
+            format: uint64
+            title: >-
+              total is total number of results available if
+              PageRequest.count_total
+
+              was set, its value is undefined otherwise
+        description: |-
+          PageResponse is to be embedded in gRPC response messages where the
+          corresponding request message has used PageRequest.
+
+           message SomeResponse {
+                   repeated Bar results = 1;
+                   PageResponse page = 2;
+           }
+  shareledger.swap.QueryParamsResponse:
+    type: object
+    properties:
+      params:
+        description: params holds all the parameters of this module.
+        type: object
+    description: QueryParamsResponse is response type for the Query/Params RPC method.
+  shareledger.swap.QueryPastTxEventResponse:
+    type: object
+    properties:
+      event:
+        type: object
+        properties:
+          srcAddr:
+            type: string
+          destAddr:
+            type: string
+        title: RequestedIns
+  shareledger.swap.QueryPastTxEventsByTxHashResponse:
+    type: object
+    properties:
+      events:
+        type: array
+        items:
+          type: object
+          properties:
+            srcAddr:
+              type: string
+            destAddr:
+              type: string
+          title: RequestedIns
+  shareledger.swap.QueryPastTxEventsResponse:
+    type: object
+    properties:
+      events:
+        type: array
+        items:
+          type: object
+          properties:
+            srcAddr:
+              type: string
+            destAddr:
+              type: string
+          title: RequestedIns
+      pagination:
+        type: object
+        properties:
+          next_key:
+            type: string
+            format: byte
+            title: |-
+              next_key is the key to be passed to PageRequest.key to
+              query the next page most efficiently
+          total:
+            type: string
+            format: uint64
+            title: >-
+              total is total number of results available if
+              PageRequest.count_total
+
+              was set, its value is undefined otherwise
+        description: |-
+          PageResponse is to be embedded in gRPC response messages where the
+          corresponding request message has used PageRequest.
+
+           message SomeResponse {
+                   repeated Bar results = 1;
+                   PageResponse page = 2;
+           }
+  shareledger.swap.QuerySchemaResponse:
+    type: object
+    properties:
+      schema:
+        type: object
+        properties:
+          network:
+            type: string
+          creator:
+            type: string
+          schema:
+            type: string
+          contractExponent:
+            type: integer
+            format: int32
+          fee:
+            type: object
+            properties:
+              in:
+                type: object
+                properties:
+                  denom:
+                    type: string
+                  amount:
+                    type: string
+                description: >-
+                  Coin defines a token with a denomination and an amount.
+
+
+                  NOTE: The amount field is an Int which implements the custom
+                  method
+
+                  signatures required by gogoproto.
+              out:
+                type: object
+                properties:
+                  denom:
+                    type: string
+                  amount:
+                    type: string
+                description: >-
+                  Coin defines a token with a denomination and an amount.
+
+
+                  NOTE: The amount field is an Int which implements the custom
+                  method
+
+                  signatures required by gogoproto.
+  shareledger.swap.QuerySchemasResponse:
     type: object
     properties:
       schemas:
@@ -54132,133 +54479,6 @@ definitions:
                    repeated Bar results = 1;
                    PageResponse page = 2;
            }
-  shareledger.swap.QueryBalanceResponse:
-    type: object
-    properties:
-      balance:
-        type: object
-        properties:
-          denom:
-            type: string
-          amount:
-            type: string
-        description: |-
-          Coin defines a token with a denomination and an amount.
-
-          NOTE: The amount field is an Int which implements the custom method
-          signatures required by gogoproto.
-  shareledger.swap.QueryBatchesResponse:
-    type: object
-    properties:
-      batches:
-        type: array
-        items:
-          type: object
-          properties:
-            id:
-              type: string
-              format: uint64
-            signature:
-              type: string
-            requestIds:
-              type: array
-              items:
-                type: string
-                format: uint64
-            status:
-              type: string
-            network:
-              type: string
-      pagination:
-        type: object
-        properties:
-          next_key:
-            type: string
-            format: byte
-            title: |-
-              next_key is the key to be passed to PageRequest.key to
-              query the next page most efficiently
-          total:
-            type: string
-            format: uint64
-            title: >-
-              total is total number of results available if
-              PageRequest.count_total
-
-              was set, its value is undefined otherwise
-        description: |-
-          PageResponse is to be embedded in gRPC response messages where the
-          corresponding request message has used PageRequest.
-
-           message SomeResponse {
-                   repeated Bar results = 1;
-                   PageResponse page = 2;
-           }
-  shareledger.swap.QueryParamsResponse:
-    type: object
-    properties:
-      params:
-        description: params holds all the parameters of this module.
-        type: object
-    description: QueryParamsResponse is response type for the Query/Params RPC method.
-  shareledger.swap.QueryRequestedInsResponse:
-    type: object
-    properties:
-      requestedIn:
-        type: object
-        properties:
-          slp3Address:
-            type: string
-          erc20Address:
-            type: string
-  shareledger.swap.QuerySchemaResponse:
-    type: object
-    properties:
-      schema:
-        type: object
-        properties:
-          network:
-            type: string
-          creator:
-            type: string
-          schema:
-            type: string
-          contractExponent:
-            type: integer
-            format: int32
-          fee:
-            type: object
-            properties:
-              in:
-                type: object
-                properties:
-                  denom:
-                    type: string
-                  amount:
-                    type: string
-                description: >-
-                  Coin defines a token with a denomination and an amount.
-
-
-                  NOTE: The amount field is an Int which implements the custom
-                  method
-
-                  signatures required by gogoproto.
-              out:
-                type: object
-                properties:
-                  denom:
-                    type: string
-                  amount:
-                    type: string
-                description: >-
-                  Coin defines a token with a denomination and an amount.
-
-
-                  NOTE: The amount field is an Int which implements the custom
-                  method
-
-                  signatures required by gogoproto.
   shareledger.swap.QuerySwapResponse:
     type: object
     properties:
@@ -54313,7 +54533,7 @@ definitions:
             batchId:
               type: string
               format: uint64
-            txHashes:
+            txEvents:
               type: array
               items:
                 type: object
@@ -54322,7 +54542,7 @@ definitions:
                     type: string
                   sender:
                     type: string
-                  logEventIdx:
+                  logIndex:
                     type: string
                     format: uint64
       pagination:
@@ -54393,7 +54613,7 @@ definitions:
       batchId:
         type: string
         format: uint64
-      txHashes:
+      txEvents:
         type: array
         items:
           type: object
@@ -54402,16 +54622,9 @@ definitions:
               type: string
             sender:
               type: string
-            logEventIdx:
+            logIndex:
               type: string
               format: uint64
-  shareledger.swap.RequestedIn:
-    type: object
-    properties:
-      slp3Address:
-        type: string
-      erc20Address:
-        type: string
   shareledger.swap.Schema:
     type: object
     properties:
@@ -54457,3 +54670,13 @@ definitions:
               method
 
               signatures required by gogoproto.
+  shareledger.swap.TxEvent:
+    type: object
+    properties:
+      txHash:
+        type: string
+      sender:
+        type: string
+      logIndex:
+        type: string
+        format: uint64
