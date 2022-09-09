@@ -2,19 +2,19 @@ package tests
 
 import (
 	"fmt"
+	"github.com/cosmos/cosmos-sdk/crypto/keyring"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	"github.com/ethereum/go-ethereum/common/hexutil"
+	"github.com/sharering/shareledger/pkg/swap"
+	"github.com/sharering/shareledger/x/gentlemint/client/tests"
 	"os"
 	"strings"
 	"testing"
 
-	"github.com/cosmos/cosmos-sdk/crypto/keyring"
 	"github.com/cosmos/cosmos-sdk/testutil/network"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	"github.com/ethereum/go-ethereum/common/hexutil"
-	"github.com/sharering/shareledger/pkg/swap"
 	netutilts "github.com/sharering/shareledger/testutil/network"
 	electoralmoduletypes "github.com/sharering/shareledger/x/electoral/types"
-	"github.com/sharering/shareledger/x/gentlemint/client/tests"
 	swapTypes "github.com/sharering/shareledger/x/swap/types"
 	denom "github.com/sharering/shareledger/x/utils/demo"
 	"github.com/stretchr/testify/require"
@@ -114,7 +114,7 @@ func (s *SwapIntegrationTestSuite) TestDeposit() {
 				fundRes := swapTypes.QueryBalanceResponse{}
 				err = validatorCtx.Codec.UnmarshalJSON(out.Bytes(), &fundRes)
 
-				balanceModuleBeforeDeposit = sdk.NewDecCoins(*fundRes.GetBalance())
+				balanceModuleBeforeDeposit = sdk.NewDecCoinsFromCoins(*fundRes.GetBalance())
 
 			}
 			if tc.expectCreatorChange != nil {
@@ -150,8 +150,9 @@ func (s *SwapIntegrationTestSuite) TestDeposit() {
 				if err != nil {
 					s.T().Fatalf("can't unmarshal json %s", err)
 				}
-				balanceModuleAfterDeposit = sdk.NewDecCoins(*fundRes.GetBalance())
-				s.Require().Equalf(balanceModuleBeforeDeposit.AmountOf(denom.Shr).Add(sdk.NewDec(tc.expectModuleChange.D)), balanceModuleAfterDeposit.AmountOf(denom.Shr), "module balance isn't equal")
+				balanceModuleAfterDeposit = sdk.NewDecCoinsFromCoins(*fundRes.GetBalance())
+
+				s.Require().Equalf(balanceModuleBeforeDeposit.AmountOf(denom.Base).Add(sdk.NewDec(tc.expectModuleChange.D*denom.ShrExponent)), balanceModuleAfterDeposit.AmountOf(denom.Base), "module balance isn't equal")
 			}
 			if tc.expectCreatorChange != nil {
 				out := tests.CmdQueryBalance(s.T(), validatorCtx, netutilts.Accounts[tc.txCreator])
@@ -205,7 +206,7 @@ func (s *SwapIntegrationTestSuite) TestWithDraw() {
 			oErr:                 nil,
 			expectReceiverChange: &Num{0},
 			expectModuleChange:   &Num{0},
-			oRes:                 &sdk.TxResponse{Code: sdkerrors.ErrInsufficientFunds.ABCICode()},
+			oRes:                 &sdk.TxResponse{Code: sdkerrors.ErrInvalidRequest.ABCICode()},
 		},
 		{
 			d:         "deposit fail creator isn't authority or treasure",
@@ -218,6 +219,15 @@ func (s *SwapIntegrationTestSuite) TestWithDraw() {
 		},
 	}
 	validatorCtx := s.network.Validators[0].ClientCtx
+	_, _ = CmdDeposit(validatorCtx,
+		"1000000000000nshr",
+		netutilts.JSONFlag,
+		netutilts.SkipConfirmation,
+		netutilts.MakeByAccount(netutilts.KeyAuthority),
+		netutilts.BlockBroadcast,
+		netutilts.SHRFee(2),
+	)
+
 	for _, tc := range testSuite {
 		s.Run(tc.d, func() {
 			var balanceReceiverBeforeDeposit sdk.DecCoins
@@ -231,7 +241,7 @@ func (s *SwapIntegrationTestSuite) TestWithDraw() {
 				fundRes := swapTypes.QueryBalanceResponse{}
 				err = validatorCtx.Codec.UnmarshalJSON(out.Bytes(), &fundRes)
 
-				balanceModuleBeforeDeposit = sdk.NewDecCoins(*fundRes.GetBalance())
+				balanceModuleBeforeDeposit = sdk.NewDecCoinsFromCoins(*fundRes.GetBalance())
 
 			}
 			rAddr, _ := sdk.AccAddressFromBech32(tc.iReceiver)
@@ -254,7 +264,7 @@ func (s *SwapIntegrationTestSuite) TestWithDraw() {
 			}
 			if tc.oRes != nil {
 				txResponse := netutilts.ParseStdOut(s.T(), out.Bytes())
-				s.Equalf(tc.oRes.Code, txResponse.Code, "deposit fail %s", out)
+				s.Equalf(tc.oRes.Code, txResponse.Code, "withdraw fail %s", out)
 			}
 
 			if tc.expectModuleChange != nil {
@@ -269,10 +279,10 @@ func (s *SwapIntegrationTestSuite) TestWithDraw() {
 				if err != nil {
 					s.T().Fatalf("can't unmarshal json %s", err)
 				}
-				balanceModuleAfterDeposit = sdk.NewDecCoins(*fundRes.GetBalance())
+				balanceModuleAfterDeposit = sdk.NewDecCoinsFromCoins(*fundRes.GetBalance())
 				s.Require().Equalf(
-					balanceModuleBeforeDeposit.AmountOf(denom.Shr).Add(sdk.NewDec(tc.expectModuleChange.D)).String(),
-					balanceModuleAfterDeposit.AmountOf(denom.Shr).String(), "module balance isn't equal")
+					balanceModuleBeforeDeposit.AmountOf(denom.Base).Add(sdk.NewDec(tc.expectModuleChange.D*denom.ShrExponent)).String(),
+					balanceModuleAfterDeposit.AmountOf(denom.Base).String(), "module balance isn't equal")
 			}
 			if tc.expectReceiverChange != nil {
 				out := tests.CmdQueryBalance(s.T(), validatorCtx, rAddr)
@@ -412,7 +422,7 @@ func (s *SwapIntegrationTestSuite) TestCancel() {
 				}
 				fundRes := swapTypes.QueryBalanceResponse{}
 				err = cliCtx.Codec.UnmarshalJSON(out.Bytes(), &fundRes)
-				balanceModuleBefore = sdk.NewDecCoins(*fundRes.GetBalance())
+				balanceModuleBefore = sdk.NewDecCoinsFromCoins(*fundRes.GetBalance())
 
 			}
 			if ts.expectCreatorChange != nil {
@@ -437,8 +447,8 @@ func (s *SwapIntegrationTestSuite) TestCancel() {
 					s.Fail("fail when init the swap out request %s", txRes.String())
 				}
 				log := netutilts.ParseRawLogGetEvent(s.T(), txRes.RawLog)[0]
-				attr := log.Events.GetEventByType(s.T(), "swap_out")
-				swapIDs = append(swapIDs, attr.Get(s.T(), "swap_id").Value)
+				attr := log.Events.GetEventByType(s.T(), swapTypes.EventTypeCreateRequest)
+				swapIDs = append(swapIDs, attr.Get(s.T(), swapTypes.EventAttrSwapId).Value)
 			}
 			if ts.approve > 0 {
 				appIDs := strings.Join(swapIDs[0:ts.approve], ",")
@@ -495,9 +505,9 @@ func (s *SwapIntegrationTestSuite) TestCancel() {
 				if err != nil {
 					s.T().Fatalf("can't unmarshal json %s", err)
 				}
-				balanceModuleAfterCancel = sdk.NewDecCoins(*fundRes.GetBalance())
+				balanceModuleAfterCancel = sdk.NewDecCoinsFromCoins(*fundRes.GetBalance())
 
-				s.Require().Equalf(balanceModuleBefore.AmountOf(denom.Shr).Add(sdk.NewDec(ts.expectModuleChange.D)).String(), balanceModuleAfterCancel.AmountOf(denom.Shr).String(), "module balance isn't equal")
+				s.Require().Equalf(balanceModuleBefore.AmountOf(denom.Base).Add(sdk.NewDec(ts.expectModuleChange.D*denom.ShrExponent)).String(), balanceModuleAfterCancel.AmountOf(denom.Base).String(), "module balance isn't equal")
 			}
 			if ts.expectCreatorChange != nil {
 				out := tests.CmdQueryBalance(s.T(), cliCtx, netutilts.Accounts[ts.iTxCreatorSwap])
@@ -634,7 +644,7 @@ func (s *SwapIntegrationTestSuite) TestReject() {
 				fundRes := swapTypes.QueryBalanceResponse{}
 				err = cliCtx.Codec.UnmarshalJSON(out.Bytes(), &fundRes)
 
-				balanceModuleBefore = sdk.NewDecCoins(*fundRes.GetBalance())
+				balanceModuleBefore = sdk.NewDecCoinsFromCoins(*fundRes.GetBalance())
 			}
 			if ts.expectCreatorChange != nil {
 				out := tests.CmdQueryBalance(s.T(), cliCtx, netutilts.Accounts[ts.iTxCreatorSwap])
@@ -658,8 +668,8 @@ func (s *SwapIntegrationTestSuite) TestReject() {
 					s.Fail("fail when init the swap out request %s", txRes.String())
 				}
 				log := netutilts.ParseRawLogGetEvent(s.T(), txRes.RawLog)[0]
-				attr := log.Events.GetEventByType(s.T(), "swap_out")
-				swapIDs = append(swapIDs, attr.Get(s.T(), "swap_id").Value)
+				attr := log.Events.GetEventByType(s.T(), swapTypes.EventTypeCreateRequest)
+				swapIDs = append(swapIDs, attr.Get(s.T(), swapTypes.EventAttrSwapId).Value)
 			}
 			if ts.approve > 0 {
 				appIDs := strings.Join(swapIDs[0:ts.approve], ",")
@@ -715,9 +725,9 @@ func (s *SwapIntegrationTestSuite) TestReject() {
 				if err != nil {
 					s.T().Fatalf("can't unmarshal json %s", err)
 				}
-				balanceModuleAfterCancel = sdk.NewDecCoins(*fundRes.GetBalance())
+				balanceModuleAfterCancel = sdk.NewDecCoinsFromCoins(*fundRes.GetBalance())
 
-				s.Require().Equalf(balanceModuleBefore.AmountOf(denom.Shr).Add(sdk.NewDec(ts.expectModuleChange.D)).String(), balanceModuleAfterCancel.AmountOf(denom.Shr).String(), "module balance isn't equal")
+				s.Require().Equalf(balanceModuleBefore.AmountOf(denom.Base).Add(sdk.NewDec(ts.expectModuleChange.D*denom.ShrExponent)).String(), balanceModuleAfterCancel.AmountOf(denom.Base).String(), "module balance isn't equal")
 			}
 			if ts.expectCreatorChange != nil {
 				out := tests.CmdQueryBalance(s.T(), cliCtx, netutilts.Accounts[ts.iTxCreatorSwap])
@@ -849,7 +859,7 @@ func networkWithSchema(t *testing.T, cf *network.Config) {
 	}
 	gen.RequestCount = 4000
 
-	gen.RequestList = []swapTypes.Request{
+	gen.Requests = []swapTypes.Request{
 		{
 			Id:       3000,
 			DestAddr: "0x97b98d335c28f9ad9c123e344a78f00c84146431",
