@@ -4,7 +4,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/tx"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	denom "github.com/sharering/shareledger/x/utils/demo"
+	denom "github.com/sharering/shareledger/x/utils/denom"
 )
 
 var autoConvertFee tx.PreRunBroadcastTx = func(clientCtx client.Context, txf tx.Factory, msgs ...sdk.Msg) (nClientCtx client.Context, nTxf tx.Factory, nMsgs []sdk.Msg, err error) {

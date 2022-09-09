@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/cosmos/cosmos-sdk/testutil/network"
 	"github.com/sharering/shareledger/app"
-	denom "github.com/sharering/shareledger/x/utils/demo"
+	denom "github.com/sharering/shareledger/x/utils/denom"
 	"github.com/tendermint/spm/cosmoscmd"
 )
 

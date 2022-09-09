@@ -6,7 +6,7 @@ import (
 	"github.com/sharering/shareledger/x/constant"
 	"github.com/sharering/shareledger/x/fee"
 	"github.com/sharering/shareledger/x/gentlemint/types"
-	denom "github.com/sharering/shareledger/x/utils/demo"
+	denom "github.com/sharering/shareledger/x/utils/denom"
 )
 
 func (k Keeper) GetBaseFeeByMsg(ctx sdk.Context, msg sdk.Msg) (sdk.Coin, error) {

@@ -16,7 +16,7 @@ import (
 	netutilts "github.com/sharering/shareledger/testutil/network"
 	electoralmoduletypes "github.com/sharering/shareledger/x/electoral/types"
 	swapTypes "github.com/sharering/shareledger/x/swap/types"
-	denom "github.com/sharering/shareledger/x/utils/demo"
+	denom "github.com/sharering/shareledger/x/utils/denom"
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
 )

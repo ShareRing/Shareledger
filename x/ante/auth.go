@@ -9,7 +9,7 @@ import (
 	gentleminttypes "github.com/sharering/shareledger/x/gentlemint/types"
 	idtypes "github.com/sharering/shareledger/x/id/types"
 	swapmoduletypes "github.com/sharering/shareledger/x/swap/types"
-	denom "github.com/sharering/shareledger/x/utils/demo"
+	denom "github.com/sharering/shareledger/x/utils/denom"
 )
 
 type Auth struct {
