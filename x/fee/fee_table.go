@@ -1,7 +1,14 @@
+/*Fee package helps the authority take
+control how much transaction for each state change message
+*/
+
 package fee
 
 import (
 	"fmt"
+	"reflect"
+	"sync"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 	distributiontypes "github.com/cosmos/cosmos-sdk/x/distribution/types"
@@ -15,8 +22,7 @@ import (
 	electoralmoduletypes "github.com/sharering/shareledger/x/electoral/types"
 	gentlemintmoduletypes "github.com/sharering/shareledger/x/gentlemint/types"
 	idmoduletypes "github.com/sharering/shareledger/x/id/types"
-	"reflect"
-	"sync"
+	swapmoduletypes "github.com/sharering/shareledger/x/swap/types"
 )
 
 func init() {
@@ -97,6 +103,23 @@ var mapActions = map[reflect.Type]string{
 	reflect.ValueOf(&stakingmoduletypes.MsgEditValidator{}).Type():   "staking_edit-validator",
 	reflect.ValueOf(&stakingmoduletypes.MsgBeginRedelegate{}).Type(): "staking_redelegate",
 	reflect.ValueOf(&stakingmoduletypes.MsgUndelegate{}).Type():      "staking_unbond",
+
+	/*------------x/swap module---------------- start */
+	reflect.ValueOf(&swapmoduletypes.MsgRequestIn{}).Type():     "swap_request-in",
+	reflect.ValueOf(&swapmoduletypes.MsgRequestOut{}).Type():    "swap_request-out",
+	reflect.ValueOf(&swapmoduletypes.MsgApproveIn{}).Type():     "swap_approve-in",
+	reflect.ValueOf(&swapmoduletypes.MsgApproveOut{}).Type():    "swap_approve-out",
+	reflect.ValueOf(&swapmoduletypes.MsgCancel{}).Type():        "swap_cancel",
+	reflect.ValueOf(&swapmoduletypes.MsgReject{}).Type():        "swap_reject",
+	reflect.ValueOf(&swapmoduletypes.MsgDeposit{}).Type():       "swap_deposit",
+	reflect.ValueOf(&swapmoduletypes.MsgWithdraw{}).Type():      "swap_withdraw",
+	reflect.ValueOf(&swapmoduletypes.MsgCreateSchema{}).Type():  "swap_create-schema",
+	reflect.ValueOf(&swapmoduletypes.MsgUpdateSchema{}).Type():  "swap_update-schema",
+	reflect.ValueOf(&swapmoduletypes.MsgDeleteSchema{}).Type():  "swap_delete-schema",
+	reflect.ValueOf(&swapmoduletypes.MsgCancelBatches{}).Type(): "swap_cancel-batches",
+	reflect.ValueOf(&swapmoduletypes.MsgCompleteBatch{}).Type(): "swap_update-batch-done",
+	reflect.ValueOf(&swapmoduletypes.MsgUpdateSwapFee{}).Type(): "swap_update-swap-fee",
+	/*------------x/swap module------------- end */
 }
 
 func GetActionKey(msg sdk.Msg) string {

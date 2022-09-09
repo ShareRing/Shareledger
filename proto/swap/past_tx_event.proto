@@ -1,0 +1,10 @@
+syntax = "proto3";
+package shareledger.swap;
+
+option go_package = "github.com/sharering/shareledger/x/swap/types";
+
+// RequestedIns
+message PastTxEvent {
+  string srcAddr = 1; // erc20
+  string destAddr = 2; // slp3
+}

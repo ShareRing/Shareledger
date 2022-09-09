@@ -3,7 +3,7 @@ package types
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/sharering/shareledger/x/constant"
-	denom "github.com/sharering/shareledger/x/utils/demo"
+	denom "github.com/sharering/shareledger/x/utils/denom"
 	"testing"
 
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"

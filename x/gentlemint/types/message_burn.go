@@ -3,7 +3,7 @@ package types
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	denom "github.com/sharering/shareledger/x/utils/demo"
+	denom "github.com/sharering/shareledger/x/utils/denom"
 )
 
 var _ sdk.Msg = &MsgBurn{}
@@ -42,9 +42,6 @@ func (msg *MsgBurn) ValidateBasic() error {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
 	}
 
-	if err := msg.Coins.Validate(); err != nil {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "coins string was not supported. Format should be {amount0}{denomination},...,{amountN}{denominationN}")
-	}
 	if err := denom.CheckSupportedCoins(msg.Coins, nil); err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, err.Error())
 	}

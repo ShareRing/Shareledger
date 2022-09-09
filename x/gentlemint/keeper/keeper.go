@@ -2,7 +2,7 @@ package keeper
 
 import (
 	"fmt"
-	denom "github.com/sharering/shareledger/x/utils/demo"
+	denom "github.com/sharering/shareledger/x/utils/denom"
 
 	"github.com/tendermint/tendermint/libs/log"
 

@@ -8,7 +8,8 @@ import (
 	electoraltypes "github.com/sharering/shareledger/x/electoral/types"
 	gentleminttypes "github.com/sharering/shareledger/x/gentlemint/types"
 	idtypes "github.com/sharering/shareledger/x/id/types"
-	denom "github.com/sharering/shareledger/x/utils/demo"
+	swapmoduletypes "github.com/sharering/shareledger/x/swap/types"
+	denom "github.com/sharering/shareledger/x/utils/denom"
 )
 
 type Auth struct {
@@ -17,14 +18,21 @@ type Auth struct {
 }
 
 const (
-	ErrMsgNotIdSigner        = "Transaction's Signer is not ID signer"
-	ErrMsgNotSHRPLoader      = "Transaction's Signer is not SHRP loader"
-	ErrMsgNotDocIssuer       = "Transaction's Signer is not document issuer"
-	ErrMsgNotAuthority       = "Transaction's Signer is not authority"
-	ErrMsgNotBackupAccount   = "Transaction's Signer is not the backup account"
-	ErrMsgNotTreasureAccount = "Transaction's Signer is not treasure account"
-	ErrMsgNotOperatorAccount = "Transaction's Signer is not operator account"
-	ErrMsgNotVoterAccount    = "Transaction's Signer is not voter account"
+	ErrMsgNotIdSigner             = "Transaction's Signer is not ID signer"
+	ErrMsgNotSHRPLoader           = "Transaction's Signer is not SHRP loader"
+	ErrMsgNotDocIssuer            = "Transaction's Signer is not document issuer"
+	ErrMsgNotAuthority            = "Transaction's Signer is not authority"
+	ErrMsgNotBackupAccount        = "Transaction's Signer is not the backup account"
+	ErrMsgNotTreasureAccount      = "Transaction's Signer is not treasure account"
+	ErrMsgNotOperatorAccount      = "Transaction's Signer is not operator account"
+	ErrMsgNotVoterAccount         = "Transaction's Signer is not voter account"
+	ErrMsgNotAuthorityAndTreasure = "Transaction's Signer is not authority OR treasure account"
+	ErrMsgNotApproverAccount      = "Transaction's Signer is not approver account"
+	ErrMsgNotRelayerAccount       = "Transaction's Signer is not relayer account"
+	ErrMsgNotSwapManager          = "Transaction's Signer is not swap manager account"
+	ErrMsgNotRelayerOrApprover    = "Transaction's Signer is not relayer approver"
+	ErrMsgNotRelayer              = "Transaction's Signer is not relayer"
+	ErrMsgStatusInvalid           = "Can't update batch to canceled via update function"
 )
 
 func NewAuthDecorator(rk RoleKeeper, ik IDKeeper) Auth {
@@ -62,7 +70,16 @@ func (a Auth) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate bool, next sdk.Ant
 			*electoraltypes.MsgEnrollAccountOperators,
 			*electoraltypes.MsgRevokeAccountOperators,
 			*electoraltypes.MsgEnrollVoter,
-			*electoraltypes.MsgRevokeVoter:
+			*electoraltypes.MsgEnrollApprovers,
+			*electoraltypes.MsgEnrollRelayers,
+			*electoraltypes.MsgRevokeRelayers,
+			*electoraltypes.MsgRevokeApprovers,
+			*swapmoduletypes.MsgCreateSchema,
+			*swapmoduletypes.MsgUpdateSchema,
+			*swapmoduletypes.MsgDeleteSchema,
+			*electoraltypes.MsgRevokeVoter,
+			*electoraltypes.MsgEnrollSwapManagers,
+			*electoraltypes.MsgRevokeSwapManagers:
 			if !a.rk.IsAuthority(ctx, signer) {
 				return ctx, sdkerrors.Wrapf(sdkerrors.ErrUnauthorized, ErrMsgNotAuthority)
 			}
@@ -106,6 +123,24 @@ func (a Auth) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate bool, next sdk.Ant
 			*stakingtypes.MsgEditValidator:
 			if !a.rk.IsVoter(ctx, signer) {
 				return ctx, sdkerrors.Wrapf(sdkerrors.ErrUnauthorized, ErrMsgNotVoterAccount)
+			}
+		case *swapmoduletypes.MsgWithdraw:
+			if !a.rk.IsAuthority(ctx, signer) && !a.rk.IsTreasurer(ctx, signer) {
+				return ctx, sdkerrors.Wrapf(sdkerrors.ErrUnauthorized, ErrMsgNotAuthorityAndTreasure)
+			}
+
+		case *swapmoduletypes.MsgApproveOut, *swapmoduletypes.MsgReject, *swapmoduletypes.MsgApproveIn:
+			if !a.rk.IsApprover(ctx, signer) {
+				return ctx, sdkerrors.Wrapf(sdkerrors.ErrUnauthorized, ErrMsgNotApproverAccount)
+			}
+		case *swapmoduletypes.MsgRequestIn, *swapmoduletypes.MsgCancelBatches,
+			*swapmoduletypes.MsgCompleteBatch:
+			if !a.rk.IsRelayer(ctx, signer) {
+				return ctx, sdkerrors.Wrapf(sdkerrors.ErrUnauthorized, ErrMsgNotRelayerAccount)
+			}
+		case *swapmoduletypes.MsgUpdateSwapFee:
+			if !a.rk.IsSwapManager(ctx, signer) && !a.rk.IsTreasurer(ctx, signer) {
+				return ctx, sdkerrors.Wrapf(sdkerrors.ErrUnauthorized, ErrMsgNotSwapManager)
 			}
 		}
 	}

@@ -1,8 +1,8 @@
-FROM golang:1.17-alpine AS build
+FROM golang:1.18.2-stretch AS build
 
 WORKDIR /app
 
-RUN apk add --update make
+RUN apt-get update && apt-get --assume-yes upgrade make
 
 COPY /go.mod ./
 COPY /go.sum ./
@@ -14,6 +14,9 @@ RUN make build
 
 FROM alpine:3.14
 WORKDIR /app
+
+RUN apk add --no-cache libc6-compat
+
 COPY --from=build /app/build/* ./
 RUN chmod +x ./shareledger
 RUN mv ./shareledger /bin

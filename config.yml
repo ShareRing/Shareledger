@@ -15,8 +15,18 @@ accounts:
     coins: ["100000000000000000nshr", "100000000000cent"]
     mnemonic: "memory mind warfare pull risk math concert address zero speak glimpse outside economy hill boil boss pulp much connect install clip short object tobacco"
   - name: user
-    coins: [ "100000000000nshr" ]
+    coins: [ "1000000000000000nshr" ]
     mnemonic: "bright payment cash tomato tragic impulse perfect jacket matter jelly artist pulse will cinnamon erase middle elevator away clinic razor rotate tide unfair trigger"
+  - name: approver
+    coins: ["100000000000nshr"]
+    mnemonic: "spend people immense ill property hungry craft corn quote once hand clarify adapt disorder airport balance alley wisdom physical appear debris awake pencil skate"
+  - name: "relayer"
+    coins: ["100000000000nshr"]
+    mnemonic : "indoor donate grid ostrich tree swamp cactus common piano buzz version world second try garage squirrel alert fork december control bind spoon taste essay"
+  - name: "swap_manager"
+    coins: ["100000000000nshr"]
+    mnemonic: "logic fade bike misery female father false speak code immune improve key food enter night timber kick spare amused miss expire bottom walk century"
+
 validator:
   name: validator
   staked: "100000000000000000nshr"
@@ -25,6 +35,7 @@ client:
     path: "docs/static/openapi.yml"
 build:
   binary: "shareledger"
+  main: "./cmd/Shareledgerd"
 # faucet:
 #   name: bob
 #   coins: ["5token", "100000stake"]
@@ -73,10 +84,38 @@ genesis:
         - key: votershareledger18pf3zdwqjntd9wkvfcjvmdc7hua6c0q2eck5h5
           address: shareledger18pf3zdwqjntd9wkvfcjvmdc7hua6c0q2eck5h5
           status: active
+        - key: approvershareledger1j4ndn4qed0ukulc0a6a5fxe6yxmnm7wh59pwpn
+          address: shareledger1j4ndn4qed0ukulc0a6a5fxe6yxmnm7wh59pwpn
+          status: active
+        - key: relayershareledger16k53l0v5fr93u2kpe7ek2lc3tm37k4954zalvv
+          address: shareledger16k53l0v5fr93u2kpe7ek2lc3tm37k4954zalvv
+          status: active
+        - key: swapManagershareledger1yfwgejzj4nmkp6es6q3xea9uwexy5xwjs9rpcx
+          address: shareledger1yfwgejzj4nmkp6es6q3xea9uwexy5xwjs9rpcx
+          status: active
       authority:
         address: shareledger1lq9svs76xwekrrzw7uprekyqydf7fp02p8zp8e
       treasurer:
         address: shareledger1l5hkf2epa5xmvngnjaasj5dp9jp7ut6s9mrqve
+    interchainaccounts: #Default config for ibc
+      host_genesis_state:
+        active_channels: []
+        interchain_accounts: []
+        port: icahost
+        params:
+          host_enabled: false
+          allow_messages: []
+      controller_genesis_state:
+        active_channels: []
+        interchain_accounts: []
+        params:
+          controller_enabled: true
+        ports: []
+    swap:
+      batchCount: '1'
+      requests: []
+      params:
+      requestCount: '1'
 init:
   client:
     chain-id: "ShareRing-VoyagerNet"

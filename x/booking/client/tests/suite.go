@@ -7,7 +7,7 @@ import (
 	netutilts "github.com/sharering/shareledger/testutil/network"
 	"github.com/sharering/shareledger/x/asset/types"
 	bookingtypes "github.com/sharering/shareledger/x/booking/types"
-	denom "github.com/sharering/shareledger/x/utils/demo"
+	denom "github.com/sharering/shareledger/x/utils/denom"
 	"os"
 
 	testutil2 "github.com/cosmos/cosmos-sdk/x/bank/client/testutil"

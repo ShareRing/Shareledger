@@ -5,7 +5,7 @@ package types
 import (
 	"fmt"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	denom "github.com/sharering/shareledger/x/utils/demo"
+	denom "github.com/sharering/shareledger/x/utils/denom"
 )
 
 // x/gentlemint module sentinel errors

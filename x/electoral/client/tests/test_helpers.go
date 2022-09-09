@@ -142,11 +142,31 @@ func JsonIDSignerUnmarshal(t *testing.T, bz []byte) types.QueryIdSignerResponse 
 	require.NoError(t, err)
 	return a
 }
+func JsonArrproverUnmarshal(t *testing.T, bz []byte) types.QueryApproverResponse {
+	var a types.QueryApproverResponse
+	encCfg := cosmoscmd.MakeEncodingConfig(app.ModuleBasics)
+	err := encCfg.Marshaler.UnmarshalJSON(bz, &a)
+	require.NoError(t, err)
+	return a
+}
+func JsonUnmarshal(t *testing.T, bz []byte) types.QueryIdSignerResponse {
+	var a types.QueryIdSignerResponse
+	encCfg := cosmoscmd.MakeEncodingConfig(app.ModuleBasics)
+	err := encCfg.Marshaler.UnmarshalJSON(bz, &a)
+	require.NoError(t, err)
+	return a
+}
 
-//func JsonLoaderUnmarshal(t *testing.T, bz []byte) types.QueryGetLoaderResponse {
-//	var a types.QueryGetLoaderResponse
-//	encCfg := cosmoscmd.MakeEncodingConfig(app.ModuleBasics)
-//	err := encCfg.Marshaler.UnmarshalJSON(bz, &a)
-//	require.NoError(t, err)
-//	return a
-//}
+func ExCmdEnrollApprover(clientCtx client.Context, address []string, additionalFlags ...string) (testutil.BufferWriter, error) {
+	args := append(address, additionalFlags...)
+	args = append(args, additionalFlags...)
+
+	return clitestutil.ExecTestCLICmd(clientCtx, cli.CmdEnrollLoaders(), args)
+}
+
+func ExCmdApprover(clientCtx client.Context, address string, additionalFlags ...string) (testutil.BufferWriter, error) {
+	args := []string{address}
+	args = append(args, additionalFlags...)
+
+	return clitestutil.ExecTestCLICmd(clientCtx, cli.CmdApprover(), args)
+}

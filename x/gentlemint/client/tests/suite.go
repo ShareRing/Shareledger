@@ -8,7 +8,7 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	netutilts "github.com/sharering/shareledger/testutil/network"
 	gentleminttypes "github.com/sharering/shareledger/x/gentlemint/types"
-	denom "github.com/sharering/shareledger/x/utils/demo"
+	denom "github.com/sharering/shareledger/x/utils/denom"
 	"github.com/stretchr/testify/suite"
 	"os"
 	"strings"

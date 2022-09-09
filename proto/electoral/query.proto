@@ -73,6 +73,36 @@ service Query {
 		option (google.api.http).get = "/shareledger/electoral/loaders";
 	}
 
+// Queries a list of Approver items.
+	rpc Approver(QueryApproverRequest) returns (QueryApproverResponse) {
+		option (google.api.http).get = "/sharering/shareledger/electoral/approver/{address}";
+	}
+
+// Queries a list of Relayer items.
+	rpc Relayer(QueryRelayerRequest) returns (QueryRelayerResponse) {
+		option (google.api.http).get = "/sharering/shareledger/electoral/relayer/{address}";
+	}
+
+// Queries a list of Relayers items.
+	rpc Relayers(QueryRelayersRequest) returns (QueryRelayersResponse) {
+		option (google.api.http).get = "/sharering/shareledger/electoral/relayers";
+	}
+
+// Queries a list of Approves items.
+	rpc Approvers(QueryApproversRequest) returns (QueryApproversResponse) {
+		option (google.api.http).get = "/sharering/shareledger/electoral/approves";
+	}
+
+// Queries a list of SwapManager items.
+	rpc SwapManager(QuerySwapManagerRequest) returns (QuerySwapManagerResponse) {
+		option (google.api.http).get = "/sharering/shareledger/electoral/swap_manager";
+	}
+
+// Queries a list of SwapManagers items.
+	rpc SwapManagers(QuerySwapManagersRequest) returns (QuerySwapManagersResponse) {
+		option (google.api.http).get = "/sharering/shareledger/electoral/swap_managers";
+	}
+
 // this line is used by starport scaffolding # 2
 }
 
@@ -167,6 +197,51 @@ message QueryLoadersRequest {
 
 message QueryLoadersResponse {
 	repeated AccState loaders = 1;
+}
+
+message QueryApproverRequest {
+  string address = 1;
+}
+
+message QueryApproverResponse {
+	AccState accState = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryRelayerRequest {
+  string address = 1;
+}
+
+message QueryRelayerResponse {
+	AccState accState = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryRelayersRequest {
+}
+
+message QueryRelayersResponse {
+	repeated AccState relayers = 1;
+}
+
+message QueryApproversRequest {
+}
+
+message QueryApproversResponse {
+	repeated AccState approvers = 1;
+}
+
+message QuerySwapManagerRequest {
+	string address = 1;
+}
+
+message QuerySwapManagerResponse {
+	AccState accState = 1 [(gogoproto.nullable) = false];
+}
+
+message QuerySwapManagersRequest {
+}
+
+message QuerySwapManagersResponse {
+	repeated AccState swapManagers = 1;
 }
 
 // this line is used by starport scaffolding # 3

@@ -4,7 +4,7 @@ import (
 	"context"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/sharering/shareledger/x/gentlemint/types"
-	denom "github.com/sharering/shareledger/x/utils/demo"
+	denom "github.com/sharering/shareledger/x/utils/denom"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )

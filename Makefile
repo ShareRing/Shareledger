@@ -19,14 +19,30 @@ dinit:
 	cp ./deploy/testnet/genesis.json ./deploy/testnet/node1/config && \
 	cp ./deploy/testnet/genesis.json ./deploy/testnet/node2/config && \
 	cp ./deploy/testnet/genesis.json ./deploy/testnet/node3/config
+
 dup:
 	cd ./deploy && \
-    docker-compose up -d --remove-orphans
+    docker-compose up -d --force-recreate
+
+dupswap:
+	cd ./deploy && \
+	docker-compose -f docker-compose-relayer.yaml up -d --force-recreate
+
+ddownswap:
+	cd ./deploy && \
+	docker-compose -f docker-compose-relayer.yaml down
+
 ddown:
 	cd ./deploy && \
     docker-compose down
 
-duprefresh: dinit dup
+duprefreshall: ddownswap ddown dinit dup dupswap
 
 test:
 	go test ./... -v
+
+MYDIR = /Users/hoai/project/sharering/swap-contract-evm/abi
+list: $(MYDIR)/*.json
+	for file in $^ ; do \
+		echo "Hello" $${file} ; \
+	done

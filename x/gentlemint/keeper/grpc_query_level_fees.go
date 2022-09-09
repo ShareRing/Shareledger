@@ -4,7 +4,7 @@ import (
 	"context"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/sharering/shareledger/x/constant"
-	denom "github.com/sharering/shareledger/x/utils/demo"
+	denom "github.com/sharering/shareledger/x/utils/denom"
 	"sort"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"

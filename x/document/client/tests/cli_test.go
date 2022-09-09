@@ -18,7 +18,7 @@ func init() {
 }
 
 func TestDocumentIntegrationTest(t *testing.T) {
-	networkConfig := network.ShareLedgerTestingConfig()
+	networkConfig := network.DefaultConfig()
 	networkConfig.NumValidators = 1
 	suite.Run(t, NewDocumentIntegrationTestSuite(networkConfig))
 }

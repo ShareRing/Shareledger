@@ -3,7 +3,7 @@ package keeper
 import (
 	"context"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	denom "github.com/sharering/shareledger/x/utils/demo"
+	denom "github.com/sharering/shareledger/x/utils/denom"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/sharering/shareledger/x/gentlemint/types"
@@ -16,10 +16,6 @@ func (k msgServer) Send(goCtx context.Context, msg *types.MsgSend) (*types.MsgSe
 		return nil, err
 	}
 
-	//decCoins, err := sdk.ParseDecCoins(msg.Coins)
-	//if err != nil {
-	//	return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, err.Error())
-	//}
 	dstAddr, err := sdk.AccAddressFromBech32(msg.Address)
 	if err != nil {
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, err.Error())

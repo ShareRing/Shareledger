@@ -68,7 +68,6 @@ func CompileGenesis(t *testing.T, config *network.Config, genesisState map[strin
 	if err != nil {
 		t.Errorf("init test fail %v", err)
 	}
-
 	genElectoralBz := config.Codec.MustMarshalJSON(&elGen)
 	if err != nil {
 		t.Errorf("init test fail %v", err)
@@ -114,11 +113,16 @@ func GetTestingGenesis(t *testing.T, config *network.Config) (keyring.Keyring, s
 		{Key: KeyAccount6, Balance: OneThousandSHROneHundredSHRPCoins},
 		{Key: KeyAccount7, Balance: OneThousandSHROneHundredSHRPCoins},
 		{Key: KeyAccount8, Balance: OneThousandSHROneHundredSHRPCoins},
+		{Key: KeyApproverRelayer, Balance: OneThousandSHROneHundredSHRPCoins},
 	}
 
 	for _, u := range users {
 		accountBuilder.InitUser(u.Key, u.Balance)
 	}
+
+	accountBuilder.GenBSCSigner(KeyAccountSwapBSC, OneThousandSHROneHundredSHRPCoins)
+	accountBuilder.GenETHSigner(KeyAccountSwapETH, OneThousandSHROneHundredSHRPCoins)
+	accountBuilder.NewAccountToSign()
 
 	newKeyringService, genAccounts, genBalances := accountBuilder.BuildGenesis()
 

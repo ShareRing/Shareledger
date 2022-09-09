@@ -4,6 +4,8 @@ services:
   nginx:
     container_name: snginx
     image: nginx:alpine
+    networks:
+      - proxynet
     restart: always
     depends_on:
       - snode0
@@ -19,6 +21,8 @@ services:
     container_name: snode0
     image: "sharering/shareledger:latest"
     restart: always
+    networks:
+      - proxynet
     hostname: snode0
     expose:
       - 26656
@@ -38,10 +42,17 @@ services:
       - ${NODE1ID}@${NODE1IP}:26656,${NODE2ID}@${NODE2IP}:26656,${NODE3ID}@${NODE3IP}:26656
       - --rpc.laddr
       - tcp://0.0.0.0:26657
+      - --log_format
+      - json
+      - --log_level
+      - info
+      - --trace
   snode1:
     container_name: snode1
     restart: always
     hostname: snode1
+    networks:
+      - proxynet
     image: "sharering/shareledger:latest"
     expose:
       - 26656
@@ -64,6 +75,8 @@ services:
     container_name: snode2
     restart: always
     hostname: snode2
+    networks:
+      - proxynet
     image: "sharering/shareledger:latest"
     expose:
       - 26656
@@ -87,6 +100,8 @@ services:
     image: "sharering/shareledger:latest"
     restart: always
     hostname: snode3
+    networks:
+      - proxynet
     expose:
       - 26656
       - 26657
@@ -104,3 +119,6 @@ services:
       - ${NODE1ID}@${NODE1IP}:26656,${NODE2ID}@${NODE2IP}:26656,${NODE0ID}@${NODE0IP}:26656
       - --rpc.laddr
       - tcp://0.0.0.0:26657
+networks:
+  proxynet:
+    name: shareledgerNetwork

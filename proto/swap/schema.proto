@@ -1,0 +1,20 @@
+syntax = "proto3";
+package shareledger.swap;
+
+import "gogoproto/gogo.proto";
+import "cosmos/base/v1beta1/coin.proto";
+
+option go_package = "github.com/sharering/shareledger/x/swap/types";
+
+message Schema {
+  string network = 1; 
+  string creator = 2;
+  string schema = 3;
+  int32 contractExponent = 4;
+  Fee fee = 5;
+
+}
+message Fee {
+  cosmos.base.v1beta1.Coin in = 1;
+  cosmos.base.v1beta1.Coin out = 2;
+}

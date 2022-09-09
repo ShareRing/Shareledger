@@ -17,7 +17,7 @@ func init() {
 	})
 }
 func TestIDModuleIntegration(t *testing.T) {
-	networkConf := network.ShareLedgerTestingConfig()
+	networkConf := network.DefaultConfig()
 	networkConf.NumValidators = 1
 	suite.Run(t, NewIDIntegrationTestSuite(networkConf))
 }

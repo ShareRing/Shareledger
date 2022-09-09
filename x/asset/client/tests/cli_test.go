@@ -19,7 +19,7 @@ func init() {
 }
 
 func TestIntegrationTestSuite(t *testing.T) {
-	cfg := network.ShareLedgerTestingConfig()
+	cfg := network.DefaultConfig()
 	cfg.NumValidators = 1
 	suite.Run(t, NewAssetIntegrationTestSuite(&cfg))
 }

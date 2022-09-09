@@ -5,7 +5,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 	"github.com/sharering/shareledger/app"
-	denom "github.com/sharering/shareledger/x/utils/demo"
+	denom "github.com/sharering/shareledger/x/utils/denom"
 	"github.com/stretchr/testify/require"
 	"github.com/tendermint/spm/cosmoscmd"
 	tmos "github.com/tendermint/tendermint/libs/os"
@@ -34,12 +34,20 @@ const (
 	KeyAccount3 string = "acc3"
 	KeyAccount4 string = "acc4"
 
-	KeyAccount5 string = "acc5"
-	KeyAccount6 string = "acc6"
-	KeyAccount7 string = "acc7"
-	KeyAccount8 string = "acc8"
+	KeyAccount5        string = "acc5"
+	KeyAccount6        string = "acc6"
+	KeyAccount7        string = "acc7"
+	KeyAccount8        string = "acc8"
+	KeyApproverRelayer string = "raAccount"
+
+	KeyAccountSwapETH = "eth"
+	KeyAccountSwapBSC = "bcs"
+
+	KeyAccountTestSign = "khang"
 
 	ShareLedgerSuccessCode = uint32(0)
+
+	SignMnemonic = "upper two old trip wolf member fruit end coyote stone gospel knee"
 )
 
 var (
@@ -119,7 +127,7 @@ func ParseStdOut(t *testing.T, stdOut []byte) sdk.TxResponse {
 
 	encCfg := cosmoscmd.MakeEncodingConfig(app.ModuleBasics)
 	err := encCfg.Marshaler.UnmarshalJSON(stdOut, &txResponse)
-	require.NoError(t, err)
+	require.NoErrorf(t, err, "parse fail %s", string(stdOut))
 	return txResponse
 }
 
