@@ -16,7 +16,7 @@ func (k Keeper) Relayers(goCtx context.Context, req *types.QueryRelayersRequest)
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	list := k.IterateAccState(ctx, types.AccStateKeyApprover)
+	list := k.IterateAccState(ctx, types.AccStateKeyRelayer)
 	relayers := make([]*types.AccState, 0, len(list))
 	for _, i := range list {
 		relayers = append(relayers, &types.AccState{
