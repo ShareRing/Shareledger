@@ -452,7 +452,7 @@ func (s *ElectoralIntegrationTestSuite) TestEnrollIDSigner() {
 			if len(tc.oAccState) != 0 {
 				for _, a := range tc.oAccState {
 					accOut, err := ExCmdGetIdSigner(validatorCtx, a.Address, netutilts.JSONFlag)
-					s.Require().NoError(err, "fail to get doc issuer")
+					s.Require().NoError(err, "fail to get id signer")
 					acc := JsonIDSignerUnmarshal(s.T(), accOut.Bytes())
 					s.Equal(a.GetKey(), acc.GetAccState().Key, "doc issuer key no equal")
 					s.Equal(a.GetAddress(), acc.GetAccState().Address, "doc issuer address no equal")
@@ -524,6 +524,73 @@ func (s *ElectoralIntegrationTestSuite) TestRevokeIDSigner() {
 					s.Equal(a.GetKey(), acc.GetAccState().Key, "doc issuer key no equal")
 					s.Equal(a.GetAddress(), acc.GetAccState().Address, "doc issuer address no equal")
 					s.Equal(a.GetStatus(), acc.GetAccState().Status, "doc issuer status no equal")
+				}
+			}
+		})
+	}
+}
+
+func (s *ElectoralIntegrationTestSuite) TestEnrollRelayer() {
+
+	testSuite := []struct {
+		d         string
+		iAddress  []string
+		txCreator string
+		txFee     int
+		oErr      error
+		oRes      *types.TxResponse
+		oAccState []types2.AccState
+	}{
+		{
+			d:         "enroll_relayer",
+			iAddress:  []string{"shareledger1sx9dp9289h8lxvg0u9z4g77y93zplvq63stkd5"},
+			txCreator: netutilts.KeyAuthority,
+			txFee:     2,
+			oErr:      nil,
+			oRes:      &types.TxResponse{Code: netutilts.ShareLedgerSuccessCode},
+			oAccState: []types2.AccState{
+				{
+					Key:     fmt.Sprintf("%sshareledger1sx9dp9289h8lxvg0u9z4g77y93zplvq63stkd5", types2.AccStateKeyRelayer),
+					Address: "shareledger1sx9dp9289h8lxvg0u9z4g77y93zplvq63stkd5",
+					Status:  "active",
+				},
+			},
+		},
+		{
+			d:         "revoke_relayer_but_not_authority",
+			iAddress:  []string{"shareledger1kcu0fdn5f07wq9534yqy3t78p3uuc5rawsshe8"},
+			txCreator: netutilts.KeyAccount1,
+			txFee:     2,
+			oErr:      nil,
+			oRes:      &types.TxResponse{Code: sdkerrors.ErrUnauthorized.ABCICode()},
+		},
+	}
+	validatorCtx := s.network.Validators[0].ClientCtx
+	for _, tc := range testSuite {
+		s.Run(tc.d, func() {
+			stdOut, err := ExCmdEnrollRelayer(validatorCtx, tc.iAddress,
+				netutilts.SHRFee(tc.txFee),
+				netutilts.JSONFlag,
+				netutilts.SkipConfirmation,
+				netutilts.MakeByAccount(tc.txCreator))
+			if tc.oErr != nil {
+				s.NotNilf(err, "case %s require error this step", tc.d)
+			}
+
+			txnResponse := netutilts.ParseStdOut(s.T(), stdOut.Bytes())
+			s.Require().NoError(s.network.WaitForNextBlock())
+			if tc.oRes != nil {
+				s.Equal(tc.oRes.Code, txnResponse.Code, fmt.Sprintf("the case %s: raw log :%s", tc.d, txnResponse.String()))
+			}
+
+			if len(tc.oAccState) != 0 {
+				for _, a := range tc.oAccState {
+					accOut, err := ExCmdGetRelayer(validatorCtx, a.Address, netutilts.JSONFlag)
+					s.Require().NoError(err, "fail to get relayer")
+					acc := JsonIRelayerUnmarshal(s.T(), accOut.Bytes())
+					s.Equal(a.GetKey(), acc.GetAccState().Key, "relayer key no equal")
+					s.Equal(a.GetAddress(), acc.GetAccState().Address, "relayer address no equal")
+					s.Equal(a.GetStatus(), acc.GetAccState().Status, "relayer status no equal")
 				}
 			}
 		})
