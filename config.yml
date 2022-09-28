@@ -51,8 +51,10 @@ genesis:
     gov:
       deposit_params:
         min_deposit:
-          - amount: "100000000"
+          - amount: "1"
             denom: "nshr"
+      voting_params:
+        voting_period: "100s"
     bank:
       denom_metadata:
         - description: "The native smallest token of shr chain"

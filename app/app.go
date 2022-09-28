@@ -591,8 +591,6 @@ func New(
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
 
 	// ------ CosmWasm setup ------
-
-	wasmDir := filepath.Join(homePath, "wasm")
 	wasmConfig, err := wasm.ReadWasmConfig(appOpts)
 	if err != nil {
 		panic(fmt.Sprintf("error while reading wasm config: %s", err))
@@ -613,7 +611,7 @@ func New(
 		app.TransferKeeper,
 		app.MsgServiceRouter(),
 		app.GRPCQueryRouter(),
-		wasmDir,
+		homePath,
 		wasmConfig,
 		supportedFeatures,
 		wasmOpts...,
