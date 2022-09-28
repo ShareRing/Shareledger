@@ -84,7 +84,6 @@ import (
 	upgradekeeper "github.com/cosmos/cosmos-sdk/x/upgrade/keeper"
 	upgradetypes "github.com/cosmos/cosmos-sdk/x/upgrade/types"
 	ica "github.com/cosmos/ibc-go/v3/modules/apps/27-interchain-accounts"
-	icacontrollertypes "github.com/cosmos/ibc-go/v3/modules/apps/27-interchain-accounts/controller/types"
 	icahost "github.com/cosmos/ibc-go/v3/modules/apps/27-interchain-accounts/host"
 	icahostkeeper "github.com/cosmos/ibc-go/v3/modules/apps/27-interchain-accounts/host/keeper"
 	icahosttypes "github.com/cosmos/ibc-go/v3/modules/apps/27-interchain-accounts/host/types"
@@ -836,71 +835,7 @@ func New(
 	app.UpgradeKeeper.SetUpgradeHandler(
 		upgradeName,
 		func(ctx sdk.Context, _ upgradetypes.Plan, fromVM module.VersionMap) (module.VersionMap, error) {
-
-			shareledgerModules := []string{
-				assetmoduletypes.ModuleName,
-				bookingmoduletypes.ModuleName,
-				documentmoduletypes.ModuleName,
-				electoralmoduletypes.ModuleName,
-				gentlemintmoduletypes.ModuleName,
-				idmoduletypes.ModuleName,
-			}
-
-			for _, moduleName := range shareledgerModules {
-				fromVM[moduleName] = 1
-			}
-
-			fromVM[swapmoduletypes.ModuleName] = swapModule.ConsensusVersion()
-			swapParams := swapmoduletypes.DefaultGenesis()
-
-			ctx.Logger().Info("start to init swap module...")
-			// initialize ICS27 module
-			swapmodule.InitGenesis(ctx, app.SwapKeeper, *swapParams)
-
-			// run custom init function for ica module
-			fromVM[icatypes.ModuleName] = icaModule.ConsensusVersion()
-			// create ICS27 Controller submodule params
-			controllerParams := icacontrollertypes.Params{}
-			// create ICS27 Host submodule params
-			hostParams := icahosttypes.Params{
-				HostEnabled: true,
-				AllowMessages: []string{
-					authzMsgExec,
-					authzMsgGrant,
-					authzMsgRevoke,
-					bankMsgSend,
-					bankMsgMultiSend,
-					distrMsgSetWithdrawAddr,
-					distrMsgWithdrawValidatorCommission,
-					distrMsgFundCommunityPool,
-					distrMsgWithdrawDelegatorReward,
-					feegrantMsgGrantAllowance,
-					feegrantMsgRevokeAllowance,
-					govMsgVoteWeighted,
-					govMsgSubmitProposal,
-					govMsgDeposit,
-					govMsgVote,
-					stakingMsgEditValidator,
-					stakingMsgDelegate,
-					stakingMsgUndelegate,
-					stakingMsgBeginRedelegate,
-					stakingMsgCreateValidator,
-					vestingMsgCreateVestingAccount,
-					transferMsgTransfer,
-					liquidityMsgCreatePool,
-					liquidityMsgSwapWithinBatch,
-					liquidityMsgDepositWithinBatch,
-					liquidityMsgWithdrawWithinBatch,
-				},
-			}
-
-			ctx.Logger().Info("start to init interchainaccount module...")
-			// initialize ICS27 module
-			icaModule.InitModule(ctx, controllerParams, hostParams)
-
-			ctx.Logger().Info("start to run module migrations...")
-
-			return app.mm.RunMigrations(ctx, app.configurator, fromVM)
+			return fromVM, nil
 		},
 	)
 
@@ -911,7 +846,7 @@ func New(
 
 	if upgradeInfo.Name == upgradeName && !app.UpgradeKeeper.IsSkipHeight(upgradeInfo.Height) {
 		storeUpgrades := store.StoreUpgrades{
-			Added: []string{swapmoduletypes.ModuleName, icahosttypes.StoreKey, authz.ModuleName},
+			Added: []string{wasm.ModuleName},
 		}
 
 		// configure store loader that checks if version == upgradeHeight and applies store upgrades
