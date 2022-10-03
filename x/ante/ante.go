@@ -56,16 +56,10 @@ func NewHandler(
 		ante.NewValidateSigCountDecorator(options.AccountKeeper),
 		ante.NewSigGasConsumeDecorator(options.AccountKeeper, sigGasConsumer),
 		ante.NewSigVerificationDecorator(options.AccountKeeper, options.SignModeHandler),
+		ante.NewIncrementSequenceDecorator(options.AccountKeeper),
 		ibcante.NewAnteDecorator(options.IBCKeeper),
 		NewLoadFeeDecorator(gentlemintKeeper),
 		NewCheckFeeDecorator(gentlemintKeeper),
-		NewCosmosAuthAnteDecorator(
-			options.AccountKeeper,
-			options.BankKeeper,
-			options.SignModeHandler,
-			options.FeegrantKeeper,
-			sigGasConsumer,
-		),
 		NewAuthDecorator(roleKeeper, idKeeper),
 		sdk.Terminator{},
 	}
