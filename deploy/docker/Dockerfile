@@ -1,16 +1,19 @@
-FROM golang:1.18.2-stretch AS build
-
+FROM golang:1.18.4-alpine3.15 AS build
 WORKDIR /app
 
-RUN apt-get update && apt-get --assume-yes upgrade make
+RUN set -eux; apk add --no-cache ca-certificates build-base linux-headers;
+RUN apk add git
 
 COPY /go.mod ./
 COPY /go.sum ./
 RUN go mod tidy
 RUN go mod download
-
 COPY  . .
-RUN make build
+
+# See https://github.com/CosmWasm/wasmvm/releases
+ADD https://github.com/CosmWasm/wasmvm/releases/download/v1.0.0/libwasmvm_muslc.x86_64.a /lib/libwasmvm_muslc.a
+
+RUN make build LEDGER_ENABLED=false BUILD_TAGS=muslc
 
 FROM alpine:3.14
 WORKDIR /app
@@ -18,6 +21,8 @@ WORKDIR /app
 RUN apk add --no-cache libc6-compat
 
 COPY --from=build /app/build/* ./
+COPY --from=build /lib/libwasmvm_muslc.a /lib/libwasmvm_muslc.a
+
 RUN chmod +x ./shareledger
 RUN mv ./shareledger /bin
 #
