@@ -1,6 +1,8 @@
 .PHONY: build_linux_amd64 build dbuild dinit dup ddown duprefresh run
 VERSION := v0.44
 COMMIT := $(shell git log -1 --format='%H')
+BUILDDIR := ./build
+DOCKER := $(shell which docker)
 build_tags = netgo
 ifeq ($(LEDGER_ENABLED),true)
   ifeq ($(OS),Windows_NT)
@@ -56,7 +58,15 @@ build:
 	go build -mod=readonly $(BUILD_FLAGS) -o build/shareledger ./cmd/Shareledgerd
 
 dbuild:
-	docker build -t sharering/shareledger -f ./deploy/docker/Dockerfile .
+	docker build -t sharering/shareledger -f ./deploy/docker/Dockerfile . --platform linux/amd64
+
+build-linux:
+	echo $(BUILDDIR)
+	mkdir -p $(BUILDDIR)
+	$(DOCKER) build -f Dockerfile-ubuntu --rm --tag sharering/builder:latest .
+	$(DOCKER) create --name shareledger sharering/builder
+	$(DOCKER) cp shareledger:/usr/bin/shareledger $(BUILDDIR)/shareledger
+	$(DOCKER) rm shareledger
 
 dinit:
 	rm -rf ./deploy/testnet && \
