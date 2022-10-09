@@ -1,6 +1,9 @@
 package ante
 
 import (
+	"fmt"
+	"strings"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	denom "github.com/sharering/shareledger/x/utils/denom"
@@ -22,6 +25,13 @@ func (cfd CheckFeeDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate boo
 		return ctx, sdkerrors.Wrap(sdkerrors.ErrTxDecode, "Tx must be a FeeTx")
 	}
 	msgs := tx.GetMsgs()
+
+	// skip check if simulate or wasm tx
+	fmt.Println(sdk.MsgTypeURL(msgs[0]))
+	if simulate || (len(msgs) == 1 && strings.HasPrefix(sdk.MsgTypeURL(msgs[0]), "/cosmwasm.wasm")) {
+		return next(ctx, tx, simulate)
+	}
+
 	requiredFees := sdk.NewCoins()
 	for _, msg := range msgs {
 		fee, err := cfd.gk.GetBaseFeeByMsg(ctx, msg)

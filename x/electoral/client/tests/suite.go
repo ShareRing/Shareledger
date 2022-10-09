@@ -2,14 +2,13 @@ package tests
 
 import (
 	"fmt"
-	"os"
-
 	"github.com/cosmos/cosmos-sdk/testutil/network"
 	"github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	netutilts "github.com/sharering/shareledger/testutil/network"
 	types2 "github.com/sharering/shareledger/x/electoral/types"
 	"github.com/stretchr/testify/suite"
+	"os"
 )
 
 type ElectoralIntegrationTestSuite struct {

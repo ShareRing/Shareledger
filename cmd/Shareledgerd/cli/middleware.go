@@ -10,8 +10,3 @@ func InitMiddleWare() {
 type MiddleWareCli interface {
 	AddPreRunBroadcastTx(tx.PreRunBroadcastTx)
 }
-
-func AddMiddleWare(cli MiddleWareCli) {
-	cli.AddPreRunBroadcastTx(autoLoadFee)
-	cli.AddPreRunBroadcastTx(autoConvertFee)
-}

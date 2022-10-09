@@ -1,40 +1,70 @@
 package ante
 
 import (
+	wasmkeeper "github.com/CosmWasm/wasmd/x/wasm/keeper"
+	wasmTypes "github.com/CosmWasm/wasmd/x/wasm/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/cosmos/cosmos-sdk/types/tx/signing"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/cosmos/cosmos-sdk/x/auth/ante"
-	authsigning "github.com/cosmos/cosmos-sdk/x/auth/signing"
-	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	ibcante "github.com/cosmos/ibc-go/v3/modules/core/ante"
 	ibckeeper "github.com/cosmos/ibc-go/v3/modules/core/keeper"
 )
 
+type HandlerOptions struct {
+	ante.HandlerOptions
+
+	IBCKeeper         *ibckeeper.Keeper
+	WasmConfig        *wasmTypes.WasmConfig
+	TXCounterStoreKey sdk.StoreKey
+}
+
 func NewHandler(
+	options HandlerOptions,
 	gentlemintKeeper GentlemintKeeper,
-	accountKeeper ante.AccountKeeper,
-	bankKeeper authtypes.BankKeeper,
-	signModeHandler authsigning.SignModeHandler,
-	feegrantKeeper ante.FeegrantKeeper,
-	sigGasConsumer func(meter sdk.GasMeter, sig signing.SignatureV2, params authtypes.Params) error,
 	roleKeeper RoleKeeper,
 	idKeeper IDKeeper,
-	ibcKeeper *ibckeeper.Keeper,
-) sdk.AnteHandler {
-	return sdk.ChainAnteDecorators(
+) (sdk.AnteHandler, error) {
+	if options.AccountKeeper == nil {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrLogic, "account keeper is required for AnteHandler")
+	}
+
+	if options.BankKeeper == nil {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrLogic, "bank keeper is required for AnteHandler")
+	}
+
+	if options.SignModeHandler == nil {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrLogic, "sign mode handler is required for ante builder")
+	}
+
+	sigGasConsumer := options.SigGasConsumer
+	if sigGasConsumer == nil {
+		sigGasConsumer = ante.DefaultSigVerificationGasConsumer
+	}
+
+	anteDecorators := []sdk.AnteDecorator{
+		ante.NewSetUpContextDecorator(),
+		wasmkeeper.NewLimitSimulationGasDecorator(options.WasmConfig.SimulationGasLimit),
+		wasmkeeper.NewCountTXDecorator(options.TXCounterStoreKey),
+		ante.NewRejectExtensionOptionsDecorator(),
+		ante.NewMempoolFeeDecorator(),
+		ante.NewValidateBasicDecorator(),
+		ante.NewTxTimeoutHeightDecorator(),
+		ante.NewValidateMemoDecorator(options.AccountKeeper),
+		ante.NewConsumeGasForTxSizeDecorator(options.AccountKeeper),
+		ante.NewDeductFeeDecorator(options.AccountKeeper, options.BankKeeper, options.FeegrantKeeper),
+		ante.NewSetPubKeyDecorator(options.AccountKeeper),
+		ante.NewValidateSigCountDecorator(options.AccountKeeper),
+		ante.NewSigGasConsumeDecorator(options.AccountKeeper, sigGasConsumer),
+		ante.NewSigVerificationDecorator(options.AccountKeeper, options.SignModeHandler),
+		ante.NewIncrementSequenceDecorator(options.AccountKeeper),
+		ibcante.NewAnteDecorator(options.IBCKeeper),
 		NewLoadFeeDecorator(gentlemintKeeper),
 		NewCheckFeeDecorator(gentlemintKeeper),
-		NewCosmosAuthAnteDecorator(
-			accountKeeper,
-			bankKeeper,
-			signModeHandler,
-			feegrantKeeper,
-			sigGasConsumer,
-		),
 		NewAuthDecorator(roleKeeper, idKeeper),
-		ibcante.NewAnteDecorator(ibcKeeper),
 		sdk.Terminator{},
-	)
+	}
+
+	return sdk.ChainAnteDecorators(anteDecorators...), nil
 }
 
 type RoleKeeperWithoutVoter struct {

@@ -15,14 +15,14 @@ accounts:
     coins: ["100000000000000000nshr", "100000000000cent"]
     mnemonic: "memory mind warfare pull risk math concert address zero speak glimpse outside economy hill boil boss pulp much connect install clip short object tobacco"
   - name: user
-    coins: [ "1000000000000000nshr" ]
+    coins: ["1000000000000000nshr"]
     mnemonic: "bright payment cash tomato tragic impulse perfect jacket matter jelly artist pulse will cinnamon erase middle elevator away clinic razor rotate tide unfair trigger"
   - name: approver
     coins: ["100000000000nshr"]
     mnemonic: "spend people immense ill property hungry craft corn quote once hand clarify adapt disorder airport balance alley wisdom physical appear debris awake pencil skate"
   - name: "relayer"
     coins: ["100000000000nshr"]
-    mnemonic : "indoor donate grid ostrich tree swamp cactus common piano buzz version world second try garage squirrel alert fork december control bind spoon taste essay"
+    mnemonic: "indoor donate grid ostrich tree swamp cactus common piano buzz version world second try garage squirrel alert fork december control bind spoon taste essay"
   - name: "swap_manager"
     coins: ["100000000000nshr"]
     mnemonic: "logic fade bike misery female father false speak code immune improve key food enter night timber kick spare amused miss expire bottom walk century"
@@ -51,8 +51,10 @@ genesis:
     gov:
       deposit_params:
         min_deposit:
-          - amount: "100000000"
+          - amount: "1"
             denom: "nshr"
+      voting_params:
+        voting_period: "100s"
     bank:
       denom_metadata:
         - description: "The native smallest token of shr chain"
@@ -112,10 +114,12 @@ genesis:
           controller_enabled: true
         ports: []
     swap:
-      batchCount: '1'
+      batchCount: "1"
       requests: []
       params:
-      requestCount: '1'
+      requestCount: "1"
 init:
   client:
     chain-id: "ShareRing-VoyagerNet"
+  app:
+    min_gas_prices: "1000nshr"

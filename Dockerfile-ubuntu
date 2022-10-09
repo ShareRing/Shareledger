@@ -1,0 +1,8 @@
+FROM ubuntu:20.04
+# Copy over binaries from the build-env
+COPY --from=sharering/builder:latest /app/build/shareledger /usr/bin/shareledger
+
+EXPOSE 26656 26657 1317 9090
+
+# Run shareledger by default, omit entrypoint to ease using container with shareledger
+CMD ["shareledger"]
