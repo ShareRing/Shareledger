@@ -1,6 +1,6 @@
 FROM ubuntu:20.04
 # Copy over binaries from the build-env
-COPY --from=sharering/builder:latest /app/build/shareledger /usr/bin/shareledger
+COPY --from=sharering/shareledger:latest /bin/shareledger /usr/bin/shareledger
 
 EXPOSE 26656 26657 1317 9090
 
