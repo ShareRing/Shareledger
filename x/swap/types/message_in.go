@@ -60,7 +60,15 @@ func (msg *MsgRequestIn) ValidateBasic() error {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "tx hashes are required")
 	}
 
+	var checkMap map[*TxEvent]bool
 	for _, h := range msg.TxEvents {
+		_, found := checkMap[h]
+		if !found {
+			checkMap[h] = true
+		} else {
+			return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "tx events has duplicate request: %+v", h)
+		}
+
 		if h.TxHash == "" {
 			return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "tx hashes are required")
 		}
