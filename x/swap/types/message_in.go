@@ -61,7 +61,7 @@ func (msg *MsgRequestIn) ValidateBasic() error {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "tx hashes are required")
 	}
 
-	var checkMap map[string]bool
+	var checkMap = make(map[string]bool)
 	for _, h := range msg.TxEvents {
 		key := fmt.Sprintf("%s/%d", h.TxHash, h.LogIndex)
 		_, found := checkMap[key]
