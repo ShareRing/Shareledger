@@ -1,6 +1,7 @@
 package types
 
 import (
+	"fmt"
 	"strings"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -60,11 +61,12 @@ func (msg *MsgRequestIn) ValidateBasic() error {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "tx hashes are required")
 	}
 
-	var checkMap map[*TxEvent]bool
+	var checkMap map[string]bool
 	for _, h := range msg.TxEvents {
-		_, found := checkMap[h]
+		key := fmt.Sprintf("%s/%d", h.TxHash, h.LogIndex)
+		_, found := checkMap[key]
 		if !found {
-			checkMap[h] = true
+			checkMap[key] = true
 		} else {
 			return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "tx events has duplicate request: %+v", h)
 		}
