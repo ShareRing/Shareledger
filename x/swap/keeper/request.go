@@ -82,7 +82,7 @@ func (k Keeper) changeStatusSwapOut(ctx sdk.Context, ids []uint64, fromStatus st
 		}
 		b, f := k.GetBatch(ctx, *batchID)
 		if !f {
-			return nil, sdkerrors.Wrapf(sdkerrors.ErrLogic, "fail to set batch network")
+			return nil, sdkerrors.Wrapf(sdkerrors.ErrLogic, "fail to set batch")
 		}
 		b.Network = destNet
 		k.SetBatch(ctx, b)

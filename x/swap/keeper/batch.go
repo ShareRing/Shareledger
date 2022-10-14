@@ -45,8 +45,8 @@ func (k Keeper) AppendBatch(
 	store.Set(GetBatchIDBytes(batch.Id), appendedValue)
 
 	// Update batch count
-	count++
-	k.SetBatchCount(ctx, count)
+	newCount := count + 1
+	k.SetBatchCount(ctx, newCount)
 
 	return count
 }
