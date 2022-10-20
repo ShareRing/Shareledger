@@ -26,6 +26,9 @@ accounts:
   - name: "swap_manager"
     coins: ["100000000000nshr"]
     mnemonic: "logic fade bike misery female father false speak code immune improve key food enter night timber kick spare amused miss expire bottom walk century"
+  - name: "doc-issuer"
+    coins: ["100000000000nshr"]
+    mnemonic: "loyal siren evoke advice churn behave volcano wood ecology select unusual clock impulse angry scene protect lucky muffin chimney earth type provide taste volcano"
 
 validator:
   name: validator
@@ -94,6 +97,15 @@ genesis:
           status: active
         - key: swapManagershareledger1yfwgejzj4nmkp6es6q3xea9uwexy5xwjs9rpcx
           address: shareledger1yfwgejzj4nmkp6es6q3xea9uwexy5xwjs9rpcx
+          status: active
+        - key: accopshareledger1mms7cehvyx7pxp7lllt0mn47hz5ufxwfwc2t95
+          address: shareledger1mms7cehvyx7pxp7lllt0mn47hz5ufxwfwc2t95
+          status: active
+        - key: docIssuershareledger1qn7whj8v3gjf3a2nncydu88kt325xtd3t3gc95
+          address: shareledger1qn7whj8v3gjf3a2nncydu88kt325xtd3t3gc95
+          status: active
+        - key: idsignershareledger19up5qp0h3ffyhz3d5cnhhnlzjpgpn23ppt9yjk
+          address: shareledger19up5qp0h3ffyhz3d5cnhhnlzjpgpn23ppt9yjk
           status: active
       authority:
         address: shareledger1lq9svs76xwekrrzw7uprekyqydf7fp02p8zp8e
