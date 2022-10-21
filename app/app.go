@@ -136,7 +136,7 @@ import (
 const (
 	AccountAddressPrefix = "shareledger"
 	Name                 = "Shareledger"
-	upgradeName          = "v1.4.0-shareledger" // CHANGE THIS
+	upgradeName          = "v1.4.1-shareledger" // CHANGE THIS
 )
 
 var (
@@ -833,10 +833,7 @@ func New(
 	app.UpgradeKeeper.SetUpgradeHandler(
 		upgradeName,
 		func(ctx sdk.Context, _ upgradetypes.Plan, fromVM module.VersionMap) (module.VersionMap, error) {
-			// fromVM[wasm.ModuleName] = 2
-			// wasmParams := wasmtypes.GenesisState{}
-			// wasmkeeper.InitGenesis(ctx, &app.WasmKeeper, wasmParams, app.StakingKeeper, wasm.NewHandler())
-			return app.mm.RunMigrations(ctx, app.configurator, fromVM)
+			return fromVM, nil
 		},
 	)
 
@@ -846,9 +843,7 @@ func New(
 	}
 
 	if upgradeInfo.Name == upgradeName && !app.UpgradeKeeper.IsSkipHeight(upgradeInfo.Height) {
-		storeUpgrades := store.StoreUpgrades{
-			Added: []string{wasm.ModuleName},
-		}
+		storeUpgrades := store.StoreUpgrades{}
 
 		// configure store loader that checks if version == upgradeHeight and applies store upgrades
 		app.SetStoreLoader(upgradetypes.UpgradeStoreLoader(upgradeInfo.Height, &storeUpgrades))
