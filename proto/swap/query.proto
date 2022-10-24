@@ -61,6 +61,16 @@ service Query {
 		option (google.api.http).get = "/sharering/shareledger/swap/past_tx_events";
 	}
 
+// Queries a list of NextRequestId items.
+	rpc NextRequestId(QueryNextRequestIdRequest) returns (QueryNextRequestIdResponse) {
+		option (google.api.http).get = "/sharering/shareledger/swap/next_request_id";
+	}
+
+// Queries a list of NextBatchId items.
+	rpc NextBatchId(QueryNextBatchIdRequest) returns (QueryNextBatchIdResponse) {
+		option (google.api.http).get = "/sharering/shareledger/swap/next_batch_id";
+	}
+
 // this line is used by starport scaffolding # 2
 }
 
@@ -151,5 +161,19 @@ message QueryPastTxEventsResponse {
 	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 
+
+message QueryNextRequestIdRequest {
+}
+
+message QueryNextRequestIdResponse {
+		uint64 nextCount = 1;
+}
+
+message QueryNextBatchIdRequest {
+}
+
+message QueryNextBatchIdResponse {
+	uint64 nextCount = 1;
+}
 
 // this line is used by starport scaffolding # 3

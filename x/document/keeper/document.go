@@ -66,9 +66,10 @@ func (k Keeper) IterateAllDocsOfAHolder(ctx sdk.Context, holderId string, cb fun
 }
 
 func (k Keeper) IterateDocs(ctx sdk.Context, cb func(doc types.Document) bool) {
-	store := ctx.KVStore(k.storeKey)
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.DocDetailKeyPrefix))
 
-	it := sdk.KVStorePrefixIterator(store, types.KeyPrefix(types.DocDetailKeyPrefix))
+	emptyBytes := []byte{}
+	it := sdk.KVStorePrefixIterator(store, emptyBytes)
 
 	defer it.Close()
 	for ; it.Valid(); it.Next() {
