@@ -1,0 +1,12 @@
+syntax = "proto3";
+package sharering.shareledger.sdistribution;
+
+import "gogoproto/gogo.proto";
+
+option go_package = "github.com/sharering/shareledger/x/sdistribution/types";
+
+// Params defines the parameters for the module.
+message Params {
+  option (gogoproto.goproto_stringer) = false;
+  
+}

@@ -4,15 +4,13 @@ import (
 	"os"
 	"sync"
 
-	"github.com/sharering/shareledger/cmd/Shareledgerd/cli"
-
-	"github.com/sharering/shareledger/cmd/Shareledgerd/sub"
-	"github.com/sharering/shareledger/cmd/Shareledgerd/tools"
-
+	"github.com/cosmos/cosmos-sdk/server"
 	svrcmd "github.com/cosmos/cosmos-sdk/server/cmd"
 	"github.com/sharering/shareledger/app"
+	"github.com/sharering/shareledger/cmd/Shareledgerd/cli"
+	"github.com/sharering/shareledger/cmd/Shareledgerd/cmd"
+	"github.com/sharering/shareledger/cmd/Shareledgerd/tools"
 	"github.com/spf13/cobra"
-	"github.com/tendermint/spm/cosmoscmd"
 )
 
 var runOnce sync.Once
@@ -24,23 +22,28 @@ func init() {
 }
 
 func main() {
-	rootCmd, _ := cosmoscmd.NewRootCmd(
-		app.Name,
-		app.AccountAddressPrefix,
-		app.DefaultNodeHome,
-		app.Name,
-		app.ModuleBasics,
-		app.New,
-		cosmoscmd.AddSubCmd(
-			sub.NewImportKeyCmd(),
-			getGenesisCmd(app.DefaultNodeHome),
-		),
-	)
-	// override name of root cmd from tendermint
-	rootCmd.Short = "ShareRing-VoyagerNet"
+	// rootCmd, _ := cosmoscmd.NewRootCmd(
+	// 	app.Name,
+	// 	app.AccountAddressPrefix,
+	// 	app.DefaultNodeHome,
+	// 	app.Name,
+	// 	app.ModuleBasics,
+	// 	app.New,
+	// 	cosmoscmd.AddSubCmd(
+	// 		sub.NewImportKeyCmd(),
+	// 		getGenesisCmd(app.DefaultNodeHome),
+	// 	),
+	// )
 
-	if err := svrcmd.Execute(rootCmd, app.DefaultNodeHome); err != nil {
-		os.Exit(1)
+	rootCmd, _ := cmd.NewRootCmd()
+
+	if err := svrcmd.Execute(rootCmd, "", app.DefaultNodeHome); err != nil {
+		switch e := err.(type) {
+		case server.ErrorCode:
+			os.Exit(e.Code)
+		default:
+			os.Exit(1)
+		}
 	}
 }
 

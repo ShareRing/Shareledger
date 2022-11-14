@@ -3,20 +3,20 @@ package keeper
 import (
 	"fmt"
 
-	"github.com/tendermint/tendermint/libs/log"
-
 	"github.com/cosmos/cosmos-sdk/codec"
+	storetypes "github.com/cosmos/cosmos-sdk/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	bankkeeper "github.com/cosmos/cosmos-sdk/x/bank/keeper"
 	assetkeeper "github.com/sharering/shareledger/x/asset/keeper"
 	"github.com/sharering/shareledger/x/booking/types"
+	"github.com/tendermint/tendermint/libs/log"
 )
 
 type (
 	Keeper struct {
 		cdc         codec.BinaryCodec
-		storeKey    sdk.StoreKey
-		memKey      sdk.StoreKey
+		storeKey    storetypes.StoreKey
+		memKey      storetypes.StoreKey
 		assetKeeper assetkeeper.Keeper
 		bankKeeper  bankkeeper.Keeper
 	}
@@ -25,7 +25,7 @@ type (
 func NewKeeper(
 	cdc codec.BinaryCodec,
 	storeKey,
-	memKey sdk.StoreKey,
+	memKey storetypes.StoreKey,
 	ask assetkeeper.Keeper,
 	bankKeeper bankkeeper.Keeper,
 ) *Keeper {

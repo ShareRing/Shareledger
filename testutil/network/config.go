@@ -2,25 +2,22 @@ package network
 
 import (
 	"fmt"
+
 	"github.com/cosmos/cosmos-sdk/testutil/network"
 	"github.com/sharering/shareledger/app"
 	denom "github.com/sharering/shareledger/x/utils/denom"
-	"github.com/tendermint/spm/cosmoscmd"
 )
 
 func DefaultConfig() network.Config {
-	shareRingEncCfg := cosmoscmd.MakeEncodingConfig(app.ModuleBasics)
-
-	cosmoscmd.SetPrefixes(Bech32MainPrefix)
-
+	encodingConfig := app.MakeTestEncodingConfig()
 	config := network.DefaultConfig()
 
-	config.Codec = shareRingEncCfg.Marshaler
-	config.TxConfig = shareRingEncCfg.TxConfig
-	config.LegacyAmino = shareRingEncCfg.Amino
-	config.InterfaceRegistry = shareRingEncCfg.InterfaceRegistry
+	config.Codec = encodingConfig.Codec
+	config.TxConfig = encodingConfig.TxConfig
+	config.LegacyAmino = encodingConfig.Amino
+	config.InterfaceRegistry = encodingConfig.InterfaceRegistry
 	config.AppConstructor = ShareLedgerChainConstructor()
-	config.GenesisState = app.ModuleBasics.DefaultGenesis(shareRingEncCfg.Marshaler)
+	config.GenesisState = app.ModuleBasics.DefaultGenesis(encodingConfig.Codec)
 	config.NumValidators = 2
 	config.MinGasPrices = fmt.Sprintf("0.000006%s", denom.Base)
 

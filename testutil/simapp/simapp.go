@@ -1,28 +1,25 @@
 package simapp
 
 import (
-	servertypes "github.com/cosmos/cosmos-sdk/server/types"
 	"time"
 
-	"github.com/tendermint/spm/cosmoscmd"
+	servertypes "github.com/cosmos/cosmos-sdk/server/types"
+	sdksimapp "github.com/cosmos/cosmos-sdk/simapp"
+	"github.com/sharering/shareledger/app"
 	abci "github.com/tendermint/tendermint/abci/types"
 	"github.com/tendermint/tendermint/libs/log"
 	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
 	tmtypes "github.com/tendermint/tendermint/types"
 	tmdb "github.com/tendermint/tm-db"
-
-	"github.com/sharering/shareledger/app"
 )
 
 // New creates application instance with in-memory database and disabled logging.
-func New(dir string, appOpts servertypes.AppOptions) cosmoscmd.App {
+func New(dir string, appOpts servertypes.AppOptions) sdksimapp.App {
 	db := tmdb.NewMemDB()
 	logger := log.NewNopLogger()
 
-	encoding := cosmoscmd.MakeEncodingConfig(app.ModuleBasics)
-
-	a := app.New(logger, db, nil, true, map[int64]bool{}, dir, 0, encoding,
-		appOpts)
+	encoding := app.MakeTestEncodingConfig()
+	a := app.New(logger, db, nil, true, map[int64]bool{}, dir, 0, encoding, appOpts)
 	// InitChain updates deliverState which is required when app.NewContext is called
 	a.InitChain(abci.RequestInitChain{
 		ConsensusParams: defaultConsensusParams,

@@ -13,7 +13,7 @@ import (
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 	distributiontypes "github.com/cosmos/cosmos-sdk/x/distribution/types"
 	feegrantmoduletypes "github.com/cosmos/cosmos-sdk/x/feegrant"
-	govmoduletypes "github.com/cosmos/cosmos-sdk/x/gov/types"
+	govmoduletypes "github.com/cosmos/cosmos-sdk/x/gov/types/v1"
 	stakingmoduletypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 	assettypes "github.com/sharering/shareledger/x/asset/types"
 	bookingtypes "github.com/sharering/shareledger/x/booking/types"

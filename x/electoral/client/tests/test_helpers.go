@@ -6,12 +6,10 @@ import (
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/testutil"
 	clitestutil "github.com/cosmos/cosmos-sdk/testutil/cli"
-	"github.com/stretchr/testify/require"
-	"github.com/tendermint/spm/cosmoscmd"
-
 	"github.com/sharering/shareledger/app"
 	"github.com/sharering/shareledger/x/electoral/client/cli"
 	"github.com/sharering/shareledger/x/electoral/types"
+	"github.com/stretchr/testify/require"
 )
 
 func ExCmdEnrollDocIssuer(clientCtx client.Context, address []string, additionalFlags ...string) (testutil.BufferWriter, error) {
@@ -101,65 +99,45 @@ func ExCmdEnrollVoters(clientCtx client.Context, t *testing.T, address string, a
 	return clitestutil.ExecTestCLICmd(clientCtx, cli.CmdEnrollVoter(), args)
 }
 
-//func ExCmdRevokeVoter(clientCtx client.Context, t *testing.T, address string, additionalFlags ...string) (testutil.BufferWriter, error) {
-//	args := []string{address}
-//	args = append(args, additionalFlags...)
-//
-//	return clitestutil.ExecTestCLICmd(clientCtx, cli.CmdRevokeVoter(), args)
-//}
-//func ExCmdGetVoter(clientCtx client.Context, t *testing.T, address string, additionalFlags ...string) (testutil.BufferWriter, error) {
-//	args := []string{address}
-//	args = append(args, additionalFlags...)
-//	return clitestutil.ExecTestCLICmd(clientCtx, cli.CmdGetVoter(), args)
-//}
-
-//func JsonVoterUnmarshal(t *testing.T, bz []byte) types.QueryGetLoaderResponse {
-//	var a types.QueryGetLoaderResponse
-//	encCfg := cosmoscmd.MakeEncodingConfig(app.ModuleBasics)
-//	err := encCfg.Marshaler.UnmarshalJSON(bz, &a)
-//	require.NoError(t, err)
-//	return a
-//}
-
 func JsonAccountOperatorUnmarshal(t *testing.T, bz []byte) types.QueryAccountOperatorResponse {
 	var a types.QueryAccountOperatorResponse
-	encCfg := cosmoscmd.MakeEncodingConfig(app.ModuleBasics)
-	err := encCfg.Marshaler.UnmarshalJSON(bz, &a)
+	encodingConfig := app.MakeTestEncodingConfig()
+	err := encodingConfig.Codec.UnmarshalJSON(bz, &a)
 	require.NoError(t, err)
 	return a
 }
 func JsonDocIssuerUnmarshal(t *testing.T, bz []byte) types.QueryDocumentIssuerResponse {
 	var a types.QueryDocumentIssuerResponse
-	encCfg := cosmoscmd.MakeEncodingConfig(app.ModuleBasics)
-	err := encCfg.Marshaler.UnmarshalJSON(bz, &a)
+	encodingConfig := app.MakeTestEncodingConfig()
+	err := encodingConfig.Codec.UnmarshalJSON(bz, &a)
 	require.NoError(t, err)
 	return a
 }
 func JsonIDSignerUnmarshal(t *testing.T, bz []byte) types.QueryIdSignerResponse {
 	var a types.QueryIdSignerResponse
-	encCfg := cosmoscmd.MakeEncodingConfig(app.ModuleBasics)
-	err := encCfg.Marshaler.UnmarshalJSON(bz, &a)
+	encodingConfig := app.MakeTestEncodingConfig()
+	err := encodingConfig.Codec.UnmarshalJSON(bz, &a)
 	require.NoError(t, err)
 	return a
 }
 func JsonIRelayerUnmarshal(t *testing.T, bz []byte) types.QueryRelayerResponse {
 	var a types.QueryRelayerResponse
-	encCfg := cosmoscmd.MakeEncodingConfig(app.ModuleBasics)
-	err := encCfg.Marshaler.UnmarshalJSON(bz, &a)
+	encodingConfig := app.MakeTestEncodingConfig()
+	err := encodingConfig.Codec.UnmarshalJSON(bz, &a)
 	require.NoError(t, err)
 	return a
 }
 func JsonArrproverUnmarshal(t *testing.T, bz []byte) types.QueryApproverResponse {
 	var a types.QueryApproverResponse
-	encCfg := cosmoscmd.MakeEncodingConfig(app.ModuleBasics)
-	err := encCfg.Marshaler.UnmarshalJSON(bz, &a)
+	encodingConfig := app.MakeTestEncodingConfig()
+	err := encodingConfig.Codec.UnmarshalJSON(bz, &a)
 	require.NoError(t, err)
 	return a
 }
 func JsonUnmarshal(t *testing.T, bz []byte) types.QueryIdSignerResponse {
 	var a types.QueryIdSignerResponse
-	encCfg := cosmoscmd.MakeEncodingConfig(app.ModuleBasics)
-	err := encCfg.Marshaler.UnmarshalJSON(bz, &a)
+	encodingConfig := app.MakeTestEncodingConfig()
+	err := encodingConfig.Codec.UnmarshalJSON(bz, &a)
 	require.NoError(t, err)
 	return a
 }

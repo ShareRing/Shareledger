@@ -7,7 +7,6 @@ import (
 	"github.com/cosmos/cosmos-sdk/testutil"
 	clitestutil "github.com/cosmos/cosmos-sdk/testutil/cli"
 	"github.com/stretchr/testify/require"
-	"github.com/tendermint/spm/cosmoscmd"
 
 	"github.com/sharering/shareledger/app"
 	"github.com/sharering/shareledger/testutil/network"
@@ -45,8 +44,8 @@ func ExCmdGetAsset(clientCtx client.Context, assetUUID string, userFlags ...stri
 
 func AssetJsonUnmarshal(t *testing.T, data []byte) types.Asset {
 	var a types.QueryAssetByUUIDResponse
-	encCfg := cosmoscmd.MakeEncodingConfig(app.ModuleBasics)
-	err := encCfg.Marshaler.UnmarshalJSON(data, &a)
+	encodingConfig := app.MakeTestEncodingConfig()
+	err := encodingConfig.Codec.UnmarshalJSON(data, &a)
 	require.NoError(t, err)
 	return *a.Asset
 

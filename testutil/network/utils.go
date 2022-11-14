@@ -2,15 +2,15 @@ package network
 
 import (
 	"encoding/json"
+	"path/filepath"
+	"testing"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 	"github.com/sharering/shareledger/app"
 	denom "github.com/sharering/shareledger/x/utils/denom"
 	"github.com/stretchr/testify/require"
-	"github.com/tendermint/spm/cosmoscmd"
 	tmos "github.com/tendermint/tendermint/libs/os"
-	"path/filepath"
-	"testing"
 )
 
 const (
@@ -104,7 +104,7 @@ func (as Attributes) Get(t *testing.T, key string) Attribute {
 	return Attribute{}
 }
 
-//Use later
+// Use later
 func writeFile(name string, dir string, contents []byte) error {
 	writePath := filepath.Join(dir)
 	file := filepath.Join(writePath, name)
@@ -124,17 +124,16 @@ func writeFile(name string, dir string, contents []byte) error {
 
 func ParseStdOut(t *testing.T, stdOut []byte) sdk.TxResponse {
 	txResponse := sdk.TxResponse{}
-
-	encCfg := cosmoscmd.MakeEncodingConfig(app.ModuleBasics)
-	err := encCfg.Marshaler.UnmarshalJSON(stdOut, &txResponse)
+	encodingConfig := app.MakeTestEncodingConfig()
+	err := encodingConfig.Codec.UnmarshalJSON(stdOut, &txResponse)
 	require.NoErrorf(t, err, "parse fail %s", string(stdOut))
 	return txResponse
 }
 
 func BalanceJsonUnmarshal(t *testing.T, data []byte) banktypes.QueryAllBalancesResponse {
 	var b banktypes.QueryAllBalancesResponse
-	encCfg := cosmoscmd.MakeEncodingConfig(app.ModuleBasics)
-	err := encCfg.Marshaler.UnmarshalJSON(data, &b)
+	encodingConfig := app.MakeTestEncodingConfig()
+	err := encodingConfig.Codec.UnmarshalJSON(data, &b)
 	require.NoError(t, err)
 	return b
 

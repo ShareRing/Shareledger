@@ -6,12 +6,10 @@ import (
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/testutil"
 	clitestutil "github.com/cosmos/cosmos-sdk/testutil/cli"
-	"github.com/stretchr/testify/require"
-	"github.com/tendermint/spm/cosmoscmd"
-
 	"github.com/sharering/shareledger/app"
 	"github.com/sharering/shareledger/x/id/client/cli"
 	"github.com/sharering/shareledger/x/id/types"
+	"github.com/stretchr/testify/require"
 )
 
 func CmdExNewID(clientCtx client.Context, userID, backupAddress, addressOwner, exData string, extraFlags ...string) (testutil.BufferWriter, error) {
@@ -66,8 +64,8 @@ func CmdExGetIDByAddress(clientCtx client.Context, t *testing.T, addr string, ex
 
 func IDJsonUnmarshal(t *testing.T, data []byte) types.Id {
 	var a types.QueryIdByIdResponse
-	encCfg := cosmoscmd.MakeEncodingConfig(app.ModuleBasics)
-	err := encCfg.Marshaler.UnmarshalJSON(data, &a)
+	encodingConfig := app.MakeTestEncodingConfig()
+	err := encodingConfig.Codec.UnmarshalJSON(data, &a)
 	require.NoError(t, err)
 	return *a.Id
 

@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"encoding/json"
 	"fmt"
+
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/codec"
@@ -75,8 +76,13 @@ func getAddr(cmd *cobra.Command, homeDir string, args []string) (sdk.AccAddress,
 		inBuf := bufio.NewReader(cmd.InOrStdin())
 		keyringBackend, _ := cmd.Flags().GetString(flags.FlagKeyringBackend)
 
+		clientCtx, err := client.GetClientQueryContext(cmd)
+		if err != nil {
+			return nil, err
+		}
+
 		// attempt to lookup address from Keybase if no address was provided
-		kb, err := keyring.New(sdk.KeyringServiceName(), keyringBackend, homeDir, inBuf)
+		kb, err := keyring.New(sdk.KeyringServiceName(), keyringBackend, homeDir, inBuf, clientCtx.Codec)
 		if err != nil {
 			return nil, err
 		}
@@ -86,7 +92,7 @@ func getAddr(cmd *cobra.Command, homeDir string, args []string) (sdk.AccAddress,
 			return nil, fmt.Errorf("failed to get address from Keybase: %w", err)
 		}
 
-		addr = info.GetAddress()
+		return info.GetAddress()
 	}
 	return addr, nil
 }

@@ -43,7 +43,7 @@ func NewImportKeyCmd() *cobra.Command {
 			}
 
 			buf := bufio.NewReader(clientCtx.Input)
-			kb, _ := keyring.New(sdk.KeyringServiceName(), viper.GetString(flags.FlagKeyringBackend), cliHome, buf)
+			kb, _ := keyring.New(sdk.KeyringServiceName(), viper.GetString(flags.FlagKeyringBackend), cliHome, buf, clientCtx.Codec)
 
 			_, err = kb.NewAccount(keyName, keySeed, "", sdk.GetConfig().GetFullBIP44Path(), hd.Secp256k1)
 			if err != nil {
