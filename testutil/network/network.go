@@ -3,6 +3,10 @@ package network
 import (
 	"bufio"
 	"encoding/json"
+	"io/ioutil"
+	"os"
+	"testing"
+
 	"github.com/cosmos/cosmos-sdk/crypto/keyring"
 	servertypes "github.com/cosmos/cosmos-sdk/server/types"
 	"github.com/cosmos/cosmos-sdk/testutil/network"
@@ -13,9 +17,6 @@ import (
 	"github.com/sharering/shareledger/app"
 	"github.com/sharering/shareledger/testutil/simapp"
 	electoraltypes "github.com/sharering/shareledger/x/electoral/types"
-	"io/ioutil"
-	"os"
-	"testing"
 )
 
 const (
@@ -87,7 +88,10 @@ func GetTestingGenesis(t *testing.T, config *network.Config) (keyring.Keyring, s
 	if err != nil {
 		t.Errorf("fail to create temp dir %v", err)
 	}
-	kb, err := keyring.New(sdk.KeyringServiceName(), keyring.BackendTest, baseDir, buf, config.KeyringOptions...)
+	kb, err := keyring.New(sdk.KeyringServiceName(), keyring.BackendTest, baseDir, buf, config.Codec, config.KeyringOptions...)
+	if err != nil {
+		t.Error("fail to create keyring")
+	}
 	accountBuilder := NewKeyringBuilder(t, kb)
 
 	users := []AccountInfo{

@@ -1,13 +1,16 @@
 package network
 
 import (
+	"testing"
+
 	"github.com/cosmos/cosmos-sdk/crypto/hd"
 	"github.com/cosmos/cosmos-sdk/crypto/keyring"
+	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
+	"github.com/cosmos/cosmos-sdk/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 	"github.com/stretchr/testify/require"
-	"testing"
 )
 
 const (
@@ -43,11 +46,11 @@ func (kb *KeyRingBuilder) InitUser(id string, coins sdk.Coins) {
 func (kb *KeyRingBuilder) InitUserByHDPath(id string, coins sdk.Coins, path string) {
 	info, _, err := kb.kb.NewMnemonic(id, keyring.English, path, keyring.DefaultBIP39Passphrase, hd.Secp256k1)
 	require.NoError(kb.t, err, "init fail")
-	Accounts[id] = info.GetAddress()
+	Accounts[id] = mustNewAddr(info)
 
-	kb.accGens = append(kb.accGens, authtypes.NewBaseAccount(info.GetAddress(), info.GetPubKey(), 0, 0))
+	kb.accGens = append(kb.accGens, authtypes.NewBaseAccount(mustNewAddr(info), mustNewPubKey(info), 0, 0))
 	kb.genBalances = append(kb.genBalances, banktypes.Balance{
-		Address: info.GetAddress().String(),
+		Address: mustNewAddr(info).String(),
 		Coins:   coins,
 	})
 }
@@ -63,11 +66,27 @@ func (kb *KeyRingBuilder) NewAccountToSign() {
 
 	info, err := kb.kb.NewAccount(KeyAccountTestSign, SignMnemonic, keyring.DefaultBIP39Passphrase, KeyPathETH, hd.Secp256k1)
 	require.NoError(kb.t, err, "init fail")
-	Accounts[KeyAccountTestSign] = info.GetAddress()
+	Accounts[KeyAccountTestSign] = mustNewAddr(info)
 
-	kb.accGens = append(kb.accGens, authtypes.NewBaseAccount(info.GetAddress(), info.GetPubKey(), 0, 0))
+	kb.accGens = append(kb.accGens, authtypes.NewBaseAccount(mustNewAddr(info), mustNewPubKey(info), 0, 0))
 	kb.genBalances = append(kb.genBalances, banktypes.Balance{
-		Address: info.GetAddress().String(),
+		Address: mustNewAddr(info).String(),
 		Coins:   OneThousandSHROneHundredSHRPCoins,
 	})
+}
+
+func mustNewAddr(info *keyring.Record) types.AccAddress {
+	addr, err := info.GetAddress()
+	if err != nil {
+		panic(err)
+	}
+	return addr
+}
+
+func mustNewPubKey(info *keyring.Record) cryptotypes.PubKey {
+	pub, err := info.GetPubKey()
+	if err != nil {
+		panic(err)
+	}
+	return pub
 }

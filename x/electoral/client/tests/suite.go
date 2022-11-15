@@ -2,13 +2,14 @@ package tests
 
 import (
 	"fmt"
+	"os"
+
 	"github.com/cosmos/cosmos-sdk/testutil/network"
 	"github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	netutilts "github.com/sharering/shareledger/testutil/network"
 	types2 "github.com/sharering/shareledger/x/electoral/types"
 	"github.com/stretchr/testify/suite"
-	"os"
 )
 
 type ElectoralIntegrationTestSuite struct {
@@ -112,8 +113,10 @@ func (s *ElectoralIntegrationTestSuite) SetupSuite() {
 	kb, dir := netutilts.GetTestingGenesis(s.T(), &s.cfg)
 	s.dir = dir
 
-	s.network = network.New(s.T(), s.cfg)
-	_, err := s.network.WaitForHeight(1)
+	var err error
+	s.network, err = network.New(s.T(), s.T().TempDir(), s.cfg)
+	s.Require().NoError(err)
+	_, err = s.network.WaitForHeight(1)
 	s.Require().NoError(err)
 
 	//override the keyring by our keyring information

@@ -146,6 +146,7 @@ type App struct {
 }
 
 // New returns a reference to an initialized blockchain app
+// TODO: add wasm and fix ibc
 func New(
 	logger log.Logger,
 	db dbm.DB,
@@ -198,6 +199,19 @@ func New(
 		interfaceRegistry: interfaceRegistry,
 		invCheckPeriod:    invCheckPeriod,
 	}
+
+	// Setup keepers
+	app.AppKeepers = keepers.NewAppKeeper(
+		appCodec,
+		bApp,
+		encodingConfig.Amino,
+		maccPerms,
+		app.BlockedModuleAccountAddrs(),
+		skipUpgradeHeights,
+		homePath,
+		invCheckPeriod,
+		appOpts,
+	)
 
 	skipGenesisInvariants := cast.ToBool(appOpts.Get(crisis.FlagSkipGenesisInvariants))
 	app.mm = module.NewManager(appModules(app, encodingConfig, skipGenesisInvariants)...)
@@ -426,6 +440,20 @@ func (app *App) InitChainer(ctx sdk.Context, req abci.RequestInitChain) abci.Res
 // LoadHeight loads a particular height
 func (app *App) LoadHeight(height int64) error {
 	return app.LoadVersion(height)
+}
+
+// BlockedModuleAccountAddrs returns all the app's blocked module account
+// addresses.
+func (app *App) BlockedModuleAccountAddrs() map[string]bool {
+	modAccAddrs := app.ModuleAccountAddrs()
+
+	// remove module accounts that are ALLOWED to received funds
+	//
+	// TODO: Blocked on updating to v0.46.x
+	// delete(modAccAddrs, authtypes.NewModuleAddress(grouptypes.ModuleName).String())
+	delete(modAccAddrs, authtypes.NewModuleAddress(govtypes.ModuleName).String())
+
+	return modAccAddrs
 }
 
 // ModuleAccountAddrs returns all the app's module account addresses.

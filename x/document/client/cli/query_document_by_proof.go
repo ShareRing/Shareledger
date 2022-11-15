@@ -2,7 +2,6 @@ package cli
 
 import (
 	"fmt"
-	"strconv"
 	"strings"
 
 	"github.com/spf13/cobra"
@@ -12,8 +11,6 @@ import (
 	"github.com/cosmos/cosmos-sdk/version"
 	"github.com/sharering/shareledger/x/document/types"
 )
-
-var _ = strconv.Itoa(0)
 
 func CmdDocumentByProof() *cobra.Command {
 	cmd := &cobra.Command{
@@ -31,14 +28,10 @@ $ %s query %s proof 5wpluxhf4qru2ewy58kc3w4tkzm3v`, version.Name, types.ModuleNa
 			if err != nil {
 				return err
 			}
-
 			queryClient := types.NewQueryClient(clientCtx)
-
 			params := &types.QueryDocumentByProofRequest{
-
 				Proof: reqProof,
 			}
-
 			res, err := queryClient.DocumentByProof(cmd.Context(), params)
 			if err != nil {
 				return err

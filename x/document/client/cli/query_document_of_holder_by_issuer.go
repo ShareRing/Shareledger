@@ -2,7 +2,6 @@ package cli
 
 import (
 	"fmt"
-	"strconv"
 	"strings"
 
 	"github.com/spf13/cobra"
@@ -12,8 +11,6 @@ import (
 	"github.com/cosmos/cosmos-sdk/version"
 	"github.com/sharering/shareledger/x/document/types"
 )
-
-var _ = strconv.Itoa(0)
 
 func CmdDocumentOfHolderByIssuer() *cobra.Command {
 	cmd := &cobra.Command{
@@ -31,15 +28,11 @@ $ %s query %s document-by-issuer uuid-5312 shareledger1z8h2ymcpr7w75l4pwxkgr3fmg
 			if err != nil {
 				return err
 			}
-
 			queryClient := types.NewQueryClient(clientCtx)
-
 			params := &types.QueryDocumentOfHolderByIssuerRequest{
-
 				Holder: reqHolder,
 				Issuer: reqIssuer,
 			}
-
 			res, err := queryClient.DocumentOfHolderByIssuer(cmd.Context(), params)
 			if err != nil {
 				return err

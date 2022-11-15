@@ -4,11 +4,9 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/spf13/cobra"
-
 	"github.com/cosmos/cosmos-sdk/client"
-	// "github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/sharering/shareledger/x/document/types"
+	"github.com/spf13/cobra"
 )
 
 var (

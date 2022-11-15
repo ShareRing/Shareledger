@@ -1,12 +1,13 @@
 package tests
 
 import (
+	"os"
+	"strings"
+
 	"github.com/cosmos/cosmos-sdk/testutil/network"
 	"github.com/cosmos/cosmos-sdk/types"
 	netutilts "github.com/sharering/shareledger/testutil/network"
 	"github.com/stretchr/testify/suite"
-	"os"
-	"strings"
 
 	"github.com/sharering/shareledger/testutil/sample"
 	documenttypes "github.com/sharering/shareledger/x/document/types"
@@ -160,7 +161,7 @@ func (s *DocumentIntegrationTestSuite) SetupSuite() {
 	kb, dir := netutilts.GetTestingGenesis(s.T(), &s.cfg)
 	s.dir = dir
 
-	s.network = network.New(s.T(), s.cfg)
+	s.network, _ = network.New(s.T(), s.T().TempDir(), s.cfg)
 	_, err := s.network.WaitForHeight(1)
 	s.Require().NoError(err)
 

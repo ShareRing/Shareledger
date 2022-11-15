@@ -4,7 +4,6 @@ import (
 	"time"
 
 	servertypes "github.com/cosmos/cosmos-sdk/server/types"
-	sdksimapp "github.com/cosmos/cosmos-sdk/simapp"
 	"github.com/sharering/shareledger/app"
 	abci "github.com/tendermint/tendermint/abci/types"
 	"github.com/tendermint/tendermint/libs/log"
@@ -14,7 +13,7 @@ import (
 )
 
 // New creates application instance with in-memory database and disabled logging.
-func New(dir string, appOpts servertypes.AppOptions) sdksimapp.App {
+func New(dir string, appOpts servertypes.AppOptions) servertypes.Application {
 	db := tmdb.NewMemDB()
 	logger := log.NewNopLogger()
 

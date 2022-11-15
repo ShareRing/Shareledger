@@ -1,12 +1,11 @@
 syntax = "proto3";
-package shareledger.electoral;
 
-option go_package = "github.com/sharering/shareledger/x/electoral/types";
+package shareledger.electoral;
 
 import "gogoproto/gogo.proto";
 
+option go_package = "github.com/sharering/shareledger/x/electoral/types";
 
 message Authority {
-  string address = 1; 
-  
+  string address = 1;
 }

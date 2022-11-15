@@ -1,17 +1,12 @@
 package cli
 
 import (
-	"strconv"
-
-	"github.com/spf13/cobra"
-
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
 	"github.com/sharering/shareledger/x/document/types"
+	"github.com/spf13/cobra"
 )
-
-var _ = strconv.Itoa(0)
 
 func CmdUpdateDocument() *cobra.Command {
 	cmd := &cobra.Command{
@@ -27,7 +22,6 @@ func CmdUpdateDocument() *cobra.Command {
 			if err != nil {
 				return err
 			}
-
 			msg := types.NewMsgUpdateDocument(
 				argData,
 				argHolder,

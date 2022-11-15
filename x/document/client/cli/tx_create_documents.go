@@ -2,19 +2,15 @@ package cli
 
 import (
 	"fmt"
-	"strconv"
 	"strings"
-
-	"github.com/spf13/cobra"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
 	"github.com/cosmos/cosmos-sdk/version"
 	"github.com/sharering/shareledger/x/document/types"
+	"github.com/spf13/cobra"
 )
-
-var _ = strconv.Itoa(0)
 
 func CmdCreateDocuments() *cobra.Command {
 	cmd := &cobra.Command{

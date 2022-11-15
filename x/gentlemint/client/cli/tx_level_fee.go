@@ -1,13 +1,12 @@
 package cli
 
 import (
-	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/spf13/cobra"
-
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/sharering/shareledger/x/gentlemint/types"
+	"github.com/spf13/cobra"
 )
 
 func CmdSetLevelFee() *cobra.Command {
