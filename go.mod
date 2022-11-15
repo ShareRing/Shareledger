@@ -4,13 +4,13 @@ go 1.18
 
 replace (
 	github.com/CosmWasm/wasmd => github.com/notional-labs/wasmd v0.29.0-sdk46.0.20221108144812-0abadd1ee929
-	github.com/cosmos/cosmos-sdk => github.com/ShareRing/cosmos-sdk v0.46.0-beta2.0.20221114075752-b51b355505a6
+	github.com/cosmos/cosmos-sdk => github.com/ShareRing/cosmos-sdk v0.46.4-sharering
 	github.com/gogo/protobuf => github.com/regen-network/protobuf v1.3.3-alpha.regen.1
 )
 
 require (
 	github.com/CosmWasm/wasmd v0.27.0
-	github.com/cosmos/cosmos-sdk v0.46.3
+	github.com/cosmos/cosmos-sdk v0.46.4
 	github.com/cosmos/ibc-go/v5 v5.0.1
 	github.com/ethereum/go-ethereum v1.10.17
 	github.com/gogo/protobuf v1.3.3
