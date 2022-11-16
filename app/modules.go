@@ -268,15 +268,13 @@ func appModules(
 		params.NewAppModule(app.ParamsKeeper),
 		app.ICAModule,
 		app.TransferModule,
-		// TODO: fill this
-
-		// documentModule,
-		// idModule,
-		// assetModule,
-		// bookingModule,
-		// gentlemintModule,
-		// electoralModule,
-		// swapModule,
+		documentmodule.NewAppModule(appCodec, app.DocumentKeeper),
+		idmodule.NewAppModule(appCodec, app.IdKeeper),
+		assetmodule.NewAppModule(appCodec, app.AssetKeeper),
+		bookingmodule.NewAppModule(appCodec, app.BookingKeeper),
+		gentlemintmodule.NewAppModule(appCodec, app.GentleMintKeeper),
+		electoralmodule.NewAppModule(appCodec, app.ElectoralKeeper),
+		swapmodule.NewAppModule(appCodec, app.SwapKeeper, app.AccountKeeper, app.BankKeeper),
 		wasm.NewAppModule(appCodec, &app.WasmKeeper, app.StakingKeeper, app.AccountKeeper, app.BankKeeper),
 		// this line is used by starport scaffolding # stargate/app/appModule
 	}

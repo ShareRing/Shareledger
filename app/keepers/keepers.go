@@ -265,8 +265,6 @@ func NewAppKeeper(
 		stakingtypes.NewMultiStakingHooks(appKeepers.DistrKeeper.Hooks(), appKeepers.SlashingKeeper.Hooks()),
 	)
 
-
-
 	// Custom sharering keepers
 	appKeepers.GentleMintKeeper = *gentlemintmodulekeeper.NewKeeper(
 		appCodec,
@@ -417,8 +415,6 @@ func NewAppKeeper(
 	ibcRouter.
 		AddRoute(icahosttypes.SubModuleName, icaHostIBCModule).
 		AddRoute(ibctransfertypes.ModuleName, appKeepers.RouterModule)
-
-	appKeepers.IBCKeeper.SetRouter(ibcRouter)
 
 	// ------ CosmWasm setup ------
 	wasmConfig, err := wasm.ReadWasmConfig(appOpts)

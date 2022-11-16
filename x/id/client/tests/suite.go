@@ -119,8 +119,10 @@ func (s *IDIntegrationTestSuite) SetupSuite() {
 	kb, dir := netutilts.GetTestingGenesis(s.T(), &s.cfg)
 	s.dir = dir
 
-	s.network = network.New(s.T(), s.cfg)
-	_, err := s.network.WaitForHeight(1)
+	n, err := network.New(s.T(), s.T().TempDir(), s.cfg)
+	s.Require().NoErrorf(err, "init network fail")
+	s.network = n
+	_, err = s.network.WaitForHeight(1)
 	s.Require().NoError(err)
 
 	//override the keyring by our keyring information

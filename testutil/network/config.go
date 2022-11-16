@@ -2,6 +2,7 @@ package network
 
 import (
 	"fmt"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 
 	"github.com/cosmos/cosmos-sdk/testutil/network"
 	"github.com/sharering/shareledger/app"
@@ -20,6 +21,9 @@ func DefaultConfig() network.Config {
 	config.GenesisState = app.ModuleBasics.DefaultGenesis(encodingConfig.Codec)
 	config.NumValidators = 2
 	config.MinGasPrices = fmt.Sprintf("0.000006%s", denom.Base)
+
+	cfg := sdk.GetConfig()
+	cfg.SetBech32PrefixForAccount(app.AccountAddressPrefix, app.AccountAddressPrefix+sdk.PrefixPublic)
 
 	return config
 }

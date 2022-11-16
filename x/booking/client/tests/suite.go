@@ -7,7 +7,8 @@ import (
 	netutilts "github.com/sharering/shareledger/testutil/network"
 	"github.com/sharering/shareledger/x/asset/types"
 	bookingtypes "github.com/sharering/shareledger/x/booking/types"
-	denom "github.com/sharering/shareledger/x/utils/denom"
+	"github.com/sharering/shareledger/x/utils/denom"
+
 	"os"
 
 	testutil2 "github.com/cosmos/cosmos-sdk/x/bank/client/testutil"
@@ -42,8 +43,10 @@ func (s *BookingIntegrationTestSuite) SetupSuite() {
 	kb, dir := netutilts.GetTestingGenesis(s.T(), &s.cfg)
 	s.dir = dir
 
-	s.network = network.New(s.T(), s.cfg)
-	_, err := s.network.WaitForHeight(1)
+	n, err := network.New(s.T(), s.T().TempDir(), s.cfg)
+	s.Require().NoErrorf(err, "init network fail")
+	s.network = n
+	_, err = s.network.WaitForHeight(1)
 	s.Require().NoError(err)
 
 	//override the keyring by our keyring information
