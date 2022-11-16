@@ -83,8 +83,8 @@ github.com/Microsoft/go-winio v0.5.2 h1:a9IhgEQBCUEk6QCdml9CiJGhAws+YwffDHEMp1VM
 github.com/Nvveen/Gotty v0.0.0-20120604004816-cd527374f1e5 h1:TngWCqHvy9oXAN6lEVMRuU21PR1EtLVZJmdB18Gu3Rw=
 github.com/OneOfOne/xxhash v1.2.2 h1:KMrpdQIwFcEqXDklaen+P1axHaj9BSKzvpUUfnHldSE=
 github.com/OneOfOne/xxhash v1.2.2/go.mod h1:HSdplMjZKSmBqAxg5vPj2TmRDmfkzw+cTzAElWljhcU=
-github.com/ShareRing/cosmos-sdk v0.46.0-beta2.0.20221114075752-b51b355505a6 h1:m6P8qZpe3UuRVVM1u59m/O2G1r2d/d82+QJmBSTUHqA=
-github.com/ShareRing/cosmos-sdk v0.46.0-beta2.0.20221114075752-b51b355505a6/go.mod h1:1GFwOFjXutM0rP4CipnSkFYgPJNwGzSHLrep7dHxKjw=
+github.com/ShareRing/cosmos-sdk v0.46.4-sharering h1:ipjkETy18aOm6/kNm6gPuxAAN4Ys+/WCE7V31K67tF4=
+github.com/ShareRing/cosmos-sdk v0.46.4-sharering/go.mod h1:1GFwOFjXutM0rP4CipnSkFYgPJNwGzSHLrep7dHxKjw=
 github.com/Shopify/sarama v1.19.0/go.mod h1:FVkBWblsNy7DGZRfXLU0O9RCGt5g3g3yEuWXgklEdEo=
 github.com/Shopify/toxiproxy v2.1.4+incompatible/go.mod h1:OXgGpZ6Cli1/URJOF1DMxUHB2q5Ap20/P/eIdh4G0pI=
 github.com/StackExchange/wmi v0.0.0-20180116203802-5d049714c4a6/go.mod h1:3eOhrUMpNV+6aFIbp5/iudMxNCF27Vw2OZgy4xEx0Fg=
