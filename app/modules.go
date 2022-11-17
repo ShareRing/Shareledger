@@ -268,6 +268,8 @@ func appModules(
 		params.NewAppModule(app.ParamsKeeper),
 		app.ICAModule,
 		app.TransferModule,
+
+		// custom module
 		documentmodule.NewAppModule(appCodec, app.DocumentKeeper),
 		idmodule.NewAppModule(appCodec, app.IdKeeper),
 		assetmodule.NewAppModule(appCodec, app.AssetKeeper),
