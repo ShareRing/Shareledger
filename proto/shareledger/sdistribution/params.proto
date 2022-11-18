@@ -1,4 +1,5 @@
 syntax = "proto3";
+
 package sharering.shareledger.sdistribution;
 
 import "gogoproto/gogo.proto";
@@ -8,5 +9,15 @@ option go_package = "github.com/sharering/shareledger/x/sdistribution/types";
 // Params defines the parameters for the module.
 message Params {
   option (gogoproto.goproto_stringer) = false;
-  
+
+  double wasm_master_builder_percent = 1 [(gogoproto.moretags) = "yaml:\"wasm_master_builder_percent\""];
+  double wasm_contract_admin_percent = 2 [(gogoproto.moretags) = "yaml:\"wasm_contract_admin_percent\""];
+  double wasm_development_percent = 3 [(gogoproto.moretags) = "yaml:\"wasm_development_percent\""];
+  double wasm_validator_percent = 4 [(gogoproto.moretags) = "yaml:\"wasm_validator_percent\""];
+
+  double native_validator_percent = 5 [(gogoproto.moretags) = "yaml:\"native_validator_percent\""];
+  double native_development_percent = 6 [(gogoproto.moretags) = "yaml:\"native_development_percent\""];
+
+  uint32 builder_windows = 7 [(gogoproto.moretags) = "yaml:\"builder_windows\""];
+  uint32 tx_threshold = 8 [(gogoproto.moretags) = "yaml:\"tx_threshold\""];
 }

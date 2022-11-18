@@ -22,19 +22,6 @@ func init() {
 }
 
 func main() {
-	// rootCmd, _ := cosmoscmd.NewRootCmd(
-	// 	app.Name,
-	// 	app.AccountAddressPrefix,
-	// 	app.DefaultNodeHome,
-	// 	app.Name,
-	// 	app.ModuleBasics,
-	// 	app.New,
-	// 	cosmoscmd.AddSubCmd(
-	// 		sub.NewImportKeyCmd(),
-	// 		getGenesisCmd(app.DefaultNodeHome),
-	// 	),
-	// )
-
 	rootCmd, _ := cmd.NewRootCmd()
 
 	if err := svrcmd.Execute(rootCmd, "", app.DefaultNodeHome); err != nil {

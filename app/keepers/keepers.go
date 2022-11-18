@@ -76,6 +76,8 @@ import (
 	gentlemintmoduletypes "github.com/sharering/shareledger/x/gentlemint/types"
 	idmodulekeeper "github.com/sharering/shareledger/x/id/keeper"
 	idmoduletypes "github.com/sharering/shareledger/x/id/types"
+	sdistributionkeeper "github.com/sharering/shareledger/x/sdistribution/keeper"
+	sdistributiontypes "github.com/sharering/shareledger/x/sdistribution/types"
 	swapmodulekeeper "github.com/sharering/shareledger/x/swap/keeper"
 	swapmoduletypes "github.com/sharering/shareledger/x/swap/types"
 	"github.com/spf13/cast"
@@ -108,15 +110,16 @@ type AppKeepers struct {
 	AuthzKeeper      authzkeeper.Keeper
 	GroupKeeper      groupkeeper.Keeper
 
-	DocumentKeeper   documentmodulekeeper.Keeper
-	IdKeeper         idmodulekeeper.Keeper
-	AssetKeeper      assetmodulekeeper.Keeper
-	BookingKeeper    bookingmodulekeeper.Keeper
-	GentleMintKeeper gentlemintmodulekeeper.Keeper
-	ElectoralKeeper  electoralmodulekeeper.Keeper
-	SwapKeeper       swapmodulekeeper.Keeper
-	WasmKeeper       wasm.Keeper
-	ContractKeeper   *wasmkeeper.PermissionedKeeper
+	DocumentKeeper      documentmodulekeeper.Keeper
+	IdKeeper            idmodulekeeper.Keeper
+	AssetKeeper         assetmodulekeeper.Keeper
+	BookingKeeper       bookingmodulekeeper.Keeper
+	GentleMintKeeper    gentlemintmodulekeeper.Keeper
+	ElectoralKeeper     electoralmodulekeeper.Keeper
+	SwapKeeper          swapmodulekeeper.Keeper
+	WasmKeeper          wasm.Keeper
+	ContractKeeper      *wasmkeeper.PermissionedKeeper
+	SDistributionKeeper sdistributionkeeper.Keeper
 
 	// IBC Keeper must be a pointer in the app, so we can SetRouter on it correctly
 	IBCKeeper           *ibckeeper.Keeper
@@ -481,6 +484,7 @@ func initParamsKeeper(appCodec codec.BinaryCodec, legacyAmino *codec.LegacyAmino
 	paramsKeeper.Subspace(bookingmoduletypes.ModuleName)
 	paramsKeeper.Subspace(gentlemintmoduletypes.ModuleName)
 	paramsKeeper.Subspace(swapmoduletypes.ModuleName)
+	paramsKeeper.Subspace(sdistributiontypes.ModuleName)
 	// this line is used by starport scaffolding # stargate/app/paramSubspace
 
 	return paramsKeeper

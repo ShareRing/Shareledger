@@ -12,6 +12,9 @@ const (
 
 	// MemStoreKey defines the in-memory store key
 	MemStoreKey = "mem_sdistribution"
+
+	// FeeCollectorName the root string for the fee collector account address
+	FeeCollectorName = "sdistribution_fee_collector"
 )
 
 func KeyPrefix(p string) []byte {

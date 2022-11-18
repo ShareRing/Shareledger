@@ -100,7 +100,9 @@ func initAppConfig() (string, interface{}) {
 
 func initRootCmd(rootCmd *cobra.Command, encodingConfig params.EncodingConfig) {
 	cfg := sdk.GetConfig()
-	cfg.SetBech32PrefixForAccount(app.AccountAddressPrefix, app.AccountAddressPrefix+sdk.PrefixPublic)
+	cfg.SetBech32PrefixForAccount(Bech32PrefixAccAddr, Bech32PrefixAccPub)
+	cfg.SetBech32PrefixForValidator(Bech32PrefixValAddr, Bech32PrefixValPub)
+	cfg.SetBech32PrefixForConsensusNode(Bech32PrefixConsAddr, Bech32PrefixConsPub)
 	cfg.Seal()
 
 	rootCmd.AddCommand(
@@ -267,7 +269,7 @@ func (ac appCreator) appExport(
 		loadLatest = true
 	}
 
-	gaiaApp := app.New(
+	shareledgerApp := app.New(
 		logger,
 		db,
 		traceStore,
@@ -280,10 +282,10 @@ func (ac appCreator) appExport(
 	)
 
 	if height != -1 {
-		if err := gaiaApp.LoadHeight(height); err != nil {
+		if err := shareledgerApp.LoadHeight(height); err != nil {
 			return servertypes.ExportedApp{}, err
 		}
 	}
 
-	return gaiaApp.ExportAppStateAndValidators(forZeroHeight, jailAllowedAddrs)
+	return shareledgerApp.ExportAppStateAndValidators(forZeroHeight, jailAllowedAddrs)
 }

@@ -27,6 +27,7 @@ func (cfd CheckFeeDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate boo
 	msgs := tx.GetMsgs()
 
 	// skip check if simulate or wasm tx
+	// FIXME: fix for case list of many txs, and check for gas consumed for wasm tx
 	fmt.Println(sdk.MsgTypeURL(msgs[0]))
 	if simulate || (len(msgs) == 1 && strings.HasPrefix(sdk.MsgTypeURL(msgs[0]), "/cosmwasm.wasm")) {
 		return next(ctx, tx, simulate)

@@ -8,5 +8,5 @@ import (
 
 // x/sdistribution module sentinel errors
 var (
-	ErrSample = sdkerrors.Register(ModuleName, 1100, "sample error")
+	ErrInvalidParams = sdkerrors.Register(ModuleName, 2, "invalid params")
 )

@@ -4,6 +4,7 @@
 package types
 
 import (
+	encoding_binary "encoding/binary"
 	fmt "fmt"
 	_ "github.com/gogo/protobuf/gogoproto"
 	proto "github.com/gogo/protobuf/proto"
@@ -25,6 +26,14 @@ const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
 // Params defines the parameters for the module.
 type Params struct {
+	WasmMasterBuilderPercent float64 `protobuf:"fixed64,1,opt,name=wasm_master_builder_percent,json=wasmMasterBuilderPercent,proto3" json:"wasm_master_builder_percent,omitempty" yaml:"wasm_master_builder_percent"`
+	WasmContractAdminPercent float64 `protobuf:"fixed64,2,opt,name=wasm_contract_admin_percent,json=wasmContractAdminPercent,proto3" json:"wasm_contract_admin_percent,omitempty" yaml:"wasm_contract_admin_percent"`
+	WasmDevelopmentPercent   float64 `protobuf:"fixed64,3,opt,name=wasm_development_percent,json=wasmDevelopmentPercent,proto3" json:"wasm_development_percent,omitempty" yaml:"wasm_development_percent"`
+	WasmValidatorPercent     float64 `protobuf:"fixed64,4,opt,name=wasm_validator_percent,json=wasmValidatorPercent,proto3" json:"wasm_validator_percent,omitempty" yaml:"wasm_validator_percent"`
+	NativeValidatorPercent   float64 `protobuf:"fixed64,5,opt,name=native_validator_percent,json=nativeValidatorPercent,proto3" json:"native_validator_percent,omitempty" yaml:"native_validator_percent"`
+	NativeDevelopmentPercent float64 `protobuf:"fixed64,6,opt,name=native_development_percent,json=nativeDevelopmentPercent,proto3" json:"native_development_percent,omitempty" yaml:"native_development_percent"`
+	BuilderWindows           uint32  `protobuf:"varint,7,opt,name=builder_windows,json=builderWindows,proto3" json:"builder_windows,omitempty" yaml:"builder_windows"`
+	TxThreshold              uint32  `protobuf:"varint,8,opt,name=tx_threshold,json=txThreshold,proto3" json:"tx_threshold,omitempty" yaml:"tx_threshold"`
 }
 
 func (m *Params) Reset()      { *m = Params{} }
@@ -59,6 +68,62 @@ func (m *Params) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_Params proto.InternalMessageInfo
 
+func (m *Params) GetWasmMasterBuilderPercent() float64 {
+	if m != nil {
+		return m.WasmMasterBuilderPercent
+	}
+	return 0
+}
+
+func (m *Params) GetWasmContractAdminPercent() float64 {
+	if m != nil {
+		return m.WasmContractAdminPercent
+	}
+	return 0
+}
+
+func (m *Params) GetWasmDevelopmentPercent() float64 {
+	if m != nil {
+		return m.WasmDevelopmentPercent
+	}
+	return 0
+}
+
+func (m *Params) GetWasmValidatorPercent() float64 {
+	if m != nil {
+		return m.WasmValidatorPercent
+	}
+	return 0
+}
+
+func (m *Params) GetNativeValidatorPercent() float64 {
+	if m != nil {
+		return m.NativeValidatorPercent
+	}
+	return 0
+}
+
+func (m *Params) GetNativeDevelopmentPercent() float64 {
+	if m != nil {
+		return m.NativeDevelopmentPercent
+	}
+	return 0
+}
+
+func (m *Params) GetBuilderWindows() uint32 {
+	if m != nil {
+		return m.BuilderWindows
+	}
+	return 0
+}
+
+func (m *Params) GetTxThreshold() uint32 {
+	if m != nil {
+		return m.TxThreshold
+	}
+	return 0
+}
+
 func init() {
 	proto.RegisterType((*Params)(nil), "sharering.shareledger.sdistribution.Params")
 }
@@ -68,18 +133,36 @@ func init() {
 }
 
 var fileDescriptor_cdcf60c88e4ba53b = []byte{
-	// 164 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x52, 0x2b, 0xce, 0x48, 0x2c,
-	0x4a, 0xcd, 0x49, 0x4d, 0x49, 0x4f, 0x2d, 0xd2, 0x2f, 0x4e, 0xc9, 0x2c, 0x2e, 0x29, 0xca, 0x4c,
-	0x2a, 0x2d, 0xc9, 0xcc, 0xcf, 0xd3, 0x2f, 0x48, 0x2c, 0x4a, 0xcc, 0x2d, 0xd6, 0x2b, 0x28, 0xca,
-	0x2f, 0xc9, 0x17, 0x52, 0x06, 0xab, 0x2b, 0xca, 0xcc, 0x4b, 0xd7, 0x43, 0xd2, 0xa1, 0x87, 0xa2,
-	0x43, 0x4a, 0x24, 0x3d, 0x3f, 0x3d, 0x1f, 0xac, 0x5e, 0x1f, 0xc4, 0x82, 0x68, 0x55, 0xe2, 0xe3,
-	0x62, 0x0b, 0x00, 0x1b, 0x65, 0xc5, 0x32, 0x63, 0x81, 0x3c, 0x83, 0x53, 0xc0, 0x89, 0x47, 0x72,
-	0x8c, 0x17, 0x1e, 0xc9, 0x31, 0x3e, 0x78, 0x24, 0xc7, 0x38, 0xe1, 0xb1, 0x1c, 0xc3, 0x85, 0xc7,
-	0x72, 0x0c, 0x37, 0x1e, 0xcb, 0x31, 0x44, 0x99, 0xa5, 0x67, 0x96, 0x64, 0x94, 0x26, 0xe9, 0x25,
-	0xe7, 0xe7, 0xea, 0xc3, 0xed, 0xd3, 0x47, 0x76, 0x61, 0x05, 0x9a, 0x1b, 0x4b, 0x2a, 0x0b, 0x52,
-	0x8b, 0x93, 0xd8, 0xc0, 0x16, 0x19, 0x03, 0x02, 0x00, 0x00, 0xff, 0xff, 0xa8, 0x8a, 0x61, 0x20,
-	0xcd, 0x00, 0x00, 0x00,
+	// 449 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x7c, 0x93, 0xcb, 0x6a, 0xdc, 0x30,
+	0x14, 0x86, 0xc7, 0x6d, 0x32, 0x2d, 0xea, 0x0d, 0xa6, 0x61, 0x3a, 0x4c, 0xa9, 0x95, 0x28, 0x34,
+	0x64, 0x35, 0x5e, 0x14, 0xba, 0x98, 0x5d, 0x9d, 0x6e, 0x0b, 0x83, 0x29, 0x0d, 0x14, 0x8a, 0x91,
+	0x2d, 0x61, 0x0b, 0x6c, 0xc9, 0x48, 0x9a, 0x4b, 0xde, 0xa2, 0xcb, 0x2e, 0xfb, 0x38, 0x5d, 0x66,
+	0xd9, 0x6e, 0x4c, 0x99, 0x79, 0x03, 0x3f, 0x41, 0xb1, 0x7c, 0x89, 0x33, 0x71, 0xb3, 0xb3, 0xcf,
+	0xf7, 0x9f, 0xff, 0x3f, 0x1c, 0x74, 0xc0, 0x99, 0x8a, 0xb1, 0xa4, 0x09, 0x25, 0x11, 0x95, 0x8e,
+	0x22, 0x4c, 0x69, 0xc9, 0x82, 0xa5, 0x66, 0x82, 0x3b, 0x19, 0x96, 0x38, 0x55, 0xb3, 0x4c, 0x0a,
+	0x2d, 0x46, 0xa7, 0x46, 0x27, 0x19, 0x8f, 0x66, 0x9d, 0x8e, 0xd9, 0xad, 0x8e, 0xe9, 0x51, 0x24,
+	0x22, 0x61, 0xf4, 0x4e, 0xf9, 0x55, 0xb5, 0xa2, 0x3f, 0x87, 0x60, 0xb8, 0x30, 0x5e, 0x23, 0x0a,
+	0x5e, 0xaf, 0xb1, 0x4a, 0xfd, 0x14, 0x2b, 0x4d, 0xa5, 0x1f, 0x2c, 0x59, 0x42, 0xa8, 0xf4, 0x33,
+	0x2a, 0x43, 0xca, 0xf5, 0xc4, 0x3a, 0xb6, 0xce, 0x2d, 0xf7, 0xac, 0xc8, 0x21, 0xba, 0xc2, 0x69,
+	0x32, 0x47, 0xf7, 0x88, 0x91, 0x37, 0x29, 0xe9, 0x27, 0x03, 0xdd, 0x8a, 0x2d, 0x2a, 0xd4, 0xc6,
+	0x84, 0x82, 0x6b, 0x89, 0x43, 0xed, 0x63, 0x92, 0x32, 0xde, 0xc6, 0x3c, 0xe8, 0x8d, 0xe9, 0x17,
+	0xd7, 0x31, 0x17, 0x35, 0xfc, 0x50, 0xb2, 0x26, 0xe6, 0x1b, 0x30, 0xcc, 0x27, 0x74, 0x45, 0x13,
+	0x91, 0xa5, 0x94, 0xeb, 0x36, 0xe3, 0xa1, 0xc9, 0x38, 0x2d, 0x72, 0x08, 0x3b, 0x19, 0x3d, 0x4a,
+	0xe4, 0x8d, 0x4b, 0xf4, 0xf1, 0x86, 0x34, 0xf6, 0x97, 0xc0, 0x10, 0x7f, 0x85, 0x13, 0x46, 0xb0,
+	0x16, 0x37, 0x7b, 0x3a, 0x30, 0xe6, 0x27, 0x45, 0x0e, 0xdf, 0x74, 0xcc, 0xef, 0xe8, 0x90, 0x77,
+	0x54, 0x82, 0x2f, 0x4d, 0xbd, 0x33, 0x37, 0xc7, 0x9a, 0xad, 0x68, 0x8f, 0xf5, 0xe1, 0xfe, 0xdc,
+	0xff, 0x53, 0x22, 0x6f, 0x5c, 0xa1, 0x3b, 0xf6, 0x21, 0x98, 0xd6, 0x4d, 0x7d, 0x8b, 0x19, 0x9a,
+	0x80, 0xb7, 0x45, 0x0e, 0x4f, 0x6e, 0x05, 0xf4, 0xae, 0xa6, 0x9e, 0xb3, 0x67, 0x39, 0x17, 0xe0,
+	0x45, 0xf3, 0x20, 0xd6, 0x8c, 0x13, 0xb1, 0x56, 0x93, 0x47, 0xc7, 0xd6, 0xf9, 0x33, 0x77, 0x5a,
+	0xe4, 0x70, 0x5c, 0x39, 0xef, 0x09, 0x90, 0xf7, 0xbc, 0xae, 0x5c, 0x56, 0x85, 0xd1, 0x1c, 0x3c,
+	0xd5, 0x1b, 0x5f, 0xc7, 0x92, 0xaa, 0x58, 0x24, 0x64, 0xf2, 0xd8, 0x38, 0xbc, 0x2a, 0x72, 0xf8,
+	0xb2, 0x72, 0xe8, 0x52, 0xe4, 0x3d, 0xd1, 0x9b, 0xcf, 0xcd, 0xdf, 0xfc, 0xe0, 0xc7, 0x4f, 0x38,
+	0x70, 0x17, 0xbf, 0xb6, 0xb6, 0x75, 0xbd, 0xb5, 0xad, 0xbf, 0x5b, 0xdb, 0xfa, 0xbe, 0xb3, 0x07,
+	0xd7, 0x3b, 0x7b, 0xf0, 0x7b, 0x67, 0x0f, 0xbe, 0xbe, 0x8f, 0x98, 0x8e, 0x97, 0xc1, 0x2c, 0x14,
+	0xa9, 0xd3, 0xde, 0x8e, 0xd3, 0xbd, 0xb6, 0xcd, 0xde, 0xbd, 0xe9, 0xab, 0x8c, 0xaa, 0x60, 0x68,
+	0x8e, 0xe6, 0xdd, 0xbf, 0x00, 0x00, 0x00, 0xff, 0xff, 0xb9, 0xa3, 0xb4, 0xaa, 0x99, 0x03, 0x00,
+	0x00,
 }
 
 func (m *Params) Marshal() (dAtA []byte, err error) {
@@ -102,6 +185,52 @@ func (m *Params) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
+	if m.TxThreshold != 0 {
+		i = encodeVarintParams(dAtA, i, uint64(m.TxThreshold))
+		i--
+		dAtA[i] = 0x40
+	}
+	if m.BuilderWindows != 0 {
+		i = encodeVarintParams(dAtA, i, uint64(m.BuilderWindows))
+		i--
+		dAtA[i] = 0x38
+	}
+	if m.NativeDevelopmentPercent != 0 {
+		i -= 8
+		encoding_binary.LittleEndian.PutUint64(dAtA[i:], uint64(math.Float64bits(float64(m.NativeDevelopmentPercent))))
+		i--
+		dAtA[i] = 0x31
+	}
+	if m.NativeValidatorPercent != 0 {
+		i -= 8
+		encoding_binary.LittleEndian.PutUint64(dAtA[i:], uint64(math.Float64bits(float64(m.NativeValidatorPercent))))
+		i--
+		dAtA[i] = 0x29
+	}
+	if m.WasmValidatorPercent != 0 {
+		i -= 8
+		encoding_binary.LittleEndian.PutUint64(dAtA[i:], uint64(math.Float64bits(float64(m.WasmValidatorPercent))))
+		i--
+		dAtA[i] = 0x21
+	}
+	if m.WasmDevelopmentPercent != 0 {
+		i -= 8
+		encoding_binary.LittleEndian.PutUint64(dAtA[i:], uint64(math.Float64bits(float64(m.WasmDevelopmentPercent))))
+		i--
+		dAtA[i] = 0x19
+	}
+	if m.WasmContractAdminPercent != 0 {
+		i -= 8
+		encoding_binary.LittleEndian.PutUint64(dAtA[i:], uint64(math.Float64bits(float64(m.WasmContractAdminPercent))))
+		i--
+		dAtA[i] = 0x11
+	}
+	if m.WasmMasterBuilderPercent != 0 {
+		i -= 8
+		encoding_binary.LittleEndian.PutUint64(dAtA[i:], uint64(math.Float64bits(float64(m.WasmMasterBuilderPercent))))
+		i--
+		dAtA[i] = 0x9
+	}
 	return len(dAtA) - i, nil
 }
 
@@ -122,6 +251,30 @@ func (m *Params) Size() (n int) {
 	}
 	var l int
 	_ = l
+	if m.WasmMasterBuilderPercent != 0 {
+		n += 9
+	}
+	if m.WasmContractAdminPercent != 0 {
+		n += 9
+	}
+	if m.WasmDevelopmentPercent != 0 {
+		n += 9
+	}
+	if m.WasmValidatorPercent != 0 {
+		n += 9
+	}
+	if m.NativeValidatorPercent != 0 {
+		n += 9
+	}
+	if m.NativeDevelopmentPercent != 0 {
+		n += 9
+	}
+	if m.BuilderWindows != 0 {
+		n += 1 + sovParams(uint64(m.BuilderWindows))
+	}
+	if m.TxThreshold != 0 {
+		n += 1 + sovParams(uint64(m.TxThreshold))
+	}
 	return n
 }
 
@@ -160,6 +313,110 @@ func (m *Params) Unmarshal(dAtA []byte) error {
 			return fmt.Errorf("proto: Params: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
+		case 1:
+			if wireType != 1 {
+				return fmt.Errorf("proto: wrong wireType = %d for field WasmMasterBuilderPercent", wireType)
+			}
+			var v uint64
+			if (iNdEx + 8) > l {
+				return io.ErrUnexpectedEOF
+			}
+			v = uint64(encoding_binary.LittleEndian.Uint64(dAtA[iNdEx:]))
+			iNdEx += 8
+			m.WasmMasterBuilderPercent = float64(math.Float64frombits(v))
+		case 2:
+			if wireType != 1 {
+				return fmt.Errorf("proto: wrong wireType = %d for field WasmContractAdminPercent", wireType)
+			}
+			var v uint64
+			if (iNdEx + 8) > l {
+				return io.ErrUnexpectedEOF
+			}
+			v = uint64(encoding_binary.LittleEndian.Uint64(dAtA[iNdEx:]))
+			iNdEx += 8
+			m.WasmContractAdminPercent = float64(math.Float64frombits(v))
+		case 3:
+			if wireType != 1 {
+				return fmt.Errorf("proto: wrong wireType = %d for field WasmDevelopmentPercent", wireType)
+			}
+			var v uint64
+			if (iNdEx + 8) > l {
+				return io.ErrUnexpectedEOF
+			}
+			v = uint64(encoding_binary.LittleEndian.Uint64(dAtA[iNdEx:]))
+			iNdEx += 8
+			m.WasmDevelopmentPercent = float64(math.Float64frombits(v))
+		case 4:
+			if wireType != 1 {
+				return fmt.Errorf("proto: wrong wireType = %d for field WasmValidatorPercent", wireType)
+			}
+			var v uint64
+			if (iNdEx + 8) > l {
+				return io.ErrUnexpectedEOF
+			}
+			v = uint64(encoding_binary.LittleEndian.Uint64(dAtA[iNdEx:]))
+			iNdEx += 8
+			m.WasmValidatorPercent = float64(math.Float64frombits(v))
+		case 5:
+			if wireType != 1 {
+				return fmt.Errorf("proto: wrong wireType = %d for field NativeValidatorPercent", wireType)
+			}
+			var v uint64
+			if (iNdEx + 8) > l {
+				return io.ErrUnexpectedEOF
+			}
+			v = uint64(encoding_binary.LittleEndian.Uint64(dAtA[iNdEx:]))
+			iNdEx += 8
+			m.NativeValidatorPercent = float64(math.Float64frombits(v))
+		case 6:
+			if wireType != 1 {
+				return fmt.Errorf("proto: wrong wireType = %d for field NativeDevelopmentPercent", wireType)
+			}
+			var v uint64
+			if (iNdEx + 8) > l {
+				return io.ErrUnexpectedEOF
+			}
+			v = uint64(encoding_binary.LittleEndian.Uint64(dAtA[iNdEx:]))
+			iNdEx += 8
+			m.NativeDevelopmentPercent = float64(math.Float64frombits(v))
+		case 7:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field BuilderWindows", wireType)
+			}
+			m.BuilderWindows = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowParams
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.BuilderWindows |= uint32(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 8:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field TxThreshold", wireType)
+			}
+			m.TxThreshold = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowParams
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.TxThreshold |= uint32(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
 		default:
 			iNdEx = preIndex
 			skippy, err := skipParams(dAtA[iNdEx:])

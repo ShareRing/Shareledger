@@ -5,69 +5,79 @@ build:
   proto:
     path: proto
     third_party_paths:
-    - third_party/proto
-    - proto_vendor
+      - third_party/proto
+      - proto_vendor
 accounts:
-- name: validator
-  coins:
-  - 100000000000000000nshr
-  - 100000000000cent
-  mnemonic: arrange amateur body cotton slim roof hand blush monkey remove expect
-    rug hazard spoil flag choose tomato end duty nominee wheel cushion into stable
-- name: authority
-  coins:
-  - 100000000000000000nshr
-  - 100000000000cent
-  mnemonic: exile dutch volcano mosquito tree correct blame tape involve fiscal blossom
-    emerge install grant normal divorce shiver barrel island drink local banana educate
-    fix
-- name: treasurer
-  coins:
-  - 100000000000000000nshr
-  - 100000000000cent
-  mnemonic: hair bacon dirt torch air uphold tackle involve pool time token junior
-    melody option judge thumb dance tube loud noise eternal congress fragile apart
-- name: account-operator
-  coins:
-  - 100000000000000000nshr
-  - 100000000000cent
-  mnemonic: pool mother column hurdle jealous wear host attack speak vague client
-    demise inherit arrange lens purity time math decade renew south ring retreat balance
-- name: idsigner
-  coins:
-  - 100000000000000000nshr
-  - 100000000000cent
-  mnemonic: memory mind warfare pull risk math concert address zero speak glimpse
-    outside economy hill boil boss pulp much connect install clip short object tobacco
-- name: user
-  coins:
-  - 1000000000000000nshr
-  mnemonic: bright payment cash tomato tragic impulse perfect jacket matter jelly
-    artist pulse will cinnamon erase middle elevator away clinic razor rotate tide
-    unfair trigger
-- name: approver
-  coins:
-  - 100000000000nshr
-  mnemonic: spend people immense ill property hungry craft corn quote once hand clarify
-    adapt disorder airport balance alley wisdom physical appear debris awake pencil
-    skate
-- name: relayer
-  coins:
-  - 100000000000nshr
-  mnemonic: indoor donate grid ostrich tree swamp cactus common piano buzz version
-    world second try garage squirrel alert fork december control bind spoon taste
-    essay
-- name: swap_manager
-  coins:
-  - 100000000000nshr
-  mnemonic: logic fade bike misery female father false speak code immune improve key
-    food enter night timber kick spare amused miss expire bottom walk century
-- name: doc-issuer
-  coins:
-  - 100000000000nshr
-  mnemonic: loyal siren evoke advice churn behave volcano wood ecology select unusual
-    clock impulse angry scene protect lucky muffin chimney earth type provide taste
-    volcano
+  - name: validator
+    coins:
+      - 100000000000000000nshr
+      - 100000000000cent
+    mnemonic:
+      arrange amateur body cotton slim roof hand blush monkey remove expect
+      rug hazard spoil flag choose tomato end duty nominee wheel cushion into stable
+  - name: authority
+    coins:
+      - 100000000000000000nshr
+      - 100000000000cent
+    mnemonic:
+      exile dutch volcano mosquito tree correct blame tape involve fiscal blossom
+      emerge install grant normal divorce shiver barrel island drink local banana educate
+      fix
+  - name: treasurer
+    coins:
+      - 100000000000000000nshr
+      - 100000000000cent
+    mnemonic:
+      hair bacon dirt torch air uphold tackle involve pool time token junior
+      melody option judge thumb dance tube loud noise eternal congress fragile apart
+  - name: account-operator
+    coins:
+      - 100000000000000000nshr
+      - 100000000000cent
+    mnemonic:
+      pool mother column hurdle jealous wear host attack speak vague client
+      demise inherit arrange lens purity time math decade renew south ring retreat balance
+  - name: idsigner
+    coins:
+      - 100000000000000000nshr
+      - 100000000000cent
+    mnemonic:
+      memory mind warfare pull risk math concert address zero speak glimpse
+      outside economy hill boil boss pulp much connect install clip short object tobacco
+  - name: user
+    coins:
+      - 1000000000000000nshr
+    mnemonic:
+      bright payment cash tomato tragic impulse perfect jacket matter jelly
+      artist pulse will cinnamon erase middle elevator away clinic razor rotate tide
+      unfair trigger
+  - name: approver
+    coins:
+      - 100000000000nshr
+    mnemonic:
+      spend people immense ill property hungry craft corn quote once hand clarify
+      adapt disorder airport balance alley wisdom physical appear debris awake pencil
+      skate
+  - name: relayer
+    coins:
+      - 100000000000nshr
+    mnemonic:
+      indoor donate grid ostrich tree swamp cactus common piano buzz version
+      world second try garage squirrel alert fork december control bind spoon taste
+      essay
+  - name: swap_manager
+    coins:
+      - 100000000000nshr
+    mnemonic:
+      logic fade bike misery female father false speak code immune improve key
+      food enter night timber kick spare amused miss expire bottom walk century
+  - name: doc-issuer
+    coins:
+      - 100000000000nshr
+    mnemonic:
+      loyal siren evoke advice churn behave volcano wood ecology select unusual
+      clock impulse angry scene protect lucky muffin chimney earth type provide taste
+      volcano
 faucet:
   name: null
   coins: []
@@ -79,49 +89,49 @@ genesis:
   app_state:
     bank:
       denom_metadata:
-      - base: nshr
-        denom_units:
-        - aliases:
-          - nshr
-          denom: nshr
-          exponent: 0
-        - aliases:
-          - shr
-          denom: shr
-          exponent: 9
-        description: The native smallest token of shr chain
-        display: shr
-        name: nshr
-        symbol: nshr
+        - base: nshr
+          denom_units:
+            - aliases:
+                - nshr
+              denom: nshr
+              exponent: 0
+            - aliases:
+                - shr
+              denom: shr
+              exponent: 9
+          description: The native smallest token of shr chain
+          display: shr
+          name: nshr
+          symbol: nshr
     crisis:
       constant_fee:
         denom: nshr
     electoral:
       accStateList:
-      - address: shareledger1lq9svs76xwekrrzw7uprekyqydf7fp02p8zp8e
-        key: shrploadershareledger1lq9svs76xwekrrzw7uprekyqydf7fp02p8zp8e
-        status: active
-      - address: shareledger18pf3zdwqjntd9wkvfcjvmdc7hua6c0q2eck5h5
-        key: votershareledger18pf3zdwqjntd9wkvfcjvmdc7hua6c0q2eck5h5
-        status: active
-      - address: shareledger1j4ndn4qed0ukulc0a6a5fxe6yxmnm7wh59pwpn
-        key: approvershareledger1j4ndn4qed0ukulc0a6a5fxe6yxmnm7wh59pwpn
-        status: active
-      - address: shareledger16k53l0v5fr93u2kpe7ek2lc3tm37k4954zalvv
-        key: relayershareledger16k53l0v5fr93u2kpe7ek2lc3tm37k4954zalvv
-        status: active
-      - address: shareledger1yfwgejzj4nmkp6es6q3xea9uwexy5xwjs9rpcx
-        key: swapManagershareledger1yfwgejzj4nmkp6es6q3xea9uwexy5xwjs9rpcx
-        status: active
-      - address: shareledger1mms7cehvyx7pxp7lllt0mn47hz5ufxwfwc2t95
-        key: accopshareledger1mms7cehvyx7pxp7lllt0mn47hz5ufxwfwc2t95
-        status: active
-      - address: shareledger1qn7whj8v3gjf3a2nncydu88kt325xtd3t3gc95
-        key: docIssuershareledger1qn7whj8v3gjf3a2nncydu88kt325xtd3t3gc95
-        status: active
-      - address: shareledger19up5qp0h3ffyhz3d5cnhhnlzjpgpn23ppt9yjk
-        key: idsignershareledger19up5qp0h3ffyhz3d5cnhhnlzjpgpn23ppt9yjk
-        status: active
+        - address: shareledger1lq9svs76xwekrrzw7uprekyqydf7fp02p8zp8e
+          key: shrploadershareledger1lq9svs76xwekrrzw7uprekyqydf7fp02p8zp8e
+          status: active
+        - address: shareledger18pf3zdwqjntd9wkvfcjvmdc7hua6c0q2eck5h5
+          key: votershareledger18pf3zdwqjntd9wkvfcjvmdc7hua6c0q2eck5h5
+          status: active
+        - address: shareledger1j4ndn4qed0ukulc0a6a5fxe6yxmnm7wh59pwpn
+          key: approvershareledger1j4ndn4qed0ukulc0a6a5fxe6yxmnm7wh59pwpn
+          status: active
+        - address: shareledger16k53l0v5fr93u2kpe7ek2lc3tm37k4954zalvv
+          key: relayershareledger16k53l0v5fr93u2kpe7ek2lc3tm37k4954zalvv
+          status: active
+        - address: shareledger1yfwgejzj4nmkp6es6q3xea9uwexy5xwjs9rpcx
+          key: swapManagershareledger1yfwgejzj4nmkp6es6q3xea9uwexy5xwjs9rpcx
+          status: active
+        - address: shareledger1mms7cehvyx7pxp7lllt0mn47hz5ufxwfwc2t95
+          key: accopshareledger1mms7cehvyx7pxp7lllt0mn47hz5ufxwfwc2t95
+          status: active
+        - address: shareledger1qn7whj8v3gjf3a2nncydu88kt325xtd3t3gc95
+          key: docIssuershareledger1qn7whj8v3gjf3a2nncydu88kt325xtd3t3gc95
+          status: active
+        - address: shareledger19up5qp0h3ffyhz3d5cnhhnlzjpgpn23ppt9yjk
+          key: idsignershareledger19up5qp0h3ffyhz3d5cnhhnlzjpgpn23ppt9yjk
+          status: active
       authority:
         address: shareledger1lq9svs76xwekrrzw7uprekyqydf7fp02p8zp8e
       treasurer:
@@ -129,8 +139,8 @@ genesis:
     gov:
       deposit_params:
         min_deposit:
-        - amount: "1"
-          denom: nshr
+          - amount: "1"
+            denom: nshr
       voting_params:
         voting_period: 100s
     interchainaccounts:
@@ -162,11 +172,21 @@ genesis:
       params: null
       requestCount: "1"
       requests: []
+    sdistribution:
+      params:
+        wasm_master_builder_percent: 12.5
+        wasm_contract_admin_percent: 12.5
+        wasm_development_percent: 25
+        wasm_validator_percent: 50
+        native_validator_percent: 50
+        native_development_percent: 50
+        builder_windows: 1000
+        tx_threshold: 1000
   chain_id: ShareRing-VoyagerNet
 validators:
-- name: validator
-  bonded: 100000000000000000nshr
-  app:
-    min_gas_prices: 1000nshr
-  client:
-    chain-id: ShareRing-VoyagerNet
+  - name: validator
+    bonded: 100000000000000000nshr
+    app:
+      min_gas_prices: 1000nshr
+    client:
+      chain-id: ShareRing-VoyagerNet

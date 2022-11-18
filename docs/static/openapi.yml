@@ -45599,6 +45599,31 @@ paths:
               params:
                 description: params holds all the parameters of this module.
                 type: object
+                properties:
+                  wasm_master_builder_percent:
+                    type: number
+                    format: double
+                  wasm_contract_admin_percent:
+                    type: number
+                    format: double
+                  wasm_development_percent:
+                    type: number
+                    format: double
+                  wasm_validator_percent:
+                    type: number
+                    format: double
+                  native_validator_percent:
+                    type: number
+                    format: double
+                  native_development_percent:
+                    type: number
+                    format: double
+                  builder_windows:
+                    type: integer
+                    format: int64
+                  tx_threshold:
+                    type: integer
+                    format: int64
             description: >-
               QueryParamsResponse is response type for the Query/Params RPC
               method.
@@ -75188,6 +75213,31 @@ definitions:
         format: uint64
   sharering.shareledger.sdistribution.Params:
     type: object
+    properties:
+      wasm_master_builder_percent:
+        type: number
+        format: double
+      wasm_contract_admin_percent:
+        type: number
+        format: double
+      wasm_development_percent:
+        type: number
+        format: double
+      wasm_validator_percent:
+        type: number
+        format: double
+      native_validator_percent:
+        type: number
+        format: double
+      native_development_percent:
+        type: number
+        format: double
+      builder_windows:
+        type: integer
+        format: int64
+      tx_threshold:
+        type: integer
+        format: int64
     description: Params defines the parameters for the module.
   sharering.shareledger.sdistribution.QueryParamsResponse:
     type: object
@@ -75195,4 +75245,29 @@ definitions:
       params:
         description: params holds all the parameters of this module.
         type: object
+        properties:
+          wasm_master_builder_percent:
+            type: number
+            format: double
+          wasm_contract_admin_percent:
+            type: number
+            format: double
+          wasm_development_percent:
+            type: number
+            format: double
+          wasm_validator_percent:
+            type: number
+            format: double
+          native_validator_percent:
+            type: number
+            format: double
+          native_development_percent:
+            type: number
+            format: double
+          builder_windows:
+            type: integer
+            format: int64
+          tx_threshold:
+            type: integer
+            format: int64
     description: QueryParamsResponse is response type for the Query/Params RPC method.
