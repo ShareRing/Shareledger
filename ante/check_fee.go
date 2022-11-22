@@ -1,7 +1,6 @@
 package ante
 
 import (
-	"fmt"
 	"strings"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -24,17 +23,18 @@ func (cfd CheckFeeDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate boo
 	if !ok {
 		return ctx, sdkerrors.Wrap(sdkerrors.ErrTxDecode, "Tx must be a FeeTx")
 	}
-	msgs := tx.GetMsgs()
 
-	// skip check if simulate or wasm tx
-	// FIXME: fix for case list of many txs, and check for gas consumed for wasm tx
-	fmt.Println(sdk.MsgTypeURL(msgs[0]))
-	if simulate || (len(msgs) == 1 && strings.HasPrefix(sdk.MsgTypeURL(msgs[0]), "/cosmwasm.wasm")) {
+	// skip check if run simulation
+	if simulate {
 		return next(ctx, tx, simulate)
 	}
 
 	requiredFees := sdk.NewCoins()
-	for _, msg := range msgs {
+	for _, msg := range tx.GetMsgs() {
+		// skip check if wasm tx
+		if strings.HasPrefix(sdk.MsgTypeURL(msg), "/cosmwasm.wasm") {
+			return next(ctx, tx, simulate)
+		}
 		fee, err := cfd.gk.GetBaseFeeByMsg(ctx, msg)
 		if err != nil {
 			return ctx, err

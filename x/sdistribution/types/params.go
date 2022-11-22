@@ -15,13 +15,13 @@ func ParamKeyTable() paramtypes.KeyTable {
 // NewParams creates a new Params instance
 func NewParams() Params {
 	return Params{
-		WasmMasterBuilderPercent: 12.5,
-		WasmContractAdminPercent: 12.5,
-		WasmDevelopmentPercent:   25,
-		WasmValidatorPercent:     50,
+		WasmMasterBuilder: .125,
+		WasmContractAdmin: .125,
+		WasmDevelopment:   .25,
+		WasmValidator:     .5,
 
-		NativeValidatorPercent:   50,
-		NativeDevelopmentPercent: 50,
+		NativeValidator:   .5,
+		NativeDevelopment: .5,
 
 		BuilderWindows: 1000,
 		TxThreshold:    1000,
@@ -40,15 +40,15 @@ func (p *Params) ParamSetPairs() paramtypes.ParamSetPairs {
 
 // Validate validates the set of params
 func (p Params) Validate() error {
-	// total wasm percent is 100
-	totalWasm := p.WasmMasterBuilderPercent + p.WasmContractAdminPercent + p.WasmDevelopmentPercent + p.WasmValidatorPercent
-	if totalWasm != 100 {
-		return ErrInvalidParams.Wrapf("total wasm percent is: %v, expected: 100", totalWasm)
+	// total wasm is 1
+	totalWasm := p.WasmMasterBuilder + p.WasmContractAdmin + p.WasmDevelopment + p.WasmValidator
+	if totalWasm != 1 {
+		return ErrInvalidParams.Wrapf("total wasm is: %v, expected: 1", totalWasm)
 	}
-	// total native percent is 100
-	totalNative := p.NativeDevelopmentPercent + p.NativeValidatorPercent
-	if totalNative != 100 {
-		return ErrInvalidParams.Wrapf("total native percent is: %v, expected 100", totalNative)
+	// total native is 1
+	totalNative := p.NativeDevelopment + p.NativeValidator
+	if totalNative != 1 {
+		return ErrInvalidParams.Wrapf("total native is: %v, expected 1", totalNative)
 	}
 	return nil
 }

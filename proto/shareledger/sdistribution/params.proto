@@ -10,13 +10,13 @@ option go_package = "github.com/sharering/shareledger/x/sdistribution/types";
 message Params {
   option (gogoproto.goproto_stringer) = false;
 
-  double wasm_master_builder_percent = 1 [(gogoproto.moretags) = "yaml:\"wasm_master_builder_percent\""];
-  double wasm_contract_admin_percent = 2 [(gogoproto.moretags) = "yaml:\"wasm_contract_admin_percent\""];
-  double wasm_development_percent = 3 [(gogoproto.moretags) = "yaml:\"wasm_development_percent\""];
-  double wasm_validator_percent = 4 [(gogoproto.moretags) = "yaml:\"wasm_validator_percent\""];
+  double wasm_master_builder = 1 [(gogoproto.moretags) = "yaml:\"wasm_master_builder\""];
+  double wasm_contract_admin = 2 [(gogoproto.moretags) = "yaml:\"wasm_contract_admin\""];
+  double wasm_development = 3 [(gogoproto.moretags) = "yaml:\"wasm_development\""];
+  double wasm_validator = 4 [(gogoproto.moretags) = "yaml:\"wasm_validator\""];
 
-  double native_validator_percent = 5 [(gogoproto.moretags) = "yaml:\"native_validator_percent\""];
-  double native_development_percent = 6 [(gogoproto.moretags) = "yaml:\"native_development_percent\""];
+  double native_validator = 5 [(gogoproto.moretags) = "yaml:\"native_validator\""];
+  double native_development = 6 [(gogoproto.moretags) = "yaml:\"native_development\""];
 
   uint32 builder_windows = 7 [(gogoproto.moretags) = "yaml:\"builder_windows\""];
   uint32 tx_threshold = 8 [(gogoproto.moretags) = "yaml:\"tx_threshold\""];

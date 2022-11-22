@@ -4,34 +4,49 @@ import (
 	"fmt"
 	"math"
 
+	sdkmath "cosmossdk.io/math"
+	wasmtypes "github.com/CosmWasm/wasmd/x/wasm/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/cosmos/cosmos-sdk/x/auth/ante"
 	"github.com/cosmos/cosmos-sdk/x/auth/types"
+	sdistributiontypes "github.com/sharering/shareledger/x/sdistribution/types"
 )
+
+// TxFeeChecker check if the provided fee is enough and returns the effective fee and tx priority,
+// the effective fee should be deducted later, and the priority should be returned in abci response.
+type TxFeeChecker func(ctx sdk.Context, tx sdk.Tx) (sdk.Coins, int64, error)
 
 // DeductFeeDecorator deducts fees from the first signer of the tx
 // If the first signer does not have the funds to pay for the fees, return with InsufficientFunds error
 // Call next AnteHandler if fees successfully deducted
 // CONTRACT: Tx must implement FeeTx interface to use DeductFeeDecorator
+// NOTE: this is modified version of cosmos DeductFeeDecorator to follow the
+// new fee distribution.
+// This ante will transfer fee of tx to `FeeWasmName` pool or `FeeNativeName` pool base on
+// transaction type
 type DeductFeeDecorator struct {
 	accountKeeper  ante.AccountKeeper
 	bankKeeper     types.BankKeeper
 	feegrantKeeper ante.FeegrantKeeper
 	txFeeChecker   ante.TxFeeChecker
+
+	sdistributionKeeper SDistributionKeeper
+	wasmKeeper          WasmKeeper
 }
 
-// Customize version of ante.NewDeductFeeDecorator
-func NewDeductFeeDecorator(ak ante.AccountKeeper, bk types.BankKeeper, fk ante.FeegrantKeeper, tfc ante.TxFeeChecker) DeductFeeDecorator {
+func NewDeductFeeDecorator(ak ante.AccountKeeper, bk types.BankKeeper, fk ante.FeegrantKeeper, tfc ante.TxFeeChecker, sk SDistributionKeeper, wk WasmKeeper) DeductFeeDecorator {
 	if tfc == nil {
 		tfc = checkTxFeeWithValidatorMinGasPrices
 	}
 
 	return DeductFeeDecorator{
-		accountKeeper:  ak,
-		bankKeeper:     bk,
-		feegrantKeeper: fk,
-		txFeeChecker:   tfc,
+		accountKeeper:       ak,
+		bankKeeper:          bk,
+		feegrantKeeper:      fk,
+		txFeeChecker:        tfc,
+		sdistributionKeeper: sk,
+		wasmKeeper:          wk,
 	}
 }
 
@@ -82,6 +97,7 @@ func (dfd DeductFeeDecorator) checkDeductFee(ctx sdk.Context, sdkTx sdk.Tx, fee 
 
 	// if feegranter set deduct fee from feegranter account.
 	// this works with only when feegrant enabled.
+	// TODO: Update this for new fee distribution
 	if feeGranter != nil {
 		if dfd.feegrantKeeper == nil {
 			return sdkerrors.ErrInvalidRequest.Wrap("fee grants are not enabled")
@@ -101,8 +117,35 @@ func (dfd DeductFeeDecorator) checkDeductFee(ctx sdk.Context, sdkTx sdk.Tx, fee 
 	}
 
 	// deduct the fees
+	params := dfd.sdistributionKeeper.GetParams(ctx)
 	if !fee.IsZero() {
-		err := DeductFees(dfd.bankKeeper, ctx, deductFeesFromAcc, fee)
+		// Custom fee distribution only apply with tx that have 1 message
+		if len(sdkTx.GetMsgs()) == 1 {
+			msg := sdkTx.GetMsgs()[0]
+			// handle case wasm msg
+			if execMsg, ok := msg.(*wasmtypes.MsgExecuteContract); ok {
+				// increase contract creator reward
+				addr, err := sdk.AccAddressFromBech32(execMsg.Contract)
+				if err != nil {
+					return err
+				}
+				contract := dfd.wasmKeeper.GetContractInfo(ctx, addr)
+				contractAdminFee := getFeeRounded(fee, params.WasmContractAdmin)
+				dfd.sdistributionKeeper.IncReward(ctx, contract.Creator, contractAdminFee)
+				fee = fee.Sub(contractAdminFee...)
+
+				wasmFee := getFeeRounded(fee, 1-params.WasmValidator)
+				deductFees(dfd.bankKeeper, ctx, deductFeesFromAcc, wasmFee, sdistributiontypes.FeeWasmName)
+				fee = fee.Sub(wasmFee...)
+			}
+		}
+
+		// move some amount to `sdistributiontypes.FeeNativeName` pool
+		nativeFee := getFeeRounded(fee, 1-params.NativeValidator)
+		deductFees(dfd.bankKeeper, ctx, deductFeesFromAcc, nativeFee, sdistributiontypes.FeeNativeName)
+		fee = fee.Sub(nativeFee...)
+
+		err := deductFees(dfd.bankKeeper, ctx, deductFeesFromAcc, fee, types.FeeCollectorName)
 		if err != nil {
 			return err
 		}
@@ -120,17 +163,24 @@ func (dfd DeductFeeDecorator) checkDeductFee(ctx sdk.Context, sdkTx sdk.Tx, fee 
 	return nil
 }
 
-// DeductFees deducts fees from the given account.
-func DeductFees(bankKeeper types.BankKeeper, ctx sdk.Context, acc types.AccountI, fees sdk.Coins) error {
+func getFeeRounded(fee sdk.Coins, rate float64) sdk.Coins {
+	// round params to 4 decimals
+	const ROUND_FACTOR = 10000
+	tp := sdkmath.NewInt(int64(rate * ROUND_FACTOR))
+	return fee.MulInt(tp).QuoInt(sdkmath.NewInt(ROUND_FACTOR))
+}
+
+// deductFees deducts fees from the given account.
+func deductFees(bankKeeper types.BankKeeper, ctx sdk.Context, acc types.AccountI, fees sdk.Coins, moudleAccount string) error {
 	if !fees.IsValid() {
 		return sdkerrors.Wrapf(sdkerrors.ErrInsufficientFee, "invalid fee amount: %s", fees)
 	}
 
-	err := bankKeeper.SendCoinsFromAccountToModule(ctx, acc.GetAddress(), types.FeeCollectorName, fees)
+	err := bankKeeper.
+		SendCoinsFromAccountToModule(ctx, acc.GetAddress(), moudleAccount, fees)
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInsufficientFunds, err.Error())
 	}
-
 	return nil
 }
 

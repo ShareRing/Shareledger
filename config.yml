@@ -174,12 +174,12 @@ genesis:
       requests: []
     sdistribution:
       params:
-        wasm_master_builder_percent: 12.5
-        wasm_contract_admin_percent: 12.5
-        wasm_development_percent: 25
-        wasm_validator_percent: 50
-        native_validator_percent: 50
-        native_development_percent: 50
+        wasm_master_builder: 0.125
+        wasm_contract_admin: 0.125
+        wasm_development: 0.25
+        wasm_validator: 0.5
+        native_validator: 0.5
+        native_development: 0.5
         builder_windows: 1000
         tx_threshold: 1000
   chain_id: ShareRing-VoyagerNet

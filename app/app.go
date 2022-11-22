@@ -34,9 +34,9 @@ import (
 	ibcchanneltypes "github.com/cosmos/ibc-go/v5/modules/core/04-channel/types"
 	"github.com/gorilla/mux"
 	"github.com/rakyll/statik/fs"
+	"github.com/sharering/shareledger/ante"
 	"github.com/sharering/shareledger/app/keepers"
 	"github.com/sharering/shareledger/app/params"
-	"github.com/sharering/shareledger/x/ante"
 	"github.com/spf13/cast"
 	abci "github.com/tendermint/tendermint/abci/types"
 	tmjson "github.com/tendermint/tendermint/libs/json"
@@ -234,6 +234,8 @@ func New(
 		app.GentleMintKeeper,
 		roleKeeper,
 		app.IdKeeper,
+		app.SDistributionKeeper,
+		app.WasmKeeper,
 	)
 	if err != nil {
 		panic(fmt.Errorf("failed to create AnteHandler: %s", err))

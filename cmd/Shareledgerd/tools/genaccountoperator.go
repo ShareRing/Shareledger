@@ -24,6 +24,9 @@ func NewGenesisAddAccountOperatorCmd(defaultNodeHome string) *cobra.Command {
 			config = config.SetRoot(homeDir)
 
 			clientCtx, err := client.GetClientQueryContext(cmd)
+			if err != nil {
+				return err
+			}
 			addr, err := getAddr(cmd, clientCtx.HomeDir, args)
 			if err != nil {
 				return err

@@ -311,6 +311,12 @@ func NewAppKeeper(
 		appKeepers.keys[swapmoduletypes.MemStoreKey],
 		appKeepers.GetSubspace(swapmoduletypes.ModuleName),
 		appKeepers.BankKeeper, appKeepers.AccountKeeper)
+	appKeepers.SDistributionKeeper = *sdistributionkeeper.NewKeeper(appCodec,
+		appKeepers.keys[swapmoduletypes.StoreKey],
+		appKeepers.keys[swapmoduletypes.MemStoreKey],
+		appKeepers.GetSubspace(sdistributiontypes.ModuleName),
+		appKeepers.AccountKeeper,
+	)
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
 
 	// set the governance module account as the authority for conducting upgrades

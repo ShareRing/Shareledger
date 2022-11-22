@@ -82,6 +82,9 @@ var maccPerms = map[string][]string{
 	electoralmoduletypes.ModuleName:  nil,
 	icatypes.ModuleName:              nil,
 	swapmoduletypes.ModuleName:       nil,
+	sdistributiontypes.ModuleName:    nil,
+	sdistributiontypes.FeeWasmName:   nil,
+	sdistributiontypes.FeeNativeName: nil,
 	wasm.ModuleName:                  {authtypes.Burner},
 	// this line is used by starport scaffolding # stargate/app/maccPerms
 }

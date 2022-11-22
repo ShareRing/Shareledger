@@ -308,7 +308,7 @@ func (s *AssetIntegrationTestSuite) TestDeleteAsset() {
 	}
 }
 
-//setupTestMaterial prepare the test data
+// setupTestMaterial prepare the test data
 func (s *AssetIntegrationTestSuite) setupTestMaterial() {
 
 	var assetList = []GenesisAsset{

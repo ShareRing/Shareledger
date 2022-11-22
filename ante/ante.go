@@ -24,6 +24,8 @@ func NewHandler(
 	gentlemintKeeper GentlemintKeeper,
 	roleKeeper RoleKeeper,
 	idKeeper IDKeeper,
+	sdistributionKeeper SDistributionKeeper,
+	wasmKeeper WasmKeeper,
 ) (sdk.AnteHandler, error) {
 	if options.AccountKeeper == nil {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrLogic, "account keeper is required for AnteHandler")
@@ -46,14 +48,13 @@ func NewHandler(
 		ante.NewSetUpContextDecorator(),
 		wasmkeeper.NewLimitSimulationGasDecorator(options.WasmConfig.SimulationGasLimit),
 		wasmkeeper.NewCountTXDecorator(options.TXCounterStoreKey),
-		// ante.NewRejectExtensionOptionsDecorator(),
-		// ante.NewMempoolFeeDecorator(),
 		ante.NewValidateBasicDecorator(),
 		ante.NewTxTimeoutHeightDecorator(),
 		ante.NewValidateMemoDecorator(options.AccountKeeper),
 		ante.NewConsumeGasForTxSizeDecorator(options.AccountKeeper),
 		// ante.NewDeductFeeDecorator(options.AccountKeeper, options.BankKeeper, options.FeegrantKeeper, options.TxFeeChecker),
-		NewDeductFeeDecorator(options.AccountKeeper, options.BankKeeper, options.FeegrantKeeper, options.TxFeeChecker),
+		NewDeductFeeDecorator(options.AccountKeeper, options.BankKeeper,
+			options.FeegrantKeeper, options.TxFeeChecker, sdistributionKeeper, wasmKeeper),
 		ante.NewSetPubKeyDecorator(options.AccountKeeper),
 		ante.NewValidateSigCountDecorator(options.AccountKeeper),
 		ante.NewSigGasConsumeDecorator(options.AccountKeeper, sigGasConsumer),
