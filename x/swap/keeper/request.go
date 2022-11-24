@@ -168,7 +168,7 @@ func (k Keeper) ChangeStatusRequests(ctx sdk.Context, ids []uint64, status strin
 	}
 
 	if isSwapOut && status == types.SwapStatusApproved {
-		if batchId == nil || *batchId == 0 {
+		if batchId == nil {
 			return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "approve swap out must provide batch id")
 		}
 	}
