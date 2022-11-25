@@ -141,7 +141,6 @@ func (s *AssetIntegrationTestSuite) TestCreateAsset() {
 			out, err := ExCmdCreateAsset(s.network.Validators[0].ClientCtx, tc.iAssetID, tc.iAssetHash, tc.iAssetStatus, tc.iShrPFee,
 				netutilts.SHRFee(tc.iTxFee),
 				netutilts.JSONFlag,
-				netutilts.AccountSeq(43),
 				netutilts.MakeByAccount(tc.iAcc),
 			)
 
@@ -198,7 +197,7 @@ func (s *AssetIntegrationTestSuite) TestUpdateAsset() {
 			},
 			oErr:    nil,
 			oResult: &types2.TxResponse{Code: netutilts.ShareLedgerSuccessCode},
-			d:       "update exited asset by update shrp fee and status",
+			d:       "update_exited_asset by update shrp fee and status",
 		},
 		{
 			iAssetID:     "not_found",
@@ -209,7 +208,7 @@ func (s *AssetIntegrationTestSuite) TestUpdateAsset() {
 			iAcc:         netutilts.KeyAccount1,
 			oErr:         nil,
 			oResult:      &types2.TxResponse{Code: types.ErrNameDoesNotExist.ABCICode()},
-			d:            "update the not found asset should return an error code",
+			d:            "update_the not found asset should return an error code",
 		},
 		{
 			iAssetID:     "e_id_2",
@@ -220,7 +219,7 @@ func (s *AssetIntegrationTestSuite) TestUpdateAsset() {
 			iAcc:         netutilts.KeyAccount3,
 			oErr:         nil,
 			oResult:      &types2.TxResponse{Code: sdkerrors.ErrUnauthorized.ABCICode()},
-			d:            "update exited asset but the who make transaction wasn't owner of this asset",
+			d:            "update_exited asset but the who make transaction wasn't owner of this asset",
 		},
 	}
 	for _, tc := range testCase {
