@@ -26,9 +26,9 @@ var _ = math.Inf
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
 type Reward struct {
-	// account address that receive distributed fee
+	// account address of reward owner
 	Index string `protobuf:"bytes,1,opt,name=index,proto3" json:"index,omitempty"`
-	// token amount
+	// reward amount
 	Amount github_com_cosmos_cosmos_sdk_types.Coins `protobuf:"bytes,2,rep,name=amount,proto3,castrepeated=github.com/cosmos/cosmos-sdk/types.Coins" json:"amount"`
 }
 

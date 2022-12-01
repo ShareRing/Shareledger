@@ -55,6 +55,7 @@ func NewHandler(
 		// ante.NewDeductFeeDecorator(options.AccountKeeper, options.BankKeeper, options.FeegrantKeeper, options.TxFeeChecker),
 		NewDeductFeeDecorator(options.AccountKeeper, options.BankKeeper,
 			options.FeegrantKeeper, options.TxFeeChecker, sdistributionKeeper, wasmKeeper),
+		NewCountBuilderDecorator(sdistributionKeeper),
 		ante.NewSetPubKeyDecorator(options.AccountKeeper),
 		ante.NewValidateSigCountDecorator(options.AccountKeeper),
 		ante.NewSigGasConsumeDecorator(options.AccountKeeper, sigGasConsumer),

@@ -40456,6 +40456,347 @@ paths:
           type: string
       tags:
         - Query
+  /sharering/shareledger/sdistribution/builder_count:
+    get:
+      summary: Queries a list of BuilderCount items.
+      operationId: ShareringShareledgerSdistributionBuilderCountAll
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              builderCount:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    index:
+                      type: string
+                      title: contract address
+                    count:
+                      type: integer
+                      format: int64
+              pagination:
+                type: object
+                properties:
+                  next_key:
+                    type: string
+                    format: byte
+                    description: |-
+                      next_key is the key to be passed to PageRequest.key to
+                      query the next page most efficiently. It will be empty if
+                      there are no more results.
+                  total:
+                    type: string
+                    format: uint64
+                    title: >-
+                      total is total number of results available if
+                      PageRequest.count_total
+
+                      was set, its value is undefined otherwise
+                description: >-
+                  PageResponse is to be embedded in gRPC response messages where
+                  the
+
+                  corresponding request message has used PageRequest.
+
+                   message SomeResponse {
+                           repeated Bar results = 1;
+                           PageResponse page = 2;
+                   }
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: pagination.key
+          description: |-
+            key is a value returned in PageResponse.next_key to begin
+            querying the next page most efficiently. Only one of offset or key
+            should be set.
+          in: query
+          required: false
+          type: string
+          format: byte
+        - name: pagination.offset
+          description: >-
+            offset is a numeric offset that can be used when key is unavailable.
+
+            It is less efficient than using key. Only one of offset or key
+            should
+
+            be set.
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.limit
+          description: >-
+            limit is the total number of results to be returned in the result
+            page.
+
+            If left empty it will default to a value to be set by each app.
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.count_total
+          description: >-
+            count_total is set to true  to indicate that the result set should
+            include
+
+            a count of the total number of items available for pagination in
+            UIs.
+
+            count_total is only respected when offset is used. It is ignored
+            when key
+
+            is set.
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+
+
+            Since: cosmos-sdk 0.43
+          in: query
+          required: false
+          type: boolean
+      tags:
+        - Query
+  /sharering/shareledger/sdistribution/builder_count/{index}:
+    get:
+      summary: Queries a BuilderCount by index.
+      operationId: ShareringShareledgerSdistributionBuilderCount
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              builderCount:
+                type: object
+                properties:
+                  index:
+                    type: string
+                    title: contract address
+                  count:
+                    type: integer
+                    format: int64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: index
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  /sharering/shareledger/sdistribution/builder_list:
+    get:
+      summary: Queries a list of BuilderList items.
+      operationId: ShareringShareledgerSdistributionBuilderListAll
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              BuilderList:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      format: uint64
+                    contract_address:
+                      type: string
+                  title: store list of contract address of master builder
+              pagination:
+                type: object
+                properties:
+                  next_key:
+                    type: string
+                    format: byte
+                    description: |-
+                      next_key is the key to be passed to PageRequest.key to
+                      query the next page most efficiently. It will be empty if
+                      there are no more results.
+                  total:
+                    type: string
+                    format: uint64
+                    title: >-
+                      total is total number of results available if
+                      PageRequest.count_total
+
+                      was set, its value is undefined otherwise
+                description: >-
+                  PageResponse is to be embedded in gRPC response messages where
+                  the
+
+                  corresponding request message has used PageRequest.
+
+                   message SomeResponse {
+                           repeated Bar results = 1;
+                           PageResponse page = 2;
+                   }
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: pagination.key
+          description: |-
+            key is a value returned in PageResponse.next_key to begin
+            querying the next page most efficiently. Only one of offset or key
+            should be set.
+          in: query
+          required: false
+          type: string
+          format: byte
+        - name: pagination.offset
+          description: >-
+            offset is a numeric offset that can be used when key is unavailable.
+
+            It is less efficient than using key. Only one of offset or key
+            should
+
+            be set.
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.limit
+          description: >-
+            limit is the total number of results to be returned in the result
+            page.
+
+            If left empty it will default to a value to be set by each app.
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.count_total
+          description: >-
+            count_total is set to true  to indicate that the result set should
+            include
+
+            a count of the total number of items available for pagination in
+            UIs.
+
+            count_total is only respected when offset is used. It is ignored
+            when key
+
+            is set.
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+
+
+            Since: cosmos-sdk 0.43
+          in: query
+          required: false
+          type: boolean
+      tags:
+        - Query
+  /sharering/shareledger/sdistribution/builder_list/{id}:
+    get:
+      summary: Queries a BuilderList by id.
+      operationId: ShareringShareledgerSdistributionBuilderList
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              BuilderList:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uint64
+                  contract_address:
+                    type: string
+                title: store list of contract address of master builder
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: string
+          format: uint64
+      tags:
+        - Query
   /sharering/shareledger/sdistribution/params:
     get:
       summary: Parameters queries the parameters of the module.
@@ -40494,6 +40835,8 @@ paths:
                   tx_threshold:
                     type: integer
                     format: int64
+                  dev_pool_account:
+                    type: string
             description: >-
               QueryParamsResponse is response type for the Query/Params RPC
               method.
@@ -40534,7 +40877,7 @@ paths:
                   properties:
                     index:
                       type: string
-                      title: account address that receive distributed fee
+                      title: account address of reward owner
                     amount:
                       type: array
                       items:
@@ -40553,7 +40896,7 @@ paths:
                           custom method
 
                           signatures required by gogoproto.
-                      title: token amount
+                      title: reward amount
               pagination:
                 type: object
                 properties:
@@ -40674,7 +41017,7 @@ paths:
                 properties:
                   index:
                     type: string
-                    title: account address that receive distributed fee
+                    title: account address of reward owner
                   amount:
                     type: array
                     items:
@@ -40692,7 +41035,7 @@ paths:
                         custom method
 
                         signatures required by gogoproto.
-                    title: token amount
+                    title: reward amount
         default:
           description: An unexpected error response.
           schema:
@@ -67800,8 +68143,41 @@ definitions:
       logIndex:
         type: string
         format: uint64
+  sharering.shareledger.sdistribution.BuilderCount:
+    type: object
+    properties:
+      index:
+        type: string
+        title: contract address
+      count:
+        type: integer
+        format: int64
+  sharering.shareledger.sdistribution.BuilderList:
+    type: object
+    properties:
+      id:
+        type: string
+        format: uint64
+      contract_address:
+        type: string
+    title: store list of contract address of master builder
   sharering.shareledger.sdistribution.MsgWithdrawRewardResponse:
     type: object
+    properties:
+      amount:
+        type: array
+        items:
+          type: object
+          properties:
+            denom:
+              type: string
+            amount:
+              type: string
+          description: |-
+            Coin defines a token with a denomination and an amount.
+
+            NOTE: The amount field is an Int which implements the custom method
+            signatures required by gogoproto.
   sharering.shareledger.sdistribution.Params:
     type: object
     properties:
@@ -67829,36 +68205,23 @@ definitions:
       tx_threshold:
         type: integer
         format: int64
+      dev_pool_account:
+        type: string
     description: Params defines the parameters for the module.
-  sharering.shareledger.sdistribution.QueryAllRewardResponse:
+  sharering.shareledger.sdistribution.QueryAllBuilderCountResponse:
     type: object
     properties:
-      reward:
+      builderCount:
         type: array
         items:
           type: object
           properties:
             index:
               type: string
-              title: account address that receive distributed fee
-            amount:
-              type: array
-              items:
-                type: object
-                properties:
-                  denom:
-                    type: string
-                  amount:
-                    type: string
-                description: >-
-                  Coin defines a token with a denomination and an amount.
-
-
-                  NOTE: The amount field is an Int which implements the custom
-                  method
-
-                  signatures required by gogoproto.
-              title: token amount
+              title: contract address
+            count:
+              type: integer
+              format: int64
       pagination:
         type: object
         properties:
@@ -67885,6 +68248,125 @@ definitions:
                    repeated Bar results = 1;
                    PageResponse page = 2;
            }
+  sharering.shareledger.sdistribution.QueryAllBuilderListResponse:
+    type: object
+    properties:
+      BuilderList:
+        type: array
+        items:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uint64
+            contract_address:
+              type: string
+          title: store list of contract address of master builder
+      pagination:
+        type: object
+        properties:
+          next_key:
+            type: string
+            format: byte
+            description: |-
+              next_key is the key to be passed to PageRequest.key to
+              query the next page most efficiently. It will be empty if
+              there are no more results.
+          total:
+            type: string
+            format: uint64
+            title: >-
+              total is total number of results available if
+              PageRequest.count_total
+
+              was set, its value is undefined otherwise
+        description: |-
+          PageResponse is to be embedded in gRPC response messages where the
+          corresponding request message has used PageRequest.
+
+           message SomeResponse {
+                   repeated Bar results = 1;
+                   PageResponse page = 2;
+           }
+  sharering.shareledger.sdistribution.QueryAllRewardResponse:
+    type: object
+    properties:
+      reward:
+        type: array
+        items:
+          type: object
+          properties:
+            index:
+              type: string
+              title: account address of reward owner
+            amount:
+              type: array
+              items:
+                type: object
+                properties:
+                  denom:
+                    type: string
+                  amount:
+                    type: string
+                description: >-
+                  Coin defines a token with a denomination and an amount.
+
+
+                  NOTE: The amount field is an Int which implements the custom
+                  method
+
+                  signatures required by gogoproto.
+              title: reward amount
+      pagination:
+        type: object
+        properties:
+          next_key:
+            type: string
+            format: byte
+            description: |-
+              next_key is the key to be passed to PageRequest.key to
+              query the next page most efficiently. It will be empty if
+              there are no more results.
+          total:
+            type: string
+            format: uint64
+            title: >-
+              total is total number of results available if
+              PageRequest.count_total
+
+              was set, its value is undefined otherwise
+        description: |-
+          PageResponse is to be embedded in gRPC response messages where the
+          corresponding request message has used PageRequest.
+
+           message SomeResponse {
+                   repeated Bar results = 1;
+                   PageResponse page = 2;
+           }
+  sharering.shareledger.sdistribution.QueryGetBuilderCountResponse:
+    type: object
+    properties:
+      builderCount:
+        type: object
+        properties:
+          index:
+            type: string
+            title: contract address
+          count:
+            type: integer
+            format: int64
+  sharering.shareledger.sdistribution.QueryGetBuilderListResponse:
+    type: object
+    properties:
+      BuilderList:
+        type: object
+        properties:
+          id:
+            type: string
+            format: uint64
+          contract_address:
+            type: string
+        title: store list of contract address of master builder
   sharering.shareledger.sdistribution.QueryGetRewardResponse:
     type: object
     properties:
@@ -67893,7 +68375,7 @@ definitions:
         properties:
           index:
             type: string
-            title: account address that receive distributed fee
+            title: account address of reward owner
           amount:
             type: array
             items:
@@ -67911,7 +68393,7 @@ definitions:
                 method
 
                 signatures required by gogoproto.
-            title: token amount
+            title: reward amount
   sharering.shareledger.sdistribution.QueryParamsResponse:
     type: object
     properties:
@@ -67943,13 +68425,15 @@ definitions:
           tx_threshold:
             type: integer
             format: int64
+          dev_pool_account:
+            type: string
     description: QueryParamsResponse is response type for the Query/Params RPC method.
   sharering.shareledger.sdistribution.Reward:
     type: object
     properties:
       index:
         type: string
-        title: account address that receive distributed fee
+        title: account address of reward owner
       amount:
         type: array
         items:
@@ -67964,4 +68448,4 @@ definitions:
 
             NOTE: The amount field is an Int which implements the custom method
             signatures required by gogoproto.
-        title: token amount
+        title: reward amount

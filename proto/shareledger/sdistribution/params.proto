@@ -20,4 +20,6 @@ message Params {
 
   uint32 builder_windows = 7 [(gogoproto.moretags) = "yaml:\"builder_windows\""];
   uint32 tx_threshold = 8 [(gogoproto.moretags) = "yaml:\"tx_threshold\""];
+
+  string dev_pool_account = 9 [(gogoproto.moretags) = "yaml:\"dev_pool_account\""];
 }

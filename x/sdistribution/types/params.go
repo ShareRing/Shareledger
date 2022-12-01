@@ -1,6 +1,7 @@
 package types
 
 import (
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
 	"gopkg.in/yaml.v2"
 )
@@ -49,6 +50,14 @@ func (p Params) Validate() error {
 	totalNative := p.NativeDevelopment + p.NativeValidator
 	if totalNative != 1 {
 		return ErrInvalidParams.Wrapf("total native is: %v, expected 1", totalNative)
+	}
+
+	if p.TxThreshold == 0 {
+		return ErrInvalidParams.Wrapf("invalid TxThreshold: %d", p.TxThreshold)
+	}
+	err := sdk.VerifyAddressFormat([]byte(p.DevPoolAccount))
+	if err != nil {
+		return ErrInvalidParams.Wrapf("invalid DevPoolAccount :%w", err)
 	}
 	return nil
 }

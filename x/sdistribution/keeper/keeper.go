@@ -20,6 +20,8 @@ type (
 		paramstore paramtypes.Subspace
 		authKeeper types.AccountKeeper
 		bankKeeper types.BankKeeper
+
+		wasmKeeper types.WasmKeeper
 	}
 )
 

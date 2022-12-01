@@ -30,6 +30,23 @@ func TestGenesisState_Validate(t *testing.T) {
 						Index: "1",
 					},
 				},
+				BuilderCountList: []types.BuilderCount{
+					{
+						Index: "0",
+					},
+					{
+						Index: "1",
+					},
+				},
+				BuilderListList: []types.BuilderList{
+					{
+						Id: 0,
+					},
+					{
+						Id: 1,
+					},
+				},
+				BuilderListCount: 2,
 				// this line is used by starport scaffolding # types/genesis/validField
 			},
 			valid: true,
@@ -45,6 +62,46 @@ func TestGenesisState_Validate(t *testing.T) {
 						Index: "0",
 					},
 				},
+			},
+			valid: false,
+		},
+		{
+			desc: "duplicated builderCount",
+			genState: &types.GenesisState{
+				BuilderCountList: []types.BuilderCount{
+					{
+						Index: "0",
+					},
+					{
+						Index: "0",
+					},
+				},
+			},
+			valid: false,
+		},
+		{
+			desc: "duplicated builderList",
+			genState: &types.GenesisState{
+				BuilderListList: []types.BuilderList{
+					{
+						Id: 0,
+					},
+					{
+						Id: 0,
+					},
+				},
+			},
+			valid: false,
+		},
+		{
+			desc: "invalid builderList count",
+			genState: &types.GenesisState{
+				BuilderListList: []types.BuilderList{
+					{
+						Id: 1,
+					},
+				},
+				BuilderListCount: 0,
 			},
 			valid: false,
 		},

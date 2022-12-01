@@ -7,6 +7,8 @@ import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
 import "shareledger/sdistribution/params.proto";
 import "shareledger/sdistribution/reward.proto";
+import "shareledger/sdistribution/builder_count.proto";
+import "shareledger/sdistribution/builder_list.proto";
 // this line is used by starport scaffolding # 1
 
 
@@ -27,6 +29,26 @@ service Query {
   rpc RewardAll(QueryAllRewardRequest) returns (QueryAllRewardResponse) {
     option (google.api.http).get = "/sharering/shareledger/sdistribution/reward";
   }
+
+// Queries a BuilderCount by index.
+	rpc BuilderCount(QueryGetBuilderCountRequest) returns (QueryGetBuilderCountResponse) {
+		option (google.api.http).get = "/sharering/shareledger/sdistribution/builder_count/{index}";
+	}
+
+	// Queries a list of BuilderCount items.
+	rpc BuilderCountAll(QueryAllBuilderCountRequest) returns (QueryAllBuilderCountResponse) {
+		option (google.api.http).get = "/sharering/shareledger/sdistribution/builder_count";
+	}
+
+// Queries a BuilderList by id.
+	rpc BuilderList(QueryGetBuilderListRequest) returns (QueryGetBuilderListResponse) {
+		option (google.api.http).get = "/sharering/shareledger/sdistribution/builder_list/{id}";
+	}
+
+	// Queries a list of BuilderList items.
+	rpc BuilderListAll(QueryAllBuilderListRequest) returns (QueryAllBuilderListResponse) {
+		option (google.api.http).get = "/sharering/shareledger/sdistribution/builder_list";
+	}
 
 // this line is used by starport scaffolding # 2
 }
@@ -55,6 +77,41 @@ message QueryAllRewardRequest {
 message QueryAllRewardResponse {
   repeated Reward reward = 1 [(gogoproto.nullable) = false];
   cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryGetBuilderCountRequest {
+	  string index = 1;
+
+}
+
+message QueryGetBuilderCountResponse {
+	BuilderCount builderCount = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllBuilderCountRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllBuilderCountResponse {
+	repeated BuilderCount builderCount = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryGetBuilderListRequest {
+	uint64 id = 1;
+}
+
+message QueryGetBuilderListResponse {
+	BuilderList BuilderList = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllBuilderListRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllBuilderListResponse {
+	repeated BuilderList BuilderList = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 
 // this line is used by starport scaffolding # 3

@@ -15,4 +15,21 @@ import (
 func BeginBlocker(ctx sdk.Context, req abci.RequestBeginBlock, k keeper.Keeper) {
 	defer telemetry.ModuleMeasureSince(types.ModuleName, time.Now(), telemetry.MetricKeyBeginBlocker)
 	k.AllocateTokens(ctx)
+
+	// reset counter & re-calculate builderList
+	params := k.GetParams(ctx)
+	if req.Header.Height%int64(params.TxThreshold) == 0 {
+		allBuilderCount := k.GetAllBuilderCount(ctx)
+		var counter uint64 = 1
+		for _, builderCount := range allBuilderCount {
+			if builderCount.Count >= params.TxThreshold {
+				k.SetBuilderList(ctx, types.BuilderList{
+					Id:              counter,
+					ContractAddress: builderCount.Index,
+				})
+			}
+		}
+
+		k.SetBuilderListCount(ctx, counter)
+	}
 }

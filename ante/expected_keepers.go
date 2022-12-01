@@ -20,4 +20,5 @@ type FeegrantKeeper interface{}
 type SDistributionKeeper interface {
 	GetParams(ctx sdk.Context) sdistributiontypes.Params
 	IncReward(ctx sdk.Context, address string, coins sdk.Coins)
+	IncBuilderCount(ctx sdk.Context, address string)
 }
