@@ -4,13 +4,11 @@ go 1.18
 
 replace (
 	github.com/CosmWasm/wasmd => github.com/notional-labs/wasmd v0.29.0-sdk46.0.20221108144812-0abadd1ee929
-	// github.com/cosmos/cosmos-sdk => github.com/ShareRing/cosmos-sdk v0.46.5-0.20221116095839-f809baadc1be
-	github.com/cosmos/cosmos-sdk => /Users/nguyenthanhdat/work/sharering-sdk
+	github.com/cosmos/cosmos-sdk => github.com/ShareRing/cosmos-sdk v0.46.5-0.20221124101703-44ed5433401f
 	github.com/gogo/protobuf => github.com/regen-network/protobuf v1.3.3-alpha.regen.1
 )
 
 require (
-	cosmossdk.io/math v1.0.0-beta.3
 	github.com/CosmWasm/wasmd v0.27.0
 	github.com/cosmos/cosmos-sdk v0.46.4
 	github.com/cosmos/ibc-go/v5 v5.0.1
