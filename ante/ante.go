@@ -55,7 +55,9 @@ func NewHandler(
 		// ante.NewDeductFeeDecorator(options.AccountKeeper, options.BankKeeper, options.FeegrantKeeper, options.TxFeeChecker),
 		NewDeductFeeDecorator(options.AccountKeeper, options.BankKeeper,
 			options.FeegrantKeeper, options.TxFeeChecker, sdistributionKeeper, wasmKeeper),
+
 		NewCountBuilderDecorator(sdistributionKeeper),
+		NewAuthDecorator(roleKeeper, idKeeper),
 		ante.NewSetPubKeyDecorator(options.AccountKeeper),
 		ante.NewValidateSigCountDecorator(options.AccountKeeper),
 		ante.NewSigGasConsumeDecorator(options.AccountKeeper, sigGasConsumer),
@@ -64,7 +66,6 @@ func NewHandler(
 		ibcante.NewRedundantRelayDecorator(options.IBCKeeper),
 		NewLoadFeeDecorator(gentlemintKeeper),
 		NewCheckFeeDecorator(gentlemintKeeper),
-		NewAuthDecorator(roleKeeper, idKeeper),
 	}
 
 	return sdk.ChainAnteDecorators(anteDecorators...), nil

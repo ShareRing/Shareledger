@@ -431,7 +431,7 @@ func (s *SwapIntegrationTestSuite) TestCancel() {
 				out := tests.CmdQueryBalance(s.T(), cliCtx, netutilts.Accounts[ts.iTxCreatorSwap])
 				balanceCreatorBefore = sdk.NewDecCoinsFromCoins(out.Balances...)
 			}
-
+			_ = s.network.WaitForNextBlock()
 			for _, sw := range ts.initSwapOut {
 				out, err := CmdOut(cliCtx,
 					"0x7b9039bd633411b48a5a5c4262b5b1a16546d209",
@@ -446,7 +446,7 @@ func (s *SwapIntegrationTestSuite) TestCancel() {
 				}
 				txRes := netutilts.ParseStdOut(s.T(), out.Bytes())
 				if txRes.Code != netutilts.ShareLedgerSuccessCode {
-					s.Fail("fail when init the swap out request %s", txRes.String())
+					s.Failf("fail when init the swap out request %s", txRes.String())
 				}
 				log := netutilts.ParseRawLogGetEvent(s.T(), txRes.RawLog)[0]
 				attr := log.Events.GetEventByType(s.T(), swapTypes.EventTypeCreateRequest)

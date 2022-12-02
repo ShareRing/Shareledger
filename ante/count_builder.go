@@ -22,5 +22,5 @@ func (cbd CountBuilderDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate
 			cbd.sdistributionKeeper.IncBuilderCount(ctx, execMsg.Contract)
 		}
 	}
-	return ctx, nil
+	return next(ctx, tx, simulate)
 }

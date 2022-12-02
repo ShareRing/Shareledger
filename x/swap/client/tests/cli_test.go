@@ -19,6 +19,6 @@ func init() {
 	})
 }
 func TestSwappingModuleIntegration(t *testing.T) {
-	NetConf.NumValidators = 1
+	NetConf.NumValidators = 2
 	suite.Run(t, NewSwapIntegrationTestSuite(NetConf))
 }
