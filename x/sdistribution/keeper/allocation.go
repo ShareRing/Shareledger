@@ -13,7 +13,7 @@ func (k *Keeper) AllocateTokens(ctx sdk.Context) {
 
 	params := k.GetParams(ctx)
 
-	// allocate tokens from wasm-pool
+	// allocate tokens from wasm-pool to master_builder_list and dev_pool
 	feeWasmCollector := k.authKeeper.GetModuleAccount(ctx, types.FeeWasmName)
 	feeWasmCollected := k.bankKeeper.GetAllBalances(ctx, feeWasmCollector.GetAddress())
 	k.bankKeeper.SendCoinsFromModuleToModule(ctx, types.FeeWasmName, types.ModuleName, feeWasmCollected)
@@ -38,7 +38,7 @@ func (k *Keeper) AllocateTokens(ctx sdk.Context) {
 	k.bankKeeper.SendCoinsFromModuleToModule(ctx, types.FeeNativeName, types.ModuleName, feeNativeCollected)
 
 	// allocate tokens from native-pool
-	k.IncReward(ctx, params.DevPoolAccount, getFeeRounded(feeWasmCollected, params.NativeDevelopment))
+	k.IncReward(ctx, params.DevPoolAccount, getFeeRounded(feeNativeCollected, params.NativeDevelopment))
 
 }
 

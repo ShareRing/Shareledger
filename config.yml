@@ -172,6 +172,9 @@ genesis:
       params: null
       requestCount: "1"
       requests: []
+    distribution:
+      params:
+        community_tax: "0"
     sdistribution:
       params:
         wasm_master_builder: 0.125
@@ -180,9 +183,9 @@ genesis:
         wasm_validator: 0.5
         native_validator: 0.5
         native_development: 0.5
-        builder_windows: 1000
-        tx_threshold: 1000
-        dev_pool_account: "shareledger1t3g4570e23h96h5hm5gdtfrjprmvk9qwmrglfr"
+        builder_windows: 100
+        tx_threshold: 5
+        dev_pool_account: shareledger1t3g4570e23h96h5hm5gdtfrjprmvk9qwmrglfr
   chain_id: ShareRing-VoyagerNet
 validators:
   - name: validator

@@ -18,7 +18,7 @@ func BeginBlocker(ctx sdk.Context, req abci.RequestBeginBlock, k keeper.Keeper) 
 
 	// reset counter & re-calculate builderList
 	params := k.GetParams(ctx)
-	if req.Header.Height%int64(params.TxThreshold) == 0 {
+	if req.Header.Height > 0 && req.Header.Height%int64(params.TxThreshold) == 0 {
 		allBuilderCount := k.GetAllBuilderCount(ctx)
 		var counter uint64 = 1
 		for _, builderCount := range allBuilderCount {
