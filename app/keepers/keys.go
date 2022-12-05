@@ -28,6 +28,7 @@ import (
 	electoralmoduletypes "github.com/sharering/shareledger/x/electoral/types"
 	gentlemintmoduletypes "github.com/sharering/shareledger/x/gentlemint/types"
 	idmoduletypes "github.com/sharering/shareledger/x/id/types"
+	sdistributiontypes "github.com/sharering/shareledger/x/sdistribution/types"
 	swapmoduletypes "github.com/sharering/shareledger/x/swap/types"
 	routertypes "github.com/strangelove-ventures/packet-forward-middleware/v5/router/types"
 )
@@ -46,6 +47,7 @@ func (appKeepers *AppKeepers) GenerateKeys() {
 		bookingmoduletypes.StoreKey,
 		gentlemintmoduletypes.StoreKey,
 		electoralmoduletypes.StoreKey,
+		sdistributiontypes.StoreKey,
 		authzkeeper.StoreKey,
 		swapmoduletypes.StoreKey,
 		wasm.StoreKey, routertypes.StoreKey,

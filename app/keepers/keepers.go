@@ -312,8 +312,8 @@ func NewAppKeeper(
 		appKeepers.GetSubspace(swapmoduletypes.ModuleName),
 		appKeepers.BankKeeper, appKeepers.AccountKeeper)
 	appKeepers.SDistributionKeeper = *sdistributionkeeper.NewKeeper(appCodec,
-		appKeepers.keys[swapmoduletypes.StoreKey],
-		appKeepers.keys[swapmoduletypes.MemStoreKey],
+		appKeepers.keys[sdistributiontypes.StoreKey],
+		appKeepers.keys[sdistributiontypes.MemStoreKey],
 		appKeepers.GetSubspace(sdistributiontypes.ModuleName),
 		appKeepers.AccountKeeper,
 	)
