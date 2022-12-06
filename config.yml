@@ -177,12 +177,12 @@ genesis:
         community_tax: "0"
     sdistribution:
       params:
-        wasm_master_builder: 0.125
-        wasm_contract_admin: 0.125
-        wasm_development: 0.25
-        wasm_validator: 0.5
-        native_validator: 0.5
-        native_development: 0.5
+        wasm_master_builder: "0.125"
+        wasm_contract_admin: "0.125"
+        wasm_development: "0.25"
+        wasm_validator: "0.5"
+        native_validator: "0.5"
+        native_development: "0.5"
         builder_windows: 100
         tx_threshold: 5
         dev_pool_account: shareledger1t3g4570e23h96h5hm5gdtfrjprmvk9qwmrglfr

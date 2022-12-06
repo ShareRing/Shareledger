@@ -134,14 +134,14 @@ func (dfd DeductFeeDecorator) checkDeductFee(ctx sdk.Context, sdkTx sdk.Tx, fee 
 				dfd.sdistributionKeeper.IncReward(ctx, contract.Creator, contractAdminFee)
 				fee = fee.Sub(contractAdminFee...)
 
-				wasmFee := getFeeRounded(fee, 1-params.WasmValidator)
+				wasmFee := getFeeRounded(fee, sdk.OneDec().Sub(params.WasmValidator))
 				deductFees(dfd.bankKeeper, ctx, deductFeesFromAcc, wasmFee, sdistributiontypes.FeeWasmName)
 				fee = fee.Sub(wasmFee...)
 			}
 		}
 
 		// move some amount to `sdistributiontypes.FeeNativeName` pool
-		nativeFee := getFeeRounded(fee, 1-params.NativeValidator)
+		nativeFee := getFeeRounded(fee, sdk.OneDec().Sub(params.NativeValidator))
 		deductFees(dfd.bankKeeper, ctx, deductFeesFromAcc, nativeFee, sdistributiontypes.FeeNativeName)
 		fee = fee.Sub(nativeFee...)
 
@@ -163,10 +163,11 @@ func (dfd DeductFeeDecorator) checkDeductFee(ctx sdk.Context, sdkTx sdk.Tx, fee 
 	return nil
 }
 
-func getFeeRounded(fee sdk.Coins, rate float64) sdk.Coins {
-	// round params to 4 decimals
+// TODO: make this logic cleaner
+func getFeeRounded(fee sdk.Coins, rate sdk.Dec) sdk.Coins {
+	rateFloat := rate.MustFloat64()
 	const ROUND_FACTOR = 10000
-	tp := sdkmath.NewInt(int64(rate * ROUND_FACTOR))
+	tp := sdkmath.NewInt(int64(rateFloat * ROUND_FACTOR))
 	return fee.MulInt(tp).QuoInt(sdkmath.NewInt(ROUND_FACTOR))
 }
 

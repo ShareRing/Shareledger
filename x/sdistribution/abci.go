@@ -14,8 +14,8 @@ import (
 // and distribute rewards for the previous block
 func BeginBlocker(ctx sdk.Context, req abci.RequestBeginBlock, k keeper.Keeper) {
 	defer telemetry.ModuleMeasureSince(types.ModuleName, time.Now(), telemetry.MetricKeyBeginBlocker)
-	k.AllocateTokens(ctx)
 
+	k.AllocateTokens(ctx)
 	// reset counter & re-calculate builderList
 	params := k.GetParams(ctx)
 	if req.Header.Height > 0 && req.Header.Height%int64(params.TxThreshold) == 0 {

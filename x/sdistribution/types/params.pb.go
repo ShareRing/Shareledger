@@ -4,8 +4,9 @@
 package types
 
 import (
-	encoding_binary "encoding/binary"
 	fmt "fmt"
+	_ "github.com/cosmos/cosmos-proto"
+	github_com_cosmos_cosmos_sdk_types "github.com/cosmos/cosmos-sdk/types"
 	_ "github.com/gogo/protobuf/gogoproto"
 	proto "github.com/gogo/protobuf/proto"
 	io "io"
@@ -26,15 +27,15 @@ const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
 // Params defines the parameters for the module.
 type Params struct {
-	WasmMasterBuilder float64 `protobuf:"fixed64,1,opt,name=wasm_master_builder,json=wasmMasterBuilder,proto3" json:"wasm_master_builder,omitempty" yaml:"wasm_master_builder"`
-	WasmContractAdmin float64 `protobuf:"fixed64,2,opt,name=wasm_contract_admin,json=wasmContractAdmin,proto3" json:"wasm_contract_admin,omitempty" yaml:"wasm_contract_admin"`
-	WasmDevelopment   float64 `protobuf:"fixed64,3,opt,name=wasm_development,json=wasmDevelopment,proto3" json:"wasm_development,omitempty" yaml:"wasm_development"`
-	WasmValidator     float64 `protobuf:"fixed64,4,opt,name=wasm_validator,json=wasmValidator,proto3" json:"wasm_validator,omitempty" yaml:"wasm_validator"`
-	NativeValidator   float64 `protobuf:"fixed64,5,opt,name=native_validator,json=nativeValidator,proto3" json:"native_validator,omitempty" yaml:"native_validator"`
-	NativeDevelopment float64 `protobuf:"fixed64,6,opt,name=native_development,json=nativeDevelopment,proto3" json:"native_development,omitempty" yaml:"native_development"`
-	BuilderWindows    uint32  `protobuf:"varint,7,opt,name=builder_windows,json=builderWindows,proto3" json:"builder_windows,omitempty" yaml:"builder_windows"`
-	TxThreshold       uint32  `protobuf:"varint,8,opt,name=tx_threshold,json=txThreshold,proto3" json:"tx_threshold,omitempty" yaml:"tx_threshold"`
-	DevPoolAccount    string  `protobuf:"bytes,9,opt,name=dev_pool_account,json=devPoolAccount,proto3" json:"dev_pool_account,omitempty" yaml:"dev_pool_account"`
+	WasmMasterBuilder github_com_cosmos_cosmos_sdk_types.Dec `protobuf:"bytes,1,opt,name=wasm_master_builder,json=wasmMasterBuilder,proto3,customtype=github.com/cosmos/cosmos-sdk/types.Dec" json:"wasm_master_builder"`
+	WasmContractAdmin github_com_cosmos_cosmos_sdk_types.Dec `protobuf:"bytes,2,opt,name=wasm_contract_admin,json=wasmContractAdmin,proto3,customtype=github.com/cosmos/cosmos-sdk/types.Dec" json:"wasm_contract_admin"`
+	WasmDevelopment   github_com_cosmos_cosmos_sdk_types.Dec `protobuf:"bytes,3,opt,name=wasm_development,json=wasmDevelopment,proto3,customtype=github.com/cosmos/cosmos-sdk/types.Dec" json:"wasm_development"`
+	WasmValidator     github_com_cosmos_cosmos_sdk_types.Dec `protobuf:"bytes,4,opt,name=wasm_validator,json=wasmValidator,proto3,customtype=github.com/cosmos/cosmos-sdk/types.Dec" json:"wasm_validator"`
+	NativeValidator   github_com_cosmos_cosmos_sdk_types.Dec `protobuf:"bytes,5,opt,name=native_validator,json=nativeValidator,proto3,customtype=github.com/cosmos/cosmos-sdk/types.Dec" json:"native_validator"`
+	NativeDevelopment github_com_cosmos_cosmos_sdk_types.Dec `protobuf:"bytes,6,opt,name=native_development,json=nativeDevelopment,proto3,customtype=github.com/cosmos/cosmos-sdk/types.Dec" json:"native_development"`
+	BuilderWindows    uint32                                 `protobuf:"varint,7,opt,name=builder_windows,json=builderWindows,proto3" json:"builder_windows,omitempty" yaml:"builder_windows"`
+	TxThreshold       uint32                                 `protobuf:"varint,8,opt,name=tx_threshold,json=txThreshold,proto3" json:"tx_threshold,omitempty" yaml:"tx_threshold"`
+	DevPoolAccount    string                                 `protobuf:"bytes,9,opt,name=dev_pool_account,json=devPoolAccount,proto3" json:"dev_pool_account,omitempty" yaml:"dev_pool_account"`
 }
 
 func (m *Params) Reset()      { *m = Params{} }
@@ -69,48 +70,6 @@ func (m *Params) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_Params proto.InternalMessageInfo
 
-func (m *Params) GetWasmMasterBuilder() float64 {
-	if m != nil {
-		return m.WasmMasterBuilder
-	}
-	return 0
-}
-
-func (m *Params) GetWasmContractAdmin() float64 {
-	if m != nil {
-		return m.WasmContractAdmin
-	}
-	return 0
-}
-
-func (m *Params) GetWasmDevelopment() float64 {
-	if m != nil {
-		return m.WasmDevelopment
-	}
-	return 0
-}
-
-func (m *Params) GetWasmValidator() float64 {
-	if m != nil {
-		return m.WasmValidator
-	}
-	return 0
-}
-
-func (m *Params) GetNativeValidator() float64 {
-	if m != nil {
-		return m.NativeValidator
-	}
-	return 0
-}
-
-func (m *Params) GetNativeDevelopment() float64 {
-	if m != nil {
-		return m.NativeDevelopment
-	}
-	return 0
-}
-
 func (m *Params) GetBuilderWindows() uint32 {
 	if m != nil {
 		return m.BuilderWindows
@@ -141,37 +100,37 @@ func init() {
 }
 
 var fileDescriptor_cdcf60c88e4ba53b = []byte{
-	// 467 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x6c, 0x93, 0xc1, 0x6e, 0xd3, 0x30,
-	0x00, 0x40, 0x1b, 0xd8, 0x0a, 0x33, 0xac, 0xdd, 0x32, 0x60, 0x59, 0x11, 0x49, 0x65, 0x24, 0xd4,
-	0x53, 0x73, 0x40, 0xe2, 0xd0, 0x13, 0xeb, 0x80, 0x13, 0xa0, 0x2a, 0x42, 0x20, 0x71, 0x89, 0xdc,
-	0xd8, 0x4a, 0x2d, 0x25, 0x71, 0x64, 0xbb, 0x69, 0xf7, 0x17, 0x9c, 0x10, 0x47, 0x3e, 0x87, 0xe3,
-	0x8e, 0x9c, 0x22, 0xd4, 0xfe, 0x41, 0xbe, 0x00, 0xc5, 0xc9, 0x3a, 0x27, 0xea, 0xad, 0x7e, 0x7e,
-	0x7e, 0xb2, 0x1b, 0x1b, 0xbc, 0x12, 0x0b, 0xc4, 0x49, 0x44, 0x70, 0x48, 0xb8, 0x2b, 0x30, 0x15,
-	0x92, 0xd3, 0xf9, 0x52, 0x52, 0x96, 0xb8, 0x29, 0xe2, 0x28, 0x16, 0xe3, 0x94, 0x33, 0xc9, 0xcc,
-	0x97, 0xca, 0xe3, 0x34, 0x09, 0xc7, 0xda, 0x8a, 0x71, 0x63, 0xc5, 0xe0, 0x49, 0xc8, 0x42, 0xa6,
-	0x7c, 0xb7, 0xfc, 0x55, 0x2d, 0x85, 0x3f, 0x0f, 0x41, 0x77, 0xa6, 0x5a, 0xe6, 0x67, 0x70, 0xb6,
-	0x42, 0x22, 0xf6, 0x63, 0x24, 0x24, 0xe1, 0xfe, 0x7c, 0x49, 0x23, 0x4c, 0xb8, 0x65, 0x0c, 0x8d,
-	0x91, 0x31, 0xb5, 0x8b, 0xdc, 0x19, 0x5c, 0xa3, 0x38, 0x9a, 0xc0, 0x3d, 0x12, 0xf4, 0x4e, 0x4b,
-	0xfa, 0x49, 0xc1, 0x69, 0xc5, 0x76, 0xbd, 0x80, 0x25, 0x92, 0xa3, 0x40, 0xfa, 0x08, 0xc7, 0x34,
-	0xb1, 0xee, 0xed, 0xed, 0x35, 0xa5, 0xba, 0x77, 0x55, 0xc3, 0xcb, 0x92, 0x99, 0x1f, 0xc0, 0x89,
-	0x52, 0x31, 0xc9, 0x48, 0xc4, 0xd2, 0x98, 0x24, 0xd2, 0xba, 0xaf, 0x62, 0xcf, 0x8b, 0xdc, 0x39,
-	0xd7, 0x62, 0x9a, 0x01, 0xbd, 0x7e, 0x89, 0xde, 0xdd, 0x11, 0xf3, 0x2d, 0xe8, 0x29, 0x2b, 0x43,
-	0x11, 0xc5, 0x48, 0x32, 0x6e, 0x1d, 0xa8, 0xca, 0x45, 0x91, 0x3b, 0x4f, 0xb5, 0xca, 0x6e, 0x1e,
-	0x7a, 0xc7, 0x25, 0xf8, 0x7a, 0x3b, 0x2e, 0x77, 0x92, 0x20, 0x49, 0x33, 0xa2, 0x35, 0x0e, 0xdb,
-	0x3b, 0x69, 0x1b, 0xd0, 0xeb, 0x57, 0xe8, 0xae, 0xf3, 0x11, 0x98, 0xb5, 0xa5, 0x9f, 0xa9, 0xab,
-	0x4a, 0x2f, 0x8a, 0xdc, 0xb9, 0x68, 0x94, 0x1a, 0xa7, 0x3a, 0xad, 0xa0, 0x7e, 0xae, 0x2b, 0xd0,
-	0xaf, 0x3f, 0x87, 0xbf, 0xa2, 0x09, 0x66, 0x2b, 0x61, 0x3d, 0x18, 0x1a, 0xa3, 0xe3, 0xe9, 0xa0,
-	0xc8, 0x9d, 0x67, 0x55, 0xaa, 0x25, 0x40, 0xaf, 0x57, 0x93, 0x6f, 0x15, 0x30, 0x27, 0xe0, 0xb1,
-	0x5c, 0xfb, 0x72, 0xc1, 0x89, 0x58, 0xb0, 0x08, 0x5b, 0x0f, 0x55, 0xe1, 0xbc, 0xc8, 0x9d, 0xb3,
-	0xaa, 0xa0, 0xcf, 0x42, 0xef, 0x91, 0x5c, 0x7f, 0xb9, 0x1d, 0x99, 0xef, 0xc1, 0x09, 0x26, 0x99,
-	0x9f, 0x32, 0x16, 0xf9, 0x28, 0x08, 0xd8, 0x32, 0x91, 0xd6, 0xd1, 0xd0, 0x18, 0x1d, 0xe9, 0x7f,
-	0x4b, 0xdb, 0x80, 0x5e, 0x0f, 0x93, 0x6c, 0xc6, 0x58, 0x74, 0x59, 0x81, 0xc9, 0xc1, 0xaf, 0xdf,
-	0x4e, 0x67, 0x3a, 0xfb, 0xb3, 0xb1, 0x8d, 0x9b, 0x8d, 0x6d, 0xfc, 0xdb, 0xd8, 0xc6, 0x8f, 0xad,
-	0xdd, 0xb9, 0xd9, 0xda, 0x9d, 0xbf, 0x5b, 0xbb, 0xf3, 0xfd, 0x4d, 0x48, 0xe5, 0x62, 0x39, 0x1f,
-	0x07, 0x2c, 0x76, 0x77, 0x17, 0xdf, 0xd5, 0x9f, 0xca, 0xba, 0xf5, 0x58, 0xe4, 0x75, 0x4a, 0xc4,
-	0xbc, 0xab, 0x6e, 0xfc, 0xeb, 0xff, 0x01, 0x00, 0x00, 0xff, 0xff, 0x07, 0x95, 0xdf, 0x56, 0x56,
-	0x03, 0x00, 0x00,
+	// 479 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xac, 0x94, 0x41, 0x6f, 0xd3, 0x30,
+	0x14, 0x80, 0x13, 0x18, 0x85, 0x19, 0xd6, 0x8d, 0x0c, 0xb1, 0x50, 0xa4, 0x64, 0x0a, 0xd2, 0xb4,
+	0xcb, 0x92, 0x03, 0x12, 0x87, 0x8a, 0xcb, 0xba, 0x72, 0x44, 0xaa, 0x2a, 0x04, 0x12, 0x97, 0xc8,
+	0x8d, 0xad, 0xd4, 0x5a, 0x92, 0x17, 0xd9, 0x6e, 0xda, 0xfd, 0x0b, 0x8e, 0x1c, 0xf9, 0x11, 0xfc,
+	0x88, 0x1d, 0x27, 0x0e, 0x08, 0x71, 0x88, 0x50, 0xfb, 0x0f, 0xfa, 0x0b, 0x50, 0xec, 0x6c, 0xcd,
+	0x7a, 0xce, 0x29, 0xf1, 0xcb, 0x7b, 0xdf, 0xa7, 0xf7, 0x62, 0x1b, 0x9d, 0x88, 0x29, 0xe6, 0x34,
+	0xa1, 0x24, 0xa6, 0x3c, 0x10, 0x84, 0x09, 0xc9, 0xd9, 0x64, 0x26, 0x19, 0x64, 0x41, 0x8e, 0x39,
+	0x4e, 0x85, 0x9f, 0x73, 0x90, 0x60, 0xbd, 0x51, 0x79, 0x9c, 0x65, 0xb1, 0xdf, 0xa8, 0xf0, 0xef,
+	0x55, 0xf4, 0x5e, 0x45, 0x20, 0x52, 0x10, 0xa1, 0x2a, 0x09, 0xf4, 0x42, 0xd7, 0xf7, 0x5e, 0xc4,
+	0x10, 0x83, 0x8e, 0x57, 0x6f, 0x3a, 0xea, 0xfd, 0xee, 0xa0, 0xce, 0x48, 0x69, 0xac, 0x04, 0x1d,
+	0xce, 0xb1, 0x48, 0xc3, 0x14, 0x0b, 0x49, 0x79, 0x38, 0x99, 0xb1, 0x84, 0x50, 0x6e, 0x9b, 0xc7,
+	0xe6, 0xe9, 0xee, 0xe0, 0xfd, 0x75, 0xe9, 0x1a, 0x7f, 0x4b, 0xf7, 0x24, 0x66, 0x72, 0x3a, 0x9b,
+	0xf8, 0x11, 0xa4, 0x35, 0xbe, 0x7e, 0x9c, 0x09, 0x72, 0x19, 0xc8, 0xab, 0x9c, 0x0a, 0x7f, 0x48,
+	0xa3, 0x5f, 0x3f, 0xcf, 0x50, 0x6d, 0x1f, 0xd2, 0x68, 0xfc, 0xbc, 0x02, 0x7f, 0x54, 0xdc, 0x81,
+	0xc6, 0xde, 0xd9, 0x22, 0xc8, 0x24, 0xc7, 0x91, 0x0c, 0x31, 0x49, 0x59, 0x66, 0x3f, 0x68, 0xcb,
+	0x76, 0x51, 0x73, 0xcf, 0x2b, 0xac, 0x15, 0xa3, 0x03, 0x65, 0x23, 0xb4, 0xa0, 0x09, 0xe4, 0x29,
+	0xcd, 0xa4, 0xfd, 0xb0, 0x05, 0xd5, 0x7e, 0x45, 0x1d, 0x6e, 0xa0, 0x56, 0x84, 0xba, 0x4a, 0x54,
+	0xe0, 0x84, 0x11, 0x2c, 0x81, 0xdb, 0x3b, 0x2d, 0x68, 0xf6, 0x2a, 0xe6, 0xe7, 0x5b, 0x64, 0xd5,
+	0x4d, 0x86, 0x25, 0x2b, 0x68, 0x43, 0xf3, 0xa8, 0x8d, 0x6e, 0x34, 0x75, 0x23, 0xba, 0x44, 0x56,
+	0x2d, 0x6a, 0x0e, 0xae, 0xd3, 0xc6, 0x3f, 0xd2, 0xdc, 0xe6, 0xe8, 0x2e, 0xd0, 0x7e, 0xbd, 0xe7,
+	0xc2, 0x39, 0xcb, 0x08, 0xcc, 0x85, 0xfd, 0xf8, 0xd8, 0x3c, 0xdd, 0x1b, 0xf4, 0xd6, 0xa5, 0xfb,
+	0xf2, 0x0a, 0xa7, 0x49, 0xdf, 0xdb, 0x4a, 0xf0, 0xc6, 0xdd, 0x3a, 0xf2, 0x45, 0x07, 0xac, 0x3e,
+	0x7a, 0x26, 0x17, 0xa1, 0x9c, 0x72, 0x2a, 0xa6, 0x90, 0x10, 0xfb, 0x89, 0x22, 0x1c, 0xad, 0x4b,
+	0xf7, 0x50, 0x13, 0x9a, 0x5f, 0xbd, 0xf1, 0x53, 0xb9, 0xf8, 0x74, 0xbb, 0xb2, 0x3e, 0xa0, 0x03,
+	0x42, 0x8b, 0x30, 0x07, 0x48, 0x42, 0x1c, 0x45, 0x30, 0xcb, 0xa4, 0xbd, 0xab, 0x7a, 0x7d, 0xbd,
+	0x2e, 0xdd, 0x23, 0x5d, 0xbf, 0x9d, 0xe1, 0x8d, 0xbb, 0x84, 0x16, 0x23, 0x80, 0xe4, 0x5c, 0x07,
+	0xfa, 0x3b, 0xdf, 0x7f, 0xb8, 0xc6, 0x60, 0x74, 0xbd, 0x74, 0xcc, 0x9b, 0xa5, 0x63, 0xfe, 0x5b,
+	0x3a, 0xe6, 0xb7, 0x95, 0x63, 0xdc, 0xac, 0x1c, 0xe3, 0xcf, 0xca, 0x31, 0xbe, 0xbe, 0x6b, 0x0c,
+	0xec, 0xee, 0x4c, 0x07, 0xcd, 0x5b, 0x60, 0xb1, 0x75, 0x0f, 0xa8, 0x21, 0x4e, 0x3a, 0xea, 0xc4,
+	0xbe, 0xfd, 0x1f, 0x00, 0x00, 0xff, 0xff, 0xb4, 0x15, 0xed, 0x45, 0x31, 0x04, 0x00, 0x00,
 }
 
 func (m *Params) Marshal() (dAtA []byte, err error) {
@@ -211,42 +170,66 @@ func (m *Params) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		i--
 		dAtA[i] = 0x38
 	}
-	if m.NativeDevelopment != 0 {
-		i -= 8
-		encoding_binary.LittleEndian.PutUint64(dAtA[i:], uint64(math.Float64bits(float64(m.NativeDevelopment))))
-		i--
-		dAtA[i] = 0x31
+	{
+		size := m.NativeDevelopment.Size()
+		i -= size
+		if _, err := m.NativeDevelopment.MarshalTo(dAtA[i:]); err != nil {
+			return 0, err
+		}
+		i = encodeVarintParams(dAtA, i, uint64(size))
 	}
-	if m.NativeValidator != 0 {
-		i -= 8
-		encoding_binary.LittleEndian.PutUint64(dAtA[i:], uint64(math.Float64bits(float64(m.NativeValidator))))
-		i--
-		dAtA[i] = 0x29
+	i--
+	dAtA[i] = 0x32
+	{
+		size := m.NativeValidator.Size()
+		i -= size
+		if _, err := m.NativeValidator.MarshalTo(dAtA[i:]); err != nil {
+			return 0, err
+		}
+		i = encodeVarintParams(dAtA, i, uint64(size))
 	}
-	if m.WasmValidator != 0 {
-		i -= 8
-		encoding_binary.LittleEndian.PutUint64(dAtA[i:], uint64(math.Float64bits(float64(m.WasmValidator))))
-		i--
-		dAtA[i] = 0x21
+	i--
+	dAtA[i] = 0x2a
+	{
+		size := m.WasmValidator.Size()
+		i -= size
+		if _, err := m.WasmValidator.MarshalTo(dAtA[i:]); err != nil {
+			return 0, err
+		}
+		i = encodeVarintParams(dAtA, i, uint64(size))
 	}
-	if m.WasmDevelopment != 0 {
-		i -= 8
-		encoding_binary.LittleEndian.PutUint64(dAtA[i:], uint64(math.Float64bits(float64(m.WasmDevelopment))))
-		i--
-		dAtA[i] = 0x19
+	i--
+	dAtA[i] = 0x22
+	{
+		size := m.WasmDevelopment.Size()
+		i -= size
+		if _, err := m.WasmDevelopment.MarshalTo(dAtA[i:]); err != nil {
+			return 0, err
+		}
+		i = encodeVarintParams(dAtA, i, uint64(size))
 	}
-	if m.WasmContractAdmin != 0 {
-		i -= 8
-		encoding_binary.LittleEndian.PutUint64(dAtA[i:], uint64(math.Float64bits(float64(m.WasmContractAdmin))))
-		i--
-		dAtA[i] = 0x11
+	i--
+	dAtA[i] = 0x1a
+	{
+		size := m.WasmContractAdmin.Size()
+		i -= size
+		if _, err := m.WasmContractAdmin.MarshalTo(dAtA[i:]); err != nil {
+			return 0, err
+		}
+		i = encodeVarintParams(dAtA, i, uint64(size))
 	}
-	if m.WasmMasterBuilder != 0 {
-		i -= 8
-		encoding_binary.LittleEndian.PutUint64(dAtA[i:], uint64(math.Float64bits(float64(m.WasmMasterBuilder))))
-		i--
-		dAtA[i] = 0x9
+	i--
+	dAtA[i] = 0x12
+	{
+		size := m.WasmMasterBuilder.Size()
+		i -= size
+		if _, err := m.WasmMasterBuilder.MarshalTo(dAtA[i:]); err != nil {
+			return 0, err
+		}
+		i = encodeVarintParams(dAtA, i, uint64(size))
 	}
+	i--
+	dAtA[i] = 0xa
 	return len(dAtA) - i, nil
 }
 
@@ -267,24 +250,18 @@ func (m *Params) Size() (n int) {
 	}
 	var l int
 	_ = l
-	if m.WasmMasterBuilder != 0 {
-		n += 9
-	}
-	if m.WasmContractAdmin != 0 {
-		n += 9
-	}
-	if m.WasmDevelopment != 0 {
-		n += 9
-	}
-	if m.WasmValidator != 0 {
-		n += 9
-	}
-	if m.NativeValidator != 0 {
-		n += 9
-	}
-	if m.NativeDevelopment != 0 {
-		n += 9
-	}
+	l = m.WasmMasterBuilder.Size()
+	n += 1 + l + sovParams(uint64(l))
+	l = m.WasmContractAdmin.Size()
+	n += 1 + l + sovParams(uint64(l))
+	l = m.WasmDevelopment.Size()
+	n += 1 + l + sovParams(uint64(l))
+	l = m.WasmValidator.Size()
+	n += 1 + l + sovParams(uint64(l))
+	l = m.NativeValidator.Size()
+	n += 1 + l + sovParams(uint64(l))
+	l = m.NativeDevelopment.Size()
+	n += 1 + l + sovParams(uint64(l))
 	if m.BuilderWindows != 0 {
 		n += 1 + sovParams(uint64(m.BuilderWindows))
 	}
@@ -334,71 +311,209 @@ func (m *Params) Unmarshal(dAtA []byte) error {
 		}
 		switch fieldNum {
 		case 1:
-			if wireType != 1 {
+			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field WasmMasterBuilder", wireType)
 			}
-			var v uint64
-			if (iNdEx + 8) > l {
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowParams
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthParams
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthParams
+			}
+			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			v = uint64(encoding_binary.LittleEndian.Uint64(dAtA[iNdEx:]))
-			iNdEx += 8
-			m.WasmMasterBuilder = float64(math.Float64frombits(v))
+			if err := m.WasmMasterBuilder.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
 		case 2:
-			if wireType != 1 {
+			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field WasmContractAdmin", wireType)
 			}
-			var v uint64
-			if (iNdEx + 8) > l {
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowParams
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthParams
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthParams
+			}
+			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			v = uint64(encoding_binary.LittleEndian.Uint64(dAtA[iNdEx:]))
-			iNdEx += 8
-			m.WasmContractAdmin = float64(math.Float64frombits(v))
+			if err := m.WasmContractAdmin.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
 		case 3:
-			if wireType != 1 {
+			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field WasmDevelopment", wireType)
 			}
-			var v uint64
-			if (iNdEx + 8) > l {
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowParams
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthParams
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthParams
+			}
+			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			v = uint64(encoding_binary.LittleEndian.Uint64(dAtA[iNdEx:]))
-			iNdEx += 8
-			m.WasmDevelopment = float64(math.Float64frombits(v))
+			if err := m.WasmDevelopment.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
 		case 4:
-			if wireType != 1 {
+			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field WasmValidator", wireType)
 			}
-			var v uint64
-			if (iNdEx + 8) > l {
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowParams
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthParams
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthParams
+			}
+			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			v = uint64(encoding_binary.LittleEndian.Uint64(dAtA[iNdEx:]))
-			iNdEx += 8
-			m.WasmValidator = float64(math.Float64frombits(v))
+			if err := m.WasmValidator.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
 		case 5:
-			if wireType != 1 {
+			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field NativeValidator", wireType)
 			}
-			var v uint64
-			if (iNdEx + 8) > l {
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowParams
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthParams
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthParams
+			}
+			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			v = uint64(encoding_binary.LittleEndian.Uint64(dAtA[iNdEx:]))
-			iNdEx += 8
-			m.NativeValidator = float64(math.Float64frombits(v))
+			if err := m.NativeValidator.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
 		case 6:
-			if wireType != 1 {
+			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field NativeDevelopment", wireType)
 			}
-			var v uint64
-			if (iNdEx + 8) > l {
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowParams
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthParams
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthParams
+			}
+			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			v = uint64(encoding_binary.LittleEndian.Uint64(dAtA[iNdEx:]))
-			iNdEx += 8
-			m.NativeDevelopment = float64(math.Float64frombits(v))
+			if err := m.NativeDevelopment.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
 		case 7:
 			if wireType != 0 {
 				return fmt.Errorf("proto: wrong wireType = %d for field BuilderWindows", wireType)

@@ -9,11 +9,11 @@ import (
 // AllocateTokens handles distribution of the collected fees
 func (k *Keeper) AllocateTokens(ctx sdk.Context) {
 	logger := k.Logger(ctx)
-	logger.Debug("Start")
+	logger.Debug("AllocateTokens")
 
 	params := k.GetParams(ctx)
 
-	// allocate tokens from wasm-pool to master_builder_list and dev_pool
+	// 1. Allocate tokens from wasm-pool to master_builder_list and dev_pool
 	feeWasmCollector := k.authKeeper.GetModuleAccount(ctx, types.FeeWasmName)
 	feeWasmCollected := k.bankKeeper.GetAllBalances(ctx, feeWasmCollector.GetAddress())
 	k.bankKeeper.SendCoinsFromModuleToModule(ctx, types.FeeWasmName, types.ModuleName, feeWasmCollected)
@@ -25,26 +25,26 @@ func (k *Keeper) AllocateTokens(ctx sdk.Context) {
 			panic(err)
 		}
 		contractInfo := k.wasmKeeper.GetContractInfo(ctx, addr)
-		rate := params.WasmMasterBuilder / float64(len(builderList))
+		rate := params.WasmMasterBuilder.Quo(sdk.NewDec(int64(len(builderList))))
 		k.IncReward(ctx, contractInfo.Creator, getFeeRounded(feeWasmCollected, rate))
 	}
 
 	// distribution for dev_pool
 	k.IncReward(ctx, params.DevPoolAccount, getFeeRounded(feeWasmCollected, params.WasmDevelopment))
 
-	// allocate tokens from wasm-pool
+	// 2. Allocate tokens from native-pool
 	feeNativeCollector := k.authKeeper.GetModuleAccount(ctx, types.FeeNativeName)
 	feeNativeCollected := k.bankKeeper.GetAllBalances(ctx, feeNativeCollector.GetAddress())
 	k.bankKeeper.SendCoinsFromModuleToModule(ctx, types.FeeNativeName, types.ModuleName, feeNativeCollected)
 
-	// allocate tokens from native-pool
 	k.IncReward(ctx, params.DevPoolAccount, getFeeRounded(feeNativeCollected, params.NativeDevelopment))
 
 }
 
-func getFeeRounded(fee sdk.Coins, rate float64) sdk.Coins {
-	// round params to 4 decimals
+// TODO: make this logic cleaner
+func getFeeRounded(fee sdk.Coins, rate sdk.Dec) sdk.Coins {
+	rateFloat := rate.MustFloat64()
 	const ROUND_FACTOR = 10000
-	tp := sdkmath.NewInt(int64(rate * ROUND_FACTOR))
+	tp := sdkmath.NewInt(int64(rateFloat * ROUND_FACTOR))
 	return fee.MulInt(tp).QuoInt(sdkmath.NewInt(ROUND_FACTOR))
 }

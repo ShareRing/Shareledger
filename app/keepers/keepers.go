@@ -316,6 +316,7 @@ func NewAppKeeper(
 		appKeepers.keys[sdistributiontypes.MemStoreKey],
 		appKeepers.GetSubspace(sdistributiontypes.ModuleName),
 		appKeepers.AccountKeeper,
+		appKeepers.BankKeeper,
 	)
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
 

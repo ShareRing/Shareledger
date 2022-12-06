@@ -6,6 +6,19 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
+// Parameter store keys
+var (
+	WasmMasterBuilderKey = []byte("wasmmasterbuilder")
+	WasmContractAdminKey = []byte("wasmcontractadmin")
+	WasmDevelopmentKey   = []byte("wasmdevelopment")
+	WasmValidatorKey     = []byte("wasmvalidator")
+	NativeValidatorKey   = []byte("nativevalidator")
+	NativeDevelopmentKey = []byte("nativedevelopment")
+	BuilderWindowsKey    = []byte("builderwindows")
+	TxThresholdKey       = []byte("txthreshold")
+	DevPoolAccountKey    = []byte("devpoolaccount")
+)
+
 var _ paramtypes.ParamSet = (*Params)(nil)
 
 // ParamKeyTable the param key table for launch module
@@ -16,16 +29,16 @@ func ParamKeyTable() paramtypes.KeyTable {
 // NewParams creates a new Params instance
 func NewParams() Params {
 	return Params{
-		WasmMasterBuilder: .125,
-		WasmContractAdmin: .125,
-		WasmDevelopment:   .25,
-		WasmValidator:     .5,
-
-		NativeValidator:   .5,
-		NativeDevelopment: .5,
+		WasmMasterBuilder: sdk.NewDecWithPrec(125, 3),
+		WasmContractAdmin: sdk.NewDecWithPrec(125, 3),
+		WasmDevelopment:   sdk.NewDecWithPrec(250, 3),
+		WasmValidator:     sdk.NewDecWithPrec(500, 3),
+		NativeValidator:   sdk.NewDecWithPrec(500, 3),
+		NativeDevelopment: sdk.NewDecWithPrec(500, 3),
 
 		BuilderWindows: 1000,
-		TxThreshold:    1000,
+		TxThreshold:    100,
+		DevPoolAccount: "",
 	}
 }
 
@@ -35,21 +48,30 @@ func DefaultParams() Params {
 }
 
 // ParamSetPairs get the params.ParamSet
+// TODO: add validator for each field
 func (p *Params) ParamSetPairs() paramtypes.ParamSetPairs {
-	return paramtypes.ParamSetPairs{}
+	return paramtypes.ParamSetPairs{
+		paramtypes.NewParamSetPair(WasmMasterBuilderKey, &p.WasmMasterBuilder, noValidate),
+		paramtypes.NewParamSetPair(WasmContractAdminKey, &p.WasmContractAdmin, noValidate),
+		paramtypes.NewParamSetPair(WasmDevelopmentKey, &p.WasmDevelopment, noValidate),
+		paramtypes.NewParamSetPair(WasmValidatorKey, &p.WasmValidator, noValidate),
+		paramtypes.NewParamSetPair(NativeValidatorKey, &p.NativeValidator, noValidate),
+		paramtypes.NewParamSetPair(NativeDevelopmentKey, &p.NativeDevelopment, noValidate),
+		paramtypes.NewParamSetPair(BuilderWindowsKey, &p.BuilderWindows, noValidate),
+		paramtypes.NewParamSetPair(TxThresholdKey, &p.TxThreshold, noValidate),
+		paramtypes.NewParamSetPair(DevPoolAccountKey, &p.DevPoolAccount, noValidate),
+	}
 }
 
 // Validate validates the set of params
 func (p Params) Validate() error {
 	// total wasm is 1
-	totalWasm := p.WasmMasterBuilder + p.WasmContractAdmin + p.WasmDevelopment + p.WasmValidator
-	if totalWasm != 1 {
-		return ErrInvalidParams.Wrapf("total wasm is: %v, expected: 1", totalWasm)
+	if !p.WasmMasterBuilder.Add(p.WasmContractAdmin).Add(p.WasmDevelopment).Add(p.WasmValidator).Equal(sdk.NewDec(1)) {
+		return ErrInvalidParams.Wrapf("total wasm is not equal: 1")
 	}
 	// total native is 1
-	totalNative := p.NativeDevelopment + p.NativeValidator
-	if totalNative != 1 {
-		return ErrInvalidParams.Wrapf("total native is: %v, expected 1", totalNative)
+	if !p.NativeDevelopment.Add(p.NativeValidator).Equal(sdk.NewDec(1)) {
+		return ErrInvalidParams.Wrapf("total native is not equal 1")
 	}
 
 	if p.TxThreshold == 0 {
@@ -66,4 +88,8 @@ func (p Params) Validate() error {
 func (p Params) String() string {
 	out, _ := yaml.Marshal(p)
 	return string(out)
+}
+
+func noValidate(i interface{}) error {
+	return nil
 }
