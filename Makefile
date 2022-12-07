@@ -78,27 +78,14 @@ dinit:
 
 dup:
 	cd ./deploy && \
-    docker-compose up -d --force-recreate
+    docker compose up -d --force-recreate
 
-dupswap:
-	cd ./deploy && \
-	docker-compose -f docker-compose-relayer.yaml up -d --force-recreate
-
-ddownswap:
-	cd ./deploy && \
-	docker-compose -f docker-compose-relayer.yaml down
 
 ddown:
 	cd ./deploy && \
-    docker-compose down
+    docker compose down
 
 duprefreshall: ddownswap ddown dinit dup dupswap
 
 test:
 	go test ./... -v
-
-MYDIR = /Users/hoai/project/sharering/swap-contract-evm/abi
-list: $(MYDIR)/*.json
-	for file in $^ ; do \
-		echo "Hello" $${file} ; \
-	done
