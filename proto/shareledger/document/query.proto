@@ -4,7 +4,7 @@ package shareledger.document;
 import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "gogoproto/gogo.proto";
-import "document/document.proto";
+import "shareledger/document/document.proto";
 // this line is used by starport scaffolding # 1
 
 option go_package = "github.com/sharering/shareledger/x/document/types";

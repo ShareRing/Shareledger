@@ -3,12 +3,12 @@ syntax = "proto3";
 package shareledger.electoral;
 
 import "cosmos/base/query/v1beta1/pagination.proto";
-import "electoral/acc_state.proto";
-import "electoral/authority.proto";
-import "electoral/treasurer.proto";
 // this line is used by starport scaffolding # 1
 import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
+import "shareledger/electoral/acc_state.proto";
+import "shareledger/electoral/authority.proto";
+import "shareledger/electoral/treasurer.proto";
 
 option go_package = "github.com/sharering/shareledger/x/electoral/types";
 

@@ -3,7 +3,7 @@ package shareledger.booking;
 
 // this line is used by starport scaffolding # genesis/proto/import
 import "gogoproto/gogo.proto";
-import "booking/booking.proto";
+import "shareledger/booking/booking.proto";
 
 option go_package = "github.com/sharering/shareledger/x/booking/types";
 

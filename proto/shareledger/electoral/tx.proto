@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package shareledger.electoral;
 
-import "electoral/acc_state.proto";
+import "shareledger/electoral/acc_state.proto";
 // this line is used by starport scaffolding # proto/tx/import
 
 

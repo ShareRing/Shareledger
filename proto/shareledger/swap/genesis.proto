@@ -2,10 +2,10 @@ syntax = "proto3";
 package shareledger.swap;
 
 import "gogoproto/gogo.proto";
-import "swap/params.proto";
-import "swap/request.proto";
-import "swap/batch.proto";
-import "swap/schema.proto";
+import "shareledger/swap/params.proto";
+import "shareledger/swap/request.proto";
+import "shareledger/swap/batch.proto";
+import "shareledger/swap/schema.proto";
 // this line is used by starport scaffolding # genesis/proto/import
 
 option go_package = "github.com/sharering/shareledger/x/swap/types";

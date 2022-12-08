@@ -1,7 +1,7 @@
 syntax = "proto3";
 package shareledger.booking;
 
-import "booking/booking.proto";
+import "shareledger/booking/booking.proto";
 import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "gogoproto/gogo.proto";
