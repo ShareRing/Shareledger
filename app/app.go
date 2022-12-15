@@ -2,6 +2,9 @@ package app
 
 import (
 	"fmt"
+	"github.com/cosmos/cosmos-sdk/x/group"
+	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
+	routertypes "github.com/strangelove-ventures/packet-forward-middleware/v5/router/types"
 	"io"
 	"net/http"
 	"os"
@@ -30,6 +33,7 @@ import (
 	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types"
 	paramstypes "github.com/cosmos/cosmos-sdk/x/params/types"
 	upgradetypes "github.com/cosmos/cosmos-sdk/x/upgrade/types"
+	icacontrollertypes "github.com/cosmos/ibc-go/v5/modules/apps/27-interchain-accounts/controller/types"
 	ibcclienttypes "github.com/cosmos/ibc-go/v5/modules/core/02-client/types"
 	ibcchanneltypes "github.com/cosmos/ibc-go/v5/modules/core/04-channel/types"
 	"github.com/gorilla/mux"
@@ -259,6 +263,16 @@ func New(
 			fromVM[sdistributionType.ModuleName] = 2
 			sGen := sdistributionType.DefaultGenesis()
 			sdistributiionModule.InitGenesis(ctx, app.SDistributionKeeper, *sGen)
+
+			defaultParams := stakingtypes.DefaultParams()
+			defaultParams.MaxValidators = app.StakingKeeper.MaxValidators(ctx)
+			defaultParams.MaxEntries = app.StakingKeeper.MaxEntries(ctx)
+			defaultParams.HistoricalEntries = app.StakingKeeper.HistoricalEntries(ctx)
+			defaultParams.BondDenom = app.StakingKeeper.BondDenom(ctx)
+			defaultParams.UnbondingTime = app.StakingKeeper.UnbondingTime(ctx)
+
+			app.StakingKeeper.SetParams(ctx, defaultParams)
+
 			return fromVM, nil
 		},
 	)
@@ -269,7 +283,8 @@ func New(
 	}
 
 	if upgradeInfo.Name == upgradeName && !app.UpgradeKeeper.IsSkipHeight(upgradeInfo.Height) {
-		storeUpgrades := store.StoreUpgrades{}
+		storeUpgrades := store.StoreUpgrades{
+			Added: []string{sdistributionType.ModuleName, group.ModuleName, icacontrollertypes.StoreKey, routertypes.StoreKey}}
 
 		// configure store loader that checks if version == upgradeHeight and applies store upgrades
 		app.SetStoreLoader(upgradetypes.UpgradeStoreLoader(upgradeInfo.Height, &storeUpgrades))
