@@ -24,11 +24,11 @@ import (
 	ibchost "github.com/cosmos/ibc-go/v5/modules/core/24-host"
 	assetmoduletypes "github.com/sharering/shareledger/x/asset/types"
 	bookingmoduletypes "github.com/sharering/shareledger/x/booking/types"
+	distributionxtypes "github.com/sharering/shareledger/x/distributionx/types"
 	documentmoduletypes "github.com/sharering/shareledger/x/document/types"
 	electoralmoduletypes "github.com/sharering/shareledger/x/electoral/types"
 	gentlemintmoduletypes "github.com/sharering/shareledger/x/gentlemint/types"
 	idmoduletypes "github.com/sharering/shareledger/x/id/types"
-	sdistributiontypes "github.com/sharering/shareledger/x/sdistribution/types"
 	swapmoduletypes "github.com/sharering/shareledger/x/swap/types"
 	routertypes "github.com/strangelove-ventures/packet-forward-middleware/v5/router/types"
 )
@@ -47,7 +47,7 @@ func (appKeepers *AppKeepers) GenerateKeys() {
 		bookingmoduletypes.StoreKey,
 		gentlemintmoduletypes.StoreKey,
 		electoralmoduletypes.StoreKey,
-		sdistributiontypes.StoreKey,
+		distributionxtypes.StoreKey,
 		authzkeeper.StoreKey,
 		swapmoduletypes.StoreKey,
 		wasm.StoreKey, routertypes.StoreKey,

@@ -6,20 +6,20 @@ import (
 )
 
 type CountBuilderDecorator struct {
-	sdistributionKeeper SDistributionKeeper
+	distributionxKeeper DistributionxKeeper
 }
 
 // count tx by contract address
-func NewCountBuilderDecorator(sk SDistributionKeeper) CountBuilderDecorator {
+func NewCountBuilderDecorator(sk DistributionxKeeper) CountBuilderDecorator {
 	return CountBuilderDecorator{
-		sdistributionKeeper: sk,
+		distributionxKeeper: sk,
 	}
 }
 
 func (cbd CountBuilderDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate bool, next sdk.AnteHandler) (sdk.Context, error) {
 	for _, msg := range tx.GetMsgs() {
 		if execMsg, ok := msg.(*wasmtypes.MsgExecuteContract); ok {
-			cbd.sdistributionKeeper.IncBuilderCount(ctx, execMsg.Contract)
+			cbd.distributionxKeeper.IncBuilderCount(ctx, execMsg.Contract)
 		}
 	}
 	return next(ctx, tx, simulate)

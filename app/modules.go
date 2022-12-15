@@ -55,6 +55,8 @@ import (
 	assetmoduletypes "github.com/sharering/shareledger/x/asset/types"
 	bookingmodule "github.com/sharering/shareledger/x/booking"
 	bookingmoduletypes "github.com/sharering/shareledger/x/booking/types"
+	"github.com/sharering/shareledger/x/distributionx"
+	distributionxtypes "github.com/sharering/shareledger/x/distributionx/types"
 	documentmodule "github.com/sharering/shareledger/x/document"
 	documentmoduletypes "github.com/sharering/shareledger/x/document/types"
 	electoralmodule "github.com/sharering/shareledger/x/electoral"
@@ -63,8 +65,6 @@ import (
 	gentlemintmoduletypes "github.com/sharering/shareledger/x/gentlemint/types"
 	idmodule "github.com/sharering/shareledger/x/id"
 	idmoduletypes "github.com/sharering/shareledger/x/id/types"
-	"github.com/sharering/shareledger/x/sdistribution"
-	sdistributiontypes "github.com/sharering/shareledger/x/sdistribution/types"
 	swapmodule "github.com/sharering/shareledger/x/swap"
 	swapmoduletypes "github.com/sharering/shareledger/x/swap/types"
 )
@@ -83,9 +83,9 @@ var maccPerms = map[string][]string{
 	electoralmoduletypes.ModuleName:  nil,
 	icatypes.ModuleName:              nil,
 	swapmoduletypes.ModuleName:       nil,
-	sdistributiontypes.ModuleName:    nil,
-	sdistributiontypes.FeeWasmName:   nil,
-	sdistributiontypes.FeeNativeName: nil,
+	distributionxtypes.ModuleName:    nil,
+	distributionxtypes.FeeWasmName:   nil,
+	distributionxtypes.FeeNativeName: nil,
 	wasm.ModuleName:                  {authtypes.Burner},
 	// this line is used by starport scaffolding # stargate/app/maccPerms
 }
@@ -138,7 +138,7 @@ var ModuleBasics = module.NewBasicManager(
 	gentlemintmodule.AppModuleBasic{},
 	electoralmodule.AppModuleBasic{},
 	swapmodule.AppModuleBasic{},
-	sdistribution.AppModuleBasic{},
+	distributionx.AppModuleBasic{},
 	wasm.AppModuleBasic{},
 	ica.AppModuleBasic{},
 	// this line is used by starport scaffolding # stargate/app/moduleBasic
@@ -175,7 +175,7 @@ func orderBeginBlockers() []string {
 		genutiltypes.ModuleName,
 		documentmoduletypes.ModuleName,
 		swapmoduletypes.ModuleName,
-		sdistributiontypes.ModuleName,
+		distributionxtypes.ModuleName,
 		wasm.ModuleName,
 	}
 }
@@ -210,7 +210,7 @@ func orderEndBlockers() []string {
 		genutiltypes.ModuleName,
 		documentmoduletypes.ModuleName,
 		swapmoduletypes.ModuleName,
-		sdistributiontypes.ModuleName,
+		distributionxtypes.ModuleName,
 		wasm.ModuleName,
 	}
 }
@@ -244,7 +244,7 @@ func orderInitBlockers() []string {
 		assetmoduletypes.ModuleName,
 		bookingmoduletypes.ModuleName,
 		swapmoduletypes.ModuleName,
-		sdistributiontypes.ModuleName,
+		distributionxtypes.ModuleName,
 		wasm.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/initGenesis
 	}
@@ -293,7 +293,7 @@ func appModules(
 		electoralmodule.NewAppModule(appCodec, app.ElectoralKeeper),
 		swapmodule.NewAppModule(appCodec, app.SwapKeeper, app.AccountKeeper, app.BankKeeper),
 		wasm.NewAppModule(appCodec, &app.WasmKeeper, app.StakingKeeper, app.AccountKeeper, app.BankKeeper),
-		sdistribution.NewAppModule(appCodec, app.SDistributionKeeper, app.AccountKeeper, app.BankKeeper),
+		distributionx.NewAppModule(appCodec, app.DistributionxKeeper, app.AccountKeeper, app.BankKeeper),
 		// this line is used by starport scaffolding # stargate/app/appModule
 	}
 }

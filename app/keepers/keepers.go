@@ -68,6 +68,8 @@ import (
 	assetmoduletypes "github.com/sharering/shareledger/x/asset/types"
 	bookingmodulekeeper "github.com/sharering/shareledger/x/booking/keeper"
 	bookingmoduletypes "github.com/sharering/shareledger/x/booking/types"
+	distributionxkeeper "github.com/sharering/shareledger/x/distributionx/keeper"
+	distributionxtypes "github.com/sharering/shareledger/x/distributionx/types"
 	documentmodulekeeper "github.com/sharering/shareledger/x/document/keeper"
 	documentmoduletypes "github.com/sharering/shareledger/x/document/types"
 	electoralmodulekeeper "github.com/sharering/shareledger/x/electoral/keeper"
@@ -76,8 +78,6 @@ import (
 	gentlemintmoduletypes "github.com/sharering/shareledger/x/gentlemint/types"
 	idmodulekeeper "github.com/sharering/shareledger/x/id/keeper"
 	idmoduletypes "github.com/sharering/shareledger/x/id/types"
-	sdistributionkeeper "github.com/sharering/shareledger/x/sdistribution/keeper"
-	sdistributiontypes "github.com/sharering/shareledger/x/sdistribution/types"
 	swapmodulekeeper "github.com/sharering/shareledger/x/swap/keeper"
 	swapmoduletypes "github.com/sharering/shareledger/x/swap/types"
 	"github.com/spf13/cast"
@@ -119,7 +119,7 @@ type AppKeepers struct {
 	SwapKeeper          swapmodulekeeper.Keeper
 	WasmKeeper          wasm.Keeper
 	ContractKeeper      *wasmkeeper.PermissionedKeeper
-	SDistributionKeeper sdistributionkeeper.Keeper
+	DistributionxKeeper distributionxkeeper.Keeper
 
 	// IBC Keeper must be a pointer in the app, so we can SetRouter on it correctly
 	IBCKeeper           *ibckeeper.Keeper
@@ -311,10 +311,10 @@ func NewAppKeeper(
 		appKeepers.keys[swapmoduletypes.MemStoreKey],
 		appKeepers.GetSubspace(swapmoduletypes.ModuleName),
 		appKeepers.BankKeeper, appKeepers.AccountKeeper)
-	appKeepers.SDistributionKeeper = *sdistributionkeeper.NewKeeper(appCodec,
-		appKeepers.keys[sdistributiontypes.StoreKey],
-		appKeepers.keys[sdistributiontypes.MemStoreKey],
-		appKeepers.GetSubspace(sdistributiontypes.ModuleName),
+	appKeepers.DistributionxKeeper = *distributionxkeeper.NewKeeper(appCodec,
+		appKeepers.keys[distributionxtypes.StoreKey],
+		appKeepers.keys[distributionxtypes.MemStoreKey],
+		appKeepers.GetSubspace(distributionxtypes.ModuleName),
 		appKeepers.AccountKeeper,
 		appKeepers.BankKeeper,
 	)
@@ -491,7 +491,7 @@ func initParamsKeeper(appCodec codec.BinaryCodec, legacyAmino *codec.LegacyAmino
 	paramsKeeper.Subspace(bookingmoduletypes.ModuleName)
 	paramsKeeper.Subspace(gentlemintmoduletypes.ModuleName)
 	paramsKeeper.Subspace(swapmoduletypes.ModuleName)
-	paramsKeeper.Subspace(sdistributiontypes.ModuleName)
+	paramsKeeper.Subspace(distributionxtypes.ModuleName)
 	// this line is used by starport scaffolding # stargate/app/paramSubspace
 
 	return paramsKeeper

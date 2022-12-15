@@ -44699,9 +44699,10 @@ paths:
                   next_key:
                     type: string
                     format: byte
-                    title: |-
+                    description: |-
                       next_key is the key to be passed to PageRequest.key to
-                      query the next page most efficiently
+                      query the next page most efficiently. It will be empty if
+                      there are no more results.
                   total:
                     type: string
                     format: uint64
@@ -44939,9 +44940,10 @@ paths:
                   next_key:
                     type: string
                     format: byte
-                    title: |-
+                    description: |-
                       next_key is the key to be passed to PageRequest.key to
-                      query the next page most efficiently
+                      query the next page most efficiently. It will be empty if
+                      there are no more results.
                   total:
                     type: string
                     format: uint64
@@ -45214,9 +45216,10 @@ paths:
                   next_key:
                     type: string
                     format: byte
-                    title: |-
+                    description: |-
                       next_key is the key to be passed to PageRequest.key to
-                      query the next page most efficiently
+                      query the next page most efficiently. It will be empty if
+                      there are no more results.
                   total:
                     type: string
                     format: uint64
@@ -45406,9 +45409,10 @@ paths:
                   next_key:
                     type: string
                     format: byte
-                    title: |-
+                    description: |-
                       next_key is the key to be passed to PageRequest.key to
-                      query the next page most efficiently
+                      query the next page most efficiently. It will be empty if
+                      there are no more results.
                   total:
                     type: string
                     format: uint64
@@ -45586,10 +45590,10 @@ paths:
           type: string
       tags:
         - Query
-  /sharering/shareledger/sdistribution/builder_count:
+  /sharering/shareledger/distributionx/builder_count:
     get:
       summary: Queries a list of BuilderCount items.
-      operationId: ShareringShareledgerSdistributionBuilderCountAll
+      operationId: ShareringShareledgerDistributionxBuilderCountAll
       responses:
         '200':
           description: A successful response.
@@ -45712,10 +45716,10 @@ paths:
           type: boolean
       tags:
         - Query
-  /sharering/shareledger/sdistribution/builder_count/{index}:
+  /sharering/shareledger/distributionx/builder_count/{index}:
     get:
       summary: Queries a BuilderCount by index.
-      operationId: ShareringShareledgerSdistributionBuilderCount
+      operationId: ShareringShareledgerDistributionxBuilderCount
       responses:
         '200':
           description: A successful response.
@@ -45756,10 +45760,10 @@ paths:
           type: string
       tags:
         - Query
-  /sharering/shareledger/sdistribution/builder_list:
+  /sharering/shareledger/distributionx/builder_list:
     get:
       summary: Queries a list of BuilderList items.
-      operationId: ShareringShareledgerSdistributionBuilderListAll
+      operationId: ShareringShareledgerDistributionxBuilderListAll
       responses:
         '200':
           description: A successful response.
@@ -45882,10 +45886,10 @@ paths:
           type: boolean
       tags:
         - Query
-  /sharering/shareledger/sdistribution/builder_list/{id}:
+  /sharering/shareledger/distributionx/builder_list/{id}:
     get:
       summary: Queries a BuilderList by id.
-      operationId: ShareringShareledgerSdistributionBuilderList
+      operationId: ShareringShareledgerDistributionxBuilderList
       responses:
         '200':
           description: A successful response.
@@ -45927,10 +45931,10 @@ paths:
           format: uint64
       tags:
         - Query
-  /sharering/shareledger/sdistribution/params:
+  /sharering/shareledger/distributionx/params:
     get:
       summary: Parameters queries the parameters of the module.
-      operationId: ShareringShareledgerSdistributionParams
+      operationId: ShareringShareledgerDistributionxParams
       responses:
         '200':
           description: A successful response.
@@ -45984,10 +45988,10 @@ paths:
                   additionalProperties: {}
       tags:
         - Query
-  /sharering/shareledger/sdistribution/reward:
+  /sharering/shareledger/distributionx/reward:
     get:
       summary: Queries a list of Reward items.
-      operationId: ShareringShareledgerSdistributionRewardAll
+      operationId: ShareringShareledgerDistributionxRewardAll
       responses:
         '200':
           description: A successful response.
@@ -46126,10 +46130,10 @@ paths:
           type: boolean
       tags:
         - Query
-  /sharering/shareledger/sdistribution/reward/{index}:
+  /sharering/shareledger/distributionx/reward/{index}:
     get:
       summary: Queries a Reward by index.
-      operationId: ShareringShareledgerSdistributionReward
+      operationId: ShareringShareledgerDistributionxReward
       responses:
         '200':
           description: A successful response.
@@ -47020,9 +47024,6 @@ definitions:
           next_key is the key to be passed to PageRequest.key to
           query the next page most efficiently. It will be empty if
           there are no more results.
-        title: |-
-          next_key is the key to be passed to PageRequest.key to
-          query the next page most efficiently
       total:
         type: string
         format: uint64
@@ -75317,9 +75318,10 @@ definitions:
           next_key:
             type: string
             format: byte
-            title: |-
+            description: |-
               next_key is the key to be passed to PageRequest.key to
-              query the next page most efficiently
+              query the next page most efficiently. It will be empty if
+              there are no more results.
           total:
             type: string
             format: uint64
@@ -75404,9 +75406,10 @@ definitions:
           next_key:
             type: string
             format: byte
-            title: |-
+            description: |-
               next_key is the key to be passed to PageRequest.key to
-              query the next page most efficiently
+              query the next page most efficiently. It will be empty if
+              there are no more results.
           total:
             type: string
             format: uint64
@@ -75527,9 +75530,10 @@ definitions:
           next_key:
             type: string
             format: byte
-            title: |-
+            description: |-
               next_key is the key to be passed to PageRequest.key to
-              query the next page most efficiently
+              query the next page most efficiently. It will be empty if
+              there are no more results.
           total:
             type: string
             format: uint64
@@ -75619,9 +75623,10 @@ definitions:
           next_key:
             type: string
             format: byte
-            title: |-
+            description: |-
               next_key is the key to be passed to PageRequest.key to
-              query the next page most efficiently
+              query the next page most efficiently. It will be empty if
+              there are no more results.
           total:
             type: string
             format: uint64
@@ -75749,7 +75754,7 @@ definitions:
       logIndex:
         type: string
         format: uint64
-  sharering.shareledger.sdistribution.BuilderCount:
+  sharering.shareledger.distributionx.BuilderCount:
     type: object
     properties:
       index:
@@ -75758,7 +75763,7 @@ definitions:
       count:
         type: integer
         format: int64
-  sharering.shareledger.sdistribution.BuilderList:
+  sharering.shareledger.distributionx.BuilderList:
     type: object
     properties:
       id:
@@ -75767,7 +75772,7 @@ definitions:
       contract_address:
         type: string
     title: store list of contract address of master builder
-  sharering.shareledger.sdistribution.MsgWithdrawRewardResponse:
+  sharering.shareledger.distributionx.MsgWithdrawRewardResponse:
     type: object
     properties:
       amount:
@@ -75784,7 +75789,7 @@ definitions:
 
             NOTE: The amount field is an Int which implements the custom method
             signatures required by gogoproto.
-  sharering.shareledger.sdistribution.Params:
+  sharering.shareledger.distributionx.Params:
     type: object
     properties:
       wasm_master_builder:
@@ -75808,7 +75813,7 @@ definitions:
       dev_pool_account:
         type: string
     description: Params defines the parameters for the module.
-  sharering.shareledger.sdistribution.QueryAllBuilderCountResponse:
+  sharering.shareledger.distributionx.QueryAllBuilderCountResponse:
     type: object
     properties:
       builderCount:
@@ -75848,7 +75853,7 @@ definitions:
                    repeated Bar results = 1;
                    PageResponse page = 2;
            }
-  sharering.shareledger.sdistribution.QueryAllBuilderListResponse:
+  sharering.shareledger.distributionx.QueryAllBuilderListResponse:
     type: object
     properties:
       BuilderList:
@@ -75888,7 +75893,7 @@ definitions:
                    repeated Bar results = 1;
                    PageResponse page = 2;
            }
-  sharering.shareledger.sdistribution.QueryAllRewardResponse:
+  sharering.shareledger.distributionx.QueryAllRewardResponse:
     type: object
     properties:
       reward:
@@ -75943,7 +75948,7 @@ definitions:
                    repeated Bar results = 1;
                    PageResponse page = 2;
            }
-  sharering.shareledger.sdistribution.QueryGetBuilderCountResponse:
+  sharering.shareledger.distributionx.QueryGetBuilderCountResponse:
     type: object
     properties:
       builderCount:
@@ -75955,7 +75960,7 @@ definitions:
           count:
             type: integer
             format: int64
-  sharering.shareledger.sdistribution.QueryGetBuilderListResponse:
+  sharering.shareledger.distributionx.QueryGetBuilderListResponse:
     type: object
     properties:
       BuilderList:
@@ -75967,7 +75972,7 @@ definitions:
           contract_address:
             type: string
         title: store list of contract address of master builder
-  sharering.shareledger.sdistribution.QueryGetRewardResponse:
+  sharering.shareledger.distributionx.QueryGetRewardResponse:
     type: object
     properties:
       reward:
@@ -75994,7 +75999,7 @@ definitions:
 
                 signatures required by gogoproto.
             title: reward amount
-  sharering.shareledger.sdistribution.QueryParamsResponse:
+  sharering.shareledger.distributionx.QueryParamsResponse:
     type: object
     properties:
       params:
@@ -76022,7 +76027,7 @@ definitions:
           dev_pool_account:
             type: string
     description: QueryParamsResponse is response type for the Query/Params RPC method.
-  sharering.shareledger.sdistribution.Reward:
+  sharering.shareledger.distributionx.Reward:
     type: object
     properties:
       index:

@@ -24,7 +24,7 @@ func NewHandler(
 	gentlemintKeeper GentlemintKeeper,
 	roleKeeper RoleKeeper,
 	idKeeper IDKeeper,
-	sdistributionKeeper SDistributionKeeper,
+	distributionxKeeper DistributionxKeeper,
 	wasmKeeper WasmKeeper,
 ) (sdk.AnteHandler, error) {
 	if options.AccountKeeper == nil {
@@ -54,9 +54,9 @@ func NewHandler(
 		ante.NewConsumeGasForTxSizeDecorator(options.AccountKeeper),
 		// ante.NewDeductFeeDecorator(options.AccountKeeper, options.BankKeeper, options.FeegrantKeeper, options.TxFeeChecker),
 		NewDeductFeeDecorator(options.AccountKeeper, options.BankKeeper,
-			options.FeegrantKeeper, options.TxFeeChecker, sdistributionKeeper, wasmKeeper),
+			options.FeegrantKeeper, options.TxFeeChecker, distributionxKeeper, wasmKeeper),
 
-		NewCountBuilderDecorator(sdistributionKeeper),
+		NewCountBuilderDecorator(distributionxKeeper),
 		NewAuthDecorator(roleKeeper, idKeeper),
 		ante.NewSetPubKeyDecorator(options.AccountKeeper),
 		ante.NewValidateSigCountDecorator(options.AccountKeeper),

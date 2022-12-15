@@ -41,8 +41,8 @@ import (
 	"github.com/sharering/shareledger/ante"
 	"github.com/sharering/shareledger/app/keepers"
 	"github.com/sharering/shareledger/app/params"
-	sdistributiionModule "github.com/sharering/shareledger/x/sdistribution"
-	sdistributionType "github.com/sharering/shareledger/x/sdistribution/types"
+	sdistributiionModule "github.com/sharering/shareledger/x/distributionx"
+	distributionxType "github.com/sharering/shareledger/x/distributionx/types"
 	"github.com/spf13/cast"
 	abci "github.com/tendermint/tendermint/abci/types"
 	tmjson "github.com/tendermint/tendermint/libs/json"
@@ -240,7 +240,7 @@ func New(
 		app.GentleMintKeeper,
 		roleKeeper,
 		app.IdKeeper,
-		app.SDistributionKeeper,
+		app.DistributionxKeeper,
 		app.WasmKeeper,
 	)
 	if err != nil {
@@ -260,9 +260,9 @@ func New(
 	app.UpgradeKeeper.SetUpgradeHandler(
 		upgradeName,
 		func(ctx sdk.Context, _ upgradetypes.Plan, fromVM module.VersionMap) (module.VersionMap, error) {
-			fromVM[sdistributionType.ModuleName] = 2
-			sGen := sdistributionType.DefaultGenesis()
-			sdistributiionModule.InitGenesis(ctx, app.SDistributionKeeper, *sGen)
+			fromVM[distributionxType.ModuleName] = 2
+			sGen := distributionxType.DefaultGenesis()
+			sdistributiionModule.InitGenesis(ctx, app.DistributionxKeeper, *sGen)
 
 			defaultParams := stakingtypes.DefaultParams()
 			defaultParams.MaxValidators = app.StakingKeeper.MaxValidators(ctx)
@@ -284,7 +284,7 @@ func New(
 
 	if upgradeInfo.Name == upgradeName && !app.UpgradeKeeper.IsSkipHeight(upgradeInfo.Height) {
 		storeUpgrades := store.StoreUpgrades{
-			Added: []string{sdistributionType.ModuleName, group.ModuleName, icacontrollertypes.StoreKey, routertypes.StoreKey}}
+			Added: []string{distributionxType.StoreKey, group.StoreKey, icacontrollertypes.StoreKey, routertypes.StoreKey}}
 
 		// configure store loader that checks if version == upgradeHeight and applies store upgrades
 		app.SetStoreLoader(upgradetypes.UpgradeStoreLoader(upgradeInfo.Height, &storeUpgrades))

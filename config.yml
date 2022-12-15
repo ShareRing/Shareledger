@@ -175,7 +175,7 @@ genesis:
     distribution:
       params:
         community_tax: "0"
-    sdistribution:
+    distributionx:
       params:
         wasm_master_builder: "0.125"
         wasm_contract_admin: "0.125"

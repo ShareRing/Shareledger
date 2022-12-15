@@ -10,7 +10,7 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/cosmos/cosmos-sdk/x/auth/ante"
 	"github.com/cosmos/cosmos-sdk/x/auth/types"
-	sdistributiontypes "github.com/sharering/shareledger/x/sdistribution/types"
+	distributionxtypes "github.com/sharering/shareledger/x/distributionx/types"
 )
 
 // TxFeeChecker check if the provided fee is enough and returns the effective fee and tx priority,
@@ -31,11 +31,11 @@ type DeductFeeDecorator struct {
 	feegrantKeeper ante.FeegrantKeeper
 	txFeeChecker   ante.TxFeeChecker
 
-	sdistributionKeeper SDistributionKeeper
+	distributionxKeeper DistributionxKeeper
 	wasmKeeper          WasmKeeper
 }
 
-func NewDeductFeeDecorator(ak ante.AccountKeeper, bk types.BankKeeper, fk ante.FeegrantKeeper, tfc ante.TxFeeChecker, sk SDistributionKeeper, wk WasmKeeper) DeductFeeDecorator {
+func NewDeductFeeDecorator(ak ante.AccountKeeper, bk types.BankKeeper, fk ante.FeegrantKeeper, tfc ante.TxFeeChecker, dk DistributionxKeeper, wk WasmKeeper) DeductFeeDecorator {
 	if tfc == nil {
 		tfc = checkTxFeeWithValidatorMinGasPrices
 	}
@@ -45,7 +45,7 @@ func NewDeductFeeDecorator(ak ante.AccountKeeper, bk types.BankKeeper, fk ante.F
 		bankKeeper:          bk,
 		feegrantKeeper:      fk,
 		txFeeChecker:        tfc,
-		sdistributionKeeper: sk,
+		distributionxKeeper: dk,
 		wasmKeeper:          wk,
 	}
 }
@@ -117,7 +117,7 @@ func (dfd DeductFeeDecorator) checkDeductFee(ctx sdk.Context, sdkTx sdk.Tx, fee 
 	}
 
 	// deduct the fees
-	params := dfd.sdistributionKeeper.GetParams(ctx)
+	params := dfd.distributionxKeeper.GetParams(ctx)
 	if !fee.IsZero() {
 		// Custom fee distribution only apply with tx that have 1 message
 		if len(sdkTx.GetMsgs()) == 1 {
@@ -131,18 +131,18 @@ func (dfd DeductFeeDecorator) checkDeductFee(ctx sdk.Context, sdkTx sdk.Tx, fee 
 				}
 				contract := dfd.wasmKeeper.GetContractInfo(ctx, addr)
 				contractAdminFee := getFeeRounded(fee, params.WasmContractAdmin)
-				dfd.sdistributionKeeper.IncReward(ctx, contract.Creator, contractAdminFee)
+				dfd.distributionxKeeper.IncReward(ctx, contract.Creator, contractAdminFee)
 				fee = fee.Sub(contractAdminFee...)
 
 				wasmFee := getFeeRounded(fee, sdk.OneDec().Sub(params.WasmValidator))
-				deductFees(dfd.bankKeeper, ctx, deductFeesFromAcc, wasmFee, sdistributiontypes.FeeWasmName)
+				deductFees(dfd.bankKeeper, ctx, deductFeesFromAcc, wasmFee, distributionxtypes.FeeWasmName)
 				fee = fee.Sub(wasmFee...)
 			}
 		}
 
-		// move some amount to `sdistributiontypes.FeeNativeName` pool
+		// move some amount to `distributionxtypes.FeeNativeName` pool
 		nativeFee := getFeeRounded(fee, sdk.OneDec().Sub(params.NativeValidator))
-		deductFees(dfd.bankKeeper, ctx, deductFeesFromAcc, nativeFee, sdistributiontypes.FeeNativeName)
+		deductFees(dfd.bankKeeper, ctx, deductFeesFromAcc, nativeFee, distributionxtypes.FeeNativeName)
 		fee = fee.Sub(nativeFee...)
 
 		err := deductFees(dfd.bankKeeper, ctx, deductFeesFromAcc, fee, types.FeeCollectorName)
