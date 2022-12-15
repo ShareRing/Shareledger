@@ -29,6 +29,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/gov"
 	govclient "github.com/cosmos/cosmos-sdk/x/gov/client"
 	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types"
+	"github.com/cosmos/cosmos-sdk/x/group"
 	groupmodule "github.com/cosmos/cosmos-sdk/x/group/module"
 	"github.com/cosmos/cosmos-sdk/x/mint"
 	minttypes "github.com/cosmos/cosmos-sdk/x/mint/types"
@@ -129,6 +130,7 @@ var ModuleBasics = module.NewBasicManager(
 	evidence.AppModuleBasic{},
 	transfer.AppModuleBasic{},
 	vesting.AppModuleBasic{},
+	groupmodule.AppModuleBasic{},
 	documentmodule.AppModuleBasic{},
 	idmodule.AppModuleBasic{},
 	assetmodule.AppModuleBasic{},
@@ -162,6 +164,7 @@ func orderBeginBlockers() []string {
 		genutiltypes.ModuleName,
 		evidencetypes.ModuleName,
 		authz.ModuleName,
+		group.ModuleName,
 		feegrant.ModuleName,
 		paramstypes.ModuleName,
 		vestingtypes.ModuleName,
@@ -187,6 +190,7 @@ func orderEndBlockers() []string {
 		icatypes.ModuleName,
 		feegrant.ModuleName,
 		authz.ModuleName,
+		group.ModuleName,
 		capabilitytypes.ModuleName,
 		authtypes.ModuleName,
 		electoralmoduletypes.ModuleName,
@@ -231,6 +235,7 @@ func orderInitBlockers() []string {
 		evidencetypes.ModuleName,
 		feegrant.ModuleName,
 		authz.ModuleName,
+		group.ModuleName,
 		paramstypes.ModuleName,
 		upgradetypes.ModuleName,
 		vestingtypes.ModuleName,
@@ -277,6 +282,7 @@ func appModules(
 		params.NewAppModule(app.ParamsKeeper),
 		app.ICAModule,
 		app.TransferModule,
+		groupmodule.NewAppModule(appCodec, app.GroupKeeper, app.AccountKeeper, app.BankKeeper, app.interfaceRegistry),
 
 		// custom module
 		documentmodule.NewAppModule(appCodec, app.DocumentKeeper),
