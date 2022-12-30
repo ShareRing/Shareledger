@@ -1,0 +1,12 @@
+global:
+  scrape_interval: "15s"
+  evaluation_interval: "15s"
+
+scrape_configs:
+  - job_name: shareledger
+    static_configs:
+      - targets:
+          - "snode0:26660"
+          - "snode1:26660"
+          - "snode2:26660"
+          - "snode3:26660"
