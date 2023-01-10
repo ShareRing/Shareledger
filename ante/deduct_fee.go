@@ -118,34 +118,32 @@ func (dfd DeductFeeDecorator) checkDeductFee(ctx sdk.Context, sdkTx sdk.Tx, fee 
 
 	// deduct the fees
 	params := dfd.distributionxKeeper.GetParams(ctx)
+	validatorFee := fee
 	if !fee.IsZero() {
 		// Custom fee distribution only apply with tx that have 1 message
-		if len(sdkTx.GetMsgs()) == 1 {
-			msg := sdkTx.GetMsgs()[0]
-			// handle case wasm msg
-			if execMsg, ok := msg.(*wasmtypes.MsgExecuteContract); ok {
-				// increase contract creator reward
-				addr, err := sdk.AccAddressFromBech32(execMsg.Contract)
-				if err != nil {
-					return err
-				}
-				contract := dfd.wasmKeeper.GetContractInfo(ctx, addr)
-				contractAdminFee := getFeeRounded(fee, params.WasmContractAdmin)
-				dfd.distributionxKeeper.IncReward(ctx, contract.Creator, contractAdminFee)
-				fee = fee.Sub(contractAdminFee...)
-
-				wasmFee := getFeeRounded(fee, sdk.OneDec().Sub(params.WasmValidator))
-				deductFees(dfd.bankKeeper, ctx, deductFeesFromAcc, wasmFee, distributionxtypes.FeeWasmName)
-				fee = fee.Sub(wasmFee...)
+		// handle case wasm execute msg
+		if execMsg, ok := sdkTx.GetMsgs()[0].(*wasmtypes.MsgExecuteContract); ok {
+			// increase contract creator reward
+			addr, err := sdk.AccAddressFromBech32(execMsg.Contract)
+			if err != nil {
+				return err
 			}
+			contract := dfd.wasmKeeper.GetContractInfo(ctx, addr)
+			contractAdminFee := getFeeRounded(fee, params.WasmContractAdmin)
+			dfd.distributionxKeeper.IncReward(ctx, contract.Creator, contractAdminFee)
+			validatorFee = validatorFee.Sub(contractAdminFee...)
+
+			wasmFee := getFeeRounded(fee, sdk.OneDec().Sub(params.WasmValidator))
+			deductFees(dfd.bankKeeper, ctx, deductFeesFromAcc, wasmFee, distributionxtypes.FeeWasmName)
+			validatorFee = validatorFee.Sub(wasmFee...)
+		} else {
+			// move some amount to `distributionxtypes.FeeNativeName` pool
+			nativeFee := getFeeRounded(fee, sdk.OneDec().Sub(params.NativeValidator))
+			deductFees(dfd.bankKeeper, ctx, deductFeesFromAcc, nativeFee, distributionxtypes.FeeNativeName)
+			validatorFee = validatorFee.Sub(nativeFee...)
 		}
 
-		// move some amount to `distributionxtypes.FeeNativeName` pool
-		nativeFee := getFeeRounded(fee, sdk.OneDec().Sub(params.NativeValidator))
-		deductFees(dfd.bankKeeper, ctx, deductFeesFromAcc, nativeFee, distributionxtypes.FeeNativeName)
-		fee = fee.Sub(nativeFee...)
-
-		err := deductFees(dfd.bankKeeper, ctx, deductFeesFromAcc, fee, types.FeeCollectorName)
+		err := deductFees(dfd.bankKeeper, ctx, deductFeesFromAcc, validatorFee, types.FeeCollectorName)
 		if err != nil {
 			return err
 		}

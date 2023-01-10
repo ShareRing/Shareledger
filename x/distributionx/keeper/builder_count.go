@@ -59,10 +59,4 @@ func (k Keeper) IncBuilderCount(ctx sdk.Context, address string) {
 	}
 	val.Count += 1
 	k.SetBuilderCount(ctx, val)
-	params := k.GetParams(ctx)
-	if val.Count == params.TxThreshold {
-		k.AppendBuilderList(ctx, types.BuilderList{
-			ContractAddress: address,
-		})
-	}
 }

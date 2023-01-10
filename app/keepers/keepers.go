@@ -311,13 +311,6 @@ func NewAppKeeper(
 		appKeepers.keys[swapmoduletypes.MemStoreKey],
 		appKeepers.GetSubspace(swapmoduletypes.ModuleName),
 		appKeepers.BankKeeper, appKeepers.AccountKeeper)
-	appKeepers.DistributionxKeeper = *distributionxkeeper.NewKeeper(appCodec,
-		appKeepers.keys[distributionxtypes.StoreKey],
-		appKeepers.keys[distributionxtypes.MemStoreKey],
-		appKeepers.GetSubspace(distributionxtypes.ModuleName),
-		appKeepers.AccountKeeper,
-		appKeepers.BankKeeper,
-	)
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
 
 	// set the governance module account as the authority for conducting upgrades
@@ -455,6 +448,14 @@ func NewAppKeeper(
 		wasmConfig,
 		supportedFeatures,
 		wasmOpts...,
+	)
+	appKeepers.DistributionxKeeper = *distributionxkeeper.NewKeeper(appCodec,
+		appKeepers.keys[distributionxtypes.StoreKey],
+		appKeepers.keys[distributionxtypes.MemStoreKey],
+		appKeepers.GetSubspace(distributionxtypes.ModuleName),
+		appKeepers.AccountKeeper,
+		appKeepers.BankKeeper,
+		appKeepers.WasmKeeper,
 	)
 
 	// Update the ICS4Wrapper with the proper contractKeeper
