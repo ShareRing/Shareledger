@@ -1,6 +1,7 @@
 package keeper
 
 import (
+	"cosmossdk.io/math"
 	sdkmath "cosmossdk.io/math"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/sharering/shareledger/x/distributionx/types"
@@ -18,26 +19,32 @@ func (k *Keeper) AllocateTokens(ctx sdk.Context) {
 	feeWasmCollected := k.bankKeeper.GetAllBalances(ctx, feeWasmCollector.GetAddress())
 	k.bankKeeper.SendCoinsFromModuleToModule(ctx, types.FeeWasmName, types.ModuleName, feeWasmCollected)
 
+	feeBuilderRate := params.WasmMasterBuilder.Quo(params.WasmMasterBuilder.Add(params.WasmDevelopment))
+
 	builderList := k.GetAllBuilderList(ctx)
-	for _, builder := range builderList {
-		addr, err := sdk.AccAddressFromBech32(builder.ContractAddress)
-		if err != nil {
-			panic(err)
+	if len(builderList) > 0 {
+		rate := feeBuilderRate.Quo(sdk.NewDec(int64(len(builderList))))
+		rewardAmount := getFeeRounded(feeWasmCollected, rate)
+		feeWasmCollected.Sub(rewardAmount.MulInt(math.NewInt(int64(len(builderList))))...)
+		for _, builder := range builderList {
+			addr, err := sdk.AccAddressFromBech32(builder.ContractAddress)
+			if err != nil {
+				panic(err)
+			}
+			contractInfo := k.wasmKeeper.GetContractInfo(ctx, addr)
+			k.IncReward(ctx, contractInfo.Creator, rewardAmount)
 		}
-		contractInfo := k.wasmKeeper.GetContractInfo(ctx, addr)
-		rate := params.WasmMasterBuilder.Quo(sdk.NewDec(int64(len(builderList))))
-		k.IncReward(ctx, contractInfo.Creator, getFeeRounded(feeWasmCollected, rate))
 	}
 
 	// distribution for dev_pool
-	k.IncReward(ctx, params.DevPoolAccount, getFeeRounded(feeWasmCollected, params.WasmDevelopment))
+	k.IncReward(ctx, params.DevPoolAccount, feeWasmCollected)
 
 	// 2. Allocate tokens from native-pool
 	feeNativeCollector := k.authKeeper.GetModuleAccount(ctx, types.FeeNativeName)
 	feeNativeCollected := k.bankKeeper.GetAllBalances(ctx, feeNativeCollector.GetAddress())
 	k.bankKeeper.SendCoinsFromModuleToModule(ctx, types.FeeNativeName, types.ModuleName, feeNativeCollected)
 
-	k.IncReward(ctx, params.DevPoolAccount, getFeeRounded(feeNativeCollected, params.NativeDevelopment))
+	k.IncReward(ctx, params.DevPoolAccount, feeNativeCollected)
 
 }
 

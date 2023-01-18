@@ -5,6 +5,7 @@ go 1.18
 replace (
 	github.com/CosmWasm/wasmd => github.com/notional-labs/wasmd v0.29.0-sdk46.0.20221108144812-0abadd1ee929
 	github.com/cosmos/cosmos-sdk => github.com/ShareRing/cosmos-sdk v0.46.5-0.20221130074243-c751eb784e5d
+	github.com/cosmos/ibc-go/v5 => /Users/nguyenthanhdat/playgroud/ibc-go
 	github.com/gogo/protobuf => github.com/regen-network/protobuf v1.3.3-alpha.regen.1
 )
 
