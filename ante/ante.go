@@ -7,8 +7,10 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/cosmos/cosmos-sdk/x/auth/ante"
+	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
 	ibcante "github.com/cosmos/ibc-go/v5/modules/core/ante"
 	ibckeeper "github.com/cosmos/ibc-go/v5/modules/core/keeper"
+	globalfeeante "github.com/sharering/shareledger/x/gentlemint/ante"
 )
 
 type HandlerOptions struct {
@@ -17,55 +19,63 @@ type HandlerOptions struct {
 	IBCKeeper         *ibckeeper.Keeper
 	WasmConfig        *wasmTypes.WasmConfig
 	TXCounterStoreKey storetypes.StoreKey
+
+	// additional data
+	GentlemintKeeper    GentlemintKeeper
+	RoleKeeper          RoleKeeper
+	IdKeeper            IDKeeper
+	DistributionxKeeper DistributionxKeeper
+	WasmKeeper          WasmKeeper
+
+	BypassMinFeeMsgTypes []string
+	GlobalFeeSubspace    paramtypes.Subspace
+	StakingSubspace      paramtypes.Subspace
 }
 
-func NewHandler(
-	options HandlerOptions,
-	gentlemintKeeper GentlemintKeeper,
-	roleKeeper RoleKeeper,
-	idKeeper IDKeeper,
-	distributionxKeeper DistributionxKeeper,
-	wasmKeeper WasmKeeper,
-) (sdk.AnteHandler, error) {
-	if options.AccountKeeper == nil {
+func NewHandler(opts HandlerOptions) (sdk.AnteHandler, error) {
+	if opts.AccountKeeper == nil {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrLogic, "account keeper is required for AnteHandler")
 	}
 
-	if options.BankKeeper == nil {
+	if opts.BankKeeper == nil {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrLogic, "bank keeper is required for AnteHandler")
 	}
 
-	if options.SignModeHandler == nil {
+	if opts.SignModeHandler == nil {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrLogic, "sign mode handler is required for ante builder")
 	}
 
-	sigGasConsumer := options.SigGasConsumer
+	sigGasConsumer := opts.SigGasConsumer
 	if sigGasConsumer == nil {
 		sigGasConsumer = ante.DefaultSigVerificationGasConsumer
 	}
 
 	anteDecorators := []sdk.AnteDecorator{
 		ante.NewSetUpContextDecorator(),
-		wasmkeeper.NewLimitSimulationGasDecorator(options.WasmConfig.SimulationGasLimit),
-		wasmkeeper.NewCountTXDecorator(options.TXCounterStoreKey),
+		wasmkeeper.NewLimitSimulationGasDecorator(opts.WasmConfig.SimulationGasLimit),
+		wasmkeeper.NewCountTXDecorator(opts.TXCounterStoreKey),
 		ante.NewValidateBasicDecorator(),
 		ante.NewTxTimeoutHeightDecorator(),
-		ante.NewValidateMemoDecorator(options.AccountKeeper),
-		ante.NewConsumeGasForTxSizeDecorator(options.AccountKeeper),
-		// ante.NewDeductFeeDecorator(options.AccountKeeper, options.BankKeeper, options.FeegrantKeeper, options.TxFeeChecker),
-		NewDeductFeeDecorator(options.AccountKeeper, options.BankKeeper,
-			options.FeegrantKeeper, options.TxFeeChecker, distributionxKeeper, wasmKeeper),
+		ante.NewValidateMemoDecorator(opts.AccountKeeper),
+		ante.NewConsumeGasForTxSizeDecorator(opts.AccountKeeper),
 
-		NewCountBuilderDecorator(distributionxKeeper),
-		NewAuthDecorator(roleKeeper, idKeeper),
-		ante.NewSetPubKeyDecorator(options.AccountKeeper),
-		ante.NewValidateSigCountDecorator(options.AccountKeeper),
-		ante.NewSigGasConsumeDecorator(options.AccountKeeper, sigGasConsumer),
-		ante.NewSigVerificationDecorator(options.AccountKeeper, options.SignModeHandler),
-		ante.NewIncrementSequenceDecorator(options.AccountKeeper),
-		ibcante.NewRedundantRelayDecorator(options.IBCKeeper),
-		NewLoadFeeDecorator(gentlemintKeeper),
-		NewCheckFeeDecorator(gentlemintKeeper),
+		// ante.NewDeductFeeDecorator(options.AccountKeeper, options.BankKeeper, options.FeegrantKeeper, options.TxFeeChecker),
+		NewDeductFeeDecorator(opts.AccountKeeper, opts.BankKeeper,
+			opts.FeegrantKeeper, opts.TxFeeChecker, opts.DistributionxKeeper, opts.WasmKeeper),
+
+		// there 2 ante that check for transaction fee
+		NewCheckFeeDecorator(opts.GentlemintKeeper),
+		globalfeeante.NewFeeDecorator(opts.BypassMinFeeMsgTypes, opts.GlobalFeeSubspace, opts.StakingSubspace),
+
+		NewCountBuilderDecorator(opts.DistributionxKeeper),
+		NewAuthDecorator(opts.RoleKeeper, opts.IdKeeper),
+		ante.NewSetPubKeyDecorator(opts.AccountKeeper),
+		ante.NewValidateSigCountDecorator(opts.AccountKeeper),
+		ante.NewSigGasConsumeDecorator(opts.AccountKeeper, sigGasConsumer),
+		ante.NewSigVerificationDecorator(opts.AccountKeeper, opts.SignModeHandler),
+		ante.NewIncrementSequenceDecorator(opts.AccountKeeper),
+		ibcante.NewRedundantRelayDecorator(opts.IBCKeeper),
+		NewLoadFeeDecorator(opts.GentlemintKeeper),
 	}
 
 	return sdk.ChainAnteDecorators(anteDecorators...), nil

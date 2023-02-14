@@ -3,16 +3,18 @@ package types_test
 import (
 	"testing"
 
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/sharering/shareledger/x/gentlemint/types"
 	"github.com/stretchr/testify/require"
 )
 
 func TestGenesisState_Validate(t *testing.T) {
-	for _, tc := range []struct {
+	type Test struct {
 		desc     string
 		genState *types.GenesisState
 		valid    bool
-	}{
+	}
+	testCases := []Test{
 		{
 			desc:     "default is valid",
 			genState: types.DefaultGenesis(),
@@ -72,8 +74,59 @@ func TestGenesisState_Validate(t *testing.T) {
 			},
 			valid: false,
 		},
+		{
+			desc: "empty min gas price",
+			genState: &types.GenesisState{
+				Params: types.Params{
+					MinimumGasPrices: sdk.DecCoins{},
+				},
+			},
+			valid: true,
+		},
+		{
+			desc: "no min gas price",
+			genState: &types.GenesisState{
+				Params: types.Params{
+					MinimumGasPrices: nil,
+				},
+			},
+			valid: true,
+		},
+		{
+			desc: "negative min gas price mount",
+			genState: &types.GenesisState{
+				Params: types.Params{
+					MinimumGasPrices: sdk.DecCoins{
+						sdk.DecCoin{
+							Denom:  "XXX",
+							Amount: sdk.NewDec(-1),
+						},
+					},
+				},
+			},
+			valid: false,
+		},
+		{
+			desc: "valid min gas price mount",
+			genState: &types.GenesisState{
+				Params: types.Params{
+					MinimumGasPrices: sdk.DecCoins{
+						sdk.DecCoin{
+							Denom:  "SHR",
+							Amount: sdk.NewDec(100),
+						},
+						sdk.DecCoin{
+							Denom:  "ABC",
+							Amount: sdk.NewDec(1),
+						},
+					},
+				},
+			},
+			valid: false,
+		},
 		// this line is used by starport scaffolding # types/genesis/testcase
-	} {
+	}
+	for _, tc := range testCases {
 		t.Run(tc.desc, func(t *testing.T) {
 			err := tc.genState.Validate()
 			if tc.valid {

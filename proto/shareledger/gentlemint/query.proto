@@ -50,7 +50,12 @@ service Query {
     option (google.api.http).get = "/shareledger/gentlemint/balances";
   }
 
-// this line is used by starport scaffolding # 2
+  rpc MinimumGasPrices(QueryMinimumGasPricesRequest)
+      returns (QueryMinimumGasPricesResponse) {
+    option (google.api.http).get =
+        "/shareledger/gentlemint/minimum_gas_prices";
+  }
+  // this line is used by starport scaffolding # 2
 }
 
 message QueryExchangeRateRequest {}
@@ -107,6 +112,21 @@ message QueryBalancesRequest {
 
 message QueryBalancesResponse {
   repeated cosmos.base.v1beta1.DecCoin coins = 1;
+}
+
+// QueryMinimumGasPricesRequest is the request type for the
+// Query/MinimumGasPrices RPC method.
+message QueryMinimumGasPricesRequest {}
+
+// QueryMinimumGasPricesResponse is the response type for the
+// Query/MinimumGasPrices RPC method.
+message QueryMinimumGasPricesResponse {
+  repeated cosmos.base.v1beta1.DecCoin minimum_gas_prices = 1 [
+    (gogoproto.nullable) = false,
+    (gogoproto.jsontag) = "minimum_gas_prices,omitempty",
+    (gogoproto.moretags) = "yaml:\"minimum_gas_prices\"",
+    (gogoproto.castrepeated) = "github.com/cosmos/cosmos-sdk/types.DecCoins"
+  ];
 }
 
 // this line is used by starport scaffolding # 3

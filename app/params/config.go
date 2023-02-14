@@ -12,10 +12,10 @@ var (
 	//nolint: gosec
 	BypassMinFeeMsgTypesKey = "bypass-min-fee-msg-types"
 
-	// customGaiaConfigTemplate defines Gaia's custom application configuration TOML template.
-	customGaiaConfigTemplate = `
+	// customConfigTemplate defines custom application configuration TOML template.
+	customConfigTemplate = `
 ###############################################################################
-###                        Custom Gaia Configuration                        ###
+###                        Custom Configuration                        ###
 ###############################################################################
 # bypass-min-fee-msg-types defines custom message types the operator may set that
 # will bypass minimum fee checks during CheckTx.
@@ -26,17 +26,17 @@ bypass-min-fee-msg-types = [{{ range .BypassMinFeeMsgTypes }}{{ printf "%q, " . 
 `
 )
 
-// CustomConfigTemplate defines Gaia's custom application configuration TOML
+// CustomConfigTemplate defines custom application configuration TOML
 // template. It extends the core SDK template.
 func CustomConfigTemplate() string {
 	config := serverconfig.DefaultConfigTemplate
 	lines := strings.Split(config, "\n")
-	// add the Gaia config at the second line of the file
-	lines[2] += customGaiaConfigTemplate
+	// add the config at the second line of the file
+	lines[2] += customConfigTemplate
 	return strings.Join(lines, "\n")
 }
 
-// CustomAppConfig defines Gaia's custom application configuration.
+// CustomAppConfig defines custom application configuration.
 type CustomAppConfig struct {
 	serverconfig.Config
 

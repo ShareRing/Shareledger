@@ -25,6 +25,7 @@ func TestMsgBurn_ValidateBasic(t *testing.T) {
 			msg: MsgBurn{
 				Creator: sample.AccAddress(),
 			},
+			err: sdkerrors.ErrInvalidCoins,
 		},
 	}
 	for _, tt := range tests {

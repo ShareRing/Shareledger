@@ -13,6 +13,7 @@ func DefaultGenesis() *GenesisState {
 		ExchangeRate:       nil,
 		LevelFeeList:       []LevelFee{},
 		ActionLevelFeeList: []ActionLevelFee{},
+		Params:             DefaultParams(),
 		// this line is used by starport scaffolding # genesis/types/default
 	}
 }
@@ -40,6 +41,10 @@ func (gs GenesisState) Validate() error {
 			return fmt.Errorf("duplicated index for actionLevelFee")
 		}
 		actionLevelFeeIndexMap[index] = struct{}{}
+	}
+
+	if err := gs.Params.ValidateBasic(); err != nil {
+		return fmt.Errorf("failed validate genesis params: %w", err)
 	}
 	// this line is used by starport scaffolding # genesis/types/validate
 

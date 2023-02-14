@@ -20,6 +20,7 @@ type (
 
 		bankKeeper    types.BankKeeper
 		accountKeeper types.AccountKeeper
+		paramsSpace   types.ParamSource
 	}
 )
 
@@ -27,15 +28,18 @@ func NewKeeper(
 	cdc codec.BinaryCodec,
 	storeKey,
 	memKey storetypes.StoreKey,
-
-	bankKeeper types.BankKeeper, accountKeeper types.AccountKeeper,
+	bankKeeper types.BankKeeper,
+	accountKeeper types.AccountKeeper,
+	paramsSpace types.ParamSource,
 ) *Keeper {
 	return &Keeper{
 		cdc:      cdc,
 		storeKey: storeKey,
 		memKey:   memKey,
 
-		bankKeeper: bankKeeper, accountKeeper: accountKeeper,
+		bankKeeper:    bankKeeper,
+		accountKeeper: accountKeeper,
+		paramsSpace:   paramsSpace,
 	}
 }
 

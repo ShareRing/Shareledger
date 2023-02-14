@@ -75,7 +75,7 @@ import (
 	electoralmodulekeeper "github.com/sharering/shareledger/x/electoral/keeper"
 	electoralmoduletypes "github.com/sharering/shareledger/x/electoral/types"
 	gentlemintmodulekeeper "github.com/sharering/shareledger/x/gentlemint/keeper"
-	gentlemintmoduletypes "github.com/sharering/shareledger/x/gentlemint/types"
+	gentleminttypes "github.com/sharering/shareledger/x/gentlemint/types"
 	idmodulekeeper "github.com/sharering/shareledger/x/id/keeper"
 	idmoduletypes "github.com/sharering/shareledger/x/id/types"
 	swapmodulekeeper "github.com/sharering/shareledger/x/swap/keeper"
@@ -271,10 +271,11 @@ func NewAppKeeper(
 	// Custom sharering keepers
 	appKeepers.GentleMintKeeper = *gentlemintmodulekeeper.NewKeeper(
 		appCodec,
-		appKeepers.keys[gentlemintmoduletypes.StoreKey],
-		appKeepers.keys[gentlemintmoduletypes.MemStoreKey],
+		appKeepers.keys[gentleminttypes.StoreKey],
+		appKeepers.keys[gentleminttypes.MemStoreKey],
 		appKeepers.BankKeeper,
 		appKeepers.AccountKeeper,
+		appKeepers.GetSubspace(distributionxtypes.ModuleName),
 	)
 	appKeepers.ElectoralKeeper = *electoralmodulekeeper.NewKeeper(
 		appCodec,
@@ -490,7 +491,7 @@ func initParamsKeeper(appCodec codec.BinaryCodec, legacyAmino *codec.LegacyAmino
 	paramsKeeper.Subspace(idmoduletypes.ModuleName)
 	paramsKeeper.Subspace(assetmoduletypes.ModuleName)
 	paramsKeeper.Subspace(bookingmoduletypes.ModuleName)
-	paramsKeeper.Subspace(gentlemintmoduletypes.ModuleName)
+	paramsKeeper.Subspace(gentleminttypes.ModuleName)
 	paramsKeeper.Subspace(swapmoduletypes.ModuleName)
 	paramsKeeper.Subspace(distributionxtypes.ModuleName)
 	// this line is used by starport scaffolding # stargate/app/paramSubspace

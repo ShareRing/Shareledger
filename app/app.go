@@ -34,6 +34,7 @@ import (
 	ibcchanneltypes "github.com/cosmos/ibc-go/v5/modules/core/04-channel/types"
 	"github.com/gorilla/mux"
 	"github.com/rakyll/statik/fs"
+	gentleminttypes "github.com/sharering/shareledger/x/gentlemint/types"
 	"github.com/spf13/cast"
 	abci "github.com/tendermint/tendermint/abci/types"
 	tmjson "github.com/tendermint/tendermint/libs/json"
@@ -46,14 +47,11 @@ import (
 	"github.com/sharering/shareledger/app/params"
 	"github.com/sharering/shareledger/app/upgrades"
 	v2 "github.com/sharering/shareledger/app/upgrades/v2"
-	sdistributiionModule "github.com/sharering/shareledger/x/distributionx"
-	distributionxType "github.com/sharering/shareledger/x/distributionx/types"
 )
 
 const (
 	AccountAddressPrefix = "shareledger"
 	Name                 = "Shareledger"
-	upgradeName          = "v1.4.2-shareledger" // CHANGE THIS
 )
 
 var (
@@ -91,8 +89,8 @@ var (
 )
 
 var (
-	_ simapp.App              = (*App)(nil)
-	_ servertypes.Application = (*App)(nil)
+	_ simapp.App              = &App{}
+	_ servertypes.Application = &App{}
 )
 
 func init() {
@@ -128,7 +126,6 @@ type App struct {
 }
 
 // New returns a reference to an initialized blockchain app
-// TODO: add wasm and fix ibc
 func New(
 	logger log.Logger,
 	db dbm.DB,
@@ -225,25 +222,21 @@ func New(
 	if err != nil {
 		panic(fmt.Sprintf("error while reading wasm config: %s", err))
 	}
-	anteHandler, err := ante.NewHandler(
-		ante.HandlerOptions{
-			HandlerOptions: authante.HandlerOptions{
-				AccountKeeper:   app.AccountKeeper,
-				BankKeeper:      app.BankKeeper,
-				FeegrantKeeper:  app.FeeGrantKeeper,
-				SignModeHandler: encodingConfig.TxConfig.SignModeHandler(),
-				SigGasConsumer:  authante.DefaultSigVerificationGasConsumer,
-			},
-			WasmConfig:        &wasmConfig,
-			IBCKeeper:         app.IBCKeeper,
-			TXCounterStoreKey: app.AppKeepers.GetKey(wasm.StoreKey),
-		},
-		app.GentleMintKeeper,
-		roleKeeper,
-		app.IdKeeper,
-		app.DistributionxKeeper,
-		app.WasmKeeper,
-	)
+	handlerOpts := ante.HandlerOptions{
+		HandlerOptions:       authante.HandlerOptions{AccountKeeper: app.AccountKeeper, BankKeeper: app.BankKeeper, FeegrantKeeper: app.FeeGrantKeeper, SignModeHandler: encodingConfig.TxConfig.SignModeHandler(), SigGasConsumer: authante.DefaultSigVerificationGasConsumer},
+		IBCKeeper:            app.IBCKeeper,
+		WasmConfig:           &wasmConfig,
+		TXCounterStoreKey:    app.AppKeepers.GetKey(wasm.StoreKey),
+		GentlemintKeeper:     app.GentleMintKeeper,
+		RoleKeeper:           roleKeeper,
+		IdKeeper:             app.IdKeeper,
+		DistributionxKeeper:  app.DistributionxKeeper,
+		WasmKeeper:           app.WasmKeeper,
+		BypassMinFeeMsgTypes: []string{},
+		GlobalFeeSubspace:    app.GetSubspace(gentleminttypes.ModuleName),
+		StakingSubspace:      app.GetSubspace(stakingtypes.ModuleName),
+	}
+	anteHandler, err := ante.NewHandler(handlerOpts)
 	if err != nil {
 		panic(fmt.Errorf("failed to create AnteHandler: %s", err))
 	}
@@ -257,26 +250,6 @@ func New(
 			panic(fmt.Errorf("failed to register snapshot extension: %s", err))
 		}
 	}
-
-	app.UpgradeKeeper.SetUpgradeHandler(
-		upgradeName,
-		func(ctx sdk.Context, _ upgradetypes.Plan, fromVM module.VersionMap) (module.VersionMap, error) {
-			fromVM[distributionxType.ModuleName] = 2
-			sGen := distributionxType.DefaultGenesis()
-			sdistributiionModule.InitGenesis(ctx, app.DistributionxKeeper, *sGen)
-
-			defaultParams := stakingtypes.DefaultParams()
-			defaultParams.MaxValidators = app.StakingKeeper.MaxValidators(ctx)
-			defaultParams.MaxEntries = app.StakingKeeper.MaxEntries(ctx)
-			defaultParams.HistoricalEntries = app.StakingKeeper.HistoricalEntries(ctx)
-			defaultParams.BondDenom = app.StakingKeeper.BondDenom(ctx)
-			defaultParams.UnbondingTime = app.StakingKeeper.UnbondingTime(ctx)
-
-			app.StakingKeeper.SetParams(ctx, defaultParams)
-
-			return fromVM, nil
-		},
-	)
 
 	app.setupUpgradeHandlers()
 	app.setupUpgradeStoreLoaders()

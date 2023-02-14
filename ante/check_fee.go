@@ -33,7 +33,7 @@ func (cfd CheckFeeDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate boo
 	for _, msg := range tx.GetMsgs() {
 		// skip check if wasm tx
 		if strings.HasPrefix(sdk.MsgTypeURL(msg), "/cosmwasm.wasm") {
-			return next(ctx, tx, simulate)
+			continue
 		}
 		fee, err := cfd.gk.GetBaseFeeByMsg(ctx, msg)
 		if err != nil {
