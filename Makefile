@@ -59,6 +59,8 @@ build:
 
 dbuild:
 	docker build -t sharering/shareledger -f ./deploy/docker/Dockerfile . --platform linux/amd64
+dbuild-mac-local:
+	docker build -t sharering/shareledger -f ./deploy/docker/Dockerfile .
 
 build-linux:
 	echo $(BUILDDIR)
@@ -74,13 +76,16 @@ dinit:
 	cp ./deploy/testnet/genesis.json ./deploy/testnet/node0/config && \
 	cp ./deploy/testnet/genesis.json ./deploy/testnet/node1/config && \
 	cp ./deploy/testnet/genesis.json ./deploy/testnet/node2/config && \
-	cp ./deploy/testnet/genesis.json ./deploy/testnet/node3/config
+	cp ./deploy/testnet/genesis.json ./deploy/testnet/node3/config && \
+	cp ./deploy/testnet/genesis.json ./deploy/testnet/node4/config
 
 dup:
 	cd ./deploy && \
     docker compose up -d --force-recreate
 
-
+dup-local-mac:
+	cd ./deploy && \
+    docker compose -f docker-compose-dev.yaml up  -d --force-recreate
 ddown:
 	cd ./deploy && \
     docker compose down
