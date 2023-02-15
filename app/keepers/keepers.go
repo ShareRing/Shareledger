@@ -275,7 +275,7 @@ func NewAppKeeper(
 		appKeepers.keys[gentleminttypes.MemStoreKey],
 		appKeepers.BankKeeper,
 		appKeepers.AccountKeeper,
-		appKeepers.GetSubspace(distributionxtypes.ModuleName),
+		appKeepers.GetSubspace(gentleminttypes.ModuleName),
 	)
 	appKeepers.ElectoralKeeper = *electoralmodulekeeper.NewKeeper(
 		appCodec,

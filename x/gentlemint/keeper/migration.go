@@ -18,3 +18,9 @@ func NewMigrator(keeper Keeper) Migrator {
 func (m Migrator) Migrate1to2(ctx sdk.Context) error {
 	return nil
 }
+
+// this version add paramSpace min_gas_price for `gentlemint`
+func (m Migrator) Migrate2to3(ctx sdk.Context) error {
+	m.keeper.SetMinGasPriceParam(ctx, sdk.NewDecCoins())
+	return nil
+}

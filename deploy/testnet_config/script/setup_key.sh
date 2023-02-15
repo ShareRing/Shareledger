@@ -10,6 +10,7 @@ echo 'lawsuit icon drill call jaguar party text chunk woman mention dawn frost n
 echo 'honey salad ride tackle border mail safe upset grape oven define coffee erase aunt stem skirt urban below ignore skill key indicate never rule' | shareledger keys add node1 --recover --index 0
 echo 'avocado blue utility tell hawk gorilla auction morning dolphin offer beyond unhappy orphan soccer asset route kite edge question tuna fragile company total minute' | shareledger keys add node2 --recover --index 0
 echo 'mango stuff casino shoulder tattoo labor civil master guitar blouse coral cabbage rose obscure winter copy learn hour explain surge tip disorder track life' | shareledger keys add node3 --recover --index 0
+echo 'bubble erode update hint swap bulk betray refuse unfold wet tired canyon relief egg price chat effort raise casino disease sing ketchup improve cherry' | shareledger keys add node4 --recover --index 0
 
 #swap features
 echo "upper two old trip wolf member fruit end coyote stone gospel knee" | shareledger keys add relayer --recover

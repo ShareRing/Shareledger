@@ -21,6 +21,7 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 	for _, elem := range genState.ActionLevelFeeList {
 		k.SetActionLevelFee(ctx, elem)
 	}
+	k.SetMinGasPriceParam(ctx, genState.Params.MinimumGasPrices)
 	// this line is used by starport scaffolding # genesis/module/init
 }
 
@@ -35,6 +36,7 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 	}
 	genesis.LevelFeeList = k.GetAllLevelFee(ctx)
 	genesis.ActionLevelFeeList = k.GetAllActionLevelFee(ctx)
+	genesis.Params.MinimumGasPrices = k.GetMinGasPriceParam(ctx)
 	// this line is used by starport scaffolding # genesis/module/export
 
 	return genesis

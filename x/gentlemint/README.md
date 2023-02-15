@@ -4,7 +4,7 @@
 
 ## Concepts
 
-### Exchange rate
+### 1) Exchange rate
 
 Use to convert **shr** to **shrp**
 
@@ -12,7 +12,7 @@ For example: rate = 200 --> 200shr = 1shrp
 
 _1 shrp = $1_
 
-### Level fee
+### 2) Level fee
 
 | level  | amount (shrp) |
 | ------ | ------------- |
@@ -26,3 +26,28 @@ _1 shrp = $1_
 ## Configuration
 
 Via transaction by authority
+
+### 1) Update global minimum_gas_price
+
+Via gov submit proposal
+
+```sh
+shareledger tx gov submit-legacy-proposal param-change proposal.json
+```
+
+**proposal.json**
+
+```json
+{
+  "title": "Gentlemint Param Change",
+  "description": "Update min global fees",
+  "changes": [
+    {
+      "subspace": "gentlemint",
+      "key": "MinimumGasPricesParam",
+      "value": [{ "denom": "nshr", "amount": "20000" }]
+    }
+  ],
+  "deposit": "1000000000nshr"
+}
+```

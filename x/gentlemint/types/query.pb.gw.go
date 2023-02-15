@@ -680,21 +680,21 @@ func RegisterQueryHandlerClient(ctx context.Context, mux *runtime.ServeMux, clie
 }
 
 var (
-	pattern_Query_ExchangeRate_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"shareledger", "gentlemint", "exchangeRate"}, "", runtime.AssumeColonVerbOpt(false)))
+	pattern_Query_ExchangeRate_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"shareledger", "gentlemint", "exchangeRate"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_LevelFee_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"shareledger", "gentlemint", "levelFee", "level"}, "", runtime.AssumeColonVerbOpt(false)))
+	pattern_Query_LevelFee_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"shareledger", "gentlemint", "levelFee", "level"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_LevelFees_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"shareledger", "gentlemint", "levelFee"}, "", runtime.AssumeColonVerbOpt(false)))
+	pattern_Query_LevelFees_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"shareledger", "gentlemint", "levelFee"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_ActionLevelFee_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"shareledger", "gentlemint", "actionLevelFee", "action"}, "", runtime.AssumeColonVerbOpt(false)))
+	pattern_Query_ActionLevelFee_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"shareledger", "gentlemint", "actionLevelFee", "action"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_ActionLevelFees_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"shareledger", "gentlemint", "actionLevelFee"}, "", runtime.AssumeColonVerbOpt(false)))
+	pattern_Query_ActionLevelFees_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"shareledger", "gentlemint", "actionLevelFee"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_CheckFees_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"shareledger", "gentlemint", "checkFees"}, "", runtime.AssumeColonVerbOpt(false)))
+	pattern_Query_CheckFees_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"shareledger", "gentlemint", "checkFees"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_Balances_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"shareledger", "gentlemint", "balances"}, "", runtime.AssumeColonVerbOpt(false)))
+	pattern_Query_Balances_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"shareledger", "gentlemint", "balances"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_MinimumGasPrices_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"shareledger", "gentlemint", "minimum_gas_prices"}, "", runtime.AssumeColonVerbOpt(false)))
+	pattern_Query_MinimumGasPrices_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"shareledger", "gentlemint", "minimum_gas_prices"}, "", runtime.AssumeColonVerbOpt(true)))
 )
 
 var (

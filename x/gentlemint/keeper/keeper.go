@@ -7,22 +7,21 @@ import (
 	storetypes "github.com/cosmos/cosmos-sdk/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	paramstypes "github.com/cosmos/cosmos-sdk/x/params/types"
 	"github.com/sharering/shareledger/x/gentlemint/types"
 	denom "github.com/sharering/shareledger/x/utils/denom"
 	"github.com/tendermint/tendermint/libs/log"
 )
 
-type (
-	Keeper struct {
-		cdc      codec.BinaryCodec
-		storeKey storetypes.StoreKey
-		memKey   storetypes.StoreKey
+type Keeper struct {
+	cdc      codec.BinaryCodec
+	storeKey storetypes.StoreKey
+	memKey   storetypes.StoreKey
 
-		bankKeeper    types.BankKeeper
-		accountKeeper types.AccountKeeper
-		paramsSpace   types.ParamSource
-	}
-)
+	bankKeeper    types.BankKeeper
+	accountKeeper types.AccountKeeper
+	paramSpace    paramstypes.Subspace
+}
 
 func NewKeeper(
 	cdc codec.BinaryCodec,
@@ -30,8 +29,12 @@ func NewKeeper(
 	memKey storetypes.StoreKey,
 	bankKeeper types.BankKeeper,
 	accountKeeper types.AccountKeeper,
-	paramsSpace types.ParamSource,
+	paramSpace paramstypes.Subspace,
 ) *Keeper {
+	if !paramSpace.HasKeyTable() {
+		paramSpace = paramSpace.WithKeyTable(types.ParamKeyTable())
+	}
+
 	return &Keeper{
 		cdc:      cdc,
 		storeKey: storeKey,
@@ -39,7 +42,7 @@ func NewKeeper(
 
 		bankKeeper:    bankKeeper,
 		accountKeeper: accountKeeper,
-		paramsSpace:   paramsSpace,
+		paramSpace:    paramSpace,
 	}
 }
 
