@@ -8,7 +8,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/store"
 	storetypes "github.com/cosmos/cosmos-sdk/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	typesparams "github.com/cosmos/cosmos-sdk/x/params/types"
+	paramstypes "github.com/cosmos/cosmos-sdk/x/params/types"
 	"github.com/sharering/shareledger/x/distributionx/keeper"
 	"github.com/sharering/shareledger/x/distributionx/types"
 	"github.com/stretchr/testify/require"
@@ -30,16 +30,10 @@ func DistributionxKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
 	registry := codectypes.NewInterfaceRegistry()
 	cdc := codec.NewProtoCodec(registry)
 
-	paramsSubspace := typesparams.NewSubspace(cdc,
-		types.Amino,
-		storeKey,
-		memStoreKey,
-		"distributionxParams",
-	)
+	paramsSubspace := paramstypes.NewSubspace(cdc, types.Amino, storeKey, memStoreKey, types.ModuleName)
 	k := keeper.NewKeeper(
 		cdc,
 		storeKey,
-		memStoreKey,
 		paramsSubspace, nil, nil, nil,
 	)
 

@@ -2,11 +2,12 @@ package keeper
 
 import (
 	"context"
-	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	denom "github.com/sharering/shareledger/x/utils/denom"
 
+	errorsmod "cosmossdk.io/errors"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/sharering/shareledger/x/gentlemint/types"
+	denom "github.com/sharering/shareledger/x/utils/denom"
 )
 
 func (k msgServer) Load(goCtx context.Context, msg *types.MsgLoad) (*types.MsgLoadResponse, error) {
@@ -23,10 +24,10 @@ func (k msgServer) Load(goCtx context.Context, msg *types.MsgLoad) (*types.MsgLo
 
 	baseCoins, err := denom.NormalizeToBaseCoins(msg.Coins, false)
 	if err != nil {
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, err.Error())
+		return nil, errorsmod.Wrapf(sdkerrors.ErrInvalidCoins, err.Error())
 	}
 	if !k.BaseMintPossible(ctx, baseCoins.AmountOf(denom.Base)) {
-		return nil, sdkerrors.Wrapf(types.ErrBaseSupplyExceeded, "load %v", baseCoins)
+		return nil, errorsmod.Wrapf(types.ErrBaseSupplyExceeded, "load %v", baseCoins)
 	}
 	if err := k.loadCoins(ctx, destAdd, baseCoins); err != nil {
 		return nil, err
@@ -38,7 +39,7 @@ func (k msgServer) Load(goCtx context.Context, msg *types.MsgLoad) (*types.MsgLo
 		loadDFee := k.GetFeeByMsg(ctx, msg)
 		loadFee, err := denom.NormalizeToBaseCoin(denom.Base, sdk.NewDecCoins(loadDFee), exchangeRate, true)
 		if err != nil {
-			return nil, sdkerrors.Wrapf(sdkerrors.ErrLogic, err.Error())
+			return nil, errorsmod.Wrapf(sdkerrors.ErrLogic, err.Error())
 		}
 		currentBalance := k.bankKeeper.GetBalance(ctx, destAdd, denom.Base)
 		if currentBalance.IsLT(loadFee) {
@@ -47,7 +48,7 @@ func (k msgServer) Load(goCtx context.Context, msg *types.MsgLoad) (*types.MsgLo
 			}
 		}
 		if err := k.bankKeeper.SendCoins(ctx, destAdd, msg.GetSigners()[0], sdk.NewCoins(loadFee)); err != nil {
-			return nil, sdkerrors.Wrapf(err, "pay fee, %v, to approver, %v", loadFee, msg.Creator)
+			return nil, errorsmod.Wrapf(err, "pay fee, %v, to approver, %v", loadFee, msg.Creator)
 		}
 	}
 

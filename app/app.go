@@ -6,7 +6,6 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
-	"strings"
 
 	"github.com/CosmWasm/wasmd/x/wasm"
 	wasmkeeper "github.com/CosmWasm/wasmd/x/wasm/keeper"
@@ -55,42 +54,13 @@ const (
 )
 
 var (
-	// If EnabledSpecificProposals is "", and this is "true", then enable all x/wasm proposals.
-	// If EnabledSpecificProposals is "", and this is not "true", then disable all x/wasm proposals.
-	ProposalsEnabled = "false"
-	// If set to non-empty string it must be comma-separated list of values that are all a subset
-	// of "EnableAllProposals" (takes precedence over ProposalsEnabled)
-	// https://github.com/CosmWasm/wasmd/blob/02a54d33ff2c064f3539ae12d75d027d9c665f05/x/wasm/internal/types/proposal.go#L28-L34
-	EnableSpecificProposals = ""
-
-	Upgrades = []upgrades.Upgrade{v2.Upgrade}
-)
-
-// GetEnabledProposals parses the ProposalsEnabled / EnableSpecificProposals values to
-// produce a list of enabled proposals to pass into wasmd app.
-func GetEnabledProposals() []wasm.ProposalType {
-	if EnableSpecificProposals == "" {
-		if ProposalsEnabled == "true" {
-			return wasm.EnableAllProposals
-		}
-		return wasm.DisableAllProposals
-	}
-	chunks := strings.Split(EnableSpecificProposals, ",")
-	proposals, err := wasm.ConvertToProposals(chunks)
-	if err != nil {
-		panic(err)
-	}
-	return proposals
-}
-
-var (
-	// DefaultNodeHome default home directories for the application daemon
-	DefaultNodeHome string
-)
-
-var (
 	_ simapp.App              = &App{}
 	_ servertypes.Application = &App{}
+
+	FlagAppOptionSkipCheckVoter = "skip-checking-voter-role"
+
+	DefaultNodeHome string
+	Upgrades        = []upgrades.Upgrade{v2.Upgrade}
 )
 
 func init() {
@@ -101,10 +71,6 @@ func init() {
 
 	DefaultNodeHome = filepath.Join(userHomeDir, "."+Name)
 }
-
-var (
-	FlagAppOptionSkipCheckVoter = "skip-checking-voter-role"
-)
 
 // App extends an ABCI application, but with most of its parameters exported.
 // They are exported for convenience in creating helper functions, as object
@@ -171,19 +137,8 @@ func New(
 	skipGenesisInvariants := cast.ToBool(appOpts.Get(crisis.FlagSkipGenesisInvariants))
 	app.mm = module.NewManager(appModules(app, encodingConfig, skipGenesisInvariants)...)
 
-	// During begin block slashing happens after distr.BeginBlocker so that
-	// there is nothing left over in the validator fee pool, so as to keep the
-	// CanWithdrawInvariant invariant.
-	// NOTE: staking module is required if HistoricalEntries param > 0
 	app.mm.SetOrderBeginBlockers(orderBeginBlockers()...)
-
 	app.mm.SetOrderEndBlockers(orderEndBlockers()...)
-
-	// NOTE: The genutils module must occur after staking so that pools are
-	// properly initialized with tokens from genesis accounts.
-	// NOTE: Capability module must occur first so that it can initialize any capabilities
-	// so that other modules that want to create or claim capabilities afterwards in InitChain
-	// can do so safely.
 	app.mm.SetOrderInitGenesis(orderInitBlockers()...)
 
 	app.mm.RegisterInvariants(&app.CrisisKeeper)

@@ -23,6 +23,8 @@ import (
 	dbm "github.com/tendermint/tm-db"
 
 	shareledgerapp "github.com/sharering/shareledger/app"
+	"github.com/sharering/shareledger/app/params"
+	"github.com/sharering/shareledger/x/utils/denom"
 )
 
 // SimAppChainID hardcoded chainID for simulation
@@ -69,6 +71,8 @@ func (EmptyAppOptions) Get(o string) interface{} { return nil }
 func Setup(t *testing.T) *shareledgerapp.App {
 	t.Helper()
 
+	params.SetAddressPrefixes()
+
 	privVal := NewPV()
 	pubKey, err := privVal.GetPubKey()
 	require.NoError(t, err)
@@ -83,7 +87,7 @@ func Setup(t *testing.T) *shareledgerapp.App {
 	acc := authtypes.NewBaseAccount(senderPubKey.Address().Bytes(), senderPubKey, 0, 0)
 	balance := banktypes.Balance{
 		Address: acc.GetAddress().String(),
-		Coins:   sdk.NewCoins(sdk.NewCoin(sdk.DefaultBondDenom, sdk.NewInt(100000000000000))),
+		Coins:   sdk.NewCoins(sdk.NewCoin(denom.Base, sdk.NewInt(100000000000000))),
 	}
 	genesisAccounts := []authtypes.GenesisAccount{acc}
 	app := SetupWithGenesisValSet(t, valSet, genesisAccounts, balance)
@@ -180,7 +184,10 @@ func genesisStateWithValSet(t *testing.T,
 
 	}
 	// set validators and delegations
-	stakingGenesis := stakingtypes.NewGenesisState(stakingtypes.DefaultParams(), validators, delegations)
+	// change bound denom to "nshr" token
+	stakingParams := stakingtypes.DefaultParams()
+	stakingParams.BondDenom = denom.Base
+	stakingGenesis := stakingtypes.NewGenesisState(stakingParams, validators, delegations)
 	genesisState[stakingtypes.ModuleName] = app.AppCodec().MustMarshalJSON(stakingGenesis)
 
 	totalSupply := sdk.NewCoins()
@@ -191,13 +198,13 @@ func genesisStateWithValSet(t *testing.T,
 
 	for range delegations {
 		// add delegated tokens to total supply
-		totalSupply = totalSupply.Add(sdk.NewCoin(sdk.DefaultBondDenom, bondAmt))
+		totalSupply = totalSupply.Add(sdk.NewCoin(denom.Base, bondAmt))
 	}
 
 	// add bonded amount to bonded pool module account
 	balances = append(balances, banktypes.Balance{
 		Address: authtypes.NewModuleAddress(stakingtypes.BondedPoolName).String(),
-		Coins:   sdk.Coins{sdk.NewCoin(sdk.DefaultBondDenom, bondAmt)},
+		Coins:   sdk.Coins{sdk.NewCoin(denom.Base, bondAmt)},
 	})
 
 	// update total supply

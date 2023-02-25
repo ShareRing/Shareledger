@@ -91,10 +91,9 @@ var maccPerms = map[string][]string{
 }
 
 func getGovProposalHandlers() []govclient.ProposalHandler {
-	var govProposalHandlers []govclient.ProposalHandler
 	// this line is used by starport scaffolding # stargate/app/govProposalHandlers
 
-	govProposalHandlers = append(
+	govProposalHandlers := append(
 		wasmclient.ProposalHandlers,
 		paramsclient.ProposalHandler,
 		distrclient.ProposalHandler,

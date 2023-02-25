@@ -452,7 +452,6 @@ func NewAppKeeper(
 	)
 	appKeepers.DistributionxKeeper = *distributionxkeeper.NewKeeper(appCodec,
 		appKeepers.keys[distributionxtypes.StoreKey],
-		appKeepers.keys[distributionxtypes.MemStoreKey],
 		appKeepers.GetSubspace(distributionxtypes.ModuleName),
 		appKeepers.AccountKeeper,
 		appKeepers.BankKeeper,

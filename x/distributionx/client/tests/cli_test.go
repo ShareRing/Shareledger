@@ -17,8 +17,8 @@ func init() {
 	})
 }
 
-func TestIntegrationTestSuite(t *testing.T) {
+func TestIntergrationTestSuite(t *testing.T) {
 	cfg := network.DefaultConfig()
 	cfg.NumValidators = 1
-	suite.Run(t, NewAssetIntegrationTestSuite(&cfg))
+	suite.Run(t, NewDistributionxIntergrationTestSuite(&cfg))
 }

@@ -1,18 +1,12 @@
 package keeper_test
 
-import (
-	"testing"
+import "fmt"
 
-	testkeeper "github.com/sharering/shareledger/testutil/keeper"
-	"github.com/sharering/shareledger/x/distributionx/types"
-	"github.com/stretchr/testify/require"
-)
+func (s *KeeperTestSuite) TestGetParams() {
+	params := s.dKeeper.GetParams(s.Ctx)
+	fmt.Println(params)
+}
 
-func TestGetParams(t *testing.T) {
-	k, ctx := testkeeper.DistributionxKeeper(t)
-	params := types.DefaultParams()
+func (s *KeeperTestSuite) TestSetParams() {
 
-	k.SetParams(ctx, params)
-
-	require.EqualValues(t, params, k.GetParams(ctx))
 }

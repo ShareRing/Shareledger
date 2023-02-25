@@ -3,8 +3,9 @@ package keeper
 import (
 	"context"
 	"fmt"
+
+	errorsmod "cosmossdk.io/errors"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/sharering/shareledger/x/gentlemint/types"
 	denom "github.com/sharering/shareledger/x/utils/denom"
 )
@@ -22,7 +23,7 @@ func (k msgServer) BuyShr(goCtx context.Context, msg *types.MsgBuyShr) (*types.M
 		return nil, err
 	}
 	if err := k.buyBaseDenom(ctx, coin, msg.GetSigners()[0]); err != nil {
-		return nil, sdkerrors.Wrapf(err, "buy %+v to %v", coin, msg.Creator)
+		return nil, errorsmod.Wrapf(err, "buy %+v to %v", coin, msg.Creator)
 	}
 	return &types.MsgBuyShrResponse{
 		Log: fmt.Sprintf("Successfull buy %+v for address %s", coin, msg.Creator),

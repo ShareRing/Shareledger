@@ -3,6 +3,8 @@ package keeper
 import (
 	"fmt"
 
+	errorsmod "cosmossdk.io/errors"
+	"cosmossdk.io/math"
 	"github.com/cosmos/cosmos-sdk/codec"
 	storetypes "github.com/cosmos/cosmos-sdk/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -50,7 +52,7 @@ func (k Keeper) Logger(ctx sdk.Context) log.Logger {
 	return ctx.Logger().With("module", fmt.Sprintf("x/%s", types.ModuleName))
 }
 
-func (k Keeper) BaseMintPossible(ctx sdk.Context, amt sdk.Int) bool {
+func (k Keeper) BaseMintPossible(ctx sdk.Context, amt math.Int) bool {
 	total := k.bankKeeper.GetSupply(ctx, denom.Base)
 	newAmt := total.Amount.Add(amt)
 	return newAmt.LT(types.MaxBaseSupply)
@@ -59,13 +61,13 @@ func (k Keeper) BaseMintPossible(ctx sdk.Context, amt sdk.Int) bool {
 // loadCoins mint amt coins to module address and then send coins to account toAddr
 func (k Keeper) loadCoins(ctx sdk.Context, toAddr sdk.AccAddress, amt sdk.Coins) error {
 	if !amt.IsValid() {
-		return sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, amt.String())
+		return errorsmod.Wrap(sdkerrors.ErrInvalidCoins, amt.String())
 	}
 	if err := k.bankKeeper.MintCoins(ctx, types.ModuleName, amt); err != nil {
-		return sdkerrors.Wrapf(err, "mint %v coins to module %v", amt, types.ModuleName)
+		return errorsmod.Wrapf(err, "mint %v coins to module %v", amt, types.ModuleName)
 	}
 	if err := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, toAddr, amt); err != nil {
-		return sdkerrors.Wrapf(err, "send coins to account %s", toAddr.String())
+		return errorsmod.Wrapf(err, "send coins to account %s", toAddr.String())
 	}
 	return nil
 }
@@ -73,11 +75,11 @@ func (k Keeper) loadCoins(ctx sdk.Context, toAddr sdk.AccAddress, amt sdk.Coins)
 // burnCoins send amt from address to module address then burning
 func (k Keeper) burnCoins(ctx sdk.Context, addr sdk.AccAddress, amt sdk.Coins) error {
 	if !amt.IsValid() {
-		return sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, amt.String())
+		return errorsmod.Wrap(sdkerrors.ErrInvalidCoins, amt.String())
 	}
 
 	if err := k.bankKeeper.SendCoinsFromAccountToModule(ctx, addr, types.ModuleName, amt); err != nil {
-		return sdkerrors.Wrapf(err, "send coins to module, amt %s", amt.String())
+		return errorsmod.Wrapf(err, "send coins to module, amt %s", amt.String())
 	}
 
 	return k.bankKeeper.BurnCoins(ctx, types.ModuleName, amt)
@@ -90,10 +92,10 @@ func (k Keeper) LoadAllowanceLoader(ctx sdk.Context, addr sdk.AccAddress) error 
 
 func (k Keeper) buyBaseDenom(ctx sdk.Context, base sdk.Coin, buyer sdk.AccAddress) error {
 	if base.Denom != denom.Base || !base.IsValid() {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "%v", base)
+		return errorsmod.Wrapf(sdkerrors.ErrInvalidCoins, "%v", base)
 	}
 	if !k.BaseMintPossible(ctx, base.Amount) {
-		return sdkerrors.Wrap(types.ErrBaseSupplyExceeded, base.String())
+		return errorsmod.Wrap(types.ErrBaseSupplyExceeded, base.String())
 	}
 
 	rate := k.GetExchangeRateD(ctx)
@@ -102,17 +104,17 @@ func (k Keeper) buyBaseDenom(ctx sdk.Context, base sdk.Coin, buyer sdk.AccAddres
 
 	cost, err := denom.NormalizeToBaseCoin(denom.BaseUSD, sdk.NewDecCoinsFromCoins(base), rate, true)
 	if err != nil {
-		return sdkerrors.Wrapf(sdkerrors.ErrLogic, "+%v", err)
+		return errorsmod.Wrapf(sdkerrors.ErrLogic, "+%v", err)
 	}
 	if !currentBalance.IsAllGTE(sdk.NewCoins(cost)) {
-		return sdkerrors.Wrapf(sdkerrors.ErrInsufficientFunds, "current balances %v, Cost: %v", currentBalance, cost)
+		return errorsmod.Wrapf(sdkerrors.ErrInsufficientFunds, "current balances %v, Cost: %v", currentBalance, cost)
 	}
 	if err := k.burnCoins(ctx, buyer, sdk.NewCoins(cost)); err != nil {
-		return sdkerrors.Wrapf(err, "charge %v coins", cost)
+		return errorsmod.Wrapf(err, "charge %v coins", cost)
 	}
 
 	if err := k.loadCoins(ctx, buyer, sdk.NewCoins(base)); err != nil {
-		return sdkerrors.Wrapf(err, "load %v coins", base)
+		return errorsmod.Wrapf(err, "load %v coins", base)
 	}
 	return nil
 }

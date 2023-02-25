@@ -24,27 +24,27 @@ func TestFormatQuerySingle(t *testing.T) {
 	msgs := createNSchema(keeper, ctx, 2)
 	for _, tc := range []struct {
 		desc     string
-		request  *types.QueryGetSchemaRequest
+		request  *types.QuerySchemaRequest
 		response *types.QuerySchemaResponse
 		err      error
 	}{
 		{
 			desc: "First",
-			request: &types.QueryGetSchemaRequest{
+			request: &types.QuerySchemaRequest{
 				Network: msgs[0].Network,
 			},
 			response: &types.QuerySchemaResponse{Schema: msgs[0]},
 		},
 		{
 			desc: "Second",
-			request: &types.QueryGetSchemaRequest{
+			request: &types.QuerySchemaRequest{
 				Network: msgs[1].Network,
 			},
 			response: &types.QuerySchemaResponse{Schema: msgs[1]},
 		},
 		{
 			desc: "KeyNotFound",
-			request: &types.QueryGetSchemaRequest{
+			request: &types.QuerySchemaRequest{
 				Network: strconv.Itoa(100000),
 			},
 			err: status.Error(codes.NotFound, "not found"),
@@ -74,8 +74,8 @@ func TestFormatQueryPaginated(t *testing.T) {
 	wctx := sdk.WrapSDKContext(ctx)
 	msgs := createNSchema(keeper, ctx, 5)
 
-	request := func(next []byte, offset, limit uint64, total bool) *types.QueryAllSchemasRequest {
-		return &types.QueryAllSchemasRequest{
+	request := func(next []byte, offset, limit uint64, total bool) *types.QuerySchemasRequest {
+		return &types.QuerySchemasRequest{
 			Pagination: &query.PageRequest{
 				Key:        next,
 				Offset:     offset,
@@ -87,7 +87,7 @@ func TestFormatQueryPaginated(t *testing.T) {
 	t.Run("ByOffset", func(t *testing.T) {
 		step := 2
 		for i := 0; i < len(msgs); i += step {
-			resp, err := keeper.AllSchemas(wctx, request(nil, uint64(i), uint64(step), false))
+			resp, err := keeper.Schemas(wctx, request(nil, uint64(i), uint64(step), false))
 			require.NoError(t, err)
 			require.LessOrEqual(t, len(resp.Schemas), step)
 			require.Subset(t,
@@ -100,7 +100,7 @@ func TestFormatQueryPaginated(t *testing.T) {
 		step := 2
 		var next []byte
 		for i := 0; i < len(msgs); i += step {
-			resp, err := keeper.AllSchemas(wctx, request(next, 0, uint64(step), false))
+			resp, err := keeper.Schemas(wctx, request(next, 0, uint64(step), false))
 			require.NoError(t, err)
 			require.LessOrEqual(t, len(resp.Schemas), step)
 			require.Subset(t,
@@ -111,7 +111,7 @@ func TestFormatQueryPaginated(t *testing.T) {
 		}
 	})
 	t.Run("Total", func(t *testing.T) {
-		resp, err := keeper.AllSchemas(wctx, request(nil, 0, 0, true))
+		resp, err := keeper.Schemas(wctx, request(nil, 0, 0, true))
 		require.NoError(t, err)
 		require.Equal(t, len(msgs), int(resp.Pagination.Total))
 		require.ElementsMatch(t,
@@ -120,7 +120,7 @@ func TestFormatQueryPaginated(t *testing.T) {
 		)
 	})
 	t.Run("InvalidRequest", func(t *testing.T) {
-		_, err := keeper.AllSchemas(wctx, nil)
+		_, err := keeper.Schemas(wctx, nil)
 		require.ErrorIs(t, err, status.Error(codes.InvalidArgument, "invalid request"))
 	})
 }

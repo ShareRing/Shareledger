@@ -1,9 +1,10 @@
 package tests
 
 import (
+	"testing"
+
 	testutil2 "github.com/cosmos/cosmos-sdk/x/bank/client/testutil"
 	"github.com/cosmos/cosmos-sdk/x/bank/types"
-	"testing"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/testutil"
@@ -80,8 +81,6 @@ func CmdTotalSupply(ctx client.Context, flags ...string) (testutil.BufferWriter,
 
 func CmdQueryBalance(t *testing.T, ctx client.Context, address sdk.Address, flags ...string) types.QueryAllBalancesResponse {
 	balRes := types.QueryAllBalancesResponse{}
-	var args = []string{address.String()}
-	args = append(args, flags...)
 	res, err := testutil2.QueryBalancesExec(ctx, address)
 	if err != nil {
 		t.Errorf("query balance fail %v", err)

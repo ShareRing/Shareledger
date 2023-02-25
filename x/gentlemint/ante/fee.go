@@ -32,9 +32,9 @@ type FeeDecorator struct {
 }
 
 func NewFeeDecorator(bypassMsgTypes []string, globalfeeSubspace, stakingSubspace paramtypes.Subspace) FeeDecorator {
-	// if !globalfeeSubspace.HasKeyTable() {
-	// 	panic("global fee paramspace was not set up via module")
-	// }
+	if !globalfeeSubspace.HasKeyTable() {
+		panic("global fee paramspace was not set up via module")
+	}
 
 	if !stakingSubspace.HasKeyTable() {
 		panic("staking paramspace was not set up via module")

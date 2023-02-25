@@ -1,10 +1,11 @@
 package denom
 
 import (
-	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/stretchr/testify/require"
 	"math/big"
 	"testing"
+
+	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/stretchr/testify/require"
 )
 
 func TestNormalizeCoins(t *testing.T) {
@@ -114,7 +115,7 @@ func TestExponentToBase(t *testing.T) {
 		},
 	}
 	for _, tc := range testCases {
-		r := ExponentToBase(sdk.NewIntFromBigInt(tc.amount), tc.exponent)
+		r := ExponentToBase(sdk.NewDecFromBigInt(tc.amount), tc.exponent)
 		require.Equal(t, tc.result, r)
 	}
 }

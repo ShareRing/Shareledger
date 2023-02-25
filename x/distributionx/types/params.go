@@ -79,7 +79,7 @@ func (p Params) Validate() error {
 	}
 	err := sdk.VerifyAddressFormat([]byte(p.DevPoolAccount))
 	if err != nil {
-		return ErrInvalidParams.Wrapf("invalid DevPoolAccount :%w", err)
+		return ErrInvalidParams.Wrapf("invalid DevPoolAccount :%s", err)
 	}
 	return nil
 }

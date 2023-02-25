@@ -14,9 +14,11 @@ import (
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	"github.com/cosmos/cosmos-sdk/x/bank/types"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
+	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 	"github.com/sharering/shareledger/app"
 	"github.com/sharering/shareledger/testutil/simapp"
 	electoraltypes "github.com/sharering/shareledger/x/electoral/types"
+	"github.com/sharering/shareledger/x/utils/denom"
 	"github.com/stretchr/testify/require"
 )
 
@@ -66,16 +68,11 @@ func New(t *testing.T, configs ...network.Config) *network.Network {
 func CompileGenesis(t *testing.T, config *network.Config, genesisState map[string]json.RawMessage, au []authtypes.GenesisAccount, b []banktypes.Balance, elGen electoraltypes.GenesisState) map[string]json.RawMessage {
 	var bankGenesis types.GenesisState
 	var authGenesis authtypes.GenesisState
+	var stakingGenesis stakingtypes.GenesisState
 
-	err := config.Codec.UnmarshalJSON(genesisState[types.ModuleName], &bankGenesis)
-	if err != nil {
-		t.Errorf("fail to init test")
-	}
-
-	err = config.Codec.UnmarshalJSON(genesisState[authtypes.ModuleName], &authGenesis)
-	if err != nil {
-		t.Errorf("fail to init test")
-	}
+	config.Codec.MustUnmarshalJSON(genesisState[types.ModuleName], &bankGenesis)
+	config.Codec.MustUnmarshalJSON(genesisState[authtypes.ModuleName], &authGenesis)
+	config.Codec.MustUnmarshalJSON(genesisState[stakingtypes.ModuleName], &stakingGenesis)
 
 	accounts, err := authtypes.PackAccounts(au)
 	if err != nil {
@@ -83,23 +80,13 @@ func CompileGenesis(t *testing.T, config *network.Config, genesisState map[strin
 	}
 
 	authGenesis.Accounts = append(authGenesis.Accounts, accounts...)
-
 	bankGenesis.Balances = b
-	bankGenesisBz, err := config.Codec.MarshalJSON(&bankGenesis)
-	if err != nil {
-		t.Errorf("init test fail %v", err)
-	}
-	authGenesisBz, err := config.Codec.MarshalJSON(&authGenesis)
-	if err != nil {
-		t.Errorf("init test fail %v", err)
-	}
-	genElectoralBz := config.Codec.MustMarshalJSON(&elGen)
-	if err != nil {
-		t.Errorf("init test fail %v", err)
-	}
-	genesisState[types.ModuleName] = bankGenesisBz
-	genesisState[authtypes.ModuleName] = authGenesisBz
-	genesisState[electoraltypes.ModuleName] = genElectoralBz
+	stakingGenesis.Params.BondDenom = denom.Base
+
+	genesisState[types.ModuleName] = config.Codec.MustMarshalJSON(&bankGenesis)
+	genesisState[authtypes.ModuleName] = config.Codec.MustMarshalJSON(&authGenesis)
+	genesisState[electoraltypes.ModuleName] = config.Codec.MustMarshalJSON(&elGen)
+	genesisState[stakingtypes.ModuleName] = config.Codec.MustMarshalJSON(&stakingGenesis)
 	return genesisState
 }
 
@@ -154,8 +141,7 @@ func GetTestingGenesis(t *testing.T, config *network.Config) (keyring.Keyring, s
 
 	newKeyringService, genAccounts, genBalances := accountBuilder.BuildGenesis()
 
-	var genElectoral electoraltypes.GenesisState
-	genElectoral = electoraltypes.GenesisState{
+	genElectoral := electoraltypes.GenesisState{
 		Authority: &electoraltypes.Authority{
 			Address: Accounts[KeyAuthority].String(),
 		},

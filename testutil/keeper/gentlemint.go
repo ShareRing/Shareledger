@@ -8,6 +8,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/store"
 	storetypes "github.com/cosmos/cosmos-sdk/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	paramstypes "github.com/cosmos/cosmos-sdk/x/params/types"
 	"github.com/sharering/shareledger/x/gentlemint/keeper"
 	"github.com/sharering/shareledger/x/gentlemint/types"
 	"github.com/stretchr/testify/require"
@@ -24,17 +25,19 @@ func GentlemintKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
 	stateStore := store.NewCommitMultiStore(db)
 	stateStore.MountStoreWithDB(storeKey, storetypes.StoreTypeIAVL, db)
 	stateStore.MountStoreWithDB(memStoreKey, storetypes.StoreTypeMemory, nil)
-
 	require.NoError(t, stateStore.LoadLatestVersion())
 
 	registry := codectypes.NewInterfaceRegistry()
+	cdc := codec.NewProtoCodec(registry)
+	paramSpace := paramstypes.NewSubspace(cdc, types.Amino, storeKey, memStoreKey, types.ModuleName)
+
 	k := keeper.NewKeeper(
 		codec.NewProtoCodec(registry),
 		storeKey,
 		memStoreKey,
 		nil,
 		nil,
-		nil,
+		paramSpace,
 	)
 
 	ctx := sdk.NewContext(stateStore, tmproto.Header{}, false, log.NewNopLogger())

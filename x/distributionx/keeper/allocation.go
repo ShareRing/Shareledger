@@ -1,6 +1,8 @@
 package keeper
 
 import (
+	"fmt"
+
 	"cosmossdk.io/math"
 	sdkmath "cosmossdk.io/math"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -17,7 +19,10 @@ func (k *Keeper) AllocateTokens(ctx sdk.Context) {
 	// 1. Allocate tokens from wasm-pool to master_builder_list and dev_pool
 	feeWasmCollector := k.authKeeper.GetModuleAccount(ctx, types.FeeWasmName)
 	feeWasmCollected := k.bankKeeper.GetAllBalances(ctx, feeWasmCollector.GetAddress())
-	k.bankKeeper.SendCoinsFromModuleToModule(ctx, types.FeeWasmName, types.ModuleName, feeWasmCollected)
+	err := k.bankKeeper.SendCoinsFromModuleToModule(ctx, types.FeeWasmName, types.ModuleName, feeWasmCollected)
+	if err != nil {
+		panic(fmt.Errorf("allocateTokens in distributionx: %w", err))
+	}
 
 	feeBuilderRate := params.WasmMasterBuilder.Quo(params.WasmMasterBuilder.Add(params.WasmDevelopment))
 
@@ -42,7 +47,10 @@ func (k *Keeper) AllocateTokens(ctx sdk.Context) {
 	// 2. Allocate tokens from native-pool
 	feeNativeCollector := k.authKeeper.GetModuleAccount(ctx, types.FeeNativeName)
 	feeNativeCollected := k.bankKeeper.GetAllBalances(ctx, feeNativeCollector.GetAddress())
-	k.bankKeeper.SendCoinsFromModuleToModule(ctx, types.FeeNativeName, types.ModuleName, feeNativeCollected)
+	err = k.bankKeeper.SendCoinsFromModuleToModule(ctx, types.FeeNativeName, types.ModuleName, feeNativeCollected)
+	if err != nil {
+		panic(fmt.Errorf("allocateTokens in distributionx: %w", err))
+	}
 
 	k.IncReward(ctx, params.DevPoolAccount, feeNativeCollected)
 

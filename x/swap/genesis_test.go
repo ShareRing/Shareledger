@@ -14,15 +14,7 @@ func TestGenesis(t *testing.T) {
 	genesisState := types.GenesisState{
 		Params: types.DefaultParams(),
 
-		IdList: []types.Id{
-			{
-				IDType: "0",
-			},
-			{
-				IDType: "1",
-			},
-		},
-		RequestList: []types.Request{
+		Requests: []types.Request{
 			{
 				Id: 0,
 			},
@@ -31,7 +23,7 @@ func TestGenesis(t *testing.T) {
 			},
 		},
 		RequestCount: 2,
-		BatchList: []types.Batch{
+		Batches: []types.Batch{
 			{
 				Id: 0,
 			},
@@ -59,10 +51,9 @@ func TestGenesis(t *testing.T) {
 	nullify.Fill(&genesisState)
 	nullify.Fill(got)
 
-	require.ElementsMatch(t, genesisState.IdList, got.IdList)
-	require.ElementsMatch(t, genesisState.RequestList, got.RequestList)
+	require.ElementsMatch(t, genesisState.Requests, got.Requests)
 	require.Equal(t, genesisState.RequestCount, got.RequestCount)
-	require.ElementsMatch(t, genesisState.BatchList, got.BatchList)
+	require.ElementsMatch(t, genesisState.Batches, got.Batches)
 	require.Equal(t, genesisState.BatchCount, got.BatchCount)
 	require.ElementsMatch(t, genesisState.Schemas, got.Schemas)
 	// this line is used by starport scaffolding # genesis/test/assert

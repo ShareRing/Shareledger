@@ -3,6 +3,7 @@ package gentlemint_test
 import (
 	"testing"
 
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	keepertest "github.com/sharering/shareledger/testutil/keeper"
 	"github.com/sharering/shareledger/x/gentlemint"
 	"github.com/sharering/shareledger/x/gentlemint/types"
@@ -30,6 +31,12 @@ func TestGenesis(t *testing.T) {
 				Action: "1",
 			},
 		},
+		Params: types.Params{
+			MinimumGasPrices: []sdk.DecCoin{{
+				Denom:  "nshr",
+				Amount: sdk.NewDec(1000),
+			}},
+		},
 		// this line is used by starport scaffolding # genesis/test/state
 	}
 
@@ -40,8 +47,13 @@ func TestGenesis(t *testing.T) {
 
 	require.Equal(t, genesisState.ExchangeRate, got.ExchangeRate)
 	require.Len(t, got.LevelFeeList, len(genesisState.LevelFeeList))
-	require.Subset(t, genesisState.LevelFeeList, got.LevelFeeList)
 	require.Len(t, got.ActionLevelFeeList, len(genesisState.ActionLevelFeeList))
 	require.Subset(t, genesisState.ActionLevelFeeList, got.ActionLevelFeeList)
+	require.Equal(t, genesisState.Params, sdk.DecCoins{
+		{
+			Denom:  "nshr",
+			Amount: sdk.NewDec(1000),
+		},
+	})
 	// this line is used by starport scaffolding # genesis/test/assert
 }

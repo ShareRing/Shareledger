@@ -22,15 +22,7 @@ func TestGenesisState_Validate(t *testing.T) {
 			desc: "valid genesis state",
 			genState: &types.GenesisState{
 
-				IdList: []types.Id{
-					{
-						IDType: "0",
-					},
-					{
-						IDType: "1",
-					},
-				},
-				RequestList: []types.Request{
+				Requests: []types.Request{
 					{
 						Id: 0,
 					},
@@ -39,7 +31,7 @@ func TestGenesisState_Validate(t *testing.T) {
 					},
 				},
 				RequestCount: 2,
-				BatchList: []types.Batch{
+				Batches: []types.Batch{
 					{
 						Id: 0,
 					},
@@ -61,23 +53,9 @@ func TestGenesisState_Validate(t *testing.T) {
 			valid: true,
 		},
 		{
-			desc: "duplicated id",
-			genState: &types.GenesisState{
-				IdList: []types.Id{
-					{
-						IDType: "0",
-					},
-					{
-						IDType: "0",
-					},
-				},
-			},
-			valid: false,
-		},
-		{
 			desc: "duplicated request",
 			genState: &types.GenesisState{
-				RequestList: []types.Request{
+				Requests: []types.Request{
 					{
 						Id: 0,
 					},
@@ -91,7 +69,7 @@ func TestGenesisState_Validate(t *testing.T) {
 		{
 			desc: "invalid request count",
 			genState: &types.GenesisState{
-				RequestList: []types.Request{
+				Requests: []types.Request{
 					{
 						Id: 1,
 					},
@@ -103,7 +81,7 @@ func TestGenesisState_Validate(t *testing.T) {
 		{
 			desc: "duplicated batch",
 			genState: &types.GenesisState{
-				BatchList: []types.Batch{
+				Batches: []types.Batch{
 					{
 						Id: 0,
 					},
@@ -117,7 +95,7 @@ func TestGenesisState_Validate(t *testing.T) {
 		{
 			desc: "invalid batch count",
 			genState: &types.GenesisState{
-				BatchList: []types.Batch{
+				Batches: []types.Batch{
 					{
 						Id: 1,
 					},

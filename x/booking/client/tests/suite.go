@@ -24,9 +24,6 @@ type BookingIntegrationTestSuite struct {
 	network *network.Network
 	dir     string
 
-	bookingIDOfAccount3 string
-	bookingID2          string
-
 	//a map with key is booking name and the value is booking ID
 	eBooking map[string]string
 }

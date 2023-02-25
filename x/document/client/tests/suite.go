@@ -18,15 +18,9 @@ import (
 type DocumentIntegrationTestSuite struct {
 	suite.Suite
 
-	cfg         network.Config
-	network     *network.Network
-	dir         string
-	userID1     string
-	userID1Addr string
-	userID2     string
-	userID2Addr string
-	userID3     string
-	userID3Addr string
+	cfg     network.Config
+	network *network.Network
+	dir     string
 }
 
 func NewDocumentIntegrationTestSuite(cf network.Config) *DocumentIntegrationTestSuite {
