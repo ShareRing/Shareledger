@@ -1,12 +1,13 @@
 package keeper_test
 
-import "fmt"
-
+// TODO:
 func (s *KeeperTestSuite) TestGetParams() {
 	params := s.dKeeper.GetParams(s.Ctx)
-	fmt.Println(params)
+	_ = params
 }
 
+// TODO:
 func (s *KeeperTestSuite) TestSetParams() {
-
+	params := s.dKeeper.GetParams(s.Ctx)
+	s.dKeeper.SetParams(s.Ctx, params)
 }

@@ -37982,6 +37982,9 @@ paths:
             type: object
             properties:
               denom_trace:
+                description: >-
+                  denom_trace returns the requested denomination trace
+                  information.
                 type: object
                 properties:
                   path:
@@ -37994,11 +37997,6 @@ paths:
                   base_denom:
                     type: string
                     description: base denomination of the relayed fungible token.
-                description: >-
-                  DenomTrace contains the base denomination for ICS20 fungible
-                  tokens and the
-
-                  source tracing information path.
             description: >-
               QueryDenomTraceResponse is the response type for the
               Query/DenomTrace RPC
@@ -77284,6 +77282,11 @@ definitions:
       source tracing information path.
   ibc.applications.transfer.v1.MsgTransferResponse:
     type: object
+    properties:
+      sequence:
+        type: string
+        format: uint64
+        title: sequence number of the transfer packet sent
     description: MsgTransferResponse defines the Msg/Transfer response type.
   ibc.applications.transfer.v1.Params:
     type: object
@@ -77324,6 +77327,7 @@ definitions:
     type: object
     properties:
       denom_trace:
+        description: denom_trace returns the requested denomination trace information.
         type: object
         properties:
           path:
@@ -77336,11 +77340,6 @@ definitions:
           base_denom:
             type: string
             description: base denomination of the relayed fungible token.
-        description: >-
-          DenomTrace contains the base denomination for ICS20 fungible tokens
-          and the
-
-          source tracing information path.
     description: |-
       QueryDenomTraceResponse is the response type for the Query/DenomTrace RPC
       method.

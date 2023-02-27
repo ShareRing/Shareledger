@@ -12,72 +12,47 @@ accounts:
     coins:
       - 100000000000000000nshr
       - 100000000000cent
-    mnemonic:
-      arrange amateur body cotton slim roof hand blush monkey remove expect
-      rug hazard spoil flag choose tomato end duty nominee wheel cushion into stable
+    mnemonic: arrange amateur body cotton slim roof hand blush monkey remove expect rug hazard spoil flag choose tomato end duty nominee wheel cushion into stable
   - name: authority
     coins:
       - 100000000000000000nshr
       - 100000000000cent
-    mnemonic:
-      exile dutch volcano mosquito tree correct blame tape involve fiscal blossom
-      emerge install grant normal divorce shiver barrel island drink local banana educate
-      fix
+    mnemonic: exile dutch volcano mosquito tree correct blame tape involve fiscal blossom emerge install grant normal divorce shiver barrel island drink local banana educate fix
   - name: treasurer
     coins:
       - 100000000000000000nshr
       - 100000000000cent
-    mnemonic:
-      hair bacon dirt torch air uphold tackle involve pool time token junior
-      melody option judge thumb dance tube loud noise eternal congress fragile apart
+    mnemonic: hair bacon dirt torch air uphold tackle involve pool time token junior melody option judge thumb dance tube loud noise eternal congress fragile apart
   - name: account-operator
     coins:
       - 100000000000000000nshr
       - 100000000000cent
-    mnemonic:
-      pool mother column hurdle jealous wear host attack speak vague client
-      demise inherit arrange lens purity time math decade renew south ring retreat balance
+    mnemonic: pool mother column hurdle jealous wear host attack speak vague client demise inherit arrange lens purity time math decade renew south ring retreat balance
   - name: idsigner
     coins:
       - 100000000000000000nshr
       - 100000000000cent
-    mnemonic:
-      memory mind warfare pull risk math concert address zero speak glimpse
-      outside economy hill boil boss pulp much connect install clip short object tobacco
+    mnemonic: memory mind warfare pull risk math concert address zero speak glimpse outside economy hill boil boss pulp much connect install clip short object tobacco
   - name: user
     coins:
       - 1000000000000000nshr
-    mnemonic:
-      bright payment cash tomato tragic impulse perfect jacket matter jelly
-      artist pulse will cinnamon erase middle elevator away clinic razor rotate tide
-      unfair trigger
+    mnemonic: bright payment cash tomato tragic impulse perfect jacket matter jelly artist pulse will cinnamon erase middle elevator away clinic razor rotate tide unfair trigger
   - name: approver
     coins:
       - 100000000000nshr
-    mnemonic:
-      spend people immense ill property hungry craft corn quote once hand clarify
-      adapt disorder airport balance alley wisdom physical appear debris awake pencil
-      skate
+    mnemonic: spend people immense ill property hungry craft corn quote once hand clarify adapt disorder airport balance alley wisdom physical appear debris awake pencil skate
   - name: relayer
     coins:
       - 100000000000nshr
-    mnemonic:
-      indoor donate grid ostrich tree swamp cactus common piano buzz version
-      world second try garage squirrel alert fork december control bind spoon taste
-      essay
+    mnemonic: indoor donate grid ostrich tree swamp cactus common piano buzz version world second try garage squirrel alert fork december control bind spoon taste essay
   - name: swap_manager
     coins:
       - 100000000000nshr
-    mnemonic:
-      logic fade bike misery female father false speak code immune improve key
-      food enter night timber kick spare amused miss expire bottom walk century
+    mnemonic: logic fade bike misery female father false speak code immune improve key food enter night timber kick spare amused miss expire bottom walk century
   - name: doc-issuer
     coins:
       - 100000000000nshr
-    mnemonic:
-      loyal siren evoke advice churn behave volcano wood ecology select unusual
-      clock impulse angry scene protect lucky muffin chimney earth type provide taste
-      volcano
+    mnemonic: loyal siren evoke advice churn behave volcano wood ecology select unusual clock impulse angry scene protect lucky muffin chimney earth type provide taste volcano
 faucet:
   name: null
   coins: []
@@ -192,5 +167,21 @@ validators:
     bonded: 100000000000000000nshr
     app:
       min_gas_prices: 1000nshr
+      api:
+        address: "tcp://0.0.0.0:1318"
+      grpc:
+        address: "0.0.0.0:8090"
+      grpc-web:
+        address: "0.0.0.0:8091"
     client:
       chain-id: ShareRing-VoyagerNet
+      keyring-backend: test
+      broadcast-mode: block
+      node: "tcp://localhost:36657"
+    config:
+      rpc:
+        laddr: "tcp://127.0.0.1:36657"
+        pprof_laddr: "localhost:6061"
+      p2p:
+        laddr: "tcp://0.0.0.0:36656"
+      proxy_app: "tcp://127.0.0.1:36658"

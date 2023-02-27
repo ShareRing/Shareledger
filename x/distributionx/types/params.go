@@ -48,7 +48,6 @@ func DefaultParams() Params {
 }
 
 // ParamSetPairs get the params.ParamSet
-// TODO: add validator for each field
 func (p *Params) ParamSetPairs() paramtypes.ParamSetPairs {
 	return paramtypes.ParamSetPairs{
 		paramtypes.NewParamSetPair(WasmMasterBuilderKey, &p.WasmMasterBuilder, noValidate),

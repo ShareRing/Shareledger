@@ -49,7 +49,7 @@ func TestGenesis(t *testing.T) {
 	require.Len(t, got.LevelFeeList, len(genesisState.LevelFeeList))
 	require.Len(t, got.ActionLevelFeeList, len(genesisState.ActionLevelFeeList))
 	require.Subset(t, genesisState.ActionLevelFeeList, got.ActionLevelFeeList)
-	require.Equal(t, genesisState.Params, sdk.DecCoins{
+	require.Equal(t, genesisState.Params.MinimumGasPrices, sdk.DecCoins{
 		{
 			Denom:  "nshr",
 			Amount: sdk.NewDec(1000),

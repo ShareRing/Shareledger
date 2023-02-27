@@ -7,6 +7,12 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+func validParams() types.Params {
+	tp := types.DefaultParams()
+	tp.DevPoolAccount = "shareledger18l057pgdpuccl7u4uf8nh69xnjpz7az28c0gvk"
+	return tp
+}
+
 func TestGenesisState_Validate(t *testing.T) {
 	for _, tc := range []struct {
 		desc     string
@@ -14,14 +20,14 @@ func TestGenesisState_Validate(t *testing.T) {
 		valid    bool
 	}{
 		{
-			desc:     "default is valid",
+			desc:     "default is not valid",
 			genState: types.DefaultGenesis(),
-			valid:    true,
+			valid:    false,
 		},
 		{
 			desc: "valid genesis state",
 			genState: &types.GenesisState{
-
+				Params: validParams(),
 				RewardList: []types.Reward{
 					{
 						Index: "0",
@@ -54,6 +60,7 @@ func TestGenesisState_Validate(t *testing.T) {
 		{
 			desc: "duplicated reward",
 			genState: &types.GenesisState{
+				Params: validParams(),
 				RewardList: []types.Reward{
 					{
 						Index: "0",
@@ -68,6 +75,7 @@ func TestGenesisState_Validate(t *testing.T) {
 		{
 			desc: "duplicated builderCount",
 			genState: &types.GenesisState{
+				Params: validParams(),
 				BuilderCountList: []types.BuilderCount{
 					{
 						Index: "0",
@@ -82,6 +90,7 @@ func TestGenesisState_Validate(t *testing.T) {
 		{
 			desc: "duplicated builderList",
 			genState: &types.GenesisState{
+				Params: validParams(),
 				BuilderListList: []types.BuilderList{
 					{
 						Id: 0,
@@ -96,6 +105,7 @@ func TestGenesisState_Validate(t *testing.T) {
 		{
 			desc: "invalid builderList count",
 			genState: &types.GenesisState{
+				Params: validParams(),
 				BuilderListList: []types.BuilderList{
 					{
 						Id: 1,
