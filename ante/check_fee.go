@@ -31,15 +31,14 @@ func (cfd CheckFeeDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate boo
 
 	requiredFees := sdk.NewCoins()
 	for _, msg := range tx.GetMsgs() {
-		// skip check if wasm tx
-		if strings.HasPrefix(sdk.MsgTypeURL(msg), "/cosmwasm.wasm") {
-			continue
+		if isFixFeeMsg(sdk.MsgTypeURL(msg)) {
+			fee, err := cfd.gk.GetBaseFeeByMsg(ctx, msg)
+			if err != nil {
+				return ctx, err
+			}
+			requiredFees = requiredFees.Add(fee)
 		}
-		fee, err := cfd.gk.GetBaseFeeByMsg(ctx, msg)
-		if err != nil {
-			return ctx, err
-		}
-		requiredFees = requiredFees.Add(fee)
+
 	}
 	baseTXFee := feeTx.GetFee().AmountOf(denom.Base)
 	baseRequiredFee := requiredFees.AmountOf(denom.Base)
@@ -48,4 +47,9 @@ func (cfd CheckFeeDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate boo
 		return ctx, sdkerrors.Wrapf(sdkerrors.ErrInsufficientFee, "got %v, required %v", baseTXFee, baseRequiredFee)
 	}
 	return next(ctx, tx, simulate)
+}
+
+func isFixFeeMsg(msgType string) bool {
+	// for now, all shareledger msg is fix fee
+	return strings.HasPrefix(msgType, "/shareledger.")
 }
