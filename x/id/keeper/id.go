@@ -101,3 +101,8 @@ func (k Keeper) IterateID(ctx sdk.Context, cb func(id types.Id) bool) {
 		}
 	}
 }
+
+func (k Keeper) RemoveID(ctx sdk.Context, id string) {
+	store := ctx.KVStore(k.storeKey)
+	store.Delete([]byte(id))
+}
