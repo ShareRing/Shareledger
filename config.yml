@@ -168,20 +168,20 @@ validators:
     app:
       min_gas_prices: 1000nshr
       api:
-        address: "tcp://0.0.0.0:1318"
+        address: "tcp://0.0.0.0:1317"
       grpc:
-        address: "0.0.0.0:8090"
+        address: "0.0.0.0:9090"
       grpc-web:
-        address: "0.0.0.0:8091"
+        address: "0.0.0.0:9091"
     client:
       chain-id: ShareRing-VoyagerNet
       keyring-backend: test
       broadcast-mode: block
-      node: "tcp://localhost:36657"
+      node: "tcp://localhost:26657"
     config:
       rpc:
-        laddr: "tcp://127.0.0.1:36657"
-        pprof_laddr: "localhost:6061"
+        laddr: "tcp://127.0.0.1:26657"
+        pprof_laddr: "localhost:6060"
       p2p:
-        laddr: "tcp://0.0.0.0:36656"
-      proxy_app: "tcp://127.0.0.1:36658"
+        laddr: "tcp://0.0.0.0:26656"
+      proxy_app: "tcp://127.0.0.1:26658"
