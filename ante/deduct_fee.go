@@ -51,6 +51,12 @@ func NewDeductFeeDecorator(ak ante.AccountKeeper, bk types.BankKeeper, fk ante.F
 }
 
 func (dfd DeductFeeDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate bool, next sdk.AnteHandler) (sdk.Context, error) {
+
+	// this will exclude gas use in this ante
+	// for better estimate used gas
+	oldCtx := ctx
+	ctx = ctx.WithGasMeter(sdk.NewInfiniteGasMeter())
+
 	feeTx, ok := tx.(sdk.FeeTx)
 	if !ok {
 		return ctx, sdkerrors.Wrap(sdkerrors.ErrTxDecode, "Tx must be a FeeTx")
@@ -76,7 +82,7 @@ func (dfd DeductFeeDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate bo
 		return ctx, err
 	}
 
-	newCtx := ctx.WithPriority(priority)
+	newCtx := oldCtx.WithPriority(priority)
 
 	return next(newCtx, tx, simulate)
 }
