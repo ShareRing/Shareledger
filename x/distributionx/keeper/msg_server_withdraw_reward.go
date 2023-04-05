@@ -10,10 +10,13 @@ import (
 func (k msgServer) WithdrawReward(goCtx context.Context, msg *types.MsgWithdrawReward) (*types.MsgWithdrawRewardResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	// send reward to the first signer than reset amount
 	signer := msg.GetSigners()[0]
 	reward, _ := k.GetReward(ctx, signer.String())
-	k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.FeeWasmName, signer, reward.Amount)
+	err := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, signer, reward.Amount)
+	if err != nil {
+		return nil, err
+	}
+	// reset reward
 	k.SetReward(ctx, types.Reward{
 		Index:  signer.String(),
 		Amount: []sdk.Coin{},

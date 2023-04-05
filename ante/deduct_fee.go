@@ -103,7 +103,6 @@ func (dfd DeductFeeDecorator) checkDeductFee(ctx sdk.Context, sdkTx sdk.Tx, fee 
 
 	// if feegranter set deduct fee from feegranter account.
 	// this works with only when feegrant enabled.
-	// TODO: Update this for new fee distribution
 	if feeGranter != nil {
 		if dfd.feegrantKeeper == nil {
 			return sdkerrors.ErrInvalidRequest.Wrap("fee grants are not enabled")
@@ -137,15 +136,20 @@ func (dfd DeductFeeDecorator) checkDeductFee(ctx sdk.Context, sdkTx sdk.Tx, fee 
 			contract := dfd.wasmKeeper.GetContractInfo(ctx, addr)
 			contractAdminFee := getFeeRounded(fee, params.WasmContractAdmin)
 			dfd.distributionxKeeper.IncReward(ctx, contract.Creator, contractAdminFee)
-			validatorFee = validatorFee.Sub(contractAdminFee...)
 
 			wasmFee := getFeeRounded(fee, sdk.OneDec().Sub(params.WasmValidator))
-			deductFees(dfd.bankKeeper, ctx, deductFeesFromAcc, wasmFee, distributionxtypes.FeeWasmName)
+			err = deductFees(dfd.bankKeeper, ctx, deductFeesFromAcc, wasmFee, distributionxtypes.FeeWasmName)
+			if err != nil {
+				return err
+			}
 			validatorFee = validatorFee.Sub(wasmFee...)
 		} else {
 			// move some amount to `distributionxtypes.FeeNativeName` pool
-			nativeFee := getFeeRounded(fee, sdk.OneDec().Sub(params.NativeValidator))
-			deductFees(dfd.bankKeeper, ctx, deductFeesFromAcc, nativeFee, distributionxtypes.FeeNativeName)
+			nativeFee := getFeeRounded(fee, params.NativeDevelopment)
+			err := deductFees(dfd.bankKeeper, ctx, deductFeesFromAcc, nativeFee, distributionxtypes.FeeNativeName)
+			if err != nil {
+				return err
+			}
 			validatorFee = validatorFee.Sub(nativeFee...)
 		}
 
@@ -170,9 +174,9 @@ func (dfd DeductFeeDecorator) checkDeductFee(ctx sdk.Context, sdkTx sdk.Tx, fee 
 // TODO: make this logic cleaner
 func getFeeRounded(fee sdk.Coins, rate sdk.Dec) sdk.Coins {
 	rateFloat := rate.MustFloat64()
-	const ROUND_FACTOR = 10000
-	tp := sdkmath.NewInt(int64(rateFloat * ROUND_FACTOR))
-	return fee.MulInt(tp).QuoInt(sdkmath.NewInt(ROUND_FACTOR))
+	const roundFactor = 10000
+	tp := sdkmath.NewInt(int64(rateFloat * roundFactor))
+	return fee.MulInt(tp).QuoInt(sdkmath.NewInt(roundFactor))
 }
 
 // deductFees deducts fees from the given account.

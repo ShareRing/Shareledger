@@ -17,15 +17,14 @@ func CmdWithdrawReward() *cobra.Command {
 		Use:   "withdraw-reward",
 		Short: "Broadcast message withdraw-reward",
 		Args:  cobra.ExactArgs(0),
-		RunE: func(cmd *cobra.Command, args []string) (err error) {
-
+		RunE: func(cmd *cobra.Command, _ []string) error {
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
 			}
 
 			msg := types.NewMsgWithdrawReward(
-				clientCtx.GetFromAddress().String(),
+				clientCtx.GetFromAddress(),
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err

@@ -15,7 +15,9 @@ service Msg {
 }
 
 // must withdraw all reward at once
-message MsgWithdrawReward {}
+message MsgWithdrawReward {
+  string creator = 1;
+}
 
 message MsgWithdrawRewardResponse {
   repeated cosmos.base.v1beta1.Coin amount = 1 [

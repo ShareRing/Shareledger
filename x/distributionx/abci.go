@@ -20,10 +20,11 @@ func BeginBlocker(ctx sdk.Context, req abci.RequestBeginBlock, k keeper.Keeper) 
 	params := k.GetParams(ctx)
 	if req.Header.Height > 0 && req.Header.Height%int64(params.BuilderWindows) == 0 {
 		allBuilderCount := k.GetAllBuilderCount(ctx)
-		var counter uint64 = 0
+		var counter uint64
+		oldLen := k.GetBuilderListCount(ctx)
 		for _, builderCount := range allBuilderCount {
-			counter += 1
 			if builderCount.Count >= params.TxThreshold {
+				counter++
 				k.SetBuilderList(ctx, types.BuilderList{
 					Id:              counter,
 					ContractAddress: builderCount.Index,
@@ -33,6 +34,9 @@ func BeginBlocker(ctx sdk.Context, req abci.RequestBeginBlock, k keeper.Keeper) 
 			k.SetBuilderCount(ctx, builderCount)
 		}
 
+		for i := counter; i < oldLen; i++ {
+			k.RemoveBuilderList(ctx, i+1)
+		}
 		k.SetBuilderListCount(ctx, counter)
 	}
 }

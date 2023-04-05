@@ -27,6 +27,7 @@ import (
 	genutilcli "github.com/cosmos/cosmos-sdk/x/genutil/client/cli"
 	"github.com/sharering/shareledger/app"
 	"github.com/sharering/shareledger/app/params"
+	"github.com/sharering/shareledger/cmd/Shareledgerd/tools"
 	"github.com/spf13/cast"
 	"github.com/spf13/cobra"
 	tmcfg "github.com/tendermint/tendermint/config"
@@ -125,6 +126,7 @@ func initRootCmd(rootCmd *cobra.Command, encodingConfig params.EncodingConfig) {
 		queryCommand(),
 		txCommand(),
 		keys.Commands(app.DefaultNodeHome),
+		getGenesisCmd(app.DefaultNodeHome),
 	)
 
 	rootCmd.AddCommand(server.RosettaCommand(encodingConfig.InterfaceRegistry, encodingConfig.Codec))
@@ -285,4 +287,18 @@ func (ac appCreator) appExport(
 	}
 
 	return shareledgerApp.ExportAppStateAndValidators(forZeroHeight, jailAllowedAddrs)
+}
+
+func getGenesisCmd(defaultNodeHome string) *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "genesis",
+		Short: "genesis file subcommands",
+	}
+	cmd.AddCommand(
+		tools.NewGenesisAddAuthorityAccountCmd(defaultNodeHome),
+		tools.NewGenesisAddTreasureAccountCmd(defaultNodeHome),
+		tools.NewGenesisAddValidatorAccountCmd(defaultNodeHome),
+		tools.NewGenesisAddAccountOperatorCmd(defaultNodeHome),
+	)
+	return cmd
 }

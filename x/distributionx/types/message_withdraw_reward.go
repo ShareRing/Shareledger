@@ -2,14 +2,17 @@ package types
 
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
 const TypeMsgWithdrawReward = "withdraw_reward"
 
 var _ sdk.Msg = &MsgWithdrawReward{}
 
-func NewMsgWithdrawReward(creator string) *MsgWithdrawReward {
-	return &MsgWithdrawReward{}
+func NewMsgWithdrawReward(creator sdk.AccAddress) *MsgWithdrawReward {
+	return &MsgWithdrawReward{
+		Creator: creator.String(),
+	}
 }
 
 func (msg *MsgWithdrawReward) Route() string {
@@ -21,7 +24,11 @@ func (msg *MsgWithdrawReward) Type() string {
 }
 
 func (msg *MsgWithdrawReward) GetSigners() []sdk.AccAddress {
-	return []sdk.AccAddress{}
+	creator, err := sdk.AccAddressFromBech32(msg.Creator)
+	if err != nil {
+		panic(err)
+	}
+	return []sdk.AccAddress{creator}
 }
 
 func (msg *MsgWithdrawReward) GetSignBytes() []byte {
@@ -30,5 +37,9 @@ func (msg *MsgWithdrawReward) GetSignBytes() []byte {
 }
 
 func (msg *MsgWithdrawReward) ValidateBasic() error {
+	_, err := sdk.AccAddressFromBech32(msg.Creator)
+	if err != nil {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", msg.Creator)
+	}
 	return nil
 }

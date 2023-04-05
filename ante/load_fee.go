@@ -16,7 +16,7 @@ func NewLoadFeeDecorator(gk GentlemintKeeper) LoadFeeDecorator {
 	}
 }
 
-func (cfd LoadFeeDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate bool, next sdk.AnteHandler) (newCtx sdk.Context, err error) {
+func (cfd LoadFeeDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate bool, next sdk.AnteHandler) (sdk.Context, error) {
 	for _, msg := range tx.GetMsgs() {
 		loadFeeMessage, ok := msg.(*gentleminttypes.MsgLoadFee)
 		if ok {
