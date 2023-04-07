@@ -85,25 +85,7 @@ const (
 
 // GenerateGenesisState creates a randomized GenState of the module
 func (AppModule) GenerateGenesisState(simState *module.SimulationState) {
-	accs := make([]string, len(simState.Accounts))
-	for i, acc := range simState.Accounts {
-		accs[i] = acc.Address.String()
-	}
-	swapGenesis := types.GenesisState{
-		Params: types.DefaultParams(),
-		Schemas: []types.Schema{
-			{
-				Creator: sample.AccAddress(),
-				Network: "0",
-			},
-			{
-				Creator: sample.AccAddress(),
-				Network: "1",
-			},
-		},
-		// this line is used by starport scaffolding # simapp/module/genesisState
-	}
-	simState.GenState[types.ModuleName] = simState.Cdc.MustMarshalJSON(&swapGenesis)
+	swapsimulation.MustGenRandGenesis(simState)
 }
 
 // ProposalContents doesn't return any content functions for governance proposals
@@ -117,7 +99,9 @@ func (am AppModule) RandomizedParams(_ *rand.Rand) []simtypes.ParamChange {
 }
 
 // RegisterStoreDecoder registers a decoder
-func (am AppModule) RegisterStoreDecoder(_ sdk.StoreDecoderRegistry) {}
+func (am AppModule) RegisterStoreDecoder(sdr sdk.StoreDecoderRegistry) {
+	sdr[types.StoreKey] = swapsimulation.NewDecodeStore(am.cdc)
+}
 
 // WeightedOperations returns the all the gov module operations with their respective weights.
 func (am AppModule) WeightedOperations(simState module.SimulationState) []simtypes.WeightedOperation {
@@ -252,7 +236,7 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	)
 	operations = append(operations, simulation.NewWeightedOperation(
 		weightMsgUpdateBatch,
-		swapsimulation.SimulateMsgUpdateBatch(am.accountKeeper, am.bankKeeper, am.keeper),
+		swapsimulation.SimulateMsgCompleteBatch(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
 	var weightMsgUpdateSwapFee int
@@ -272,10 +256,13 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 			weightMsgCancelBatches = defaultWeightMsgCancelBatches
 		},
 	)
-	operations = append(operations, simulation.NewWeightedOperation(
+
+	cancelBatch := simulation.NewWeightedOperation(
 		weightMsgCancelBatches,
 		swapsimulation.SimulateMsgCancelBatches(am.accountKeeper, am.bankKeeper, am.keeper),
-	))
+	)
+
+	operations = append(operations, cancelBatch)
 
 	// this line is used by starport scaffolding # simapp/module/operation
 

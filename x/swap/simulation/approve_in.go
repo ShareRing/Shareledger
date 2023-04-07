@@ -1,6 +1,8 @@
 package simulation
 
 import (
+	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
+	"github.com/sharering/shareledger/testutil"
 	"math/rand"
 
 	"github.com/cosmos/cosmos-sdk/baseapp"
@@ -21,9 +23,23 @@ func SimulateMsgApproveIn(
 		msg := &types.MsgApproveIn{
 			Creator: simAccount.Address.String(),
 		}
+		reqIn, err := k.Swap(ctx, &types.QuerySwapRequest{
+			Status:     types.SwapStatusPending,
+			SrcNetwork: testutil.RandNetwork(r),
+		})
+		if err != nil || len(reqIn.GetSwaps()) == 0 {
+			return simtypes.NoOpMsg(types.ModuleName, msg.Type(), "no pending request out found "), nil, nil
+		}
 
-		// TODO: Handling the ApproveIn simulation
+		rqs := testutil.RandPick(r, reqIn.GetSwaps())
 
-		return simtypes.NoOpMsg(types.ModuleName, msg.Type(), "ApproveIn simulation not implemented"), nil, nil
+		msg.Ids = []uint64{rqs.Id}
+
+		err = makeTransaction(r, app, msg, ak, bk, k, ctx, chainID, []cryptotypes.PrivKey{simAccount.PrivKey})
+		if err != nil {
+			return simtypes.NoOpMsg(types.ModuleName, msg.Type(), err.Error()), nil, nil
+		}
+
+		return simtypes.NewOperationMsg(msg, true, "", nil), nil, nil
 	}
 }

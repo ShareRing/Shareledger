@@ -1,6 +1,9 @@
 package simulation
 
 import (
+	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
+	"github.com/sharering/shareledger/testutil"
+	"github.com/sharering/shareledger/x/utils/denom"
 	"math/rand"
 
 	"github.com/cosmos/cosmos-sdk/baseapp"
@@ -20,10 +23,30 @@ func SimulateMsgUpdateSwapFee(
 		simAccount, _ := simtypes.RandomAcc(r, accs)
 		msg := &types.MsgUpdateSwapFee{
 			Creator: simAccount.Address.String(),
+			In:      &sdk.DecCoin{},
+			Out:     &sdk.DecCoin{},
 		}
 
-		// TODO: Handling the UpdateSwapFee simulation
+		res, err := k.Schemas(ctx, &types.QuerySchemasRequest{})
+		if err != nil || len(res.GetSchemas()) == 0 {
+			return simtypes.NoOpMsg(types.ModuleName, msg.Type(), "no schema here"), nil, nil
+		}
+		s := testutil.RandPick(r, res.GetSchemas())
 
-		return simtypes.NoOpMsg(types.ModuleName, msg.Type(), "UpdateSwapFee simulation not implemented"), nil, nil
+		msg.Network = s.GetNetwork()
+		shrRandIn := rand.Int63n(10000000000000-1000000000) + 10000000000000
+		amountIn := sdk.NewDecCoin(denom.Base, sdk.NewInt(shrRandIn))
+
+		shrRandOut := rand.Int63n(10000000000000-1000000000) + 10000000000000
+		amountOut := sdk.NewDecCoin(denom.Base, sdk.NewInt(shrRandOut))
+
+		*msg.In = amountIn
+		*msg.Out = amountOut
+
+		err = makeTransaction(r, app, msg, ak, bk, k, ctx, chainID, []cryptotypes.PrivKey{simAccount.PrivKey})
+		if err != nil {
+			return simtypes.NoOpMsg(types.ModuleName, msg.Type(), "no transaction"), nil, nil
+		}
+		return simtypes.NewOperationMsg(msg, true, "", nil), nil, nil
 	}
 }

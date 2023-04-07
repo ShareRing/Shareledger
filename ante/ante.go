@@ -64,18 +64,18 @@ func NewHandler(opts HandlerOptions) (sdk.AnteHandler, error) {
 			opts.FeegrantKeeper, opts.TxFeeChecker, opts.DistributionxKeeper, opts.WasmKeeper),
 
 		// there 2 ante that check for transaction fee
-		NewCheckFeeDecorator(opts.GentlemintKeeper),
+		//NewCheckFeeDecorator(opts.GentlemintKeeper),
 		globalfeeante.NewFeeDecorator(opts.BypassMinFeeMsgTypes, opts.GlobalFeeSubspace, opts.StakingSubspace),
 
 		NewCountBuilderDecorator(opts.DistributionxKeeper),
-		NewAuthDecorator(opts.RoleKeeper, opts.IdKeeper),
+		//NewAuthDecorator(opts.RoleKeeper, opts.IdKeeper),
 		ante.NewSetPubKeyDecorator(opts.AccountKeeper),
 		ante.NewValidateSigCountDecorator(opts.AccountKeeper),
 		ante.NewSigGasConsumeDecorator(opts.AccountKeeper, sigGasConsumer),
 		ante.NewSigVerificationDecorator(opts.AccountKeeper, opts.SignModeHandler),
 		ante.NewIncrementSequenceDecorator(opts.AccountKeeper),
 		ibcante.NewRedundantRelayDecorator(opts.IBCKeeper),
-		NewLoadFeeDecorator(opts.GentlemintKeeper),
+		//NewLoadFeeDecorator(opts.GentlemintKeeper),
 	}
 
 	return sdk.ChainAnteDecorators(anteDecorators...), nil

@@ -1,6 +1,9 @@
 package simulation
 
 import (
+	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
+	"github.com/sharering/shareledger/testutil"
+	"github.com/sharering/shareledger/x/utils/denom"
 	"math/rand"
 
 	"github.com/cosmos/cosmos-sdk/baseapp"
@@ -18,12 +21,21 @@ func SimulateMsgOut(
 	return func(r *rand.Rand, app *baseapp.BaseApp, ctx sdk.Context, accs []simtypes.Account, chainID string,
 	) (simtypes.OperationMsg, []simtypes.FutureOperation, error) {
 		simAccount, _ := simtypes.RandomAcc(r, accs)
+		shrRand := rand.Int63n(10000000000000-1000000000) + 10000000000000
+
+		amount := sdk.NewDecCoinFromCoin(sdk.NewCoin(denom.Base, sdk.NewInt(shrRand)))
 		msg := &types.MsgRequestOut{
-			Creator: simAccount.Address.String(),
+			Creator:     simAccount.Address.String(),
+			SrcAddress:  simAccount.Address.String(),
+			DestAddress: testutil.RandEthAddress(),
+			Network:     testutil.RandNetwork(r),
+			Amount:      &amount,
 		}
 
-		// TODO: Handling the Out simulation
-
-		return simtypes.NoOpMsg(types.ModuleName, msg.Type(), "Out simulation not implemented"), nil, nil
+		err := makeTransaction(r, app, msg, ak, bk, k, ctx, chainID, []cryptotypes.PrivKey{simAccount.PrivKey})
+		if err != nil {
+			return simtypes.NoOpMsg(types.ModuleName, msg.Type(), err.Error()), nil, nil
+		}
+		return simtypes.NewOperationMsg(msg, true, "", nil), nil, nil
 	}
 }

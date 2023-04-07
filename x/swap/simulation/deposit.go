@@ -1,6 +1,9 @@
 package simulation
 
 import (
+	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
+	"github.com/sharering/shareledger/testutil"
+	"github.com/sharering/shareledger/x/utils/denom"
 	"math/rand"
 
 	"github.com/cosmos/cosmos-sdk/baseapp"
@@ -22,8 +25,18 @@ func SimulateMsgDeposit(
 			Creator: simAccount.Address.String(),
 		}
 
-		// TODO: Handling the Deposit simulation
+		availableCoins := bk.SpendableCoins(ctx, simAccount.Address)
 
-		return simtypes.NoOpMsg(types.ModuleName, msg.Type(), "Deposit simulation not implemented"), nil, nil
+		if availableCoins.Empty() {
+			return simtypes.NoOpMsg(types.ModuleName, msg.Type(), "account balance isn't enough"), nil, nil
+		}
+		msg.Amount = testutil.PtrOf(sdk.NewDecCoin(denom.Base, simtypes.RandomAmount(r, availableCoins.AmountOf(denom.Base))))
+
+		err := makeTransaction(r, app, msg, ak, bk, k, ctx, chainID, []cryptotypes.PrivKey{simAccount.PrivKey})
+		if err != nil {
+			return simtypes.NoOpMsg(types.ModuleName, msg.Type(), ""), nil, nil
+		}
+
+		return simtypes.NewOperationMsg(msg, true, "", nil), nil, nil
 	}
 }

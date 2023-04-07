@@ -10,14 +10,14 @@ import (
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
 	"github.com/cosmos/cosmos-sdk/x/simulation"
 	"github.com/sharering/shareledger/testutil/sample"
-	sdistributionsimulation "github.com/sharering/shareledger/x/distributionx/simulation"
+	distributionxSimulation "github.com/sharering/shareledger/x/distributionx/simulation"
 	"github.com/sharering/shareledger/x/distributionx/types"
 )
 
 // avoid unused import issue
 var (
 	_ = sample.AccAddress
-	_ = sdistributionsimulation.FindAccount
+	_ = distributionxSimulation.FindAccount
 	_ = simappparams.StakePerAccount
 	_ = simulation.MsgEntryKind
 	_ = baseapp.Paramspace
@@ -33,15 +33,7 @@ const (
 
 // GenerateGenesisState creates a randomized GenState of the module
 func (AppModule) GenerateGenesisState(simState *module.SimulationState) {
-	accs := make([]string, len(simState.Accounts))
-	for i, acc := range simState.Accounts {
-		accs[i] = acc.Address.String()
-	}
-	sdistributionGenesis := types.GenesisState{
-		Params: types.DefaultParams(),
-		// this line is used by starport scaffolding # simapp/module/genesisState
-	}
-	simState.GenState[types.ModuleName] = simState.Cdc.MustMarshalJSON(&sdistributionGenesis)
+	distributionxSimulation.RandomizedGenState(simState)
 }
 
 // ProposalContents doesn't return any content functions for governance proposals
@@ -56,7 +48,9 @@ func (am AppModule) RandomizedParams(_ *rand.Rand) []simtypes.ParamChange {
 }
 
 // RegisterStoreDecoder registers a decoder
-func (am AppModule) RegisterStoreDecoder(_ sdk.StoreDecoderRegistry) {}
+func (am AppModule) RegisterStoreDecoder(str sdk.StoreDecoderRegistry) {
+	str[types.StoreKey] = distributionxSimulation.NewStoreDecoder(am.cdc)
+}
 
 // WeightedOperations returns the all the gov module operations with their respective weights.
 func (am AppModule) WeightedOperations(simState module.SimulationState) []simtypes.WeightedOperation {
@@ -70,7 +64,7 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	)
 	operations = append(operations, simulation.NewWeightedOperation(
 		weightMsgWithdrawReward,
-		sdistributionsimulation.SimulateMsgWithdrawReward(am.accountKeeper, am.bankKeeper, am.keeper),
+		distributionxSimulation.SimulateMsgWithdrawReward(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
 	// this line is used by starport scaffolding # simapp/module/operation

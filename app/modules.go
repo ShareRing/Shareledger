@@ -289,7 +289,7 @@ func appModules(
 		assetmodule.NewAppModule(appCodec, app.AssetKeeper),
 		bookingmodule.NewAppModule(appCodec, app.BookingKeeper),
 		gentlemintmodule.NewAppModule(appCodec, app.GentleMintKeeper),
-		electoralmodule.NewAppModule(appCodec, app.ElectoralKeeper),
+		electoralmodule.NewAppModule(appCodec, app.ElectoralKeeper, nil, nil, nil),
 		swapmodule.NewAppModule(appCodec, app.SwapKeeper, app.AccountKeeper, app.BankKeeper),
 		wasm.NewAppModule(appCodec, &app.WasmKeeper, app.StakingKeeper, app.AccountKeeper, app.BankKeeper),
 		distributionx.NewAppModule(appCodec, app.DistributionxKeeper, app.AccountKeeper, app.BankKeeper),
@@ -306,22 +306,36 @@ func simulationModules(
 ) []module.AppModuleSimulation {
 	appCodec := encodingConfig.Codec
 
-	// TODO: add custom module here
 	return []module.AppModuleSimulation{
 		auth.NewAppModule(appCodec, app.AccountKeeper, authsims.RandomGenesisAccounts),
+		//vesting.NewAppModule(app.AccountKeeper, app.BankKeeper),
 		bank.NewAppModule(appCodec, app.BankKeeper, app.AccountKeeper),
 		capability.NewAppModule(appCodec, *app.CapabilityKeeper),
 		feegrantmodule.NewAppModule(appCodec, app.AccountKeeper, app.BankKeeper, app.FeeGrantKeeper, app.interfaceRegistry),
+		authzmodule.NewAppModule(appCodec, app.AuthzKeeper, app.AccountKeeper, app.BankKeeper, app.interfaceRegistry),
+		//crisis.NewAppModule(&app.CrisisKeeper, skipGenesisInvariants),
 		gov.NewAppModule(appCodec, app.GovKeeper, app.AccountKeeper, app.BankKeeper),
 		mint.NewAppModule(appCodec, app.MintKeeper, app.AccountKeeper, nil),
-		staking.NewAppModule(appCodec, app.StakingKeeper, app.AccountKeeper, app.BankKeeper),
-		distr.NewAppModule(appCodec, app.DistrKeeper, app.AccountKeeper, app.BankKeeper, app.StakingKeeper),
 		slashing.NewAppModule(appCodec, app.SlashingKeeper, app.AccountKeeper, app.BankKeeper, app.StakingKeeper),
-		params.NewAppModule(app.ParamsKeeper),
+		distr.NewAppModule(appCodec, app.DistrKeeper, app.AccountKeeper, app.BankKeeper, app.StakingKeeper),
+		staking.NewAppModule(appCodec, app.StakingKeeper, app.AccountKeeper, app.BankKeeper),
+		//upgrade.NewAppModule(app.UpgradeKeeper),
 		evidence.NewAppModule(app.EvidenceKeeper),
-		authzmodule.NewAppModule(appCodec, app.AuthzKeeper, app.AccountKeeper, app.BankKeeper, app.interfaceRegistry),
-		groupmodule.NewAppModule(appCodec, app.GroupKeeper, app.AccountKeeper, app.BankKeeper, app.interfaceRegistry),
 		ibc.NewAppModule(app.IBCKeeper),
+		params.NewAppModule(app.ParamsKeeper),
+		app.ICAModule,
 		app.TransferModule,
+		groupmodule.NewAppModule(appCodec, app.GroupKeeper, app.AccountKeeper, app.BankKeeper, app.interfaceRegistry),
+
+		// custom module
+		//documentmodule.NewAppModule(appCodec, app.DocumentKeeper),
+		//idmodule.NewAppModule(appCodec, app.IdKeeper),
+		assetmodule.NewAppModule(appCodec, app.AssetKeeper),
+		//bookingmodule.NewAppModule(appCodec, app.BookingKeeper),
+		gentlemintmodule.NewAppModule(appCodec, app.GentleMintKeeper),
+		electoralmodule.NewAppModule(appCodec, app.ElectoralKeeper, app.AccountKeeper, app.BankKeeper, app.GentleMintKeeper),
+		swapmodule.NewAppModule(appCodec, app.SwapKeeper, app.AccountKeeper, app.BankKeeper),
+		wasm.NewAppModule(appCodec, &app.WasmKeeper, app.StakingKeeper, app.AccountKeeper, app.BankKeeper),
+		distributionx.NewAppModule(appCodec, app.DistributionxKeeper, app.AccountKeeper, app.BankKeeper),
 	}
 }

@@ -22,8 +22,9 @@ import (
 )
 
 var (
-	_ module.AppModule      = AppModule{}
-	_ module.AppModuleBasic = AppModuleBasic{}
+	_ module.AppModule           = AppModule{}
+	_ module.AppModuleBasic      = AppModuleBasic{}
+	_ module.AppModuleSimulation = AppModule{}
 )
 
 // ----------------------------------------------------------------------------
@@ -32,10 +33,10 @@ var (
 
 // AppModuleBasic implements the AppModuleBasic interface for the capability module.
 type AppModuleBasic struct {
-	cdc codec.BinaryCodec
+	cdc codec.Codec
 }
 
-func NewAppModuleBasic(cdc codec.BinaryCodec) AppModuleBasic {
+func NewAppModuleBasic(cdc codec.Codec) AppModuleBasic {
 	return AppModuleBasic{cdc: cdc}
 }
 
@@ -99,12 +100,22 @@ type AppModule struct {
 	AppModuleBasic
 
 	keeper keeper.Keeper
+
+	//Used for simulation purpose only
+
+	bk types.BankKeeper
+	ak types.AccountKeeper
+	gk keeper.GentlemintKeeper
 }
 
-func NewAppModule(cdc codec.Codec, keeper keeper.Keeper) AppModule {
+// NewAppModule create the elctoral app module instance but the bk,ak,gk keeper is used for simulation. You can pass it nil when initialization the real run app module
+func NewAppModule(cdc codec.Codec, keeper keeper.Keeper, ak types.AccountKeeper, bankKeeper types.BankKeeper, gm keeper.GentlemintKeeper) AppModule {
 	return AppModule{
 		AppModuleBasic: NewAppModuleBasic(cdc),
 		keeper:         keeper,
+		ak:             ak,
+		bk:             bankKeeper,
+		gk:             gm,
 	}
 }
 

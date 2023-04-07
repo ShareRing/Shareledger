@@ -4,10 +4,12 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-
+	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
 	"github.com/gorilla/mux"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
+	"github.com/sharering/shareledger/x/utils/denom"
 	"github.com/spf13/cobra"
+	"math/rand"
 
 	abci "github.com/tendermint/tendermint/abci/types"
 
@@ -99,6 +101,40 @@ type AppModule struct {
 	AppModuleBasic
 
 	keeper keeper.Keeper
+}
+
+func (am AppModule) GenerateGenesisState(input *module.SimulationState) {
+	//randRate := testutil.RandRate(input.Rand)
+	miniMumGasPrice := sdk.DecCoins{}
+	input.AppParams.GetOrGenerate(
+		input.Cdc, string(types.ParamStoreKeyMinGasPrices), &miniMumGasPrice, input.Rand,
+		func(r *rand.Rand) {
+			miniMumGasPrice = sdk.NewDecCoinsFromCoins(sdk.NewCoin(denom.Base, sdk.NewInt(0)))
+		},
+	)
+
+	gentlemintGenesis := types.DefaultGenesis()
+
+	input.GenState[types.ModuleName] = input.Cdc.MustMarshalJSON(gentlemintGenesis)
+
+}
+
+func (am AppModule) ProposalContents(simState module.SimulationState) []simtypes.WeightedProposalContent {
+
+	return nil
+}
+
+func (am AppModule) RandomizedParams(r *rand.Rand) []simtypes.ParamChange {
+	return nil
+}
+
+func (am AppModule) RegisterStoreDecoder(registry sdk.StoreDecoderRegistry) {
+
+	return
+}
+
+func (am AppModule) WeightedOperations(simState module.SimulationState) []simtypes.WeightedOperation {
+	return nil
 }
 
 func NewAppModule(cdc codec.Codec, keeper keeper.Keeper) AppModule {

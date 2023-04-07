@@ -1,6 +1,8 @@
 package simulation
 
 import (
+	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
+	"github.com/sharering/shareledger/x/utils/denom"
 	"math/rand"
 
 	"github.com/cosmos/cosmos-sdk/baseapp"
@@ -18,12 +20,24 @@ func SimulateMsgWithdraw(
 	return func(r *rand.Rand, app *baseapp.BaseApp, ctx sdk.Context, accs []simtypes.Account, chainID string,
 	) (simtypes.OperationMsg, []simtypes.FutureOperation, error) {
 		simAccount, _ := simtypes.RandomAcc(r, accs)
+		receiver, _ := simtypes.RandomAcc(r, accs)
 		msg := &types.MsgWithdraw{
-			Creator: simAccount.Address.String(),
+			Creator:  simAccount.Address.String(),
+			Receiver: receiver.Address.String(),
 		}
 
-		// TODO: Handling the Withdraw simulation
+		moduleAddr := ak.GetModuleAddress(types.ModuleName)
 
-		return simtypes.NoOpMsg(types.ModuleName, msg.Type(), "Withdraw simulation not implemented"), nil, nil
+		availableCoins := bk.SpendableCoins(ctx, moduleAddr)
+		if availableCoins.Empty() {
+			return simtypes.NoOpMsg(types.ModuleName, msg.Type(), "Withdraw not available now"), nil, nil
+		}
+
+		msg.Amount = sdk.NewDecCoin(denom.Base, simtypes.RandomAmount(r, availableCoins.AmountOf(denom.Base)))
+		err := makeTransaction(r, app, msg, ak, bk, k, ctx, chainID, []cryptotypes.PrivKey{simAccount.PrivKey})
+		if err != nil {
+			return simtypes.NoOpMsg(types.ModuleName, msg.Type(), "Withdraw not available now"), nil, nil
+		}
+		return simtypes.NewOperationMsg(msg, true, "", nil), nil, nil
 	}
 }

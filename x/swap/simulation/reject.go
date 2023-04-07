@@ -1,6 +1,8 @@
 package simulation
 
 import (
+	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
+	"github.com/sharering/shareledger/testutil"
 	"math/rand"
 
 	"github.com/cosmos/cosmos-sdk/baseapp"
@@ -22,8 +24,23 @@ func SimulateMsgReject(
 			Creator: simAccount.Address.String(),
 		}
 
-		// TODO: Handling the Reject simulation
+		res, err := k.Swap(ctx, &types.QuerySwapRequest{
+			Status:     types.SwapStatusPending,
+			SrcNetwork: types.NetworkNameShareLedger,
+		})
 
-		return simtypes.NoOpMsg(types.ModuleName, msg.Type(), "Reject simulation not implemented"), nil, nil
+		if err != nil || len(res.GetSwaps()) == 0 {
+			return simtypes.NoOpMsg(types.ModuleName, msg.Type(), "pending swap out not available now"), nil, nil
+		}
+
+		swapOut := testutil.RandPick(r, res.GetSwaps())
+		msg.Ids = []uint64{swapOut.Id}
+
+		err = makeTransaction(r, app, msg, ak, bk, k, ctx, chainID, []cryptotypes.PrivKey{simAccount.PrivKey})
+		if err != nil {
+			return simtypes.NoOpMsg(types.ModuleName, msg.Type(), ""), nil, nil
+		}
+
+		return simtypes.NewOperationMsg(msg, true, "", nil), nil, nil
 	}
 }

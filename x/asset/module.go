@@ -4,6 +4,9 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
+	"github.com/sharering/shareledger/x/asset/simulation"
+	"math/rand"
 
 	// this line is used by starport scaffolding # 1
 
@@ -24,8 +27,9 @@ import (
 )
 
 var (
-	_ module.AppModule      = AppModule{}
-	_ module.AppModuleBasic = AppModuleBasic{}
+	_ module.AppModule           = AppModule{}
+	_ module.AppModuleBasic      = AppModuleBasic{}
+	_ module.AppModuleSimulation = AppModuleBasic{}
 )
 
 // ----------------------------------------------------------------------------
@@ -171,4 +175,29 @@ func (am AppModule) BeginBlock(_ sdk.Context, _ abci.RequestBeginBlock) {}
 // returns no validator updates.
 func (am AppModule) EndBlock(_ sdk.Context, _ abci.RequestEndBlock) []abci.ValidatorUpdate {
 	return []abci.ValidatorUpdate{}
+}
+
+//  For simulation
+
+func (a AppModuleBasic) GenerateGenesisState(input *module.SimulationState) {
+
+	simulation.RandomizedGenState(input)
+}
+
+func (a AppModuleBasic) ProposalContents(simState module.SimulationState) []simtypes.WeightedProposalContent {
+	return nil
+}
+
+func (a AppModuleBasic) RandomizedParams(r *rand.Rand) []simtypes.ParamChange {
+	return nil
+}
+
+func (a AppModuleBasic) RegisterStoreDecoder(registry sdk.StoreDecoderRegistry) {
+	return
+}
+
+func (a AppModuleBasic) WeightedOperations(simState module.SimulationState) []simtypes.WeightedOperation {
+	////TODO implement me
+	//panic("implement me")
+	return nil
 }

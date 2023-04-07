@@ -398,3 +398,8 @@ func (app *App) setupUpgradeHandlers() {
 		)
 	}
 }
+
+// GetMM get module manager
+func (app *App) GetMM() *module.Manager {
+	return app.mm
+}

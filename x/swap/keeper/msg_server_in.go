@@ -15,7 +15,7 @@ func (k msgServer) RequestIn(goCtx context.Context, msg *types.MsgRequestIn) (*t
 
 	schema, found := k.GetSchema(ctx, msg.Network)
 	if !found {
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "network, %s, is not supported", msg.Network)
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "network %s, is not supported", msg.Network)
 	}
 
 	amount, err := denom.NormalizeToBaseCoins(sdk.NewDecCoins(*msg.GetAmount()), false)

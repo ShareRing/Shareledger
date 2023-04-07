@@ -1,6 +1,13 @@
 package simulation
 
 import (
+	"encoding/json"
+	"fmt"
+	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
+	"github.com/ethereum/go-ethereum/signer/core/apitypes"
+	"github.com/sharering/shareledger/testutil"
+	"github.com/sharering/shareledger/x/utils/denom"
+	"github.com/thanhpk/randstr"
 	"math/rand"
 	"strconv"
 
@@ -24,12 +31,29 @@ func SimulateMsgCreateFormat(
 	return func(r *rand.Rand, app *baseapp.BaseApp, ctx sdk.Context, accs []simtypes.Account, chainID string,
 	) (simtypes.OperationMsg, []simtypes.FutureOperation, error) {
 		simAccount, _ := simtypes.RandomAcc(r, accs)
-
-		i := r.Int()
 		msg := &types.MsgCreateSchema{
 			Creator: simAccount.Address.String(),
-			Network: strconv.Itoa(i),
+			Network: randstr.String(4),
 		}
+		shrRandIn := rand.Int63n(10000000000000-1000000000) + 10000000000000
+		amountIn := sdk.NewDecCoin(denom.Base, sdk.NewInt(shrRandIn))
+
+		shrRandOut := rand.Int63n(10000000000000-1000000000) + 10000000000000
+		amountOut := sdk.NewDecCoin(denom.Base, sdk.NewInt(shrRandOut))
+
+		randSchemaS := apitypes.TypedData{
+			Domain: apitypes.TypedDataDomain{
+				VerifyingContract: fmt.Sprintf("0x%s", randstr.Hex(40)),
+			},
+		}
+
+		bz, err := json.Marshal(randSchemaS)
+		if err != nil {
+			return simtypes.NoOpMsg(types.ModuleName, msg.Type(), "fail make random schemas"), nil, nil
+		}
+		msg.Schema = string(bz)
+		msg.In = amountIn
+		msg.Out = amountOut
 
 		_, found := k.GetSchema(ctx, msg.Network)
 		if found {
@@ -66,37 +90,23 @@ func SimulateMsgUpdateFormat(
 			format     = types.Schema{}
 			msg        = &types.MsgUpdateSchema{}
 			allFormat  = k.GetAllSchema(ctx)
-			found      = false
 		)
-		for _, obj := range allFormat {
-			simAccount, found = FindAccount(accs, obj.Creator)
-			if found {
-				format = obj
-				break
-			}
+		simAccount, _ = simtypes.RandomAcc(r, accs)
+		if len(allFormat) == 0 {
+			return simtypes.NoOpMsg(types.ModuleName, msg.Type(), "no no schema for update"), nil, nil
 		}
-		if !found {
-			return simtypes.NoOpMsg(types.ModuleName, msg.Type(), "format creator not found"), nil, nil
-		}
+		schema := testutil.RandPick(r, allFormat)
+		msg.Schema = schema.Schema
+		msg.In = testutil.PtrOf(sdk.NewDecCoinFromCoin(*schema.Fee.In))
+		msg.Out = testutil.PtrOf(sdk.NewDecCoinFromCoin(*schema.Fee.Out))
 		msg.Creator = simAccount.Address.String()
-
 		msg.Network = format.Network
-
-		txCtx := simulation.OperationInput{
-			R:               r,
-			App:             app,
-			TxGen:           simappparams.MakeTestEncodingConfig().TxConfig,
-			Cdc:             nil,
-			Msg:             msg,
-			MsgType:         msg.Type(),
-			Context:         ctx,
-			SimAccount:      simAccount,
-			ModuleName:      types.ModuleName,
-			CoinsSpentInMsg: sdk.NewCoins(),
-			AccountKeeper:   ak,
-			Bankkeeper:      bk,
+		err := makeTransaction(r, app, msg, ak, bk, k, ctx, chainID, []cryptotypes.PrivKey{simAccount.PrivKey})
+		if err != nil {
+			return simtypes.NoOpMsg(types.ModuleName, msg.Type(), ""), nil, nil
 		}
-		return simulation.GenAndDeliverTxWithRandFees(txCtx)
+
+		return simtypes.NewOperationMsg(msg, true, "", nil), nil, nil
 	}
 }
 
@@ -109,39 +119,29 @@ func SimulateMsgDeleteFormat(
 	) (simtypes.OperationMsg, []simtypes.FutureOperation, error) {
 		var (
 			simAccount = simtypes.Account{}
-			format     = types.Schema{}
-			msg        = &types.MsgUpdateSchema{}
+			msg        = &types.MsgDeleteSchema{}
 			allFormat  = k.GetAllSchema(ctx)
-			found      = false
 		)
-		for _, obj := range allFormat {
-			simAccount, found = FindAccount(accs, obj.Creator)
-			if found {
-				format = obj
+		if len(allFormat) == 0 {
+			return simtypes.NoOpMsg(types.ModuleName, msg.Type(), "no no schema for delete"), nil, nil
+		}
+		c := types.Schema{}
+		for {
+			c := testutil.RandPick(r, allFormat)
+			if c.Network != "bsc" && c.Schema != "eth" {
 				break
 			}
 		}
-		if !found {
-			return simtypes.NoOpMsg(types.ModuleName, msg.Type(), "format creator not found"), nil, nil
-		}
+
+		simAccount, _ = simtypes.RandomAcc(r, accs)
+
 		msg.Creator = simAccount.Address.String()
+		msg.Network = c.GetNetwork()
 
-		msg.Network = format.Network
-
-		txCtx := simulation.OperationInput{
-			R:               r,
-			App:             app,
-			TxGen:           simappparams.MakeTestEncodingConfig().TxConfig,
-			Cdc:             nil,
-			Msg:             msg,
-			MsgType:         msg.Type(),
-			Context:         ctx,
-			SimAccount:      simAccount,
-			ModuleName:      types.ModuleName,
-			CoinsSpentInMsg: sdk.NewCoins(),
-			AccountKeeper:   ak,
-			Bankkeeper:      bk,
+		err := makeTransaction(r, app, msg, ak, bk, k, ctx, chainID, []cryptotypes.PrivKey{simAccount.PrivKey})
+		if err != nil {
+			return simtypes.NoOpMsg(types.ModuleName, msg.Type(), ""), nil, nil
 		}
-		return simulation.GenAndDeliverTxWithRandFees(txCtx)
+		return simtypes.NewOperationMsg(msg, true, "", nil), nil, nil
 	}
 }
