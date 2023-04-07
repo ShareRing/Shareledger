@@ -3,6 +3,7 @@ package app_test
 import (
 	"encoding/json"
 	"fmt"
+	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
 	"os"
 	"runtime/debug"
 	"strings"
@@ -154,7 +155,7 @@ func TestAppImportExport(t *testing.T) {
 		{simApp.AppKeepers.GetKey(minttypes.StoreKey), newSimApp.AppKeepers.GetKey(minttypes.StoreKey), [][]byte{}},
 		{simApp.AppKeepers.GetKey(distrtypes.StoreKey), newSimApp.AppKeepers.GetKey(distrtypes.StoreKey), [][]byte{}},
 		{simApp.AppKeepers.GetKey(banktypes.StoreKey), newSimApp.AppKeepers.GetKey(banktypes.StoreKey), [][]byte{banktypes.BalancesPrefix}},
-		// {simApp.AppKeepers.GetKey(paramtypes.StoreKey), newSimApp.AppKeepers.GetKey(paramtypes.StoreKey), [][]byte{}},
+		{simApp.AppKeepers.GetKey(paramtypes.StoreKey), newSimApp.AppKeepers.GetKey(paramtypes.StoreKey), [][]byte{}},
 		{simApp.AppKeepers.GetKey(govtypes.StoreKey), newSimApp.AppKeepers.GetKey(govtypes.StoreKey), [][]byte{}},
 		{simApp.AppKeepers.GetKey(evidencetypes.StoreKey), newSimApp.AppKeepers.GetKey(evidencetypes.StoreKey), [][]byte{}},
 		{simApp.AppKeepers.GetKey(capabilitytypes.StoreKey), newSimApp.AppKeepers.GetKey(capabilitytypes.StoreKey), [][]byte{}},

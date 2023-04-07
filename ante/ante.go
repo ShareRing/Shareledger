@@ -60,8 +60,8 @@ func NewHandler(opts HandlerOptions) (sdk.AnteHandler, error) {
 		ante.NewConsumeGasForTxSizeDecorator(opts.AccountKeeper),
 
 		// ante.NewDeductFeeDecorator(options.AccountKeeper, options.BankKeeper, options.FeegrantKeeper, options.TxFeeChecker),
-		NewDeductFeeDecorator(opts.AccountKeeper, opts.BankKeeper,
-			opts.FeegrantKeeper, opts.TxFeeChecker, opts.DistributionxKeeper, opts.WasmKeeper),
+		//NewDeductFeeDecorator(opts.AccountKeeper, opts.BankKeeper,
+		//	opts.FeegrantKeeper, opts.TxFeeChecker, opts.DistributionxKeeper, opts.WasmKeeper),
 
 		// there 2 ante that check for transaction fee
 		//NewCheckFeeDecorator(opts.GentlemintKeeper),
