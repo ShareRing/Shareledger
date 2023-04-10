@@ -1,9 +1,11 @@
 package simulation
 
 import (
-	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
-	"github.com/sharering/shareledger/x/utils/denom"
 	"math/rand"
+
+	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
+	elecSim "github.com/sharering/shareledger/x/electoral/simulation"
+	"github.com/sharering/shareledger/x/utils/denom"
 
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -19,7 +21,7 @@ func SimulateMsgWithdraw(
 ) simtypes.Operation {
 	return func(r *rand.Rand, app *baseapp.BaseApp, ctx sdk.Context, accs []simtypes.Account, chainID string,
 	) (simtypes.OperationMsg, []simtypes.FutureOperation, error) {
-		simAccount, _ := simtypes.RandomAcc(r, accs)
+		simAccount := elecSim.GetElectoralAddress(r, "authority")
 		receiver, _ := simtypes.RandomAcc(r, accs)
 		msg := &types.MsgWithdraw{
 			Creator:  simAccount.Address.String(),

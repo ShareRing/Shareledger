@@ -4,23 +4,23 @@ import (
 	"math/rand"
 	"sync"
 
-	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
+	"github.com/cosmos/cosmos-sdk/types/simulation"
 	"github.com/sharering/shareledger/testutil"
 	"github.com/sharering/shareledger/x/electoral/types"
 )
 
 var (
-	electoralAccount = map[string][]sdk.AccAddress{}
+	electoralAccount = map[string][]simulation.Account{}
 	rwMux            = sync.RWMutex{}
 )
 
-func GetElectoralAddress(r *rand.Rand, addressRole string) sdk.Address {
+func GetElectoralAddress(r *rand.Rand, addressRole string) simulation.Account {
 	rwMux.RLock()
 	defer rwMux.RUnlock()
 	accounts := electoralAccount[addressRole]
 	if len(accounts) == 0 {
-		return nil
+		return simulation.Account{}
 	}
 	if len(accounts) == 1 {
 		return accounts[0]
@@ -34,8 +34,8 @@ func MustGenRandGenesis(simState *module.SimulationState) {
 	authority := testutil.RandPick(simState.Rand, simState.Accounts)
 	treasure := testutil.RandPick(simState.Rand, simState.Accounts)
 
-	electoralAccount["authority"] = []sdk.AccAddress{authority.Address}
-	electoralAccount["treasure"] = []sdk.AccAddress{treasure.Address}
+	electoralAccount["authority"] = []simulation.Account{authority}
+	electoralAccount["treasure"] = []simulation.Account{treasure}
 
 	accState := make([]types.AccState, 0, 24)
 
@@ -46,7 +46,7 @@ func MustGenRandGenesis(simState *module.SimulationState) {
 			Address: acc.Address.String(),
 			Status:  string(types.StatusActive),
 		})
-		electoralAccount["operator"] = append(electoralAccount["operator"], acc.Address)
+		electoralAccount["operator"] = append(electoralAccount["operator"], acc)
 
 		acc = testutil.RandPick(simState.Rand, simState.Accounts)
 		accState = append(accState, types.AccState{
@@ -54,7 +54,7 @@ func MustGenRandGenesis(simState *module.SimulationState) {
 			Address: acc.Address.String(),
 			Status:  string(types.StatusActive),
 		})
-		electoralAccount["approver"] = append(electoralAccount["approver"], acc.Address)
+		electoralAccount["approver"] = append(electoralAccount["approver"], acc)
 
 		acc = testutil.RandPick(simState.Rand, simState.Accounts)
 		accState = append(accState, types.AccState{
@@ -62,7 +62,7 @@ func MustGenRandGenesis(simState *module.SimulationState) {
 			Address: acc.Address.String(),
 			Status:  string(types.StatusActive),
 		})
-		electoralAccount["docIssuer"] = append(electoralAccount["docIssuer"], acc.Address)
+		electoralAccount["docIssuer"] = append(electoralAccount["docIssuer"], acc)
 
 		acc = testutil.RandPick(simState.Rand, simState.Accounts)
 		accState = append(accState, types.AccState{
@@ -70,7 +70,7 @@ func MustGenRandGenesis(simState *module.SimulationState) {
 			Address: acc.Address.String(),
 			Status:  string(types.StatusActive),
 		})
-		electoralAccount["idSigner"] = append(electoralAccount["idSigner"], acc.Address)
+		electoralAccount["idSigner"] = append(electoralAccount["idSigner"], acc)
 
 		acc = testutil.RandPick(simState.Rand, simState.Accounts)
 		accState = append(accState, types.AccState{
@@ -78,7 +78,7 @@ func MustGenRandGenesis(simState *module.SimulationState) {
 			Address: acc.Address.String(),
 			Status:  string(types.StatusActive),
 		})
-		electoralAccount["loader"] = append(electoralAccount["loader"], acc.Address)
+		electoralAccount["loader"] = append(electoralAccount["loader"], acc)
 
 		acc = testutil.RandPick(simState.Rand, simState.Accounts)
 		accState = append(accState, types.AccState{
@@ -86,7 +86,7 @@ func MustGenRandGenesis(simState *module.SimulationState) {
 			Address: acc.Address.String(),
 			Status:  string(types.StatusActive),
 		})
-		electoralAccount["relayer"] = append(electoralAccount["relayer"], acc.Address)
+		electoralAccount["relayer"] = append(electoralAccount["relayer"], acc)
 
 		acc = testutil.RandPick(simState.Rand, simState.Accounts)
 		accState = append(accState, types.AccState{
@@ -94,7 +94,7 @@ func MustGenRandGenesis(simState *module.SimulationState) {
 			Address: acc.Address.String(),
 			Status:  string(types.StatusActive),
 		})
-		electoralAccount["swapManager"] = append(electoralAccount["swapManager"], acc.Address)
+		electoralAccount["swapManager"] = append(electoralAccount["swapManager"], acc)
 
 		acc = testutil.RandPick(simState.Rand, simState.Accounts)
 		accState = append(accState, types.AccState{
@@ -102,7 +102,7 @@ func MustGenRandGenesis(simState *module.SimulationState) {
 			Address: acc.Address.String(),
 			Status:  string(types.StatusActive),
 		})
-		electoralAccount["voter"] = append(electoralAccount["voter"], acc.Address)
+		electoralAccount["voter"] = append(electoralAccount["voter"], acc)
 	}
 
 	genState := types.GenesisState{

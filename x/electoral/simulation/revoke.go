@@ -1,6 +1,8 @@
 package simulation
 
 import (
+	"math/rand"
+
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	types2 "github.com/cosmos/cosmos-sdk/crypto/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -8,7 +10,6 @@ import (
 	"github.com/sharering/shareledger/testutil"
 	"github.com/sharering/shareledger/x/electoral/keeper"
 	"github.com/sharering/shareledger/x/electoral/types"
-	"math/rand"
 )
 
 func SimulateRevokeAccountOperator(
@@ -21,7 +22,7 @@ func SimulateRevokeAccountOperator(
 	) (simtypes.OperationMsg, []simtypes.FutureOperation, error) {
 		creator := GetElectoralAddress(r, "authority")
 		a := testutil.RandPick(r, accs)
-		msg := &types.MsgRevokeAccountOperators{Creator: creator.String()}
+		msg := &types.MsgRevokeAccountOperators{Creator: creator.Address.String()}
 
 		operator, err := k.AccountOperators(ctx, &types.QueryAccountOperatorsRequest{})
 		if err != nil {
@@ -30,7 +31,7 @@ func SimulateRevokeAccountOperator(
 
 		msg.Addresses = []string{operator.AccStates[0].Address}
 
-		err = gk.LoadAllowanceLoader(ctx, sdk.MustAccAddressFromBech32(creator.String()))
+		err = gk.LoadAllowanceLoader(ctx, sdk.MustAccAddressFromBech32(creator.Address.String()))
 		if err != nil {
 			return simtypes.NoOpMsg(types.ModuleName, msg.Type(), err.Error()), nil, nil
 		}
@@ -53,7 +54,7 @@ func SimulateRevokeApprover(
 	) (simtypes.OperationMsg, []simtypes.FutureOperation, error) {
 		creator := GetElectoralAddress(r, "authority")
 		a := testutil.RandPick(r, accs)
-		msg := &types.MsgRevokeApprovers{Creator: creator.String()}
+		msg := &types.MsgRevokeApprovers{Creator: creator.Address.String()}
 
 		approver, err := k.Approvers(ctx, &types.QueryApproversRequest{})
 		if err != nil {
@@ -62,7 +63,7 @@ func SimulateRevokeApprover(
 
 		msg.Addresses = []string{approver.Approvers[0].Address}
 
-		err = gk.LoadAllowanceLoader(ctx, sdk.MustAccAddressFromBech32(creator.String()))
+		err = gk.LoadAllowanceLoader(ctx, sdk.MustAccAddressFromBech32(creator.Address.String()))
 		if err != nil {
 			return simtypes.NoOpMsg(types.ModuleName, msg.Type(), err.Error()), nil, nil
 		}
@@ -85,7 +86,7 @@ func SimulateRevokeDocIssuer(
 	) (simtypes.OperationMsg, []simtypes.FutureOperation, error) {
 		creator := GetElectoralAddress(r, "authority")
 		a := testutil.RandPick(r, accs)
-		msg := &types.MsgRevokeDocIssuers{Creator: creator.String()}
+		msg := &types.MsgRevokeDocIssuers{Creator: creator.Address.String()}
 
 		docIssuer, err := k.DocumentIssuers(ctx, &types.QueryDocumentIssuersRequest{})
 		if err != nil {
@@ -94,7 +95,7 @@ func SimulateRevokeDocIssuer(
 
 		msg.Addresses = []string{docIssuer.AccStates[0].Address}
 
-		err = gk.LoadAllowanceLoader(ctx, sdk.MustAccAddressFromBech32(creator.String()))
+		err = gk.LoadAllowanceLoader(ctx, sdk.MustAccAddressFromBech32(creator.Address.String()))
 		if err != nil {
 			return simtypes.NoOpMsg(types.ModuleName, msg.Type(), err.Error()), nil, nil
 		}
@@ -117,7 +118,7 @@ func SimulateRevokeIdSigner(
 	) (simtypes.OperationMsg, []simtypes.FutureOperation, error) {
 		creator := GetElectoralAddress(r, "authority")
 		a := testutil.RandPick(r, accs)
-		msg := &types.MsgRevokeIdSigners{Creator: creator.String()}
+		msg := &types.MsgRevokeIdSigners{Creator: creator.Address.String()}
 
 		idSigner, err := k.IdSigners(ctx, &types.QueryIdSignersRequest{})
 		if err != nil {
@@ -126,7 +127,7 @@ func SimulateRevokeIdSigner(
 
 		msg.Addresses = []string{idSigner.AccStates[0].Address}
 
-		err = gk.LoadAllowanceLoader(ctx, sdk.MustAccAddressFromBech32(creator.String()))
+		err = gk.LoadAllowanceLoader(ctx, sdk.MustAccAddressFromBech32(creator.Address.String()))
 		if err != nil {
 			return simtypes.NoOpMsg(types.ModuleName, msg.Type(), err.Error()), nil, nil
 		}
@@ -149,7 +150,7 @@ func SimulateRevokeLoader(
 	) (simtypes.OperationMsg, []simtypes.FutureOperation, error) {
 		creator := GetElectoralAddress(r, "authority")
 		a := testutil.RandPick(r, accs)
-		msg := &types.MsgRevokeLoaders{Creator: creator.String()}
+		msg := &types.MsgRevokeLoaders{Creator: creator.Address.String()}
 
 		loader, err := k.Loaders(ctx, &types.QueryLoadersRequest{})
 		if err != nil {
@@ -158,7 +159,7 @@ func SimulateRevokeLoader(
 
 		msg.Addresses = []string{loader.Loaders[0].Address}
 
-		err = gk.LoadAllowanceLoader(ctx, sdk.MustAccAddressFromBech32(creator.String()))
+		err = gk.LoadAllowanceLoader(ctx, sdk.MustAccAddressFromBech32(creator.Address.String()))
 		if err != nil {
 			return simtypes.NoOpMsg(types.ModuleName, msg.Type(), err.Error()), nil, nil
 		}
@@ -181,7 +182,7 @@ func SimulateRevokeRelayer(
 	) (simtypes.OperationMsg, []simtypes.FutureOperation, error) {
 		creator := GetElectoralAddress(r, "authority")
 		a := testutil.RandPick(r, accs)
-		msg := &types.MsgRevokeRelayers{Creator: creator.String()}
+		msg := &types.MsgRevokeRelayers{Creator: creator.Address.String()}
 
 		relayers, err := k.Relayers(ctx, &types.QueryRelayersRequest{})
 		if err != nil {
@@ -190,7 +191,7 @@ func SimulateRevokeRelayer(
 
 		msg.Addresses = []string{relayers.Relayers[0].Address}
 
-		err = gk.LoadAllowanceLoader(ctx, sdk.MustAccAddressFromBech32(creator.String()))
+		err = gk.LoadAllowanceLoader(ctx, sdk.MustAccAddressFromBech32(creator.Address.String()))
 		if err != nil {
 			return simtypes.NoOpMsg(types.ModuleName, msg.Type(), err.Error()), nil, nil
 		}
@@ -212,7 +213,7 @@ func SimulateRevokeSwapManager(
 	) (simtypes.OperationMsg, []simtypes.FutureOperation, error) {
 		creator := GetElectoralAddress(r, "authority")
 		a := testutil.RandPick(r, accs)
-		msg := &types.MsgRevokeRelayers{Creator: creator.String()}
+		msg := &types.MsgRevokeRelayers{Creator: creator.Address.String()}
 
 		swapManager, err := k.SwapManagers(ctx, &types.QuerySwapManagersRequest{})
 		if err != nil {
@@ -221,7 +222,7 @@ func SimulateRevokeSwapManager(
 
 		msg.Addresses = []string{swapManager.SwapManagers[0].Address}
 
-		err = gk.LoadAllowanceLoader(ctx, sdk.MustAccAddressFromBech32(creator.String()))
+		err = gk.LoadAllowanceLoader(ctx, sdk.MustAccAddressFromBech32(creator.Address.String()))
 		if err != nil {
 			return simtypes.NoOpMsg(types.ModuleName, msg.Type(), err.Error()), nil, nil
 		}

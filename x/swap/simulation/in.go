@@ -2,11 +2,13 @@ package simulation
 
 import (
 	"fmt"
+	"math/rand"
+
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
 	"github.com/sharering/shareledger/testutil"
+	elecSim "github.com/sharering/shareledger/x/electoral/simulation"
 	"github.com/sharering/shareledger/x/utils/denom"
 	"github.com/thanhpk/randstr"
-	"math/rand"
 
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -22,7 +24,7 @@ func SimulateMsgIn(
 ) simtypes.Operation {
 	return func(r *rand.Rand, app *baseapp.BaseApp, ctx sdk.Context, accs []simtypes.Account, chainID string,
 	) (simtypes.OperationMsg, []simtypes.FutureOperation, error) {
-		simAccount, _ := simtypes.RandomAcc(r, accs)
+		simAccount := elecSim.GetElectoralAddress(r, "relayer")
 		shrRand := rand.Int63n(10000000000000-1000000000) + 10000000000000
 		net := testutil.RandNetwork(r)
 		amount := sdk.NewDecCoinFromCoin(sdk.NewCoin(denom.Base, sdk.NewInt(shrRand)))

@@ -3,11 +3,12 @@ package app_test
 import (
 	"encoding/json"
 	"fmt"
-	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
 	"os"
 	"runtime/debug"
 	"strings"
 	"testing"
+
+	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
 
 	"github.com/CosmWasm/wasmd/x/wasm"
 	"github.com/cosmos/cosmos-sdk/baseapp"
@@ -40,6 +41,7 @@ import (
 // Get flags every time the simulator is run
 func init() {
 	simapp.GetSimulatorFlags()
+
 }
 
 type StoreKeysPrefixes struct {
@@ -53,6 +55,19 @@ var emptyWasmOpts []wasm.Option = nil
 func fauxMerkleModeOpt(bapp *baseapp.BaseApp) {
 	bapp.SetFauxMerkleMode()
 }
+
+type (
+	SkipCheckVoterOpts struct {
+	}
+)
+
+func (opt SkipCheckVoterOpts) Get(o string) interface{} {
+	if o == app.FlagAppOptionSkipCheckVoter {
+		return true
+	}
+	return false
+}
+
 func TestAppImportExport(t *testing.T) {
 	config, db, dir, logger, skip, err := simapp.SetupSimulation("leveldb-app-sim", "Simulation")
 	if skip {
@@ -73,7 +88,7 @@ func TestAppImportExport(t *testing.T) {
 		app.DefaultNodeHome,
 		simapp.FlagPeriodValue,
 		app.MakeTestEncodingConfig(),
-		simapp.EmptyAppOptions{},
+		SkipCheckVoterOpts{},
 		fauxMerkleModeOpt,
 	)
 
@@ -126,7 +141,7 @@ func TestAppImportExport(t *testing.T) {
 	var genesisState app.GenesisState
 	err = json.Unmarshal(exported.AppState, &genesisState)
 	require.NoError(t, err)
-	fmt.Println("genesis---------- ", string(genesisState[distributionxType.ModuleName]))
+
 	defer func() {
 		if r := recover(); r != nil {
 			err := fmt.Sprintf("%v", r)

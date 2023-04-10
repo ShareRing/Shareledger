@@ -3,13 +3,15 @@ package simulation
 import (
 	"encoding/json"
 	"fmt"
+	"math/rand"
+	"strconv"
+
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
 	"github.com/ethereum/go-ethereum/signer/core/apitypes"
 	"github.com/sharering/shareledger/testutil"
+	elecSim "github.com/sharering/shareledger/x/electoral/simulation"
 	"github.com/sharering/shareledger/x/utils/denom"
 	"github.com/thanhpk/randstr"
-	"math/rand"
-	"strconv"
 
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	simappparams "github.com/cosmos/cosmos-sdk/simapp/params"
@@ -30,7 +32,7 @@ func SimulateMsgCreateFormat(
 ) simtypes.Operation {
 	return func(r *rand.Rand, app *baseapp.BaseApp, ctx sdk.Context, accs []simtypes.Account, chainID string,
 	) (simtypes.OperationMsg, []simtypes.FutureOperation, error) {
-		simAccount, _ := simtypes.RandomAcc(r, accs)
+		simAccount := elecSim.GetElectoralAddress(r, "authority")
 		msg := &types.MsgCreateSchema{
 			Creator: simAccount.Address.String(),
 			Network: randstr.String(4),
@@ -91,7 +93,8 @@ func SimulateMsgUpdateFormat(
 			msg        = &types.MsgUpdateSchema{}
 			allFormat  = k.GetAllSchema(ctx)
 		)
-		simAccount, _ = simtypes.RandomAcc(r, accs)
+		simAccount = elecSim.GetElectoralAddress(r, "authority")
+
 		if len(allFormat) == 0 {
 			return simtypes.NoOpMsg(types.ModuleName, msg.Type(), "no no schema for update"), nil, nil
 		}
@@ -133,7 +136,7 @@ func SimulateMsgDeleteFormat(
 			}
 		}
 
-		simAccount, _ = simtypes.RandomAcc(r, accs)
+		simAccount = elecSim.GetElectoralAddress(r, "authority")
 
 		msg.Creator = simAccount.Address.String()
 		msg.Network = c.GetNetwork()

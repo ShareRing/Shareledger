@@ -1,16 +1,18 @@
 package simulation
 
 import (
+	"math/rand"
+
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
 	simappparams "github.com/cosmos/cosmos-sdk/simapp/params"
 	"github.com/cosmos/ibc-go/v5/testing/simapp/helpers"
 	"github.com/sharering/shareledger/testutil"
 	"github.com/thanhpk/randstr"
-	"math/rand"
 
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
+	elecSim "github.com/sharering/shareledger/x/electoral/simulation"
 	"github.com/sharering/shareledger/x/swap/keeper"
 	"github.com/sharering/shareledger/x/swap/types"
 )
@@ -22,7 +24,7 @@ func SimulateMsgApprove(
 ) simtypes.Operation {
 	return func(r *rand.Rand, app *baseapp.BaseApp, ctx sdk.Context, accs []simtypes.Account, chainID string,
 	) (simtypes.OperationMsg, []simtypes.FutureOperation, error) {
-		simAccount, _ := simtypes.RandomAcc(r, accs)
+		simAccount := elecSim.GetElectoralAddress(r, "approver")
 		msg := &types.MsgApproveOut{
 			Signature: randstr.Hex(50),
 			Creator:   simAccount.Address.String(),

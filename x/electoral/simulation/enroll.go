@@ -1,8 +1,9 @@
 package simulation
 
 import (
-	types2 "github.com/cosmos/cosmos-sdk/crypto/types"
 	"math/rand"
+
+	types2 "github.com/cosmos/cosmos-sdk/crypto/types"
 
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -22,9 +23,9 @@ func SimulateEnrollAccountOperator(
 	) (simtypes.OperationMsg, []simtypes.FutureOperation, error) {
 		creator := GetElectoralAddress(r, "authority")
 		a := testutil.RandPick(r, accs)
-		msg := &types.MsgEnrollAccountOperators{Creator: creator.String(), Addresses: []string{a.Address.String()}}
+		msg := &types.MsgEnrollAccountOperators{Creator: creator.Address.String(), Addresses: []string{a.Address.String()}}
 
-		err := gk.LoadAllowanceLoader(ctx, sdk.MustAccAddressFromBech32(creator.String()))
+		err := gk.LoadAllowanceLoader(ctx, sdk.MustAccAddressFromBech32(creator.Address.String()))
 		if err != nil {
 			return simtypes.NoOpMsg(types.ModuleName, msg.Type(), err.Error()), nil, nil
 		}
@@ -47,9 +48,9 @@ func SimulateEnrollApprover(
 	) (simtypes.OperationMsg, []simtypes.FutureOperation, error) {
 		creator := GetElectoralAddress(r, "authority")
 		a := testutil.RandPick(r, accs)
-		msg := &types.MsgEnrollApprovers{Creator: creator.String(), Addresses: []string{a.Address.String()}}
+		msg := &types.MsgEnrollApprovers{Creator: creator.Address.String(), Addresses: []string{a.Address.String()}}
 
-		err := gk.LoadAllowanceLoader(ctx, sdk.MustAccAddressFromBech32(creator.String()))
+		err := gk.LoadAllowanceLoader(ctx, sdk.MustAccAddressFromBech32(creator.Address.String()))
 		if err != nil {
 			return simtypes.NoOpMsg(types.ModuleName, msg.Type(), err.Error()), nil, nil
 		}
@@ -72,9 +73,9 @@ func SimulateEnrollDocIssuer(
 	) (simtypes.OperationMsg, []simtypes.FutureOperation, error) {
 		creator := GetElectoralAddress(r, "authority")
 		a := testutil.RandPick(r, accs)
-		msg := &types.MsgEnrollDocIssuers{Creator: creator.String(), Addresses: []string{a.Address.String()}}
+		msg := &types.MsgEnrollDocIssuers{Creator: creator.Address.String(), Addresses: []string{a.Address.String()}}
 
-		err := gk.LoadAllowanceLoader(ctx, sdk.MustAccAddressFromBech32(creator.String()))
+		err := gk.LoadAllowanceLoader(ctx, sdk.MustAccAddressFromBech32(creator.Address.String()))
 		if err != nil {
 			return simtypes.NoOpMsg(types.ModuleName, msg.Type(), err.Error()), nil, nil
 		}
@@ -96,9 +97,9 @@ func SimulateEnrollIdSigner(
 	) (simtypes.OperationMsg, []simtypes.FutureOperation, error) {
 		creator := GetElectoralAddress(r, "authority")
 		a := testutil.RandPick(r, accs)
-		msg := &types.MsgEnrollIdSigners{Creator: creator.String(), Addresses: []string{a.Address.String()}}
+		msg := &types.MsgEnrollIdSigners{Creator: creator.Address.String(), Addresses: []string{a.Address.String()}}
 
-		err := gk.LoadAllowanceLoader(ctx, sdk.MustAccAddressFromBech32(creator.String()))
+		err := gk.LoadAllowanceLoader(ctx, sdk.MustAccAddressFromBech32(creator.Address.String()))
 		if err != nil {
 			return simtypes.NoOpMsg(types.ModuleName, msg.Type(), err.Error()), nil, nil
 		}
@@ -121,9 +122,9 @@ func SimulateEnrollLoader(
 	) (simtypes.OperationMsg, []simtypes.FutureOperation, error) {
 		creator := GetElectoralAddress(r, "authority")
 		a := testutil.RandPick(r, accs)
-		msg := &types.MsgEnrollLoaders{Creator: creator.String(), Addresses: []string{a.Address.String()}}
+		msg := &types.MsgEnrollLoaders{Creator: creator.Address.String(), Addresses: []string{a.Address.String()}}
 
-		err := gk.LoadAllowanceLoader(ctx, sdk.MustAccAddressFromBech32(creator.String()))
+		err := gk.LoadAllowanceLoader(ctx, sdk.MustAccAddressFromBech32(creator.Address.String()))
 		if err != nil {
 			return simtypes.NoOpMsg(types.ModuleName, msg.Type(), err.Error()), nil, nil
 		}
@@ -149,8 +150,8 @@ func SimulateEnrollRelayer(
 
 		a := testutil.RandPick(r, accs)
 
-		msg := &types.MsgEnrollRelayers{Creator: creator.String(), Addresses: []string{a.Address.String()}}
-		err := gk.LoadAllowanceLoader(ctx, sdk.MustAccAddressFromBech32(creator.String()))
+		msg := &types.MsgEnrollRelayers{Creator: creator.Address.String(), Addresses: []string{a.Address.String()}}
+		err := gk.LoadAllowanceLoader(ctx, sdk.MustAccAddressFromBech32(creator.Address.String()))
 		if err != nil {
 			return simtypes.NoOpMsg(types.ModuleName, msg.Type(), err.Error()), nil, nil
 		}
@@ -173,9 +174,9 @@ func SimulateEnrollSwapManager(
 	) (simtypes.OperationMsg, []simtypes.FutureOperation, error) {
 		creator := GetElectoralAddress(r, "authority")
 		a := testutil.RandPick(r, accs)
-		msg := &types.MsgEnrollSwapManagers{Creator: creator.String(), Addresses: []string{a.Address.String()}}
+		msg := &types.MsgEnrollSwapManagers{Creator: creator.Address.String(), Addresses: []string{a.Address.String()}}
 
-		err := gk.LoadAllowanceLoader(ctx, sdk.MustAccAddressFromBech32(creator.String()))
+		err := gk.LoadAllowanceLoader(ctx, sdk.MustAccAddressFromBech32(creator.Address.String()))
 		if err != nil {
 			return simtypes.NoOpMsg(types.ModuleName, msg.Type(), err.Error()), nil, nil
 		}
@@ -198,9 +199,9 @@ func SimulateEnrollVoter(
 	) (simtypes.OperationMsg, []simtypes.FutureOperation, error) {
 		creator := GetElectoralAddress(r, "authority")
 		a := testutil.RandPick(r, accs)
-		msg := &types.MsgEnrollVoter{Creator: creator.String(), Address: a.Address.String()}
+		msg := &types.MsgEnrollVoter{Creator: creator.Address.String(), Address: a.Address.String()}
 
-		err := gk.LoadAllowanceLoader(ctx, sdk.MustAccAddressFromBech32(creator.String()))
+		err := gk.LoadAllowanceLoader(ctx, sdk.MustAccAddressFromBech32(creator.Address.String()))
 		if err != nil {
 			return simtypes.NoOpMsg(types.ModuleName, msg.Type(), err.Error()), nil, nil
 		}

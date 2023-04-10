@@ -29,12 +29,13 @@ func SimulateMsgWithdrawReward(
 		if moduleBalance.AmountOf(denom.Base).IsZero() {
 			return simtypes.NoOpMsg(types.ModuleName, msg.Type(), "WithdrawReward not available now"), nil, nil
 		}
+
 		acc := testutil.RandPick(r, accs)
 		msg = types.NewMsgWithdrawReward(acc.Address)
 		err := SimBroadcastTransaction(r, app, msg, ak, bk, ctx, chainID, []cryptotypes.PrivKey{acc.PrivKey})
 		if err != nil {
 			return simtypes.NoOpMsg(types.ModuleName, msg.Type(), "WithdrawReward user insufficient fund"), nil, nil
 		}
-		return simtypes.NewOperationMsg(msg, true, "", nil), nil, nil
+		return simtypes.NewOperationMsg(msg, true, "Success", nil), nil, nil
 	}
 }

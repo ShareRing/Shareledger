@@ -1,10 +1,12 @@
 package simulation
 
 import (
+	"math/rand"
+
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
 	"github.com/sharering/shareledger/testutil"
+	elecSim "github.com/sharering/shareledger/x/electoral/simulation"
 	"github.com/sharering/shareledger/x/utils/denom"
-	"math/rand"
 
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -20,7 +22,7 @@ func SimulateMsgUpdateSwapFee(
 ) simtypes.Operation {
 	return func(r *rand.Rand, app *baseapp.BaseApp, ctx sdk.Context, accs []simtypes.Account, chainID string,
 	) (simtypes.OperationMsg, []simtypes.FutureOperation, error) {
-		simAccount, _ := simtypes.RandomAcc(r, accs)
+		simAccount := elecSim.GetElectoralAddress(r, "swapManager")
 		msg := &types.MsgUpdateSwapFee{
 			Creator: simAccount.Address.String(),
 			In:      &sdk.DecCoin{},

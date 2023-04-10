@@ -66,7 +66,7 @@ func (a Auth) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate bool, next sdk.Ant
 			*electoraltypes.MsgRevokeLoaders,
 			*electoraltypes.MsgEnrollAccountOperators,
 			*electoraltypes.MsgRevokeAccountOperators,
-			*electoraltypes.MsgEnrollVoter,
+			// *electoraltypes.MsgEnrollVoter,
 			*electoraltypes.MsgEnrollApprovers,
 			*electoraltypes.MsgEnrollRelayers,
 			*electoraltypes.MsgRevokeRelayers,

@@ -58,13 +58,13 @@ func NewHandler(opts HandlerOptions) (sdk.AnteHandler, error) {
 		ante.NewTxTimeoutHeightDecorator(),
 		ante.NewValidateMemoDecorator(opts.AccountKeeper),
 		ante.NewConsumeGasForTxSizeDecorator(opts.AccountKeeper),
-
+		NewAuthDecorator(opts.RoleKeeper, opts.IdKeeper),
 		// ante.NewDeductFeeDecorator(options.AccountKeeper, options.BankKeeper, options.FeegrantKeeper, options.TxFeeChecker),
-		//NewDeductFeeDecorator(opts.AccountKeeper, opts.BankKeeper,
-		//	opts.FeegrantKeeper, opts.TxFeeChecker, opts.DistributionxKeeper, opts.WasmKeeper),
+		// NewDeductFeeDecorator(opts.AccountKeeper, opts.BankKeeper,
+		// 	opts.FeegrantKeeper, opts.TxFeeChecker, opts.DistributionxKeeper, opts.WasmKeeper),
 
 		// there 2 ante that check for transaction fee
-		//NewCheckFeeDecorator(opts.GentlemintKeeper),
+		// NewCheckFeeDecorator(opts.GentlemintKeeper),
 		globalfeeante.NewFeeDecorator(opts.BypassMinFeeMsgTypes, opts.GlobalFeeSubspace, opts.StakingSubspace),
 
 		NewCountBuilderDecorator(opts.DistributionxKeeper),

@@ -4,12 +4,12 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"math/rand"
+
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
 	"github.com/gorilla/mux"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
-	"github.com/sharering/shareledger/x/utils/denom"
 	"github.com/spf13/cobra"
-	"math/rand"
 
 	abci "github.com/tendermint/tendermint/abci/types"
 
@@ -104,18 +104,6 @@ type AppModule struct {
 }
 
 func (am AppModule) GenerateGenesisState(input *module.SimulationState) {
-	//randRate := testutil.RandRate(input.Rand)
-	miniMumGasPrice := sdk.DecCoins{}
-	input.AppParams.GetOrGenerate(
-		input.Cdc, string(types.ParamStoreKeyMinGasPrices), &miniMumGasPrice, input.Rand,
-		func(r *rand.Rand) {
-			miniMumGasPrice = sdk.NewDecCoinsFromCoins(sdk.NewCoin(denom.Base, sdk.NewInt(0)))
-		},
-	)
-
-	gentlemintGenesis := types.DefaultGenesis()
-
-	input.GenState[types.ModuleName] = input.Cdc.MustMarshalJSON(gentlemintGenesis)
 
 }
 
