@@ -3,6 +3,7 @@ package network
 import (
 	"bufio"
 	"encoding/json"
+	distributionxtypes "github.com/sharering/shareledger/x/distributionx/types"
 	"io/ioutil"
 	"os"
 	"testing"
@@ -65,7 +66,7 @@ func New(t *testing.T, configs ...network.Config) *network.Network {
 	return net
 }
 
-func CompileGenesis(t *testing.T, config *network.Config, genesisState map[string]json.RawMessage, au []authtypes.GenesisAccount, b []banktypes.Balance, elGen electoraltypes.GenesisState) map[string]json.RawMessage {
+func CompileGenesis(t *testing.T, config *network.Config, genesisState map[string]json.RawMessage, au []authtypes.GenesisAccount, b []banktypes.Balance, elGen electoraltypes.GenesisState, distributionXGen distributionxtypes.GenesisState) map[string]json.RawMessage {
 	var bankGenesis types.GenesisState
 	var authGenesis authtypes.GenesisState
 	var stakingGenesis stakingtypes.GenesisState
@@ -87,11 +88,14 @@ func CompileGenesis(t *testing.T, config *network.Config, genesisState map[strin
 	genesisState[authtypes.ModuleName] = config.Codec.MustMarshalJSON(&authGenesis)
 	genesisState[electoraltypes.ModuleName] = config.Codec.MustMarshalJSON(&elGen)
 	genesisState[stakingtypes.ModuleName] = config.Codec.MustMarshalJSON(&stakingGenesis)
+	genesisState[distributionxtypes.ModuleName] = config.Codec.MustMarshalJSON(&distributionXGen)
+
 	return genesisState
 }
 
 // GetTestingGenesis init the genesis state for testing in here
 func GetTestingGenesis(t *testing.T, config *network.Config) (keyring.Keyring, string) {
+
 	genesisState := config.GenesisState
 
 	buf := bufio.NewReader(os.Stdin)
@@ -128,6 +132,13 @@ func GetTestingGenesis(t *testing.T, config *network.Config) (keyring.Keyring, s
 		{Key: KeyAccount6, Balance: OneThousandSHROneHundredSHRPCoins},
 		{Key: KeyAccount7, Balance: OneThousandSHROneHundredSHRPCoins},
 		{Key: KeyAccount8, Balance: OneThousandSHROneHundredSHRPCoins},
+
+		{Key: KeyMasterBuilder1, Balance: OneThousandSHROneHundredSHRPCoins},
+		{Key: KeyMasterBuilder2, Balance: OneThousandSHROneHundredSHRPCoins},
+		{Key: KeyDevPoolAccount, Balance: ZeroSHRSHRP},
+
+		{Key: KeyApproverRelayer, Balance: OneThousandSHROneHundredSHRPCoins},
+
 		{Key: KeyApproverRelayer, Balance: OneThousandSHROneHundredSHRPCoins},
 	}
 
@@ -150,7 +161,20 @@ func GetTestingGenesis(t *testing.T, config *network.Config) (keyring.Keyring, s
 		},
 	}
 
-	genesisState = CompileGenesis(t, config, genesisState, genAccounts, genBalances, genElectoral)
+	disXGen := distributionxtypes.DefaultGenesis()
+
+	devPoolAddr := MustAddressFormKeyring(newKeyringService, KeyDevPoolAccount)
+
+	disXGen.Params.DevPoolAccount = devPoolAddr.String()
+
+	disXGen.BuilderListList = []distributionxtypes.BuilderList{
+		{
+			Id:              0,
+			ContractAddress: "",
+		},
+	}
+
+	genesisState = CompileGenesis(t, config, genesisState, genAccounts, genBalances, genElectoral, *disXGen)
 	config.GenesisState = genesisState
 	return newKeyringService, baseDir
 }
@@ -170,4 +194,17 @@ func (ao TestAppOptions) Get(o string) interface{} {
 		return true
 	}
 	return nil
+}
+
+func MustAddressFormKeyring(kr keyring.Keyring, id string) sdk.AccAddress {
+	r, err := kr.Key(id)
+	if err != nil {
+		panic(err)
+	}
+	p, err := r.GetPubKey()
+	if err != nil {
+		panic(err)
+	}
+	return sdk.AccAddress(p.Address())
+
 }

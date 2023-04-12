@@ -48,5 +48,4 @@ func AssetJsonUnmarshal(t *testing.T, data []byte) types.Asset {
 	err := encodingConfig.Codec.UnmarshalJSON(data, &a)
 	require.NoError(t, err)
 	return *a.Asset
-
 }

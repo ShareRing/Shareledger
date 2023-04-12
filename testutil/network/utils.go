@@ -40,6 +40,10 @@ const (
 	KeyAccount8        string = "acc8"
 	KeyApproverRelayer string = "raAccount"
 
+	KeyMasterBuilder1 = "masterBuilder1"
+	KeyMasterBuilder2 = "masterBuilder1"
+	KeyDevPoolAccount = "devPool"
+
 	KeyAccountSwapETH = "eth"
 	KeyAccountSwapBSC = "bcs"
 
