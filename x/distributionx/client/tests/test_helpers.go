@@ -5,6 +5,8 @@ import (
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/testutil"
 	clitestutil "github.com/cosmos/cosmos-sdk/testutil/cli"
+	cli3 "github.com/cosmos/cosmos-sdk/x/distribution/client/cli"
+	types2 "github.com/cosmos/cosmos-sdk/x/distribution/types"
 	"github.com/pkg/errors"
 	"github.com/sharering/shareledger/testutil/network"
 	cli2 "github.com/sharering/shareledger/x/distributionx/client/cli"
@@ -65,6 +67,42 @@ func ExCmdListReward(clientCtx client.Context) (types.QueryAllRewardResponse, er
 	err = clientCtx.Codec.UnmarshalJSON(out.Bytes(), &res)
 	if err != nil {
 		return types.QueryAllRewardResponse{}, err
+	}
+	return res, nil
+}
+func ExCmdQueryParam(clientCtx client.Context) (types.QueryParamsResponse, error) {
+	var args []string
+	//args = append(args, masterBuilder)
+	args = append(args, network.JSONFlag)
+
+	out, err := clitestutil.ExecTestCLICmd(clientCtx, cli2.CmdQueryParams(), args)
+	if err != nil {
+		return types.QueryParamsResponse{}, err
+	}
+
+	var res = types.QueryParamsResponse{}
+	err = clientCtx.Codec.UnmarshalJSON(out.Bytes(), &res)
+	if err != nil {
+		return types.QueryParamsResponse{}, err
+	}
+	return res, nil
+}
+
+func ExCmdValidatorReward(clientCtx client.Context, delegator string) (types2.QueryDelegationTotalRewardsResponse, error) {
+	var args []string
+	args = append(args, delegator)
+
+	args = append(args, network.JSONFlag)
+
+	out, err := clitestutil.ExecTestCLICmd(clientCtx, cli3.GetCmdQueryDelegatorRewards(), args)
+	if err != nil {
+		return types2.QueryDelegationTotalRewardsResponse{}, err
+	}
+
+	var res = types2.QueryDelegationTotalRewardsResponse{}
+	err = clientCtx.Codec.UnmarshalJSON(out.Bytes(), &res)
+	if err != nil {
+		return types2.QueryDelegationTotalRewardsResponse{}, err
 	}
 	return res, nil
 }

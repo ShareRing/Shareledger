@@ -92,15 +92,6 @@
         "wasm_validator": "0.500000000000000000"
       },
       "rewardList": [
-        {
-          "amount": [
-            {
-              "amount": "2000000000",
-              "denom": "nshr"
-            }
-          ],
-          "index": "shareledger1t3g4570e23h96h5hm5gdtfrjprmvk9qwmrglfr"
-        }
       ]
     },
     "document": {
