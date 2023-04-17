@@ -7,6 +7,8 @@ import (
 	clitestutil "github.com/cosmos/cosmos-sdk/testutil/cli"
 	cli3 "github.com/cosmos/cosmos-sdk/x/distribution/client/cli"
 	types2 "github.com/cosmos/cosmos-sdk/x/distribution/types"
+	cli4 "github.com/cosmos/cosmos-sdk/x/staking/client/cli"
+	types3 "github.com/cosmos/cosmos-sdk/x/staking/types"
 	"github.com/pkg/errors"
 	"github.com/sharering/shareledger/testutil/network"
 	cli2 "github.com/sharering/shareledger/x/distributionx/client/cli"
@@ -88,21 +90,40 @@ func ExCmdQueryParam(clientCtx client.Context) (types.QueryParamsResponse, error
 	return res, nil
 }
 
-func ExCmdValidatorReward(clientCtx client.Context, delegator string) (types2.QueryDelegationTotalRewardsResponse, error) {
+func ExCmdQueryOutStandingReward(clientCtx client.Context, validator string) (types2.ValidatorOutstandingRewards, error) {
 	var args []string
-	args = append(args, delegator)
 
+	args = append(args, validator)
 	args = append(args, network.JSONFlag)
 
-	out, err := clitestutil.ExecTestCLICmd(clientCtx, cli3.GetCmdQueryDelegatorRewards(), args)
+	out, err := clitestutil.ExecTestCLICmd(clientCtx, cli3.GetCmdQueryValidatorOutstandingRewards(), args)
 	if err != nil {
-		return types2.QueryDelegationTotalRewardsResponse{}, err
+		return types2.ValidatorOutstandingRewards{}, err
 	}
+	var res = types2.ValidatorOutstandingRewards{}
 
-	var res = types2.QueryDelegationTotalRewardsResponse{}
 	err = clientCtx.Codec.UnmarshalJSON(out.Bytes(), &res)
 	if err != nil {
-		return types2.QueryDelegationTotalRewardsResponse{}, err
+		return types2.ValidatorOutstandingRewards{}, err
+	}
+	return res, nil
+}
+
+func ExCmdListDelegator(clientCtx client.Context, validator string) (types3.QueryValidatorDelegationsResponse, error) {
+	var args []string
+	args = append(args, validator)
+
+	args = append(args, network.JSONFlag)
+	//GetCmdQueryValidatorDelegations
+	out, err := clitestutil.ExecTestCLICmd(clientCtx, cli4.GetCmdQueryValidatorDelegations(), args)
+	if err != nil {
+		return types3.QueryValidatorDelegationsResponse{}, err
+	}
+	//QueryValidatorDelegationsResponse
+	var res = types3.QueryValidatorDelegationsResponse{}
+	err = clientCtx.Codec.Unmarshal(out.Bytes(), &res)
+	if err != nil {
+		return types3.QueryValidatorDelegationsResponse{}, err
 	}
 	return res, nil
 }

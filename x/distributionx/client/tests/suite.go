@@ -101,9 +101,9 @@ func (s *DistributionXIntegrationTestSuite) TestDistributionXWasmTransaction() {
 	if err != nil && !strings.Contains(err.Error(), "not found") {
 		s.T().Fail()
 	}
-	_, err = ExCmdValidatorReward(
+	outStandingRewardBefore, err := ExCmdQueryOutStandingReward(
 		s.network.Validators[0].ClientCtx,
-		s.network.Validators[0].Address.String(),
+		s.network.Validators[0].ValAddress.String(),
 	)
 	s.NoError(err, "Get validator reward error")
 
@@ -128,6 +128,7 @@ func (s *DistributionXIntegrationTestSuite) TestDistributionXWasmTransaction() {
 	s.Equalf(netutilts.ShareLedgerSuccessCode, res.Code, "broadcast transaction fail %v", res.String())
 	_ = s.network.WaitForNextBlock()
 	_ = s.network.WaitForNextBlock()
+	_ = s.network.WaitForNextBlock()
 
 	_, err = ExCmdListReward(s.network.Validators[0].ClientCtx)
 
@@ -144,25 +145,34 @@ func (s *DistributionXIntegrationTestSuite) TestDistributionXWasmTransaction() {
 	s.NoError(err)
 	makeTransactionAccBalanceAfterEx := netutilts.BalanceJsonUnmarshal(s.T(), accByte.Bytes())
 
+	//s.T().Log("delegator address", s.network.Validators[0].Address.String())
+	s.T().Log("validator address", s.network.Validators[0].ValAddress.String())
+
 	accByte, err = testutil2.QueryBalancesExec(
 		s.network.Validators[0].ClientCtx,
 		s.network.Validators[0].Address)
 	s.NoError(err)
 
-	_, err = ExCmdValidatorReward(s.network.Validators[0].ClientCtx, s.network.Validators[0].Address.String())
-	s.NoError(err, "Get validator reward error")
+	outStandingRewardAfter, err := ExCmdQueryOutStandingReward(
+		s.network.Validators[0].ClientCtx,
+		s.network.Validators[0].ValAddress.String(),
+	)
 
 	//Assertion time
 	s.Require().Equalf(sdk.NewInt(6250000000).String(), contractOwnerReward.Reward.GetAmount().AmountOf(denom.Base).String(), "the contract owner reward must be increment")
-	//s.Require().Equalf(sdk.NewInt(12500000000).String(), devPoolReward.Reward.GetAmount().AmountOf(denom.Base).String(), "Devpool must take 25%")
+
 	s.Require().Equalf(devPoolRewardBefore.Reward.Amount.AmountOf(denom.Base).Add(sdk.NewInt(12500000000)).String(), devPoolReward.Reward.GetAmount().AmountOf(denom.Base).String(), "Devpool must take 25%")
 	s.Require().Equalf(makeTransactionAccBalance.Balances.AmountOf(denom.Base).Sub(sdk.NewInt(50*denom.ShrExponent)), makeTransactionAccBalanceAfterEx.Balances.AmountOf(denom.Base), "the transaction execute maker must be reduce by the fee that input")
-	//s.Require().Equalf(validatorAccRewardBeforeExcContract.Total.AmountOf(denom.Base).Add(sdk.NewDec(25*denom.ShrExponent)).String(), validatorAccBalanceAfterExcContract.Total.AmountOf(denom.Base).String(), "the validator must take 50% transaction fee from 50shr fee")
+	s.Require().Equalf(outStandingRewardBefore.Rewards.AmountOf(denom.Base).Add(sdk.NewDec(25*denom.ShrExponent)).String(), outStandingRewardAfter.Rewards.AmountOf(denom.Base).String(), "the validator must take 50% transaction fee from 50shr fee")
 
 }
 
 func (s *DistributionXIntegrationTestSuite) TestDistributionXNormalTransaction() {
-
+	outStandingRewardBefore, err := ExCmdQueryOutStandingReward(
+		s.network.Validators[0].ClientCtx,
+		s.network.Validators[0].ValAddress.String(),
+	)
+	s.NoError(err, "Get validator reward error")
 	devPoolRewardBefore, err := ExCmdQueryReward(s.network.Validators[0].ClientCtx, "shareledger1t3g4570e23h96h5hm5gdtfrjprmvk9qwmrglfr")
 	if err != nil && !strings.Contains(err.Error(), "not found") {
 		s.T().Fail()
@@ -187,6 +197,11 @@ func (s *DistributionXIntegrationTestSuite) TestDistributionXNormalTransaction()
 	_ = s.network.WaitForNextBlock()
 	_ = s.network.WaitForNextBlock()
 	devPoolRewardAfter, err := ExCmdQueryReward(s.network.Validators[0].ClientCtx, "shareledger1t3g4570e23h96h5hm5gdtfrjprmvk9qwmrglfr")
+	outStandingRewardAfter, err := ExCmdQueryOutStandingReward(
+		s.network.Validators[0].ClientCtx,
+		s.network.Validators[0].ValAddress.String(),
+	)
+	s.NoError(err, "Get validator reward error")
 
 	s.Require().Equalf(
 		devPoolRewardBefore.Reward.Amount.
@@ -195,13 +210,6 @@ func (s *DistributionXIntegrationTestSuite) TestDistributionXNormalTransaction()
 		devPoolRewardAfter.Reward.Amount.AmountOf(denom.Base).String(),
 		"dev pool account must take 50% of 50shr transaction fee",
 	)
+	s.Require().Equalf(outStandingRewardBefore.Rewards.AmountOf(denom.Base).Add(sdk.NewDec(25*denom.ShrExponent)).String(), outStandingRewardAfter.Rewards.AmountOf(denom.Base).String(), "the validator must take 50% transaction fee from 50shr fee")
 
-	//s.Require().Equalf(
-	//	validatorBalanceBeforeTxn.
-	//		Balances.
-	//		AmountOf(denom.Base).
-	//		Add(sdk.NewInt(25*denom.ShrExponent)).String(),
-	//	validatorBalanceAfterTxn.Balances.AmountOf(denom.Base).String(),
-	//	"dev pool account must take 50% of 50shr transaction fee",
-	//)
 }
