@@ -26,5 +26,5 @@ COPY --from=build /lib/libwasmvm_muslc.a /lib/libwasmvm_muslc.a
 RUN chmod +x ./shareledger
 RUN mv ./shareledger /bin
 #
-EXPOSE 26656 26657
+EXPOSE 26656 26657 26658 1317 9090 9091
 CMD ["shareledger", "start"]

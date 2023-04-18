@@ -1,2 +1,4 @@
 build
 deploy/testnet
+go.work
+go.work.sum

@@ -6,3 +6,5 @@ release/
 /deploy/testnet/
 vendor/
 .vscode
+go.work
+go.work.sum

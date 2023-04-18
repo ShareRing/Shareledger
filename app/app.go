@@ -50,7 +50,7 @@ import (
 
 const (
 	AccountAddressPrefix = "shareledger"
-	Name                 = "Shareledger"
+	Name                 = "shareledger"
 )
 
 var (
@@ -193,7 +193,7 @@ func New(
 	}
 	anteHandler, err := ante.NewHandler(handlerOpts)
 	if err != nil {
-		panic(fmt.Errorf("failed to create AnteHandler: %s", err))
+		panic(fmt.Errorf("failed to create AnteHandler: %w", err))
 	}
 
 	app.SetAnteHandler(anteHandler)
@@ -202,7 +202,7 @@ func New(
 	if manager := app.SnapshotManager(); manager != nil {
 		err := manager.RegisterExtensions(wasmkeeper.NewWasmSnapshotter(app.CommitMultiStore(), &app.WasmKeeper))
 		if err != nil {
-			panic(fmt.Errorf("failed to register snapshot extension: %s", err))
+			panic(fmt.Errorf("failed to register snapshot extension: %w", err))
 		}
 	}
 
@@ -383,7 +383,6 @@ func (app *App) setupUpgradeStoreLoaders() {
 			app.SetStoreLoader(upgradetypes.UpgradeStoreLoader(upgradeInfo.Height, &upgrade.StoreUpgrades))
 		}
 	}
-
 }
 
 func (app *App) setupUpgradeHandlers() {
