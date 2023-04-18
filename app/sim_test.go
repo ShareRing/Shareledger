@@ -3,6 +3,7 @@ package app_test
 import (
 	"encoding/json"
 	"fmt"
+	gentlemintmoduletypes "github.com/sharering/shareledger/x/gentlemint/types"
 	"os"
 	"runtime/debug"
 	"strings"
@@ -76,7 +77,7 @@ func TestAppImportExport(t *testing.T) {
 	require.NoError(t, err, "simulation setup failed")
 	params.SetAddressPrefixes()
 	defer func() {
-		db.Close()
+		_ = db.Close()
 		require.NoError(t, os.RemoveAll(dir))
 	}()
 
@@ -178,6 +179,7 @@ func TestAppImportExport(t *testing.T) {
 		{simApp.AppKeepers.GetKey(distributionxType.StoreKey), newSimApp.AppKeepers.GetKey(distributionxType.StoreKey), [][]byte{}},
 		{simApp.AppKeepers.GetKey(swapmoduletypes.StoreKey), newSimApp.AppKeepers.GetKey(swapmoduletypes.StoreKey), [][]byte{}},
 		{simApp.AppKeepers.GetKey(elecTypes.StoreKey), newSimApp.AppKeepers.GetKey(elecTypes.StoreKey), [][]byte{}},
+		{simApp.AppKeepers.GetKey(gentlemintmoduletypes.StoreKey), newSimApp.AppKeepers.GetKey(gentlemintmoduletypes.StoreKey), [][]byte{}},
 	}
 
 	for _, skp := range storeKeysPrefixes {

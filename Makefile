@@ -94,3 +94,13 @@ duprefreshall: ddownswap ddown dinit dup dupswap
 
 test:
 	go test ./... -v
+
+sim-export-import:
+	@echo "Run Shareledger simulation test WARNING.If there are Insufficient error when run simulation  please check the ante/ante.go find the NewDeductFeeDecorator and remove it"
+	go test ./app/sim_test.go -run=TestAppImportExport -Enabled=true -NumBlocks=100 -BlockSize=200 -Commit=true -Period=0 -v skip-checking-voter-role true
+
+sim-full:
+	@echo "Run Shareledger simulation test WARNING.If there are Insufficient error when run simulation  please check the ante/ante.go find the NewDeductFeeDecorator and remove it"
+	go test ./app/sim_test.go -run=TestAppFullSimulation -Enabled=true -NumBlocks=100 -BlockSize=200 -Commit=true -Period=0 -v skip-checking-voter-role true
+
+sim: sim-export-import sim-full

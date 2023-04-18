@@ -86,8 +86,8 @@ func MustGenRandGenesis(simState *module.SimulationState) {
 			Address: acc.Address.String(),
 			Status:  string(types.StatusActive),
 		})
-		electoralAccount["relayer"] = append(electoralAccount["relayer"], acc)
 
+		electoralAccount["relayer"] = append(electoralAccount["relayer"], acc)
 		acc = testutil.RandPick(simState.Rand, simState.Accounts)
 		accState = append(accState, types.AccState{
 			Key:     string(types.GenAccStateIndexKey(acc.Address, types.AccStateKeySwapManager)),

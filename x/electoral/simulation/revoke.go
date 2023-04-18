@@ -1,6 +1,8 @@
 package simulation
 
 import (
+	"fmt"
+	"github.com/thanhpk/randstr"
 	"math/rand"
 
 	"github.com/cosmos/cosmos-sdk/baseapp"
@@ -24,14 +26,12 @@ func SimulateRevokeAccountOperator(
 		a := testutil.RandPick(r, accs)
 		msg := &types.MsgRevokeAccountOperators{Creator: creator.Address.String()}
 
-		operator, err := k.AccountOperators(ctx, &types.QueryAccountOperatorsRequest{})
-		if err != nil {
-			return simtypes.NoOpMsg(types.ModuleName, msg.Type(), err.Error()), nil, nil
-		}
+		acc := fmt.Sprintf("shareledger%s", randstr.Base62(39))
+		k.ActiveAccState(ctx, []byte(acc), types.AccStateKeyAccOp)
 
-		msg.Addresses = []string{operator.AccStates[0].Address}
+		msg.Addresses = []string{acc}
 
-		err = gk.LoadAllowanceLoader(ctx, sdk.MustAccAddressFromBech32(creator.Address.String()))
+		err := gk.LoadAllowanceLoader(ctx, sdk.MustAccAddressFromBech32(creator.Address.String()))
 		if err != nil {
 			return simtypes.NoOpMsg(types.ModuleName, msg.Type(), err.Error()), nil, nil
 		}
@@ -56,14 +56,12 @@ func SimulateRevokeApprover(
 		a := testutil.RandPick(r, accs)
 		msg := &types.MsgRevokeApprovers{Creator: creator.Address.String()}
 
-		approver, err := k.Approvers(ctx, &types.QueryApproversRequest{})
-		if err != nil {
-			return simtypes.NoOpMsg(types.ModuleName, msg.Type(), err.Error()), nil, nil
-		}
+		acc := fmt.Sprintf("shareledger%s", randstr.Base62(39))
+		k.ActiveAccState(ctx, []byte(acc), types.AccStateKeyApprover)
 
-		msg.Addresses = []string{approver.Approvers[0].Address}
+		msg.Addresses = []string{acc}
 
-		err = gk.LoadAllowanceLoader(ctx, sdk.MustAccAddressFromBech32(creator.Address.String()))
+		err := gk.LoadAllowanceLoader(ctx, sdk.MustAccAddressFromBech32(creator.Address.String()))
 		if err != nil {
 			return simtypes.NoOpMsg(types.ModuleName, msg.Type(), err.Error()), nil, nil
 		}
@@ -88,14 +86,12 @@ func SimulateRevokeDocIssuer(
 		a := testutil.RandPick(r, accs)
 		msg := &types.MsgRevokeDocIssuers{Creator: creator.Address.String()}
 
-		docIssuer, err := k.DocumentIssuers(ctx, &types.QueryDocumentIssuersRequest{})
-		if err != nil {
-			return simtypes.NoOpMsg(types.ModuleName, msg.Type(), err.Error()), nil, nil
-		}
+		acc := fmt.Sprintf("shareledger%s", randstr.Base62(39))
+		k.ActiveAccState(ctx, []byte(acc), types.AccStateKeyDocIssuer)
 
-		msg.Addresses = []string{docIssuer.AccStates[0].Address}
+		msg.Addresses = []string{acc}
 
-		err = gk.LoadAllowanceLoader(ctx, sdk.MustAccAddressFromBech32(creator.Address.String()))
+		err := gk.LoadAllowanceLoader(ctx, sdk.MustAccAddressFromBech32(creator.Address.String()))
 		if err != nil {
 			return simtypes.NoOpMsg(types.ModuleName, msg.Type(), err.Error()), nil, nil
 		}
@@ -120,18 +116,15 @@ func SimulateRevokeIdSigner(
 		a := testutil.RandPick(r, accs)
 		msg := &types.MsgRevokeIdSigners{Creator: creator.Address.String()}
 
-		idSigner, err := k.IdSigners(ctx, &types.QueryIdSignersRequest{})
+		acc := fmt.Sprintf("shareledger%s", randstr.Base62(39))
+		k.ActiveAccState(ctx, []byte(acc), types.AccStateKeyIdSigner)
+
+		msg.Addresses = []string{acc}
+
+		err := gk.LoadAllowanceLoader(ctx, sdk.MustAccAddressFromBech32(creator.Address.String()))
 		if err != nil {
 			return simtypes.NoOpMsg(types.ModuleName, msg.Type(), err.Error()), nil, nil
 		}
-
-		msg.Addresses = []string{idSigner.AccStates[0].Address}
-
-		err = gk.LoadAllowanceLoader(ctx, sdk.MustAccAddressFromBech32(creator.Address.String()))
-		if err != nil {
-			return simtypes.NoOpMsg(types.ModuleName, msg.Type(), err.Error()), nil, nil
-		}
-
 		err = makeTransaction(r, app, msg, ak, ctx, chainID, []types2.PrivKey{a.PrivKey})
 		if err != nil {
 			return simtypes.NoOpMsg(types.ModuleName, msg.Type(), err.Error()), nil, nil
@@ -151,19 +144,15 @@ func SimulateRevokeLoader(
 		creator := GetElectoralAddress(r, "authority")
 		a := testutil.RandPick(r, accs)
 		msg := &types.MsgRevokeLoaders{Creator: creator.Address.String()}
+		acc := fmt.Sprintf("shareledger%s", randstr.Base62(39))
+		k.ActiveAccState(ctx, []byte(acc), types.AccStateKeyShrpLoaders)
 
-		loader, err := k.Loaders(ctx, &types.QueryLoadersRequest{})
+		msg.Addresses = []string{acc}
+
+		err := gk.LoadAllowanceLoader(ctx, sdk.MustAccAddressFromBech32(creator.Address.String()))
 		if err != nil {
 			return simtypes.NoOpMsg(types.ModuleName, msg.Type(), err.Error()), nil, nil
 		}
-
-		msg.Addresses = []string{loader.Loaders[0].Address}
-
-		err = gk.LoadAllowanceLoader(ctx, sdk.MustAccAddressFromBech32(creator.Address.String()))
-		if err != nil {
-			return simtypes.NoOpMsg(types.ModuleName, msg.Type(), err.Error()), nil, nil
-		}
-
 		err = makeTransaction(r, app, msg, ak, ctx, chainID, []types2.PrivKey{a.PrivKey})
 		if err != nil {
 			return simtypes.NoOpMsg(types.ModuleName, msg.Type(), err.Error()), nil, nil
@@ -184,14 +173,12 @@ func SimulateRevokeRelayer(
 		a := testutil.RandPick(r, accs)
 		msg := &types.MsgRevokeRelayers{Creator: creator.Address.String()}
 
-		relayers, err := k.Relayers(ctx, &types.QueryRelayersRequest{})
-		if err != nil {
-			return simtypes.NoOpMsg(types.ModuleName, msg.Type(), err.Error()), nil, nil
-		}
+		acc := fmt.Sprintf("shareledger%s", randstr.Base62(39))
+		k.ActiveAccState(ctx, []byte(acc), types.AccStateKeyRelayer)
 
-		msg.Addresses = []string{relayers.Relayers[0].Address}
+		msg.Addresses = []string{acc}
 
-		err = gk.LoadAllowanceLoader(ctx, sdk.MustAccAddressFromBech32(creator.Address.String()))
+		err := gk.LoadAllowanceLoader(ctx, sdk.MustAccAddressFromBech32(creator.Address.String()))
 		if err != nil {
 			return simtypes.NoOpMsg(types.ModuleName, msg.Type(), err.Error()), nil, nil
 		}
@@ -215,18 +202,15 @@ func SimulateRevokeSwapManager(
 		a := testutil.RandPick(r, accs)
 		msg := &types.MsgRevokeRelayers{Creator: creator.Address.String()}
 
-		swapManager, err := k.SwapManagers(ctx, &types.QuerySwapManagersRequest{})
+		acc := fmt.Sprintf("shareledger%s", randstr.Base62(39))
+		k.ActiveAccState(ctx, []byte(acc), types.AccStateKeySwapManager)
+
+		msg.Addresses = []string{acc}
+
+		err := gk.LoadAllowanceLoader(ctx, sdk.MustAccAddressFromBech32(creator.Address.String()))
 		if err != nil {
 			return simtypes.NoOpMsg(types.ModuleName, msg.Type(), err.Error()), nil, nil
 		}
-
-		msg.Addresses = []string{swapManager.SwapManagers[0].Address}
-
-		err = gk.LoadAllowanceLoader(ctx, sdk.MustAccAddressFromBech32(creator.Address.String()))
-		if err != nil {
-			return simtypes.NoOpMsg(types.ModuleName, msg.Type(), err.Error()), nil, nil
-		}
-
 		err = makeTransaction(r, app, msg, ak, ctx, chainID, []types2.PrivKey{a.PrivKey})
 		if err != nil {
 			return simtypes.NoOpMsg(types.ModuleName, msg.Type(), err.Error()), nil, nil

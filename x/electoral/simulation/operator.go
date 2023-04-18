@@ -1,13 +1,12 @@
 package simulation
 
 import (
-	"math/rand"
-
 	"github.com/cosmos/cosmos-sdk/types/module"
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
 	"github.com/cosmos/cosmos-sdk/x/simulation"
 	"github.com/sharering/shareledger/x/electoral/keeper"
 	"github.com/sharering/shareledger/x/electoral/types"
+	"math/rand"
 )
 
 const (
@@ -117,7 +116,7 @@ func NewWeightedOperations(simState module.SimulationState, k keeper.Keeper, gk 
 	))
 
 	var weightRevokeDocIssuer int
-	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightEnrollDocIssuer, &weightRevokeDocIssuer, nil,
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightRevokeDocIssuer, &weightRevokeDocIssuer, nil,
 		func(_ *rand.Rand) {
 			weightRevokeDocIssuer = defaultWeightErRevoke
 		},
@@ -163,7 +162,7 @@ func NewWeightedOperations(simState module.SimulationState, k keeper.Keeper, gk 
 	))
 
 	var weightRevokeLoader int
-	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightRevokeIdSigner, &weightRevokeLoader, nil,
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightRevokeLoader, &weightRevokeLoader, nil,
 		func(_ *rand.Rand) {
 			weightRevokeLoader = defaultWeightErRevoke
 		},
@@ -198,7 +197,7 @@ func NewWeightedOperations(simState module.SimulationState, k keeper.Keeper, gk 
 
 	// Voter
 	var weightErVoter int
-	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightEnrollSwapManager, &weightErVoter, nil,
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightEnrollVoter, &weightErVoter, nil,
 		func(_ *rand.Rand) {
 			weightErVoter = defaultWeightErEnroll
 		},
@@ -209,7 +208,7 @@ func NewWeightedOperations(simState module.SimulationState, k keeper.Keeper, gk 
 	))
 
 	var weightRevokeVoter int
-	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightRevokeSwapManager, &weightRevokeVoter, nil,
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightRevokeVoter, &weightRevokeVoter, nil,
 		func(_ *rand.Rand) {
 			weightRevokeVoter = defaultWeightErRevoke
 		},
