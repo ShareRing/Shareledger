@@ -89,7 +89,7 @@ func queryDelegation(endpoint, validatorAddr, delegatorAddr string) (stakingtype
 	}
 
 	err = cdc.UnmarshalJSON(body, &res)
-	return res, nil
+	return res, err
 }
 
 func queryGovProposal(endpoint string, proposalID int) (govtypes.QueryProposalResponse, error) {

@@ -88,9 +88,9 @@ func (s *IntegrationTestSuite) executeGaiaTxCommand(ctx context.Context, c *chai
 
 	stdOut := outBuf.Bytes()
 	stdErr := errBuf.Bytes()
-	fmt.Println("cmd: ", gaiaCommand)
-	fmt.Println("stdOut", string(stdOut))
-	fmt.Println("stdErr", string(stdErr))
+	// fmt.Println("cmd: ", gaiaCommand)
+	// fmt.Println("stdOut", string(stdOut))
+	// fmt.Println("stdErr", string(stdErr))
 	if !validation(stdOut, stdErr) {
 		s.Require().FailNowf("Exec validation failed", "stdout: %s, stderr: %s",
 			string(stdOut), string(stdErr))
@@ -129,8 +129,10 @@ func (s *IntegrationTestSuite) execEncode(
 	return encoded
 }
 
+//nolint:unparam
 func (s *IntegrationTestSuite) execWithdrawAllRewards(c *chain, valIdx int,
-  payee, fees string, expectErr bool, opt ...flagOption) { //nolint:unparam
+	payee, fees string, expectErr bool, opt ...flagOption,
+) {
 	opt = append(opt, withKeyValue(flagFees, fees))
 	opt = append(opt, withKeyValue(flagFrom, payee))
 	opts := applyOptions(c.id, opt)
@@ -207,7 +209,7 @@ func (s *IntegrationTestSuite) runGovExec(c *chain, valIdx int, submitterAddr, g
 	for flag, value := range opts {
 		gaiaCommand = append(gaiaCommand, fmt.Sprintf("--%s=%v", flag, value))
 	}
-  gaiaCommand = append(gaiaCommand, "-y")
+	gaiaCommand = append(gaiaCommand, "-y")
 
 	s.T().Logf("Executing gaiad tx gov %s on chain %s", govCommand, c.id)
 	s.executeGaiaTxCommand(ctx, c, gaiaCommand, valIdx, s.defaultExecValidation(c, valIdx))

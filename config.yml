@@ -1,5 +1,4 @@
 version: 1
-version: 1
 build:
   main: ./cmd/Shareledgerd
   binary: shareledger
@@ -165,7 +164,7 @@ genesis:
   chain_id: ShareRing-VoyagerNet
 validators:
   - name: validator
-    bonded: 100000000000000000nshr
+    bonded: 10000000000000000nshr
     app:
       min_gas_prices: 1000nshr
       api:

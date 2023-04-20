@@ -45,12 +45,12 @@ const (
 	denom          = "nshr"
 	photonDenom    = "photon"
 	initBalanceStr = "10000000000000000nshr,10000000000000000photon" // 1 mil SHR
-	minGasPrice    = "10000"
+	minGasPrice    = "100000"
 	// the test globalfee in genesis is the same as minGasPrice
 	// global fee lower/higher than min_gas_price
-	initialGlobalFeeAmt          = "10000"
-	lowGlobalFeesAmt             = "1000"
-	highGlobalFeeAmt             = "100000"
+	initialGlobalFeeAmt          = "100000"
+	lowGlobalFeesAmt             = "90000"
+	highGlobalFeeAmt             = "110000"
 	gas                          = 200000
 	govProposalBlockBuffer       = 35
 	relayerAccountIndex          = 0
@@ -513,7 +513,7 @@ func (s *IntegrationTestSuite) runValidators(c *chain, portOffset int) {
 			Mounts: []string{
 				fmt.Sprintf("%s/:%s", val.configDir(), homePath),
 			},
-			Repository: "sharering/shareledger",
+			Repository: "bacbia/shareledger",
 			Cmd:        []string{"shareledger", "start", "--home", homePath},
 		}
 
@@ -618,7 +618,7 @@ func (s *IntegrationTestSuite) writeGovCommunitySpendProposal(c *chain, amount s
 		Description: "Fund Team!",
 		Recipient:   recipient,
 		Amount:      amount,
-		Deposit: "1000nshr",
+		Deposit:     "1000nshr",
 	}
 	commSpendBody, err := json.MarshalIndent(proposalCommSpend, "", " ")
 	s.Require().NoError(err)

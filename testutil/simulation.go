@@ -11,6 +11,7 @@ import (
 func RandBool(r *rand.Rand) bool {
 	return r.Intn(2) == 1
 }
+
 func RandRate(r *rand.Rand) int64 {
 	return r.Int63()
 }
@@ -44,5 +45,4 @@ func RandERC20Event(r *rand.Rand) []*types.TxEvent {
 		}
 	}
 	return txs
-
 }

@@ -38,7 +38,6 @@ func (cfd CheckFeeDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate boo
 			}
 			requiredFees = requiredFees.Add(fee)
 		}
-
 	}
 	baseTXFee := feeTx.GetFee().AmountOf(denom.Base)
 	baseRequiredFee := requiredFees.AmountOf(denom.Base)
