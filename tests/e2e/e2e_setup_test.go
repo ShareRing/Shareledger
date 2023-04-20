@@ -45,12 +45,12 @@ const (
 	denom          = "nshr"
 	photonDenom    = "photon"
 	initBalanceStr = "10000000000000000nshr,10000000000000000photon" // 1 mil SHR
-	minGasPrice    = "100000"
+	minGasPrice    = "30000"
 	// the test globalfee in genesis is the same as minGasPrice
 	// global fee lower/higher than min_gas_price
-	initialGlobalFeeAmt          = "100000"
-	lowGlobalFeesAmt             = "90000"
-	highGlobalFeeAmt             = "110000"
+	initialGlobalFeeAmt          = "30000"
+	lowGlobalFeesAmt             = "20000"
+	highGlobalFeeAmt             = "40000"
 	gas                          = 200000
 	govProposalBlockBuffer       = 35
 	relayerAccountIndex          = 0
@@ -68,7 +68,7 @@ var (
 	stakingAmount     = sdk.NewInt(100_000000000)
 	stakingAmountCoin = sdk.NewCoin(denom, stakingAmount)
 	tokenAmount       = sdk.NewCoin(denom, sdk.NewInt(3300_000000000)) // 3,300SHR
-	standardFees      = sdk.NewCoin(denom, sdk.NewInt(25_000000000))   // 25SHR
+	standardFees      = sdk.NewCoin(denom, sdk.NewInt(10_000000000))   // 10SHR
 	depositAmount     = sdk.NewCoin(denom, sdk.NewInt(3300_000000000)) // 3,300SHR
 	distModuleAddress = authtypes.NewModuleAddress(distrtypes.ModuleName).String()
 	proposalCounter   = 0
