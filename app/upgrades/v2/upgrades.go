@@ -16,7 +16,7 @@ func CreateUpgradeHandler(
 	configurator module.Configurator,
 	keepers *keepers.AppKeepers,
 ) upgradetypes.UpgradeHandler {
-	return func(ctx sdk.Context, plan upgradetypes.Plan, vm module.VersionMap) (module.VersionMap, error) {
+	return func(ctx sdk.Context, _ upgradetypes.Plan, vm module.VersionMap) (module.VersionMap, error) {
 		ctx.Logger().Info("start to run module migrations version:", UpgradeName, " ...")
 
 		// this will fix export genesis fail when we upgrade to v2
@@ -33,7 +33,8 @@ func CreateUpgradeHandler(
 		vm, err := mm.RunMigrations(ctx, configurator, vm)
 
 		p := keepers.DistributionxKeeper.GetParams(ctx)
-		p.DevPoolAccount = plan.Info
+		// TODO: update this
+		p.DevPoolAccount = "shareledger18pf3zdwqjntd9wkvfcjvmdc7hua6c0q2eck5h5"
 		keepers.DistributionxKeeper.SetParams(ctx, p)
 		return vm, err
 	}

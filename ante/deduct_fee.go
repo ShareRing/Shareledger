@@ -126,6 +126,7 @@ func (dfd DeductFeeDecorator) checkDeductFee(ctx sdk.Context, sdkTx sdk.Tx, fee 
 	if !fee.IsZero() {
 		// Custom fee distribution only apply with tx that have 1 message
 		// handle case wasm execute msg
+		config := params.ConfigPercent
 		if execMsg, ok := sdkTx.GetMsgs()[0].(*wasmtypes.MsgExecuteContract); ok {
 			// increase contract creator reward
 			addr, err := sdk.AccAddressFromBech32(execMsg.Contract)
@@ -133,10 +134,10 @@ func (dfd DeductFeeDecorator) checkDeductFee(ctx sdk.Context, sdkTx sdk.Tx, fee 
 				return err
 			}
 			contract := dfd.wasmKeeper.GetContractInfo(ctx, addr)
-			contractAdminFee := getFeeRounded(fee, params.WasmContractAdmin)
+			contractAdminFee := getFeeRounded(fee, config.WasmContractAdmin)
 			dfd.distributionxKeeper.IncReward(ctx, contract.Creator, contractAdminFee)
 
-			wasmFee := getFeeRounded(fee, sdk.OneDec().Sub(params.WasmValidator))
+			wasmFee := getFeeRounded(fee, sdk.OneDec().Sub(config.WasmValidator))
 			err = deductFees(dfd.bankKeeper, ctx, deductFeesFromAcc, wasmFee, distributionxtypes.FeeWasmName)
 			if err != nil {
 				return err
@@ -144,7 +145,7 @@ func (dfd DeductFeeDecorator) checkDeductFee(ctx sdk.Context, sdkTx sdk.Tx, fee 
 			validatorFee = validatorFee.Sub(wasmFee...)
 		} else {
 			// move some amount to `distributionxtypes.FeeNativeName` pool
-			nativeFee := getFeeRounded(fee, params.NativeDevelopment)
+			nativeFee := getFeeRounded(fee, config.NativeDevelopment)
 			err := deductFees(dfd.bankKeeper, ctx, deductFeesFromAcc, nativeFee, distributionxtypes.FeeNativeName)
 			if err != nil {
 				return err
