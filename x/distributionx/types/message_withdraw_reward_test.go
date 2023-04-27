@@ -3,6 +3,7 @@ package types
 import (
 	"testing"
 
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/stretchr/testify/require"
 )
 
@@ -14,7 +15,16 @@ func TestMsgWithdrawReward_ValidateBasic(t *testing.T) {
 	}{
 		{
 			name: "valid address",
-			msg:  MsgWithdrawReward{},
+			msg: MsgWithdrawReward{
+				Creator: "shareledger18g8x9censnr3k2y7x6vwntlhvz254ym4qflcak",
+			},
+		},
+		{
+			name: "invalid address",
+			msg: MsgWithdrawReward{
+				Creator: "",
+			},
+			err: sdkerrors.ErrInvalidAddress,
 		},
 	}
 	for _, tt := range tests {

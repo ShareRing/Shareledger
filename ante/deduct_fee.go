@@ -51,7 +51,6 @@ func NewDeductFeeDecorator(ak ante.AccountKeeper, bk types.BankKeeper, fk ante.F
 }
 
 func (dfd DeductFeeDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate bool, next sdk.AnteHandler) (sdk.Context, error) {
-
 	// this will exclude gas use in this ante
 	// for better estimate used gas
 	oldCtx := ctx
@@ -127,6 +126,7 @@ func (dfd DeductFeeDecorator) checkDeductFee(ctx sdk.Context, sdkTx sdk.Tx, fee 
 	if !fee.IsZero() {
 		// Custom fee distribution only apply with tx that have 1 message
 		// handle case wasm execute msg
+		config := params.ConfigPercent
 		if execMsg, ok := sdkTx.GetMsgs()[0].(*wasmtypes.MsgExecuteContract); ok {
 			// increase contract creator reward
 			addr, err := sdk.AccAddressFromBech32(execMsg.Contract)
@@ -134,10 +134,10 @@ func (dfd DeductFeeDecorator) checkDeductFee(ctx sdk.Context, sdkTx sdk.Tx, fee 
 				return err
 			}
 			contract := dfd.wasmKeeper.GetContractInfo(ctx, addr)
-			contractAdminFee := getFeeRounded(fee, params.WasmContractAdmin)
+			contractAdminFee := getFeeRounded(fee, config.WasmContractAdmin)
 			dfd.distributionxKeeper.IncReward(ctx, contract.Creator, contractAdminFee)
 
-			wasmFee := getFeeRounded(fee, sdk.OneDec().Sub(params.WasmValidator))
+			wasmFee := getFeeRounded(fee, sdk.OneDec().Sub(config.WasmValidator))
 			err = deductFees(dfd.bankKeeper, ctx, deductFeesFromAcc, wasmFee, distributionxtypes.FeeWasmName)
 			if err != nil {
 				return err
@@ -145,7 +145,7 @@ func (dfd DeductFeeDecorator) checkDeductFee(ctx sdk.Context, sdkTx sdk.Tx, fee 
 			validatorFee = validatorFee.Sub(wasmFee...)
 		} else {
 			// move some amount to `distributionxtypes.FeeNativeName` pool
-			nativeFee := getFeeRounded(fee, params.NativeDevelopment)
+			nativeFee := getFeeRounded(fee, config.NativeDevelopment)
 			err := deductFees(dfd.bankKeeper, ctx, deductFeesFromAcc, nativeFee, distributionxtypes.FeeNativeName)
 			if err != nil {
 				return err
@@ -181,6 +181,9 @@ func getFeeRounded(fee sdk.Coins, rate sdk.Dec) sdk.Coins {
 
 // deductFees deducts fees from the given account.
 func deductFees(bankKeeper types.BankKeeper, ctx sdk.Context, acc types.AccountI, fees sdk.Coins, moudleAccount string) error {
+	if fees.IsZero() {
+		return nil
+	}
 	if !fees.IsValid() {
 		return sdkerrors.Wrapf(sdkerrors.ErrInsufficientFee, "invalid fee amount: %s", fees)
 	}
@@ -195,7 +198,7 @@ func deductFees(bankKeeper types.BankKeeper, ctx sdk.Context, acc types.AccountI
 
 // checkTxFeeWithValidatorMinGasPrices implements the default fee logic, where the minimum price per
 // unit of gas is fixed and set by each validator, can the tx priority is computed from the gas price.
-func checkTxFeeWithValidatorMinGasPrices(ctx sdk.Context, tx sdk.Tx) (sdk.Coins, int64, error) {
+func checkTxFeeWithValidatorMinGasPrices(_ sdk.Context, tx sdk.Tx) (sdk.Coins, int64, error) {
 	feeTx, ok := tx.(sdk.FeeTx)
 	if !ok {
 		return nil, 0, sdkerrors.Wrap(sdkerrors.ErrTxDecode, "Tx must be a FeeTx")
@@ -203,28 +206,6 @@ func checkTxFeeWithValidatorMinGasPrices(ctx sdk.Context, tx sdk.Tx) (sdk.Coins,
 
 	feeCoins := feeTx.GetFee()
 	gas := feeTx.GetGas()
-
-	// Ensure that the provided fees meet a minimum threshold for the validator,
-	// if this is a CheckTx. This is only for local mempool purposes, and thus
-	// is only ran on check tx.
-	if ctx.IsCheckTx() {
-		minGasPrices := ctx.MinGasPrices()
-		if !minGasPrices.IsZero() {
-			requiredFees := make(sdk.Coins, len(minGasPrices))
-
-			// Determine the required fees by multiplying each required minimum gas
-			// price by the gas limit, where fee = ceil(minGasPrice * gasLimit).
-			glDec := sdk.NewDec(int64(gas))
-			for i, gp := range minGasPrices {
-				fee := gp.Amount.Mul(glDec)
-				requiredFees[i] = sdk.NewCoin(gp.Denom, fee.Ceil().RoundInt())
-			}
-
-			if !feeCoins.IsAnyGTE(requiredFees) {
-				return nil, 0, sdkerrors.Wrapf(sdkerrors.ErrInsufficientFee, "insufficient fees; got: %s required: %s", feeCoins, requiredFees)
-			}
-		}
-	}
 
 	priority := getTxPriority(feeCoins, int64(gas))
 	return feeCoins, priority, nil

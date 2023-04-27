@@ -12,41 +12,41 @@ import (
 )
 
 func RandomizedGenState(simState *module.SimulationState) {
-	var wasmMasterBuilder sdk.Dec
-	simState.AppParams.GetOrGenerate(simState.Cdc, string(types.WasmMasterBuilderKey), &wasmMasterBuilder,
-		simState.Rand, func(r *rand.Rand) {
-			wasmMasterBuilder = sdk.NewDec(r.Int63n(40))
-		})
-
-	var wasmContractAdmin sdk.Dec
-	simState.AppParams.GetOrGenerate(simState.Cdc, string(types.WasmContractAdminKey), &wasmContractAdmin,
-		simState.Rand, func(r *rand.Rand) {
-			wasmContractAdmin = sdk.NewDec(r.Int63n(40))
-		})
-
-	var wasmDevelopment sdk.Dec
-	simState.AppParams.GetOrGenerate(simState.Cdc, string(types.WasmDevelopmentKey), &wasmDevelopment,
-		simState.Rand, func(r *rand.Rand) {
-			wasmDevelopment = sdk.NewDec(r.Int63n(40))
-		})
-
-	var wasmValidator sdk.Dec
-	simState.AppParams.GetOrGenerate(simState.Cdc, string(types.WasmValidatorKey), &wasmValidator,
-		simState.Rand, func(r *rand.Rand) {
-			wasmValidator = sdk.NewDec(r.Int63n(40))
-		})
-
-	var nativeValidator sdk.Dec
-	simState.AppParams.GetOrGenerate(simState.Cdc, string(types.NativeValidatorKey), &nativeValidator,
-		simState.Rand, func(r *rand.Rand) {
-			nativeValidator = sdk.NewDec(r.Int63n(40))
-		})
-
-	var nativeDevelopment sdk.Dec
-	simState.AppParams.GetOrGenerate(simState.Cdc, string(types.NativeDevelopmentKey), &nativeDevelopment,
-		simState.Rand, func(r *rand.Rand) {
-			nativeDevelopment = sdk.NewDec(r.Int63n(40))
-		})
+	// var wasmMasterBuilder sdk.Dec
+	// simState.AppParams.GetOrGenerate(simState.Cdc, string(types.WasmMasterBuilderKey), &wasmMasterBuilder,
+	// 	simState.Rand, func(r *rand.Rand) {
+	// 		wasmMasterBuilder = sdk.NewDec(r.Int63n(40))
+	// 	})
+	//
+	// var wasmContractAdmin sdk.Dec
+	// simState.AppParams.GetOrGenerate(simState.Cdc, string(types.WasmContractAdminKey), &wasmContractAdmin,
+	// 	simState.Rand, func(r *rand.Rand) {
+	// 		wasmContractAdmin = sdk.NewDec(r.Int63n(40))
+	// 	})
+	//
+	// var wasmDevelopment sdk.Dec
+	// simState.AppParams.GetOrGenerate(simState.Cdc, string(types.WasmDevelopmentKey), &wasmDevelopment,
+	// 	simState.Rand, func(r *rand.Rand) {
+	// 		wasmDevelopment = sdk.NewDec(r.Int63n(40))
+	// 	})
+	//
+	// var wasmValidator sdk.Dec
+	// simState.AppParams.GetOrGenerate(simState.Cdc, string(types.WasmValidatorKey), &wasmValidator,
+	// 	simState.Rand, func(r *rand.Rand) {
+	// 		wasmValidator = sdk.NewDec(r.Int63n(40))
+	// 	})
+	//
+	// var nativeValidator sdk.Dec
+	// simState.AppParams.GetOrGenerate(simState.Cdc, string(types.NativeValidatorKey), &nativeValidator,
+	// 	simState.Rand, func(r *rand.Rand) {
+	// 		nativeValidator = sdk.NewDec(r.Int63n(40))
+	// 	})
+	//
+	// var nativeDevelopment sdk.Dec
+	// simState.AppParams.GetOrGenerate(simState.Cdc, string(types.NativeDevelopmentKey), &nativeDevelopment,
+	// 	simState.Rand, func(r *rand.Rand) {
+	// 		nativeDevelopment = sdk.NewDec(r.Int63n(40))
+	// 	})
 
 	var wasmBuilderWindow uint32
 	simState.AppParams.GetOrGenerate(simState.Cdc, string(types.BuilderWindowsKey), &wasmBuilderWindow,
@@ -69,15 +69,10 @@ func RandomizedGenState(simState *module.SimulationState) {
 	builderList := mustRandBuilderList(simState.Rand, simState.Accounts)
 	distributionXGenesis := &types.GenesisState{
 		Params: types.Params{
-			WasmMasterBuilder: wasmMasterBuilder,
-			WasmContractAdmin: wasmContractAdmin,
-			WasmDevelopment:   wasmDevelopment,
-			WasmValidator:     wasmValidator,
-			NativeValidator:   nativeValidator,
-			NativeDevelopment: nativeDevelopment,
-			BuilderWindows:    wasmBuilderWindow,
-			TxThreshold:       txThreshold,
-			DevPoolAccount:    devPoolAccount,
+			ConfigPercent:  types.DefaultParams().ConfigPercent,
+			BuilderWindows: wasmBuilderWindow,
+			TxThreshold:    txThreshold,
+			DevPoolAccount: devPoolAccount,
 		},
 		RewardList:       mustRandReward(simState.Rand, simState.Accounts),
 		BuilderCountList: mustRandBuilderCount(simState.Rand, simState.Accounts),
@@ -107,7 +102,6 @@ func mustRandBuilderCount(r *rand.Rand, simAcc []simulation.Account) []types.Bui
 	bNum := r.Intn(20)
 	builderCount := make([]types.BuilderCount, bNum)
 	for i := 0; i < bNum; i++ {
-
 		builderCount[i] = types.BuilderCount{
 			Index: testutil.RandPick(r, simAcc).Address.String(),
 			Count: uint32(simulation.RandIntBetween(r, 1, 32)),

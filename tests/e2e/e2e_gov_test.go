@@ -28,8 +28,8 @@ func (s *IntegrationTestSuite) GovSoftwareUpgrade() {
 	proposalHeight := height + govProposalBlockBuffer
 	// Gov tests may be run in arbitrary order, each test must increment proposalCounter to have the correct proposal id to submit and query
 	proposalCounter++
-  info := `--upgrade-info='{"binaries":{"darwin/amd64":"https://v1.cosmos.network/sdk?checksum=sha256:1fe1ec87c930a11507b1f17a1d93f846a351bcaa15bd90d2dc961eb729979da8"}}'`
-	submitGovFlags := []string{"software-upgrade", "Upgrade-0", "--title='Upgrade V1'", "--description='Software Upgrade'", fmt.Sprintf("--upgrade-height=%d", proposalHeight), info}
+	info := `--upgrade-info=helloworld`
+	submitGovFlags := []string{"software-upgrade", "Upgrade-0", "--title='Upgrade V1'", "--description='Software Upgrade'", fmt.Sprintf("--upgrade-height=%d", proposalHeight), info, "--no-validate"}
 	depositGovFlags := []string{strconv.Itoa(proposalCounter), depositAmount.String()}
 	voteGovFlags := []string{strconv.Itoa(proposalCounter), "yes=0.8,no=0.1,abstain=0.05,no_with_veto=0.05"}
 	s.runGovProcess(chainAAPIEndpoint, sender, proposalCounter, upgradetypes.ProposalTypeSoftwareUpgrade, submitGovFlags, depositGovFlags, voteGovFlags, "weighted-vote", true)
@@ -70,7 +70,8 @@ func (s *IntegrationTestSuite) GovCancelSoftwareUpgrade() {
 	proposalHeight := height + 50
 	// Gov tests may be run in arbitrary order, each test must increment proposalCounter to have the correct proposal id to submit and query
 	proposalCounter++
-	submitGovFlags := []string{"software-upgrade", "Upgrade-1", "--title='Upgrade V1'", "--description='Software Upgrade'", fmt.Sprintf("--upgrade-height=%d", proposalHeight)}
+	info := `--upgrade-info=helloworld`
+	submitGovFlags := []string{"software-upgrade", "Upgrade-1", "--title='Upgrade V1'", "--description='Software Upgrade'", fmt.Sprintf("--upgrade-height=%d", proposalHeight), info, "--no-validate"}
 	depositGovFlags := []string{strconv.Itoa(proposalCounter), depositAmount.String()}
 	voteGovFlags := []string{strconv.Itoa(proposalCounter), "yes"}
 	s.runGovProcess(chainAAPIEndpoint, sender, proposalCounter, upgradetypes.ProposalTypeSoftwareUpgrade, submitGovFlags, depositGovFlags, voteGovFlags, "vote", true)
@@ -99,7 +100,7 @@ func (s *IntegrationTestSuite) GovCommunityPoolSpend() {
 	sender := senderAddress.String()
 	recipientAddress, _ := s.chainA.validators[1].keyInfo.GetAddress()
 	recipient := recipientAddress.String()
-	sendAmount := sdk.NewCoin(denom, sdk.NewInt(10000000)) // 10uatom
+	sendAmount := sdk.NewCoin(denom, sdk.NewInt(10000000))
 	s.writeGovCommunitySpendProposal(s.chainA, sendAmount.String(), recipient)
 
 	beforeRecipientBalance, err := querySpecificBalance(chainAAPIEndpoint, recipient, denom)
@@ -135,10 +136,10 @@ Test Benchmarks:
 
 func (s *IntegrationTestSuite) runGovProcess(chainAAPIEndpoint, sender string, proposalID int, proposalType string, submitFlags []string, depositFlags []string, voteFlags []string, voteCommand string, withDeposit bool) {
 	s.T().Logf("Submitting Gov Proposal: %s", proposalType)
-	// min deposit of 1000uatom is required in e2e tests, otherwise the gov antehandler causes the proposal to be dropped
+	// min deposit of 1000nshr is required in e2e tests, otherwise the gov antehandler causes the proposal to be dropped
 	sflags := submitFlags
 	if withDeposit {
-		sflags = append(sflags, "--deposit=1000uatom")
+		sflags = append(sflags, "--deposit=1000nshr")
 	}
 	s.submitGovCommand(chainAAPIEndpoint, sender, proposalID, "submit-legacy-proposal", sflags, govv1.StatusDepositPeriod)
 	s.T().Logf("Depositing Gov Proposal: %s", proposalType)

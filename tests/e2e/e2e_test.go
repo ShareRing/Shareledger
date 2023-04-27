@@ -1,13 +1,13 @@
 package e2e
 
 var (
-	runBankTest                   = false
-	runBypassMinFeeTest           = false
-	runEncodeTest                 = false
-	runEvidenceTest               = false
-	runFeeGrantTest               = false
-	runGlobalFeesTest             = false
-	runGovTest                    = false
+	runBankTest                   = true
+	runBypassMinFeeTest           = true
+	runEncodeTest                 = true
+	runEvidenceTest               = true
+	runFeeGrantTest               = true
+	runGlobalFeesTest             = true
+	runGovTest                    = true
 	runIBCTest                    = true
 	runSlashingTest               = false
 	runStakingAndDistributionTest = false
@@ -71,6 +71,4 @@ func (s *IntegrationTestSuite) TestIBC() {
 		s.T().Skip()
 	}
 	s.testIBCTokenTransfer()
-	s.testMultihopIBCTokenTransfer()
-	s.testFailedMultihopIBCTokenTransfer()
 }

@@ -33,8 +33,8 @@ func CreateUpgradeHandler(
 		vm, err := mm.RunMigrations(ctx, configurator, vm)
 
 		p := keepers.DistributionxKeeper.GetParams(ctx)
-		// TODO: input this!
-		p.DevPoolAccount = "devpoolaccount"
+		// TODO: update this
+		p.DevPoolAccount = "shareledger18pf3zdwqjntd9wkvfcjvmdc7hua6c0q2eck5h5"
 		keepers.DistributionxKeeper.SetParams(ctx, p)
 		return vm, err
 	}

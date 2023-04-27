@@ -23,13 +23,13 @@ func (k *Keeper) AllocateTokens(ctx sdk.Context) {
 		if err != nil {
 			panic(fmt.Errorf("SendCoinsFromModuleToModule allocateTokens in distributionx: %w", err))
 		}
-
-		totalRate := params.WasmMasterBuilder.Add(params.WasmDevelopment).Add(params.WasmContractAdmin)
-		adminAmount := getFeeRounded(feeWasmCollected, params.WasmContractAdmin.Quo(totalRate))
+		config := params.ConfigPercent
+		totalRate := config.WasmMasterBuilder.Add(config.WasmDevelopment).Add(config.WasmContractAdmin)
+		adminAmount := getFeeRounded(feeWasmCollected, config.WasmContractAdmin.Quo(totalRate))
 
 		builderList := k.GetAllBuilderList(ctx)
 		if len(builderList) > 0 {
-			feeBuilderRate := params.WasmMasterBuilder.Quo(totalRate)
+			feeBuilderRate := config.WasmMasterBuilder.Quo(totalRate)
 			rate := feeBuilderRate.Quo(sdk.NewDec(int64(len(builderList))))
 			rewardAmount := getFeeRounded(feeWasmCollected, rate)
 			feeWasmCollected = feeWasmCollected.Sub(rewardAmount.MulInt(sdkmath.NewInt(int64(len(builderList))))...)

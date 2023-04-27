@@ -165,7 +165,7 @@ func New(
 	var roleKeeper ante.RoleKeeper
 	roleKeeper = app.ElectoralKeeper
 
-	var isSkipCheckVoter = cast.ToBool(appOpts.Get(FlagAppOptionSkipCheckVoter))
+	isSkipCheckVoter := cast.ToBool(appOpts.Get(FlagAppOptionSkipCheckVoter))
 	if isSkipCheckVoter {
 		or := ante.RoleKeeperWithoutVoter{
 			RoleKeeper: roleKeeper,
@@ -177,6 +177,15 @@ func New(
 	if err != nil {
 		panic(fmt.Sprintf("error while reading wasm config: %s", err))
 	}
+
+	var bypassMinFeeMsgTypes []string
+	bypassMinFeeMsgTypesOptions := appOpts.Get(params.BypassMinFeeMsgTypesKey)
+	if bypassMinFeeMsgTypesOptions == nil {
+		bypassMinFeeMsgTypes = GetDefaultBypassFeeMessages()
+	} else {
+		bypassMinFeeMsgTypes = cast.ToStringSlice(bypassMinFeeMsgTypesOptions)
+	}
+
 	handlerOpts := ante.HandlerOptions{
 		HandlerOptions:       authante.HandlerOptions{AccountKeeper: app.AccountKeeper, BankKeeper: app.BankKeeper, FeegrantKeeper: app.FeeGrantKeeper, SignModeHandler: encodingConfig.TxConfig.SignModeHandler(), SigGasConsumer: authante.DefaultSigVerificationGasConsumer},
 		IBCKeeper:            app.IBCKeeper,
@@ -187,7 +196,7 @@ func New(
 		IdKeeper:             app.IdKeeper,
 		DistributionxKeeper:  app.DistributionxKeeper,
 		WasmKeeper:           app.WasmKeeper,
-		BypassMinFeeMsgTypes: []string{},
+		BypassMinFeeMsgTypes: bypassMinFeeMsgTypes,
 		GlobalFeeSubspace:    app.GetSubspace(gentleminttypes.ModuleName),
 		StakingSubspace:      app.GetSubspace(stakingtypes.ModuleName),
 	}
@@ -364,6 +373,8 @@ func GetDefaultBypassFeeMessages() []string {
 		sdk.MsgTypeURL(&ibcchanneltypes.MsgRecvPacket{}),
 		sdk.MsgTypeURL(&ibcchanneltypes.MsgAcknowledgement{}),
 		sdk.MsgTypeURL(&ibcclienttypes.MsgUpdateClient{}),
+		sdk.MsgTypeURL(&ibcchanneltypes.MsgTimeout{}),
+		sdk.MsgTypeURL(&ibcchanneltypes.MsgTimeoutOnClose{}),
 	}
 }
 

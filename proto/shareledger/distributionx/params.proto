@@ -11,39 +11,42 @@ option go_package = "github.com/sharering/shareledger/x/distributionx/types";
 message Params {
   option (gogoproto.goproto_stringer) = false;
 
-  string wasm_master_builder = 1 [
-    (cosmos_proto.scalar) = "cosmos.Dec",
-    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
-    (gogoproto.nullable) = false
-  ];
-  string wasm_contract_admin = 2 [
-    (cosmos_proto.scalar) = "cosmos.Dec",
-    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
-    (gogoproto.nullable) = false
-  ];
-  string wasm_development = 3 [
-    (cosmos_proto.scalar) = "cosmos.Dec",
-    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
-    (gogoproto.nullable) = false
-  ];
-  string wasm_validator = 4 [
-    (cosmos_proto.scalar) = "cosmos.Dec",
-    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
-    (gogoproto.nullable) = false
-  ];
-  string native_validator = 5 [
-    (cosmos_proto.scalar) = "cosmos.Dec",
-    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
-    (gogoproto.nullable) = false
-  ];
-  string native_development = 6 [
-    (cosmos_proto.scalar) = "cosmos.Dec",
-    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
-    (gogoproto.nullable) = false
-  ];
+  message ConfigPercent {
+    string wasm_master_builder = 1 [
+      (cosmos_proto.scalar) = "cosmos.Dec",
+      (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
+      (gogoproto.nullable) = false
+    ];
+    string wasm_contract_admin = 2 [
+      (cosmos_proto.scalar) = "cosmos.Dec",
+      (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
+      (gogoproto.nullable) = false
+    ];
+    string wasm_development = 3 [
+      (cosmos_proto.scalar) = "cosmos.Dec",
+      (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
+      (gogoproto.nullable) = false
+    ];
+    string wasm_validator = 4 [
+      (cosmos_proto.scalar) = "cosmos.Dec",
+      (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
+      (gogoproto.nullable) = false
+    ];
+    string native_validator = 5 [
+      (cosmos_proto.scalar) = "cosmos.Dec",
+      (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
+      (gogoproto.nullable) = false
+    ];
+    string native_development = 6 [
+      (cosmos_proto.scalar) = "cosmos.Dec",
+      (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
+      (gogoproto.nullable) = false
+    ];
+  }
 
-  uint32 builder_windows = 7 [(gogoproto.moretags) = "yaml:\"builder_windows\""];
-  uint32 tx_threshold = 8 [(gogoproto.moretags) = "yaml:\"tx_threshold\""];
+  ConfigPercent config_percent = 1 [(gogoproto.moretags) = "yaml:\"config_percent\""];
+  uint32 builder_windows = 2 [(gogoproto.moretags) = "yaml:\"builder_windows\""];
+  uint32 tx_threshold = 3 [(gogoproto.moretags) = "yaml:\"tx_threshold\""];
 
-  string dev_pool_account = 9 [(gogoproto.moretags) = "yaml:\"dev_pool_account\""];
+  string dev_pool_account = 4 [(gogoproto.moretags) = "yaml:\"dev_pool_account\""];
 }

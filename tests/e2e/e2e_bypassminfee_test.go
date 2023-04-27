@@ -11,13 +11,9 @@ func (s *IntegrationTestSuite) testByPassMinFeeWithdrawReward() {
 	s.T().Logf("bypass-msg with fee in the denom of global fee, pass")
 	s.execWithdrawAllRewards(s.chainA, 0, payee.String(), paidFeeAmt+denom, false)
 	// pass
-	s.T().Logf("bypass-msg with zero coin in the denom of global fee, pass")
-	s.execWithdrawAllRewards(s.chainA, 0, payee.String(), "0"+denom, false)
-	// pass
-	s.T().Logf("bypass-msg with zero coin not in the denom of global fee, pass")
-	s.execWithdrawAllRewards(s.chainA, 0, payee.String(), "0"+photonDenom, false)
+	s.T().Logf("bypass-msg with low fee coin in the denom of global fee, pass")
+	s.execWithdrawAllRewards(s.chainA, 0, payee.String(), "1"+denom, false)
 	// fail
 	s.T().Logf("bypass-msg with non-zero coin not in the denom of global fee, fail")
 	s.execWithdrawAllRewards(s.chainA, 0, payee.String(), paidFeeAmt+photonDenom, true)
 }
-

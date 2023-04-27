@@ -45993,18 +45993,21 @@ paths:
                 description: params holds all the parameters of this module.
                 type: object
                 properties:
-                  wasm_master_builder:
-                    type: string
-                  wasm_contract_admin:
-                    type: string
-                  wasm_development:
-                    type: string
-                  wasm_validator:
-                    type: string
-                  native_validator:
-                    type: string
-                  native_development:
-                    type: string
+                  config_percent:
+                    type: object
+                    properties:
+                      wasm_master_builder:
+                        type: string
+                      wasm_contract_admin:
+                        type: string
+                      wasm_development:
+                        type: string
+                      wasm_validator:
+                        type: string
+                      native_validator:
+                        type: string
+                      native_development:
+                        type: string
                   builder_windows:
                     type: integer
                     format: int64
@@ -75861,6 +75864,33 @@ definitions:
   sharering.shareledger.distributionx.Params:
     type: object
     properties:
+      config_percent:
+        type: object
+        properties:
+          wasm_master_builder:
+            type: string
+          wasm_contract_admin:
+            type: string
+          wasm_development:
+            type: string
+          wasm_validator:
+            type: string
+          native_validator:
+            type: string
+          native_development:
+            type: string
+      builder_windows:
+        type: integer
+        format: int64
+      tx_threshold:
+        type: integer
+        format: int64
+      dev_pool_account:
+        type: string
+    description: Params defines the parameters for the module.
+  sharering.shareledger.distributionx.Params.ConfigPercent:
+    type: object
+    properties:
       wasm_master_builder:
         type: string
       wasm_contract_admin:
@@ -75873,15 +75903,6 @@ definitions:
         type: string
       native_development:
         type: string
-      builder_windows:
-        type: integer
-        format: int64
-      tx_threshold:
-        type: integer
-        format: int64
-      dev_pool_account:
-        type: string
-    description: Params defines the parameters for the module.
   sharering.shareledger.distributionx.QueryAllBuilderCountResponse:
     type: object
     properties:
@@ -76075,18 +76096,21 @@ definitions:
         description: params holds all the parameters of this module.
         type: object
         properties:
-          wasm_master_builder:
-            type: string
-          wasm_contract_admin:
-            type: string
-          wasm_development:
-            type: string
-          wasm_validator:
-            type: string
-          native_validator:
-            type: string
-          native_development:
-            type: string
+          config_percent:
+            type: object
+            properties:
+              wasm_master_builder:
+                type: string
+              wasm_contract_admin:
+                type: string
+              wasm_development:
+                type: string
+              wasm_validator:
+                type: string
+              native_validator:
+                type: string
+              native_development:
+                type: string
           builder_windows:
             type: integer
             format: int64
