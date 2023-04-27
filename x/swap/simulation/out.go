@@ -17,22 +17,31 @@ func SimulateMsgOut(
 	ak types.AccountKeeper,
 	bk types.BankKeeper,
 	k keeper.Keeper,
+	gk types.GentlemintKeeper,
 ) simtypes.Operation {
 	return func(r *rand.Rand, app *baseapp.BaseApp, ctx sdk.Context, accs []simtypes.Account, chainID string,
 	) (simtypes.OperationMsg, []simtypes.FutureOperation, error) {
 		simAccount, _ := simtypes.RandomAcc(r, accs)
-		shrRand := rand.Int63n(10000000000000-1000000000) + 10000000000000
+
+		shrRand := rand.Int63n(100000000000-100000000) + 100000000000
+		network := testutil.RandNetwork(r)
 
 		amount := sdk.NewDecCoinFromCoin(sdk.NewCoin(denom.Base, sdk.NewInt(shrRand)))
 		msg := &types.MsgRequestOut{
 			Creator:     simAccount.Address.String(),
 			SrcAddress:  simAccount.Address.String(),
 			DestAddress: testutil.RandEthAddress(),
-			Network:     testutil.RandNetwork(r),
+			Network:     network,
 			Amount:      &amount,
 		}
+		shrRand = rand.Int63n(10000000000000-100000000) + 10000000000000
+		lC := sdk.NewCoins(sdk.NewCoin(denom.Base, sdk.NewInt(shrRand)))
 
-		err := makeTransaction(r, app, msg, ak, bk, k, ctx, chainID, []cryptotypes.PrivKey{simAccount.PrivKey})
+		err := gk.LoadCoins(ctx, sdk.MustAccAddressFromBech32(simAccount.Address.String()), lC)
+		if err != nil {
+			return simtypes.NoOpMsg(types.ModuleName, msg.Type(), err.Error()), nil, nil
+		}
+		err = makeTransaction(r, app, msg, ak, bk, k, ctx, chainID, []cryptotypes.PrivKey{simAccount.PrivKey})
 		if err != nil {
 			return simtypes.NoOpMsg(types.ModuleName, msg.Type(), err.Error()), nil, nil
 		}

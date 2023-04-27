@@ -290,7 +290,7 @@ func appModules(
 		bookingmodule.NewAppModule(appCodec, app.BookingKeeper),
 		gentlemintmodule.NewAppModule(appCodec, app.GentleMintKeeper),
 		electoralmodule.NewAppModule(appCodec, app.ElectoralKeeper, nil, nil, nil),
-		swapmodule.NewAppModule(appCodec, app.SwapKeeper, app.AccountKeeper, app.BankKeeper),
+		swapmodule.NewAppModule(appCodec, app.SwapKeeper, app.AccountKeeper, app.BankKeeper, nil),
 		wasm.NewAppModule(appCodec, &app.WasmKeeper, app.StakingKeeper, app.AccountKeeper, app.BankKeeper),
 		distributionx.NewAppModule(appCodec, app.DistributionxKeeper, app.AccountKeeper, app.BankKeeper),
 		// this line is used by starport scaffolding # stargate/app/appModule
@@ -334,7 +334,7 @@ func simulationModules(
 		//bookingmodule.NewAppModule(appCodec, app.BookingKeeper),
 		gentlemintmodule.NewAppModule(appCodec, app.GentleMintKeeper),
 		electoralmodule.NewAppModule(appCodec, app.ElectoralKeeper, app.AccountKeeper, app.BankKeeper, app.GentleMintKeeper),
-		swapmodule.NewAppModule(appCodec, app.SwapKeeper, app.AccountKeeper, app.BankKeeper),
+		swapmodule.NewAppModule(appCodec, app.SwapKeeper, app.AccountKeeper, app.BankKeeper, app.GentleMintKeeper),
 		wasm.NewAppModule(appCodec, &app.WasmKeeper, app.StakingKeeper, app.AccountKeeper, app.BankKeeper),
 		distributionx.NewAppModule(appCodec, app.DistributionxKeeper, app.AccountKeeper, app.BankKeeper),
 	}

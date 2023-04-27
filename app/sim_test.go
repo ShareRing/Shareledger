@@ -216,7 +216,7 @@ func TestAppFullSimulation(t *testing.T) {
 		app.DefaultNodeHome,
 		simapp.FlagPeriodValue,
 		app.MakeTestEncodingConfig(),
-		simapp.EmptyAppOptions{},
+		SkipCheckVoterOpts{},
 		fauxMerkleModeOpt,
 	)
 

@@ -12,7 +12,7 @@ import (
 func NewDecodeStore(cdc codec.Codec) func(kvA, kvB kv.Pair) string {
 	return func(kvA, kvB kv.Pair) string {
 		switch {
-		case bytes.Equal(kvA.Key[:], types.KeyPrefix(types.SignSchemaKeyPrefix)):
+		case bytes.Equal(kvA.Key[:1], types.KeyPrefix(types.SignSchemaKeyPrefix)):
 			var (
 				schemaA types.Schema
 				schemaB types.Schema
@@ -23,8 +23,8 @@ func NewDecodeStore(cdc codec.Codec) func(kvA, kvB kv.Pair) string {
 			err = cdc.Unmarshal(kvB.Value, &schemaB)
 			panicIfErr(err)
 			return fmt.Sprintf("SchemaA: %v\nSchemaB: %v", schemaA, schemaB)
-		case bytes.Equal(kvA.Key[:], []byte(types.RequestKey("pending"))),
-			bytes.Equal(kvA.Key[:], []byte(types.RequestKey("approved"))):
+		case bytes.Equal(kvA.Key[:1], []byte(types.RequestKey("pending"))),
+			bytes.Equal(kvA.Key[:1], []byte(types.RequestKey("approved"))):
 			var (
 				requestA types.Request
 				requestB types.Request
@@ -34,7 +34,7 @@ func NewDecodeStore(cdc codec.Codec) func(kvA, kvB kv.Pair) string {
 			err = cdc.Unmarshal(kvB.Value, &requestB)
 			panicIfErr(err)
 			return fmt.Sprintf("RequestA: %v\nRequestB: %v", requestA, requestB)
-		case bytes.Equal(kvA.Key[:], []byte(types.BatchKey)):
+		case bytes.Equal(kvA.Key[:1], []byte(types.BatchKey)):
 			var (
 				batchA types.Batch
 				batchB types.Batch
@@ -44,16 +44,16 @@ func NewDecodeStore(cdc codec.Codec) func(kvA, kvB kv.Pair) string {
 			err = cdc.Unmarshal(kvB.Value, &batchB)
 			panicIfErr(err)
 			return fmt.Sprintf("BatchA: %v\nBatchB: %v", batchA, batchB)
-		case bytes.Equal(kvA.Key[:], []byte(types.BatchCountKey)):
+		case bytes.Equal(kvA.Key[:1], []byte(types.BatchCountKey)):
 			countA := binary.BigEndian.Uint64(kvA.Value)
 			countB := binary.BigEndian.Uint64(kvB.Value)
 			return fmt.Sprintf("BatchCountA: %v\nBatchCountB: %v", countA, countB)
-		case bytes.Equal(kvA.Key[:], []byte(types.RequestCountKey)):
+		case bytes.Equal(kvA.Key[:1], []byte(types.RequestCountKey)):
 			countA := binary.BigEndian.Uint64(kvA.Value)
 			countB := binary.BigEndian.Uint64(kvB.Value)
 			return fmt.Sprintf("RequestCountA: %v\nRequestCountB: %v", countA, countB)
 		default:
-			panic(fmt.Sprintf("invalid swap key prefix %X", kvA.Key[:]))
+			return fmt.Sprintf("KVA_Key: %s \nKVB_Key: %s ", string(kvA.Key), string(kvB.Key))
 		}
 
 	}

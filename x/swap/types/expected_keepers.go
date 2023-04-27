@@ -19,3 +19,7 @@ type BankKeeper interface {
 	SendCoinsFromAccountToModule(ctx sdk.Context, senderAddr sdk.AccAddress, recipientModule string, amt sdk.Coins) error
 	GetBalance(ctx sdk.Context, addr sdk.AccAddress, denom string) sdk.Coin
 }
+
+type GentlemintKeeper interface {
+	LoadCoins(ctx sdk.Context, address sdk.AccAddress, coin sdk.Coins) error
+}

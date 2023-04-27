@@ -2,13 +2,12 @@ package simulation
 
 import (
 	"fmt"
-	"math/rand"
-
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
 	"github.com/sharering/shareledger/testutil"
 	elecSim "github.com/sharering/shareledger/x/electoral/simulation"
 	"github.com/sharering/shareledger/x/utils/denom"
 	"github.com/thanhpk/randstr"
+	"math/rand"
 
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -16,6 +15,8 @@ import (
 	"github.com/sharering/shareledger/x/swap/keeper"
 	"github.com/sharering/shareledger/x/swap/types"
 )
+
+var msg types.MsgRequestIn
 
 func SimulateMsgIn(
 	ak types.AccountKeeper,
@@ -41,5 +42,6 @@ func SimulateMsgIn(
 			return simtypes.NoOpMsg(types.ModuleName, msg.Type(), err.Error()), nil, err
 		}
 		return simtypes.NewOperationMsg(msg, true, "", nil), nil, nil
+		//return simtypes.NoOpMsg(types.ModuleName, msg.Type(), "no"), nil, nil
 	}
 }

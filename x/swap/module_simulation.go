@@ -115,7 +115,7 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	)
 	operations = append(operations, simulation.NewWeightedOperation(
 		weightMsgOut,
-		swapsimulation.SimulateMsgOut(am.accountKeeper, am.bankKeeper, am.keeper),
+		swapsimulation.SimulateMsgOut(am.accountKeeper, am.bankKeeper, am.keeper, am.gk),
 	))
 
 	var weightMsgApprove int
