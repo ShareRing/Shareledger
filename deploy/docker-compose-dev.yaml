@@ -1,14 +1,53 @@
 version: "3"
 
 services:
+  grafana:
+    container_name: grafana
+    image: grafana/grafana
+    ports:
+      - "3000:3000"
+    networks:
+      - proxynet
+  prometheus:
+    container_name: prometheus
+    image: prom/prometheus
+    networks:
+      - proxynet
+    ports:
+      - "9095:9090"
+    volumes:
+      - "./prometheus.yml:/etc/prometheus/prometheus.yml"
+  nginx:
+    container_name: snginx
+    image: nginx:alpine
+    networks:
+      - proxynet
+    restart: always
+    depends_on:
+      - snode0
+      - snode2
+    ports:
+      - "1317-1318:1317-1318"
+      - "26657-26658:26657-26658"
+      - "9090-9091:9090-9091"
+    volumes:
+      - ./testnet/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./testnet/nginx/certs:/etc/nginx/certs
   snode0:
     container_name: snode0
     image: "sharering/shareledger:latest"
-    platform: linux/amd64
     restart: always
     networks:
       - proxynet
     hostname: snode0
+    expose:
+      - 26656
+      - 26657
+      - 9090
+      - 9091
+      - 1317
+      - 26658
+      - 26660
     volumes:
       - ./testnet/node0:/root/.Shareledger
       - ./testnet/script:/app/script:ro
@@ -31,8 +70,14 @@ services:
     networks:
       - proxynet
     image: "sharering/shareledger:latest"
-    platform: linux/amd64
-
+    expose:
+      - 26656
+      - 26657
+      - 9090
+      - 9091
+      - 1317
+      - 26658
+      - 26660
     volumes:
       - ./testnet/node1:/root/.Shareledger
     command:
@@ -49,8 +94,14 @@ services:
     networks:
       - proxynet
     image: "sharering/shareledger:latest"
-    platform: linux/amd64
-
+    expose:
+      - 26656
+      - 26657
+      - 9090
+      - 9091
+      - 1317
+      - 26658
+      - 26660
     volumes:
       - ./testnet/node2:/root/.Shareledger
     command:
@@ -63,12 +114,18 @@ services:
   snode3:
     container_name: snode3
     image: "sharering/shareledger:latest"
-    platform: linux/amd64
     restart: always
     hostname: snode3
     networks:
       - proxynet
-
+    expose:
+      - 26656
+      - 26657
+      - 9090
+      - 9091
+      - 1317
+      - 26658
+      - 26660
     volumes:
       - ./testnet/node3:/root/.Shareledger
     command:
@@ -81,15 +138,18 @@ services:
   snode4:
     container_name: snode4
     image: "sharering/shareledger:latest"
-    platform: linux/amd64
     restart: always
     hostname: snode4
     networks:
       - proxynet
-    ports:
-      - "1317-1318:1317-1318"
-      - "26657-26658:26657-26658"
-      - "9090-9091:9090-9091"
+    expose:
+      - 26656
+      - 26657
+      - 9090
+      - 9091
+      - 1317
+      - 26658
+      - 26660
     volumes:
       - ./testnet/node4:/root/.Shareledger
     command:
