@@ -1,22 +1,6 @@
-version: "3"
+version: '3'
 
 services:
-  grafana:
-    container_name: grafana
-    image: grafana/grafana
-    ports:
-      - "3000:3000"
-    networks:
-      - proxynet
-  prometheus:
-    container_name: prometheus
-    image: prom/prometheus
-    networks:
-      - proxynet
-    ports:
-      - "9095:9090"
-    volumes:
-      - "./prometheus.yml:/etc/prometheus/prometheus.yml"
   nginx:
     container_name: snginx
     image: nginx:alpine
@@ -49,13 +33,13 @@ services:
       - 26658
       - 26660
     volumes:
-      - ./testnet/node0:/root/.Shareledger
+      - ./testnet/node0:/root/.shareledger
       - ./testnet/script:/app/script:ro
     command:
       - shareledger
       - start
       - --p2p.persistent_peers
-      - ${NODE1ID}@${NODE1IP}:26656,${NODE2ID}@${NODE2IP}:26656,${NODE3ID}@${NODE3IP}:26656,${NODE4ID}@${NODE4IP}:26656
+      - ${NODE1ID}@${NODE1IP}:26656,${NODE2ID}@${NODE2IP}:26656,${NODE3ID}@${NODE3IP}:26656
       - --rpc.laddr
       - tcp://0.0.0.0:26657
       - --log_format
@@ -79,12 +63,12 @@ services:
       - 26658
       - 26660
     volumes:
-      - ./testnet/node1:/root/.Shareledger
+      - ./testnet/node1:/root/.shareledger
     command:
       - shareledger
       - start
       - --p2p.persistent_peers
-      - ${NODE0ID}@${NODE0IP}:26656,${NODE2ID}@${NODE2IP}:26656,${NODE3ID}@${NODE3IP}:26656,${NODE4ID}@${NODE4IP}:26656
+      - ${NODE0ID}@${NODE0IP}:26656,${NODE2ID}@${NODE2IP}:26656,${NODE3ID}@${NODE3IP}:26656
       - --rpc.laddr
       - tcp://0.0.0.0:26657
   snode2:
@@ -103,7 +87,7 @@ services:
       - 26658
       - 26660
     volumes:
-      - ./testnet/node2:/root/.Shareledger
+      - ./testnet/node2:/root/.shareledger
     command:
       - shareledger
       - start
@@ -127,36 +111,12 @@ services:
       - 26658
       - 26660
     volumes:
-      - ./testnet/node3:/root/.Shareledger
+      - ./testnet/node3:/root/.shareledger
     command:
       - shareledger
       - start
       - --p2p.persistent_peers
-      - ${NODE1ID}@${NODE1IP}:26656,${NODE2ID}@${NODE2IP}:26656,${NODE0ID}@${NODE0IP}:26656,${NODE4ID}@${NODE4IP}:26656
-      - --rpc.laddr
-      - tcp://0.0.0.0:26657
-  snode4:
-    container_name: snode4
-    image: "sharering/shareledger:latest"
-    restart: always
-    hostname: snode4
-    networks:
-      - proxynet
-    expose:
-      - 26656
-      - 26657
-      - 9090
-      - 9091
-      - 1317
-      - 26658
-      - 26660
-    volumes:
-      - ./testnet/node4:/root/.Shareledger
-    command:
-      - shareledger
-      - start
-      - --p2p.persistent_peers
-      - ${NODE1ID}@${NODE1IP}:26656,${NODE2ID}@${NODE2IP}:26656,${NODE0ID}@${NODE0IP}:26656,${NODE3ID}@${NODE3IP}:26656
+      - ${NODE1ID}@${NODE1IP}:26656,${NODE2ID}@${NODE2IP}:26656,${NODE0ID}@${NODE0IP}:26656
       - --rpc.laddr
       - tcp://0.0.0.0:26657
 networks:
