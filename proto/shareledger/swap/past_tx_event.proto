@@ -8,3 +8,9 @@ message PastTxEvent {
   string srcAddr = 1; // erc20
   string destAddr = 2; // slp3
 }
+message PastTxEventGenesis {
+  string srcAddr = 1; // erc20
+  string destAddr = 2; // slp3
+  string txHash = 3;
+  uint64  logIndex = 4;
+}

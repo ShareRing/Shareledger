@@ -77,7 +77,6 @@ func (k Keeper) RemovePastTxEvent(
 func (k Keeper) GetPastTxEventsByTxHash(ctx sdk.Context, txHash string) (events []*types.PastTxEvent) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.PastTxEventsKeyPrefix))
 	iterator := sdk.KVStorePrefixIterator(store, types.PastTxEventByTxHashKey(txHash))
-
 	defer iterator.Close()
 
 	for ; iterator.Valid(); iterator.Next() {

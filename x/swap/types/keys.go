@@ -1,8 +1,10 @@
 package types
 
 import (
+	"bytes"
 	"encoding/binary"
 	"fmt"
+	"strconv"
 )
 
 var _ binary.ByteOrder
@@ -73,6 +75,30 @@ func PastTxEventKey(
 	key = append([]byte(txHash), key...)
 
 	return key
+}
+func PastTxEventKeyReverser(key []byte) (txHash string, logIndex uint64, err error) {
+
+	defer func() {
+		if r := recover(); r != nil {
+			err = fmt.Errorf("can't reverse key cause: %s", r)
+		}
+	}()
+
+	if len(key) == 0 {
+		err = fmt.Errorf("key is empty")
+		return "", 0, err
+	}
+
+	firstSeparator := bytes.Index(key, []byte(Seperator))
+	lastSeparator := bytes.LastIndex(key, []byte(Seperator))
+	txhHshBz := key[:firstSeparator]
+
+	logIndexBz := key[firstSeparator+1 : lastSeparator]
+
+	txHash = string(txhHshBz)
+	logIndex, err = strconv.ParseUint(string(logIndexBz), 10, 64)
+	return
+
 }
 
 // filter value by txhash

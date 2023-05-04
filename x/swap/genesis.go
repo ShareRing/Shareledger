@@ -27,6 +27,9 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 	}
 	// this line is used by starport scaffolding # genesis/module/init
 	k.SetParams(ctx, genState.Params)
+
+	k.SetPastEventFromGenesis(ctx, genState.GetPastTxEvent())
+
 }
 
 // ExportGenesis returns the capability module's exported genesis.
@@ -39,6 +42,7 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 	genesis.Batches = k.GetAllBatch(ctx)
 	genesis.BatchCount = k.GetBatchCount(ctx)
 	genesis.Schemas = k.GetAllSchema(ctx)
+	genesis.PastTxEvent = k.AllPastEventGenesis(ctx)
 	// this line is used by starport scaffolding # genesis/module/export
 
 	return genesis

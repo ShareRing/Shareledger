@@ -59,6 +59,7 @@ build:
 
 dbuild:
 	docker build -t sharering/shareledger -f ./deploy/docker/Dockerfile . --platform linux/amd64
+
 dbuild-mac-local:
 	docker build -t sharering/shareledger -f ./deploy/docker/Dockerfile .
 
