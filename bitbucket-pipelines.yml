@@ -1,0 +1,36 @@
+clone:
+  depth: full
+
+definitions:
+  services:
+    docker:
+      memory: 2048
+  caches:
+    sonar: ~/.sonar/cache
+  steps:
+  - step: &build-test-sonarcloud
+      name: Build, test and analyze on SonarCloud
+      caches:
+        - sonar
+      script:
+        - set -xe
+        - make dbuild
+        - make build-linux
+        - pipe: sonarsource/sonarcloud-scan:1.4.0
+          variables:
+              SONAR_SCANNER_OPTS: -Xmx2048m
+              EXTRA_ARGS: '-Dsonar.exclusions=**/*.spec.ts -Dsonar.sources=src -Dsonar.tests=src -Dsonar.test.inclusions="**/testing/**,**/*.spec.ts" -Dsonar.typescript.lcov.reportPaths=coverage/lcov.info'
+  - step: &check-quality-gate-sonarcloud
+      name: Check the Quality Gate on SonarCloud
+      script:
+        - pipe: sonarsource/sonarcloud-quality-gate:0.1.6
+
+pipelines:
+  branches:
+    develop:
+      - step: *build-test-sonarcloud
+      - step: *check-quality-gate-sonarcloud
+  pull-requests:
+    '**':
+      - step: *build-test-sonarcloud
+      - step: *check-quality-gate-sonarcloud
