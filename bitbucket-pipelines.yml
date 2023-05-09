@@ -19,7 +19,7 @@ definitions:
         - pipe: sonarsource/sonarcloud-scan:1.4.0
           variables:
               SONAR_SCANNER_OPTS: -Xmx2048m
-              EXTRA_ARGS: '-Dsonar.exclusions=**/*.spec.ts -Dsonar.sources=src -Dsonar.tests=src -Dsonar.test.inclusions="**/testing/**,**/*.spec.ts" -Dsonar.typescript.lcov.reportPaths=coverage/lcov.info'
+              EXTRA_ARGS: '-Dsonar.exclusions=**/*_test.go -Dsonar.sources=. -Dsonar.tests=. -Dsonar.test.inclusions="**/*_test.go"'
   - step: &check-quality-gate-sonarcloud
       name: Check the Quality Gate on SonarCloud
       script:
