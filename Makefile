@@ -66,7 +66,7 @@ dbuild-mac-local:
 build-linux:
 	echo $(BUILDDIR)
 	mkdir -p $(BUILDDIR)
-	$(DOCKER) build -f Dockerfile-ubuntu --rm --tag sharering/builder:latest .
+	$(DOCKER) build -f Dockerfile.ubuntu --rm --tag sharering/builder:latest .
 	$(DOCKER) create --name shareledger sharering/builder
 	$(DOCKER) cp shareledger:/usr/bin/shareledger $(BUILDDIR)/shareledger
 	$(DOCKER) rm shareledger
