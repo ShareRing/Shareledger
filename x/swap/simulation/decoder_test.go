@@ -3,6 +3,8 @@ package simulation_test
 import (
 	"encoding/binary"
 	"fmt"
+	"testing"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/kv"
 	"github.com/sharering/shareledger/app"
@@ -10,7 +12,6 @@ import (
 	"github.com/sharering/shareledger/x/swap/types"
 	"github.com/sharering/shareledger/x/utils/denom"
 	"github.com/stretchr/testify/require"
-	"testing"
 )
 
 func TestNewDecodeStore(t *testing.T) {
@@ -72,6 +73,21 @@ func TestNewDecodeStore(t *testing.T) {
 	batchCountBbz := make([]byte, 8)
 	binary.BigEndian.PutUint64(batchCountBbz, 24)
 
+	pastTxEventA := types.PastTxEvent{
+		SrcAddr:  "src1",
+		DestAddr: "dest1",
+	}
+
+	pastTxEventB := types.PastTxEvent{
+		SrcAddr:  "src2",
+		DestAddr: "dest2",
+	}
+
+	pastTxEventABz, err := cdc.Marshal(&pastTxEventA)
+	require.NoError(t, err)
+	pastTxEventBBz, err := cdc.Marshal(&pastTxEventB)
+	require.NoError(t, err)
+
 	tests := []struct {
 		name        string
 		kvA, kvB    kv.Pair
@@ -116,6 +132,19 @@ func TestNewDecodeStore(t *testing.T) {
 			},
 			wantPanic:   false,
 			expectedLog: fmt.Sprintf("BatchCountA: %v\nBatchCountB: %v", 23, 24),
+		},
+		{
+			name: "Past transaction event A-b",
+			kvA: kv.Pair{
+				Key:   append(types.KeyPrefix(types.PastTxEventsKeyPrefix), types.PastTxEventKey("hash1", 2)...),
+				Value: pastTxEventABz,
+			},
+			kvB: kv.Pair{
+				Key:   append(types.KeyPrefix(types.PastTxEventsKeyPrefix), types.PastTxEventKey("hash1", 2)...),
+				Value: pastTxEventBBz,
+			},
+			wantPanic:   false,
+			expectedLog: fmt.Sprintf("PastTXEventA: %v\nPastTXEventB: %v", pastTxEventA, pastTxEventB),
 		},
 	}
 	for _, tt := range tests {

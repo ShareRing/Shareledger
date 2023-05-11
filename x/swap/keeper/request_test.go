@@ -13,6 +13,7 @@ import (
 func createNRequest(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.Request {
 	items := make([]types.Request, n)
 	for i := range items {
+		items[i].Status = "pending"
 		m, err := keeper.AppendPendingRequest(ctx, items[i])
 		if err != nil {
 			panic(err)

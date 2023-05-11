@@ -18,12 +18,14 @@ func TestMsgReject_ValidateBasic(t *testing.T) {
 			name: "invalid address",
 			msg: MsgReject{
 				Creator: "invalid_address",
+				Ids:     []uint64{23},
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
 			msg: MsgReject{
 				Creator: sample.AccAddress(),
+				Ids:     []uint64{23},
 			},
 		},
 	}

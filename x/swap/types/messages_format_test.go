@@ -3,12 +3,15 @@ package types
 import (
 	"testing"
 
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/sharering/shareledger/testutil/sample"
+	"github.com/sharering/shareledger/x/utils/denom"
 	"github.com/stretchr/testify/require"
 )
 
 func TestMsgCreateFormat_ValidateBasic(t *testing.T) {
+	dec := sdk.NewDecCoin(denom.Base, sdk.NewInt(10000))
 	tests := []struct {
 		name string
 		msg  MsgCreateSchema
@@ -18,12 +21,18 @@ func TestMsgCreateFormat_ValidateBasic(t *testing.T) {
 			name: "invalid address",
 			msg: MsgCreateSchema{
 				Creator: "invalid_address",
+				In:      dec,
+				Out:     dec,
+				Schema:  "schema",
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
 			msg: MsgCreateSchema{
 				Creator: sample.AccAddress(),
+				In:      dec,
+				Out:     dec,
+				Schema:  "schema",
 			},
 		},
 	}
@@ -40,6 +49,7 @@ func TestMsgCreateFormat_ValidateBasic(t *testing.T) {
 }
 
 func TestMsgUpdateFormat_ValidateBasic(t *testing.T) {
+	dec := sdk.NewDecCoin(denom.Base, sdk.NewInt(10000))
 	tests := []struct {
 		name string
 		msg  MsgUpdateSchema
@@ -55,6 +65,10 @@ func TestMsgUpdateFormat_ValidateBasic(t *testing.T) {
 			name: "valid address",
 			msg: MsgUpdateSchema{
 				Creator: sample.AccAddress(),
+				Network: "eth",
+				In:      &dec,
+				Schema:  "schema",
+				Out:     &dec,
 			},
 		},
 	}
@@ -85,6 +99,7 @@ func TestMsgDeleteFormat_ValidateBasic(t *testing.T) {
 		}, {
 			name: "valid address",
 			msg: MsgDeleteSchema{
+				Network: "eth",
 				Creator: sample.AccAddress(),
 			},
 		},

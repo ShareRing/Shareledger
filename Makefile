@@ -105,3 +105,6 @@ sim-full:
 	go test ./app/sim_test.go -run=TestAppFullSimulation -Enabled=true -NumBlocks=100 -BlockSize=200 -Commit=true -Period=0 -v skip-checking-voter-role true
 
 sim: sim-export-import sim-full
+
+run-test:
+	go test $$(go list ./... | grep -v /tests/e2e ) -coverprofile .testCoverage.out

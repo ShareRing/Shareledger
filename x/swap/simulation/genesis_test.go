@@ -2,14 +2,13 @@ package simulation
 
 import (
 	"encoding/json"
-	"fmt"
+	"math/rand"
+	"testing"
+
 	"github.com/cosmos/cosmos-sdk/codec"
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
-	"github.com/sharering/shareledger/x/swap/types"
-	"math/rand"
-	"testing"
 )
 
 func TestMustGenRandGenesis(t *testing.T) {
@@ -27,10 +26,5 @@ func TestMustGenRandGenesis(t *testing.T) {
 		GenState:  make(map[string]json.RawMessage),
 	}
 	MustGenRandGenesis(simState)
-	genStr, err := simState.GenState[types.ModuleName].MarshalJSON()
-	if err != nil {
-		t.Failed()
-	}
 
-	fmt.Println("genesis swap", string(genStr))
 }

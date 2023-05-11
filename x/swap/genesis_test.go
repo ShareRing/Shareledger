@@ -16,16 +16,24 @@ func TestGenesis(t *testing.T) {
 
 		Requests: []types.Request{
 			{
-				Id: 0,
+				Id:     0,
+				Status: "pending",
 			},
 			{
-				Id: 1,
+				Id:     1,
+				Status: "pending",
+			},
+			{
+				Id:      2,
+				Status:  "approved",
+				BatchId: 0,
 			},
 		},
 		RequestCount: 2,
 		Batches: []types.Batch{
 			{
-				Id: 0,
+				Id:         0,
+				RequestIds: []uint64{2},
 			},
 			{
 				Id: 1,

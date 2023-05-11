@@ -1,14 +1,15 @@
 package tests
 
 import (
+	"os"
+	"strings"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	testutil2 "github.com/cosmos/cosmos-sdk/x/bank/client/testutil"
 	distributionxType "github.com/sharering/shareledger/x/distributionx/types"
 	"github.com/sharering/shareledger/x/swap/client/tests"
 	swapmoduletypes "github.com/sharering/shareledger/x/swap/types"
 	"github.com/sharering/shareledger/x/utils/denom"
-	"os"
-	"strings"
 
 	"github.com/cosmos/cosmos-sdk/testutil/network"
 	netutilts "github.com/sharering/shareledger/testutil/network"
