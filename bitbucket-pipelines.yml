@@ -10,6 +10,7 @@ definitions:
   steps:
   - step: &build-test-sonarcloud
       name: Build, test and analyze on SonarCloud
+      image: golang
       caches:
         - sonar
       script:
