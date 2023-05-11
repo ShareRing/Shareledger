@@ -107,4 +107,4 @@ sim-full:
 sim: sim-export-import sim-full
 
 run-test:
-	go test $(go list ./... | grep -v /tests/e2e ) -coverprofile .testCoverage.out
+	go test $$(go list ./... | grep -v /tests/e2e ) -coverprofile .testCoverage.out
