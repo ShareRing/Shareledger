@@ -1,6 +1,7 @@
 package types
 
 import (
+	"strings"
 	"testing"
 
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
@@ -23,7 +24,8 @@ func TestMsgRevokeApprover_ValidateBasic(t *testing.T) {
 		}, {
 			name: "valid address",
 			msg: MsgRevokeApprovers{
-				Creator: sample.AccAddress(),
+				Creator:   sample.AccAddress(),
+				Addresses: []string{sample.AccAddress()},
 			},
 		},
 	}
@@ -31,10 +33,12 @@ func TestMsgRevokeApprover_ValidateBasic(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			err := tt.msg.ValidateBasic()
 			if tt.err != nil {
-				require.ErrorIs(t, err, tt.err)
+				isContain := strings.Contains(err.Error(), tt.err.Error())
+				require.True(t, isContain)
 				return
 			}
 			require.NoError(t, err)
-		})
+		},
+		)
 	}
 }

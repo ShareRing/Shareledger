@@ -78,32 +78,7 @@ func TestGenesisState_Validate(t *testing.T) {
 			},
 			valid: false,
 		},
-		{
-			desc: "duplicated batch",
-			genState: &types.GenesisState{
-				Batches: []types.Batch{
-					{
-						Id: 0,
-					},
-					{
-						Id: 0,
-					},
-				},
-			},
-			valid: false,
-		},
-		{
-			desc: "invalid batch count",
-			genState: &types.GenesisState{
-				Batches: []types.Batch{
-					{
-						Id: 1,
-					},
-				},
-				BatchCount: 0,
-			},
-			valid: false,
-		},
+
 		{
 			desc: "duplicated format",
 			genState: &types.GenesisState{

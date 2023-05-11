@@ -1,14 +1,19 @@
 package types
 
 import (
-	"github.com/google/uuid"
 	"testing"
 
+	"github.com/google/uuid"
+
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	"github.com/sharering/shareledger/app/params"
 	"github.com/sharering/shareledger/testutil/sample"
 	"github.com/stretchr/testify/require"
 )
 
+func init() {
+	params.SetAddressPrefixes()
+}
 func TestMsgCreateIds_ValidateBasic(t *testing.T) {
 	tests := []struct {
 		name string

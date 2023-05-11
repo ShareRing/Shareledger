@@ -18,9 +18,7 @@
       "authorization": []
     },
     "bank": {
-      "balances": [
-
-      ],
+      "balances": [],
       "denom_metadata": [
         {
           "base": "nshr",
@@ -52,16 +50,12 @@
         "default_send_enabled": true,
         "send_enabled": []
       },
-      "supply": [
-
-      ]
+      "supply": []
     },
     "booking": {
       "bookings": []
     },
-    "capability": {
-
-    },
+    "capability": {},
     "crisis": {
       "constant_fee": {
         "amount": "1000",
@@ -82,24 +76,23 @@
       "builderListList": [],
       "params": {
         "builder_windows": 50,
-        "dev_pool_account": "shareledger1t3g4570e23h96h5hm5gdtfrjprmvk9qwmrglfr",
-        "native_development": "0.500000000000000000",
-        "native_validator": "0.500000000000000000",
         "tx_threshold": 2,
-        "wasm_contract_admin": "0.125000000000000000",
-        "wasm_development": "0.250000000000000000",
-        "wasm_master_builder": "0.125000000000000000",
-        "wasm_validator": "0.500000000000000000"
+        "dev_pool_account": "shareledger1t3g4570e23h96h5hm5gdtfrjprmvk9qwmrglfr",
+        "config_percent": {
+          "native_development": "0.500000000000000000",
+          "native_validator": "0.500000000000000000",
+          "wasm_contract_admin": "0.125000000000000000",
+          "wasm_development": "0.250000000000000000",
+          "wasm_master_builder": "0.125000000000000000",
+          "wasm_validator": "0.500000000000000000"
+        }
       },
-      "rewardList": [
-      ]
+      "rewardList": []
     },
     "document": {
       "documents": []
     },
-    "electoral": {
-
-    },
+    "electoral": {},
     "evidence": {
       "evidence": []
     },
@@ -274,7 +267,6 @@
       ],
       "contracts": [
         {
-
           "contract_address": "shareledger1suhgf5svhu4usrurvxzlgn54ksxmn8gljarjtxqnapv8kjnp4nrsy56wda",
           "contract_info": {
             "admin": "",
@@ -297,7 +289,6 @@
           ]
         },
         {
-
           "contract_address": "shareledger14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9smpkm95",
           "contract_info": {
             "admin": "",
@@ -362,7 +353,5 @@
   },
   "genesis_time": "2023-04-11T07:43:45.341445Z",
   "initial_height": "247",
-  "validators": [
-
-  ]
+  "validators": []
 }

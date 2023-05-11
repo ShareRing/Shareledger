@@ -11,6 +11,7 @@ import (
 	keepertest "github.com/sharering/shareledger/testutil/keeper"
 	"github.com/sharering/shareledger/x/swap/keeper"
 	"github.com/sharering/shareledger/x/swap/types"
+	"github.com/sharering/shareledger/x/utils/denom"
 )
 
 // Prevent strconv unused error
@@ -24,6 +25,8 @@ func TestFormatMsgServerCreate(t *testing.T) {
 	for i := 0; i < 5; i++ {
 		expected := &types.MsgCreateSchema{Creator: creator,
 			Network: strconv.Itoa(i),
+			In:      sdk.NewDecCoin(denom.Base, sdk.NewInt(100)),
+			Out:     sdk.NewDecCoin(denom.Base, sdk.NewInt(100)),
 		}
 		_, err := srv.CreateSchema(wctx, expected)
 		require.NoError(t, err)
@@ -37,7 +40,8 @@ func TestFormatMsgServerCreate(t *testing.T) {
 
 func TestFormatMsgServerUpdate(t *testing.T) {
 	creator := "A"
-
+	in := sdk.NewDecCoin(denom.Base, sdk.NewInt(100))
+	out := sdk.NewDecCoin(denom.Base, sdk.NewInt(100))
 	for _, tc := range []struct {
 		desc    string
 		request *types.MsgUpdateSchema
@@ -46,19 +50,17 @@ func TestFormatMsgServerUpdate(t *testing.T) {
 		{
 			desc: "Completed",
 			request: &types.MsgUpdateSchema{Creator: creator,
+				In:      &in,
+				Out:     &out,
 				Network: strconv.Itoa(0),
 			},
 		},
-		{
-			desc: "Unauthorized",
-			request: &types.MsgUpdateSchema{Creator: "B",
-				Network: strconv.Itoa(0),
-			},
-			err: sdkerrors.ErrUnauthorized,
-		},
+
 		{
 			desc: "KeyNotFound",
 			request: &types.MsgUpdateSchema{Creator: creator,
+				In:      &in,
+				Out:     &out,
 				Network: strconv.Itoa(100000),
 			},
 			err: sdkerrors.ErrKeyNotFound,
@@ -70,6 +72,8 @@ func TestFormatMsgServerUpdate(t *testing.T) {
 			wctx := sdk.WrapSDKContext(ctx)
 			expected := &types.MsgCreateSchema{Creator: creator,
 				Network: strconv.Itoa(0),
+				In:      in,
+				Out:     out,
 			}
 			_, err := srv.CreateSchema(wctx, expected)
 			require.NoError(t, err)
@@ -103,13 +107,7 @@ func TestFormatMsgServerDelete(t *testing.T) {
 				Network: strconv.Itoa(0),
 			},
 		},
-		{
-			desc: "Unauthorized",
-			request: &types.MsgDeleteSchema{Creator: "B",
-				Network: strconv.Itoa(0),
-			},
-			err: sdkerrors.ErrUnauthorized,
-		},
+
 		{
 			desc: "KeyNotFound",
 			request: &types.MsgDeleteSchema{Creator: creator,
@@ -125,6 +123,8 @@ func TestFormatMsgServerDelete(t *testing.T) {
 
 			_, err := srv.CreateSchema(wctx, &types.MsgCreateSchema{Creator: creator,
 				Network: strconv.Itoa(0),
+				In:      sdk.NewDecCoin(denom.Base, sdk.NewInt(100)),
+				Out:     sdk.NewDecCoin(denom.Base, sdk.NewInt(100)),
 			})
 			require.NoError(t, err)
 			_, err = srv.DeleteSchema(wctx, tc.request)

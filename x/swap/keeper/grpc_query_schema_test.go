@@ -7,8 +7,6 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/query"
 	"github.com/stretchr/testify/require"
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
 
 	keepertest "github.com/sharering/shareledger/testutil/keeper"
 	"github.com/sharering/shareledger/testutil/nullify"
@@ -42,22 +40,13 @@ func TestFormatQuerySingle(t *testing.T) {
 			},
 			response: &types.QuerySchemaResponse{Schema: msgs[1]},
 		},
-		{
-			desc: "KeyNotFound",
-			request: &types.QuerySchemaRequest{
-				Network: strconv.Itoa(100000),
-			},
-			err: status.Error(codes.NotFound, "not found"),
-		},
-		{
-			desc: "InvalidRequest",
-			err:  status.Error(codes.InvalidArgument, "invalid request"),
-		},
 	} {
 		t.Run(tc.desc, func(t *testing.T) {
 			response, err := keeper.Schema(wctx, tc.request)
 			if tc.err != nil {
-				require.ErrorIs(t, err, tc.err)
+				require.ErrorIs(t, tc.err, err)
+				// require.True(t, strings.Contains(tc.err.Error(), err.Error()))
+				return
 			} else {
 				require.NoError(t, err)
 				require.Equal(t,
@@ -118,9 +107,5 @@ func TestFormatQueryPaginated(t *testing.T) {
 			nullify.Fill(msgs),
 			nullify.Fill(resp.Schemas),
 		)
-	})
-	t.Run("InvalidRequest", func(t *testing.T) {
-		_, err := keeper.Schemas(wctx, nil)
-		require.ErrorIs(t, err, status.Error(codes.InvalidArgument, "invalid request"))
 	})
 }

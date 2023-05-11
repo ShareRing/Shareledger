@@ -3,12 +3,15 @@ package types
 import (
 	"testing"
 
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/sharering/shareledger/testutil/sample"
+	denom "github.com/sharering/shareledger/x/utils/denom"
 	"github.com/stretchr/testify/require"
 )
 
 func TestMsgUpdateSwapFee_ValidateBasic(t *testing.T) {
+	amount := sdk.NewDecCoin(denom.Base, sdk.NewInt(100000))
 	tests := []struct {
 		name string
 		msg  MsgUpdateSwapFee
@@ -18,12 +21,16 @@ func TestMsgUpdateSwapFee_ValidateBasic(t *testing.T) {
 			name: "invalid address",
 			msg: MsgUpdateSwapFee{
 				Creator: "invalid_address",
+				In:      &amount,
+				Out:     &amount,
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
 			msg: MsgUpdateSwapFee{
 				Creator: sample.AccAddress(),
+				In:      &amount,
+				Out:     &amount,
 			},
 		},
 	}
