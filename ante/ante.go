@@ -1,6 +1,7 @@
 package ante
 
 import (
+	errorsmod "cosmossdk.io/errors"
 	wasmkeeper "github.com/CosmWasm/wasmd/x/wasm/keeper"
 	wasmTypes "github.com/CosmWasm/wasmd/x/wasm/types"
 	storetypes "github.com/cosmos/cosmos-sdk/store/types"
@@ -23,7 +24,7 @@ type HandlerOptions struct {
 	// additional data
 	GentlemintKeeper    GentlemintKeeper
 	RoleKeeper          RoleKeeper
-	IdKeeper            IDKeeper
+	IDKeeper            IDKeeper
 	DistributionxKeeper DistributionxKeeper
 	WasmKeeper          WasmKeeper
 
@@ -34,15 +35,15 @@ type HandlerOptions struct {
 
 func NewHandler(opts HandlerOptions) (sdk.AnteHandler, error) {
 	if opts.AccountKeeper == nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrLogic, "account keeper is required for AnteHandler")
+		return nil, errorsmod.Wrap(sdkerrors.ErrLogic, "account keeper is required for AnteHandler")
 	}
 
 	if opts.BankKeeper == nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrLogic, "bank keeper is required for AnteHandler")
+		return nil, errorsmod.Wrap(sdkerrors.ErrLogic, "bank keeper is required for AnteHandler")
 	}
 
 	if opts.SignModeHandler == nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrLogic, "sign mode handler is required for ante builder")
+		return nil, errorsmod.Wrap(sdkerrors.ErrLogic, "sign mode handler is required for ante builder")
 	}
 
 	sigGasConsumer := opts.SigGasConsumer
@@ -58,24 +59,24 @@ func NewHandler(opts HandlerOptions) (sdk.AnteHandler, error) {
 		ante.NewTxTimeoutHeightDecorator(),
 		ante.NewValidateMemoDecorator(opts.AccountKeeper),
 		ante.NewConsumeGasForTxSizeDecorator(opts.AccountKeeper),
-		NewAuthDecorator(opts.RoleKeeper, opts.IdKeeper),
+		NewAuthDecorator(opts.RoleKeeper, opts.IDKeeper),
 		// ante.NewDeductFeeDecorator(options.AccountKeeper, options.BankKeeper, options.FeegrantKeeper, options.TxFeeChecker),
 		NewDeductFeeDecorator(opts.AccountKeeper, opts.BankKeeper,
 			opts.FeegrantKeeper, opts.TxFeeChecker, opts.DistributionxKeeper, opts.WasmKeeper),
 
 		// there 2 ante that check for transaction fee
-		// NewCheckFeeDecorator(opts.GentlemintKeeper),
+		NewCheckFeeDecorator(opts.GentlemintKeeper),
 		globalfeeante.NewFeeDecorator(opts.BypassMinFeeMsgTypes, opts.GlobalFeeSubspace, opts.StakingSubspace),
 
 		NewCountBuilderDecorator(opts.DistributionxKeeper),
-		//NewAuthDecorator(opts.RoleKeeper, opts.IdKeeper),
+		// NewAuthDecorator(opts.RoleKeeper, opts.IdKeeper),
 		ante.NewSetPubKeyDecorator(opts.AccountKeeper),
 		ante.NewValidateSigCountDecorator(opts.AccountKeeper),
 		ante.NewSigGasConsumeDecorator(opts.AccountKeeper, sigGasConsumer),
 		ante.NewSigVerificationDecorator(opts.AccountKeeper, opts.SignModeHandler),
 		ante.NewIncrementSequenceDecorator(opts.AccountKeeper),
 		ibcante.NewRedundantRelayDecorator(opts.IBCKeeper),
-		//NewLoadFeeDecorator(opts.GentlemintKeeper),
+		// NewLoadFeeDecorator(opts.GentlemintKeeper),
 	}
 
 	return sdk.ChainAnteDecorators(anteDecorators...), nil

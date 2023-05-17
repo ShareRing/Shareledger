@@ -1,6 +1,7 @@
 package ante
 
 import (
+	errorsmod "cosmossdk.io/errors"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
@@ -18,7 +19,7 @@ type Auth struct {
 }
 
 const (
-	ErrMsgNotIdSigner             = "Transaction's Signer is not ID signer"
+	ErrMsgNotIDSigner             = "Transaction's Signer is not ID signer"
 	ErrMsgNotSHRPLoader           = "Transaction's Signer is not SHRP loader"
 	ErrMsgNotDocIssuer            = "Transaction's Signer is not document issuer"
 	ErrMsgNotAuthority            = "Transaction's Signer is not authority"
@@ -49,11 +50,11 @@ func (a Auth) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate bool, next sdk.Ant
 				switch c.Denom {
 				case denom.Base, denom.Shr:
 					if !a.rk.IsAuthority(ctx, signer) {
-						return ctx, sdkerrors.Wrapf(sdkerrors.ErrUnauthorized, ErrMsgNotAuthority)
+						return ctx, errorsmod.Wrapf(sdkerrors.ErrUnauthorized, ErrMsgNotAuthority)
 					}
-				default: //denom.BaseUSD denom.SHRP
+				default: // denom.BaseUSD denom.SHRP
 					if !a.rk.IsSHRPLoader(ctx, signer) {
-						return ctx, sdkerrors.Wrapf(sdkerrors.ErrUnauthorized, ErrMsgNotSHRPLoader)
+						return ctx, errorsmod.Wrapf(sdkerrors.ErrUnauthorized, ErrMsgNotSHRPLoader)
 					}
 				}
 			}
@@ -91,7 +92,7 @@ func (a Auth) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate bool, next sdk.Ant
 			*idtypes.MsgCreateIds,
 			*idtypes.MsgUpdateId:
 			if !a.rk.IsIDSigner(ctx, signer) {
-				return ctx, sdkerrors.Wrapf(sdkerrors.ErrUnauthorized, ErrMsgNotIdSigner)
+				return ctx, sdkerrors.Wrapf(sdkerrors.ErrUnauthorized, ErrMsgNotIDSigner)
 			}
 		case // Backup account permission
 			*idtypes.MsgReplaceIdOwner:
@@ -99,7 +100,7 @@ func (a Auth) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate bool, next sdk.Ant
 			if id == nil || id.Data == nil || id.Data.BackupAddress != msg.BackupAddress {
 				return ctx, sdkerrors.Wrapf(sdkerrors.ErrUnauthorized, ErrMsgNotBackupAccount)
 			}
-		case //Doc Issuer
+		case // Doc Issuer
 			*documenttypes.MsgCreateDocument,
 			*documenttypes.MsgCreateDocuments,
 			*documenttypes.MsgUpdateDocument,

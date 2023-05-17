@@ -88,9 +88,6 @@ func (s *IntegrationTestSuite) executeGaiaTxCommand(ctx context.Context, c *chai
 
 	stdOut := outBuf.Bytes()
 	stdErr := errBuf.Bytes()
-	fmt.Println("cmd: ", gaiaCommand)
-	fmt.Println("stdOut", string(stdOut))
-	fmt.Println("stdErr", string(stdErr))
 	if !validation(stdOut, stdErr) {
 		s.Require().FailNowf("Exec validation failed", "stdout: %s, stderr: %s",
 			string(stdOut), string(stdErr))

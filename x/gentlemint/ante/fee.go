@@ -2,7 +2,9 @@ package ante
 
 import (
 	"errors"
+	"strings"
 
+	errorsmod "cosmossdk.io/errors"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
@@ -51,7 +53,7 @@ func (mfd FeeDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate bool, ne
 	// please note: after parsing feeflag, the zero fees are removed already
 	feeTx, ok := tx.(sdk.FeeTx)
 	if !ok {
-		return ctx, sdkerrors.Wrap(sdkerrors.ErrTxDecode, "Tx must be a FeeTx")
+		return ctx, errorsmod.Wrap(sdkerrors.ErrTxDecode, "Tx must be a FeeTx")
 	}
 	feeCoins := feeTx.GetFee().Sort()
 	gas := feeTx.GetGas()
@@ -63,7 +65,8 @@ func (mfd FeeDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate bool, ne
 	// or equal to a constant, otherwise minimum fees and global fees are checked to prevent spam.
 	containsOnlyBypassMinFeeMsgs := mfd.bypassMinFeeMsgs(msgs)
 	doesNotExceedMaxGasUsage := gas <= uint64(len(msgs))*maxBypassMinFeeMsgGasUsage
-	allowedToBypassMinFee := containsOnlyBypassMinFeeMsgs && doesNotExceedMaxGasUsage
+	containsOnlyFixFeeMsgs := isFixFeeMsgs(msgs)
+	allowedToBypassMinFee := (containsOnlyBypassMinFeeMsgs || containsOnlyFixFeeMsgs) && doesNotExceedMaxGasUsage
 
 	var allFees sdk.Coins
 	requiredFees := getMinGasPrice(ctx, feeTx)
@@ -79,11 +82,11 @@ func (mfd FeeDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate bool, ne
 		// this is to ban 1stake passing if the globalfee is 1photon or 0photon
 		// if feeCoins=[] and requiredGlobalFees has 0denom coins then it should pass.
 		if !DenomsSubsetOfIncludingZero(feeCoins, allFees) {
-			return ctx, sdkerrors.Wrapf(sdkerrors.ErrInsufficientFee, "fee is not a subset of required fees; got %s, required: %s", feeCoins, allFees)
+			return ctx, errorsmod.Wrapf(sdkerrors.ErrInsufficientFee, "fee is not a subset of required fees; got %s, required: %s", feeCoins, allFees)
 		}
 		// At least one feeCoin amount must be GTE to one of the requiredGlobalFees
 		if !IsAnyGTEIncludingZero(feeCoins, allFees) {
-			return ctx, sdkerrors.Wrapf(sdkerrors.ErrInsufficientFee, "insufficient fees; got: %s required: %s", feeCoins, allFees)
+			return ctx, errorsmod.Wrapf(sdkerrors.ErrInsufficientFee, "insufficient fees; got: %s required: %s", feeCoins, allFees)
 		}
 	}
 
@@ -99,7 +102,7 @@ func (mfd FeeDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate bool, ne
 		}
 		// bypass with fee, fee denom must in requiredGlobalFees
 		if !DenomsSubsetOfIncludingZero(feeCoins, requiredGlobalFees) {
-			return ctx, sdkerrors.Wrapf(sdkerrors.ErrInsufficientFee, "fees denom is wrong; got: %s required: %s", feeCoins, requiredGlobalFees)
+			return ctx, errorsmod.Wrapf(sdkerrors.ErrInsufficientFee, "fees denom is wrong; got: %s required: %s", feeCoins, requiredGlobalFees)
 		}
 	}
 
@@ -148,4 +151,15 @@ func (mfd FeeDecorator) getBondDenom(ctx sdk.Context) string {
 	}
 
 	return bondDenom
+}
+
+func isFixFeeMsgs(msgs []sdk.Msg) bool {
+	for _, msg := range msgs {
+		if strings.HasPrefix(sdk.MsgTypeURL(msg), "/shareledger.") {
+			continue
+		}
+		return false
+	}
+
+	return true
 }

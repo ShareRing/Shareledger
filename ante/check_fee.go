@@ -3,6 +3,7 @@ package ante
 import (
 	"strings"
 
+	errorsmod "cosmossdk.io/errors"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	denom "github.com/sharering/shareledger/x/utils/denom"
@@ -21,7 +22,7 @@ func NewCheckFeeDecorator(gk GentlemintKeeper) CheckFeeDecorator {
 func (cfd CheckFeeDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate bool, next sdk.AnteHandler) (newCtx sdk.Context, err error) {
 	feeTx, ok := tx.(sdk.FeeTx)
 	if !ok {
-		return ctx, sdkerrors.Wrap(sdkerrors.ErrTxDecode, "Tx must be a FeeTx")
+		return ctx, errorsmod.Wrap(sdkerrors.ErrTxDecode, "Tx must be a FeeTx")
 	}
 
 	// skip check if run simulation
@@ -43,7 +44,7 @@ func (cfd CheckFeeDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate boo
 	baseRequiredFee := requiredFees.AmountOf(denom.Base)
 
 	if baseRequiredFee.GT(baseTXFee) {
-		return ctx, sdkerrors.Wrapf(sdkerrors.ErrInsufficientFee, "got %v, required %v", baseTXFee, baseRequiredFee)
+		return ctx, errorsmod.Wrapf(sdkerrors.ErrInsufficientFee, "got %v, required %v", baseTXFee, baseRequiredFee)
 	}
 	return next(ctx, tx, simulate)
 }

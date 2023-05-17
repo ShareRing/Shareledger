@@ -193,7 +193,7 @@ func New(
 		TXCounterStoreKey:    app.AppKeepers.GetKey(wasm.StoreKey),
 		GentlemintKeeper:     app.GentleMintKeeper,
 		RoleKeeper:           roleKeeper,
-		IdKeeper:             app.IdKeeper,
+		IDKeeper:             app.IdKeeper,
 		DistributionxKeeper:  app.DistributionxKeeper,
 		WasmKeeper:           app.WasmKeeper,
 		BypassMinFeeMsgTypes: bypassMinFeeMsgTypes,
