@@ -70,7 +70,6 @@ func exportGenesisFile(cmd *cobra.Command, homeDir string, moduleName string, pt
 
 func getAddr(cmd *cobra.Command, homeDir string, args []string) (sdk.AccAddress, error) {
 	addr, err := sdk.AccAddressFromBech32(args[0])
-
 	// try to convert from key if param is not address
 	if err != nil {
 		inBuf := bufio.NewReader(cmd.InOrStdin())

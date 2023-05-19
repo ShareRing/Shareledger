@@ -4,8 +4,8 @@ import (
 	"os"
 	"strings"
 
+	clitestutil "github.com/cosmos/cosmos-sdk/testutil/cli"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	testutil2 "github.com/cosmos/cosmos-sdk/x/bank/client/testutil"
 	distributionxType "github.com/sharering/shareledger/x/distributionx/types"
 	"github.com/sharering/shareledger/x/swap/client/tests"
 	swapmoduletypes "github.com/sharering/shareledger/x/swap/types"
@@ -97,7 +97,7 @@ func (s *DistributionXIntegrationTestSuite) TearDownSuite() {
 }
 
 func (s *DistributionXIntegrationTestSuite) TestDistributionXWasmTransaction() {
-	//Execute the contract with fee
+	// Execute the contract with fee
 	devPoolRewardBefore, err := ExCmdQueryReward(s.network.Validators[0].ClientCtx, "shareledger1t3g4570e23h96h5hm5gdtfrjprmvk9qwmrglfr")
 	if err != nil && !strings.Contains(err.Error(), "not found") {
 		s.T().Fail()
@@ -108,7 +108,7 @@ func (s *DistributionXIntegrationTestSuite) TestDistributionXWasmTransaction() {
 	)
 	s.NoError(err, "Get validator reward error")
 
-	accByte, err := testutil2.QueryBalancesExec(
+	accByte, err := clitestutil.QueryBalancesExec(
 		s.network.Validators[0].ClientCtx,
 		netutilts.Accounts[netutilts.KeyAccount2])
 	s.NoError(err)
@@ -121,7 +121,7 @@ func (s *DistributionXIntegrationTestSuite) TestDistributionXWasmTransaction() {
 		netutilts.JSONFlag,
 		netutilts.SkipConfirmation,
 		netutilts.MakeByAccount(netutilts.KeyAccount2),
-		netutilts.BlockBroadcast,
+		netutilts.SyncBroadcast,
 		netutilts.SHRFee(50),
 	)
 	s.Require().NoError(err, "execute the contract fail")
@@ -138,18 +138,18 @@ func (s *DistributionXIntegrationTestSuite) TestDistributionXWasmTransaction() {
 
 	devPoolReward, err := ExCmdQueryReward(s.network.Validators[0].ClientCtx, "shareledger1t3g4570e23h96h5hm5gdtfrjprmvk9qwmrglfr")
 	s.NoError(err)
-	//list, err := ExCmdListReward(s.network.Validators[0].ClientCtx)
-	//s.T().Log(list)
-	accByte, err = testutil2.QueryBalancesExec(
+	// list, err := ExCmdListReward(s.network.Validators[0].ClientCtx)
+	// s.T().Log(list)
+	accByte, err = clitestutil.QueryBalancesExec(
 		s.network.Validators[0].ClientCtx,
 		netutilts.Accounts[netutilts.KeyAccount2])
 	s.NoError(err)
 	makeTransactionAccBalanceAfterEx := netutilts.BalanceJsonUnmarshal(s.T(), accByte.Bytes())
 
-	//s.T().Log("delegator address", s.network.Validators[0].Address.String())
+	// s.T().Log("delegator address", s.network.Validators[0].Address.String())
 	s.T().Log("validator address", s.network.Validators[0].ValAddress.String())
 
-	accByte, err = testutil2.QueryBalancesExec(
+	accByte, err = clitestutil.QueryBalancesExec(
 		s.network.Validators[0].ClientCtx,
 		s.network.Validators[0].Address)
 	s.NoError(err)
@@ -159,13 +159,12 @@ func (s *DistributionXIntegrationTestSuite) TestDistributionXWasmTransaction() {
 		s.network.Validators[0].ValAddress.String(),
 	)
 
-	//Assertion time
+	// Assertion time
 	s.Require().Equalf(sdk.NewInt(6250000000).String(), contractOwnerReward.Reward.GetAmount().AmountOf(denom.Base).String(), "the contract owner reward must be increment")
 
 	s.Require().Equalf(devPoolRewardBefore.Reward.Amount.AmountOf(denom.Base).Add(sdk.NewInt(12500000000)).String(), devPoolReward.Reward.GetAmount().AmountOf(denom.Base).String(), "Devpool must take 25%")
 	s.Require().Equalf(makeTransactionAccBalance.Balances.AmountOf(denom.Base).Sub(sdk.NewInt(50*denom.ShrExponent)), makeTransactionAccBalanceAfterEx.Balances.AmountOf(denom.Base), "the transaction execute maker must be reduce by the fee that input")
 	s.Require().Equalf(outStandingRewardBefore.Rewards.AmountOf(denom.Base).Add(sdk.NewDec(25*denom.ShrExponent)).String(), outStandingRewardAfter.Rewards.AmountOf(denom.Base).String(), "the validator must take 50% transaction fee from 50shr fee")
-
 }
 
 func (s *DistributionXIntegrationTestSuite) TestDistributionXNormalTransaction() {
@@ -185,7 +184,7 @@ func (s *DistributionXIntegrationTestSuite) TestDistributionXNormalTransaction()
 		"100shr",
 		netutilts.SHRFee(50),
 		netutilts.SkipConfirmation,
-		netutilts.BlockBroadcast,
+		netutilts.SyncBroadcast,
 		netutilts.MakeByAccount(netutilts.KeyAccount3))
 	if err != nil {
 		s.Fail("fail when init the swap out request", err)
@@ -212,5 +211,4 @@ func (s *DistributionXIntegrationTestSuite) TestDistributionXNormalTransaction()
 		"dev pool account must take 50% of 50shr transaction fee",
 	)
 	s.Require().Equalf(outStandingRewardBefore.Rewards.AmountOf(denom.Base).Add(sdk.NewDec(25*denom.ShrExponent)).String(), outStandingRewardAfter.Rewards.AmountOf(denom.Base).String(), "the validator must take 50% transaction fee from 50shr fee")
-
 }

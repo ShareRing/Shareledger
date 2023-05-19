@@ -9,8 +9,8 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/cosmos/cosmos-sdk/x/auth/ante"
 	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
-	ibcante "github.com/cosmos/ibc-go/v5/modules/core/ante"
-	ibckeeper "github.com/cosmos/ibc-go/v5/modules/core/keeper"
+	ibcante "github.com/cosmos/ibc-go/v7/modules/core/ante"
+	ibckeeper "github.com/cosmos/ibc-go/v7/modules/core/keeper"
 	globalfeeante "github.com/sharering/shareledger/x/gentlemint/ante"
 )
 
@@ -30,7 +30,6 @@ type HandlerOptions struct {
 
 	BypassMinFeeMsgTypes []string
 	GlobalFeeSubspace    paramtypes.Subspace
-	StakingSubspace      paramtypes.Subspace
 }
 
 func NewHandler(opts HandlerOptions) (sdk.AnteHandler, error) {
@@ -66,7 +65,7 @@ func NewHandler(opts HandlerOptions) (sdk.AnteHandler, error) {
 
 		// there 2 ante that check for transaction fee
 		NewCheckFeeDecorator(opts.GentlemintKeeper),
-		globalfeeante.NewFeeDecorator(opts.BypassMinFeeMsgTypes, opts.GlobalFeeSubspace, opts.StakingSubspace),
+		globalfeeante.NewFeeDecorator(opts.BypassMinFeeMsgTypes, opts.GlobalFeeSubspace),
 
 		NewCountBuilderDecorator(opts.DistributionxKeeper),
 		// NewAuthDecorator(opts.RoleKeeper, opts.IdKeeper),

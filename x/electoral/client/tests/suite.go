@@ -34,7 +34,7 @@ func (s *ElectoralIntegrationTestSuite) setupTestMaterial() {
 		netutilts.SHRFee2,
 		netutilts.MakeByAccount(netutilts.KeyAuthority),
 		netutilts.SkipConfirmation,
-		netutilts.BlockBroadcast,
+		netutilts.SyncBroadcast,
 	)
 	s.Require().NoError(s.network.WaitForNextBlock())
 
@@ -66,7 +66,7 @@ func (s *ElectoralIntegrationTestSuite) setupTestMaterial() {
 			netutilts.SHRFee2,
 			netutilts.MakeByAccount(netutilts.KeyOperator),
 			netutilts.SkipConfirmation,
-			netutilts.BlockBroadcast,
+			netutilts.SyncBroadcast,
 		)
 		if err != nil {
 			s.Require().NoError(err, "init id signer fail")
@@ -81,7 +81,7 @@ func (s *ElectoralIntegrationTestSuite) setupTestMaterial() {
 			netutilts.SHRFee2,
 			netutilts.MakeByAccount(netutilts.KeyAuthority),
 			netutilts.SkipConfirmation,
-			netutilts.BlockBroadcast,
+			netutilts.SyncBroadcast,
 		)
 		if err != nil {
 			s.Require().NoError(err, "init operator fail")
@@ -97,7 +97,7 @@ func (s *ElectoralIntegrationTestSuite) setupTestMaterial() {
 			netutilts.SHRFee2,
 			netutilts.MakeByAccount(netutilts.KeyOperator),
 			netutilts.SkipConfirmation,
-			netutilts.BlockBroadcast,
+			netutilts.SyncBroadcast,
 		)
 		if err != nil {
 			s.Require().NoError(err, "init doc issuer fail")

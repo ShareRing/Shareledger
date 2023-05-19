@@ -12,7 +12,7 @@ import (
 	"github.com/sharering/shareledger/app"
 	"github.com/sharering/shareledger/app/helpers"
 	"github.com/stretchr/testify/suite"
-	tmtypes "github.com/tendermint/tendermint/proto/tendermint/types"
+	tmtypes "github.com/cometbft/cometbft/proto/tendermint/types"
 )
 
 type KeeperTestHelper struct {

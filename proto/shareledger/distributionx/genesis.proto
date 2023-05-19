@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package sharering.shareledger.distributionx;
+package shareledger.distributionx;
 
 import "gogoproto/gogo.proto";
 import "shareledger/distributionx/params.proto";

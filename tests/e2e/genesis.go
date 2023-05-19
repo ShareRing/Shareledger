@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
-	"time"
 
+	tmtypes "github.com/cometbft/cometbft/types"
 	"github.com/cosmos/cosmos-sdk/server"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
@@ -15,10 +15,10 @@ import (
 	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types"
 	govv1 "github.com/cosmos/cosmos-sdk/x/gov/types/v1"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
-	icatypes "github.com/cosmos/ibc-go/v5/modules/apps/27-interchain-accounts/types"
+	icagenesistypes "github.com/cosmos/ibc-go/v7/modules/apps/27-interchain-accounts/genesis/types"
+	icatypes "github.com/cosmos/ibc-go/v7/modules/apps/27-interchain-accounts/types"
 	electoraltypes "github.com/sharering/shareledger/x/electoral/types"
 	gentleminttypes "github.com/sharering/shareledger/x/gentlemint/types"
-	tmtypes "github.com/tendermint/tendermint/types"
 )
 
 func getGenDoc(path string) (*tmtypes.GenesisDoc, error) {
@@ -134,7 +134,7 @@ func modifyGenesis(c *chain, path, moniker, amountStr string, addrAll []sdk.AccA
 	appState[banktypes.ModuleName] = bankGenStateBz
 
 	// add ica host allowed msg types
-	var icaGenesisState icatypes.GenesisState
+	var icaGenesisState icagenesistypes.GenesisState
 
 	if appState[icatypes.ModuleName] != nil {
 		cdc.MustUnmarshalJSON(appState[icatypes.ModuleName], &icaGenesisState)
@@ -197,14 +197,12 @@ func modifyGenesis(c *chain, path, moniker, amountStr string, addrAll []sdk.AccA
 	appState[stakingtypes.ModuleName] = stakingGenStateBz
 	// Refactor to separate method
 	amnt := sdk.NewInt(10000)
-	quorum, _ := sdk.NewDecFromStr("0.000000000000000001")
-	threshold, _ := sdk.NewDecFromStr("0.000000000000000001")
+	// quorum, _ := sdk.NewDecFromStr("0.000000000000000001")
+	// threshold, _ := sdk.NewDecFromStr("0.000000000000000001")
 
-	govState := govv1.NewGenesisState(1,
-		govv1.NewDepositParams(sdk.NewCoins(sdk.NewCoin(denom, amnt)), 10*time.Minute),
-		govv1.NewVotingParams(15*time.Second),
-		govv1.NewTallyParams(quorum, threshold, govv1.DefaultVetoThreshold),
-	)
+	govParams := govv1.DefaultParams()
+	govParams.MinDeposit = sdk.NewCoins(sdk.NewCoin(denom, amnt))
+	govState := govv1.NewGenesisState(1, govParams)
 
 	govGenStateBz, err := cdc.MarshalJSON(govState)
 	if err != nil {

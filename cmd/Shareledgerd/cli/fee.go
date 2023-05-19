@@ -13,7 +13,7 @@ import (
 var autoLoadFee tx.PreRunBroadcastTx = func(clientCtx client.Context, txf tx.Factory, msgs ...sdk.Msg) (nClientCtx client.Context, nTxf tx.Factory, nMsgs []sdk.Msg, err error) {
 	nClientCtx = clientCtx
 	nTxf = txf
-	nMsgs = msgs[:]
+	nMsgs = msgs
 
 	// Not autoload fee if there is a flag fee on cli or gas-prices flag
 	if !txf.Fees().IsZero() || len(txf.GasPrices()) != 0 {
@@ -33,7 +33,6 @@ var autoLoadFee tx.PreRunBroadcastTx = func(clientCtx client.Context, txf tx.Fac
 	}
 
 	res, err := queryClient.CheckFees(context.Background(), msg)
-
 	if err != nil {
 		return
 	}

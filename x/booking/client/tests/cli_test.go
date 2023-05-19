@@ -1,9 +1,10 @@
 package tests
 
 import (
-	"github.com/sharering/shareledger/cmd/Shareledgerd/cli"
 	"sync"
 	"testing"
+
+	"github.com/sharering/shareledger/cmd/Shareledgerd/cli"
 
 	"github.com/stretchr/testify/suite"
 
@@ -17,6 +18,7 @@ func init() {
 		cli.InitMiddleWare()
 	})
 }
+
 func TestIntegrationBookingTestSuite(t *testing.T) {
 	cfg := network.DefaultConfig()
 	cfg.NumValidators = 2

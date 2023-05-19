@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package sharering.shareledger.distributionx;
+package shareledger.distributionx;
 
 option go_package = "github.com/sharering/shareledger/x/distributionx/types";
 

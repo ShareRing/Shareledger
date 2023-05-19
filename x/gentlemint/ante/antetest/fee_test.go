@@ -6,9 +6,8 @@ import (
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
 	"github.com/cosmos/cosmos-sdk/testutil/testdata"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
-	ibcclienttypes "github.com/cosmos/ibc-go/v5/modules/core/02-client/types"
-	ibcchanneltypes "github.com/cosmos/ibc-go/v5/modules/core/04-channel/types"
+	ibcclienttypes "github.com/cosmos/ibc-go/v7/modules/core/02-client/types"
+	ibcchanneltypes "github.com/cosmos/ibc-go/v7/modules/core/04-channel/types"
 	"github.com/stretchr/testify/suite"
 
 	"github.com/sharering/shareledger/app"
@@ -25,13 +24,10 @@ func (s *IntegrationTestSuite) TestGetDefaultGlobalFees() {
 	globalfeeSubspace := s.SetupTestGlobalFeeStoreAndMinGasPrice([]sdk.DecCoin{}, &types.Params{})
 
 	// set staking params
-	stakingParam := stakingtypes.DefaultParams()
 	bondDenom := "uatom"
-	stakingParam.BondDenom = bondDenom
-	stakingSubspace := s.SetupTestStakingSubspace(stakingParam)
 
 	// setup antehandler
-	mfd := ante.NewFeeDecorator(app.GetDefaultBypassFeeMessages(), globalfeeSubspace, stakingSubspace)
+	mfd := ante.NewFeeDecorator(app.GetDefaultBypassFeeMessages(), globalfeeSubspace)
 
 	defaultGlobalFees, err := mfd.DefaultZeroGlobalFee(s.ctx)
 	s.Require().NoError(err)
@@ -560,11 +556,8 @@ func (s *IntegrationTestSuite) TestGlobalFeeMinimumGasFeeAnteHandler() {
 		s.Run(name, func() {
 			// set globalfees and min gas price
 			globalfeeSubspace := s.SetupTestGlobalFeeStoreAndMinGasPrice(testCase.minGasPrice, testCase.globalFeeParams)
-			stakingParam := stakingtypes.DefaultParams()
-			stakingParam.BondDenom = "uatom"
-			stakingSubspace := s.SetupTestStakingSubspace(stakingParam)
 			// setup antehandler
-			mfd := ante.NewFeeDecorator(app.GetDefaultBypassFeeMessages(), globalfeeSubspace, stakingSubspace)
+			mfd := ante.NewFeeDecorator(app.GetDefaultBypassFeeMessages(), globalfeeSubspace)
 			antehandler := sdk.ChainAnteDecorators(mfd)
 
 			s.Require().NoError(s.txBuilder.SetMsgs(testCase.txMsg))

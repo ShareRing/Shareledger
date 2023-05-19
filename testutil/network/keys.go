@@ -6,7 +6,6 @@ import (
 	"github.com/cosmos/cosmos-sdk/crypto/hd"
 	"github.com/cosmos/cosmos-sdk/crypto/keyring"
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
-	"github.com/cosmos/cosmos-sdk/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
@@ -43,6 +42,7 @@ func (kb *KeyRingBuilder) BuildGenesis() (keyring.Keyring, []authtypes.GenesisAc
 func (kb *KeyRingBuilder) InitUser(id string, coins sdk.Coins) {
 	kb.InitUserByHDPath(id, coins, sdk.FullFundraiserPath)
 }
+
 func (kb *KeyRingBuilder) InitUserByHDPath(id string, coins sdk.Coins, path string) {
 	info, _, err := kb.kb.NewMnemonic(id, keyring.English, path, keyring.DefaultBIP39Passphrase, hd.Secp256k1)
 	require.NoError(kb.t, err, "init fail")
@@ -56,14 +56,14 @@ func (kb *KeyRingBuilder) InitUserByHDPath(id string, coins sdk.Coins, path stri
 }
 
 func (kb *KeyRingBuilder) GenETHSigner(id string, coins sdk.Coins) {
-	kb.InitUserByHDPath(id, coins, KeyPathETH) //ETH hd path
+	kb.InitUserByHDPath(id, coins, KeyPathETH) // ETH hd path
 }
+
 func (kb *KeyRingBuilder) GenBSCSigner(id string, coins sdk.Coins) {
-	kb.InitUserByHDPath(id, coins, KeyPathBSC) //ETH hd path
+	kb.InitUserByHDPath(id, coins, KeyPathBSC) // ETH hd path
 }
 
 func (kb *KeyRingBuilder) NewAccountToSign() {
-
 	info, err := kb.kb.NewAccount(KeyAccountTestSign, SignMnemonic, keyring.DefaultBIP39Passphrase, KeyPathETH, hd.Secp256k1)
 	require.NoError(kb.t, err, "init fail")
 	Accounts[KeyAccountTestSign] = mustNewAddr(info)
@@ -75,7 +75,7 @@ func (kb *KeyRingBuilder) NewAccountToSign() {
 	})
 }
 
-func mustNewAddr(info *keyring.Record) types.AccAddress {
+func mustNewAddr(info *keyring.Record) sdk.AccAddress {
 	addr, err := info.GetAddress()
 	if err != nil {
 		panic(err)

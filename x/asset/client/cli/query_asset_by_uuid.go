@@ -29,7 +29,6 @@ func CmdAssetByUUID() *cobra.Command {
 			queryClient := types.NewQueryClient(clientCtx)
 
 			params := &types.QueryAssetByUUIDRequest{
-
 				Uuid: reqUUID,
 			}
 

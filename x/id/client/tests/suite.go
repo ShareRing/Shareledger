@@ -31,7 +31,7 @@ func (s *IDIntegrationTestSuite) setupTestMaterial() {
 		[]string{netutilts.Accounts[netutilts.KeyOperator].String()},
 		netutilts.MakeByAccount(netutilts.KeyAuthority),
 		netutilts.SkipConfirmation,
-		netutilts.BlockBroadcast,
+		netutilts.SyncBroadcast,
 		netutilts.SHRFee2,
 	)
 	s.Require().NoError(s.network.WaitForNextBlock())
@@ -92,7 +92,7 @@ func (s *IDIntegrationTestSuite) setupTestMaterial() {
 				[]string{netutilts.Accounts[id.accID].String()},
 				netutilts.MakeByAccount(netutilts.KeyOperator),
 				netutilts.SkipConfirmation,
-				netutilts.BlockBroadcast,
+				netutilts.SyncBroadcast,
 				netutilts.SHRFee2,
 			)
 			s.Require().NoError(s.network.WaitForNextBlock())
@@ -103,7 +103,7 @@ func (s *IDIntegrationTestSuite) setupTestMaterial() {
 			out, _ = CmdExNewID(s.network.Validators[0].ClientCtx, id.id, id.idBackup, id.idOwner, id.idData,
 				netutilts.SkipConfirmation,
 				netutilts.MakeByAccount(id.accID),
-				netutilts.BlockBroadcast,
+				netutilts.SyncBroadcast,
 				netutilts.SHRFee2,
 			)
 			s.Require().NoError(s.network.WaitForNextBlock())
@@ -196,7 +196,7 @@ func (s *IDIntegrationTestSuite) TestCreateID() {
 				netutilts.JSONFlag,
 				netutilts.SkipConfirmation,
 				netutilts.MakeByAccount(tc.txCreator),
-				netutilts.BlockBroadcast,
+				netutilts.SyncBroadcast,
 				netutilts.SHRFee(tc.txFee),
 			)
 			if tc.oErr != nil {
@@ -310,7 +310,7 @@ func (s *IDIntegrationTestSuite) TestCreateIDInBatch() {
 				netutilts.JSONFlag,
 				netutilts.SkipConfirmation,
 				netutilts.MakeByAccount(tc.txCreator),
-				netutilts.BlockBroadcast,
+				netutilts.SyncBroadcast,
 				netutilts.SHRFee(tc.txFee),
 			)
 			if tc.oErr != nil {
@@ -387,7 +387,7 @@ func (s *IDIntegrationTestSuite) TestUpdateID() {
 			out, err := CmdExUpdateID(validatorCtx, tc.iID, tc.iData,
 				netutilts.SkipConfirmation,
 				netutilts.MakeByAccount(tc.txCreator),
-				netutilts.BlockBroadcast,
+				netutilts.SyncBroadcast,
 				netutilts.JSONFlag,
 				netutilts.SHRFee(tc.txFee))
 			if tc.oErr != nil {
@@ -472,7 +472,7 @@ func (s *IDIntegrationTestSuite) TestReplaceOwner() {
 		s.Run(tc.d, func() {
 			out, err := CmdExReplaceIdOwner(validatorCtx, tc.iID, tc.iNewAddr,
 				netutilts.MakeByAccount(tc.txCreator),
-				netutilts.SkipConfirmation, netutilts.JSONFlag, netutilts.SHRFee(tc.txFee), netutilts.BlockBroadcast)
+				netutilts.SkipConfirmation, netutilts.JSONFlag, netutilts.SHRFee(tc.txFee), netutilts.SyncBroadcast)
 			if tc.oErr != nil {
 				s.NotNilf(err, "require error in this case")
 			}

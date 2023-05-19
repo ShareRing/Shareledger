@@ -2,6 +2,8 @@ package tests
 
 import (
 	"fmt"
+	"os"
+
 	"github.com/cosmos/cosmos-sdk/testutil/network"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	netutilts "github.com/sharering/shareledger/testutil/network"
@@ -9,9 +11,7 @@ import (
 	bookingtypes "github.com/sharering/shareledger/x/booking/types"
 	"github.com/sharering/shareledger/x/utils/denom"
 
-	"os"
-
-	testutil2 "github.com/cosmos/cosmos-sdk/x/bank/client/testutil"
+	clitestutil "github.com/cosmos/cosmos-sdk/testutil/cli"
 	"github.com/stretchr/testify/suite"
 
 	"github.com/sharering/shareledger/x/asset/client/tests"
@@ -24,7 +24,7 @@ type BookingIntegrationTestSuite struct {
 	network *network.Network
 	dir     string
 
-	//a map with key is booking name and the value is booking ID
+	// a map with key is booking name and the value is booking ID
 	eBooking map[string]string
 }
 
@@ -46,15 +46,15 @@ func (s *BookingIntegrationTestSuite) SetupSuite() {
 	_, err = s.network.WaitForHeight(1)
 	s.Require().NoError(err)
 
-	//override the keyring by our keyring information
+	// override the keyring by our keyring information
 	s.network.Validators[0].ClientCtx.Keyring = kb
 
 	s.T().Log("setting up asset data..")
 	s.setupTestMaterial()
 	s.T().Log("setting up integration test suite successfully")
 	s.Require().NoError(s.network.WaitForNextBlock())
-
 }
+
 func (s *BookingIntegrationTestSuite) TearDownSuite() {
 	s.NoError(os.RemoveAll(s.dir), "fail to cleanup")
 	s.network.Cleanup()
@@ -75,10 +75,10 @@ func (s *BookingIntegrationTestSuite) TestCreateBooking() {
 		oBooking    *bookingtypes.Booking
 		oAccBalance sdk.Coins
 	}
-	//each test case should be use difference account to avoid conflict the balance
+	// each test case should be use difference account to avoid conflict the balance
 	testSuite := []TestCase{
 		{
-			//This test case wil run with account 1 has 100shrp
+			// This test case wil run with account 1 has 100shrp
 			description: "create the booking with total free asset",
 			iAssetID:    "free_asset",
 			iDuration:   "2",
@@ -99,7 +99,7 @@ func (s *BookingIntegrationTestSuite) TestCreateBooking() {
 			oAccBalance: sdk.NewCoins(sdk.NewCoin(denom.BaseUSD, sdk.NewInt(94*denom.USDExponent))),
 		},
 		{
-			//This test case wil run with account 1 has 100shrp
+			// This test case wil run with account 1 has 100shrp
 			description: "create the booking with not free asset",
 			iAssetID:    "not_free_asset",
 			iDuration:   "2",
@@ -153,21 +153,18 @@ func (s *BookingIntegrationTestSuite) TestCreateBooking() {
 
 			}
 			if !tc.oAccBalance.IsZero() {
-				//validate the owner of booking
-				accByte, err := testutil2.QueryBalancesExec(validatorCtx, netutilts.Accounts[tc.iTxnCreator])
+				// validate the owner of booking
+				accByte, err := clitestutil.QueryBalancesExec(validatorCtx, netutilts.Accounts[tc.iTxnCreator])
 				s.NoError(err)
 				accBalance := netutilts.BalanceJsonUnmarshal(s.T(), accByte.Bytes())
-				//default shrp 100
+				// default shrp 100
 				s.Equal(tc.oAccBalance.AmountOf(denom.BaseUSD), accBalance.Balances.AmountOf(denom.BaseUSD), accBalance.Balances)
 			}
-
 		})
 	}
-
 }
 
 func (s *BookingIntegrationTestSuite) TestCompleteBooking() {
-
 	validatorCtx := s.network.Validators[0].ClientCtx
 
 	type TestCase struct {
@@ -242,7 +239,6 @@ func (s *BookingIntegrationTestSuite) TestCompleteBooking() {
 }
 
 func (s *BookingIntegrationTestSuite) setupTestMaterial() {
-
 	s.eBooking = make(map[string]string)
 	type (
 		ExistedAsset struct {
@@ -324,7 +320,7 @@ func (s *BookingIntegrationTestSuite) setupTestMaterial() {
 
 		s.NoError(err)
 		txnResponse := netutilts.ParseStdOut(s.T(), stdOut.Bytes())
-		//s.T().Log(stdOut.String())
+		// s.T().Log(stdOut.String())
 		logs := netutilts.ParseRawLogGetEvent(s.T(), txnResponse.RawLog)
 		l := logs[0]
 		attr := l.Events.GetEventByType(s.T(), "BookingStart")
@@ -334,5 +330,4 @@ func (s *BookingIntegrationTestSuite) setupTestMaterial() {
 		s.Require().NoError(s.network.WaitForNextBlock())
 
 	}
-
 }

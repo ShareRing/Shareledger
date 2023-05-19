@@ -16,21 +16,21 @@ import (
 
 func ExCmdCreateAsset(clientCtx client.Context, assetUUID, assetHash, assetStatus, assetFee string, userFlags ...string) (testutil.BufferWriter, error) {
 	args := []string{assetHash, assetUUID, assetStatus, assetFee}
-	args = append(args, network.SkipConfirmation, network.BlockBroadcast)
+	args = append(args, network.SkipConfirmation, network.SyncBroadcast)
 	args = append(args, userFlags...)
 	return clitestutil.ExecTestCLICmd(clientCtx, cli.CmdCreate(), args)
 }
 
 func ExCmdUpdateAsset(clientCtx client.Context, assetUUID, assetHash, assetStatus, assetFee string, userFlags ...string) (testutil.BufferWriter, error) {
 	args := []string{assetHash, assetUUID, assetStatus, assetFee}
-	args = append(args, network.SkipConfirmation, network.BlockBroadcast)
+	args = append(args, network.SkipConfirmation, network.SyncBroadcast)
 	args = append(args, userFlags...)
 	return clitestutil.ExecTestCLICmd(clientCtx, cli.CmdUpdate(), args)
 }
 
 func ExCmdDeleteAsset(clientCtx client.Context, assetUUID string, userFlags ...string) (testutil.BufferWriter, error) {
 	args := []string{assetUUID}
-	args = append(args, network.SkipConfirmation, network.BlockBroadcast)
+	args = append(args, network.SkipConfirmation, network.SyncBroadcast)
 	args = append(args, userFlags...)
 	return clitestutil.ExecTestCLICmd(clientCtx, cli.CmdDelete(), args)
 }

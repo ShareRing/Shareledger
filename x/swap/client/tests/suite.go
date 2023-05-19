@@ -129,7 +129,7 @@ func (s *SwapIntegrationTestSuite) TestDeposit() {
 				netutilts.JSONFlag,
 				netutilts.SkipConfirmation,
 				netutilts.MakeByAccount(tc.txCreator),
-				netutilts.BlockBroadcast,
+				netutilts.SyncBroadcast,
 				netutilts.SHRFee(tc.txFee),
 			)
 			if tc.oErr != nil {
@@ -226,7 +226,7 @@ func (s *SwapIntegrationTestSuite) TestWithDraw() {
 		netutilts.JSONFlag,
 		netutilts.SkipConfirmation,
 		netutilts.MakeByAccount(netutilts.KeyAuthority),
-		netutilts.BlockBroadcast,
+		netutilts.SyncBroadcast,
 		netutilts.SHRFee(2),
 	)
 
@@ -258,7 +258,7 @@ func (s *SwapIntegrationTestSuite) TestWithDraw() {
 				netutilts.JSONFlag,
 				netutilts.SkipConfirmation,
 				netutilts.MakeByAccount(tc.txCreator),
-				netutilts.BlockBroadcast,
+				netutilts.SyncBroadcast,
 				netutilts.SHRFee(tc.txFee),
 			)
 			if tc.oErr != nil {
@@ -439,7 +439,7 @@ func (s *SwapIntegrationTestSuite) TestCancel() {
 					sw.wAmount,
 					ts.iTxFee,
 					netutilts.SkipConfirmation,
-					netutilts.BlockBroadcast,
+					netutilts.SyncBroadcast,
 					netutilts.MakeByAccount(ts.iTxCreatorSwap))
 				if err != nil {
 					s.Fail("fail when init the swap out request", err)
@@ -461,7 +461,7 @@ func (s *SwapIntegrationTestSuite) TestCancel() {
 					"eth",
 					netutilts.SHRFee2,
 					netutilts.SkipConfirmation,
-					netutilts.BlockBroadcast,
+					netutilts.SyncBroadcast,
 					netutilts.MakeByAccount(netutilts.KeyApproverRelayer))
 				if err != nil {
 					s.Fail("fail when approve the swap out request", err)
@@ -480,7 +480,7 @@ func (s *SwapIntegrationTestSuite) TestCancel() {
 				ts.iTxFee,
 				netutilts.MakeByAccount(ts.iTxCreatorCancel),
 				netutilts.SkipConfirmation,
-				netutilts.BlockBroadcast)
+				netutilts.SyncBroadcast)
 			if err != nil {
 				s.Failf("fail when cancel request", "%s", err)
 			}
@@ -660,7 +660,7 @@ func (s *SwapIntegrationTestSuite) TestReject() {
 					sw.wAmount,
 					ts.iTxFee,
 					netutilts.SkipConfirmation,
-					netutilts.BlockBroadcast,
+					netutilts.SyncBroadcast,
 					netutilts.MakeByAccount(ts.iTxCreatorSwap))
 				if err != nil {
 					s.Fail("fail when init the swap out request", err)
@@ -682,7 +682,7 @@ func (s *SwapIntegrationTestSuite) TestReject() {
 					"eth",
 					netutilts.SHRFee2,
 					netutilts.SkipConfirmation,
-					netutilts.BlockBroadcast,
+					netutilts.SyncBroadcast,
 					netutilts.MakeByAccount(netutilts.KeyApproverRelayer))
 				if err != nil {
 					s.Fail("fail when init the swap out request", err)
@@ -701,7 +701,7 @@ func (s *SwapIntegrationTestSuite) TestReject() {
 				ts.iTxFee,
 				netutilts.MakeByAccount(ts.iTxCreatorReject),
 				netutilts.SkipConfirmation,
-				netutilts.BlockBroadcast)
+				netutilts.SyncBroadcast)
 
 			if ts.oErr != nil {
 				s.Require().NotNilf(err, "this case require err")
@@ -758,7 +758,7 @@ func (s *SwapIntegrationTestSuite) TestApprove() {
 		s.Fail("fail to get back swap", "err %s out %s", err, swapInfoResOut.String())
 	}
 
-	out, err := CmdApprove(cliCtx, netutilts.KeyAccountTestSign, "3000,3001", "eth", netutilts.SkipConfirmation, netutilts.BlockBroadcast, netutilts.MakeByAccount(netutilts.KeyApproverRelayer))
+	out, err := CmdApprove(cliCtx, netutilts.KeyAccountTestSign, "3000,3001", "eth", netutilts.SkipConfirmation, netutilts.SyncBroadcast, netutilts.MakeByAccount(netutilts.KeyApproverRelayer))
 	if err != nil {
 		s.Fail("approve fail", "out %s", out.String())
 	}

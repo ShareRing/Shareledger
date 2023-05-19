@@ -113,27 +113,30 @@
       "gen_txs": []
     },
     "gov": {
-      "deposit_params": {
+      "deposit_params": null,
+      "deposits": [],
+      "params": {
+        "burn_proposal_deposit_prevote": false,
+        "burn_vote_quorum": false,
+        "burn_vote_veto": true,
         "max_deposit_period": "172800s",
         "min_deposit": [
           {
             "amount": "1",
             "denom": "nshr"
           }
-        ]
-      },
-      "deposits": [],
-      "proposals": [],
-      "starting_proposal_id": "1",
-      "tally_params": {
+        ],
+        "min_initial_deposit_ratio": "0.000000000000000000",
         "quorum": "0.334000000000000000",
         "threshold": "0.500000000000000000",
-        "veto_threshold": "0.334000000000000000"
-      },
-      "votes": [],
-      "voting_params": {
+        "veto_threshold": "0.334000000000000000",
         "voting_period": "100s"
-      }
+      },
+      "proposals": [],
+      "starting_proposal_id": "1",
+      "tally_params": null,
+      "votes": [],
+      "voting_params": null
     },
     "group": {
       "group_members": [],
@@ -311,7 +314,6 @@
           ]
         }
       ],
-      "gen_msgs": [],
       "params": {
         "code_upload_access": {
           "address": "",

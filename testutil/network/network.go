@@ -12,7 +12,6 @@ import (
 	"github.com/cosmos/cosmos-sdk/testutil/network"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
-	"github.com/cosmos/cosmos-sdk/x/bank/types"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 	"github.com/sharering/shareledger/app"
@@ -29,9 +28,7 @@ const (
 // AppConstructor defines a function which accepts a network configuration and
 // creates an ABCI Application to provide to Tendermint.
 
-var (
-	Accounts = map[string]sdk.Address{}
-)
+var Accounts = map[string]sdk.Address{}
 
 type (
 	AppConstructor = func(val network.Validator) servertypes.Application
@@ -66,11 +63,11 @@ func New(t *testing.T, configs ...network.Config) *network.Network {
 }
 
 func CompileGenesis(t *testing.T, config *network.Config, genesisState map[string]json.RawMessage, au []authtypes.GenesisAccount, b []banktypes.Balance, elGen electoraltypes.GenesisState) map[string]json.RawMessage {
-	var bankGenesis types.GenesisState
+	var bankGenesis banktypes.GenesisState
 	var authGenesis authtypes.GenesisState
 	var stakingGenesis stakingtypes.GenesisState
 
-	config.Codec.MustUnmarshalJSON(genesisState[types.ModuleName], &bankGenesis)
+	config.Codec.MustUnmarshalJSON(genesisState[banktypes.ModuleName], &bankGenesis)
 	config.Codec.MustUnmarshalJSON(genesisState[authtypes.ModuleName], &authGenesis)
 	config.Codec.MustUnmarshalJSON(genesisState[stakingtypes.ModuleName], &stakingGenesis)
 
@@ -83,7 +80,7 @@ func CompileGenesis(t *testing.T, config *network.Config, genesisState map[strin
 	bankGenesis.Balances = b
 	stakingGenesis.Params.BondDenom = denom.Base
 
-	genesisState[types.ModuleName] = config.Codec.MustMarshalJSON(&bankGenesis)
+	genesisState[banktypes.ModuleName] = config.Codec.MustMarshalJSON(&bankGenesis)
 	genesisState[authtypes.ModuleName] = config.Codec.MustMarshalJSON(&authGenesis)
 	genesisState[electoraltypes.ModuleName] = config.Codec.MustMarshalJSON(&elGen)
 	genesisState[stakingtypes.ModuleName] = config.Codec.MustMarshalJSON(&stakingGenesis)
@@ -93,7 +90,6 @@ func CompileGenesis(t *testing.T, config *network.Config, genesisState map[strin
 
 // GetTestingGenesis init the genesis state for testing in here
 func GetTestingGenesis(t *testing.T, config *network.Config) (keyring.Keyring, string) {
-
 	genesisState := config.GenesisState
 
 	buf := bufio.NewReader(os.Stdin)
@@ -191,5 +187,4 @@ func MustAddressFormKeyring(kr keyring.Keyring, id string) sdk.AccAddress {
 		panic(err)
 	}
 	return sdk.AccAddress(p.Address())
-
 }

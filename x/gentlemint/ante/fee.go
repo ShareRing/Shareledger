@@ -8,8 +8,8 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
-	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 	"github.com/sharering/shareledger/x/gentlemint/types"
+	"github.com/sharering/shareledger/x/utils/denom"
 )
 
 const maxBypassMinFeeMsgGasUsage = uint64(200_000)
@@ -30,22 +30,16 @@ var _ sdk.AnteDecorator = FeeDecorator{}
 type FeeDecorator struct {
 	BypassMinFeeMsgTypes []string
 	GlobalMinFee         types.ParamSource
-	StakingSubspace      paramtypes.Subspace
 }
 
-func NewFeeDecorator(bypassMsgTypes []string, globalfeeSubspace, stakingSubspace paramtypes.Subspace) FeeDecorator {
+func NewFeeDecorator(bypassMsgTypes []string, globalfeeSubspace paramtypes.Subspace) FeeDecorator {
 	if !globalfeeSubspace.HasKeyTable() {
 		panic("global fee paramspace was not set up via module")
-	}
-
-	if !stakingSubspace.HasKeyTable() {
-		panic("staking paramspace was not set up via module")
 	}
 
 	return FeeDecorator{
 		BypassMinFeeMsgTypes: bypassMsgTypes,
 		GlobalMinFee:         globalfeeSubspace,
-		StakingSubspace:      stakingSubspace,
 	}
 }
 
@@ -144,13 +138,8 @@ func (mfd FeeDecorator) DefaultZeroGlobalFee(ctx sdk.Context) ([]sdk.DecCoin, er
 	return []sdk.DecCoin{sdk.NewDecCoinFromDec(bondDenom, sdk.NewDec(0))}, nil
 }
 
-func (mfd FeeDecorator) getBondDenom(ctx sdk.Context) string {
-	var bondDenom string
-	if mfd.StakingSubspace.Has(ctx, stakingtypes.KeyBondDenom) {
-		mfd.StakingSubspace.Get(ctx, stakingtypes.KeyBondDenom, &bondDenom)
-	}
-
-	return bondDenom
+func (FeeDecorator) getBondDenom(_ sdk.Context) string {
+	return denom.Base
 }
 
 func isFixFeeMsgs(msgs []sdk.Msg) bool {

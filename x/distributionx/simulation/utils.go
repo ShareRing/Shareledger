@@ -3,20 +3,21 @@ package simulation
 import (
 	"errors"
 	"math/rand"
+	"time"
 
+	simappparams "cosmossdk.io/simapp/params"
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
-	simappparams "github.com/cosmos/cosmos-sdk/simapp/params"
+	simtestutil "github.com/cosmos/cosmos-sdk/testutil/sims"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
-	"github.com/cosmos/ibc-go/v5/testing/simapp/helpers"
 	"github.com/sharering/shareledger/x/distributionx/types"
 	"github.com/sharering/shareledger/x/utils/denom"
 )
 
 func SimBroadcastTransaction(r *rand.Rand,
-	app *baseapp.BaseApp, msg sdk.Msg, ak types.AccountKeeper, bk types.BankKeeper, ctx sdk.Context, chainID string, privkeys []cryptotypes.PrivKey) error {
-
+	app *baseapp.BaseApp, msg sdk.Msg, ak types.AccountKeeper, bk types.BankKeeper, ctx sdk.Context, chainID string, privkeys []cryptotypes.PrivKey,
+) error {
 	var (
 		fees sdk.Coins
 		err  error
@@ -46,17 +47,17 @@ func SimBroadcastTransaction(r *rand.Rand,
 	}
 	txGen := simappparams.MakeTestEncodingConfig().TxConfig
 
-	tx, err := helpers.GenTx(
+	tx, err := simtestutil.GenSignedMockTx(
+		rand.New(rand.NewSource(time.Now().UnixNano())),
 		txGen,
 		[]sdk.Msg{msg},
 		fees,
-		helpers.DefaultGenTxGas,
+		simtestutil.DefaultGenTxGas,
 		chainID,
 		[]uint64{account.GetAccountNumber()},
 		[]uint64{account.GetSequence()},
 		privkeys...,
 	)
-
 	if err != nil {
 		return err
 	}

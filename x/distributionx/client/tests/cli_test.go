@@ -2,13 +2,14 @@ package tests
 
 import (
 	"encoding/json"
-	"github.com/stretchr/testify/suite"
-	tmjson "github.com/tendermint/tendermint/libs/json"
-	tmtypes "github.com/tendermint/tendermint/types"
 	"os"
 	"path/filepath"
 	"sync"
 	"testing"
+
+	tmjson "github.com/cometbft/cometbft/libs/json"
+	tmtypes "github.com/cometbft/cometbft/types"
+	"github.com/stretchr/testify/suite"
 
 	"github.com/sharering/shareledger/cmd/Shareledgerd/cli"
 	"github.com/sharering/shareledger/testutil/network"
@@ -52,5 +53,4 @@ func mustLoadTestGenesis(dir string) map[string]json.RawMessage {
 		panic(err)
 	}
 	return appState
-
 }

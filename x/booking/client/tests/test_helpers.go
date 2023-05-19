@@ -15,7 +15,7 @@ import (
 
 func ExCmdCreateBooking(clientCtx client.Context, assetUUID, duration string, additionalFlags ...string) (testutil.BufferWriter, error) {
 	args := []string{assetUUID, duration}
-	args = append(args, network.SkipConfirmation, network.BlockBroadcast)
+	args = append(args, network.SkipConfirmation, network.SyncBroadcast)
 	args = append(args, additionalFlags...)
 	return clitestutil.ExecTestCLICmd(clientCtx, cli.CmdBook(), args)
 }
@@ -29,7 +29,7 @@ func ExCmdCGetBooking(clientCtx client.Context, bookingID string, additionalFlag
 
 func ExCmdCCompleteBooking(clientCtx client.Context, bookingID string, additionalFlags ...string) (testutil.BufferWriter, error) {
 	args := []string{bookingID}
-	args = append(args, network.SkipConfirmation, network.BlockBroadcast)
+	args = append(args, network.SkipConfirmation, network.SyncBroadcast)
 	args = append(args, additionalFlags...)
 	return clitestutil.ExecTestCLICmd(clientCtx, cli.CmdComplete(), args)
 }
@@ -40,5 +40,4 @@ func BookingJsonUnmarshal(t *testing.T, data []byte) types.Booking {
 	err := encodingConfig.Codec.UnmarshalJSON(data, &a)
 	require.NoError(t, err)
 	return *a.Booking
-
 }

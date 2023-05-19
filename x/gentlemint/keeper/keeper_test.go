@@ -30,7 +30,6 @@ func (s *KeeperTestSuite) SetupTest() {
 
 func (s *KeeperTestSuite) TestBaseMintPossible_false() {
 	s.False(s.gKeeper.BaseMintPossible(s.Ctx, types.MaxBaseSupply))
-
 }
 
 func (s *KeeperTestSuite) TestBaseMintPossible_true() {

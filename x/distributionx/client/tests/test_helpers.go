@@ -48,16 +48,17 @@ func ExCmdQueryReward(clientCtx client.Context, rewardAddr string) (types.QueryG
 		return types.QueryGetRewardResponse{}, errors.Wrapf(err, "addr %s", rewardAddr)
 	}
 
-	var res = types.QueryGetRewardResponse{}
+	res := types.QueryGetRewardResponse{}
 	err = clientCtx.Codec.UnmarshalJSON(out.Bytes(), &res)
 	if err != nil {
 		return types.QueryGetRewardResponse{}, err
 	}
 	return res, nil
 }
+
 func ExCmdListReward(clientCtx client.Context) (types.QueryAllRewardResponse, error) {
 	var args []string
-	//args = append(args, masterBuilder)
+	// args = append(args, masterBuilder)
 	args = append(args, network.JSONFlag)
 
 	out, err := clitestutil.ExecTestCLICmd(clientCtx, cli2.CmdListReward(), args)
@@ -65,16 +66,17 @@ func ExCmdListReward(clientCtx client.Context) (types.QueryAllRewardResponse, er
 		return types.QueryAllRewardResponse{}, err
 	}
 
-	var res = types.QueryAllRewardResponse{}
+	res := types.QueryAllRewardResponse{}
 	err = clientCtx.Codec.UnmarshalJSON(out.Bytes(), &res)
 	if err != nil {
 		return types.QueryAllRewardResponse{}, err
 	}
 	return res, nil
 }
+
 func ExCmdQueryParam(clientCtx client.Context) (types.QueryParamsResponse, error) {
 	var args []string
-	//args = append(args, masterBuilder)
+	// args = append(args, masterBuilder)
 	args = append(args, network.JSONFlag)
 
 	out, err := clitestutil.ExecTestCLICmd(clientCtx, cli2.CmdQueryParams(), args)
@@ -82,7 +84,7 @@ func ExCmdQueryParam(clientCtx client.Context) (types.QueryParamsResponse, error
 		return types.QueryParamsResponse{}, err
 	}
 
-	var res = types.QueryParamsResponse{}
+	res := types.QueryParamsResponse{}
 	err = clientCtx.Codec.UnmarshalJSON(out.Bytes(), &res)
 	if err != nil {
 		return types.QueryParamsResponse{}, err
@@ -100,7 +102,7 @@ func ExCmdQueryOutStandingReward(clientCtx client.Context, validator string) (ty
 	if err != nil {
 		return types2.ValidatorOutstandingRewards{}, err
 	}
-	var res = types2.ValidatorOutstandingRewards{}
+	res := types2.ValidatorOutstandingRewards{}
 
 	err = clientCtx.Codec.UnmarshalJSON(out.Bytes(), &res)
 	if err != nil {
@@ -114,13 +116,13 @@ func ExCmdListDelegator(clientCtx client.Context, validator string) (types3.Quer
 	args = append(args, validator)
 
 	args = append(args, network.JSONFlag)
-	//GetCmdQueryValidatorDelegations
+	// GetCmdQueryValidatorDelegations
 	out, err := clitestutil.ExecTestCLICmd(clientCtx, cli4.GetCmdQueryValidatorDelegations(), args)
 	if err != nil {
 		return types3.QueryValidatorDelegationsResponse{}, err
 	}
-	//QueryValidatorDelegationsResponse
-	var res = types3.QueryValidatorDelegationsResponse{}
+	// QueryValidatorDelegationsResponse
+	res := types3.QueryValidatorDelegationsResponse{}
 	err = clientCtx.Codec.Unmarshal(out.Bytes(), &res)
 	if err != nil {
 		return types3.QueryValidatorDelegationsResponse{}, err

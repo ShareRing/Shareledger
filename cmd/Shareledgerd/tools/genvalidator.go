@@ -1,6 +1,7 @@
 package tools
 
 import (
+	"github.com/cometbft/cometbft/libs/cli"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/server"
@@ -8,7 +9,6 @@ import (
 	electoralmoduletypes "github.com/sharering/shareledger/x/electoral/types"
 	"github.com/sharering/shareledger/x/gentlemint/types"
 	"github.com/spf13/cobra"
-	"github.com/tendermint/tendermint/libs/cli"
 )
 
 func NewGenesisAddValidatorAccountCmd(defaultNodeHome string) *cobra.Command {

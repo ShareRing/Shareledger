@@ -4,7 +4,7 @@ import (
 	"math"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	tmstrings "github.com/tendermint/tendermint/libs/strings"
+	tmstrings "github.com/cometbft/cometbft/libs/strings"
 )
 
 // getMinGasPrice will also return sorted coins

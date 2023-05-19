@@ -56,7 +56,7 @@ func (s *GentlemintIntegrationTestSuite) SetupSuite() {
 		netutilts.Accounts[netutilts.KeyLoader].String(),
 		netutilts.MakeByAccount(netutilts.KeyAuthority),
 		netutilts.SkipConfirmation,
-		netutilts.BlockBroadcast,
+		netutilts.SyncBroadcast,
 		netutilts.SHRFee2,
 	)
 	s.Require().NoError(s.network.WaitForNextBlock())
@@ -127,7 +127,7 @@ func (s *GentlemintIntegrationTestSuite) TestLoadSHR() {
 				tc.iAmount,
 				netutilts.MakeByAccount(tc.txCreator),
 				netutilts.SkipConfirmation,
-				netutilts.BlockBroadcast,
+				netutilts.SyncBroadcast,
 				netutilts.SHRFee(tc.txFee),
 			)
 			if tc.oErr != nil {
@@ -185,7 +185,7 @@ func (s *GentlemintIntegrationTestSuite) TestBurnSHR() {
 				tc.iAmount,
 				netutilts.MakeByAccount(tc.txCreator),
 				netutilts.SkipConfirmation,
-				netutilts.BlockBroadcast,
+				netutilts.SyncBroadcast,
 				netutilts.SHRFee(tc.txFee),
 			)
 			if tc.oErr != nil {
@@ -243,7 +243,7 @@ func (s *GentlemintIntegrationTestSuite) TestBurnSHRP() {
 				tc.iAmount,
 				netutilts.MakeByAccount(tc.txCreator),
 				netutilts.SkipConfirmation,
-				netutilts.BlockBroadcast,
+				netutilts.SyncBroadcast,
 				netutilts.SHRFee(tc.txFee),
 			)
 			if tc.oErr != nil {
@@ -304,7 +304,7 @@ func (s *GentlemintIntegrationTestSuite) TestBuySHR() {
 				tc.iAmount,
 				netutilts.MakeByAccount(tc.txCreator),
 				netutilts.SkipConfirmation,
-				netutilts.BlockBroadcast,
+				netutilts.SyncBroadcast,
 				netutilts.SHRFee(tc.txFee),
 			)
 			if tc.oErr != nil {
@@ -368,7 +368,7 @@ func (s *GentlemintIntegrationTestSuite) TestLoadSHRP() {
 				tc.iAmount,
 				netutilts.MakeByAccount(tc.txCreator),
 				netutilts.SkipConfirmation,
-				netutilts.BlockBroadcast,
+				netutilts.SyncBroadcast,
 				netutilts.SHRFee(tc.txFee),
 			)
 			if tc.oErr != nil {
@@ -454,7 +454,7 @@ func (s *GentlemintIntegrationTestSuite) TestSendSHR() {
 		stdOut, err = CmdSendSHR(validatorCtx, tc.iReceiver, tc.iAmount,
 			netutilts.JSONFlag,
 			netutilts.SHRFee(tc.txFee),
-			netutilts.BlockBroadcast,
+			netutilts.SyncBroadcast,
 			netutilts.SkipConfirmation,
 			netutilts.MakeByAccount(tc.txCreator))
 
@@ -532,7 +532,7 @@ func (s *GentlemintIntegrationTestSuite) TestSendSHRP() {
 		stdOut, err = CmdSendSHRP(validatorCtx, tc.iReceiver, tc.iAmount,
 			netutilts.JSONFlag,
 			netutilts.SHRFee(tc.txFee),
-			netutilts.BlockBroadcast,
+			netutilts.SyncBroadcast,
 			netutilts.SkipConfirmation,
 			netutilts.MakeByAccount(tc.txCreator))
 
@@ -597,7 +597,7 @@ func (s *GentlemintIntegrationTestSuite) TestSetExchangeRate() {
 				tc.iRate, netutilts.SHRFee(tc.txFee),
 				netutilts.MakeByAccount(tc.txCreator),
 				netutilts.SkipConfirmation,
-				netutilts.BlockBroadcast)
+				netutilts.SyncBroadcast)
 			if tc.oErr != nil {
 				s.Require().NotNilf(err, "error is required in this case")
 			}

@@ -88,7 +88,7 @@ func (s *DocumentIntegrationTestSuite) setupTestingMaterial() {
 		[]string{netutilts.Accounts[netutilts.KeyOperator].String()},
 		netutilts.MakeByAccount(netutilts.KeyAuthority),
 		netutilts.SkipConfirmation,
-		netutilts.BlockBroadcast,
+		netutilts.SyncBroadcast,
 		netutilts.SHRFee2,
 	)
 	s.Require().NoError(s.network.WaitForNextBlock())
@@ -126,7 +126,7 @@ func (s *DocumentIntegrationTestSuite) setupTestingMaterial() {
 			iz.idData,
 			netutilts.MakeByAccount(iz.accountID),
 			netutilts.SkipConfirmation,
-			netutilts.BlockBroadcast,
+			netutilts.SyncBroadcast,
 			netutilts.SHRFee2)
 
 		s.Require().NoError(s.network.WaitForNextBlock())
@@ -137,7 +137,7 @@ func (s *DocumentIntegrationTestSuite) setupTestingMaterial() {
 			out, _ := CmdExCreateDocument(s.network.Validators[0].ClientCtx,
 				iz.id, iz.docProof, iz.docData,
 				netutilts.MakeByAccount(iz.accountID),
-				netutilts.BlockBroadcast,
+				netutilts.SyncBroadcast,
 				netutilts.SHRFee2,
 				netutilts.SkipConfirmation,
 			)
@@ -226,7 +226,7 @@ func (s *DocumentIntegrationTestSuite) TestCreateDocument() {
 			out, err := CmdExCreateDocument(validationCtx,
 				tc.iHolderID, tc.iDocProof, tc.iDocData,
 				netutilts.MakeByAccount(tc.txnCreator),
-				netutilts.BlockBroadcast,
+				netutilts.SyncBroadcast,
 				netutilts.SHRFee(tc.txnFee),
 				netutilts.SkipConfirmation,
 			)
@@ -319,7 +319,7 @@ func (s *DocumentIntegrationTestSuite) TestCreateBatchDocument() {
 				strings.Join(tc.iDocProofs, ","),
 				strings.Join(tc.iDocDatas, ","),
 				netutilts.MakeByAccount(tc.txnCreator),
-				netutilts.BlockBroadcast,
+				netutilts.SyncBroadcast,
 				netutilts.SHRFee(tc.txnFee),
 				netutilts.SkipConfirmation,
 			)
@@ -415,7 +415,7 @@ func (s *DocumentIntegrationTestSuite) TestUpdateDocument() {
 			out, err := CmdExUpdateDocument(validationCtx,
 				tc.iHolderID, tc.iDocProof, tc.iDocData,
 				netutilts.MakeByAccount(tc.txnCreator),
-				netutilts.BlockBroadcast,
+				netutilts.SyncBroadcast,
 				netutilts.SHRFee(tc.txnFee),
 				netutilts.SkipConfirmation,
 			)
@@ -484,7 +484,7 @@ func (s *DocumentIntegrationTestSuite) TestRevokeDocument() {
 			out, err := CmdExRevokeDocument(validationCtx,
 				tc.iHolderID, tc.iDocProof,
 				netutilts.MakeByAccount(tc.txnCreator),
-				netutilts.BlockBroadcast,
+				netutilts.SyncBroadcast,
 				netutilts.SHRFee(tc.txnFee),
 				netutilts.SkipConfirmation,
 			)

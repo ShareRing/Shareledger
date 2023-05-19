@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package sharering.shareledger.distributionx;
+package shareledger.distributionx;
 
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "gogoproto/gogo.proto";

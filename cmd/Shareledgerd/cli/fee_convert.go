@@ -15,7 +15,7 @@ var autoConvertFee tx.PreRunBroadcastTx = func(clientCtx client.Context, txf tx.
 
 	nClientCtx = clientCtx
 	nTxf = txf
-	nMsgs = msgs[:]
+	nMsgs = msgs
 
 	baseCoins, err := denom.NormalizeToBaseCoins(sdk.NewDecCoinsFromCoins(txf.Fees()...), true)
 	if err != nil {

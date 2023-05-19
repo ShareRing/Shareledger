@@ -2,11 +2,12 @@ package tests
 
 import (
 	"fmt"
+	"os"
+
 	"github.com/cosmos/cosmos-sdk/testutil/network"
 	types2 "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/sharering/shareledger/x/asset/types"
-	"os"
 
 	netutilts "github.com/sharering/shareledger/testutil/network"
 
@@ -49,13 +50,14 @@ func (s *AssetIntegrationTestSuite) SetupSuite() {
 	_, err = s.network.WaitForHeight(1)
 	s.Require().NoError(err)
 
-	//override the keyring by our keyring information
+	// override the keyring by our keyring information
 	s.network.Validators[0].ClientCtx.Keyring = kb
 
 	s.setupTestMaterial()
 
 	s.T().Log("setting up integration test suite successfully")
 }
+
 func (s *AssetIntegrationTestSuite) TearDownSuite() {
 	s.NoError(os.RemoveAll(s.dir), "cleanup test case fails")
 	s.network.Cleanup()
@@ -63,7 +65,6 @@ func (s *AssetIntegrationTestSuite) TearDownSuite() {
 }
 
 func (s *AssetIntegrationTestSuite) TestCreateAsset() {
-
 	type testCase struct {
 		iAssetID     string
 		iAssetHash   string
@@ -76,7 +77,7 @@ func (s *AssetIntegrationTestSuite) TestCreateAsset() {
 		oErr         error
 		d            string
 	}
-	//write your test suite here
+	// write your test suite here
 	testCases := []testCase{
 		{
 			iAssetID:     "id1",
@@ -161,13 +162,10 @@ func (s *AssetIntegrationTestSuite) TestCreateAsset() {
 				s.Equal(tc.oAsset.Rate, asset.Rate, tc.d)
 			}
 		})
-
 	}
-
 }
 
 func (s *AssetIntegrationTestSuite) TestUpdateAsset() {
-
 	type TestCase struct {
 		iAssetID     string
 		iAssetHash   string
@@ -180,7 +178,7 @@ func (s *AssetIntegrationTestSuite) TestUpdateAsset() {
 		oErr         error
 		d            string
 	}
-	//write your test suite here
+	// write your test suite here
 	testCase := []TestCase{
 		{
 			iAssetID:     "e_id_1",
@@ -249,11 +247,9 @@ func (s *AssetIntegrationTestSuite) TestUpdateAsset() {
 			}
 		})
 	}
-
 }
 
 func (s *AssetIntegrationTestSuite) TestDeleteAsset() {
-
 	type TestCase struct {
 		iAssetID string
 		iTxFee   int
@@ -262,7 +258,7 @@ func (s *AssetIntegrationTestSuite) TestDeleteAsset() {
 		oErr     error
 		d        string
 	}
-	//write your test suite here
+	// write your test suite here
 	testCases := []TestCase{
 		{
 			iAssetID: "e_id_3",
@@ -311,8 +307,7 @@ func (s *AssetIntegrationTestSuite) TestDeleteAsset() {
 
 // setupTestMaterial prepare the test data
 func (s *AssetIntegrationTestSuite) setupTestMaterial() {
-
-	var assetList = []GenesisAsset{
+	assetList := []GenesisAsset{
 		{
 			AssetCreator: netutilts.KeyAccount1,
 			AssetHash:    "0b44517f76eab863c3c4ab13c9774fadd62080ee97af663ec76ffeb671e9e064",

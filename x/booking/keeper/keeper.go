@@ -9,7 +9,7 @@ import (
 	bankkeeper "github.com/cosmos/cosmos-sdk/x/bank/keeper"
 	assetkeeper "github.com/sharering/shareledger/x/asset/keeper"
 	"github.com/sharering/shareledger/x/booking/types"
-	"github.com/tendermint/tendermint/libs/log"
+	"github.com/cometbft/cometbft/libs/log"
 )
 
 type (
