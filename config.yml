@@ -177,7 +177,7 @@ validators:
     client:
       chain-id: ShareRing-VoyagerNet
       keyring-backend: test
-      broadcast-mode: block
+      broadcast-mode: sync
       node: "tcp://localhost:26657"
     config:
       rpc:

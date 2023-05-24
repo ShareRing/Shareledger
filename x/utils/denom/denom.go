@@ -1,10 +1,11 @@
 package denom
 
 import (
-	sdk "github.com/cosmos/cosmos-sdk/types"
-	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"math"
 	"math/big"
+
+	sdk "github.com/cosmos/cosmos-sdk/types"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
 func CheckSupport(denom string) error {
@@ -102,7 +103,6 @@ func NormalizeToBaseCoins(dcoins sdk.DecCoins, roundUp bool) (sdk.Coins, error) 
 	base, err := NormalizeToBaseCoin(Base, sdk.NewDecCoins(
 		sdk.NewDecCoinFromDec(Shr, dcoins.AmountOf(Shr)),
 		sdk.NewDecCoinFromDec(Base, dcoins.AmountOf(Base))), sdk.NewDec(1), roundUp)
-
 	if err != nil {
 		return nil, err
 	}

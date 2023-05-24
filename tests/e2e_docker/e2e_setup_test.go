@@ -12,6 +12,9 @@ import (
 	"testing"
 	"time"
 
+	tmconfig "github.com/cometbft/cometbft/config"
+	tmjson "github.com/cometbft/cometbft/libs/json"
+	rpchttp "github.com/cometbft/cometbft/rpc/client/http"
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	"github.com/cosmos/cosmos-sdk/crypto/hd"
 	"github.com/cosmos/cosmos-sdk/crypto/keyring"
@@ -31,9 +34,6 @@ import (
 	"github.com/sharering/shareledger/app/params"
 	"github.com/spf13/viper"
 	"github.com/stretchr/testify/suite"
-	tmconfig "github.com/cometbft/cometbft/config"
-	tmjson "github.com/cometbft/cometbft/libs/json"
-	rpchttp "github.com/cometbft/cometbft/rpc/client/http"
 )
 
 const (

@@ -4,7 +4,8 @@ go 1.18
 
 replace (
 	github.com/CosmWasm/wasmd => github.com/CosmWasm/wasmd v0.40.0-rc.2
-	github.com/cosmos/cosmos-sdk => github.com/sharering/cosmos-sdk v0.47.2-sharering
+	github.com/cometbft/cometbft => github.com/cometbft/cometbft v0.37.1
+	github.com/cosmos/cosmos-sdk => github.com/sharering/cosmos-sdk v0.47.2-shr
 )
 
 require (
@@ -21,7 +22,7 @@ require (
 )
 
 require (
-	cosmossdk.io/simapp v0.0.0-20230224204036-a6adb0821462
+	cosmossdk.io/simapp v0.0.0-20230426205644-8f6a94cd1f9f
 	github.com/CosmWasm/wasmd v0.0.0-00010101000000-000000000000
 	github.com/cosmos/cosmos-proto v1.0.0-beta.2
 	github.com/cosmos/cosmos-sdk v0.47.2

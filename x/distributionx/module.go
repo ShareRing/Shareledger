@@ -7,6 +7,7 @@ import (
 
 	// this line is used by starport scaffolding # 1
 
+	abci "github.com/cometbft/cometbft/abci/types"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/codec"
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
@@ -17,7 +18,6 @@ import (
 	"github.com/sharering/shareledger/x/distributionx/keeper"
 	"github.com/sharering/shareledger/x/distributionx/types"
 	"github.com/spf13/cobra"
-	abci "github.com/cometbft/cometbft/abci/types"
 )
 
 var (
@@ -108,9 +108,6 @@ func NewAppModule(
 		bankKeeper:     bankKeeper,
 	}
 }
-
-// Deprecated: use RegisterServices
-func (AppModule) QuerierRoute() string { return types.RouterKey }
 
 // RegisterServices registers a gRPC query service to respond to the module-specific gRPC queries
 func (am AppModule) RegisterServices(cfg module.Configurator) {

@@ -3,11 +3,11 @@ package distributionx
 import (
 	"time"
 
+	abci "github.com/cometbft/cometbft/abci/types"
 	"github.com/cosmos/cosmos-sdk/telemetry"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/sharering/shareledger/x/distributionx/keeper"
 	"github.com/sharering/shareledger/x/distributionx/types"
-	abci "github.com/cometbft/cometbft/abci/types"
 )
 
 // BeginBlocker sets the proposer for determining distribution during endblock

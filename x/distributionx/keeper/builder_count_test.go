@@ -39,6 +39,7 @@ func TestBuilderCountGet(t *testing.T) {
 		)
 	}
 }
+
 func TestBuilderCountRemove(t *testing.T) {
 	keeper, ctx := keepertest.DistributionxKeeper(t)
 	items := createNBuilderCount(keeper, ctx, 10)

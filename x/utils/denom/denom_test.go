@@ -104,9 +104,9 @@ func TestExponentToBase(t *testing.T) {
 		result   sdk.Coin
 	}{
 		{
-			amount:   big.NewInt(9000000000000000000), //9shr - bsc
+			amount:   big.NewInt(9000000000000000000), // 9shr - bsc
 			exponent: 18,
-			result:   sdk.NewCoin(Base, sdk.NewInt(9000000000)), //9shr - shr
+			result:   sdk.NewCoin(Base, sdk.NewInt(9000000000)), // 9shr - shr
 		},
 		{
 			amount:   big.NewInt(900), // 9shr - eth

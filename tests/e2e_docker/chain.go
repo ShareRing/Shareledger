@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 
+	tmrand "github.com/cometbft/cometbft/libs/rand"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/codec"
 	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
@@ -14,7 +15,6 @@ import (
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 	"github.com/sharering/shareledger/app"
 	"github.com/sharering/shareledger/app/params"
-	tmrand "github.com/cometbft/cometbft/libs/rand"
 )
 
 const (
