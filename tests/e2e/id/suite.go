@@ -70,7 +70,7 @@ func (s *E2ETestSuite) TestGetByID() {
 			Expected:  nil,
 		},
 	}
-	tests.RunTestCases(s.Require(), testCases, cli.CmdIdById(), s.network.Validators[0])
+	tests.RunTestCases(&s.Suite, testCases, cli.CmdIdById(), s.network.Validators[0])
 }
 
 func (s *E2ETestSuite) TestGetByAddress() {
@@ -92,5 +92,5 @@ func (s *E2ETestSuite) TestGetByAddress() {
 		RespType:  nil,
 		Expected:  nil,
 	}}
-	tests.RunTestCases(s.Require(), testCases, cli.CmdIdByAddress(), s.network.Validators[0])
+	tests.RunTestCases(&s.Suite, testCases, cli.CmdIdByAddress(), s.network.Validators[0])
 }
