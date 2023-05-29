@@ -4,6 +4,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/testutil"
 	clitestutil "github.com/cosmos/cosmos-sdk/testutil/cli"
 	"github.com/cosmos/cosmos-sdk/testutil/network"
+	"github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/gogoproto/proto"
 	"github.com/spf13/cobra"
 	"github.com/stretchr/testify/suite"
@@ -57,6 +58,32 @@ func RunTestCasesGrpc(s *suite.Suite, tcs TestCasesGrpc, val *network.Validator)
 			} else {
 				assert.NoError(val.ClientCtx.Codec.UnmarshalJSON(resp, tc.RespType))
 				assert.Equal(tc.Expected.String(), tc.RespType.String())
+			}
+		})
+	}
+}
+
+type TestCaseTx struct {
+	Name         string
+	Args         []string
+	ExpectErr    bool
+	ExpectedCode uint32
+}
+
+type TestCasesTx = []TestCaseTx
+
+func RunTestCasesTx(s *suite.Suite, tcs TestCasesTx, cmd *cobra.Command, val *network.Validator) {
+	assert := s.Assert()
+	for _, tc := range tcs {
+		s.Run(tc.Name, func() {
+			out, err := clitestutil.ExecTestCLICmd(val.ClientCtx, cmd, tc.Args)
+			if tc.ExpectErr {
+				assert.Error(err)
+			} else {
+				assert.NoError(err)
+				var resp types.TxResponse
+				assert.NoError(val.ClientCtx.Codec.UnmarshalJSON(out.Bytes(), &resp))
+				assert.Equal(tc.ExpectedCode, resp.Code)
 			}
 		})
 	}

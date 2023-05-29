@@ -37,7 +37,7 @@ func NewBookingIntegrationTestSuite(cf network.Config) *BookingIntegrationTestSu
 func (s *BookingIntegrationTestSuite) SetupSuite() {
 	s.T().Log("setting up integration test suite for booking module")
 
-	kb, dir := netutilts.GetTestingGenesis(s.T(), &s.cfg)
+	kb, dir := netutilts.SetTestingGenesis(s.T(), &s.cfg)
 	s.dir = dir
 
 	n, err := network.New(s.T(), s.T().TempDir(), s.cfg)
@@ -156,7 +156,7 @@ func (s *BookingIntegrationTestSuite) TestCreateBooking() {
 				// validate the owner of booking
 				accByte, err := clitestutil.QueryBalancesExec(validatorCtx, netutilts.Accounts[tc.iTxnCreator])
 				s.NoError(err)
-				accBalance := netutilts.BalanceJsonUnmarshal(s.T(), accByte.Bytes())
+				accBalance := netutilts.BalanceJSONUnmarshal(s.T(), accByte.Bytes())
 				// default shrp 100
 				s.Equal(tc.oAccBalance.AmountOf(denom.BaseUSD), accBalance.Balances.AmountOf(denom.BaseUSD), accBalance.Balances)
 			}

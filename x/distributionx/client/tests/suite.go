@@ -41,7 +41,7 @@ func NewDistributionXIntegrationTestSuite(cf *network.Config) *DistributionXInte
 func (s *DistributionXIntegrationTestSuite) SetupSuite() {
 	s.T().Log("setting up integration test suite for distributionx module")
 
-	kb, dir := netutilts.GetTestingGenesis(s.T(), &s.cfg)
+	kb, dir := netutilts.SetTestingGenesis(s.T(), &s.cfg)
 	s.dir = dir
 	delete(s.cfg.GenesisState, "capability")
 
@@ -112,7 +112,7 @@ func (s *DistributionXIntegrationTestSuite) TestDistributionXWasmTransaction() {
 		s.network.Validators[0].ClientCtx,
 		netutilts.Accounts[netutilts.KeyAccount2])
 	s.NoError(err)
-	makeTransactionAccBalance := netutilts.BalanceJsonUnmarshal(s.T(), accByte.Bytes())
+	makeTransactionAccBalance := netutilts.BalanceJSONUnmarshal(s.T(), accByte.Bytes())
 
 	out, err := ExCmdExecuteContract(
 		s.network.Validators[0].ClientCtx,
@@ -144,7 +144,7 @@ func (s *DistributionXIntegrationTestSuite) TestDistributionXWasmTransaction() {
 		s.network.Validators[0].ClientCtx,
 		netutilts.Accounts[netutilts.KeyAccount2])
 	s.NoError(err)
-	makeTransactionAccBalanceAfterEx := netutilts.BalanceJsonUnmarshal(s.T(), accByte.Bytes())
+	makeTransactionAccBalanceAfterEx := netutilts.BalanceJSONUnmarshal(s.T(), accByte.Bytes())
 
 	// s.T().Log("delegator address", s.network.Validators[0].Address.String())
 	s.T().Log("validator address", s.network.Validators[0].ValAddress.String())

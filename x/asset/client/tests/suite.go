@@ -41,7 +41,7 @@ func NewAssetIntegrationTestSuite(cfg *network.Config) *AssetIntegrationTestSuit
 func (s *AssetIntegrationTestSuite) SetupSuite() {
 	s.T().Log("setting up integration test suite")
 
-	kb, dir := netutilts.GetTestingGenesis(s.T(), s.cfg)
+	kb, dir := netutilts.SetTestingGenesis(s.T(), s.cfg)
 	s.dir = dir
 
 	n, err := network.New(s.T(), s.T().TempDir(), *s.cfg)

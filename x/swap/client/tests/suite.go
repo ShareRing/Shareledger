@@ -36,7 +36,7 @@ func NewSwapIntegrationTestSuite(cfg network.Config) *SwapIntegrationTestSuite {
 func (s *SwapIntegrationTestSuite) SetupSuite() {
 	s.T().Log("setting up integration test suite for swap module")
 
-	kb, dir := netutilts.GetTestingGenesis(s.T(), &s.cfg)
+	kb, dir := netutilts.SetTestingGenesis(s.T(), &s.cfg)
 	s.dir = dir
 
 	networkWithSchema(s.T(), &s.cfg)

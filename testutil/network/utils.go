@@ -2,10 +2,8 @@ package network
 
 import (
 	"encoding/json"
-	"path/filepath"
 	"testing"
 
-	tmos "github.com/cometbft/cometbft/libs/os"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 	"github.com/sharering/shareledger/app"
@@ -108,24 +106,6 @@ func (as Attributes) Get(t *testing.T, key string) Attribute {
 	return Attribute{}
 }
 
-// Use later
-func writeFile(name string, dir string, contents []byte) error {
-	writePath := filepath.Join(dir)
-	file := filepath.Join(writePath, name)
-
-	err := tmos.EnsureDir(writePath, 0755)
-	if err != nil {
-		return err
-	}
-
-	err = tmos.WriteFile(file, contents, 0644)
-	if err != nil {
-		return err
-	}
-
-	return nil
-}
-
 func ParseStdOut(t *testing.T, stdOut []byte) sdk.TxResponse {
 	txResponse := sdk.TxResponse{}
 	encodingConfig := app.MakeTestEncodingConfig()
@@ -134,7 +114,7 @@ func ParseStdOut(t *testing.T, stdOut []byte) sdk.TxResponse {
 	return txResponse
 }
 
-func BalanceJsonUnmarshal(t *testing.T, data []byte) banktypes.QueryAllBalancesResponse {
+func BalanceJSONUnmarshal(t *testing.T, data []byte) banktypes.QueryAllBalancesResponse {
 	var b banktypes.QueryAllBalancesResponse
 	encodingConfig := app.MakeTestEncodingConfig()
 	err := encodingConfig.Codec.UnmarshalJSON(data, &b)

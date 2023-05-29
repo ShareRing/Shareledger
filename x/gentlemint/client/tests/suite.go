@@ -36,7 +36,7 @@ func NewGentlemintIntegrationTestSuite(cf network.Config) *GentlemintIntegration
 func (s *GentlemintIntegrationTestSuite) SetupSuite() {
 	s.T().Log("setting up integration test suite for document module")
 
-	kb, dir := netutilts.GetTestingGenesis(s.T(), &s.cfg)
+	kb, dir := netutilts.SetTestingGenesis(s.T(), &s.cfg)
 	s.dir = dir
 
 	n, err := network.New(s.T(), s.T().TempDir(), s.cfg)

@@ -1,10 +1,8 @@
 package network
 
 import (
-	"bufio"
 	"encoding/json"
-	"io/ioutil"
-	"os"
+	"fmt"
 	"testing"
 
 	"github.com/cosmos/cosmos-sdk/crypto/keyring"
@@ -19,10 +17,6 @@ import (
 	electoraltypes "github.com/sharering/shareledger/x/electoral/types"
 	"github.com/sharering/shareledger/x/utils/denom"
 	"github.com/stretchr/testify/require"
-)
-
-const (
-	Bech32MainPrefix = "shareledger"
 )
 
 // AppConstructor defines a function which accepts a network configuration and
@@ -88,19 +82,11 @@ func CompileGenesis(t *testing.T, config *network.Config, genesisState map[strin
 	return genesisState
 }
 
-// GetTestingGenesis init the genesis state for testing in here
-func GetTestingGenesis(t *testing.T, config *network.Config) (keyring.Keyring, string) {
+// SetTestingGenesis init the genesis state for testing in here
+func SetTestingGenesis(t *testing.T, config *network.Config) (keyring.Keyring, string) {
 	genesisState := config.GenesisState
 
-	buf := bufio.NewReader(os.Stdin)
-	baseDir, err := ioutil.TempDir(t.TempDir(), config.ChainID)
-	if err != nil {
-		t.Errorf("fail to create temp dir %v", err)
-	}
-	kb, err := keyring.New(sdk.KeyringServiceName(), keyring.BackendTest, baseDir, buf, config.Codec, config.KeyringOptions...)
-	if err != nil {
-		t.Error("fail to create keyring")
-	}
+	kb := keyring.NewInMemory(config.Codec, config.KeyringOptions...)
 	accountBuilder := NewKeyringBuilder(t, kb)
 
 	users := []AccountInfo{
@@ -146,18 +132,20 @@ func GetTestingGenesis(t *testing.T, config *network.Config) (keyring.Keyring, s
 
 	newKeyringService, genAccounts, genBalances := accountBuilder.BuildGenesis()
 
+	acc := MustAddressFormKeyring(kb, KeyIDSigner)
 	genElectoral := electoraltypes.GenesisState{
-		Authority: &electoraltypes.Authority{
-			Address: Accounts[KeyAuthority].String(),
-		},
-		Treasurer: &electoraltypes.Treasurer{
-			Address: Accounts[KeyTreasurer].String(),
-		},
+		AccStateList: []electoraltypes.AccState{{
+			Key:     fmt.Sprintf("idsigner%s", acc),
+			Address: acc.String(),
+			Status:  "active",
+		}},
+		Authority: &electoraltypes.Authority{Address: Accounts[KeyAuthority].String()},
+		Treasurer: &electoraltypes.Treasurer{Address: Accounts[KeyTreasurer].String()},
 	}
 
 	genesisState = CompileGenesis(t, config, genesisState, genAccounts, genBalances, genElectoral)
 	config.GenesisState = genesisState
-	return newKeyringService, baseDir
+	return newKeyringService, ""
 }
 
 // ShareLedgerChainConstructor returns a new shareLedger AppConstructor

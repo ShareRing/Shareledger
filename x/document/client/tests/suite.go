@@ -152,7 +152,7 @@ func (s *DocumentIntegrationTestSuite) setupTestingMaterial() {
 func (s *DocumentIntegrationTestSuite) SetupSuite() {
 	s.T().Log("setting up integration test suite for document module")
 
-	kb, dir := netutilts.GetTestingGenesis(s.T(), &s.cfg)
+	kb, dir := netutilts.SetTestingGenesis(s.T(), &s.cfg)
 	s.dir = dir
 
 	s.network, _ = network.New(s.T(), s.T().TempDir(), s.cfg)

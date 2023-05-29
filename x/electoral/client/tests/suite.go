@@ -110,7 +110,7 @@ func (s *ElectoralIntegrationTestSuite) setupTestMaterial() {
 
 func (s *ElectoralIntegrationTestSuite) SetupSuite() {
 	s.T().Log("setting up integration test suite for electoral module")
-	kb, dir := netutilts.GetTestingGenesis(s.T(), &s.cfg)
+	kb, dir := netutilts.SetTestingGenesis(s.T(), &s.cfg)
 	s.dir = dir
 
 	var err error
