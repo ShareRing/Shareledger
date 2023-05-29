@@ -36,12 +36,12 @@ func RunTestCases(s *suite.Suite, tcs TestCases, cmd *cobra.Command, val *networ
 }
 
 type TestCaseGrpc struct {
-	Name     string
-	URL      string
-	Headers  map[string]string
-	ExpErr   bool
-	RespType proto.Message
-	Expected proto.Message
+	Name      string
+	URL       string
+	Headers   map[string]string
+	ExpectErr bool
+	RespType  proto.Message
+	Expected  proto.Message
 }
 
 type TestCasesGrpc = []TestCaseGrpc
@@ -52,7 +52,7 @@ func RunTestCasesGrpc(s *suite.Suite, tcs TestCasesGrpc, val *network.Validator)
 		s.Run(tc.Name, func() {
 			resp, err := testutil.GetRequestWithHeaders(tc.URL, tc.Headers)
 			assert.NoError(err)
-			if tc.ExpErr {
+			if tc.ExpectErr {
 				assert.Error(val.ClientCtx.Codec.UnmarshalJSON(resp, tc.RespType))
 			} else {
 				assert.NoError(val.ClientCtx.Codec.UnmarshalJSON(resp, tc.RespType))

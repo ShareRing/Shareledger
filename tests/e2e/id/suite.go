@@ -54,7 +54,7 @@ func (s *E2ETestSuite) TestGetByID() {
 		{
 			Name: "valid query id by id",
 			Args: []string{
-				"Id1",
+				id1.Id,
 				fmt.Sprintf("--%s=json", flags.FlagOutput),
 			},
 			ExpectErr: false,
@@ -77,7 +77,7 @@ func (s *E2ETestSuite) TestGetByAddress() {
 	testCases := tests.TestCases{{
 		Name: "valid query id by address",
 		Args: []string{
-			"shareledger1t3g4570e23h96h5hm5gdtfrjprmvk9qwmrglfr",
+			id1.Data.OwnerAddress,
 			fmt.Sprintf("--%s=json", flags.FlagOutput),
 		},
 		ExpectErr: false,
