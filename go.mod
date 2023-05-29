@@ -1,6 +1,6 @@
 module github.com/sharering/shareledger
 
-go 1.18
+go 1.20
 
 replace (
 	github.com/CosmWasm/wasmd => github.com/CosmWasm/wasmd v0.40.0-rc.2
@@ -10,7 +10,7 @@ replace (
 
 require (
 	cosmossdk.io/api v0.3.1
-	cosmossdk.io/core v0.5.1 // indirect
+	cosmossdk.io/core v0.5.1
 	cosmossdk.io/errors v1.0.0-beta.7
 	cosmossdk.io/math v1.0.0
 	cosmossdk.io/tools/rosetta v0.2.1
@@ -22,6 +22,7 @@ require (
 )
 
 require (
+	cosmossdk.io/depinject v1.0.0-alpha.3
 	cosmossdk.io/simapp v0.0.0-20230426205644-8f6a94cd1f9f
 	github.com/CosmWasm/wasmd v0.0.0-00010101000000-000000000000
 	github.com/cosmos/cosmos-proto v1.0.0-beta.2
@@ -46,6 +47,8 @@ require (
 	github.com/thanhpk/randstr v1.0.4
 	google.golang.org/genproto v0.0.0-20230223222841-637eb2293923
 	google.golang.org/grpc v1.54.0
+	google.golang.org/grpc/cmd/protoc-gen-go-grpc v1.1.0
+	google.golang.org/protobuf v1.30.0
 	gopkg.in/yaml.v2 v2.4.0
 )
 
@@ -55,7 +58,6 @@ require (
 	cloud.google.com/go/compute/metadata v0.2.3 // indirect
 	cloud.google.com/go/iam v0.12.0 // indirect
 	cloud.google.com/go/storage v1.29.0 // indirect
-	cosmossdk.io/depinject v1.0.0-alpha.3 // indirect
 	filippo.io/edwards25519 v1.0.0 // indirect
 	github.com/99designs/go-keychain v0.0.0-20191008050251-8e49817e8af4 // indirect
 	github.com/99designs/keyring v1.2.1 // indirect
@@ -203,7 +205,6 @@ require (
 	golang.org/x/xerrors v0.0.0-20220907171357-04be3eba64a2 // indirect
 	google.golang.org/api v0.110.0 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
-	google.golang.org/protobuf v1.30.0 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/natefinch/npipe.v2 v2.0.0-20160621034901-c1b8fa8bdcce // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect

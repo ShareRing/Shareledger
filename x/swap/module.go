@@ -5,14 +5,19 @@ import (
 	"encoding/json"
 	"fmt"
 
+	"cosmossdk.io/core/appmodule"
+	"cosmossdk.io/depinject"
 	abci "github.com/cometbft/cometbft/abci/types"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/codec"
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
+	store "github.com/cosmos/cosmos-sdk/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
+	paramskeeper "github.com/cosmos/cosmos-sdk/x/params/keeper"
 	"github.com/gorilla/mux"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
+	modulev1 "github.com/sharering/shareledger/api/shareledger/swap/module/v1"
 	"github.com/sharering/shareledger/x/swap/client/cli"
 	"github.com/sharering/shareledger/x/swap/keeper"
 	"github.com/sharering/shareledger/x/swap/types"
@@ -122,6 +127,14 @@ func NewAppModule(
 	}
 }
 
+var _ appmodule.AppModule = AppModule{}
+
+// IsOnePerModuleType implements the depinject.OnePerModuleType interface.
+func (am AppModule) IsOnePerModuleType() {}
+
+// IsAppModule implements the appmodule.AppModule interface.
+func (am AppModule) IsAppModule() {}
+
 // Name returns the capability module's name.
 func (am AppModule) Name() string {
 	return am.AppModuleBasic.Name()
@@ -173,4 +186,43 @@ func (am AppModule) BeginBlock(_ sdk.Context, _ abci.RequestBeginBlock) {}
 // returns no validator updates.
 func (am AppModule) EndBlock(_ sdk.Context, _ abci.RequestEndBlock) []abci.ValidatorUpdate {
 	return []abci.ValidatorUpdate{}
+}
+
+//
+// App Wiring Setup
+//
+
+func init() {
+	appmodule.Register(&modulev1.Module{},
+		appmodule.Provide(ProvideModule),
+	)
+}
+
+type SwapInputs struct {
+	depinject.In
+
+	Config *modulev1.Module
+	Key    *store.KVStoreKey
+	Cdc    codec.Codec
+
+	BankKeeper       types.BankKeeper
+	AccountKeeper    types.AccountKeeper
+	ParamsKeeper     paramskeeper.Keeper
+	GentlemintKeeper types.GentlemintKeeper
+}
+
+type SwapOutputs struct {
+	depinject.Out
+
+	Module     appmodule.AppModule
+	SwapKeeper keeper.Keeper
+}
+
+func ProvideModule(in SwapInputs) SwapOutputs {
+	k := keeper.NewKeeper(in.Cdc, in.Key, in.ParamsKeeper.Subspace(types.ModuleName), in.BankKeeper, in.AccountKeeper)
+	m := NewAppModule(in.Cdc, *k, in.AccountKeeper, in.BankKeeper, in.GentlemintKeeper)
+	return SwapOutputs{
+		Module:     m,
+		SwapKeeper: *k,
+	}
 }

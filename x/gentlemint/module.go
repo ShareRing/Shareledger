@@ -8,17 +8,22 @@ import (
 	"github.com/sharering/shareledger/x/gentlemint/simulation"
 
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
+	paramskeeper "github.com/cosmos/cosmos-sdk/x/params/keeper"
 	"github.com/gorilla/mux"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	"github.com/spf13/cobra"
 
 	abci "github.com/cometbft/cometbft/abci/types"
 
+	"cosmossdk.io/core/appmodule"
+	"cosmossdk.io/depinject"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/codec"
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
+	store "github.com/cosmos/cosmos-sdk/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
+	modulev1 "github.com/sharering/shareledger/api/shareledger/gentlemint/module/v1"
 	"github.com/sharering/shareledger/x/gentlemint/client/cli"
 	"github.com/sharering/shareledger/x/gentlemint/keeper"
 	"github.com/sharering/shareledger/x/gentlemint/types"
@@ -129,6 +134,14 @@ func NewAppModule(cdc codec.Codec, keeper keeper.Keeper) AppModule {
 	}
 }
 
+var _ appmodule.AppModule = AppModule{}
+
+// IsOnePerModuleType implements the depinject.OnePerModuleType interface.
+func (am AppModule) IsOnePerModuleType() {}
+
+// IsAppModule implements the appmodule.AppModule interface.
+func (am AppModule) IsAppModule() {}
+
 // Name returns the capability module's name.
 func (am AppModule) Name() string {
 	return am.AppModuleBasic.Name()
@@ -184,4 +197,42 @@ func (am AppModule) BeginBlock(_ sdk.Context, _ abci.RequestBeginBlock) {}
 // returns no validator updates.
 func (am AppModule) EndBlock(_ sdk.Context, _ abci.RequestEndBlock) []abci.ValidatorUpdate {
 	return []abci.ValidatorUpdate{}
+}
+
+//
+// App Wiring Setup
+//
+
+func init() {
+	appmodule.Register(&modulev1.Module{},
+		appmodule.Provide(ProvideModule),
+	)
+}
+
+type GentlemintInputs struct {
+	depinject.In
+
+	Config *modulev1.Module
+	Key    *store.KVStoreKey
+	Cdc    codec.Codec
+
+	BankKeeper    types.BankKeeper
+	AccountKeeper types.AccountKeeper
+	ParamsKeeper  paramskeeper.Keeper
+}
+
+type GentlemintOutputs struct {
+	depinject.Out
+
+	Module           appmodule.AppModule
+	GentlemintKeeper keeper.Keeper
+}
+
+func ProvideModule(in GentlemintInputs) GentlemintOutputs {
+	k := keeper.NewKeeper(in.Cdc, in.Key, in.BankKeeper, in.AccountKeeper, in.ParamsKeeper.Subspace(types.ModuleName))
+	m := NewAppModule(in.Cdc, *k)
+	return GentlemintOutputs{
+		Module:           m,
+		GentlemintKeeper: *k,
+	}
 }

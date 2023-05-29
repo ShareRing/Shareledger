@@ -1,16 +1,16 @@
 package tests
 
 import (
+	"os"
+	"strings"
+
 	"github.com/cosmos/cosmos-sdk/testutil/network"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	netutilts "github.com/sharering/shareledger/testutil/network"
+	"github.com/sharering/shareledger/x/electoral/client/tests"
 	idtypes "github.com/sharering/shareledger/x/id/types"
 	"github.com/stretchr/testify/suite"
-	"os"
-	"strings"
-
-	"github.com/sharering/shareledger/x/electoral/client/tests"
 )
 
 type IDIntegrationTestSuite struct {
@@ -24,8 +24,8 @@ type IDIntegrationTestSuite struct {
 func NewIDIntegrationTestSuite(cfg network.Config) *IDIntegrationTestSuite {
 	return &IDIntegrationTestSuite{cfg: cfg}
 }
-func (s *IDIntegrationTestSuite) setupTestMaterial() {
 
+func (s *IDIntegrationTestSuite) setupTestMaterial() {
 	out, _ := tests.ExCmdEnrollAccountOperator(
 		s.network.Validators[0].ClientCtx,
 		[]string{netutilts.Accounts[netutilts.KeyOperator].String()},
@@ -113,6 +113,7 @@ func (s *IDIntegrationTestSuite) setupTestMaterial() {
 
 	}
 }
+
 func (s *IDIntegrationTestSuite) SetupSuite() {
 	s.T().Log("setting up integration test suite for booking module")
 
@@ -125,13 +126,14 @@ func (s *IDIntegrationTestSuite) SetupSuite() {
 	_, err = s.network.WaitForHeight(1)
 	s.Require().NoError(err)
 
-	//override the keyring by our keyring information
+	// override the keyring by our keyring information
 	s.network.Validators[0].ClientCtx.Keyring = kb
 
 	s.T().Log("setting up id data....")
 	s.setupTestMaterial()
 	s.T().Log("setting up integration test suite successfully")
 }
+
 func (s *IDIntegrationTestSuite) TearDownSuite() {
 	s.NoError(os.RemoveAll(s.dir), "tearing down fail")
 	s.network.Cleanup()
@@ -139,7 +141,6 @@ func (s *IDIntegrationTestSuite) TearDownSuite() {
 }
 
 func (s *IDIntegrationTestSuite) TestCreateID() {
-
 	validatorCtx := s.network.Validators[0].ClientCtx
 	type (
 		TestCase struct {
@@ -220,11 +221,9 @@ func (s *IDIntegrationTestSuite) TestCreateID() {
 			}
 		})
 	}
-
 }
 
 func (s *IDIntegrationTestSuite) TestCreateIDInBatch() {
-
 	type (
 		TestCase struct {
 			d            string
@@ -247,11 +246,13 @@ func (s *IDIntegrationTestSuite) TestCreateIDInBatch() {
 			iOwnerAddrs: []string{
 				"shareledger1ghrpxfgfy0kdnas8lsr9wjq3q0hg0m3cs3n8n8",
 				"shareledger17papd8h9glkvx0ff0lexn9u42689y63ffrtxs2",
-				"shareledger1hq7wjjgeymvs3q4vmkvac3dghfsjwvjvf8jdaw"},
+				"shareledger1hq7wjjgeymvs3q4vmkvac3dghfsjwvjvf8jdaw",
+			},
 			iBackupAddrs: []string{
 				"shareledger1ghrpxfgfy0kdnas8lsr9wjq3q0hg0m3cs3n8n8",
 				"shareledger17papd8h9glkvx0ff0lexn9u42689y63ffrtxs2",
-				"shareledger1hq7wjjgeymvs3q4vmkvac3dghfsjwvjvf8jdaw"},
+				"shareledger1hq7wjjgeymvs3q4vmkvac3dghfsjwvjvf8jdaw",
+			},
 			iExDatas:  []string{"ex_data_1", "ex_data_2", "ex_data_3"},
 			txCreator: netutilts.KeyIDSigner,
 			txFee:     2,
@@ -333,11 +334,9 @@ func (s *IDIntegrationTestSuite) TestCreateIDInBatch() {
 					s.Equal(i.GetData().OwnerAddress, idData.ToBaseID().OwnerAddress)
 					s.Equal(netutilts.Accounts[netutilts.KeyIDSigner].String(), i.ToBaseID().IssuerAddress)
 				}
-
 			}
 		})
 	}
-
 }
 
 func (s *IDIntegrationTestSuite) TestUpdateID() {
@@ -406,11 +405,9 @@ func (s *IDIntegrationTestSuite) TestUpdateID() {
 			}
 		})
 	}
-
 }
 
 func (s *IDIntegrationTestSuite) TestReplaceOwner() {
-
 	testSuite := []struct {
 		d         string
 		iID       string
@@ -489,5 +486,4 @@ func (s *IDIntegrationTestSuite) TestReplaceOwner() {
 			}
 		})
 	}
-
 }

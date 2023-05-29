@@ -280,7 +280,6 @@ func NewAppKeeper(
 	appKeepers.GentleMintKeeper = *gentlemintmodulekeeper.NewKeeper(
 		appCodec,
 		appKeepers.keys[gentleminttypes.StoreKey],
-		appKeepers.keys[gentleminttypes.MemStoreKey],
 		appKeepers.BankKeeper,
 		appKeepers.AccountKeeper,
 		appKeepers.GetSubspace(gentleminttypes.ModuleName),
@@ -288,36 +287,29 @@ func NewAppKeeper(
 	appKeepers.ElectoralKeeper = *electoralmodulekeeper.NewKeeper(
 		appCodec,
 		appKeepers.keys[electoralmoduletypes.StoreKey],
-		appKeepers.keys[electoralmoduletypes.MemStoreKey],
-
 		appKeepers.GentleMintKeeper,
 	)
 	appKeepers.IDKeeper = *idmodulekeeper.NewKeeper(
 		appCodec,
 		appKeepers.keys[idmoduletypes.StoreKey],
-		appKeepers.keys[idmoduletypes.MemStoreKey],
 	)
 	appKeepers.AssetKeeper = *assetmodulekeeper.NewKeeper(
 		appCodec,
 		appKeepers.keys[assetmoduletypes.StoreKey],
-		appKeepers.keys[assetmoduletypes.MemStoreKey],
 	)
 	appKeepers.BookingKeeper = *bookingmodulekeeper.NewKeeper(
 		appCodec,
 		appKeepers.keys[bookingmoduletypes.StoreKey],
-		appKeepers.keys[bookingmoduletypes.MemStoreKey],
 		appKeepers.AssetKeeper,
 		appKeepers.BankKeeper,
 	)
 	appKeepers.DocumentKeeper = *documentmodulekeeper.NewKeeper(
 		appCodec,
 		appKeepers.keys[documentmoduletypes.StoreKey],
-		appKeepers.keys[documentmoduletypes.MemStoreKey],
 		appKeepers.IDKeeper,
 	)
 	appKeepers.SwapKeeper = *swapmodulekeeper.NewKeeper(appCodec,
 		appKeepers.keys[swapmoduletypes.StoreKey],
-		appKeepers.keys[swapmoduletypes.MemStoreKey],
 		appKeepers.GetSubspace(swapmoduletypes.ModuleName),
 		appKeepers.BankKeeper, appKeepers.AccountKeeper)
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition

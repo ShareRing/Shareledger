@@ -28,8 +28,8 @@ func NewDocumentIntegrationTestSuite(cf network.Config) *DocumentIntegrationTest
 		cfg: cf,
 	}
 }
-func (s *DocumentIntegrationTestSuite) setupTestingMaterial() {
 
+func (s *DocumentIntegrationTestSuite) setupTestingMaterial() {
 	initIDSigAndDocIssuer := []struct {
 		id        string
 		accountID string
@@ -82,7 +82,7 @@ func (s *DocumentIntegrationTestSuite) setupTestingMaterial() {
 		},
 	}
 
-	//Enroll ACCOUNT_OPERATOR
+	// Enroll ACCOUNT_OPERATOR
 	out, _ := tests.ExCmdEnrollAccountOperator(
 		s.network.Validators[0].ClientCtx,
 		[]string{netutilts.Accounts[netutilts.KeyOperator].String()},
@@ -96,7 +96,7 @@ func (s *DocumentIntegrationTestSuite) setupTestingMaterial() {
 	s.Equalf(netutilts.ShareLedgerSuccessCode, res.Code, "init operator fail %v", res.String())
 
 	for _, iz := range initIDSigAndDocIssuer {
-		//Enroll ID_SIGNER
+		// Enroll ID_SIGNER
 		out, _ = tests.ExCmdEnrollIdSigner(
 			s.network.Validators[0].ClientCtx,
 			[]string{netutilts.Accounts[iz.accountID].String()},
@@ -147,8 +147,8 @@ func (s *DocumentIntegrationTestSuite) setupTestingMaterial() {
 		}
 
 	}
-
 }
+
 func (s *DocumentIntegrationTestSuite) SetupSuite() {
 	s.T().Log("setting up integration test suite for document module")
 
@@ -159,14 +159,14 @@ func (s *DocumentIntegrationTestSuite) SetupSuite() {
 	_, err := s.network.WaitForHeight(1)
 	s.Require().NoError(err)
 
-	//override the keyring by our keyring informatirevoke_the_document_successfullyon
+	// override the keyring by our keyring informatirevoke_the_document_successfullyon
 	s.network.Validators[0].ClientCtx.Keyring = kb
 
 	s.setupTestingMaterial()
 
 	s.T().Log("setting up integration test suite successfully")
-
 }
+
 func (s *DocumentIntegrationTestSuite) TearDownSuite() {
 	s.NoError(os.RemoveAll(s.dir), "cleanup test case fails")
 	s.network.Cleanup()
@@ -244,10 +244,8 @@ func (s *DocumentIntegrationTestSuite) TestCreateDocument() {
 				s.Equalf(tc.oDoc.Proof, docResponse.GetProof(), "proof isn't equal")
 				s.Equalf(tc.oDoc.Data, docResponse.GetData(), "data ID isn't equal")
 			}
-
 		})
 	}
-
 }
 
 func (s *DocumentIntegrationTestSuite) TestCreateBatchDocument() {
@@ -282,7 +280,8 @@ func (s *DocumentIntegrationTestSuite) TestCreateBatchDocument() {
 			iDocDatas: []string{
 				"extradata_batch_001",
 				"extradata_batch_002",
-				"extradata_batch_003"},
+				"extradata_batch_003",
+			},
 			txnCreator: netutilts.KeyAccount3,
 			txnFee:     2,
 			oErr:       nil,
@@ -338,15 +337,12 @@ func (s *DocumentIntegrationTestSuite) TestCreateBatchDocument() {
 					s.Equalf(d.Proof, docResponse.GetProof(), "proof isn't equal")
 					s.Equalf(d.Data, docResponse.GetData(), "data ID isn't equal")
 				}
-
 			}
-
 		})
 	}
 }
 
 func (s *DocumentIntegrationTestSuite) TestUpdateDocument() {
-
 	validationCtx := s.network.Validators[0].ClientCtx
 
 	type (
@@ -433,10 +429,8 @@ func (s *DocumentIntegrationTestSuite) TestUpdateDocument() {
 				s.Equalf(tc.oDoc.Proof, docResponse.GetProof(), "proof isn't equal")
 				s.Equalf(tc.oDoc.Data, docResponse.GetData(), "data ID isn't equal")
 			}
-
 		})
 	}
-
 }
 
 func (s *DocumentIntegrationTestSuite) TestRevokeDocument() {
@@ -500,8 +494,6 @@ func (s *DocumentIntegrationTestSuite) TestRevokeDocument() {
 				docResponse := queryDocResponse.GetDocument()
 				s.Equalf(tc.oDoc.Version, docResponse.GetVersion(), "version isn't equal")
 			}
-
 		})
 	}
-
 }

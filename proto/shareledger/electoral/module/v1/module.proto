@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package shareledger.electoral.module.v1;
+
+import "cosmos/app/v1alpha1/module.proto";
+
+// Module is the config object of the nft module.
+message Module {
+  option (cosmos.app.v1alpha1.module) = {
+    go_import: "github.com/sharering/shareledger/x/electoral"
+  };
+}
+
+

@@ -11,14 +11,19 @@ import (
 
 	abci "github.com/cometbft/cometbft/abci/types"
 
+	"cosmossdk.io/core/appmodule"
+	"cosmossdk.io/depinject"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/codec"
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
+	store "github.com/cosmos/cosmos-sdk/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
+	modulev1 "github.com/sharering/shareledger/api/shareledger/electoral/module/v1"
 	"github.com/sharering/shareledger/x/electoral/client/cli"
 	"github.com/sharering/shareledger/x/electoral/keeper"
 	"github.com/sharering/shareledger/x/electoral/types"
+	gentlemintkeeper "github.com/sharering/shareledger/x/gentlemint/keeper"
 )
 
 var (
@@ -101,7 +106,7 @@ type AppModule struct {
 
 	keeper keeper.Keeper
 
-	//Used for simulation purpose only
+	// Used for simulation purpose only
 
 	bk types.BankKeeper
 	ak types.AccountKeeper
@@ -118,6 +123,14 @@ func NewAppModule(cdc codec.Codec, keeper keeper.Keeper, ak types.AccountKeeper,
 		gk:             gm,
 	}
 }
+
+var _ appmodule.AppModule = AppModule{}
+
+// IsOnePerModuleType implements the depinject.OnePerModuleType interface.
+func (am AppModule) IsOnePerModuleType() {}
+
+// IsAppModule implements the appmodule.AppModule interface.
+func (am AppModule) IsAppModule() {}
 
 // Name returns the capability module's name.
 func (am AppModule) Name() string {
@@ -170,4 +183,42 @@ func (am AppModule) BeginBlock(_ sdk.Context, _ abci.RequestBeginBlock) {}
 // returns no validator updates.
 func (am AppModule) EndBlock(_ sdk.Context, _ abci.RequestEndBlock) []abci.ValidatorUpdate {
 	return []abci.ValidatorUpdate{}
+}
+
+//
+// App Wiring Setup
+//
+
+func init() {
+	appmodule.Register(&modulev1.Module{},
+		appmodule.Provide(ProvideModule),
+	)
+}
+
+type ElectoralInputs struct {
+	depinject.In
+
+	Config *modulev1.Module
+	Key    *store.KVStoreKey
+	Cdc    codec.Codec
+
+	GentlemintKeeper gentlemintkeeper.Keeper
+	BankKeeper       types.BankKeeper
+	AccountKeeper    types.AccountKeeper
+}
+
+type ElectoralOutputs struct {
+	depinject.Out
+
+	Module          appmodule.AppModule
+	ElectoralKeeper keeper.Keeper
+}
+
+func ProvideModule(in ElectoralInputs) ElectoralOutputs {
+	k := keeper.NewKeeper(in.Cdc, in.Key, in.GentlemintKeeper)
+	m := NewAppModule(in.Cdc, *k, in.AccountKeeper, in.BankKeeper, in.GentlemintKeeper)
+	return ElectoralOutputs{
+		Module:          m,
+		ElectoralKeeper: *k,
+	}
 }

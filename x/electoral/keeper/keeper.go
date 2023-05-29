@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"fmt"
+
 	"github.com/cometbft/cometbft/libs/log"
 
 	"github.com/cosmos/cosmos-sdk/codec"
@@ -14,21 +15,18 @@ type (
 	Keeper struct {
 		cdc      codec.BinaryCodec
 		storeKey storetypes.StoreKey
-		memKey   storetypes.StoreKey
 		gk       GentlemintKeeper
 	}
 )
 
 func NewKeeper(
 	cdc codec.BinaryCodec,
-	storeKey,
-	memKey storetypes.StoreKey,
+	storeKey storetypes.StoreKey,
 	gk GentlemintKeeper,
 ) *Keeper {
 	return &Keeper{
 		cdc:      cdc,
 		storeKey: storeKey,
-		memKey:   memKey,
 		gk:       gk,
 	}
 }

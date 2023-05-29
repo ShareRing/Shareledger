@@ -16,10 +16,10 @@ func ExCmdEnrollDocIssuer(clientCtx client.Context, address []string, additional
 	args := append(address, additionalFlags...)
 	return clitestutil.ExecTestCLICmd(clientCtx, cli.CmdEnrollDocIssuers(), args)
 }
+
 func ExCmdRevokeDocIssuer(clientCtx client.Context, address []string, additionalFlags ...string) (testutil.BufferWriter, error) {
 	args := append(address, additionalFlags...)
 	return clitestutil.ExecTestCLICmd(clientCtx, cli.CmdRevokeDocIssuers(), args)
-
 }
 
 func ExCmdGetDocIssuers(clientCtx client.Context, t *testing.T, additionalFlags ...string) (testutil.BufferWriter, error) {
@@ -36,18 +36,18 @@ func ExCmdGetDocIssuer(clientCtx client.Context, address string, additionalFlags
 }
 
 func ExCmdEnrollAccountOperator(clientCtx client.Context, address []string, additionalFlags ...string) (testutil.BufferWriter, error) {
-
 	args := append(address, additionalFlags...)
 
 	return clitestutil.ExecTestCLICmd(clientCtx, cli.CmdEnrollAccountOperators(), args)
 }
+
 func ExCmdQueryAccountOperator(clientCtx client.Context, address string, additionalFlags ...string) (testutil.BufferWriter, error) {
 	args := []string{address}
 	args = append(args, additionalFlags...)
 	return clitestutil.ExecTestCLICmd(clientCtx, cli.CmdAccountOperator(), args)
 }
-func ExCmdRevokeAccountOperator(clientCtx client.Context, address []string, additionalFlags ...string) (testutil.BufferWriter, error) {
 
+func ExCmdRevokeAccountOperator(clientCtx client.Context, address []string, additionalFlags ...string) (testutil.BufferWriter, error) {
 	args := append(address, additionalFlags...)
 
 	return clitestutil.ExecTestCLICmd(clientCtx, cli.CmdRevokeAccountOperators(), args)
@@ -60,6 +60,7 @@ func ExCmdEnrollIdSigner(clientCtx client.Context, address []string, additionalF
 
 	return clitestutil.ExecTestCLICmd(clientCtx, cli.CmdEnrollIdSigners(), args)
 }
+
 func ExCmdRevokeIdSigner(clientCtx client.Context, address []string, additionalFlags ...string) (testutil.BufferWriter, error) {
 	args := append(address, additionalFlags...)
 
@@ -67,6 +68,7 @@ func ExCmdRevokeIdSigner(clientCtx client.Context, address []string, additionalF
 
 	return clitestutil.ExecTestCLICmd(clientCtx, cli.CmdRevokeIdSigners(), args)
 }
+
 func ExCmdGetIdSigner(clientCtx client.Context, address string, additionalFlags ...string) (testutil.BufferWriter, error) {
 	args := []string{address}
 	args = append(args, additionalFlags...)
@@ -80,11 +82,13 @@ func ExCmdEnrollLoader(clientCtx client.Context, t *testing.T, address string, a
 
 	return clitestutil.ExecTestCLICmd(clientCtx, cli.CmdEnrollLoaders(), args)
 }
+
 func ExCmdRevokeLoader(clientCtx client.Context, t *testing.T, address string, additionalFlags ...string) (testutil.BufferWriter, error) {
 	args := []string{address}
 	args = append(args, additionalFlags...)
 	return clitestutil.ExecTestCLICmd(clientCtx, cli.CmdRevokeLoaders(), args)
 }
+
 func ExCmdGetLoader(clientCtx client.Context, t *testing.T, address string, additionalFlags ...string) (testutil.BufferWriter, error) {
 	args := []string{address}
 	args = append(args, additionalFlags...)
@@ -106,6 +110,7 @@ func JsonAccountOperatorUnmarshal(t *testing.T, bz []byte) types.QueryAccountOpe
 	require.NoError(t, err)
 	return a
 }
+
 func JsonDocIssuerUnmarshal(t *testing.T, bz []byte) types.QueryDocumentIssuerResponse {
 	var a types.QueryDocumentIssuerResponse
 	encodingConfig := app.MakeTestEncodingConfig()
@@ -113,6 +118,7 @@ func JsonDocIssuerUnmarshal(t *testing.T, bz []byte) types.QueryDocumentIssuerRe
 	require.NoError(t, err)
 	return a
 }
+
 func JsonIDSignerUnmarshal(t *testing.T, bz []byte) types.QueryIdSignerResponse {
 	var a types.QueryIdSignerResponse
 	encodingConfig := app.MakeTestEncodingConfig()
@@ -120,6 +126,7 @@ func JsonIDSignerUnmarshal(t *testing.T, bz []byte) types.QueryIdSignerResponse 
 	require.NoError(t, err)
 	return a
 }
+
 func JsonIRelayerUnmarshal(t *testing.T, bz []byte) types.QueryRelayerResponse {
 	var a types.QueryRelayerResponse
 	encodingConfig := app.MakeTestEncodingConfig()
@@ -127,6 +134,7 @@ func JsonIRelayerUnmarshal(t *testing.T, bz []byte) types.QueryRelayerResponse {
 	require.NoError(t, err)
 	return a
 }
+
 func JsonArrproverUnmarshal(t *testing.T, bz []byte) types.QueryApproverResponse {
 	var a types.QueryApproverResponse
 	encodingConfig := app.MakeTestEncodingConfig()
@@ -134,6 +142,7 @@ func JsonArrproverUnmarshal(t *testing.T, bz []byte) types.QueryApproverResponse
 	require.NoError(t, err)
 	return a
 }
+
 func JsonUnmarshal(t *testing.T, bz []byte) types.QueryIdSignerResponse {
 	var a types.QueryIdSignerResponse
 	encodingConfig := app.MakeTestEncodingConfig()
@@ -148,6 +157,7 @@ func ExCmdEnrollApprover(clientCtx client.Context, address []string, additionalF
 
 	return clitestutil.ExecTestCLICmd(clientCtx, cli.CmdEnrollLoaders(), args)
 }
+
 func ExCmdEnrollRelayer(clientCtx client.Context, address []string, additionalFlags ...string) (testutil.BufferWriter, error) {
 	args := append(address, additionalFlags...)
 
@@ -155,12 +165,14 @@ func ExCmdEnrollRelayer(clientCtx client.Context, address []string, additionalFl
 
 	return clitestutil.ExecTestCLICmd(clientCtx, cli.CmdEnrollRelayers(), args)
 }
+
 func ExCmdApprover(clientCtx client.Context, address string, additionalFlags ...string) (testutil.BufferWriter, error) {
 	args := []string{address}
 	args = append(args, additionalFlags...)
 
 	return clitestutil.ExecTestCLICmd(clientCtx, cli.CmdApprover(), args)
 }
+
 func ExCmdGetRelayer(clientCtx client.Context, address string, additionalFlags ...string) (testutil.BufferWriter, error) {
 	args := []string{address}
 	args = append(args, additionalFlags...)

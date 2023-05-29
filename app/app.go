@@ -1,3 +1,5 @@
+//go:build !app_v2
+
 package app
 
 import (
@@ -52,7 +54,7 @@ import (
 
 const (
 	AccountAddressPrefix = "shareledger"
-	Name                 = "shareledger"
+	Name                 = "Shareledger"
 )
 
 var (
@@ -86,7 +88,7 @@ type App struct {
 	invCheckPeriod    uint
 
 	// the module manager
-	mm *module.Manager
+	ModuleManager *module.Manager
 	// simulation manager
 	sm           *module.SimulationManager
 	configurator module.Configurator
@@ -137,18 +139,18 @@ func New(
 	)
 
 	skipGenesisInvariants := cast.ToBool(appOpts.Get(crisis.FlagSkipGenesisInvariants))
-	app.mm = module.NewManager(appModules(app, encodingConfig, skipGenesisInvariants)...)
+	app.ModuleManager = module.NewManager(appModules(app, encodingConfig, skipGenesisInvariants)...)
 
-	app.mm.SetOrderBeginBlockers(orderBeginBlockers()...)
-	app.mm.SetOrderEndBlockers(orderEndBlockers()...)
-	app.mm.SetOrderInitGenesis(orderInitBlockers()...)
+	app.ModuleManager.SetOrderBeginBlockers(orderBeginBlockers()...)
+	app.ModuleManager.SetOrderEndBlockers(orderEndBlockers()...)
+	app.ModuleManager.SetOrderInitGenesis(orderInitBlockers()...)
 
-	app.mm.RegisterInvariants(app.CrisisKeeper)
+	app.ModuleManager.RegisterInvariants(app.CrisisKeeper)
 	// app.mm.RegisterRoutes(app.Router(), app.QueryRouter(), encodingConfig.Amino)
 	app.configurator = module.NewConfigurator(app.appCodec, app.MsgServiceRouter(), app.GRPCQueryRouter())
-	app.mm.RegisterServices(app.configurator)
+	app.ModuleManager.RegisterServices(app.configurator)
 
-	autocliv1.RegisterQueryServer(app.GRPCQueryRouter(), runtimeservices.NewAutoCLIQueryService(app.mm.Modules))
+	autocliv1.RegisterQueryServer(app.GRPCQueryRouter(), runtimeservices.NewAutoCLIQueryService(app.ModuleManager.Modules))
 
 	reflectionSvc, err := runtimeservices.NewReflectionService()
 	if err != nil {
@@ -246,12 +248,12 @@ func (app *App) Name() string { return app.BaseApp.Name() }
 
 // BeginBlocker application updates every begin block
 func (app *App) BeginBlocker(ctx sdk.Context, req abci.RequestBeginBlock) abci.ResponseBeginBlock {
-	return app.mm.BeginBlock(ctx, req)
+	return app.ModuleManager.BeginBlock(ctx, req)
 }
 
 // EndBlocker application updates every end block
 func (app *App) EndBlocker(ctx sdk.Context, req abci.RequestEndBlock) abci.ResponseEndBlock {
-	return app.mm.EndBlock(ctx, req)
+	return app.ModuleManager.EndBlock(ctx, req)
 }
 
 // InitChainer application update at chain initialization
@@ -260,8 +262,8 @@ func (app *App) InitChainer(ctx sdk.Context, req abci.RequestInitChain) abci.Res
 	if err := tmjson.Unmarshal(req.AppStateBytes, &genesisState); err != nil {
 		panic(err)
 	}
-	app.UpgradeKeeper.SetModuleVersionMap(ctx, app.mm.GetVersionMap())
-	return app.mm.InitGenesis(ctx, app.appCodec, genesisState)
+	app.UpgradeKeeper.SetModuleVersionMap(ctx, app.ModuleManager.GetVersionMap())
+	return app.ModuleManager.InitGenesis(ctx, app.appCodec, genesisState)
 }
 
 // LoadHeight loads a particular height
@@ -415,7 +417,7 @@ func (app *App) setupUpgradeHandlers() {
 		app.UpgradeKeeper.SetUpgradeHandler(
 			upgrade.UpgradeName,
 			upgrade.CreateUpgradeHandler(
-				app.mm,
+				app.ModuleManager,
 				app.configurator,
 				&app.AppKeepers,
 			),
@@ -425,5 +427,5 @@ func (app *App) setupUpgradeHandlers() {
 
 // GetMM get module manager
 func (app *App) GetMM() *module.Manager {
-	return app.mm
+	return app.ModuleManager
 }

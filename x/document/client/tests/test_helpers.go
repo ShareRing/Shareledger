@@ -51,6 +51,7 @@ func CmdExGetDocByHolderID(clientCtx client.Context, t *testing.T, holderID stri
 
 	return DocumentsResponseUnMarshal(t, out.Bytes())
 }
+
 func CmdExGetDocByProof(clientCtx client.Context, t *testing.T, proof string, extraFlags ...string) types.QueryDocumentByProofResponse {
 	args := []string{proof}
 	args = append(args, extraFlags...)
@@ -70,6 +71,7 @@ func DocumentResponseUnMarshal(t *testing.T, bs []byte) (res types.QueryDocument
 	}
 	return
 }
+
 func DocumentsResponseUnMarshal(t *testing.T, bs []byte) (res types.QueryDocumentByHolderIdResponse) {
 	err := json.Unmarshal(bs, &res)
 	if err != nil {

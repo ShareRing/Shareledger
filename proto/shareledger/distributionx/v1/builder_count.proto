@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package shareledger.distributionx.v1;
+
+option go_package = "github.com/sharering/shareledger/x/distributionx/types";
+
+message BuilderCount {
+  // contract address
+  string index = 1;
+  uint32 count = 2;
+}

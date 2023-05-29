@@ -2,6 +2,9 @@ package tests
 
 import (
 	"fmt"
+	"os"
+	"strings"
+
 	testutil2 "github.com/cosmos/cosmos-sdk/testutil"
 	"github.com/cosmos/cosmos-sdk/testutil/network"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -10,8 +13,6 @@ import (
 	gentleminttypes "github.com/sharering/shareledger/x/gentlemint/types"
 	denom "github.com/sharering/shareledger/x/utils/denom"
 	"github.com/stretchr/testify/suite"
-	"os"
-	"strings"
 
 	"github.com/sharering/shareledger/x/electoral/client/tests"
 )
@@ -44,12 +45,12 @@ func (s *GentlemintIntegrationTestSuite) SetupSuite() {
 	_, err = s.network.WaitForHeight(1)
 	s.Require().NoError(err)
 
-	//override the keyring by our keyring information
+	// override the keyring by our keyring information
 	s.network.Validators[0].ClientCtx.Keyring = kb
 
 	s.T().Log("setting up document data....")
 
-	//Enroll ACCOUNT_OPERATOR
+	// Enroll ACCOUNT_OPERATOR
 	out, _ := tests.ExCmdEnrollLoader(
 		s.network.Validators[0].ClientCtx,
 		s.T(),
@@ -64,8 +65,8 @@ func (s *GentlemintIntegrationTestSuite) SetupSuite() {
 	s.Equalf(netutilts.ShareLedgerSuccessCode, res.Code, "init operator fail %v", res.String())
 
 	s.T().Log("setting up integration test suite successfully")
-
 }
+
 func (s *GentlemintIntegrationTestSuite) TearDownSuite() {
 	s.NoError(os.RemoveAll(s.dir))
 	s.network.Cleanup()
@@ -264,7 +265,6 @@ func (s *GentlemintIntegrationTestSuite) TestBurnSHRP() {
 			}
 		})
 	}
-
 }
 
 func (s *GentlemintIntegrationTestSuite) TestBuySHR() {
@@ -326,7 +326,6 @@ func (s *GentlemintIntegrationTestSuite) TestBuySHR() {
 			}
 		})
 	}
-
 }
 
 func (s *GentlemintIntegrationTestSuite) TestLoadSHRP() {
@@ -391,7 +390,6 @@ func (s *GentlemintIntegrationTestSuite) TestLoadSHRP() {
 			}
 		})
 	}
-
 }
 
 func (s *GentlemintIntegrationTestSuite) TestSendSHR() {
@@ -481,7 +479,6 @@ func (s *GentlemintIntegrationTestSuite) TestSendSHR() {
 		}
 
 	}
-
 }
 
 func (s *GentlemintIntegrationTestSuite) TestSendSHRP() {
@@ -559,11 +556,9 @@ func (s *GentlemintIntegrationTestSuite) TestSendSHRP() {
 		}
 
 	}
-
 }
 
 func (s *GentlemintIntegrationTestSuite) TestSetExchangeRate() {
-
 	var (
 		stdOut      testutil2.BufferWriter
 		err         error

@@ -53500,7 +53500,7 @@ paths:
   /sharering/shareledger/distributionx/builder_count:
     get:
       summary: Queries a list of BuilderCount items.
-      operationId: ShareledgerDistributionxBuilderCountAll
+      operationId: ShareledgerDistributionxV1BuilderCountAll
       responses:
         '200':
           description: A successful response.
@@ -53626,7 +53626,7 @@ paths:
   /sharering/shareledger/distributionx/builder_count/{index}:
     get:
       summary: Queries a BuilderCount by index.
-      operationId: ShareledgerDistributionxBuilderCount
+      operationId: ShareledgerDistributionxV1BuilderCount
       responses:
         '200':
           description: A successful response.
@@ -53670,7 +53670,7 @@ paths:
   /sharering/shareledger/distributionx/builder_list:
     get:
       summary: Queries a list of BuilderList items.
-      operationId: ShareledgerDistributionxBuilderListAll
+      operationId: ShareledgerDistributionxV1BuilderListAll
       responses:
         '200':
           description: A successful response.
@@ -53796,7 +53796,7 @@ paths:
   /sharering/shareledger/distributionx/builder_list/{id}:
     get:
       summary: Queries a BuilderList by id.
-      operationId: ShareledgerDistributionxBuilderList
+      operationId: ShareledgerDistributionxV1BuilderList
       responses:
         '200':
           description: A successful response.
@@ -53841,7 +53841,7 @@ paths:
   /sharering/shareledger/distributionx/params:
     get:
       summary: Parameters queries the parameters of the module.
-      operationId: ShareledgerDistributionxParams
+      operationId: ShareledgerDistributionxV1Params
       responses:
         '200':
           description: A successful response.
@@ -53901,7 +53901,7 @@ paths:
   /sharering/shareledger/distributionx/reward:
     get:
       summary: Queries a list of Reward items.
-      operationId: ShareledgerDistributionxRewardAll
+      operationId: ShareledgerDistributionxV1RewardAll
       responses:
         '200':
           description: A successful response.
@@ -54043,7 +54043,7 @@ paths:
   /sharering/shareledger/distributionx/reward/{index}:
     get:
       summary: Queries a Reward by index.
-      operationId: ShareledgerDistributionxReward
+      operationId: ShareledgerDistributionxV1Reward
       responses:
         '200':
           description: A successful response.
@@ -89224,7 +89224,7 @@ definitions:
             format: int64
           isCompleted:
             type: boolean
-  shareledger.distributionx.BuilderCount:
+  shareledger.distributionx.v1.BuilderCount:
     type: object
     properties:
       index:
@@ -89233,7 +89233,7 @@ definitions:
       count:
         type: integer
         format: int64
-  shareledger.distributionx.BuilderList:
+  shareledger.distributionx.v1.BuilderList:
     type: object
     properties:
       id:
@@ -89242,7 +89242,7 @@ definitions:
       contract_address:
         type: string
     title: store list of contract address of master builder
-  shareledger.distributionx.MsgWithdrawRewardResponse:
+  shareledger.distributionx.v1.MsgWithdrawRewardResponse:
     type: object
     properties:
       amount:
@@ -89259,7 +89259,7 @@ definitions:
 
             NOTE: The amount field is an Int which implements the custom method
             signatures required by gogoproto.
-  shareledger.distributionx.Params:
+  shareledger.distributionx.v1.Params:
     type: object
     properties:
       config_percent:
@@ -89286,7 +89286,7 @@ definitions:
       dev_pool_account:
         type: string
     description: Params defines the parameters for the module.
-  shareledger.distributionx.Params.ConfigPercent:
+  shareledger.distributionx.v1.Params.ConfigPercent:
     type: object
     properties:
       wasm_master_builder:
@@ -89301,7 +89301,7 @@ definitions:
         type: string
       native_development:
         type: string
-  shareledger.distributionx.QueryAllBuilderCountResponse:
+  shareledger.distributionx.v1.QueryAllBuilderCountResponse:
     type: object
     properties:
       builderCount:
@@ -89341,7 +89341,7 @@ definitions:
                    repeated Bar results = 1;
                    PageResponse page = 2;
            }
-  shareledger.distributionx.QueryAllBuilderListResponse:
+  shareledger.distributionx.v1.QueryAllBuilderListResponse:
     type: object
     properties:
       BuilderList:
@@ -89381,7 +89381,7 @@ definitions:
                    repeated Bar results = 1;
                    PageResponse page = 2;
            }
-  shareledger.distributionx.QueryAllRewardResponse:
+  shareledger.distributionx.v1.QueryAllRewardResponse:
     type: object
     properties:
       reward:
@@ -89436,7 +89436,7 @@ definitions:
                    repeated Bar results = 1;
                    PageResponse page = 2;
            }
-  shareledger.distributionx.QueryGetBuilderCountResponse:
+  shareledger.distributionx.v1.QueryGetBuilderCountResponse:
     type: object
     properties:
       builderCount:
@@ -89448,7 +89448,7 @@ definitions:
           count:
             type: integer
             format: int64
-  shareledger.distributionx.QueryGetBuilderListResponse:
+  shareledger.distributionx.v1.QueryGetBuilderListResponse:
     type: object
     properties:
       BuilderList:
@@ -89460,7 +89460,7 @@ definitions:
           contract_address:
             type: string
         title: store list of contract address of master builder
-  shareledger.distributionx.QueryGetRewardResponse:
+  shareledger.distributionx.v1.QueryGetRewardResponse:
     type: object
     properties:
       reward:
@@ -89487,7 +89487,7 @@ definitions:
 
                 signatures required by gogoproto.
             title: reward amount
-  shareledger.distributionx.QueryParamsResponse:
+  shareledger.distributionx.v1.QueryParamsResponse:
     type: object
     properties:
       params:
@@ -89518,7 +89518,7 @@ definitions:
           dev_pool_account:
             type: string
     description: QueryParamsResponse is response type for the Query/Params RPC method.
-  shareledger.distributionx.Reward:
+  shareledger.distributionx.v1.Reward:
     type: object
     properties:
       index:

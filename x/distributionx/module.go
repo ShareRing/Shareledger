@@ -7,13 +7,18 @@ import (
 
 	// this line is used by starport scaffolding # 1
 
+	"cosmossdk.io/core/appmodule"
+	"cosmossdk.io/depinject"
 	abci "github.com/cometbft/cometbft/abci/types"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/codec"
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
+	store "github.com/cosmos/cosmos-sdk/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
+	paramskeeper "github.com/cosmos/cosmos-sdk/x/params/keeper"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
+	modulev1 "github.com/sharering/shareledger/api/shareledger/distributionx/module/v1"
 	"github.com/sharering/shareledger/x/distributionx/client/cli"
 	"github.com/sharering/shareledger/x/distributionx/keeper"
 	"github.com/sharering/shareledger/x/distributionx/types"
@@ -109,6 +114,14 @@ func NewAppModule(
 	}
 }
 
+var _ appmodule.AppModule = AppModule{}
+
+// IsOnePerModuleType implements the depinject.OnePerModuleType interface.
+func (am AppModule) IsOnePerModuleType() {}
+
+// IsAppModule implements the appmodule.AppModule interface.
+func (am AppModule) IsAppModule() {}
+
 // RegisterServices registers a gRPC query service to respond to the module-specific gRPC queries
 func (am AppModule) RegisterServices(cfg module.Configurator) {
 	types.RegisterMsgServer(cfg.MsgServer(), keeper.NewMsgServerImpl(am.keeper))
@@ -146,4 +159,42 @@ func (am AppModule) BeginBlock(ctx sdk.Context, req abci.RequestBeginBlock) {
 // EndBlock contains the logic that is automatically triggered at the end of each block
 func (am AppModule) EndBlock(_ sdk.Context, _ abci.RequestEndBlock) []abci.ValidatorUpdate {
 	return []abci.ValidatorUpdate{}
+}
+
+//
+// App Wiring Setup
+//
+
+func init() {
+	appmodule.Register(&modulev1.Module{},
+		appmodule.Provide(ProvideModule),
+	)
+}
+
+type DistributionxInputs struct {
+	depinject.In
+
+	Config *modulev1.Module
+	Key    *store.KVStoreKey
+	Cdc    codec.Codec
+
+	ParamsKeeper  paramskeeper.Keeper
+	AccountKeeper types.AccountKeeper
+	BankKeeper    types.BankKeeper
+	WasmKeeper    types.WasmKeeper
+}
+
+type DistributionxOutputs struct {
+	depinject.Out
+
+	Module              appmodule.AppModule
+	DistributionxKeeper keeper.Keeper
+}
+
+func ProvideModule(in DistributionxInputs) DistributionxOutputs {
+	k := keeper.NewKeeper(in.Cdc, in.Key, in.ParamsKeeper.Subspace(types.ModuleName), in.AccountKeeper, in.BankKeeper, in.WasmKeeper)
+	m := NewAppModule(in.Cdc, *k, in.AccountKeeper, in.BankKeeper)
+	return DistributionxOutputs{
+		Module: m,
+	}
 }

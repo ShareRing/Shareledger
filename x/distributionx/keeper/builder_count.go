@@ -57,6 +57,6 @@ func (k Keeper) IncBuilderCount(ctx sdk.Context, address string) {
 			Count: 0,
 		}
 	}
-	val.Count ++
+	val.Count++
 	k.SetBuilderCount(ctx, val)
 }

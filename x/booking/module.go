@@ -13,11 +13,17 @@ import (
 
 	abci "github.com/cometbft/cometbft/abci/types"
 
+	"cosmossdk.io/core/appmodule"
+	"cosmossdk.io/depinject"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/codec"
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
+	store "github.com/cosmos/cosmos-sdk/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
+	bankkeeper "github.com/cosmos/cosmos-sdk/x/bank/keeper"
+	modulev1 "github.com/sharering/shareledger/api/shareledger/booking/module/v1"
+	assetkeeper "github.com/sharering/shareledger/x/asset/keeper"
 	"github.com/sharering/shareledger/x/booking/client/cli"
 	"github.com/sharering/shareledger/x/booking/keeper"
 	"github.com/sharering/shareledger/x/booking/types"
@@ -111,6 +117,14 @@ func NewAppModule(cdc codec.Codec, keeper keeper.Keeper) AppModule {
 	}
 }
 
+var _ appmodule.AppModule = AppModule{}
+
+// IsOnePerModuleType implements the depinject.OnePerModuleType interface.
+func (am AppModule) IsOnePerModuleType() {}
+
+// IsAppModule implements the appmodule.AppModule interface.
+func (am AppModule) IsAppModule() {}
+
 // Name returns the capability module's name.
 func (am AppModule) Name() string {
 	return am.AppModuleBasic.Name()
@@ -162,4 +176,41 @@ func (am AppModule) BeginBlock(_ sdk.Context, _ abci.RequestBeginBlock) {}
 // returns no validator updates.
 func (am AppModule) EndBlock(_ sdk.Context, _ abci.RequestEndBlock) []abci.ValidatorUpdate {
 	return []abci.ValidatorUpdate{}
+}
+
+//
+// App Wiring Setup
+//
+
+func init() {
+	appmodule.Register(&modulev1.Module{},
+		appmodule.Provide(ProvideModule),
+	)
+}
+
+type BookingInputs struct {
+	depinject.In
+
+	Config *modulev1.Module
+	Key    *store.KVStoreKey
+	Cdc    codec.Codec
+
+	AssetKeeper assetkeeper.Keeper
+	BankKeeper  bankkeeper.Keeper
+}
+
+type BookingOutputs struct {
+	depinject.Out
+
+	Module        appmodule.AppModule
+	BookingKeeper keeper.Keeper
+}
+
+func ProvideModule(in BookingInputs) BookingOutputs {
+	k := keeper.NewKeeper(in.Cdc, in.Key, in.AssetKeeper, in.BankKeeper)
+	m := NewAppModule(in.Cdc, *k)
+	return BookingOutputs{
+		Module:        m,
+		BookingKeeper: *k,
+	}
 }

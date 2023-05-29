@@ -3,24 +3,22 @@ package keeper
 import (
 	"fmt"
 
+	"github.com/cometbft/cometbft/libs/log"
 	"github.com/cosmos/cosmos-sdk/codec"
 	storetypes "github.com/cosmos/cosmos-sdk/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
 	"github.com/sharering/shareledger/x/distributionx/types"
-	"github.com/cometbft/cometbft/libs/log"
 )
 
-type (
-	Keeper struct {
-		cdc        codec.BinaryCodec
-		storeKey   storetypes.StoreKey
-		paramstore paramtypes.Subspace
-		authKeeper types.AccountKeeper
-		bankKeeper types.BankKeeper
-		wasmKeeper types.WasmKeeper
-	}
-)
+type Keeper struct {
+	cdc        codec.BinaryCodec
+	storeKey   storetypes.StoreKey
+	paramstore paramtypes.Subspace
+	authKeeper types.AccountKeeper
+	bankKeeper types.BankKeeper
+	wasmKeeper types.WasmKeeper
+}
 
 func NewKeeper(
 	cdc codec.BinaryCodec,

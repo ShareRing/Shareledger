@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package shareledger.distributionx.v1;
+
+option go_package = "github.com/sharering/shareledger/x/distributionx/types";
+
+// store list of contract address of master builder
+message BuilderList {
+  uint64 id = 1;
+
+  string contract_address = 2;
+}

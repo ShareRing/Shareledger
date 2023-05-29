@@ -32,7 +32,6 @@ func (k Keeper) BuilderListAll(c context.Context, req *types.QueryAllBuilderList
 		builderLists = append(builderLists, builderList)
 		return nil
 	})
-
 	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
 	}

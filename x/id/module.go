@@ -13,11 +13,15 @@ import (
 
 	abci "github.com/cometbft/cometbft/abci/types"
 
+	"cosmossdk.io/core/appmodule"
+	"cosmossdk.io/depinject"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/codec"
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
+	store "github.com/cosmos/cosmos-sdk/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
+	modulev1 "github.com/sharering/shareledger/api/shareledger/id/module/v1"
 	"github.com/sharering/shareledger/x/id/client/cli"
 	"github.com/sharering/shareledger/x/id/keeper"
 	"github.com/sharering/shareledger/x/id/types"
@@ -111,6 +115,14 @@ func NewAppModule(cdc codec.Codec, keeper keeper.Keeper) AppModule {
 	}
 }
 
+var _ appmodule.AppModule = AppModule{}
+
+// IsOnePerModuleType implements the depinject.OnePerModuleType interface.
+func (am AppModule) IsOnePerModuleType() {}
+
+// IsAppModule implements the appmodule.AppModule interface.
+func (am AppModule) IsAppModule() {}
+
 // Name returns the capability module's name.
 func (am AppModule) Name() string {
 	return am.AppModuleBasic.Name()
@@ -164,4 +176,38 @@ func (am AppModule) BeginBlock(_ sdk.Context, _ abci.RequestBeginBlock) {}
 // returns no validator updates.
 func (am AppModule) EndBlock(_ sdk.Context, _ abci.RequestEndBlock) []abci.ValidatorUpdate {
 	return []abci.ValidatorUpdate{}
+}
+
+//
+// App Wiring Setup
+//
+
+func init() {
+	appmodule.Register(&modulev1.Module{},
+		appmodule.Provide(ProvideModule),
+	)
+}
+
+type IDInputs struct {
+	depinject.In
+
+	Config *modulev1.Module
+	Key    *store.KVStoreKey
+	Cdc    codec.Codec
+}
+
+type IDOutputs struct {
+	depinject.Out
+
+	Module   appmodule.AppModule
+	IDKeeper keeper.Keeper
+}
+
+func ProvideModule(in IDInputs) IDOutputs {
+	k := keeper.NewKeeper(in.Cdc, in.Key)
+	m := NewAppModule(in.Cdc, *k)
+	return IDOutputs{
+		Module:   m,
+		IDKeeper: *k,
+	}
 }
