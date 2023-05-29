@@ -6,8 +6,7 @@ import (
 	"fmt"
 
 	"github.com/cosmos/cosmos-sdk/client/flags"
-	clitestutil "github.com/cosmos/cosmos-sdk/testutil/cli"
-	"github.com/cosmos/gogoproto/proto"
+	"github.com/sharering/shareledger/tests"
 	"github.com/sharering/shareledger/testutil/network"
 	"github.com/sharering/shareledger/x/id/client/cli"
 	"github.com/sharering/shareledger/x/id/types"
@@ -50,43 +49,48 @@ func (s *E2ETestSuite) SetupSuite() {
 	s.Require().NoError(s.network.WaitForNextBlock())
 }
 
-func (s *E2ETestSuite) TestGetIDs() {
-	testCases := []struct {
-		name      string
-		args      []string
-		expectErr bool
-		respType  proto.Message
-		expected  proto.Message
-	}{{
-		name: "valid query id by id",
-		args: []string{
-			"Id1",
+func (s *E2ETestSuite) TestGetByID() {
+	testCases := tests.TestCases{
+		{
+			Name: "valid query id by id",
+			Args: []string{
+				"Id1",
+				fmt.Sprintf("--%s=json", flags.FlagOutput),
+			},
+			ExpectErr: false,
+			RespType:  &types.QueryIdByIdResponse{},
+			Expected: &types.QueryIdByIdResponse{
+				Id: &id1,
+			},
+		}, {
+			Name:      "query id by id not pass Id",
+			Args:      []string{},
+			ExpectErr: true,
+			RespType:  nil,
+			Expected:  nil,
+		},
+	}
+	tests.RunTestCases(s.Require(), testCases, cli.CmdIdById(), s.network.Validators[0])
+}
+
+func (s *E2ETestSuite) TestGetByAddress() {
+	testCases := tests.TestCases{{
+		Name: "valid query id by address",
+		Args: []string{
+			"shareledger1t3g4570e23h96h5hm5gdtfrjprmvk9qwmrglfr",
 			fmt.Sprintf("--%s=json", flags.FlagOutput),
 		},
-		expectErr: false,
-		respType:  &types.QueryIdByIdResponse{},
-		expected: &types.QueryIdByIdResponse{
+		ExpectErr: false,
+		RespType:  &types.QueryIdByIdResponse{},
+		Expected: &types.QueryIdByIdResponse{
 			Id: &id1,
 		},
 	}, {
-		name: "query id by id not pass Id",
-		args: []string{
-			fmt.Sprintf("--%s=json", flags.FlagOutput),
-		},
-		expectErr: true,
-		respType:  nil,
-		expected:  nil,
+		Name:      "query id by address not pass address",
+		Args:      []string{},
+		ExpectErr: true,
+		RespType:  nil,
+		Expected:  nil,
 	}}
-	val := s.network.Validators[0]
-	for _, tc := range testCases {
-		cmd := cli.CmdIdById()
-		out, err := clitestutil.ExecTestCLICmd(val.ClientCtx, cmd, tc.args)
-		if tc.expectErr {
-			s.Require().Error(err)
-		} else {
-			s.Require().NoError(err)
-			s.Require().NoError(val.ClientCtx.Codec.UnmarshalJSON(out.Bytes(), tc.respType))
-			s.Require().Equal(tc.expected.String(), tc.respType.String())
-		}
-	}
+	tests.RunTestCases(s.Require(), testCases, cli.CmdIdByAddress(), s.network.Validators[0])
 }

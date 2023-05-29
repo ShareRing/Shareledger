@@ -8,3 +8,4 @@ vendor/
 .vscode
 go.work
 go.work.sum
+coverage/
