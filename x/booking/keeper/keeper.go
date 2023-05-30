@@ -7,8 +7,6 @@ import (
 	"github.com/cosmos/cosmos-sdk/codec"
 	storetypes "github.com/cosmos/cosmos-sdk/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	bankkeeper "github.com/cosmos/cosmos-sdk/x/bank/keeper"
-	assetkeeper "github.com/sharering/shareledger/x/asset/keeper"
 	"github.com/sharering/shareledger/x/booking/types"
 )
 
@@ -16,16 +14,16 @@ type (
 	Keeper struct {
 		cdc         codec.BinaryCodec
 		storeKey    storetypes.StoreKey
-		assetKeeper assetkeeper.Keeper
-		bankKeeper  bankkeeper.Keeper
+		assetKeeper types.AssetKeeper
+		bankKeeper  types.BankKeeper
 	}
 )
 
 func NewKeeper(
 	cdc codec.BinaryCodec,
 	storeKey storetypes.StoreKey,
-	ask assetkeeper.Keeper,
-	bankKeeper bankkeeper.Keeper,
+	ask types.AssetKeeper,
+	bankKeeper types.BankKeeper,
 ) *Keeper {
 	return &Keeper{
 		cdc:         cdc,

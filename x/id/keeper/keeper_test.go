@@ -20,13 +20,11 @@ import (
 type KeeperTestSuite struct {
 	suite.Suite
 
-	ctx sdk.Context
-
+	ctx         sdk.Context
 	queryClient types.QueryClient
 	msgServer   types.MsgServer
 	idKeeper    keeper.Keeper
-
-	encCfg moduletestutil.TestEncodingConfig
+	encCfg      moduletestutil.TestEncodingConfig
 }
 
 var (

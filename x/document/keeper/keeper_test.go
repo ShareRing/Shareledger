@@ -46,6 +46,7 @@ type KeeperTestSuite struct {
 
 func TestKeeperTestSuite(t *testing.T) {
 	params.SetAddressPrefixes()
+	t.Log("Running TestKeeperTestSuite for document module...")
 	suite.Run(t, new(KeeperTestSuite))
 }
 
