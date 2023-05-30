@@ -9,6 +9,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/testutil"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	moduletestutil "github.com/cosmos/cosmos-sdk/types/module/testutil"
+	"google.golang.org/grpc/codes"
 
 	"github.com/sharering/shareledger/app/params"
 	"github.com/sharering/shareledger/x/id/keeper"
@@ -66,7 +67,11 @@ func (s *KeeperTestSuite) SetupTest() {
 }
 
 func (s *KeeperTestSuite) TestGetIDByID() {
-	_, err := s.msgServer.CreateId(s.ctx, createIdReq)
+	// invalid
+	_, err := s.queryClient.IdById(s.ctx, nil)
+	s.ErrorContains(err, codes.InvalidArgument.String())
+	// valid
+	_, err = s.msgServer.CreateId(s.ctx, createIdReq)
 	s.NoError(err)
 	resp, err := s.queryClient.IdById(s.ctx, &types.QueryIdByIdRequest{
 		Id: idID,
@@ -77,7 +82,11 @@ func (s *KeeperTestSuite) TestGetIDByID() {
 }
 
 func (s *KeeperTestSuite) TestGetByAddress() {
-	_, err := s.msgServer.CreateId(s.ctx, createIdReq)
+	// invalid
+	_, err := s.queryClient.IdByAddress(s.ctx, nil)
+	s.ErrorContains(err, codes.InvalidArgument.String())
+	// valid
+	_, err = s.msgServer.CreateId(s.ctx, createIdReq)
 	s.NoError(err)
 	resp, err := s.queryClient.IdByAddress(s.ctx, &types.QueryIdByAddressRequest{
 		Address: ownerAddress,
@@ -97,21 +106,16 @@ func (s *KeeperTestSuite) TestCreateID() {
 }
 
 func (s *KeeperTestSuite) TestCreateIDs() {
-	_, err := s.msgServer.CreateIds(s.ctx, &types.MsgCreateIds{
+	req := &types.MsgCreateIds{
 		IssuerAddress: issuerAddress,
 		BackupAddress: []string{"backup"},
 		ExtraData:     []string{"extra1"},
 		Id:            []string{idID},
 		OwnerAddress:  []string{ownerAddress},
-	})
+	}
+	_, err := s.msgServer.CreateIds(s.ctx, req)
 	s.NoError(err)
-	_, err = s.msgServer.CreateIds(s.ctx, &types.MsgCreateIds{
-		IssuerAddress: issuerAddress,
-		BackupAddress: []string{"backup"},
-		ExtraData:     []string{"extra1"},
-		Id:            []string{idID},
-		OwnerAddress:  []string{ownerAddress},
-	})
+	_, err = s.msgServer.CreateIds(s.ctx, req)
 	s.Error(err)
 }
 
