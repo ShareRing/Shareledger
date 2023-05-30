@@ -21,16 +21,15 @@ type TestCase struct {
 type TestCases = []TestCase
 
 func RunTestCases(s *suite.Suite, tcs TestCases, cmd *cobra.Command, val *network.Validator) {
-	assert := s.Assert()
 	for _, tc := range tcs {
 		s.Run(tc.Name, func() {
 			out, err := clitestutil.ExecTestCLICmd(val.ClientCtx, cmd, tc.Args)
 			if tc.ExpectErr {
-				assert.Error(err)
+				s.Error(err)
 			} else {
-				assert.NoError(err)
-				assert.NoError(val.ClientCtx.Codec.UnmarshalJSON(out.Bytes(), tc.RespType))
-				assert.Equal(tc.Expected.String(), tc.RespType.String())
+				s.NoError(err)
+				s.NoError(val.ClientCtx.Codec.UnmarshalJSON(out.Bytes(), tc.RespType))
+				s.Equal(tc.Expected.String(), tc.RespType.String())
 			}
 		})
 	}
@@ -48,16 +47,15 @@ type TestCaseGrpc struct {
 type TestCasesGrpc = []TestCaseGrpc
 
 func RunTestCasesGrpc(s *suite.Suite, tcs TestCasesGrpc, val *network.Validator) {
-	assert := s.Assert()
 	for _, tc := range tcs {
 		s.Run(tc.Name, func() {
 			resp, err := testutil.GetRequestWithHeaders(tc.URL, tc.Headers)
-			assert.NoError(err)
+			s.NoError(err)
 			if tc.ExpectErr {
-				assert.Error(val.ClientCtx.Codec.UnmarshalJSON(resp, tc.RespType))
+				s.Error(val.ClientCtx.Codec.UnmarshalJSON(resp, tc.RespType))
 			} else {
-				assert.NoError(val.ClientCtx.Codec.UnmarshalJSON(resp, tc.RespType))
-				assert.Equal(tc.Expected.String(), tc.RespType.String())
+				s.NoError(val.ClientCtx.Codec.UnmarshalJSON(resp, tc.RespType))
+				s.Equal(tc.Expected.String(), tc.RespType.String())
 			}
 		})
 	}
@@ -73,17 +71,16 @@ type TestCaseTx struct {
 type TestCasesTx = []TestCaseTx
 
 func RunTestCasesTx(s *suite.Suite, tcs TestCasesTx, cmd *cobra.Command, val *network.Validator) {
-	assert := s.Assert()
 	for _, tc := range tcs {
 		s.Run(tc.Name, func() {
 			out, err := clitestutil.ExecTestCLICmd(val.ClientCtx, cmd, tc.Args)
 			if tc.ExpectErr {
-				assert.Error(err)
+				s.Error(err)
 			} else {
-				assert.NoError(err)
+				s.NoError(err)
 				var resp types.TxResponse
-				assert.NoError(val.ClientCtx.Codec.UnmarshalJSON(out.Bytes(), &resp))
-				assert.Equal(tc.ExpectedCode, resp.Code)
+				s.NoError(val.ClientCtx.Codec.UnmarshalJSON(out.Bytes(), &resp))
+				s.Equal(tc.ExpectedCode, resp.Code)
 			}
 		})
 	}

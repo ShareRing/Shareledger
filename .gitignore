@@ -9,3 +9,6 @@ vendor/
 go.work
 go.work.sum
 coverage/
+coverage.out
+coverage.html
+cover.out
