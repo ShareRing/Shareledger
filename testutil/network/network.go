@@ -132,13 +132,21 @@ func SetTestingGenesis(t *testing.T, config *network.Config) (keyring.Keyring, s
 
 	newKeyringService, genAccounts, genBalances := accountBuilder.BuildGenesis()
 
-	acc := MustAddressFormKeyring(kb, KeyIDSigner)
+	idSignerAcc := MustAddressFormKeyring(kb, KeyIDSigner)
+	docIssuerAcc := MustAddressFormKeyring(kb, KeyDocIssuer)
 	genElectoral := electoraltypes.GenesisState{
-		AccStateList: []electoraltypes.AccState{{
-			Key:     fmt.Sprintf("idsigner%s", acc),
-			Address: acc.String(),
-			Status:  "active",
-		}},
+		AccStateList: []electoraltypes.AccState{
+			{
+				Key:     fmt.Sprintf("idsigner%s", idSignerAcc),
+				Address: idSignerAcc.String(),
+				Status:  "active",
+			},
+			{
+				Key:     fmt.Sprintf("docIssuer%s", docIssuerAcc),
+				Address: docIssuerAcc.String(),
+				Status:  "active",
+			},
+		},
 		Authority: &electoraltypes.Authority{Address: Accounts[KeyAuthority].String()},
 		Treasurer: &electoraltypes.Treasurer{Address: Accounts[KeyTreasurer].String()},
 	}
