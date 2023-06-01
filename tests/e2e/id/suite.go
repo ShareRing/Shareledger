@@ -20,25 +20,28 @@ func NewE2ETestSuite(cfg network.Config) *E2ETestSuite {
 	return &E2ETestSuite{cfg: cfg}
 }
 
+var id1 = types.Id{
+	Id: "Id1",
+	Data: &types.BaseID{
+		IssuerAddress: "shareledger18g8x9censnr3k2y7x6vwntlhvz254ym4qflcak",
+		BackupAddress: "BackupAddress",
+		OwnerAddress:  "shareledger1t3g4570e23h96h5hm5gdtfrjprmvk9qwmrglfr",
+		ExtraData:     "ExtraData",
+	},
+}
+
 func (s *E2ETestSuite) SetupSuite() {
-	s.T().Log("setting up e2e test suite")
+	s.T().Log("setting up e2e test suite for id module")
 
 	kr, _ := network.SetTestingGenesis(s.T(), &s.cfg)
 
 	// update Id module state
-	genesisState := s.cfg.GenesisState
-	var idGenesis types.GenesisState
-	s.Require().NoError(s.cfg.Codec.UnmarshalJSON(genesisState[types.ModuleName], &idGenesis))
-	idGenesis.IDs = []*types.Id{&id1}
-	idGenesisBz, err := s.cfg.Codec.MarshalJSON(&idGenesis)
-	s.Require().NoError(err)
-	genesisState[types.ModuleName] = idGenesisBz
-	s.cfg.GenesisState = genesisState
+	idGenesis := types.GenesisState{
+		IDs: []*types.Id{&id1},
+	}
+	s.cfg.GenesisState[types.ModuleName] = s.cfg.Codec.MustMarshalJSON(&idGenesis)
 
 	s.network = network.New(s.T(), s.cfg)
 	s.network.Validators[0].ClientCtx.Keyring = kr
 	s.Require().NoError(s.network.WaitForNextBlock())
-}
-
-func (s *E2ETestSuite) TearDownSuite() {
 }

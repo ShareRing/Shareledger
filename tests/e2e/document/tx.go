@@ -1,19 +1,14 @@
 package document
 
 import (
-	"time"
-
+	errorsmod "cosmossdk.io/errors"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/sharering/shareledger/tests"
 	"github.com/sharering/shareledger/testutil/network"
 	"github.com/sharering/shareledger/x/document/client/cli"
 )
 
-var waitForSync = 2
-
 func (s *E2ETestSuite) TestCreateDocument() {
-	// need to wait for previous transaction finish and sync before try a next one
-	// to avoid the err: "account sequence mismatch, expected <num1>, got <num0>, incorrect account sequence"
-	time.Sleep(time.Duration(waitForSync) * time.Second)
 	testCases := tests.TestCasesTx{
 		{
 			Name: "create new document",
@@ -21,13 +16,10 @@ func (s *E2ETestSuite) TestCreateDocument() {
 				"Holder-ID",
 				"TestProof",
 				"ExtraData",
-				network.SkipConfirmation,
-				network.JSONFlag,
-				network.SyncBroadcast,
 				network.MakeByAccount(network.KeyDocIssuer),
 			},
 			ExpectErr:    false,
-			ExpectedCode: 0,
+			ExpectedCode: errorsmod.SuccessABCICode,
 		},
 		{
 			Name: "create new document with unauthorize account",
@@ -35,22 +27,16 @@ func (s *E2ETestSuite) TestCreateDocument() {
 				"Holder-ID",
 				"TestProof",
 				"ExtraData",
-				network.SkipConfirmation,
-				network.JSONFlag,
-				network.SyncBroadcast,
 				network.MakeByAccount(network.KeyAccount1),
 			},
 			ExpectErr:    false,
-			ExpectedCode: 0x4,
+			ExpectedCode: sdkerrors.ErrUnauthorized.ABCICode(),
 		},
 	}
 	tests.RunTestCasesTx(&s.Suite, testCases, cli.CmdCreateDocument(), s.network.Validators[0])
 }
 
 func (s *E2ETestSuite) TestCreateDocuments() {
-	// need to wait for previous transaction finish and sync before try a next one
-	// to avoid the err: "account sequence mismatch, expected <num1>, got <num0>, incorrect account sequence"
-	time.Sleep(time.Duration(waitForSync) * time.Second)
 	testCases := tests.TestCasesTx{
 		{
 			Name: "create new documents",
@@ -58,13 +44,10 @@ func (s *E2ETestSuite) TestCreateDocuments() {
 				"Holder-ID1,Holder-ID2,Holder-ID3",
 				"TestProof1,TestProof2,TestProof3",
 				"ExtraData1,ExtraData2,ExtraData3",
-				network.SkipConfirmation,
-				network.JSONFlag,
-				network.SyncBroadcast,
 				network.MakeByAccount(network.KeyDocIssuer),
 			},
 			ExpectErr:    false,
-			ExpectedCode: 0,
+			ExpectedCode: errorsmod.SuccessABCICode,
 		},
 		{
 			Name: "create new documents",
@@ -72,57 +55,42 @@ func (s *E2ETestSuite) TestCreateDocuments() {
 				"Holder-ID1,Holder-ID2,Holder-ID3",
 				"TestProof1,TestProof2,TestProof3",
 				"ExtraData1,ExtraData2,ExtraData3",
-				network.SkipConfirmation,
-				network.JSONFlag,
-				network.SyncBroadcast,
 				network.MakeByAccount(network.KeyAccount1),
 			},
 			ExpectErr:    false,
-			ExpectedCode: 0x4,
+			ExpectedCode: sdkerrors.ErrUnauthorized.ABCICode(),
 		},
 	}
 	tests.RunTestCasesTx(&s.Suite, testCases, cli.CmdCreateDocuments(), s.network.Validators[0])
 }
 
 func (s *E2ETestSuite) TestCmdRevokeDocument() {
-	// need to wait for previous transaction finish and sync before try a next one
-	// to avoid the err: "account sequence mismatch, expected <num1>, got <num0>, incorrect account sequence"
-	time.Sleep(time.Duration(waitForSync) * time.Second)
 	testCases := tests.TestCasesTx{
 		{
 			Name: "revoke document",
 			Args: []string{
 				"Holder-ID",
 				"TestProof",
-				network.SkipConfirmation,
-				network.JSONFlag,
-				network.SyncBroadcast,
 				network.MakeByAccount(network.KeyDocIssuer),
 			},
 			ExpectErr:    false,
-			ExpectedCode: 0,
+			ExpectedCode: errorsmod.SuccessABCICode,
 		},
 		{
 			Name: "revoke document with empty input argument",
 			Args: []string{
 				"",
 				"TestProof",
-				network.SkipConfirmation,
-				network.JSONFlag,
-				network.SyncBroadcast,
 				network.MakeByAccount(network.KeyDocIssuer),
 			},
 			ExpectErr:    true,
-			ExpectedCode: 0,
+			ExpectedCode: errorsmod.SuccessABCICode,
 		},
 	}
 	tests.RunTestCasesTx(&s.Suite, testCases, cli.CmdRevokeDocument(), s.network.Validators[0])
 }
 
 func (s *E2ETestSuite) TestCmdUpdateDocument() {
-	// need to wait for previous transaction finish and sync before try a next one
-	// to avoid the err: "account sequence mismatch, expected <num1>, got <num0>, incorrect account sequence"
-	time.Sleep(time.Duration(waitForSync) * time.Second)
 	testCases := tests.TestCasesTx{
 		{
 			Name: "update document ok",
@@ -130,13 +98,10 @@ func (s *E2ETestSuite) TestCmdUpdateDocument() {
 				"Holder-ID",
 				"TestProof",
 				"ExtraData",
-				network.SkipConfirmation,
-				network.JSONFlag,
-				network.SyncBroadcast,
 				network.MakeByAccount(network.KeyDocIssuer),
 			},
 			ExpectErr:    false,
-			ExpectedCode: 0,
+			ExpectedCode: errorsmod.SuccessABCICode,
 		},
 		{
 			Name: "update document with empty input argument",
@@ -145,12 +110,11 @@ func (s *E2ETestSuite) TestCmdUpdateDocument() {
 				"TestProof",
 				"ExtraData",
 				network.SkipConfirmation,
-				network.JSONFlag,
 				network.SyncBroadcast,
 				network.MakeByAccount(network.KeyDocIssuer),
 			},
 			ExpectErr:    true,
-			ExpectedCode: 0,
+			ExpectedCode: errorsmod.SuccessABCICode,
 		},
 	}
 	tests.RunTestCasesTx(&s.Suite, testCases, cli.CmdUpdateDocument(), s.network.Validators[0])

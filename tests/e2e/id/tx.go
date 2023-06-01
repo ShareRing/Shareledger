@@ -14,8 +14,6 @@ func (s *E2ETestSuite) TestClientId() {
 			"shareledger1s432u6zv95wpluxhf4qru2ewy58kc3w4tkzm3v",
 			"shareledger18pf3zdwqjntd9wkvfcjvmdc7hua6c0q2eck5h5",
 			"ExtraData",
-			network.SkipConfirmation,
-			network.JSONFlag,
 			network.MakeByAccount(network.KeyIDSigner),
 		},
 		ExpectErr:    false,
