@@ -89,10 +89,6 @@ require (
 	github.com/cosmos/rosetta-sdk-go v0.10.0 // indirect
 	github.com/creachadair/taskgroup v0.4.2 // indirect
 	github.com/danieljoos/wincred v1.1.2 // indirect
-	github.com/dave/astrid v0.0.0-20170323122508-8c2895878b14 // indirect
-	github.com/dave/brenda v1.1.0 // indirect
-	github.com/dave/courtney v0.4.0 // indirect
-	github.com/dave/patsy v0.0.0-20210517141501-957256f50cba // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/deckarep/golang-set/v2 v2.1.0 // indirect
 	github.com/decred/dcrd/dcrec/secp256k1/v4 v4.1.0 // indirect
