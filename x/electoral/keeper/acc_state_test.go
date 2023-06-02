@@ -1,9 +1,11 @@
 package keeper_test
 
 import (
-	"github.com/sharering/shareledger/testutil/sample"
+	"sort"
 	"strconv"
 	"testing"
+
+	"github.com/sharering/shareledger/testutil/sample"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	keepertest "github.com/sharering/shareledger/testutil/keeper"
@@ -20,9 +22,12 @@ func createNAccState(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.AccS
 	for i := range items {
 		addr, _ := sdk.AccAddressFromBech32(sample.AccAddress())
 		items[i].Key = string(types.GenAccStateIndexKey(addr, types.AccStateKeyIdSigner))
-
+		items[i].Address = addr.String()
 		keeper.SetAccState(ctx, items[i])
 	}
+	sort.Slice(items, func(i, j int) bool {
+		return items[i].Key < items[j].Key
+	})
 	return items
 }
 
