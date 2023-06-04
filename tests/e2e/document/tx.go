@@ -83,8 +83,7 @@ func (s *E2ETestSuite) TestCmdRevokeDocument() {
 				"TestProof",
 				network.MakeByAccount(network.KeyDocIssuer),
 			},
-			ExpectErr:    true,
-			ExpectedCode: errorsmod.SuccessABCICode,
+			ExpectErr: true,
 		},
 	}
 	tests.RunTestCasesTx(&s.Suite, testCases, cli.CmdRevokeDocument(), s.network.Validators[0])
@@ -113,8 +112,7 @@ func (s *E2ETestSuite) TestCmdUpdateDocument() {
 				network.SyncBroadcast,
 				network.MakeByAccount(network.KeyDocIssuer),
 			},
-			ExpectErr:    true,
-			ExpectedCode: errorsmod.SuccessABCICode,
+			ExpectErr: true,
 		},
 	}
 	tests.RunTestCasesTx(&s.Suite, testCases, cli.CmdUpdateDocument(), s.network.Validators[0])

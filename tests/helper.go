@@ -2,6 +2,7 @@ package tests
 
 import (
 	"errors"
+	"strings"
 	"time"
 
 	"github.com/cosmos/cosmos-sdk/client"
@@ -95,10 +96,20 @@ func RunTestCasesTx(s *suite.Suite, tcs TestCasesTx, cmd *cobra.Command, val *ne
 			if tc.ExpectErr {
 				s.Error(err)
 			} else {
+				resFromCli := resp
 				s.NoError(err)
 				resp, err = QueryTxWithRetry(val.ClientCtx, resp.TxHash, DEFAULT_NUM_RETRY)
-				s.NoError(err)
-				s.Equal(tc.ExpectedCode, resp.Code)
+
+				//Assert the response is not found or not. If not found there something happen before the transaction wasn't indexed
+				// should assert the error direct from cli
+				if err != nil {
+					if !strings.Contains(err.Error(), "not found") {
+						s.Fail("query transaction hash fail")
+					}
+					s.Equal(tc.ExpectedCode, resFromCli.Code)
+				} else {
+					s.Equalf(tc.ExpectedCode, resp.Code, "res is %s", resp.String())
+				}
 			}
 		})
 	}
