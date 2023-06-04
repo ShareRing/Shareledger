@@ -31,7 +31,6 @@ func (k Keeper) BuilderCountAll(c context.Context, req *types.QueryAllBuilderCou
 		builderCounts = append(builderCounts, builderCount)
 		return nil
 	})
-
 	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
 	}

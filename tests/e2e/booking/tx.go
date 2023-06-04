@@ -62,17 +62,15 @@ func (s *E2ETestSuite) TestCompleteBooking() {
 }
 
 func (s *E2ETestSuite) createNewBooking(uuid string) string {
+	val := s.network.Validators[0]
 	_, err := tests.RunCmdWithRetry(&s.Suite,
 		cli.CmdBook(),
-		s.network.Validators[0],
+		val,
 		[]string{uuid, "1", network.MakeByAccount(network.KeyAccount1)},
 		100,
 	)
 	s.NoError(err)
-	recored, err := s.network.Validators[0].ClientCtx.Keyring.Key(network.KeyAccount1)
-	s.NoError(err)
-	booker, err := recored.GetAddress()
-	s.NoError(err)
+	booker := network.MustAddressFormKeyring(val.ClientCtx.Keyring, network.KeyAccount1)
 	bookID, err := keeper.GenBookID(&types.MsgCreateBooking{
 		Booker:   booker.String(),
 		UUID:     uuid,

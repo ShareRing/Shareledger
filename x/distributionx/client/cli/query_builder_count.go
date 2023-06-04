@@ -13,7 +13,7 @@ func CmdListBuilderCount() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "list-builder-count",
 		Short: "list all builderCount",
-		RunE: func(cmd *cobra.Command, args []string) error {
+		RunE: func(cmd *cobra.Command, _ []string) error {
 			clientCtx := client.GetClientContextFromCmd(cmd)
 
 			pageReq, err := client.ReadPageRequest(cmd.Flags())
