@@ -2,55 +2,48 @@ package keeper_test
 
 import (
 	"strconv"
-	"testing"
 
-	sdk "github.com/cosmos/cosmos-sdk/types"
-	keepertest "github.com/sharering/shareledger/testutil/keeper"
-	"github.com/sharering/shareledger/x/gentlemint/keeper"
 	"github.com/sharering/shareledger/x/gentlemint/types"
-	"github.com/stretchr/testify/require"
 )
 
-// Prevent strconv unused error
-var _ = strconv.IntSize
-
-func createNActionLevelFee(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.ActionLevelFee {
+func (s *KeeperTestSuite) createNActionLevelFee(n int) []types.ActionLevelFee {
 	items := make([]types.ActionLevelFee, n)
 	for i := range items {
 		items[i].Action = strconv.Itoa(i)
 
-		keeper.SetActionLevelFee(ctx, items[i])
+		s.createActionLevelFee(items[i])
 	}
 	return items
 }
 
-func TestActionLevelFeeGet(t *testing.T) {
-	keeper, ctx := keepertest.GentlemintKeeper(t)
-	items := createNActionLevelFee(keeper, ctx, 10)
+func (s *KeeperTestSuite) createActionLevelFee(input types.ActionLevelFee) {
+	s.gKeeper.SetActionLevelFee(s.ctx, input)
+}
+
+func (s *KeeperTestSuite) TestActionLevelFeeGet() {
+	items := s.createNActionLevelFee(10)
 	for _, item := range items {
-		rst, found := keeper.GetActionLevelFee(ctx,
+		rst, found := s.gKeeper.GetActionLevelFee(s.ctx,
 			item.Action,
 		)
-		require.True(t, found)
-		require.Equal(t, item, rst)
+		s.Require().True(found)
+		s.Require().Equal(item, rst)
 	}
 }
-func TestActionLevelFeeRemove(t *testing.T) {
-	keeper, ctx := keepertest.GentlemintKeeper(t)
-	items := createNActionLevelFee(keeper, ctx, 10)
+func (s *KeeperTestSuite) TestActionLevelFeeRemove() {
+	items := s.createNActionLevelFee(10)
 	for _, item := range items {
-		keeper.RemoveActionLevelFee(ctx,
+		s.gKeeper.RemoveActionLevelFee(s.ctx,
 			item.Action,
 		)
-		_, found := keeper.GetActionLevelFee(ctx,
+		_, found := s.gKeeper.GetActionLevelFee(s.ctx,
 			item.Action,
 		)
-		require.False(t, found)
+		s.Require().False(found)
 	}
 }
 
-func TestActionLevelFeeGetAll(t *testing.T) {
-	keeper, ctx := keepertest.GentlemintKeeper(t)
-	items := createNActionLevelFee(keeper, ctx, 10)
-	require.ElementsMatch(t, items, keeper.GetAllActionLevelFee(ctx))
+func (s *KeeperTestSuite) TestActionLevelFeeGetAll() {
+	items := s.createNActionLevelFee(10)
+	s.Require().ElementsMatch(items, s.gKeeper.GetAllActionLevelFee(s.ctx))
 }

@@ -1,36 +1,35 @@
 package keeper_test
 
 import (
-	"testing"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/stretchr/testify/require"
-
-	keepertest "github.com/sharering/shareledger/testutil/keeper"
-	"github.com/sharering/shareledger/x/gentlemint/keeper"
 	"github.com/sharering/shareledger/x/gentlemint/types"
 )
 
-func createTestExchangeRate(keeper *keeper.Keeper, ctx sdk.Context) types.ExchangeRate {
+func (s *KeeperTestSuite) createTestExchangeRate() types.ExchangeRate {
 	item := types.ExchangeRate{
 		Rate: "200.1",
 	}
-	keeper.SetExchangeRate(ctx, item)
+	s.gKeeper.SetExchangeRate(s.ctx, item)
 	return item
 }
 
-func TestExchangeRateGet(t *testing.T) {
-	keeper, ctx := keepertest.GentlemintKeeper(t)
-	item := createTestExchangeRate(keeper, ctx)
-	rst, found := keeper.GetExchangeRate(ctx)
-	require.True(t, found)
-	require.Equal(t, item, rst)
+func (s *KeeperTestSuite) TestGetExchangeRate() {
+	item := s.createTestExchangeRate()
+	rst, found := s.gKeeper.GetExchangeRate(s.ctx)
+	s.Require().True(found)
+	s.Require().Equal(item, rst)
 }
-func TestExchangeRateRemove(t *testing.T) {
-	keeper, ctx := keepertest.GentlemintKeeper(t)
-	createTestExchangeRate(keeper, ctx)
-	keeper.RemoveExchangeRate(ctx)
-	v, found := keeper.GetExchangeRate(ctx)
-	require.True(t, found)
-	require.Equal(t, types.DefaultExchangeRateSHRPToSHR, sdk.MustNewDecFromStr(v.Rate))
+
+func (s *KeeperTestSuite) TestRemoveExchangeRate() {
+	s.createTestExchangeRate()
+	s.gKeeper.RemoveExchangeRate(s.ctx)
+	v, found := s.gKeeper.GetExchangeRate(s.ctx)
+	s.Require().True(found)
+	s.Require().Equal(types.DefaultExchangeRateSHRPToSHR, sdk.MustNewDecFromStr(v.Rate))
+}
+
+func (s *KeeperTestSuite) TestGetExchangeRateD() {
+	item := s.createTestExchangeRate()
+	resp := s.gKeeper.GetExchangeRateD(s.ctx)
+	s.Require().Equal(sdk.MustNewDecFromStr(item.Rate), resp)
 }

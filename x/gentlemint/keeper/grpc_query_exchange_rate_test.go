@@ -1,21 +1,15 @@
 package keeper_test
 
 import (
-	"testing"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/stretchr/testify/require"
+	"github.com/sharering/shareledger/x/gentlemint/types"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-
-	keepertest "github.com/sharering/shareledger/testutil/keeper"
-	"github.com/sharering/shareledger/x/gentlemint/types"
 )
 
-func TestExchangeRateQuery(t *testing.T) {
-	keeper, ctx := keepertest.GentlemintKeeper(t)
-	wctx := sdk.WrapSDKContext(ctx)
-	item := createTestExchangeRate(keeper, ctx)
+func (s *KeeperTestSuite) TestExchangeRateQuery() {
+	wctx := sdk.WrapSDKContext(s.ctx)
+	item := s.createTestExchangeRate()
 	for _, tc := range []struct {
 		desc     string
 		request  *types.QueryExchangeRateRequest
@@ -32,12 +26,12 @@ func TestExchangeRateQuery(t *testing.T) {
 			err:  status.Error(codes.InvalidArgument, "invalid request"),
 		},
 	} {
-		t.Run(tc.desc, func(t *testing.T) {
-			response, err := keeper.ExchangeRate(wctx, tc.request)
+		s.Run(tc.desc, func() {
+			response, err := s.gKeeper.ExchangeRate(wctx, tc.request)
 			if tc.err != nil {
-				require.ErrorIs(t, err, tc.err)
+				s.Require().ErrorIs(err, tc.err)
 			} else {
-				require.Equal(t, sdk.MustNewDecFromStr(tc.response.Rate), sdk.MustNewDecFromStr(response.Rate))
+				s.Require().Equal(sdk.MustNewDecFromStr(tc.response.Rate), sdk.MustNewDecFromStr(response.Rate))
 			}
 		})
 	}
