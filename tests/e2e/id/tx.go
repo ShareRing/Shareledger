@@ -1,6 +1,7 @@
 package id
 
 import (
+	errorsmod "cosmossdk.io/errors"
 	"github.com/sharering/shareledger/tests"
 	"github.com/sharering/shareledger/testutil/network"
 	"github.com/sharering/shareledger/x/id/client/cli"
@@ -17,7 +18,7 @@ func (s *E2ETestSuite) TestClientId() {
 			network.MakeByAccount(network.KeyIDSigner),
 		},
 		ExpectErr:    false,
-		ExpectedCode: 0,
+		ExpectedCode: errorsmod.SuccessABCICode,
 	}}
 	tests.RunTestCasesTx(&s.Suite, testCases, cli.CmdCreateId(), s.network.Validators[0])
 }
