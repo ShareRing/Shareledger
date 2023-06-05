@@ -20,7 +20,7 @@ type E2ETestSuite struct {
 func NewE2ETestSuite(cfg network.Config) *E2ETestSuite {
 	return &E2ETestSuite{cfg: cfg}
 }
-func (s *E2ETestSuite) SetupSuite() {
+func (s *E2ETestSuite) SetupTest() {
 	s.T().Log("setting up e2e test suite for shareledger swap module")
 
 	coin1 := sdk.NewCoin(denom.Base, sdk.NewInt(20*denom.ShrExponent))
@@ -63,7 +63,7 @@ func (s *E2ETestSuite) SetupSuite() {
 			{
 				Id:          uint64(1),
 				SrcAddr:     network.Accounts[network.KeyAccount1].String(),
-				DestAddr:    "0xx1234",
+				DestAddr:    "0xx1234x",
 				SrcNetwork:  swapTypes.NetworkNameShareLedger,
 				DestNetwork: swapTypes.NetworkNameEthereum,
 				Amount:      sdk.NewCoin(denom.Base, sdk.NewInt(1000*denom.ShrExponent)),
@@ -157,6 +157,20 @@ func (s *E2ETestSuite) SetupSuite() {
 				RequestIds: []uint64{6, 7},
 				Status:     swapTypes.BatchStatusPending,
 				Network:    swapTypes.NetworkNameBinanceSmartChain,
+			},
+		},
+		PastTxEvent: []swapTypes.PastTxEventGenesis{
+			{
+				SrcAddr:  "src111",
+				DestAddr: "dest111",
+				TxHash:   "hashxxxxx",
+				LogIndex: 1,
+			},
+			{
+				SrcAddr:  "src222",
+				DestAddr: "dest22",
+				TxHash:   "hashxxxxx",
+				LogIndex: 2,
 			},
 		},
 		BatchCount:   4,

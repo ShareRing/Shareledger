@@ -96,6 +96,22 @@ func RunTestCasesTx(s *suite.Suite, tcs TestCasesTx, cmd *cobra.Command, val *ne
 			if tc.ExpectErr {
 				s.Error(err)
 			} else {
+				resp, err = QueryTxWithRetry(val.ClientCtx, resp.TxHash, DEFAULT_NUM_RETRY)
+				s.NoError(err)
+				s.Equalf(tc.ExpectedCode, resp.Code, "res is %s", resp.String())
+
+			}
+		})
+	}
+}
+
+func RunTestCasesTx2(s *suite.Suite, tcs TestCasesTx, cmd *cobra.Command, val *network.Validator) {
+	for _, tc := range tcs {
+		s.Run(tc.Name, func() {
+			resp, err := RunCmdWithRetry(s, cmd, val, tc.Args, DEFAULT_NUM_RETRY)
+			if tc.ExpectErr {
+				s.Error(err)
+			} else {
 				resFromCli := resp
 				s.NoError(err)
 				resp, err = QueryTxWithRetry(val.ClientCtx, resp.TxHash, DEFAULT_NUM_RETRY)
