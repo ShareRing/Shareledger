@@ -2,10 +2,10 @@ package tests
 
 import (
 	"errors"
-	"strings"
 	"time"
 
 	"github.com/cosmos/cosmos-sdk/client"
+	"github.com/cosmos/cosmos-sdk/codec"
 	"github.com/cosmos/cosmos-sdk/testutil"
 	clitestutil "github.com/cosmos/cosmos-sdk/testutil/cli"
 	"github.com/cosmos/cosmos-sdk/testutil/network"
@@ -96,43 +96,20 @@ func RunTestCasesTx(s *suite.Suite, tcs TestCasesTx, cmd *cobra.Command, val *ne
 			if tc.ExpectErr {
 				s.Error(err)
 			} else {
-				resp, err = QueryTxWithRetry(val.ClientCtx, resp.TxHash, DEFAULT_NUM_RETRY)
 				s.NoError(err)
-				s.Equalf(tc.ExpectedCode, resp.Code, "res is %s", resp.String())
-
-			}
-		})
-	}
-}
-
-func RunTestCasesTx2(s *suite.Suite, tcs TestCasesTx, cmd *cobra.Command, val *network.Validator) {
-	for _, tc := range tcs {
-		s.Run(tc.Name, func() {
-			resp, err := RunCmdWithRetry(s, cmd, val, tc.Args, DEFAULT_NUM_RETRY)
-			if tc.ExpectErr {
-				s.Error(err)
-			} else {
-				resFromCli := resp
-				s.NoError(err)
-				resp, err = QueryTxWithRetry(val.ClientCtx, resp.TxHash, DEFAULT_NUM_RETRY)
-
-				//Assert the response is not found or not. If not found there something happen before the transaction wasn't indexed
-				// should assert the error direct from cli
-				if err != nil {
-					if !strings.Contains(err.Error(), "not found") {
-						s.Fail("query transaction hash fail")
-					}
-					s.Equal(tc.ExpectedCode, resFromCli.Code)
-				} else {
-					s.Equalf(tc.ExpectedCode, resp.Code, "res is %s", resp.String())
+				if resp.Code != 0 {
+					s.Equal(tc.ExpectedCode, resp.Code)
 				}
+				resp, err = QueryTxWithRetry(val.ClientCtx, resp.TxHash, DEFAULT_NUM_RETRY)
+				s.NoError(err)
+				s.Equal(tc.ExpectedCode, resp.Code)
 			}
 		})
 	}
 }
 
 // QueryTxWithRetry wait for tx `hashHexStr` to success
-func QueryTxWithRetry(clientCtx client.Context, hashHexStr string, retry uint) (*sdk.TxResponse, error) {
+func QueryTxWithRetry(clientCtx client.Context, hashHexStr string, retry int) (*sdk.TxResponse, error) {
 	resp, err := authtx.QueryTx(clientCtx, hashHexStr)
 	if retry == 0 || err == nil {
 		return resp, err
@@ -162,11 +139,33 @@ func RunCmdWithRetry(s *suite.Suite, cmd *cobra.Command, val *network.Validator,
 	return &resp, nil
 }
 
+// RunCmdBlock auto retry on error and wait for tx committed
+func RunCmdBlock(s *suite.Suite, cmd *cobra.Command, val *network.Validator, args []string) (*types.TxResponse, error) {
+	resp, err := RunCmdWithRetry(s, cmd, val, args, 100)
+	if err != nil {
+		return resp, err
+	}
+	return QueryTxWithRetry(val.ClientCtx, resp.TxHash, 100)
+}
+
 func DefaultTxFlag() []string {
 	return []string{
 		shareledgernetwork.JSONFlag,
 		shareledgernetwork.SkipConfirmation,
 		shareledgernetwork.SyncBroadcast,
-		"--gas=1000000", // make sure that we always have enough gas
+		"--gas=2000000",          // make sure that we always have enough gas
+		"--fees=10000000000nshr", // fees always is 10SHR
 	}
+}
+
+func RunQueryCmd(val *network.Validator, cmd *cobra.Command, args []string, resp codec.ProtoMarshaler) error {
+	args = append(args, shareledgernetwork.JSONFlag)
+	out, err := clitestutil.ExecTestCLICmd(
+		val.ClientCtx,
+		cmd,
+		args)
+	if err != nil {
+		return err
+	}
+	return val.ClientCtx.Codec.UnmarshalJSON(out.Bytes(), resp)
 }

@@ -1,59 +1,46 @@
 package keeper_test
 
 import (
-	"testing"
-
-	sdk "github.com/cosmos/cosmos-sdk/types"
-	keepertest "github.com/sharering/shareledger/testutil/keeper"
 	"github.com/sharering/shareledger/testutil/nullify"
-	"github.com/sharering/shareledger/x/distributionx/keeper"
 	"github.com/sharering/shareledger/x/distributionx/types"
-	"github.com/stretchr/testify/require"
 )
 
-func createNBuilderList(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.BuilderList {
+func (s *KeeperTestSuite) createNBuilderList(n int) []types.BuilderList {
 	items := make([]types.BuilderList, n)
 	for i := range items {
-		items[i].Id = keeper.AppendBuilderList(ctx, items[i])
+		items[i].Id = s.dKeeper.AppendBuilderList(s.ctx, items[i])
 	}
 	return items
 }
 
-func TestBuilderListGet(t *testing.T) {
-	keeper, ctx := keepertest.DistributionxKeeper(t)
-	items := createNBuilderList(keeper, ctx, 10)
+func (s *KeeperTestSuite) TestBuilderListGet() {
+	items := s.createNBuilderList(10)
 	for _, item := range items {
-		got, found := keeper.GetBuilderList(ctx, item.Id)
-		require.True(t, found)
-		require.Equal(t,
-			nullify.Fill(&item),
-			nullify.Fill(&got),
-		)
+		got, found := s.dKeeper.GetBuilderList(s.ctx, item.Id)
+		s.Require().True(found)
+		s.Require().Equal(&item, &got)
 	}
 }
 
-func TestBuilderListRemove(t *testing.T) {
-	keeper, ctx := keepertest.DistributionxKeeper(t)
-	items := createNBuilderList(keeper, ctx, 10)
+func (s *KeeperTestSuite) TestBuilderListRemove() {
+	items := s.createNBuilderList(10)
 	for _, item := range items {
-		keeper.RemoveBuilderList(ctx, item.Id)
-		_, found := keeper.GetBuilderList(ctx, item.Id)
-		require.False(t, found)
+		s.dKeeper.RemoveBuilderList(s.ctx, item.Id)
+		_, found := s.dKeeper.GetBuilderList(s.ctx, item.Id)
+		s.Require().False(found)
 	}
 }
 
-func TestBuilderListGetAll(t *testing.T) {
-	keeper, ctx := keepertest.DistributionxKeeper(t)
-	items := createNBuilderList(keeper, ctx, 10)
-	require.ElementsMatch(t,
+func (s *KeeperTestSuite) TestBuilderListGetAll() {
+	items := s.createNBuilderList(10)
+	s.Require().ElementsMatch(
 		nullify.Fill(items),
-		nullify.Fill(keeper.GetAllBuilderList(ctx)),
+		nullify.Fill(s.dKeeper.GetAllBuilderList(s.ctx)),
 	)
 }
 
-func TestBuilderListCount(t *testing.T) {
-	keeper, ctx := keepertest.DistributionxKeeper(t)
-	items := createNBuilderList(keeper, ctx, 10)
+func (s *KeeperTestSuite) TestBuilderListCount() {
+	items := s.createNBuilderList(10)
 	count := uint64(len(items))
-	require.Equal(t, count, keeper.GetBuilderListCount(ctx))
+	s.Require().Equal(count, s.dKeeper.GetBuilderListCount(s.ctx))
 }

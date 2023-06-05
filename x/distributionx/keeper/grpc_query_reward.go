@@ -31,7 +31,6 @@ func (k Keeper) RewardAll(c context.Context, req *types.QueryAllRewardRequest) (
 		rewards = append(rewards, reward)
 		return nil
 	})
-
 	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
 	}
