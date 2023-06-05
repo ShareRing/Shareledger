@@ -1,24 +1,17 @@
 package keeper_test
 
 import (
-	"testing"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/cosmos/cosmos-sdk/types/query"
-	"github.com/stretchr/testify/require"
+	"github.com/sharering/shareledger/x/distributionx/types"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-
-	keepertest "github.com/sharering/shareledger/testutil/keeper"
-	"github.com/sharering/shareledger/testutil/nullify"
-	"github.com/sharering/shareledger/x/distributionx/types"
 )
 
-func TestBuilderListQuerySingle(t *testing.T) {
-	keeper, ctx := keepertest.DistributionxKeeper(t)
-	wctx := sdk.WrapSDKContext(ctx)
-	msgs := createNBuilderList(keeper, ctx, 2)
+func (s *KeeperTestSuite) TestBuilderListQuerySingle() {
+	wctx := sdk.WrapSDKContext(s.ctx)
+	msgs := s.createNBuilderList(2)
 	for _, tc := range []struct {
 		desc     string
 		request  *types.QueryGetBuilderListRequest
@@ -45,25 +38,21 @@ func TestBuilderListQuerySingle(t *testing.T) {
 			err:  status.Error(codes.InvalidArgument, "invalid request"),
 		},
 	} {
-		t.Run(tc.desc, func(t *testing.T) {
-			response, err := keeper.BuilderList(wctx, tc.request)
+		s.Run(tc.desc, func() {
+			response, err := s.dKeeper.BuilderList(wctx, tc.request)
 			if tc.err != nil {
-				require.ErrorIs(t, err, tc.err)
+				s.Require().ErrorIs(err, tc.err)
 			} else {
-				require.NoError(t, err)
-				require.Equal(t,
-					nullify.Fill(tc.response),
-					nullify.Fill(response),
-				)
+				s.Require().NoError(err)
+				s.Require().Equal(tc.response, response)
 			}
 		})
 	}
 }
 
-func TestBuilderListQueryPaginated(t *testing.T) {
-	keeper, ctx := keepertest.DistributionxKeeper(t)
-	wctx := sdk.WrapSDKContext(ctx)
-	msgs := createNBuilderList(keeper, ctx, 5)
+func (s *KeeperTestSuite) TestBuilderListQueryPaginated() {
+	wctx := sdk.WrapSDKContext(s.ctx)
+	msgs := s.createNBuilderList(5)
 
 	request := func(next []byte, offset, limit uint64, total bool) *types.QueryAllBuilderListRequest {
 		return &types.QueryAllBuilderListRequest{
@@ -75,43 +64,34 @@ func TestBuilderListQueryPaginated(t *testing.T) {
 			},
 		}
 	}
-	t.Run("ByOffset", func(t *testing.T) {
+	s.Run("ByOffset", func() {
 		step := 2
 		for i := 0; i < len(msgs); i += step {
-			resp, err := keeper.BuilderListAll(wctx, request(nil, uint64(i), uint64(step), false))
-			require.NoError(t, err)
-			require.LessOrEqual(t, len(resp.BuilderList), step)
-			require.Subset(t,
-				nullify.Fill(msgs),
-				nullify.Fill(resp.BuilderList),
-			)
+			resp, err := s.dKeeper.BuilderListAll(wctx, request(nil, uint64(i), uint64(step), false))
+			s.Require().NoError(err)
+			s.Require().LessOrEqual(len(resp.BuilderList), step)
+			s.Require().Subset(msgs, resp.BuilderList)
 		}
 	})
-	t.Run("ByKey", func(t *testing.T) {
+	s.Run("ByKey", func() {
 		step := 2
 		var next []byte
 		for i := 0; i < len(msgs); i += step {
-			resp, err := keeper.BuilderListAll(wctx, request(next, 0, uint64(step), false))
-			require.NoError(t, err)
-			require.LessOrEqual(t, len(resp.BuilderList), step)
-			require.Subset(t,
-				nullify.Fill(msgs),
-				nullify.Fill(resp.BuilderList),
-			)
+			resp, err := s.dKeeper.BuilderListAll(wctx, request(next, 0, uint64(step), false))
+			s.Require().NoError(err)
+			s.Require().LessOrEqual(len(resp.BuilderList), step)
+			s.Require().Subset(msgs, resp.BuilderList)
 			next = resp.Pagination.NextKey
 		}
 	})
-	t.Run("Total", func(t *testing.T) {
-		resp, err := keeper.BuilderListAll(wctx, request(nil, 0, 0, true))
-		require.NoError(t, err)
-		require.Equal(t, len(msgs), int(resp.Pagination.Total))
-		require.ElementsMatch(t,
-			nullify.Fill(msgs),
-			nullify.Fill(resp.BuilderList),
-		)
+	s.Run("Total", func() {
+		resp, err := s.dKeeper.BuilderListAll(wctx, request(nil, 0, 0, true))
+		s.Require().NoError(err)
+		s.Require().Equal(len(msgs), int(resp.Pagination.Total))
+		s.Require().ElementsMatch(msgs, resp.BuilderList)
 	})
-	t.Run("InvalidRequest", func(t *testing.T) {
-		_, err := keeper.BuilderListAll(wctx, nil)
-		require.ErrorIs(t, err, status.Error(codes.InvalidArgument, "invalid request"))
+	s.Run("InvalidRequest", func() {
+		_, err := s.dKeeper.BuilderListAll(wctx, nil)
+		s.Require().ErrorIs(err, status.Error(codes.InvalidArgument, "invalid request"))
 	})
 }
