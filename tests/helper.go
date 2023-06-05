@@ -97,6 +97,9 @@ func RunTestCasesTx(s *suite.Suite, tcs TestCasesTx, cmd *cobra.Command, val *ne
 				s.Error(err)
 			} else {
 				s.NoError(err)
+				if resp.Code != 0 {
+					s.Equal(tc.ExpectedCode, resp.Code)
+				}
 				resp, err = QueryTxWithRetry(val.ClientCtx, resp.TxHash, DEFAULT_NUM_RETRY)
 				s.NoError(err)
 				s.Equal(tc.ExpectedCode, resp.Code)
