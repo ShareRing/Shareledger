@@ -1,63 +1,37 @@
 package keeper_test
 
-import (
-	"strconv"
-	"testing"
+import "github.com/sharering/shareledger/testutil/nullify"
 
-	sdk "github.com/cosmos/cosmos-sdk/types"
-	keepertest "github.com/sharering/shareledger/testutil/keeper"
-	"github.com/sharering/shareledger/testutil/nullify"
-	"github.com/sharering/shareledger/x/swap/keeper"
-	"github.com/sharering/shareledger/x/swap/types"
-	"github.com/stretchr/testify/require"
-)
-
-// Prevent strconv unused error
-var _ = strconv.IntSize
-
-func createNSchema(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.Schema {
-	items := make([]types.Schema, n)
-	for i := range items {
-		items[i].Network = strconv.Itoa(i)
-
-		keeper.SetSchema(ctx, items[i])
-	}
-	return items
-}
-
-func TestFormatGet(t *testing.T) {
-	keeper, ctx := keepertest.SwapKeeper(t)
-	items := createNSchema(keeper, ctx, 10)
+func (s *KeeperTestSuite) TestFormatGet() {
+	items := s.createNSchema(10)
 	for _, item := range items {
-		rst, found := keeper.GetSchema(ctx,
+		rst, found := s.swapKeeper.GetSchema(s.ctx,
 			item.Network,
 		)
-		require.True(t, found)
-		require.Equal(t,
+		s.Require().True(found)
+		s.Require().Equal(
 			nullify.Fill(&item),
 			nullify.Fill(&rst),
 		)
 	}
 }
-func TestFormatRemove(t *testing.T) {
-	keeper, ctx := keepertest.SwapKeeper(t)
-	items := createNSchema(keeper, ctx, 10)
+func (s *KeeperTestSuite) TestFormatRemove() {
+	items := s.createNSchema(10)
 	for _, item := range items {
-		keeper.RemoveSchema(ctx,
+		s.swapKeeper.RemoveSchema(s.ctx,
 			item.Network,
 		)
-		_, found := keeper.GetSchema(ctx,
+		_, found := s.swapKeeper.GetSchema(s.ctx,
 			item.Network,
 		)
-		require.False(t, found)
+		s.Require().False(found)
 	}
 }
 
-func TestFormatGetAll(t *testing.T) {
-	keeper, ctx := keepertest.SwapKeeper(t)
-	items := createNSchema(keeper, ctx, 10)
-	require.ElementsMatch(t,
+func (s *KeeperTestSuite) TestFormatGetAll() {
+	items := s.createNSchema(10)
+	s.Require().ElementsMatch(
 		nullify.Fill(items),
-		nullify.Fill(keeper.GetAllSchema(ctx)),
+		nullify.Fill(s.swapKeeper.GetAllSchema(s.ctx)),
 	)
 }

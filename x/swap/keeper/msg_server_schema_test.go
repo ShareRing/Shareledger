@@ -2,25 +2,15 @@ package keeper_test
 
 import (
 	"strconv"
-	"testing"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	"github.com/stretchr/testify/require"
-
-	keepertest "github.com/sharering/shareledger/testutil/keeper"
-	"github.com/sharering/shareledger/x/swap/keeper"
 	"github.com/sharering/shareledger/x/swap/types"
-	"github.com/sharering/shareledger/x/utils/denom"
+	denom "github.com/sharering/shareledger/x/utils/denom"
 )
 
-// Prevent strconv unused error
-var _ = strconv.IntSize
-
-func TestFormatMsgServerCreate(t *testing.T) {
-	k, ctx := keepertest.SwapKeeper(t)
-	srv := keeper.NewMsgServerImpl(*k)
-	wctx := sdk.WrapSDKContext(ctx)
+func (s *KeeperTestSuite) TestFormatMsgServerCreate() {
+	wctx := sdk.WrapSDKContext(s.ctx)
 	creator := "A"
 	for i := 0; i < 5; i++ {
 		expected := &types.MsgCreateSchema{Creator: creator,
@@ -28,20 +18,29 @@ func TestFormatMsgServerCreate(t *testing.T) {
 			In:      sdk.NewDecCoin(denom.Base, sdk.NewInt(100)),
 			Out:     sdk.NewDecCoin(denom.Base, sdk.NewInt(100)),
 		}
-		_, err := srv.CreateSchema(wctx, expected)
-		require.NoError(t, err)
-		rst, found := k.GetSchema(ctx,
+		_, err := s.msgServer.CreateSchema(wctx, expected)
+		s.Require().NoError(err)
+		rst, found := s.swapKeeper.GetSchema(s.ctx,
 			expected.Network,
 		)
-		require.True(t, found)
-		require.Equal(t, expected.Creator, rst.Creator)
+		s.Require().True(found)
+		s.Require().Equal(expected.Creator, rst.Creator)
 	}
 }
 
-func TestFormatMsgServerUpdate(t *testing.T) {
+func (s *KeeperTestSuite) TestFormatMsgServerUpdate() {
 	creator := "A"
 	in := sdk.NewDecCoin(denom.Base, sdk.NewInt(100))
 	out := sdk.NewDecCoin(denom.Base, sdk.NewInt(100))
+
+	wctx := sdk.WrapSDKContext(s.ctx)
+	expected := &types.MsgCreateSchema{Creator: creator,
+		Network: strconv.Itoa(0),
+		In:      in,
+		Out:     out,
+	}
+	_, err := s.msgServer.CreateSchema(wctx, expected)
+	s.Require().NoError(err)
 	for _, tc := range []struct {
 		desc    string
 		request *types.MsgUpdateSchema
@@ -55,7 +54,6 @@ func TestFormatMsgServerUpdate(t *testing.T) {
 				Network: strconv.Itoa(0),
 			},
 		},
-
 		{
 			desc: "KeyNotFound",
 			request: &types.MsgUpdateSchema{Creator: creator,
@@ -66,34 +64,23 @@ func TestFormatMsgServerUpdate(t *testing.T) {
 			err: sdkerrors.ErrKeyNotFound,
 		},
 	} {
-		t.Run(tc.desc, func(t *testing.T) {
-			k, ctx := keepertest.SwapKeeper(t)
-			srv := keeper.NewMsgServerImpl(*k)
-			wctx := sdk.WrapSDKContext(ctx)
-			expected := &types.MsgCreateSchema{Creator: creator,
-				Network: strconv.Itoa(0),
-				In:      in,
-				Out:     out,
-			}
-			_, err := srv.CreateSchema(wctx, expected)
-			require.NoError(t, err)
-
-			_, err = srv.UpdateSchema(wctx, tc.request)
+		s.Run(tc.desc, func() {
+			_, err = s.msgServer.UpdateSchema(wctx, tc.request)
 			if tc.err != nil {
-				require.ErrorIs(t, err, tc.err)
+				s.Require().ErrorIs(err, tc.err)
 			} else {
-				require.NoError(t, err)
-				rst, found := k.GetSchema(ctx,
+				s.Require().NoError(err)
+				rst, found := s.swapKeeper.GetSchema(s.ctx,
 					expected.Network,
 				)
-				require.True(t, found)
-				require.Equal(t, expected.Creator, rst.Creator)
+				s.Require().True(found)
+				s.Require().Equal(expected.Creator, rst.Creator)
 			}
 		})
 	}
 }
 
-func TestFormatMsgServerDelete(t *testing.T) {
+func (s *KeeperTestSuite) TestFormatMsgServerDelete() {
 	creator := "A"
 
 	for _, tc := range []struct {
@@ -116,26 +103,24 @@ func TestFormatMsgServerDelete(t *testing.T) {
 			err: sdkerrors.ErrKeyNotFound,
 		},
 	} {
-		t.Run(tc.desc, func(t *testing.T) {
-			k, ctx := keepertest.SwapKeeper(t)
-			srv := keeper.NewMsgServerImpl(*k)
-			wctx := sdk.WrapSDKContext(ctx)
+		s.Run(tc.desc, func() {
+			wctx := sdk.WrapSDKContext(s.ctx)
 
-			_, err := srv.CreateSchema(wctx, &types.MsgCreateSchema{Creator: creator,
+			_, err := s.msgServer.CreateSchema(wctx, &types.MsgCreateSchema{Creator: creator,
 				Network: strconv.Itoa(0),
 				In:      sdk.NewDecCoin(denom.Base, sdk.NewInt(100)),
 				Out:     sdk.NewDecCoin(denom.Base, sdk.NewInt(100)),
 			})
-			require.NoError(t, err)
-			_, err = srv.DeleteSchema(wctx, tc.request)
+			s.Require().NoError(err)
+			_, err = s.msgServer.DeleteSchema(wctx, tc.request)
 			if tc.err != nil {
-				require.ErrorIs(t, err, tc.err)
+				s.Require().ErrorIs(err, tc.err)
 			} else {
-				require.NoError(t, err)
-				_, found := k.GetSchema(ctx,
+				s.Require().NoError(err)
+				_, found := s.swapKeeper.GetSchema(s.ctx,
 					tc.request.Network,
 				)
-				require.False(t, found)
+				s.Require().False(found)
 			}
 		})
 	}

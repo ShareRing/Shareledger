@@ -1,21 +1,21 @@
 package keeper_test
 
 import (
-	"testing"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	testkeeper "github.com/sharering/shareledger/testutil/keeper"
 	"github.com/sharering/shareledger/x/distributionx/types"
-	"github.com/stretchr/testify/require"
 )
 
-func TestParamsQuery(t *testing.T) {
-	keeper, ctx := testkeeper.DistributionxKeeper(t)
-	wctx := sdk.WrapSDKContext(ctx)
+func (s *KeeperTestSuite) TestParamsQuery() {
+	wctx := sdk.WrapSDKContext(s.ctx)
 	params := types.DefaultParams()
-	keeper.SetParams(ctx, params)
+	s.dKeeper.SetParams(s.ctx, params)
 
-	response, err := keeper.Params(wctx, &types.QueryParamsRequest{})
-	require.NoError(t, err)
-	require.Equal(t, &types.QueryParamsResponse{Params: params}, response)
+	// nil request
+	response, err := s.dKeeper.Params(wctx, nil)
+	s.Require().NotNil(err)
+
+	// normal request
+	response, err = s.dKeeper.Params(wctx, &types.QueryParamsRequest{})
+	s.Require().NoError(err)
+	s.Require().Equal(&types.QueryParamsResponse{Params: params}, response)
 }

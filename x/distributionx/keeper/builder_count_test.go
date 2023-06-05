@@ -2,63 +2,54 @@ package keeper_test
 
 import (
 	"strconv"
-	"testing"
 
-	sdk "github.com/cosmos/cosmos-sdk/types"
-	keepertest "github.com/sharering/shareledger/testutil/keeper"
-	"github.com/sharering/shareledger/testutil/nullify"
-	"github.com/sharering/shareledger/x/distributionx/keeper"
 	"github.com/sharering/shareledger/x/distributionx/types"
-	"github.com/stretchr/testify/require"
 )
 
-// Prevent strconv unused error
-var _ = strconv.IntSize
-
-func createNBuilderCount(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.BuilderCount {
+func (s *KeeperTestSuite) createNBuilderCount(n int) []types.BuilderCount {
 	items := make([]types.BuilderCount, n)
 	for i := range items {
 		items[i].Index = strconv.Itoa(i)
 
-		keeper.SetBuilderCount(ctx, items[i])
+		s.dKeeper.SetBuilderCount(s.ctx, items[i])
 	}
 	return items
 }
 
-func TestBuilderCountGet(t *testing.T) {
-	keeper, ctx := keepertest.DistributionxKeeper(t)
-	items := createNBuilderCount(keeper, ctx, 10)
+func (s *KeeperTestSuite) TestBuilderCountGet() {
+	items := s.createNBuilderCount(10)
 	for _, item := range items {
-		rst, found := keeper.GetBuilderCount(ctx,
+		resp, found := s.dKeeper.GetBuilderCount(s.ctx,
 			item.Index,
 		)
-		require.True(t, found)
-		require.Equal(t,
-			nullify.Fill(&item),
-			nullify.Fill(&rst),
-		)
+		s.Require().True(found)
+		s.Require().Equal(&item, &resp)
 	}
 }
 
-func TestBuilderCountRemove(t *testing.T) {
-	keeper, ctx := keepertest.DistributionxKeeper(t)
-	items := createNBuilderCount(keeper, ctx, 10)
+func (s *KeeperTestSuite) TestBuilderCountRemove() {
+	items := s.createNBuilderCount(10)
 	for _, item := range items {
-		keeper.RemoveBuilderCount(ctx,
+		s.dKeeper.RemoveBuilderCount(s.ctx,
 			item.Index,
 		)
-		_, found := keeper.GetBuilderCount(ctx,
+		_, found := s.dKeeper.GetBuilderCount(s.ctx,
 			item.Index,
 		)
-		require.False(t, found)
+		s.Require().False(found)
 	}
 }
 
-func TestBuilderCountGetAll(t *testing.T) {
-	keeper, ctx := keepertest.DistributionxKeeper(t)
-	items := createNBuilderCount(keeper, ctx, 10)
-	require.ElementsMatch(t,
-		nullify.Fill(items),
-		nullify.Fill(keeper.GetAllBuilderCount(ctx)),
-	)
+func (s *KeeperTestSuite) TestBuilderCountGetAll() {
+	items := s.createNBuilderCount(10)
+	s.Require().ElementsMatch(items, s.dKeeper.GetAllBuilderCount(s.ctx))
+}
+
+func (s *KeeperTestSuite) TestIncBuilderCount() {
+	items := s.createNBuilderCount(3)
+	s.dKeeper.IncBuilderCount(s.ctx, "test")
+	_, found := s.dKeeper.GetBuilderCount(s.ctx, "test")
+	s.Require().True(found)
+	resp := s.dKeeper.GetAllBuilderCount(s.ctx)
+	s.Require().Equal(len(items)+1, len(resp))
 }

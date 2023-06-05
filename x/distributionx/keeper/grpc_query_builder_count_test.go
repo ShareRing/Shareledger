@@ -2,26 +2,17 @@ package keeper_test
 
 import (
 	"strconv"
-	"testing"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/query"
-	"github.com/stretchr/testify/require"
+	"github.com/sharering/shareledger/x/distributionx/types"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-
-	keepertest "github.com/sharering/shareledger/testutil/keeper"
-	"github.com/sharering/shareledger/testutil/nullify"
-	"github.com/sharering/shareledger/x/distributionx/types"
 )
 
-// Prevent strconv unused error
-var _ = strconv.IntSize
-
-func TestBuilderCountQuerySingle(t *testing.T) {
-	keeper, ctx := keepertest.DistributionxKeeper(t)
-	wctx := sdk.WrapSDKContext(ctx)
-	msgs := createNBuilderCount(keeper, ctx, 2)
+func (s *KeeperTestSuite) TestBuilderCountQuerySingle() {
+	wctx := sdk.WrapSDKContext(s.ctx)
+	msgs := s.createNBuilderCount(2)
 	for _, tc := range []struct {
 		desc     string
 		request  *types.QueryGetBuilderCountRequest
@@ -54,25 +45,21 @@ func TestBuilderCountQuerySingle(t *testing.T) {
 			err:  status.Error(codes.InvalidArgument, "invalid request"),
 		},
 	} {
-		t.Run(tc.desc, func(t *testing.T) {
-			response, err := keeper.BuilderCount(wctx, tc.request)
+		s.Run(tc.desc, func() {
+			response, err := s.dKeeper.BuilderCount(wctx, tc.request)
 			if tc.err != nil {
-				require.ErrorIs(t, err, tc.err)
+				s.Require().ErrorIs(err, tc.err)
 			} else {
-				require.NoError(t, err)
-				require.Equal(t,
-					nullify.Fill(tc.response),
-					nullify.Fill(response),
-				)
+				s.Require().NoError(err)
+				s.Require().Equal(tc.response, response)
 			}
 		})
 	}
 }
 
-func TestBuilderCountQueryPaginated(t *testing.T) {
-	keeper, ctx := keepertest.DistributionxKeeper(t)
-	wctx := sdk.WrapSDKContext(ctx)
-	msgs := createNBuilderCount(keeper, ctx, 5)
+func (s *KeeperTestSuite) TestBuilderCountQueryPaginated() {
+	wctx := sdk.WrapSDKContext(s.ctx)
+	msgs := s.createNBuilderCount(5)
 
 	request := func(next []byte, offset, limit uint64, total bool) *types.QueryAllBuilderCountRequest {
 		return &types.QueryAllBuilderCountRequest{
@@ -84,43 +71,34 @@ func TestBuilderCountQueryPaginated(t *testing.T) {
 			},
 		}
 	}
-	t.Run("ByOffset", func(t *testing.T) {
+	s.Run("ByOffset", func() {
 		step := 2
 		for i := 0; i < len(msgs); i += step {
-			resp, err := keeper.BuilderCountAll(wctx, request(nil, uint64(i), uint64(step), false))
-			require.NoError(t, err)
-			require.LessOrEqual(t, len(resp.BuilderCount), step)
-			require.Subset(t,
-				nullify.Fill(msgs),
-				nullify.Fill(resp.BuilderCount),
-			)
+			resp, err := s.dKeeper.BuilderCountAll(wctx, request(nil, uint64(i), uint64(step), false))
+			s.Require().NoError(err)
+			s.Require().LessOrEqual(len(resp.BuilderCount), step)
+			s.Require().Subset(msgs, resp.BuilderCount)
 		}
 	})
-	t.Run("ByKey", func(t *testing.T) {
+	s.Run("ByKey", func() {
 		step := 2
 		var next []byte
 		for i := 0; i < len(msgs); i += step {
-			resp, err := keeper.BuilderCountAll(wctx, request(next, 0, uint64(step), false))
-			require.NoError(t, err)
-			require.LessOrEqual(t, len(resp.BuilderCount), step)
-			require.Subset(t,
-				nullify.Fill(msgs),
-				nullify.Fill(resp.BuilderCount),
-			)
+			resp, err := s.dKeeper.BuilderCountAll(wctx, request(next, 0, uint64(step), false))
+			s.Require().NoError(err)
+			s.Require().LessOrEqual(len(resp.BuilderCount), step)
+			s.Require().Subset(msgs, resp.BuilderCount)
 			next = resp.Pagination.NextKey
 		}
 	})
-	t.Run("Total", func(t *testing.T) {
-		resp, err := keeper.BuilderCountAll(wctx, request(nil, 0, 0, true))
-		require.NoError(t, err)
-		require.Equal(t, len(msgs), int(resp.Pagination.Total))
-		require.ElementsMatch(t,
-			nullify.Fill(msgs),
-			nullify.Fill(resp.BuilderCount),
-		)
+	s.Run("Total", func() {
+		resp, err := s.dKeeper.BuilderCountAll(wctx, request(nil, 0, 0, true))
+		s.Require().NoError(err)
+		s.Require().Equal(len(msgs), int(resp.Pagination.Total))
+		s.Require().ElementsMatch(msgs, resp.BuilderCount)
 	})
-	t.Run("InvalidRequest", func(t *testing.T) {
-		_, err := keeper.BuilderCountAll(wctx, nil)
-		require.ErrorIs(t, err, status.Error(codes.InvalidArgument, "invalid request"))
+	s.Run("InvalidRequest", func() {
+		_, err := s.dKeeper.BuilderCountAll(wctx, nil)
+		s.Require().ErrorIs(err, status.Error(codes.InvalidArgument, "invalid request"))
 	})
 }

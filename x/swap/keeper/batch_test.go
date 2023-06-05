@@ -1,59 +1,65 @@
 package keeper_test
 
 import (
-	"testing"
+	"encoding/binary"
 
-	sdk "github.com/cosmos/cosmos-sdk/types"
-	keepertest "github.com/sharering/shareledger/testutil/keeper"
-	"github.com/sharering/shareledger/testutil/nullify"
 	"github.com/sharering/shareledger/x/swap/keeper"
 	"github.com/sharering/shareledger/x/swap/types"
-	"github.com/stretchr/testify/require"
 )
 
-func createNBatch(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.Batch {
+func (s *KeeperTestSuite) createNBatch(requestIds []uint64, status string, n int) []types.Batch {
 	items := make([]types.Batch, n)
 	for i := range items {
-		items[i].Id = keeper.AppendBatch(ctx, items[i])
+		if len(requestIds) != 0 {
+			items[i].RequestIds = requestIds
+		}
+		if status != "" {
+			items[i].Status = status
+		}
+		items[i].Id = s.swapKeeper.AppendBatch(s.ctx, items[i])
 	}
 	return items
 }
 
-func TestBatchGet(t *testing.T) {
-	keeper, ctx := keepertest.SwapKeeper(t)
-	items := createNBatch(keeper, ctx, 10)
+func (s *KeeperTestSuite) TestBatchGet() {
+	items := s.createNBatch([]uint64{}, "", 10)
 	for _, item := range items {
-		got, found := keeper.GetBatch(ctx, item.Id)
-		require.True(t, found)
-		require.Equal(t,
-			nullify.Fill(&item),
-			nullify.Fill(&got),
-		)
+		got, found := s.swapKeeper.GetBatch(s.ctx, item.Id)
+		s.Require().True(found)
+		s.Require().Equal(&item, &got)
 	}
 }
 
-func TestBatchRemove(t *testing.T) {
-	keeper, ctx := keepertest.SwapKeeper(t)
-	items := createNBatch(keeper, ctx, 10)
+func (s *KeeperTestSuite) TestBatchRemove() {
+	items := s.createNBatch([]uint64{}, "", 10)
 	for _, item := range items {
-		keeper.RemoveBatch(ctx, item.Id)
-		_, found := keeper.GetBatch(ctx, item.Id)
-		require.False(t, found)
+		s.swapKeeper.RemoveBatch(s.ctx, item.Id)
+		_, found := s.swapKeeper.GetBatch(s.ctx, item.Id)
+		s.Require().False(found)
 	}
 }
 
-func TestBatchGetAll(t *testing.T) {
-	keeper, ctx := keepertest.SwapKeeper(t)
-	items := createNBatch(keeper, ctx, 10)
-	require.ElementsMatch(t,
-		nullify.Fill(items),
-		nullify.Fill(keeper.GetAllBatch(ctx)),
-	)
+func (s *KeeperTestSuite) TestBatchGetAll() {
+	items := s.createNBatch([]uint64{}, "", 10)
+	s.Require().ElementsMatch(items, s.swapKeeper.GetAllBatch(s.ctx))
 }
 
-func TestBatchCount(t *testing.T) {
-	keeper, ctx := keepertest.SwapKeeper(t)
-	items := createNBatch(keeper, ctx, 10)
+func (s *KeeperTestSuite) TestBatchCount() {
+	items := s.createNBatch([]uint64{}, "", 10)
 	count := uint64(len(items))
-	require.Equal(t, count, keeper.GetBatchCount(ctx))
+	s.Require().Equal(count, s.swapKeeper.GetBatchCount(s.ctx))
+}
+
+func (s *KeeperTestSuite) TestGetBatchesByIDs() {
+	items := s.createNBatch([]uint64{}, "", 3)
+	batch := s.swapKeeper.GetBatchesByIDs(s.ctx, []uint64{0, 1, 2})
+	s.Require().Equal(len(items), len(batch))
+}
+
+func (s *KeeperTestSuite) TestGetBatchIDBytes() {
+	_ = s.createNBatch([]uint64{}, "", 3)
+	batchId := keeper.GetBatchIDBytes(1)
+	bz := make([]byte, 8)
+	binary.BigEndian.PutUint64(bz, 1)
+	s.Require().Equal(batchId, bz)
 }

@@ -2,24 +2,24 @@ package keeper_test
 
 import (
 	"strconv"
-	"testing"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/query"
-	"github.com/stretchr/testify/require"
-
-	keepertest "github.com/sharering/shareledger/testutil/keeper"
-	"github.com/sharering/shareledger/testutil/nullify"
 	"github.com/sharering/shareledger/x/swap/types"
 )
 
-// Prevent strconv unused error
-var _ = strconv.IntSize
+func (s *KeeperTestSuite) createNSchema(n int) []types.Schema {
+	items := make([]types.Schema, n)
+	for i := range items {
+		items[i].Network = strconv.Itoa(i)
 
-func TestFormatQuerySingle(t *testing.T) {
-	keeper, ctx := keepertest.SwapKeeper(t)
-	wctx := sdk.WrapSDKContext(ctx)
-	msgs := createNSchema(keeper, ctx, 2)
+		s.swapKeeper.SetSchema(s.ctx, items[i])
+	}
+	return items
+}
+
+func (s *KeeperTestSuite) TestFormatQuerySingle() {
+	msgs := s.createNSchema(2)
 	for _, tc := range []struct {
 		desc     string
 		request  *types.QuerySchemaRequest
@@ -41,27 +41,22 @@ func TestFormatQuerySingle(t *testing.T) {
 			response: &types.QuerySchemaResponse{Schema: msgs[1]},
 		},
 	} {
-		t.Run(tc.desc, func(t *testing.T) {
-			response, err := keeper.Schema(wctx, tc.request)
+		s.Run(tc.desc, func() {
+			response, err := s.swapKeeper.Schema(sdk.WrapSDKContext(s.ctx), tc.request)
 			if tc.err != nil {
-				require.ErrorIs(t, tc.err, err)
-				// require.True(t, strings.Contains(tc.err.Error(), err.Error()))
+				s.Require().ErrorIs(tc.err, err)
 				return
 			} else {
-				require.NoError(t, err)
-				require.Equal(t,
-					nullify.Fill(tc.response),
-					nullify.Fill(response),
-				)
+				s.Require().NoError(err)
+				s.Require().Equal(tc.response, response)
 			}
 		})
 	}
 }
 
-func TestFormatQueryPaginated(t *testing.T) {
-	keeper, ctx := keepertest.SwapKeeper(t)
-	wctx := sdk.WrapSDKContext(ctx)
-	msgs := createNSchema(keeper, ctx, 5)
+func (s *KeeperTestSuite) TestFormatQueryPaginated() {
+	wctx := sdk.WrapSDKContext(s.ctx)
+	msgs := s.createNSchema(5)
 
 	request := func(next []byte, offset, limit uint64, total bool) *types.QuerySchemasRequest {
 		return &types.QuerySchemasRequest{
@@ -73,39 +68,30 @@ func TestFormatQueryPaginated(t *testing.T) {
 			},
 		}
 	}
-	t.Run("ByOffset", func(t *testing.T) {
+	s.Run("ByOffset", func() {
 		step := 2
 		for i := 0; i < len(msgs); i += step {
-			resp, err := keeper.Schemas(wctx, request(nil, uint64(i), uint64(step), false))
-			require.NoError(t, err)
-			require.LessOrEqual(t, len(resp.Schemas), step)
-			require.Subset(t,
-				nullify.Fill(msgs),
-				nullify.Fill(resp.Schemas),
-			)
+			resp, err := s.swapKeeper.Schemas(wctx, request(nil, uint64(i), uint64(step), false))
+			s.Require().NoError(err)
+			s.Require().LessOrEqual(len(resp.Schemas), step)
+			s.Require().Subset(msgs, resp.Schemas)
 		}
 	})
-	t.Run("ByKey", func(t *testing.T) {
+	s.Run("ByKey", func() {
 		step := 2
 		var next []byte
 		for i := 0; i < len(msgs); i += step {
-			resp, err := keeper.Schemas(wctx, request(next, 0, uint64(step), false))
-			require.NoError(t, err)
-			require.LessOrEqual(t, len(resp.Schemas), step)
-			require.Subset(t,
-				nullify.Fill(msgs),
-				nullify.Fill(resp.Schemas),
-			)
+			resp, err := s.swapKeeper.Schemas(wctx, request(next, 0, uint64(step), false))
+			s.Require().NoError(err)
+			s.Require().LessOrEqual(len(resp.Schemas), step)
+			s.Require().Subset(msgs, resp.Schemas)
 			next = resp.Pagination.NextKey
 		}
 	})
-	t.Run("Total", func(t *testing.T) {
-		resp, err := keeper.Schemas(wctx, request(nil, 0, 0, true))
-		require.NoError(t, err)
-		require.Equal(t, len(msgs), int(resp.Pagination.Total))
-		require.ElementsMatch(t,
-			nullify.Fill(msgs),
-			nullify.Fill(resp.Schemas),
-		)
+	s.Run("Total", func() {
+		resp, err := s.swapKeeper.Schemas(wctx, request(nil, 0, 0, true))
+		s.Require().NoError(err)
+		s.Require().Equal(len(msgs), int(resp.Pagination.Total))
+		s.Require().ElementsMatch(msgs, resp.Schemas)
 	})
 }

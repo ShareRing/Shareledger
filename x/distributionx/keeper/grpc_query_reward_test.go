@@ -2,26 +2,17 @@ package keeper_test
 
 import (
 	"strconv"
-	"testing"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/query"
-	"github.com/stretchr/testify/require"
+	"github.com/sharering/shareledger/x/distributionx/types"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-
-	keepertest "github.com/sharering/shareledger/testutil/keeper"
-	"github.com/sharering/shareledger/testutil/nullify"
-	"github.com/sharering/shareledger/x/distributionx/types"
 )
 
-// Prevent strconv unused error
-var _ = strconv.IntSize
-
-func TestRewardQuerySingle(t *testing.T) {
-	keeper, ctx := keepertest.DistributionxKeeper(t)
-	wctx := sdk.WrapSDKContext(ctx)
-	msgs := createNReward(keeper, ctx, 2)
+func (s *KeeperTestSuite) TestRewardQuerySingle() {
+	wctx := sdk.WrapSDKContext(s.ctx)
+	msgs := s.createNReward(2)
 	for _, tc := range []struct {
 		desc     string
 		request  *types.QueryGetRewardRequest
@@ -54,25 +45,21 @@ func TestRewardQuerySingle(t *testing.T) {
 			err:  status.Error(codes.InvalidArgument, "invalid request"),
 		},
 	} {
-		t.Run(tc.desc, func(t *testing.T) {
-			response, err := keeper.Reward(wctx, tc.request)
+		s.Run(tc.desc, func() {
+			response, err := s.dKeeper.Reward(wctx, tc.request)
 			if tc.err != nil {
-				require.ErrorIs(t, err, tc.err)
+				s.Require().ErrorIs(err, tc.err)
 			} else {
-				require.NoError(t, err)
-				require.Equal(t,
-					nullify.Fill(tc.response),
-					nullify.Fill(response),
-				)
+				s.Require().NoError(err)
+				s.Require().Equal(tc.response, response)
 			}
 		})
 	}
 }
 
-func TestRewardQueryPaginated(t *testing.T) {
-	keeper, ctx := keepertest.DistributionxKeeper(t)
-	wctx := sdk.WrapSDKContext(ctx)
-	msgs := createNReward(keeper, ctx, 5)
+func (s *KeeperTestSuite) TestRewardQueryPaginated() {
+	wctx := sdk.WrapSDKContext(s.ctx)
+	msgs := s.createNReward(5)
 
 	request := func(next []byte, offset, limit uint64, total bool) *types.QueryAllRewardRequest {
 		return &types.QueryAllRewardRequest{
@@ -84,43 +71,34 @@ func TestRewardQueryPaginated(t *testing.T) {
 			},
 		}
 	}
-	t.Run("ByOffset", func(t *testing.T) {
+	s.Run("ByOffset", func() {
 		step := 2
 		for i := 0; i < len(msgs); i += step {
-			resp, err := keeper.RewardAll(wctx, request(nil, uint64(i), uint64(step), false))
-			require.NoError(t, err)
-			require.LessOrEqual(t, len(resp.Reward), step)
-			require.Subset(t,
-				nullify.Fill(msgs),
-				nullify.Fill(resp.Reward),
-			)
+			resp, err := s.dKeeper.RewardAll(wctx, request(nil, uint64(i), uint64(step), false))
+			s.Require().NoError(err)
+			s.Require().LessOrEqual(len(resp.Reward), step)
+			s.Require().Subset(msgs, resp.Reward)
 		}
 	})
-	t.Run("ByKey", func(t *testing.T) {
+	s.Run("ByKey", func() {
 		step := 2
 		var next []byte
 		for i := 0; i < len(msgs); i += step {
-			resp, err := keeper.RewardAll(wctx, request(next, 0, uint64(step), false))
-			require.NoError(t, err)
-			require.LessOrEqual(t, len(resp.Reward), step)
-			require.Subset(t,
-				nullify.Fill(msgs),
-				nullify.Fill(resp.Reward),
-			)
+			resp, err := s.dKeeper.RewardAll(wctx, request(next, 0, uint64(step), false))
+			s.Require().NoError(err)
+			s.Require().LessOrEqual(len(resp.Reward), step)
+			s.Require().Subset(msgs, resp.Reward)
 			next = resp.Pagination.NextKey
 		}
 	})
-	t.Run("Total", func(t *testing.T) {
-		resp, err := keeper.RewardAll(wctx, request(nil, 0, 0, true))
-		require.NoError(t, err)
-		require.Equal(t, len(msgs), int(resp.Pagination.Total))
-		require.ElementsMatch(t,
-			nullify.Fill(msgs),
-			nullify.Fill(resp.Reward),
-		)
+	s.Run("Total", func() {
+		resp, err := s.dKeeper.RewardAll(wctx, request(nil, 0, 0, true))
+		s.Require().NoError(err)
+		s.Require().Equal(len(msgs), int(resp.Pagination.Total))
+		s.Require().ElementsMatch(msgs, resp.Reward)
 	})
-	t.Run("InvalidRequest", func(t *testing.T) {
-		_, err := keeper.RewardAll(wctx, nil)
-		require.ErrorIs(t, err, status.Error(codes.InvalidArgument, "invalid request"))
+	s.Run("InvalidRequest", func() {
+		_, err := s.dKeeper.RewardAll(wctx, nil)
+		s.Require().ErrorIs(err, status.Error(codes.InvalidArgument, "invalid request"))
 	})
 }

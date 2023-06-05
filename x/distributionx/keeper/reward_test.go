@@ -2,62 +2,51 @@ package keeper_test
 
 import (
 	"strconv"
-	"testing"
 
-	sdk "github.com/cosmos/cosmos-sdk/types"
-	keepertest "github.com/sharering/shareledger/testutil/keeper"
 	"github.com/sharering/shareledger/testutil/nullify"
-	"github.com/sharering/shareledger/x/distributionx/keeper"
 	"github.com/sharering/shareledger/x/distributionx/types"
-	"github.com/stretchr/testify/require"
 )
 
-// Prevent strconv unused error
-var _ = strconv.IntSize
-
-func createNReward(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.Reward {
+func (s *KeeperTestSuite) createNReward(n int) []types.Reward {
 	items := make([]types.Reward, n)
 	for i := range items {
 		items[i].Index = strconv.Itoa(i)
 
-		keeper.SetReward(ctx, items[i])
+		s.dKeeper.SetReward(s.ctx, items[i])
 	}
 	return items
 }
 
-func TestRewardGet(t *testing.T) {
-	keeper, ctx := keepertest.DistributionxKeeper(t)
-	items := createNReward(keeper, ctx, 10)
+func (s *KeeperTestSuite) TestGetReward() {
+	items := s.createNReward(10)
 	for _, item := range items {
-		rst, found := keeper.GetReward(ctx,
+		rst, found := s.dKeeper.GetReward(s.ctx,
 			item.Index,
 		)
-		require.True(t, found)
-		require.Equal(t,
+		s.Require().True(found)
+		s.Require().Equal(
 			nullify.Fill(&item),
 			nullify.Fill(&rst),
 		)
 	}
 }
-func TestRewardRemove(t *testing.T) {
-	keeper, ctx := keepertest.DistributionxKeeper(t)
-	items := createNReward(keeper, ctx, 10)
+func (s *KeeperTestSuite) TestRemoveReward() {
+	items := s.createNReward(10)
 	for _, item := range items {
-		keeper.RemoveReward(ctx,
+		s.dKeeper.RemoveReward(s.ctx,
 			item.Index,
 		)
-		_, found := keeper.GetReward(ctx,
+		_, found := s.dKeeper.GetReward(s.ctx,
 			item.Index,
 		)
-		require.False(t, found)
+		s.Require().False(found)
 	}
 }
 
-func TestRewardGetAll(t *testing.T) {
-	keeper, ctx := keepertest.DistributionxKeeper(t)
-	items := createNReward(keeper, ctx, 10)
-	require.ElementsMatch(t,
-		nullify.Fill(items),
-		nullify.Fill(keeper.GetAllReward(ctx)),
+func (s *KeeperTestSuite) TestGetAllReward() {
+	items := s.createNReward(10)
+	s.Require().ElementsMatch(
+		items,
+		s.dKeeper.GetAllReward(s.ctx),
 	)
 }
