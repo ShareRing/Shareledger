@@ -2,6 +2,8 @@ package testutil
 
 import (
 	"fmt"
+	"os"
+	"path/filepath"
 	"time"
 
 	"github.com/cosmos/cosmos-sdk/client"
@@ -46,4 +48,14 @@ func ExecTestCLICmdBlocked(clientCtx client.Context, cmd *cobra.Command, extraAr
 		}
 	}
 	return resp, err
+}
+
+func GetAbsolutePath(relativePath string) (string, error) {
+	cwd, err := os.Getwd()
+	if err != nil {
+		return "", err
+	}
+	absPath := filepath.Join(cwd, relativePath)
+	absPath = filepath.FromSlash(absPath)
+	return absPath, nil
 }

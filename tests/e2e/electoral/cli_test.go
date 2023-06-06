@@ -19,6 +19,5 @@ func init() {
 
 func TestE2ETestSuite(t *testing.T) {
 	conf := network.DefaultConfig()
-	conf.NumValidators = 1
 	suite.Run(t, NewE2ETestSuite(conf))
 }

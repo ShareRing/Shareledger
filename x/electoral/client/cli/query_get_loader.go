@@ -1,8 +1,9 @@
 package cli
 
 import (
-	"github.com/sharering/shareledger/x/utils"
 	"strconv"
+
+	"github.com/sharering/shareledger/x/utils"
 
 	"github.com/spf13/cobra"
 
@@ -53,13 +54,14 @@ func CmdGetLoadersFromFile() *cobra.Command {
 		Short: "get shrp loaders from json file of addresses",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
 			}
-
 			addrList, err := utils.GetAddressFromFile(args[0])
+			if err != nil {
+				return err
+			}
 
 			queryClient := types.NewQueryClient(clientCtx)
 
