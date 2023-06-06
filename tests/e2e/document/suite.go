@@ -18,6 +18,15 @@ var (
 		Version: 0,
 	}
 
+	// test update with mismatch doc issuer acc
+	secondDoc = types.Document{
+		Holder:  "Id7",
+		Issuer:  "shareledger18g8x9censnr3k2y7x6vwntlhvz254ym4qflcak", // doc issuer account address
+		Proof:   "testProof2",
+		Data:    "testData2",
+		Version: 0,
+	}
+
 	firstId = idtypes.Id{
 		Id: "Id1",
 		Data: &idtypes.BaseID{
@@ -77,6 +86,16 @@ var (
 			ExtraData:     "ExtraData6",
 		},
 	}
+
+	eightId = idtypes.Id{
+		Id: "Id8",
+		Data: &idtypes.BaseID{
+			IssuerAddress: "shareledger1zqhw26j0el2u080ua62u8zrcassxx93h7cddlf",
+			BackupAddress: "BackupAddress8",
+			OwnerAddress:  "shareledger1mfru9azs5nua2wxcd4sq64g5nt7nn4n85mcr0s",
+			ExtraData:     "ExtraData8",
+		},
+	}
 )
 
 type E2ETestSuite struct {
@@ -95,11 +114,11 @@ func (s *E2ETestSuite) SetupSuite() {
 
 	kr, _ := network.SetTestingGenesis(s.T(), &s.cfg)
 	docGenesis := types.GenesisState{
-		Documents: []*types.Document{&firstDoc},
+		Documents: []*types.Document{&firstDoc, &secondDoc},
 	}
 
 	idGenesis := idtypes.GenesisState{
-		IDs: []*idtypes.Id{&firstId, &secondId, &thirdId, &fourthId, &fifthId, &sixthId},
+		IDs: []*idtypes.Id{&firstId, &secondId, &thirdId, &fourthId, &fifthId, &sixthId, &eightId},
 	}
 
 	docGenesisBz, err := s.cfg.Codec.MarshalJSON(&docGenesis)
