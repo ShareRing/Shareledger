@@ -369,10 +369,3 @@ func (s *E2ETestQuerySuite) SetupSuite() {
 	s.network.Validators[0].ClientCtx.Keyring = kr
 	s.Require().NoError(s.network.WaitForNextBlock())
 }
-func (s *E2ETestSuite) TearDownSuite() {
-	s.network.Cleanup()
-}
-
-func (s *E2ETestQuerySuite) TearDownSuite() {
-	s.network.Cleanup()
-}

@@ -42,6 +42,3 @@ func (s *E2ETestSuite) SetupSuite() {
 	s.network.Validators[0].ClientCtx.Keyring = kr
 	s.Require().NoError(s.network.WaitForNextBlock())
 }
-func (s *E2ETestSuite) TearDownSuite() {
-	s.network.Cleanup()
-}

@@ -1,8 +1,6 @@
 package distributionx
 
 import (
-	"fmt"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/sharering/shareledger/testutil/network"
 	"github.com/sharering/shareledger/x/distributionx/types"
@@ -71,9 +69,4 @@ func (s *E2ETestSuite) SetupSuite() {
 
 	s.network = network.New(s.T(), s.cfg)
 	s.network.Validators[0].ClientCtx.Keyring = kr
-}
-
-func (s *E2ETestSuite) TearDownSuite() {
-	fmt.Println("a .E2ETestSuite..any Tearing down")
-	// s.network.Cleanup()
 }
