@@ -297,7 +297,7 @@ func (s *E2ETestSuite) TestQueryDocumentIssuers() {
 			ExpectErr: false,
 			RespType:  &types.QueryDocumentIssuersResponse{},
 			Expected: &types.QueryDocumentIssuersResponse{
-				AccStates: []*types.AccState{&accDocIssuer, &accDocIssuer1},
+				AccStates: []*types.AccState{&accDocIssuer},
 			},
 		},
 	}

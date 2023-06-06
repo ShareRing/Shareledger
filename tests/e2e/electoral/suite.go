@@ -15,10 +15,21 @@ type E2ETestSuite struct {
 	cfg     network.Config
 	network *network.Network
 }
+type E2ETestSuiteTx struct {
+	suite.Suite
+
+	cfg     network.Config
+	network *network.Network
+}
 
 func NewE2ETestSuite(cfg network.Config) *E2ETestSuite {
 	cfg.NumValidators = 1
 	return &E2ETestSuite{cfg: cfg}
+}
+
+func NewE2ETestSuiteTx(cfg network.Config) *E2ETestSuiteTx {
+	cfg.NumValidators = 1
+	return &E2ETestSuiteTx{cfg: cfg}
 }
 
 var (
@@ -30,24 +41,10 @@ var (
 	accKeyRelayer     types.AccState
 	accApprover       types.AccState
 	accOp             types.AccState
+	accDocIssuer1     = types.AccState{}
+	accIDSigner1      = types.AccState{}
 
-	address         = "shareledger19ac3d6cwqwpzvaxr4xv9kfduwtyswad88fjgw4"
-	idSignerAccKey  = "idsignershareledger1z8q5ml2nemt63zd50u3frtvcxfuuttkllvdlsy"
-	idsignerAddress = "shareledger1z8q5ml2nemt63zd50u3frtvcxfuuttkllvdlsy"
-
-	docIssuerAccKey  = "docIssuershareledger14gytjg3zdpqmakreduy26hdpmevpsd8dycvmte"
-	docIssuerAddress = "shareledger14gytjg3zdpqmakreduy26hdpmevpsd8dycvmte"
-
-	accDocIssuer1 = types.AccState{
-		Address: docIssuerAddress,
-		Key:     docIssuerAccKey,
-		Status:  "active",
-	}
-	accIDSigner1 = types.AccState{
-		Address: idsignerAddress,
-		Key:     idSignerAccKey,
-		Status:  "active",
-	}
+	address = "shareledger19ac3d6cwqwpzvaxr4xv9kfduwtyswad88fjgw4"
 )
 
 func (s *E2ETestSuite) SetupSuite() {
@@ -55,8 +52,24 @@ func (s *E2ETestSuite) SetupSuite() {
 
 	kr, _ := network.SetTestingGenesis(s.T(), &s.cfg)
 	addr, err := sdk.AccAddressFromBech32(address)
-
 	s.NoError(err)
+
+	// docIssuerAddr, err := sdk.AccAddressFromBech32(network.Accounts[network.KeyDocIssuer].String())
+	// s.NoError(err)
+
+	// idSignerAddr, err := sdk.AccAddressFromBech32(network.Accounts[network.KeyIDSigner].String())
+	// s.NoError(err)
+
+	// accDocIssuer1 = types.AccState{
+	// 	Address: network.Accounts[network.KeyDocIssuer].String(),
+	// 	Key:     string(types.GenAccStateIndexKey(docIssuerAddr, types.AccStateKeyDocIssuer)),
+	// 	Status:  "active",
+	// }
+	// accIDSigner1 = types.AccState{
+	// 	Address: network.Accounts[network.KeyIDSigner].String(),
+	// 	Key:     string(types.GenAccStateIndexKey(idSignerAddr, types.AccStateKeyIdSigner)),
+	// 	Status:  "active",
+	// }
 	accOp = types.AccState{
 		Address: address,
 		Key:     string(types.GenAccStateIndexKey(addr, types.AccStateKeyAccOp)),
@@ -67,7 +80,85 @@ func (s *E2ETestSuite) SetupSuite() {
 		Key:     string(types.GenAccStateIndexKey(addr, types.AccStateKeyIdSigner)),
 		Status:  "active",
 	}
+	accVoter = types.AccState{
+		Address: address,
+		Key:     string(types.GenAccStateIndexKey(addr, types.AccStateKeyVoter)),
+		Status:  "active",
+	}
+	accDocIssuer = types.AccState{
+		Address: address,
+		Key:     string(types.GenAccStateIndexKey(addr, types.AccStateKeyDocIssuer)),
+		Status:  "active",
+	}
+	accKeyShrpLoaders = types.AccState{
+		Address: address,
+		Key:     string(types.GenAccStateIndexKey(addr, types.AccStateKeyShrpLoaders)),
+		Status:  "active",
+	}
+	accKeyRelayer = types.AccState{
+		Address: address,
+		Key:     string(types.GenAccStateIndexKey(addr, types.AccStateKeyRelayer)),
+		Status:  "active",
+	}
+	accApprover = types.AccState{
+		Address: address,
+		Key:     string(types.GenAccStateIndexKey(addr, types.AccStateKeyApprover)),
+		Status:  "active",
+	}
+	accSwapManager = types.AccState{
+		Address: address,
+		Key:     string(types.GenAccStateIndexKey(addr, types.AccStateKeySwapManager)),
+		Status:  "active",
+	}
 
+	genesis := types.GenesisState{}
+	// err = json.Unmarshal(s.cfg.GenesisState[types.ModuleName], &genesis)
+	// s.NoError(err)
+
+	genesis.AccStateList = append(genesis.AccStateList, accApprover, accDocIssuer, accIDSigner, accKeyRelayer, accKeyShrpLoaders, accOp, accSwapManager, accVoter)
+	genesisJSON, err := json.Marshal(genesis)
+	s.NoError(err)
+
+	s.cfg.GenesisState[types.ModuleName] = genesisJSON
+	s.network = network.New(s.T(), s.cfg)
+	s.network.Validators[0].ClientCtx.Keyring = kr
+
+	s.NoError(s.network.WaitForNextBlock())
+}
+
+func (s *E2ETestSuiteTx) SetupSuite() {
+	s.T().Log("setting up e2e test suite for shareledger electoral tx module")
+
+	kr, _ := network.SetTestingGenesis(s.T(), &s.cfg)
+	addr, err := sdk.AccAddressFromBech32(address)
+	s.NoError(err)
+
+	docIssuerAddr, err := sdk.AccAddressFromBech32(network.Accounts[network.KeyDocIssuer].String())
+	s.NoError(err)
+
+	idSignerAddr, err := sdk.AccAddressFromBech32(network.Accounts[network.KeyIDSigner].String())
+	s.NoError(err)
+
+	accDocIssuer1 = types.AccState{
+		Address: network.Accounts[network.KeyDocIssuer].String(),
+		Key:     string(types.GenAccStateIndexKey(docIssuerAddr, types.AccStateKeyDocIssuer)),
+		Status:  "active",
+	}
+	accIDSigner1 = types.AccState{
+		Address: network.Accounts[network.KeyIDSigner].String(),
+		Key:     string(types.GenAccStateIndexKey(idSignerAddr, types.AccStateKeyIdSigner)),
+		Status:  "active",
+	}
+	accOp = types.AccState{
+		Address: network.Accounts[network.KeyOperator].String(),
+		Key:     string(types.GenAccStateIndexKey(network.Accounts[network.KeyOperator].(sdk.AccAddress), types.AccStateKeyAccOp)),
+		Status:  "active",
+	}
+	accIDSigner = types.AccState{
+		Address: address,
+		Key:     string(types.GenAccStateIndexKey(addr, types.AccStateKeyIdSigner)),
+		Status:  "active",
+	}
 	accVoter = types.AccState{
 		Address: address,
 		Key:     string(types.GenAccStateIndexKey(addr, types.AccStateKeyVoter)),

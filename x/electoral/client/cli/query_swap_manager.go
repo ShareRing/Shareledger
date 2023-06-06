@@ -1,7 +1,6 @@
 package cli
 
 import (
-	"fmt"
 	"strconv"
 
 	"github.com/cosmos/cosmos-sdk/client"
@@ -31,7 +30,6 @@ func CmdSwapManager() *cobra.Command {
 
 			res, err := queryClient.SwapManager(cmd.Context(), params)
 			if err != nil {
-				fmt.Print(err)
 				return err
 			}
 

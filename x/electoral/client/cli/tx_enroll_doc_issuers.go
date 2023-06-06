@@ -24,7 +24,6 @@ func CmdEnrollDocIssuers() *cobra.Command {
 			if err != nil {
 				return err
 			}
-
 			msg := types.NewMsgEnrollDocIssuers(
 				clientCtx.GetFromAddress().String(),
 				args[:],

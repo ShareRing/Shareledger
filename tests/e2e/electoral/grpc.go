@@ -14,7 +14,9 @@ func (s *E2ETestSuite) TestGRPC() {
 	buildURL := func(suffix string) string {
 		return fmt.Sprintf("%s/shareledger/electoral/%s", val.APIAddress, suffix)
 	}
-
+	buildURLShareRing := func(suffix string) string {
+		return fmt.Sprintf("%s/sharering/shareledger/electoral/%s", val.APIAddress, suffix)
+	}
 	testCase := tests.TestCasesGrpc{
 		{
 			Name:      "gRPC get all accstate",
@@ -84,7 +86,7 @@ func (s *E2ETestSuite) TestGRPC() {
 		},
 		{
 			Name:      "gRPC get approver by address",
-			URL:       buildURL("approver/" + accApprover.Address),
+			URL:       buildURLShareRing("approver/" + accApprover.Address),
 			Headers:   map[string]string{},
 			ExpectErr: false,
 			RespType:  &types.QueryApproverResponse{},
@@ -94,13 +96,13 @@ func (s *E2ETestSuite) TestGRPC() {
 		},
 		{
 			Name:      "gRPC get approver by address not exists",
-			URL:       buildURL("approver/" + "notExistsAddress"),
+			URL:       buildURLShareRing("approver/" + "notExistsAddress"),
 			Headers:   map[string]string{},
 			ExpectErr: true,
 		},
 		{
 			Name:      "gRPC get approver by address empty",
-			URL:       buildURL("approver/" + ""),
+			URL:       buildURLShareRing("approver/" + ""),
 			Headers:   map[string]string{},
 			ExpectErr: true,
 		},
@@ -150,7 +152,7 @@ func (s *E2ETestSuite) TestGRPC() {
 		},
 		{
 			Name:      "gRPC get key relayer by address",
-			URL:       buildURL("relayer/" + accKeyRelayer.Address),
+			URL:       buildURLShareRing("relayer/" + accKeyRelayer.Address),
 			Headers:   map[string]string{},
 			ExpectErr: false,
 			RespType:  &types.QueryRelayerResponse{},
@@ -160,13 +162,13 @@ func (s *E2ETestSuite) TestGRPC() {
 		},
 		{
 			Name:      "gRPC get key relayer by address not exists",
-			URL:       buildURL("relayer/" + "notExistsAddress"),
+			URL:       buildURLShareRing("relayer/" + "notExistsAddress"),
 			Headers:   map[string]string{},
 			ExpectErr: true,
 		},
 		{
 			Name:      "gRPC get key relayer by address empty",
-			URL:       buildURL("relayer/" + ""),
+			URL:       buildURLShareRing("relayer/" + ""),
 			Headers:   map[string]string{},
 			ExpectErr: true,
 		},
@@ -181,10 +183,9 @@ func (s *E2ETestSuite) TestGRPC() {
 			},
 		},
 		{
-			Name:    "gRPC get voter by address not exists",
-			URL:     buildURL("voters/" + "notExistsAddress"),
-			Headers: map[string]string{},
-
+			Name:      "gRPC get voter by address not exists",
+			URL:       buildURL("voters/" + "notExistsAddress"),
+			Headers:   map[string]string{},
 			ExpectErr: true,
 		},
 		{
@@ -205,7 +206,7 @@ func (s *E2ETestSuite) TestGRPC() {
 		},
 		{
 			Name:      "gRPC get approvers",
-			URL:       buildURL("approves"),
+			URL:       buildURLShareRing("approves"),
 			Headers:   map[string]string{},
 			ExpectErr: false,
 			RespType:  &types.QueryApproversResponse{},
@@ -220,7 +221,7 @@ func (s *E2ETestSuite) TestGRPC() {
 			ExpectErr: false,
 			RespType:  &types.QueryDocumentIssuersResponse{},
 			Expected: &types.QueryDocumentIssuersResponse{
-				AccStates: []*types.AccState{&accDocIssuer, &accDocIssuer1},
+				AccStates: []*types.AccState{&accDocIssuer},
 			},
 		},
 		{
@@ -230,17 +231,27 @@ func (s *E2ETestSuite) TestGRPC() {
 			ExpectErr: false,
 			RespType:  &types.QueryIdSignersResponse{},
 			Expected: &types.QueryIdSignersResponse{
-				AccStates: []*types.AccState{&accIDSigner, &accIDSigner1},
+				AccStates: []*types.AccState{&accIDSigner},
 			},
 		},
 		{
 			Name:      "gRPC get key relayers",
-			URL:       buildURL("relayers"),
+			URL:       buildURLShareRing("relayers"),
 			Headers:   map[string]string{},
 			ExpectErr: false,
 			RespType:  &types.QueryRelayersResponse{},
 			Expected: &types.QueryRelayersResponse{
 				Relayers: []*types.AccState{&accKeyRelayer},
+			},
+		},
+		{
+			Name:      "gRPC get relayer by address",
+			URL:       buildURLShareRing("relayer/" + accKeyRelayer.Address),
+			Headers:   map[string]string{},
+			ExpectErr: false,
+			RespType:  &types.QueryRelayerResponse{},
+			Expected: &types.QueryRelayerResponse{
+				AccState: accKeyRelayer,
 			},
 		},
 		{
@@ -277,16 +288,14 @@ func (s *E2ETestSuite) TestGRPC() {
 		},
 		{
 			Name:      "gRPC get swapmanagers",
-			URL:       buildURL("swap_managers"),
+			URL:       buildURLShareRing("swap_managers"),
 			Headers:   map[string]string{},
 			ExpectErr: false,
-
-			RespType: &types.QuerySwapManagersResponse{},
+			RespType:  &types.QuerySwapManagersResponse{},
 			Expected: &types.QuerySwapManagersResponse{
 				SwapManagers: []*types.AccState{&accSwapManager},
 			},
 		},
 	}
-
 	tests.RunTestCasesGrpc(&s.Suite, testCase, val)
 }

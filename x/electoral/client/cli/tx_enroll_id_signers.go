@@ -1,8 +1,9 @@
 package cli
 
 import (
-	"github.com/sharering/shareledger/x/utils"
 	"strconv"
+
+	"github.com/sharering/shareledger/x/utils"
 
 	"github.com/spf13/cobra"
 
@@ -24,7 +25,6 @@ func CmdEnrollIdSigners() *cobra.Command {
 			if err != nil {
 				return err
 			}
-
 			msg := types.NewMsgEnrollIdSigners(
 				clientCtx.GetFromAddress().String(),
 				args[:],

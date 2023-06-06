@@ -18,6 +18,9 @@ func init() {
 }
 
 func TestE2ETestSuite(t *testing.T) {
-	conf := network.DefaultConfig()
-	suite.Run(t, NewE2ETestSuite(conf))
+	suite.Run(t, NewE2ETestSuite(network.DefaultConfig()))
+}
+
+func TestE2ETestSuiteTx(t *testing.T) {
+	suite.Run(t, NewE2ETestSuiteTx(network.DefaultConfig()))
 }
