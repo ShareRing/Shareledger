@@ -3,28 +3,37 @@
 # Note that you should run this script from root dir
 # sh ./script/test.sh
 
+echo "============START TO RUN TESTSUITE===================="
 module_list=(id swap asset booking document distributionx electoral)
-
-
-go test ./x/...
+pids=""
 
 mkdir -p coverage
 
-go test ./x/... -coverprofile coverage.out
+go test ./x/... -coverprofile coverage.out &
+pids+=" $!"
 
 for i in "${!module_list[@]}"; do
-  go test --tags e2e -coverprofile=coverage/${module_list[$i]}.out -coverpkg=./... ./tests/e2e/${module_list[$i]}
+	go test --tags e2e -coverprofile=coverage/${module_list[$i]}.out -coverpkg=./... ./tests/e2e/${module_list[$i]} &
+  pids+=" $!"
   module_list[$i]=./coverage/${module_list[$i]}.out
 done
 go install github.com/wadey/gocovmerge@latest
 
-gocovmerge ${module_list[@]} ./coverage.out > ./coverage/after_merge_coverate.out
+# make sure that all tests is pass
+for p in $pids; do
+	if ! wait $p; then
+    echo "============RUN THE TEST FAILED!===================="
+    # kill all child process and exit
+    pkill -P $$
+		exit 1
+	fi
+done
 
+gocovmerge ${module_list[@]} ./coverage.out >./coverage/merged_coverage.out
 
+# remove generated and simulation file
+grep -vE '(pb(\.gw)?\.go)|simulation|pulsar' ./coverage/merged_coverage.out >./coverage/coverage.out
 
+go tool cover -func ./coverage/coverage.out | tail -n1
 
-# todo: wait all test done merge coverage
-# coverage.out
-
-# remove .pb.go gw.pb.go
-grep -vE 'pb(\.gw)?\.go' ./coverage/after_merge_coverate.out | grep -v simulation | grep -v pulsar > ./coverage/coverage.out
+echo "============RUN THE TEST SUCCESSFUL===================="

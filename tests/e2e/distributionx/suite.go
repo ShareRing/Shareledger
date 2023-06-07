@@ -45,7 +45,7 @@ func (s *E2ETestSuite) SetupSuite() {
 	kr, _ := network.SetTestingGenesis(s.T(), &s.cfg)
 	devPoolAccount = network.MustAddressFormKeyring(kr, network.KeyAccount3).String()
 
-	params.BuilderWindows = 10
+	params.BuilderWindows = 15
 	params.TxThreshold = 3
 	params.DevPoolAccount = devPoolAccount
 	reward1 = types.Reward{
