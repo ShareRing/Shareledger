@@ -42,6 +42,7 @@ func (s *E2ETestSuite) TestRewardNormalTx() {
 	val := s.network.Validators[0]
 	acc1 := network.MustAddressFormKeyring(val.ClientCtx.Keyring, network.KeyAccount1)
 
+	s.waitNextWindow()
 	before := s.getReward(devPoolAccount)
 
 	_, err := tests.RunCmdBlock(
