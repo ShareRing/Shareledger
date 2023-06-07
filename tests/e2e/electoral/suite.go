@@ -41,8 +41,8 @@ var (
 	accKeyRelayer     types.AccState
 	accApprover       types.AccState
 	accOp             types.AccState
-	accDocIssuer1     = types.AccState{}
-	accIDSigner1      = types.AccState{}
+	accDocIssuer1     types.AccState
+	accIDSigner1      types.AccState
 
 	address = "shareledger19ac3d6cwqwpzvaxr4xv9kfduwtyswad88fjgw4"
 )
@@ -54,22 +54,6 @@ func (s *E2ETestSuite) SetupSuite() {
 	addr, err := sdk.AccAddressFromBech32(address)
 	s.NoError(err)
 
-	// docIssuerAddr, err := sdk.AccAddressFromBech32(network.Accounts[network.KeyDocIssuer].String())
-	// s.NoError(err)
-
-	// idSignerAddr, err := sdk.AccAddressFromBech32(network.Accounts[network.KeyIDSigner].String())
-	// s.NoError(err)
-
-	// accDocIssuer1 = types.AccState{
-	// 	Address: network.Accounts[network.KeyDocIssuer].String(),
-	// 	Key:     string(types.GenAccStateIndexKey(docIssuerAddr, types.AccStateKeyDocIssuer)),
-	// 	Status:  "active",
-	// }
-	// accIDSigner1 = types.AccState{
-	// 	Address: network.Accounts[network.KeyIDSigner].String(),
-	// 	Key:     string(types.GenAccStateIndexKey(idSignerAddr, types.AccStateKeyIdSigner)),
-	// 	Status:  "active",
-	// }
 	accOp = types.AccState{
 		Address: address,
 		Key:     string(types.GenAccStateIndexKey(addr, types.AccStateKeyAccOp)),
@@ -112,8 +96,6 @@ func (s *E2ETestSuite) SetupSuite() {
 	}
 
 	genesis := types.GenesisState{}
-	// err = json.Unmarshal(s.cfg.GenesisState[types.ModuleName], &genesis)
-	// s.NoError(err)
 
 	genesis.AccStateList = append(genesis.AccStateList, accApprover, accDocIssuer, accIDSigner, accKeyRelayer, accKeyShrpLoaders, accOp, accSwapManager, accVoter)
 	genesisJSON, err := json.Marshal(genesis)
@@ -194,7 +176,7 @@ func (s *E2ETestSuiteTx) SetupSuite() {
 	err = json.Unmarshal(s.cfg.GenesisState[types.ModuleName], &genesis)
 	s.NoError(err)
 
-	genesis.AccStateList = append(genesis.AccStateList, accApprover, accDocIssuer, accIDSigner, accKeyRelayer, accKeyShrpLoaders, accOp, accSwapManager, accVoter)
+	genesis.AccStateList = append(genesis.AccStateList, accDocIssuer1, accIDSigner1, accApprover, accDocIssuer, accIDSigner, accKeyRelayer, accKeyShrpLoaders, accOp, accSwapManager, accVoter)
 	genesisJSON, err := json.Marshal(genesis)
 	s.NoError(err)
 

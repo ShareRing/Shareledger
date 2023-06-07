@@ -99,7 +99,6 @@ func (s *E2ETestSuiteTx) TestCmdRevokeLoaders() {
 }
 
 func (s *E2ETestSuiteTx) TestCmdEnrollDocIssuers() {
-	s.T().Log(network.Accounts[network.KeyOperator].String())
 	testCasesTx := tests.TestCasesTx{
 		{
 			Name:      "enroll docissuer",
@@ -121,29 +120,6 @@ func (s *E2ETestSuiteTx) TestCmdEnrollDocIssuers() {
 	}
 	tests.RunTestCasesTx(&s.Suite, testCasesTx, cli.CmdEnrollDocIssuers(), s.network.Validators[0])
 }
-
-// func (s *E2ETestSuiteTx) TestCmdRevokeDocIssuers() {
-// 	testCasesTx := tests.TestCasesTx{
-// 		{
-// 			Name:      "revoke docissuer",
-// 			Args:      []string{accDocIssuer.Address, network.MakeByAccount(network.KeyOperator)},
-// 			ExpectErr: false,
-// 		},
-// 		{
-// 			Name:      "revoke docissuer empty",
-// 			Args:      []string{},
-// 			ExpectErr: true,
-// 		},
-// 		{
-// 			Name: "revoke docissuer not exists",
-// 			Args: []string{
-// 				"notExistsAddress",
-// 			},
-// 			ExpectErr: true,
-// 		},
-// 	}
-// 	tests.RunTestCasesTx(&s.Suite, testCasesTx, cli.CmdRevokeDocIssuers(), s.network.Validators[0])
-// }
 
 func (s *E2ETestSuiteTx) TestCmdEnrollAccountOperators() {
 	testCasesTx := tests.TestCasesTx{

@@ -73,7 +73,7 @@ func RunTestCasesGrpc(s *suite.Suite, tcs TestCasesGrpc, val *network.Validator)
 			if tc.ExpectErr {
 				s.Error(val.ClientCtx.Codec.UnmarshalJSON(resp, tc.RespType))
 			} else {
-				s.NoError(val.ClientCtx.Codec.UnmarshalJSON(resp, tc.RespType), string(resp))
+				s.NoError(val.ClientCtx.Codec.UnmarshalJSON(resp, tc.RespType))
 				s.Equal(tc.Expected.String(), tc.RespType.String())
 			}
 		})
