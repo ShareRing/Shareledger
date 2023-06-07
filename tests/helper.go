@@ -97,6 +97,7 @@ func RunTestCasesTx(s *suite.Suite, tcs TestCasesTx, cmd *cobra.Command, val *ne
 				s.Error(err)
 			} else {
 				s.NoError(err)
+				// code !=0 mean that this tx failed on CheckTx call (ante step) => the tx is not committed
 				if resp.Code != 0 {
 					s.Equal(tc.ExpectedCode, resp.Code)
 					return
