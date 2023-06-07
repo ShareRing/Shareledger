@@ -3,7 +3,7 @@
 # Note that you should run this script from root dir
 # sh ./script/test.sh
 
-module_list=(id swap asset booking)
+module_list=(id swap asset booking document distributionx electoral)
 
 
 go test ./x/...
@@ -27,4 +27,4 @@ gocovmerge ${module_list[@]} ./coverage.out > ./coverage/after_merge_coverate.ou
 # coverage.out
 
 # remove .pb.go gw.pb.go
-grep -vE 'pb(\.gw)?\.go' ./coverage/after_merge_coverate.out > ./coverage/coverage.out
+grep -vE 'pb(\.gw)?\.go' ./coverage/after_merge_coverate.out | grep -v simulation | grep -v pulsar > ./coverage/coverage.out
