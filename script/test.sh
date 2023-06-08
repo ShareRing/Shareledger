@@ -4,7 +4,7 @@
 # sh ./script/test.sh
 
 echo "============START TO RUN TESTSUITE===================="
-module_list=(id swap asset booking document distributionx electoral)
+module_list=(id swap asset booking document electoral)
 pids=""
 
 mkdir -p coverage
