@@ -1,4 +1,4 @@
-FROM golang:1.18.4-alpine3.15 AS build
+FROM golang:1.20.5-alpine3.18 AS build
 WORKDIR /app
 
 RUN set -eux; apk add --no-cache ca-certificates build-base linux-headers;
@@ -11,11 +11,11 @@ RUN go mod download
 COPY  . .
 
 # See https://github.com/CosmWasm/wasmvm/releases
-ADD https://github.com/CosmWasm/wasmvm/releases/download/v1.0.0/libwasmvm_muslc.x86_64.a /lib/libwasmvm_muslc.a
+ADD https://github.com/CosmWasm/wasmvm/releases/download/v1.2.4/libwasmvm_muslc.x86_64.a /lib/libwasmvm_muslc.a
 
 RUN make build LEDGER_ENABLED=false BUILD_TAGS=muslc
 
-FROM alpine:3.14
+FROM alpine:3.18
 WORKDIR /app
 
 RUN apk add --no-cache libc6-compat
