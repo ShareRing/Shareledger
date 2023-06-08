@@ -107,4 +107,4 @@ sim-full:
 sim: sim-export-import sim-full
 
 run-test:
-	sh ./script/test.sh
+	bash ./script/test.sh
