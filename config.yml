@@ -112,11 +112,10 @@ genesis:
       treasurer:
         address: shareledger1hq7wjjgeymvs3q4vmkvac3dghfsjwvjvf8jdaw
     gov:
-      deposit_params:
+      params:
         min_deposit:
-          - amount: "1"
-            denom: nshr
-      voting_params:
+        - amount: "1"
+          denom: nshr
         voting_period: 100s
     interchainaccounts:
       controller_genesis_state:

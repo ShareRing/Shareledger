@@ -364,6 +364,7 @@ func NewAppKeeper(
 		authtypes.NewModuleAddress(govtypes.ModuleName).String(),
 	)
 
+	appKeepers.GovKeeper.SetLegacyRouter(govRouter)
 	appKeepers.GovKeeper = appKeepers.GovKeeper.SetHooks(
 		govtypes.NewMultiGovHooks(
 		// register the governance hooks

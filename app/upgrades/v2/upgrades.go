@@ -2,6 +2,7 @@ package v2
 
 import (
 	wasmtypes "github.com/CosmWasm/wasmd/x/wasm/types"
+	tmtypes "github.com/cometbft/cometbft/types"
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
@@ -78,6 +79,12 @@ func CreateUpgradeHandler(
 		}
 		baseAppLegacySS := keepers.ParamsKeeper.Subspace(baseapp.Paramspace).WithKeyTable(paramstypes.ConsensusParamsKeyTable())
 		baseapp.MigrateParams(ctx, baseAppLegacySS, &keepers.ConsensusParamsKeeper)
+		consensusParams := baseapp.GetConsensusParams(ctx, baseAppLegacySS)
+		// make sure the consensus params are set
+		if consensusParams.Block == nil || consensusParams.Evidence == nil || consensusParams.Validator == nil {
+			defaultParams := tmtypes.DefaultConsensusParams().ToProto()
+			keepers.ConsensusParamsKeeper.Set(ctx, &defaultParams)
+		}
 		// ======================================================
 
 		return mm.RunMigrations(ctx, configurator, vm)
