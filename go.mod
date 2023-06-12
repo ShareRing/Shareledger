@@ -5,7 +5,7 @@ go 1.20
 replace (
 	github.com/CosmWasm/wasmd => github.com/CosmWasm/wasmd v0.40.0-rc.2
 	github.com/cometbft/cometbft => github.com/cometbft/cometbft v0.37.1
-	github.com/cosmos/cosmos-sdk => github.com/sharering/cosmos-sdk v0.47.2-shr
+	github.com/cosmos/cosmos-sdk => github.com/sharering/cosmos-sdk v0.47.2-shareledger
 )
 
 // required by cosmos-sdk
