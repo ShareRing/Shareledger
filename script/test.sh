@@ -7,14 +7,14 @@ echo "============START TO RUN TESTSUITE===================="
 module_list=(id swap asset booking document electoral)
 
 
-mkdir -p coverage
+mkdir -p .coverage
 
-go test ./x/... -coverprofile coverage.out
+go test ./x/... -coverprofile ./.coverage/coverage.out
 
 
 for i in "${!module_list[@]}"; do
-	go test --tags e2e -coverprofile=coverage/${module_list[$i]}.out -coverpkg=./... ./tests/e2e/${module_list[$i]}
-  module_list[$i]=./coverage/${module_list[$i]}.out
+	go test --tags e2e -coverprofile=./.coverage/${module_list[$i]}.out -coverpkg=./... ./tests/e2e/${module_list[$i]}
+  module_list[$i]=./.coverage/${module_list[$i]}.out
 done
 go install github.com/wadey/gocovmerge@latest
 
