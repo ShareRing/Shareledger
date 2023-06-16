@@ -20,7 +20,7 @@ definitions:
         - pipe: sonarsource/sonarcloud-scan:1.4.0
           variables:
               SONAR_SCANNER_OPTS: -Xmx2048m
-              EXTRA_ARGS: ' -Dsonar.sources=. -Dsonar.go.coverage.reportPaths=**/./coverage/coverage.out'
+              EXTRA_ARGS: ' -Dsonar.sources=. -Dsonar.go.coverage.reportPaths=coverage/coverage.out'
   - step: &check-quality-gate-sonarcloud
       name: Check the Quality Gate on SonarCloud
       script:
