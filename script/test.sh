@@ -19,7 +19,7 @@ done
 go install github.com/wadey/gocovmerge@latest
 
 
-gocovmerge ${module_list[@]} ./coverage.out >./coverage/merged_coverage.out
+gocovmerge ${module_list[@]} ./coverage/coverage.out >./coverage/merged_coverage.out
 
 # remove generated and simulation file
 grep -vE '(pb(\.gw)?\.go)|simulation|pulsar' ./coverage/merged_coverage.out >./coverage/coverage.out
