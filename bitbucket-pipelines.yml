@@ -20,8 +20,6 @@ definitions:
         - pipe: sonarsource/sonarcloud-scan:1.4.0
           variables:
               SONAR_SCANNER_OPTS: -Xmx2048m
-              EXTRA_ARGS: '-Dsonar.sources=. -Dsonar.exclusions=**/*_test.go,**/vendor/**,**/mocks/** -Dsonar.test.inclusions=**/*_test.go
--Dsonar.test.exclusions=**/vendor/**,**/*.pb.go,**/*.pb.gw.go,**/simulation/**,**/*.pulsar.go -Dsonar.go.coverage.reportPaths=coverage/coverage.out'
   - step: &check-quality-gate-sonarcloud
       name: Check the Quality Gate on SonarCloud
       script:
