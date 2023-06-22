@@ -134,7 +134,7 @@ func SetTestingGenesis(t *testing.T, config *network.Config) (keyring.Keyring, s
 
 	idSignerAcc := MustAddressFormKeyring(kb, KeyIDSigner)
 	docIssuerAcc := MustAddressFormKeyring(kb, KeyDocIssuer)
-	realyerAcc := MustAddressFormKeyring(kb, KeyApproverRelayer)
+	relayerAcc := MustAddressFormKeyring(kb, KeyApproverRelayer)
 	genElectoral := electoraltypes.GenesisState{
 		AccStateList: []electoraltypes.AccState{
 			{
@@ -153,13 +153,13 @@ func SetTestingGenesis(t *testing.T, config *network.Config) (keyring.Keyring, s
 				Status:  "active",
 			},
 			{
-				Key:     string(electoraltypes.GenAccStateIndexKey(realyerAcc, electoraltypes.AccStateKeyRelayer)),
-				Address: realyerAcc.String(),
+				Key:     string(electoraltypes.GenAccStateIndexKey(relayerAcc, electoraltypes.AccStateKeyRelayer)),
+				Address: relayerAcc.String(),
 				Status:  "active",
 			},
 			{
-				Key:     string(electoraltypes.GenAccStateIndexKey(realyerAcc, electoraltypes.AccStateKeyApprover)),
-				Address: realyerAcc.String(),
+				Key:     string(electoraltypes.GenAccStateIndexKey(relayerAcc, electoraltypes.AccStateKeyApprover)),
+				Address: relayerAcc.String(),
 				Status:  "active",
 			},
 		},

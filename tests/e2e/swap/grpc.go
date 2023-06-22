@@ -111,7 +111,7 @@ func (s *E2ETestQuerySuite) TestGRPCQuerySchemas() {
 	coin2 := sdk.NewCoin(denom.Base, sdk.NewInt(30*denom.ShrExponent))
 	testCases := tests.TestCasesGrpc{
 		{
-			Name:      "Query swap schema eth should be success",
+			Name:      "Query list of swap schema should be success",
 			URL:       fmt.Sprintf("%s/sharering/shareledger/swap/schemas", val.APIAddress),
 			Headers:   map[string]string{},
 			ExpectErr: false,
@@ -160,7 +160,7 @@ func (s *E2ETestQuerySuite) TestGRPCQueryNextRequestID() {
 
 	testCases := tests.TestCasesGrpc{
 		{
-			Name:      "Query swap schema eth should be success",
+			Name:      "Query query net request ID data should be success",
 			URL:       fmt.Sprintf("%s/sharering/shareledger/swap/next_request_id", val.APIAddress),
 			Headers:   map[string]string{},
 			ExpectErr: false,
@@ -178,7 +178,7 @@ func (s *E2ETestQuerySuite) TestGRPCQueryNextBatchId() {
 
 	testCases := tests.TestCasesGrpc{
 		{
-			Name:      "Query swap schema eth should be success",
+			Name:      "Query next batch id should be success",
 			URL:       fmt.Sprintf("%s/sharering/shareledger/swap/next_batch_id", val.APIAddress),
 			Headers:   map[string]string{},
 			ExpectErr: false,
@@ -196,7 +196,7 @@ func (s *E2ETestQuerySuite) TestGRPCQueryPastTxEvent() {
 
 	testCases := tests.TestCasesGrpc{
 		{
-			Name:      "Query list past transaction event",
+			Name:      "Query list transaction event approved swap in should be success",
 			URL:       fmt.Sprintf("%s/sharering/shareledger/swap/past_tx_events", val.APIAddress),
 			Headers:   map[string]string{},
 			ExpectErr: false,
@@ -224,7 +224,7 @@ func (s *E2ETestQuerySuite) TestGRPCQueryPastTxEventByTxHash() {
 
 	testCases := tests.TestCasesGrpc{
 		{
-			Name:      "Query swap schema eth should be success",
+			Name:      "Query past transaction event by tx hash should be success",
 			URL:       fmt.Sprintf("%s/sharering/shareledger/swap/past_tx_events/%s", val.APIAddress, "hashxxxxx"),
 			Headers:   map[string]string{},
 			ExpectErr: false,
@@ -251,7 +251,7 @@ func (s *E2ETestQuerySuite) TestGRPCQueryPastTxEventByTxHashLogIndex() {
 
 	testCases := tests.TestCasesGrpc{
 		{
-			Name:      "Query swap schema eth should be success",
+			Name:      "Query past transaction event by log index and tx hash should be success",
 			URL:       fmt.Sprintf("%s/sharering/shareledger/swap/past_tx_events/%s/%d", val.APIAddress, "hashxxxxx", 2),
 			Headers:   map[string]string{},
 			ExpectErr: false,

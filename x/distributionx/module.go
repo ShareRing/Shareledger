@@ -117,10 +117,14 @@ func NewAppModule(
 var _ appmodule.AppModule = AppModule{}
 
 // IsOnePerModuleType implements the depinject.OnePerModuleType interface.
-func (am AppModule) IsOnePerModuleType() {}
+func (am AppModule) IsOnePerModuleType() {
+	//Do nothing because that is waited for new way to wire module together
+}
 
 // IsAppModule implements the appmodule.AppModule interface.
-func (am AppModule) IsAppModule() {}
+func (am AppModule) IsAppModule() {
+	//Do nothing because that is waited for new way to wire module together
+}
 
 // RegisterServices registers a gRPC query service to respond to the module-specific gRPC queries
 func (am AppModule) RegisterServices(cfg module.Configurator) {

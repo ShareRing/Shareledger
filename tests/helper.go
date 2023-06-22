@@ -28,12 +28,12 @@ type TestCase struct {
 }
 
 const (
-	DEFAULT_NUM_RETRY = 100
-	RETRY_TIME_GAP    = 100 * time.Millisecond
+	DefaultNumRetry = 100
+	RetryTimeGap    = 100 * time.Millisecond
 )
 
-func retry_gap() {
-	time.Sleep(RETRY_TIME_GAP)
+func retryGap() {
+	time.Sleep(RetryTimeGap)
 }
 
 type TestCases = []TestCase
@@ -92,7 +92,7 @@ type TestCasesTx = []TestCaseTx
 func RunTestCasesTx(s *suite.Suite, tcs TestCasesTx, cmd *cobra.Command, val *network.Validator) {
 	for _, tc := range tcs {
 		s.Run(tc.Name, func() {
-			resp, err := RunCmdWithRetry(s, cmd, val, tc.Args, DEFAULT_NUM_RETRY)
+			resp, err := RunCmdWithRetry(s, cmd, val, tc.Args, DefaultNumRetry)
 			if tc.ExpectErr {
 				s.Error(err)
 			} else {
@@ -102,7 +102,7 @@ func RunTestCasesTx(s *suite.Suite, tcs TestCasesTx, cmd *cobra.Command, val *ne
 					s.Equal(tc.ExpectedCode, resp.Code)
 					return
 				}
-				resp, err = QueryTxWithRetry(val.ClientCtx, resp.TxHash, DEFAULT_NUM_RETRY)
+				resp, err = QueryTxWithRetry(val.ClientCtx, resp.TxHash, DefaultNumRetry)
 				s.NoError(err)
 				s.Equal(tc.ExpectedCode, resp.Code)
 			}
@@ -117,7 +117,7 @@ func QueryTxWithRetry(clientCtx client.Context, hashHexStr string, retry int) (*
 		return resp, err
 	}
 	// take a nap before each retries
-	retry_gap()
+	retryGap()
 	return QueryTxWithRetry(clientCtx, hashHexStr, retry-1)
 }
 
@@ -135,7 +135,7 @@ func RunCmdWithRetry(s *suite.Suite, cmd *cobra.Command, val *network.Validator,
 			return nil, errors.New("Exceeded max retried time")
 		}
 		// take a nap before each retries
-		retry_gap()
+		retryGap()
 		return RunCmdWithRetry(s, cmd, val, args, retry-1)
 	}
 	return &resp, nil

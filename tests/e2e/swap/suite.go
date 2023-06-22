@@ -58,6 +58,16 @@ func (s *E2ETestSuite) SetupSuite() {
 				},
 				Schema: "{}",
 			},
+
+			{
+				Network:          "k_eth",
+				Schema:           "{\"types\":{\"EIP712Domain\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"version\",\"type\":\"string\"},{\"name\":\"chainId\",\"type\":\"uint256\"},{\"name\":\"verifyingContract\",\"type\":\"address\"}],\"Swap\":[{\"name\":\"ids\",\"type\":\"uint256[]\"},{\"name\":\"tos\",\"type\":\"address[]\"},{\"name\":\"amounts\",\"type\":\"uint256[]\"}]},\"primaryType\":\"Swap\",\"domain\":{\"name\":\"ShareRingSwap\",\"version\":\"2.0\",\"chainId\":\"0x3\",\"verifyingContract\":\"0x3AE875a6e8E8EB6fa4a0748156CE6b9030E4a560\",\"salt\":\"\"}}",
+				ContractExponent: 2,
+				Fee: &swapTypes.Fee{
+					In:  &coin1,
+					Out: &coin2,
+				},
+			},
 		},
 		Requests: []swapTypes.Request{
 			{
@@ -135,6 +145,17 @@ func (s *E2ETestSuite) SetupSuite() {
 				BatchId:     1,
 				Status:      swapTypes.SwapStatusApproved,
 			},
+			{
+				Id:          uint64(8),
+				SrcAddr:     "shareledger1wh7w0p2naly7anxdsyes3u6028pd2uc4vnxt2y",
+				DestAddr:    "0x5a15dfb7a7f3dccf75e62101af3a908a0078b4f5",
+				SrcNetwork:  swapTypes.NetworkNameShareLedger,
+				DestNetwork: "k_eth",
+				Amount:      sdk.NewCoin(denom.Base, sdk.NewInt(1000*denom.ShrExponent)),
+				Fee:         coin2,
+				BatchId:     1,
+				Status:      swapTypes.SwapStatusPending,
+			},
 		},
 		Batches: []swapTypes.Batch{
 			{
@@ -174,7 +195,7 @@ func (s *E2ETestSuite) SetupSuite() {
 			},
 		},
 		BatchCount:   4,
-		RequestCount: 7,
+		RequestCount: 8,
 	}
 	swapGenesisBz, err := s.cfg.Codec.MarshalJSON(&swapGenesis)
 	s.Require().NoError(err)

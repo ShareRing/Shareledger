@@ -8,7 +8,7 @@ import (
 	"github.com/ethereum/go-ethereum/signer/core/apitypes"
 	crypto2 "github.com/sharering/shareledger/pkg/crypto"
 	swapmoduletypes "github.com/sharering/shareledger/x/swap/types"
-	denom "github.com/sharering/shareledger/x/utils/denom"
+	"github.com/sharering/shareledger/x/utils/denom"
 	"math/big"
 )
 

@@ -137,10 +137,14 @@ func NewAppModule(cdc codec.Codec, keeper keeper.Keeper) AppModule {
 var _ appmodule.AppModule = AppModule{}
 
 // IsOnePerModuleType implements the depinject.OnePerModuleType interface.
-func (am AppModule) IsOnePerModuleType() {}
+func (am AppModule) IsOnePerModuleType() {
+	//Do nothing because that is waited for new way to wire module together
+}
 
 // IsAppModule implements the appmodule.AppModule interface.
-func (am AppModule) IsAppModule() {}
+func (am AppModule) IsAppModule() {
+	//Do nothing because that is waited for new way to wire module together
+}
 
 // Name returns the capability module's name.
 func (am AppModule) Name() string {

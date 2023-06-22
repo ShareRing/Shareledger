@@ -47,8 +47,6 @@ const (
 
 	KeyAccountTestSign = "khang"
 
-	ShareLedgerSuccessCode = uint32(0)
-
 	SignMnemonic = "upper two old trip wolf member fruit end coyote stone gospel knee"
 )
 

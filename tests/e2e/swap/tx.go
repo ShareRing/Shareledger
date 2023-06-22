@@ -8,6 +8,13 @@ import (
 	"github.com/sharering/shareledger/x/swap/client/cli"
 )
 
+const (
+	EmptySchema = "--schema={}"
+	FeeIn10Shr  = "--fee-in=10shr"
+	FeeOut10Shr = "--fee-out=10shr"
+	Exponent8   = "--exp=8"
+)
+
 func (s *E2ETestSuite) TestCreateRequestOut() {
 	testCases := tests.TestCasesTx{
 		{
@@ -86,13 +93,18 @@ func (s *E2ETestSuite) TestCreateRequestOut() {
 }
 
 func (s *E2ETestSuite) TestCreateRequestIn() {
+
+	var (
+		event1 = "hash1:sender1:12"
+	)
+
 	testCases := tests.TestCasesTx{
 		{
 			Name: "create request in valid should be success",
 			Args: []string{
 				"shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
 				"eth",
-				"hash1:sender1:12",
+				event1,
 				"1000000000nshr",
 				"20000000000nshr",
 				network.MakeByAccount(network.KeyApproverRelayer),
@@ -105,7 +117,7 @@ func (s *E2ETestSuite) TestCreateRequestIn() {
 			Args: []string{
 				"shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
 				"eth",
-				"hash1:sender1:12,hash1:sender1:12",
+				event1 + ",hash1:sender1:12",
 				"1000000000nshr",
 				"20000000000nshr",
 				network.MakeByAccount(network.KeyApproverRelayer),
@@ -117,7 +129,7 @@ func (s *E2ETestSuite) TestCreateRequestIn() {
 			Args: []string{
 				"shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
 				"eth",
-				"hash1:sender1:12",
+				event1,
 				"1000000000nshr",
 				"20000000000nshr",
 				network.MakeByAccount(network.KeyApproverRelayer),
@@ -141,7 +153,7 @@ func (s *E2ETestSuite) TestCreateRequestIn() {
 			Args: []string{
 				"shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
 				"eth",
-				"hash1:sender1:12",
+				event1,
 				"1000000000nshr",
 				"20000000000nshr",
 				network.MakeByAccount(network.KeyAccount1),
@@ -439,10 +451,10 @@ func (s *E2ETestSuite) TestUpdateSchema() {
 			Name: "update valid schema should be success",
 			Args: []string{
 				"hero",
-				"--schema={}",
-				"--fee-in=10shr",
-				"--fee-out=10shr",
-				"--exp=8",
+				EmptySchema,
+				FeeIn10Shr,
+				FeeOut10Shr,
+				Exponent8,
 				network.MakeByAccount(network.KeyAuthority),
 			},
 			ExpectErr:    false,
@@ -452,10 +464,10 @@ func (s *E2ETestSuite) TestUpdateSchema() {
 			Name: "update the valid schema but creator isn't authority should got error",
 			Args: []string{
 				"hero",
-				"--schema={}",
-				"--fee-in=10shr",
-				"--fee-out=10shr",
-				"--exp=8",
+				EmptySchema,
+				FeeIn10Shr,
+				FeeOut10Shr,
+				Exponent8,
 				network.MakeByAccount(network.KeyAccount1),
 			},
 			ExpectErr:    false,
@@ -465,10 +477,10 @@ func (s *E2ETestSuite) TestUpdateSchema() {
 			Name: "given invalid coins should be fail",
 			Args: []string{
 				"hero",
-				"--schema={}",
+				EmptySchema,
 				"--fee-in=tenshr",
 				"--fee-out=tenshr",
-				"--exp=8",
+				Exponent8,
 				network.MakeByAccount(network.KeyAuthority),
 			},
 			ExpectErr: true,
@@ -477,10 +489,10 @@ func (s *E2ETestSuite) TestUpdateSchema() {
 			Name: "given invalid contract exponent should be fail",
 			Args: []string{
 				"hero",
-				"--schema={}",
-				"--fee-in=10shr",
-				"--fee-out=10shr",
-				"--exp=8x",
+				EmptySchema,
+				FeeIn10Shr,
+				FeeOut10Shr,
+				Exponent8,
 				network.MakeByAccount(network.KeyAuthority),
 			},
 			ExpectErr: true,
@@ -489,10 +501,9 @@ func (s *E2ETestSuite) TestUpdateSchema() {
 			Name: "update not exist schema should be fail",
 			Args: []string{
 				"ethxxx",
-				"--schema={}",
-				"--fee-in=10shr",
-				"--fee-out=10shr",
-				"--exp=8",
+				FeeIn10Shr,
+				FeeOut10Shr,
+				Exponent8,
 				network.MakeByAccount(network.KeyAuthority),
 			},
 			ExpectErr:    false,
@@ -516,7 +527,7 @@ func (s *E2ETestSuite) TestDeleteSchema() {
 		{
 			Name: "delete schema but not authority should be fail",
 			Args: []string{
-				"hero1",
+				"schema",
 				network.MakeByAccount(network.KeyAccount1),
 			},
 
@@ -541,8 +552,8 @@ func (s *E2ETestSuite) TestUpdateSwappingFee() {
 			Name: "Update swapping success",
 			Args: []string{
 				"hero",
-				"--fee-in=10shr",
-				"--fee-out=10shr",
+				FeeIn10Shr,
+				FeeOut10Shr,
 				network.MakeByAccount(network.KeyTreasurer),
 			},
 			ExpectErr:    false,
@@ -562,8 +573,8 @@ func (s *E2ETestSuite) TestUpdateSwappingFee() {
 			Name: "Update swapping fee with not exist network",
 			Args: []string{
 				"no_exited",
-				"--fee-in=10shr",
-				"--fee-out=10shr",
+				FeeIn10Shr,
+				FeeOut10Shr,
 				network.MakeByAccount(network.KeyTreasurer),
 			},
 			ExpectErr:    false,
@@ -572,9 +583,9 @@ func (s *E2ETestSuite) TestUpdateSwappingFee() {
 		{
 			Name: "Update swapping fee but not authorize",
 			Args: []string{
-				"no_exited",
-				"--fee-in=10shr",
-				"--fee-out=10shr",
+				"eth",
+				FeeIn10Shr,
+				FeeOut10Shr,
 				network.MakeByAccount(network.KeyAccount3),
 			},
 			ExpectErr:    false,
