@@ -40,7 +40,7 @@ type (
 
 // New creates instance with fully configured cosmos network.
 // Accepts optional config, that will be used in place of the DefaultConfig() if provided.
-func New(t *testing.T, configs ...network.Config) *network.Network {
+func New(t *testing.T, rootDir string, configs ...network.Config) *network.Network {
 	if len(configs) > 1 {
 		panic("at most one config should be provided")
 	}
@@ -50,7 +50,8 @@ func New(t *testing.T, configs ...network.Config) *network.Network {
 	} else {
 		cfg = configs[0]
 	}
-	net, err := network.New(t, t.TempDir(), cfg)
+	// net, err := network.New(t, t.TempDir(), cfg)
+	net, err := network.New(t, rootDir, cfg)
 	require.NoError(t, err)
 	t.Cleanup(net.Cleanup)
 	return net
@@ -83,10 +84,14 @@ func CompileGenesis(t *testing.T, config *network.Config, genesisState map[strin
 }
 
 // SetTestingGenesis init the genesis state for testing in here
-func SetTestingGenesis(t *testing.T, config *network.Config) (keyring.Keyring, string) {
+func SetTestingGenesis(t *testing.T, config *network.Config, nodedir, moniker string) (keyring.Keyring, string) {
 	genesisState := config.GenesisState
 
-	kb := keyring.NewInMemory(config.Codec, config.KeyringOptions...)
+	// kb := keyring.NewInMemory(config.Codec, config.KeyringOptions...)
+	kb, err := keyring.New(moniker, keyring.BackendTest, nodedir, nil, config.Codec, config.KeyringOptions...)
+	if err != nil {
+		return nil, ""
+	}
 	accountBuilder := NewKeyringBuilder(t, kb)
 
 	users := []AccountInfo{

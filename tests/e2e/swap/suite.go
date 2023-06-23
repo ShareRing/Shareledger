@@ -1,6 +1,9 @@
 package swap
 
 import (
+	"fmt"
+	"path/filepath"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	bankTypes "github.com/cosmos/cosmos-sdk/x/bank/types"
@@ -22,11 +25,19 @@ func NewE2ETestSuite(cfg network.Config) *E2ETestSuite {
 }
 func (s *E2ETestSuite) SetupSuite() {
 	s.T().Log("setting up e2e test suite for shareledger swap module")
+	// the nodeDir, and moniker hard code at here in cosmos-sdk:
+	// github.com/sharering/cosmos-sdk@v0.47.2-shareledger/testutil/network/network.go:398
+	// So just reuse it
+	rootDir := s.T().TempDir()
+	moniker := fmt.Sprintf("node%d", s.cfg.NumValidators-1)
+	// TestingGenesis should use the same KeyringDir as validator KeyringDir
+	// github.com/sharering/cosmos-sdk@v0.47.2-shareledger/testutil/network/network.go:400
+	nodeDir := filepath.Join(rootDir, moniker, "simcli")
 
+	kr, _ := network.SetTestingGenesis(s.T(), &s.cfg, nodeDir, moniker)
+	s.Require().NotNil(kr)
 	coin1 := sdk.NewCoin(denom.Base, sdk.NewInt(20*denom.ShrExponent))
 	coin2 := sdk.NewCoin(denom.Base, sdk.NewInt(30*denom.ShrExponent))
-
-	kr, _ := network.SetTestingGenesis(s.T(), &s.cfg)
 
 	//swap genesis
 	swapGenesis := swapTypes.GenesisState{
@@ -211,18 +222,26 @@ func (s *E2ETestSuite) SetupSuite() {
 	bankGenesisBz, err := s.cfg.Codec.MarshalJSON(&bankGen)
 	s.NoError(err)
 	s.cfg.GenesisState[bankTypes.ModuleName] = bankGenesisBz
-	s.network = network.New(s.T(), s.cfg)
+	s.network = network.New(s.T(), rootDir, s.cfg)
 	s.network.Validators[0].ClientCtx.Keyring = kr
 	s.Require().NoError(s.network.WaitForNextBlock())
 }
 
 func (s *E2ETestQuerySuite) SetupSuite() {
 	s.T().Log("setting up e2e test suite for shareledger swap module")
+	// the nodeDir, and moniker hard code at here in cosmos-sdk:
+	// github.com/sharering/cosmos-sdk@v0.47.2-shareledger/testutil/network/network.go:398
+	// So just replicate it
+	rootDir := s.T().TempDir()
+	moniker := fmt.Sprintf("node%d", s.cfg.NumValidators-1)
+	// TestingGenesis should use the same KeyringDir as validator KeyringDir
+	// github.com/sharering/cosmos-sdk@v0.47.2-shareledger/testutil/network/network.go:400
+	nodeDir := filepath.Join(rootDir, moniker, "simcli")
 
+	kr, _ := network.SetTestingGenesis(s.T(), &s.cfg, nodeDir, moniker)
+	s.Require().NotNil(kr)
 	coin1 := sdk.NewCoin(denom.Base, sdk.NewInt(20*denom.ShrExponent))
 	coin2 := sdk.NewCoin(denom.Base, sdk.NewInt(30*denom.ShrExponent))
-
-	kr, _ := network.SetTestingGenesis(s.T(), &s.cfg)
 
 	//swap genesis
 	swapGenesis := swapTypes.GenesisState{
@@ -386,7 +405,7 @@ func (s *E2ETestQuerySuite) SetupSuite() {
 	bankGenesisBz, err := s.cfg.Codec.MarshalJSON(&bankGen)
 	s.NoError(err)
 	s.cfg.GenesisState[bankTypes.ModuleName] = bankGenesisBz
-	s.network = network.New(s.T(), s.cfg)
+	s.network = network.New(s.T(), rootDir, s.cfg)
 	s.network.Validators[0].ClientCtx.Keyring = kr
 	s.Require().NoError(s.network.WaitForNextBlock())
 }

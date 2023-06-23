@@ -1,6 +1,9 @@
 package distributionx
 
 import (
+	"fmt"
+	"path/filepath"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/sharering/shareledger/testutil/network"
 	"github.com/sharering/shareledger/x/distributionx/types"
@@ -18,6 +21,10 @@ type E2ETestSuite struct {
 func NewE2ETestSuite(cfg network.Config) *E2ETestSuite {
 	cfg.NumValidators = 1
 	return &E2ETestSuite{cfg: cfg}
+}
+
+func (s *E2ETestSuite) NewE2ENetWork(nw *network.Network) {
+	s.network = nw
 }
 
 var (
@@ -40,9 +47,19 @@ var (
 
 func (s *E2ETestSuite) SetupSuite() {
 	s.T().Log("settings up e2e test suite for distributionx module")
+	// the nodeDir, and moniker hard code at here in cosmos-sdk:
+	// github.com/sharering/cosmos-sdk@v0.47.2-shareledger/testutil/network/network.go:398
+	// So just reuse it here
+	rootDir := s.T().TempDir()
+	moniker := fmt.Sprintf("node%d", s.cfg.NumValidators-1)
+	// TestingGenesis should use the same KeyringDir as validator KeyringDir
+	// github.com/sharering/cosmos-sdk@v0.47.2-shareledger/testutil/network/network.go:400
+	nodeDir := filepath.Join(rootDir, moniker, "simcli")
 
+	kr, _ := network.SetTestingGenesis(s.T(), &s.cfg, nodeDir, moniker)
+	s.Require().NotNil(kr)
 	// set devPoolAccount == KeyAccount3
-	kr, _ := network.SetTestingGenesis(s.T(), &s.cfg)
+	// kr, _ := network.SetTestingGenesis(s.T(), &s.cfg)
 	devPoolAccount = network.MustAddressFormKeyring(kr, network.KeyAccount3).String()
 
 	params.BuilderWindows = 15
@@ -67,6 +84,6 @@ func (s *E2ETestSuite) SetupSuite() {
 	}
 	s.cfg.GenesisState[types.ModuleName] = s.cfg.Codec.MustMarshalJSON(distriXGenesis)
 
-	s.network = network.New(s.T(), s.cfg)
+	s.network = network.New(s.T(), rootDir, s.cfg)
 	s.network.Validators[0].ClientCtx.Keyring = kr
 }

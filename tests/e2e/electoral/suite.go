@@ -2,6 +2,8 @@ package electoral
 
 import (
 	"encoding/json"
+	"fmt"
+	"path/filepath"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/sharering/shareledger/testutil/network"
@@ -49,8 +51,17 @@ var (
 
 func (s *E2ETestSuite) SetupSuite() {
 	s.T().Log("setting up e2e test suite for shareledger electoral module")
+	// the nodeDir, and moniker hard code at here in cosmos-sdk:
+	// github.com/sharering/cosmos-sdk@v0.47.2-shareledger/testutil/network/network.go:398
+	// So just reuse it
+	rootDir := s.T().TempDir()
+	moniker := fmt.Sprintf("node%d", s.cfg.NumValidators-1)
+	// TestingGenesis should use the same KeyringDir as validator KeyringDir
+	// github.com/sharering/cosmos-sdk@v0.47.2-shareledger/testutil/network/network.go:400
+	nodeDir := filepath.Join(rootDir, moniker, "simcli")
 
-	kr, _ := network.SetTestingGenesis(s.T(), &s.cfg)
+	kr, _ := network.SetTestingGenesis(s.T(), &s.cfg, nodeDir, moniker)
+	s.Require().NotNil(kr)
 	addr, err := sdk.AccAddressFromBech32(address)
 	s.NoError(err)
 
@@ -102,7 +113,7 @@ func (s *E2ETestSuite) SetupSuite() {
 	s.NoError(err)
 
 	s.cfg.GenesisState[types.ModuleName] = genesisJSON
-	s.network = network.New(s.T(), s.cfg)
+	s.network = network.New(s.T(), rootDir, s.cfg)
 	s.network.Validators[0].ClientCtx.Keyring = kr
 
 	s.NoError(s.network.WaitForNextBlock())
@@ -110,8 +121,17 @@ func (s *E2ETestSuite) SetupSuite() {
 
 func (s *E2ETestSuiteTx) SetupSuite() {
 	s.T().Log("setting up e2e test suite for shareledger electoral tx module")
+	// the nodeDir, and moniker hard code at here in cosmos-sdk:
+	// github.com/sharering/cosmos-sdk@v0.47.2-shareledger/testutil/network/network.go:398
+	// So just replicate it
+	rootDir := s.T().TempDir()
+	moniker := fmt.Sprintf("node%d", s.cfg.NumValidators-1)
+	// TestingGenesis should use the same KeyringDir as validator KeyringDir
+	// github.com/sharering/cosmos-sdk@v0.47.2-shareledger/testutil/network/network.go:400
+	nodeDir := filepath.Join(rootDir, moniker, "simcli")
 
-	kr, _ := network.SetTestingGenesis(s.T(), &s.cfg)
+	kr, _ := network.SetTestingGenesis(s.T(), &s.cfg, nodeDir, moniker)
+	s.Require().NotNil(kr)
 	addr, err := sdk.AccAddressFromBech32(address)
 	s.NoError(err)
 
@@ -181,7 +201,7 @@ func (s *E2ETestSuiteTx) SetupSuite() {
 	s.NoError(err)
 
 	s.cfg.GenesisState[types.ModuleName] = genesisJSON
-	s.network = network.New(s.T(), s.cfg)
+	s.network = network.New(s.T(), rootDir, s.cfg)
 	s.network.Validators[0].ClientCtx.Keyring = kr
 
 	s.NoError(s.network.WaitForNextBlock())

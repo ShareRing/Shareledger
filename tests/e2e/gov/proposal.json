@@ -1,0 +1,23 @@
+{
+  "title": "Test",
+  "type": "Text",
+  "description": "testing",
+  "changes": [
+    {
+      "subspace": "distributionx",
+      "key": "configpercent",
+      "value":
+        {
+          "wasm_master_builder": "0.15",
+          "wasm_contract_admin": "0.25",
+          "wasm_validator": "0.2",
+          "wasm_development": "0.4",
+          "native_development": "0.4",
+          "native_validator": "0.6"
+        }
+    }
+  ],
+  "metadata": "ipfs://CID",
+  "deposit": "2000000000000nshr",
+  "summary": "summary"
+}

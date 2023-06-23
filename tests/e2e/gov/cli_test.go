@@ -1,6 +1,6 @@
-//#go:build e2e
+//go:build e2e
 
-package document
+package gov
 
 import (
 	"sync"
