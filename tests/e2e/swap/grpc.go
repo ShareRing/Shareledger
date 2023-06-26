@@ -2,6 +2,7 @@ package swap
 
 import (
 	"fmt"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/query"
 	"github.com/sharering/shareledger/tests"
@@ -44,6 +45,7 @@ func (s *E2ETestQuerySuite) TestGRPCQueryRequest() {
 						Amount:      sdk.NewCoin(denom.Base, sdk.NewInt(1000*denom.ShrExponent)),
 						Fee:         coin2,
 						Status:      swaptypes.SwapStatusPending,
+						TxEvents:    []*swaptypes.TxEvent{},
 					},
 				},
 				Pagination: &query.PageResponse{Total: 1},

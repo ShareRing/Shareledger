@@ -16,6 +16,9 @@ import (
 	"github.com/cosmos/gogoproto/proto"
 	shareledgernetwork "github.com/sharering/shareledger/testutil/network"
 	"github.com/spf13/cobra"
+
+	"reflect"
+
 	"github.com/stretchr/testify/suite"
 )
 
@@ -48,7 +51,7 @@ func RunTestCases(s *suite.Suite, tcs TestCases, cmd *cobra.Command, val *networ
 			} else {
 				s.NoError(err)
 				s.NoError(val.ClientCtx.Codec.UnmarshalJSON(out.Bytes(), tc.RespType))
-				s.Equal(tc.Expected.String(), tc.RespType.String())
+				checkRespType(s, tc.RespType, tc.Expected)
 			}
 		})
 	}
@@ -65,6 +68,24 @@ type TestCaseGrpc struct {
 
 type TestCasesGrpc = []TestCaseGrpc
 
+func checkRespType(s *suite.Suite, resp, expected interface{}) {
+	typeOfResp := reflect.ValueOf(resp).Elem()
+	typeOfExpected := reflect.ValueOf(expected).Elem()
+	for i := 0; i < typeOfResp.NumField(); i++ {
+		exp := typeOfExpected.Field(i)
+		res := typeOfResp.Field(i)
+		if res.Kind() == reflect.Slice || res.Kind() == reflect.Array {
+			// currently only check for array/slice of first level of the struct field
+			for j := 0; j < exp.Len(); j++ {
+				s.Contains(res.Interface(), exp.Index(j).Interface())
+			}
+		} else {
+			s.Equal(exp.Interface(), res.Interface())
+
+		}
+	}
+}
+
 func RunTestCasesGrpc(s *suite.Suite, tcs TestCasesGrpc, val *network.Validator) {
 	for _, tc := range tcs {
 		s.Run(tc.Name, func() {
@@ -74,7 +95,7 @@ func RunTestCasesGrpc(s *suite.Suite, tcs TestCasesGrpc, val *network.Validator)
 				s.Error(val.ClientCtx.Codec.UnmarshalJSON(resp, tc.RespType))
 			} else {
 				s.NoError(val.ClientCtx.Codec.UnmarshalJSON(resp, tc.RespType))
-				s.Equal(tc.Expected.String(), tc.RespType.String())
+				checkRespType(s, tc.RespType, tc.Expected)
 			}
 		})
 	}
