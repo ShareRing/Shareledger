@@ -22,11 +22,12 @@ import (
 )
 
 type TestCase struct {
-	Name      string
-	Args      []string
-	ExpectErr bool
-	RespType  proto.Message
-	Expected  proto.Message
+	Name         string
+	Args         []string
+	ExpectErr    bool
+	CheckContain bool
+	RespType     proto.Message
+	Expected     proto.Message
 }
 
 const (
@@ -50,30 +51,31 @@ func RunTestCases(s *suite.Suite, tcs TestCases, cmd *cobra.Command, val *networ
 			} else {
 				s.NoError(err)
 				s.NoError(val.ClientCtx.Codec.UnmarshalJSON(out.Bytes(), tc.RespType))
-				checkRespType(s, tc.RespType, tc.Expected)
+				checkRespType(s, tc.CheckContain, tc.RespType, tc.Expected)
 			}
 		})
 	}
 }
 
 type TestCaseGrpc struct {
-	Name      string
-	URL       string
-	Headers   map[string]string
-	ExpectErr bool
-	RespType  proto.Message
-	Expected  proto.Message
+	Name         string
+	URL          string
+	Headers      map[string]string
+	ExpectErr    bool
+	CheckContain bool
+	RespType     proto.Message
+	Expected     proto.Message
 }
 
 type TestCasesGrpc = []TestCaseGrpc
 
-func checkRespType(s *suite.Suite, resp, expected interface{}) {
+func checkRespType(s *suite.Suite, isCheckContain bool, resp, expected interface{}) {
 	typeOfResp := reflect.ValueOf(resp).Elem()
 	typeOfExpected := reflect.ValueOf(expected).Elem()
 	for i := 0; i < typeOfResp.NumField(); i++ {
 		exp := typeOfExpected.Field(i)
 		res := typeOfResp.Field(i)
-		if res.Kind() == reflect.Slice || res.Kind() == reflect.Array {
+		if isCheckContain || exp.Kind() == reflect.Slice || res.Kind() == reflect.Array {
 			// currently only check for array/slice of first level of the struct field
 			for j := 0; j < exp.Len(); j++ {
 				s.Contains(res.Interface(), exp.Index(j).Interface())
@@ -93,7 +95,7 @@ func RunTestCasesGrpc(s *suite.Suite, tcs TestCasesGrpc, val *network.Validator)
 				s.Error(val.ClientCtx.Codec.UnmarshalJSON(resp, tc.RespType))
 			} else {
 				s.NoError(val.ClientCtx.Codec.UnmarshalJSON(resp, tc.RespType))
-				checkRespType(s, tc.RespType, tc.Expected)
+				checkRespType(s, tc.CheckContain, tc.RespType, tc.Expected)
 			}
 		})
 	}

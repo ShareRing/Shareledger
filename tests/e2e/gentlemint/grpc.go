@@ -100,11 +100,12 @@ func (s *E2ETestSuite) TestGRPCQueryDocumentByHolderId() {
 			ExpectErr: true,
 		},
 		{
-			Name:      "gRPC list action level fee ok",
-			URL:       fmt.Sprintf("%s/shareledger/gentlemint/actionLevelFee", baseURL),
-			Headers:   map[string]string{},
-			ExpectErr: false,
-			RespType:  &types.QueryActionLevelFeesResponse{},
+			Name:         "gRPC list action level fee ok",
+			URL:          fmt.Sprintf("%s/shareledger/gentlemint/actionLevelFee", baseURL),
+			Headers:      map[string]string{},
+			ExpectErr:    false,
+			CheckContain: true,
+			RespType:     &types.QueryActionLevelFeesResponse{},
 			Expected: &types.QueryActionLevelFeesResponse{
 				// ignore the last item that used to test delete
 				ActionLevelFee: defaultActionLevelFees[:2],

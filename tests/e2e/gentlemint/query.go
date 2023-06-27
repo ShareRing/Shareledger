@@ -12,10 +12,11 @@ import (
 func (s *E2ETestSuite) TestQueryActionLevelFee() {
 	testCases := tests.TestCases{
 		{
-			Name:      "query list action level fee",
-			Args:      []string{},
-			ExpectErr: false,
-			RespType:  &types.QueryActionLevelFeesResponse{},
+			Name:         "query list action level fee",
+			Args:         []string{},
+			ExpectErr:    false,
+			CheckContain: true,
+			RespType:     &types.QueryActionLevelFeesResponse{},
 			Expected: &types.QueryActionLevelFeesResponse{
 				// ignore the last item that used to test delete
 				ActionLevelFee: defaultActionLevelFees[:2],

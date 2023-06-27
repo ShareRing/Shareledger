@@ -57,6 +57,7 @@ func (s *E2ETestSuite) CheckRewardNormalTx(amount int64) {
 		})
 	s.NoError(err)
 	s.NoError(s.network.WaitForNextBlock())
+	s.NoError(s.network.WaitForNextBlock())
 
 	after := s.getReward(devPoolAccount)
 	// check dev pool account have reward of 0.4% * Fee = 0.4*10 = 4SHR
@@ -188,6 +189,8 @@ func (s *E2ETestSuite) mintToken(contractAddress, receiver string) {
 		},
 	)
 	s.NoError(err)
+	s.NoError(s.network.WaitForNextBlock())
+	s.NoError(s.network.WaitForNextBlock())
 }
 
 func decodeMsg(cdc codec.Codec, data string) (*sdk.TxMsgData, error) {
