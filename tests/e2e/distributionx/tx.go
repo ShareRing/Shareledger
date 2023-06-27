@@ -57,6 +57,7 @@ func (s *E2ETestSuite) TestRewardNormalTx() {
 		})
 	s.NoError(err)
 	s.NoError(s.network.WaitForNextBlock())
+	s.NoError(s.network.WaitForNextBlock())
 
 	after := s.getReward(devPoolAccount)
 	// check dev pool account have reward of 5SHR
@@ -69,7 +70,7 @@ func (s *E2ETestSuite) TestRewardWasmTx() {
 	acc1Address := network.MustAddressFormKeyring(val.ClientCtx.Keyring, network.KeyAccount1).String()
 	s.waitNextWindow()
 	for i := 0; i < 3; i++ {
-		s.mintToken(contractAddress, acc1Address)
+		s.mintToken(contractAddress, acc1Address, fmt.Sprint(i))
 	}
 	s.waitNextWindow()
 	// make sure contractAddress in builder list
@@ -79,8 +80,7 @@ func (s *E2ETestSuite) TestRewardWasmTx() {
 
 	beforeAcc1 := s.getReward(acc1Address)
 	before := s.getReward(devPoolAccount)
-	s.mintToken(contractAddress, acc1Address)
-	s.NoError(s.network.WaitForNextBlock())
+	s.mintToken(contractAddress, acc1Address, "3")
 
 	afterAcc1 := s.getReward(acc1Address)
 	after := s.getReward(devPoolAccount)
@@ -172,10 +172,11 @@ func (s *E2ETestSuite) getBuiderList() []types.BuilderList {
 	return resp.BuilderList
 }
 
-func (s *E2ETestSuite) mintToken(contractAddress, receiver string) {
+func (s *E2ETestSuite) mintToken(contractAddress, receiver, tokenID string) {
 	val := s.network.Validators[0]
 	msg := MintMsg{
-		Owner: receiver,
+		TokenID: tokenID,
+		Owner:   receiver,
 	}
 	_, err := tests.RunCmdBlock(
 		&s.Suite,
@@ -183,11 +184,13 @@ func (s *E2ETestSuite) mintToken(contractAddress, receiver string) {
 		val,
 		[]string{
 			contractAddress,
-			msg.MustToJSON(),
+			fmt.Sprintf(`{"mint": %s}`, msg.MustToJSON()),
 			network.MakeByAccount(network.KeyAccount1),
 		},
 	)
 	s.NoError(err)
+	s.NoError(s.network.WaitForNextBlock())
+	s.NoError(s.network.WaitForNextBlock())
 }
 
 func decodeMsg(cdc codec.Codec, data string) (*sdk.TxMsgData, error) {

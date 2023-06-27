@@ -60,12 +60,10 @@ func (s *E2ETestSuite) SetupSuite() {
 
 	kr, _ := network.SetTestingGenesis(s.T(), &s.cfg, nodeDir, moniker)
 	s.Require().NotNil(kr)
-	// set devPoolAccount == KeyAccount3
-	// kr, _ := network.SetTestingGenesis(s.T(), &s.cfg)
 	devPoolAccount = network.MustAddressFormKeyring(kr, network.KeyAccount3).String()
 
 	reward := sdk.NewCoins(sdk.NewCoin(denom.Base, sdk.NewInt(1000)))
-	params.BuilderWindows = 15
+	params.BuilderWindows = 25
 	params.TxThreshold = 3
 	params.DevPoolAccount = devPoolAccount
 	reward1 = types.Reward{

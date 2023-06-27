@@ -17,16 +17,14 @@ import (
 	dtxtypes "github.com/sharering/shareledger/x/distributionx/types"
 )
 
-var (
-	distributionxParams = &dtxtypes.Params_ConfigPercent{
-		WasmMasterBuilder: sdk.NewDecWithPrec(150, 3),
-		WasmContractAdmin: sdk.NewDecWithPrec(250, 3),
-		WasmDevelopment:   sdk.NewDecWithPrec(400, 3),
-		WasmValidator:     sdk.NewDecWithPrec(200, 3),
-		NativeValidator:   sdk.NewDecWithPrec(600, 3),
-		NativeDevelopment: sdk.NewDecWithPrec(400, 3),
-	}
-)
+var distributionxParams = &dtxtypes.Params_ConfigPercent{
+	WasmMasterBuilder: sdk.NewDecWithPrec(150, 3),
+	WasmContractAdmin: sdk.NewDecWithPrec(250, 3),
+	WasmDevelopment:   sdk.NewDecWithPrec(400, 3),
+	WasmValidator:     sdk.NewDecWithPrec(200, 3),
+	NativeValidator:   sdk.NewDecWithPrec(600, 3),
+	NativeDevelopment: sdk.NewDecWithPrec(400, 3),
+}
 
 func (s *E2ETestSuite) QueryDistributionxParams() {
 	params := dtxtypes.DefaultParams()

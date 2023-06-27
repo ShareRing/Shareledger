@@ -19,7 +19,8 @@ func (m *InstantiateMsg) MustToJSON() string {
 }
 
 type MintMsg struct {
-	Owner string `json:"owner"`
+	Owner   string `json:"owner"`
+	TokenID string `json:"token_id"`
 }
 
 func (m *MintMsg) MustToJSON() string {

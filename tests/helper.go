@@ -2,6 +2,7 @@ package tests
 
 import (
 	"errors"
+	"reflect"
 	"time"
 
 	"github.com/cosmos/cosmos-sdk/client"
@@ -16,8 +17,6 @@ import (
 	"github.com/cosmos/gogoproto/proto"
 	shareledgernetwork "github.com/sharering/shareledger/testutil/network"
 	"github.com/spf13/cobra"
-
-	"reflect"
 
 	"github.com/stretchr/testify/suite"
 )
@@ -81,7 +80,6 @@ func checkRespType(s *suite.Suite, resp, expected interface{}) {
 			}
 		} else {
 			s.Equal(exp.Interface(), res.Interface())
-
 		}
 	}
 }

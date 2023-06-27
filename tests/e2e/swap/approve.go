@@ -2,6 +2,9 @@ package swap
 
 import (
 	"fmt"
+	"path/filepath"
+	"strconv"
+
 	"github.com/cosmos/cosmos-sdk/crypto/keyring"
 	clitestutil "github.com/cosmos/cosmos-sdk/testutil/cli"
 	"github.com/cosmos/cosmos-sdk/types"
@@ -16,7 +19,6 @@ import (
 	swapTypes "github.com/sharering/shareledger/x/swap/types"
 	"github.com/sharering/shareledger/x/utils/denom"
 	"github.com/stretchr/testify/suite"
-	"strconv"
 )
 
 type E2ETestApprove struct {
@@ -36,9 +38,18 @@ func (s *E2ETestApprove) SetupSuite() {
 	coin1 := sdk.NewCoin(denom.Base, sdk.NewInt(20*denom.ShrExponent))
 	coin2 := sdk.NewCoin(denom.Base, sdk.NewInt(30*denom.ShrExponent))
 
-	kr, _ := network.SetTestingGenesis(s.T(), &s.cfg)
+	// the nodeDir, and moniker hard code at here in cosmos-sdk:
+	// github.com/sharering/cosmos-sdk@v0.47.2-shareledger/testutil/network/network.go:398
+	// So just reuse it
+	rootDir := s.T().TempDir()
+	moniker := fmt.Sprintf("node%d", s.cfg.NumValidators-1)
+	// TestingGenesis should use the same KeyringDir as validator KeyringDir
+	// github.com/sharering/cosmos-sdk@v0.47.2-shareledger/testutil/network/network.go:400
+	nodeDir := filepath.Join(rootDir, moniker, "simcli")
+	kr, _ := network.SetTestingGenesis(s.T(), &s.cfg, nodeDir, moniker)
+	s.Require().NotNil(kr)
 
-	//swap genesis
+	// swap genesis
 	swapGenesis := swapTypes.GenesisState{
 		Schemas: []swapTypes.Schema{
 			{
@@ -57,7 +68,7 @@ func (s *E2ETestApprove) SetupSuite() {
 				DestAddr: "0x97b98d335c28f9ad9c123e344a78f00c84146431",
 				Amount: sdk.Coin{
 					Denom:  denom.Base,
-					Amount: sdk.NewInt(3455000000000), //3455 shr
+					Amount: sdk.NewInt(3455000000000), // 3455 shr
 				},
 				Status:     "pending",
 				SrcNetwork: "shareledger",
@@ -67,7 +78,7 @@ func (s *E2ETestApprove) SetupSuite() {
 				DestAddr: "0x97b98d335c28f9ad9c123e344a78f00c84146431",
 				Amount: sdk.Coin{
 					Denom:  denom.Base,
-					Amount: sdk.NewInt(6733000000000), //6733 shr
+					Amount: sdk.NewInt(6733000000000), // 6733 shr
 				},
 				Status:     "pending",
 				SrcNetwork: "shareledger",
@@ -82,7 +93,7 @@ func (s *E2ETestApprove) SetupSuite() {
 	swapGenesisBz, err := s.cfg.Codec.MarshalJSON(&swapGenesis)
 	s.Require().NoError(err)
 	s.cfg.GenesisState[swapTypes.ModuleName] = swapGenesisBz
-	//Bank genesis
+	// Bank genesis
 	bankGen := bankTypes.GenesisState{}
 	s.cfg.Codec.MustUnmarshalJSON(s.cfg.GenesisState[bankTypes.ModuleName], &bankGen)
 	bankGen.Balances = append(bankGen.Balances, bankTypes.Balance{
@@ -93,7 +104,7 @@ func (s *E2ETestApprove) SetupSuite() {
 	bankGenesisBz, err := s.cfg.Codec.MarshalJSON(&bankGen)
 	s.NoError(err)
 	s.cfg.GenesisState[bankTypes.ModuleName] = bankGenesisBz
-	s.network = network.New(s.T(), s.cfg)
+	s.network = network.New(s.T(), rootDir, s.cfg)
 	s.network.Validators[0].ClientCtx.Keyring = kr
 	s.Require().NoError(s.network.WaitForNextBlock())
 }
@@ -101,7 +112,7 @@ func (s *E2ETestApprove) SetupSuite() {
 func (s *E2ETestApprove) TestApproveRequest() {
 	cliCtx := s.network.Validators[0].ClientCtx
 
-	//Approve
+	// Approve
 	approveOut, err := clitestutil.ExecTestCLICmd(cliCtx, cli.CmdApprove(), append([]string{"3000,3001", network.KeyAccountTestSign, "eth", network.MakeByAccount(network.KeyApproverRelayer)}, tests.DefaultTxFlag()...))
 	s.Require().NoError(err)
 	var resp types.TxResponse
@@ -132,7 +143,7 @@ func (s *E2ETestApprove) TestApproveRequest() {
 			DestAddr: "0x97b98d335c28f9ad9c123e344a78f00c84146431",
 			Amount: sdk.Coin{
 				Denom:  denom.Base,
-				Amount: sdk.NewInt(3455000000000), //3455 shr
+				Amount: sdk.NewInt(3455000000000), // 3455 shr
 			},
 			Status:     "pending",
 			SrcNetwork: "shareledger",
@@ -142,7 +153,7 @@ func (s *E2ETestApprove) TestApproveRequest() {
 			DestAddr: "0x97b98d335c28f9ad9c123e344a78f00c84146431",
 			Amount: sdk.Coin{
 				Denom:  denom.Base,
-				Amount: sdk.NewInt(6733000000000), //6733 shr
+				Amount: sdk.NewInt(6733000000000), // 6733 shr
 			},
 			Status:     "pending",
 			SrcNetwork: "shareledger",
@@ -167,5 +178,4 @@ func (s *E2ETestApprove) TestApproveRequest() {
 	s.Equalf(true, npk.VerifySignature(digest.Bytes(), sig), "verify sign fail")
 	s.Equalf("0xd9a5705095d8c83fc051fde2dda2e47fb81d16ee23f11f9322c0656e6020ee9001f73fd951ad0d1d7d36a59900d2bd481c47477d01fbd1a2a6da5c7f6d78129d1c", batchRes.Batches[0].GetSignature(), "eip sign not same")
 	s.Equalf("0xb63b8aa6f75b29271051d9069070d0555f4e6cdaf35e72d69ffcb366a4d47a08", digest.String(), "digest not equal")
-
 }
