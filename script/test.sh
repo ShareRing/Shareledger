@@ -4,7 +4,7 @@
 # sh ./script/test_parallel.sh
 
 echo "============START TO RUN TESTSUITE===================="
-module_list=(id swap asset booking document electoral)
+module_list=(id swap asset booking document electoral distributionx gov)
 
 
 mkdir -p coverage
