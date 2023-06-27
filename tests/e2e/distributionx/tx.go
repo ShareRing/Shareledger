@@ -32,10 +32,10 @@ func (s *E2ETestSuite) TestWithdrawReward() {
 			network.MakeByAccount(network.KeyAccount1),
 		},
 	)
-	after := s.getBalance(acc1Address)
 	s.NoError(err)
+	after := s.getBalance(acc1Address)
 	// check balances increase (and substract tx fee = 10SHR)
-	s.Equal(reward.Sub(sdkmath.NewInt(10_000_000_000)), after.Sub(before))
+	s.Equal(before.Add(reward).Sub(sdk.NewInt(10_000_000_000)), after)
 }
 
 func (s *E2ETestSuite) TestRewardNormalTx() {

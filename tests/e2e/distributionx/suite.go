@@ -5,6 +5,8 @@ import (
 	"path/filepath"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
+	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 	"github.com/sharering/shareledger/testutil/network"
 	"github.com/sharering/shareledger/x/distributionx/types"
 	"github.com/sharering/shareledger/x/utils/denom"
@@ -62,12 +64,13 @@ func (s *E2ETestSuite) SetupSuite() {
 	// kr, _ := network.SetTestingGenesis(s.T(), &s.cfg)
 	devPoolAccount = network.MustAddressFormKeyring(kr, network.KeyAccount3).String()
 
+	reward := sdk.NewCoins(sdk.NewCoin(denom.Base, sdk.NewInt(1000)))
 	params.BuilderWindows = 15
 	params.TxThreshold = 3
 	params.DevPoolAccount = devPoolAccount
 	reward1 = types.Reward{
 		Index:  network.MustAddressFormKeyring(kr, network.KeyAccount1).String(),
-		Amount: sdk.NewCoins(sdk.NewCoin(denom.Base, sdk.NewInt(1000))),
+		Amount: reward,
 	}
 	distriXGenesis := &types.GenesisState{
 		Params: params,
@@ -82,7 +85,21 @@ func (s *E2ETestSuite) SetupSuite() {
 		},
 		BuilderListCount: 2,
 	}
+
+	// set distributionx module balance
+	authtypes.NewModuleAddress(types.ModuleName)
+
+	var bankGenesis banktypes.GenesisState
+	s.Require().NoError(s.cfg.Codec.UnmarshalJSON(s.cfg.GenesisState[banktypes.ModuleName], &bankGenesis))
+
+	bankGenesis.Balances = append(bankGenesis.Balances, banktypes.Balance{
+		Address: authtypes.NewModuleAddress(types.ModuleName).String(),
+		Coins:   reward,
+	})
+	bankGenesis.Supply.Add(reward...)
+
 	s.cfg.GenesisState[types.ModuleName] = s.cfg.Codec.MustMarshalJSON(distriXGenesis)
+	s.cfg.GenesisState[banktypes.ModuleName] = s.cfg.Codec.MustMarshalJSON(&bankGenesis)
 
 	s.network = network.New(s.T(), rootDir, s.cfg)
 	s.network.Validators[0].ClientCtx.Keyring = kr
