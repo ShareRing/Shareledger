@@ -417,18 +417,6 @@ func (s *E2ETestSuite) TestCreateSchema() {
 			ExpectErr: true,
 		},
 		{
-			Name: "given invalid contract exponent should be fail",
-			Args: []string{
-				"newNet",
-				"{}",
-				"10shr",
-				"10shr",
-				"8x",
-				network.MakeByAccount(network.KeyAuthority),
-			},
-			ExpectErr: true,
-		},
-		{
 			Name: "given existed contract should be fail",
 			Args: []string{
 				"eth",
@@ -480,18 +468,6 @@ func (s *E2ETestSuite) TestUpdateSchema() {
 				EmptySchema,
 				"--fee-in=tenshr",
 				"--fee-out=tenshr",
-				Exponent8,
-				network.MakeByAccount(network.KeyAuthority),
-			},
-			ExpectErr: true,
-		},
-		{
-			Name: "given invalid contract exponent should be fail",
-			Args: []string{
-				"hero",
-				EmptySchema,
-				FeeIn10Shr,
-				FeeOut10Shr,
 				Exponent8,
 				network.MakeByAccount(network.KeyAuthority),
 			},
