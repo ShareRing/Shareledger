@@ -18,16 +18,17 @@ func init() {
 	})
 }
 
-//func TestE2ETxTestSuite(t *testing.T) {
-//	conf := network.DefaultConfig()
-//	conf.NumValidators = 1
-//	suite.Run(t, NewE2ETestSuite(conf))
-//}
-//func TestE2EQueryTestSuite(t *testing.T) {
-//	conf := network.DefaultConfig()
-//	conf.NumValidators = 1
-//	suite.Run(t, NewE2ETestQuerySuite(conf))
-//}
+func TestE2EQueryTestSuite(t *testing.T) {
+	conf := network.DefaultConfig()
+	conf.NumValidators = 1
+	suite.Run(t, NewE2ETestQuerySuite(conf))
+}
+
+func TestE2ETxTestSuite(t *testing.T) {
+	conf := network.DefaultConfig()
+	conf.NumValidators = 1
+	suite.Run(t, NewE2ETestSuite(conf))
+}
 
 func TestE2EApproveSuite(t *testing.T) {
 	conf := network.DefaultConfig()
