@@ -63,7 +63,7 @@ services:
       - 26658
       - 26660
     volumes:
-      - ./testnet/node1:/root/.shareledger
+      - ./testnet/node1:/root/.Shareledger
     command:
       - shareledger
       - start
@@ -87,7 +87,7 @@ services:
       - 26658
       - 26660
     volumes:
-      - ./testnet/node2:/root/.shareledger
+      - ./testnet/node2:/root/.Shareledger
     command:
       - shareledger
       - start
@@ -111,7 +111,7 @@ services:
       - 26658
       - 26660
     volumes:
-      - ./testnet/node3:/root/.shareledger
+      - ./testnet/node3:/root/.Shareledger
     command:
       - shareledger
       - start
