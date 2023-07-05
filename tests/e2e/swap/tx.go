@@ -102,6 +102,7 @@ func (s *E2ETestSuite) TestCreateRequestIn() {
 		{
 			Name: "create request in valid should be success",
 			Args: []string{
+				"0x1111",
 				"shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
 				"eth",
 				event1,
@@ -115,6 +116,7 @@ func (s *E2ETestSuite) TestCreateRequestIn() {
 		{
 			Name: "create request in duplication tx hashes should be error",
 			Args: []string{
+				"0x1111",
 				"shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
 				"eth",
 				event1 + ",hash1:sender1:12",
@@ -127,6 +129,7 @@ func (s *E2ETestSuite) TestCreateRequestIn() {
 		{
 			Name: "create request in valid should be success",
 			Args: []string{
+				"0x1111",
 				"shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
 				"eth",
 				event1,
@@ -140,6 +143,7 @@ func (s *E2ETestSuite) TestCreateRequestIn() {
 		{
 			Name: "create request in not valid log index should be success",
 			Args: []string{
+				"0x1111",
 				"shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
 				"eth",
 				"hash1:sender1:1xx2",
@@ -151,6 +155,7 @@ func (s *E2ETestSuite) TestCreateRequestIn() {
 		{
 			Name: "create request in but transaction singer isn't relayer account",
 			Args: []string{
+				"0x1111",
 				"shareledger1tc9yej24s698vm5w0jvt7452mgxl3ck74nqxjg",
 				"eth",
 				event1,
