@@ -16,7 +16,7 @@ import (
 
 func CmdIn() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "in [dest_address] [src_network] [txHashes] [amount] [fee]",
+		Use:   "in [src_address] [dest_address] [src_network] [txHashes] [amount] [fee]",
 		Short: "Broadcast message in, to create the swap in request",
 		Long: `
 			[dest_address] should be shareledger address in shareledger
@@ -24,11 +24,12 @@ func CmdIn() *cobra.Command {
 			[amount] the total of all external transactions' amount minus swap fee.
 			[fee] the fee for swap in which is configured in schema data.
 		`,
-		Args: cobra.ExactArgs(5),
+		Args: cobra.ExactArgs(6),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			argDesAddress := args[0]
-			argSrcNetwork := args[1]
-			hashesLog := strings.Split(args[2], ",")
+			argSrcAddress := args[0]
+			argDesAddress := args[1]
+			argSrcNetwork := args[2]
+			hashesLog := strings.Split(args[3], ",")
 			txHashes := make([]*types.TxEvent, 0, len(hashesLog))
 
 			for i := range hashesLog {
@@ -49,8 +50,8 @@ func CmdIn() *cobra.Command {
 				}
 			}
 
-			argAmount := args[3]
-			argFee := args[4]
+			argAmount := args[4]
+			argFee := args[5]
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -69,6 +70,7 @@ func CmdIn() *cobra.Command {
 
 			msg := types.NewMsgRequestIn(
 				clientCtx.GetFromAddress().String(),
+				argSrcAddress,
 				argDesAddress,
 				argSrcNetwork,
 				txHashes,
