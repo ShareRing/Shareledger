@@ -1,13 +1,14 @@
 package types
 
 import (
-	"github.com/cosmos/cosmos-sdk/types"
-	denom "github.com/sharering/shareledger/x/utils/denom"
 	"testing"
 
+	"github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	"github.com/sharering/shareledger/testutil/sample"
 	"github.com/stretchr/testify/require"
+
+	"github.com/sharering/shareledger/testutil/sample"
+	denom "github.com/sharering/shareledger/x/utils/denom"
 )
 
 func TestMsgLoad_ValidateBasic(t *testing.T) {

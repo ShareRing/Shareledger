@@ -1,11 +1,13 @@
 package tests
 
 import (
-	"github.com/sharering/shareledger/cmd/Shareledgerd/cli"
-	"github.com/sharering/shareledger/testutil/network"
-	"github.com/stretchr/testify/suite"
 	"sync"
 	"testing"
+
+	"github.com/stretchr/testify/suite"
+
+	"github.com/sharering/shareledger/cmd/Shareledgerd/cli"
+	"github.com/sharering/shareledger/testutil/network"
 )
 
 var (

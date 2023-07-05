@@ -5,10 +5,11 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	"github.com/stretchr/testify/require"
+
 	"github.com/sharering/shareledger/app/params"
 	"github.com/sharering/shareledger/testutil/sample"
 	denom "github.com/sharering/shareledger/x/utils/denom"
-	"github.com/stretchr/testify/require"
 )
 
 func init() {

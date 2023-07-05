@@ -5,6 +5,7 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/testutil/network"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
+
 	"github.com/sharering/shareledger/app"
 	"github.com/sharering/shareledger/app/params"
 	denom "github.com/sharering/shareledger/x/utils/denom"

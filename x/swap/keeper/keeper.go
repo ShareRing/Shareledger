@@ -8,8 +8,9 @@ import (
 	storetypes "github.com/cosmos/cosmos-sdk/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
-	"github.com/sharering/shareledger/x/swap/types"
 	"github.com/tendermint/tendermint/libs/log"
+
+	"github.com/sharering/shareledger/x/swap/types"
 )
 
 type (

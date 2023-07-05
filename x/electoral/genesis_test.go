@@ -3,10 +3,11 @@ package electoral_test
 import (
 	"testing"
 
+	"github.com/stretchr/testify/require"
+
 	keepertest "github.com/sharering/shareledger/testutil/keeper"
 	"github.com/sharering/shareledger/x/electoral"
 	"github.com/sharering/shareledger/x/electoral/types"
-	"github.com/stretchr/testify/require"
 )
 
 func TestGenesis(t *testing.T) {

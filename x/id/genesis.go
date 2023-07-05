@@ -2,6 +2,7 @@ package id
 
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
+
 	"github.com/sharering/shareledger/x/id/keeper"
 	"github.com/sharering/shareledger/x/id/types"
 )

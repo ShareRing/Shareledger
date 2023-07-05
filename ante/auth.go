@@ -5,6 +5,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
+
 	documenttypes "github.com/sharering/shareledger/x/document/types"
 	electoraltypes "github.com/sharering/shareledger/x/electoral/types"
 	gentleminttypes "github.com/sharering/shareledger/x/gentlemint/types"

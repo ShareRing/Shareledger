@@ -2,6 +2,7 @@ package booking
 
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
+
 	"github.com/sharering/shareledger/x/booking/keeper"
 	"github.com/sharering/shareledger/x/booking/types"
 )

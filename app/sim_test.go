@@ -3,13 +3,10 @@ package app_test
 import (
 	"encoding/json"
 	"fmt"
-	gentlemintmoduletypes "github.com/sharering/shareledger/x/gentlemint/types"
 	"os"
 	"runtime/debug"
 	"strings"
 	"testing"
-
-	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
 
 	"github.com/CosmWasm/wasmd/x/wasm"
 	"github.com/cosmos/cosmos-sdk/baseapp"
@@ -26,17 +23,20 @@ import (
 	evidencetypes "github.com/cosmos/cosmos-sdk/x/evidence/types"
 	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types"
 	minttypes "github.com/cosmos/cosmos-sdk/x/mint/types"
+	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
 	"github.com/cosmos/cosmos-sdk/x/simulation"
 	slashingtypes "github.com/cosmos/cosmos-sdk/x/slashing/types"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
+	"github.com/stretchr/testify/require"
+	"github.com/tendermint/tendermint/libs/log"
+	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
+
 	"github.com/sharering/shareledger/app"
 	"github.com/sharering/shareledger/app/params"
 	distributionxType "github.com/sharering/shareledger/x/distributionx/types"
 	elecTypes "github.com/sharering/shareledger/x/electoral/types"
+	gentlemintmoduletypes "github.com/sharering/shareledger/x/gentlemint/types"
 	swapmoduletypes "github.com/sharering/shareledger/x/swap/types"
-	"github.com/stretchr/testify/require"
-	"github.com/tendermint/tendermint/libs/log"
-	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
 )
 
 // Get flags every time the simulator is run

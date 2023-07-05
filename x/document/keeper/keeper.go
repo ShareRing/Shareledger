@@ -6,9 +6,10 @@ import (
 	"github.com/cosmos/cosmos-sdk/codec"
 	storetypes "github.com/cosmos/cosmos-sdk/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/tendermint/tendermint/libs/log"
+
 	"github.com/sharering/shareledger/x/document/types"
 	idk "github.com/sharering/shareledger/x/id/keeper"
-	"github.com/tendermint/tendermint/libs/log"
 )
 
 type (

@@ -12,11 +12,12 @@ import (
 	"github.com/cosmos/cosmos-sdk/types/module"
 	"github.com/gorilla/mux"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
+	"github.com/spf13/cobra"
+	abci "github.com/tendermint/tendermint/abci/types"
+
 	"github.com/sharering/shareledger/x/swap/client/cli"
 	"github.com/sharering/shareledger/x/swap/keeper"
 	"github.com/sharering/shareledger/x/swap/types"
-	"github.com/spf13/cobra"
-	abci "github.com/tendermint/tendermint/abci/types"
 )
 
 var (

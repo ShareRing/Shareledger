@@ -5,8 +5,9 @@ import (
 	"time"
 
 	"github.com/cosmos/cosmos-sdk/client"
-	"github.com/sharering/shareledger/x/document/types"
 	"github.com/spf13/cobra"
+
+	"github.com/sharering/shareledger/x/document/types"
 )
 
 var (

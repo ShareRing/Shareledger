@@ -1,15 +1,16 @@
 package keeper_test
 
 import (
-	"github.com/sharering/shareledger/testutil/sample"
 	"strconv"
 	"testing"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/stretchr/testify/require"
+
 	keepertest "github.com/sharering/shareledger/testutil/keeper"
+	"github.com/sharering/shareledger/testutil/sample"
 	"github.com/sharering/shareledger/x/electoral/keeper"
 	"github.com/sharering/shareledger/x/electoral/types"
-	"github.com/stretchr/testify/require"
 )
 
 // Prevent strconv unused error

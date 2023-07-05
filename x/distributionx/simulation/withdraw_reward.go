@@ -7,6 +7,7 @@ import (
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
+
 	"github.com/sharering/shareledger/testutil"
 	"github.com/sharering/shareledger/x/distributionx/keeper"
 	"github.com/sharering/shareledger/x/distributionx/types"

@@ -12,9 +12,10 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/cosmos/cosmos-sdk/types/query"
 	"github.com/ethereum/go-ethereum/common/hexutil"
+	"github.com/spf13/cobra"
+
 	"github.com/sharering/shareledger/pkg/swap"
 	"github.com/sharering/shareledger/x/swap/types"
-	"github.com/spf13/cobra"
 )
 
 func CmdApprove() *cobra.Command {

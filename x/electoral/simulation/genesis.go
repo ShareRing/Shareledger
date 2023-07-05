@@ -6,6 +6,7 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/types/module"
 	"github.com/cosmos/cosmos-sdk/types/simulation"
+
 	"github.com/sharering/shareledger/testutil"
 	"github.com/sharering/shareledger/x/electoral/types"
 )

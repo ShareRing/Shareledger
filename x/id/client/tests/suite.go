@@ -1,16 +1,17 @@
 package tests
 
 import (
-	"github.com/cosmos/cosmos-sdk/testutil/network"
-	sdk "github.com/cosmos/cosmos-sdk/types"
-	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	netutilts "github.com/sharering/shareledger/testutil/network"
-	idtypes "github.com/sharering/shareledger/x/id/types"
-	"github.com/stretchr/testify/suite"
 	"os"
 	"strings"
 
+	"github.com/cosmos/cosmos-sdk/testutil/network"
+	sdk "github.com/cosmos/cosmos-sdk/types"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	"github.com/stretchr/testify/suite"
+
+	netutilts "github.com/sharering/shareledger/testutil/network"
 	"github.com/sharering/shareledger/x/electoral/client/tests"
+	idtypes "github.com/sharering/shareledger/x/id/types"
 )
 
 type IDIntegrationTestSuite struct {

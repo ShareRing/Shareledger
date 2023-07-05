@@ -3,12 +3,12 @@ package types
 import (
 	"testing"
 
-	"github.com/google/uuid"
-
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	"github.com/google/uuid"
+	"github.com/stretchr/testify/require"
+
 	"github.com/sharering/shareledger/app/params"
 	"github.com/sharering/shareledger/testutil/sample"
-	"github.com/stretchr/testify/require"
 )
 
 func init() {

@@ -6,10 +6,11 @@ import (
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/testutil"
 	clitestutil "github.com/cosmos/cosmos-sdk/testutil/cli"
+	"github.com/stretchr/testify/require"
+
 	"github.com/sharering/shareledger/app"
 	"github.com/sharering/shareledger/x/id/client/cli"
 	"github.com/sharering/shareledger/x/id/types"
-	"github.com/stretchr/testify/require"
 )
 
 func CmdExNewID(clientCtx client.Context, userID, backupAddress, addressOwner, exData string, extraFlags ...string) (testutil.BufferWriter, error) {

@@ -6,9 +6,9 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/testutil/network"
 	"github.com/cosmos/cosmos-sdk/types"
-	netutilts "github.com/sharering/shareledger/testutil/network"
 	"github.com/stretchr/testify/suite"
 
+	netutilts "github.com/sharering/shareledger/testutil/network"
 	"github.com/sharering/shareledger/testutil/sample"
 	documenttypes "github.com/sharering/shareledger/x/document/types"
 	"github.com/sharering/shareledger/x/electoral/client/tests"

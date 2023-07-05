@@ -5,8 +5,9 @@ import (
 	"testing"
 
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	"github.com/sharering/shareledger/app/params"
 	"github.com/stretchr/testify/require"
+
+	"github.com/sharering/shareledger/app/params"
 )
 
 func init() {

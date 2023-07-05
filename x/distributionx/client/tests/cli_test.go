@@ -2,13 +2,14 @@ package tests
 
 import (
 	"encoding/json"
-	"github.com/stretchr/testify/suite"
-	tmjson "github.com/tendermint/tendermint/libs/json"
-	tmtypes "github.com/tendermint/tendermint/types"
 	"os"
 	"path/filepath"
 	"sync"
 	"testing"
+
+	"github.com/stretchr/testify/suite"
+	tmjson "github.com/tendermint/tendermint/libs/json"
+	tmtypes "github.com/tendermint/tendermint/types"
 
 	"github.com/sharering/shareledger/cmd/Shareledgerd/cli"
 	"github.com/sharering/shareledger/testutil/network"

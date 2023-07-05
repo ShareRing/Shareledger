@@ -4,8 +4,9 @@ import (
 	"testing"
 
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	"github.com/sharering/shareledger/testutil/sample"
 	"github.com/stretchr/testify/require"
+
+	"github.com/sharering/shareledger/testutil/sample"
 )
 
 func TestMsgCreateDocuments_ValidateBasic(t *testing.T) {

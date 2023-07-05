@@ -2,6 +2,7 @@ package constant
 
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
+
 	denom "github.com/sharering/shareledger/x/utils/denom"
 )
 

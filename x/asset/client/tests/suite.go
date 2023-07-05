@@ -2,15 +2,15 @@ package tests
 
 import (
 	"fmt"
+	"os"
+
 	"github.com/cosmos/cosmos-sdk/testutil/network"
 	types2 "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	"github.com/sharering/shareledger/x/asset/types"
-	"os"
+	"github.com/stretchr/testify/suite"
 
 	netutilts "github.com/sharering/shareledger/testutil/network"
-
-	"github.com/stretchr/testify/suite"
+	"github.com/sharering/shareledger/x/asset/types"
 )
 
 type (

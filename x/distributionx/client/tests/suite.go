@@ -4,16 +4,16 @@ import (
 	"os"
 	"strings"
 
+	"github.com/cosmos/cosmos-sdk/testutil/network"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	testutil2 "github.com/cosmos/cosmos-sdk/x/bank/client/testutil"
+	"github.com/stretchr/testify/suite"
+
+	netutilts "github.com/sharering/shareledger/testutil/network"
 	distributionxType "github.com/sharering/shareledger/x/distributionx/types"
 	"github.com/sharering/shareledger/x/swap/client/tests"
 	swapmoduletypes "github.com/sharering/shareledger/x/swap/types"
 	"github.com/sharering/shareledger/x/utils/denom"
-
-	"github.com/cosmos/cosmos-sdk/testutil/network"
-	netutilts "github.com/sharering/shareledger/testutil/network"
-	"github.com/stretchr/testify/suite"
 )
 
 type (

@@ -4,11 +4,12 @@ import (
 	"testing"
 
 	"cosmossdk.io/math"
+	"github.com/stretchr/testify/suite"
+
 	"github.com/sharering/shareledger/app/apptesting"
 	"github.com/sharering/shareledger/x/gentlemint/keeper"
 	"github.com/sharering/shareledger/x/gentlemint/types"
 	"github.com/sharering/shareledger/x/utils/denom"
-	"github.com/stretchr/testify/suite"
 )
 
 type KeeperTestSuite struct {

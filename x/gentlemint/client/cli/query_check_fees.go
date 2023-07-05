@@ -3,8 +3,9 @@ package cli
 import (
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
-	"github.com/sharering/shareledger/x/gentlemint/types"
 	"github.com/spf13/cobra"
+
+	"github.com/sharering/shareledger/x/gentlemint/types"
 )
 
 func CmdCheckFees() *cobra.Command {

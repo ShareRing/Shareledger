@@ -7,10 +7,11 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
-	"github.com/sharering/shareledger/app"
-	denom "github.com/sharering/shareledger/x/utils/denom"
 	"github.com/stretchr/testify/require"
 	tmos "github.com/tendermint/tendermint/libs/os"
+
+	"github.com/sharering/shareledger/app"
+	denom "github.com/sharering/shareledger/x/utils/denom"
 )
 
 const (

@@ -2,9 +2,10 @@ package simapp
 
 import (
 	servertypes "github.com/cosmos/cosmos-sdk/server/types"
-	"github.com/sharering/shareledger/app"
 	"github.com/tendermint/tendermint/libs/log"
 	tmdb "github.com/tendermint/tm-db"
+
+	"github.com/sharering/shareledger/app"
 )
 
 // New creates application instance with in-memory database and disabled logging.

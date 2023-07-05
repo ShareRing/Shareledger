@@ -1,14 +1,16 @@
 package simulation
 
 import (
+	"math/rand"
+
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
 	simappparams "github.com/cosmos/cosmos-sdk/simapp/params"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/ibc-go/v5/testing/simapp/helpers"
+
 	"github.com/sharering/shareledger/x/electoral/types"
 	"github.com/sharering/shareledger/x/utils/denom"
-	"math/rand"
 )
 
 func makeTransaction(_ *rand.Rand,

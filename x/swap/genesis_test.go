@@ -3,11 +3,12 @@ package swap_test
 import (
 	"testing"
 
+	"github.com/stretchr/testify/require"
+
 	keepertest "github.com/sharering/shareledger/testutil/keeper"
 	"github.com/sharering/shareledger/testutil/nullify"
 	"github.com/sharering/shareledger/x/swap"
 	"github.com/sharering/shareledger/x/swap/types"
-	"github.com/stretchr/testify/require"
 )
 
 func TestGenesis(t *testing.T) {

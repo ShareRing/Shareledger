@@ -3,10 +3,11 @@ package keeper_test
 import (
 	"testing"
 
+	"github.com/stretchr/testify/suite"
+
 	"github.com/sharering/shareledger/app/apptesting"
 	"github.com/sharering/shareledger/x/distributionx/keeper"
 	"github.com/sharering/shareledger/x/distributionx/types"
-	"github.com/stretchr/testify/suite"
 )
 
 type KeeperTestSuite struct {

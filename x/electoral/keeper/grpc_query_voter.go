@@ -2,10 +2,12 @@ package keeper
 
 import (
 	"context"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/sharering/shareledger/x/electoral/types"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+
+	"github.com/sharering/shareledger/x/electoral/types"
 )
 
 func (k Keeper) Voter(goCtx context.Context, req *types.QueryVoterRequest) (result *types.QueryVoterResponse, err error) {

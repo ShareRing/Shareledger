@@ -3,15 +3,17 @@ package simulation
 import (
 	"encoding/json"
 	"fmt"
+	"math/rand"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
 	"github.com/cosmos/cosmos-sdk/types/simulation"
 	"github.com/ethereum/go-ethereum/signer/core/apitypes"
+	"github.com/thanhpk/randstr"
+
 	"github.com/sharering/shareledger/testutil"
 	"github.com/sharering/shareledger/x/swap/types"
 	"github.com/sharering/shareledger/x/utils/denom"
-	"github.com/thanhpk/randstr"
-	"math/rand"
 )
 
 const (

@@ -4,10 +4,11 @@ import (
 	"testing"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/stretchr/testify/require"
+
 	keepertest "github.com/sharering/shareledger/testutil/keeper"
 	"github.com/sharering/shareledger/x/gentlemint"
 	"github.com/sharering/shareledger/x/gentlemint/types"
-	"github.com/stretchr/testify/require"
 )
 
 func TestGenesis(t *testing.T) {

@@ -3,13 +3,15 @@ package swap
 import (
 	"encoding/json"
 	"fmt"
+	"math/big"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/signer/core/apitypes"
+
 	crypto2 "github.com/sharering/shareledger/pkg/crypto"
 	swapmoduletypes "github.com/sharering/shareledger/x/swap/types"
 	denom "github.com/sharering/shareledger/x/utils/denom"
-	"math/big"
 )
 
 type BatchDetail struct {

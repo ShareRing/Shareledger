@@ -2,15 +2,16 @@ package keeper
 
 import (
 	"context"
-	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	"github.com/sharering/shareledger/x/constant"
-	denom "github.com/sharering/shareledger/x/utils/denom"
 	"sort"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/sharering/shareledger/x/gentlemint/types"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+
+	"github.com/sharering/shareledger/x/constant"
+	"github.com/sharering/shareledger/x/gentlemint/types"
+	denom "github.com/sharering/shareledger/x/utils/denom"
 )
 
 func (k Keeper) LevelFees(c context.Context, req *types.QueryLevelFeesRequest) (*types.QueryLevelFeesResponse, error) {

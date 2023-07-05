@@ -2,10 +2,11 @@ package fee
 
 import (
 	"fmt"
-	sdk "github.com/cosmos/cosmos-sdk/types"
-	distributiontypes "github.com/cosmos/cosmos-sdk/x/distribution/types"
 	"reflect"
 	"testing"
+
+	sdk "github.com/cosmos/cosmos-sdk/types"
+	distributiontypes "github.com/cosmos/cosmos-sdk/x/distribution/types"
 )
 
 func TestTableFee_GetNameMsg(t *testing.T) {

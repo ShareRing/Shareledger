@@ -4,9 +4,10 @@ import (
 	"context"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/sharering/shareledger/x/document/types"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+
+	"github.com/sharering/shareledger/x/document/types"
 )
 
 func (k Keeper) DocumentOfHolderByIssuer(goCtx context.Context, req *types.QueryDocumentOfHolderByIssuerRequest) (*types.QueryDocumentOfHolderByIssuerResponse, error) {

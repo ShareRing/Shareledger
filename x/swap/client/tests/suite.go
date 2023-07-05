@@ -2,23 +2,24 @@ package tests
 
 import (
 	"fmt"
-	"github.com/cosmos/cosmos-sdk/crypto/keyring"
-	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	"github.com/ethereum/go-ethereum/common/hexutil"
-	"github.com/sharering/shareledger/pkg/swap"
-	"github.com/sharering/shareledger/x/gentlemint/client/tests"
 	"os"
 	"strings"
 	"testing"
 
+	"github.com/cosmos/cosmos-sdk/crypto/keyring"
 	"github.com/cosmos/cosmos-sdk/testutil/network"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	netutilts "github.com/sharering/shareledger/testutil/network"
-	electoralmoduletypes "github.com/sharering/shareledger/x/electoral/types"
-	swapTypes "github.com/sharering/shareledger/x/swap/types"
-	denom "github.com/sharering/shareledger/x/utils/denom"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
+
+	"github.com/sharering/shareledger/pkg/swap"
+	netutilts "github.com/sharering/shareledger/testutil/network"
+	electoralmoduletypes "github.com/sharering/shareledger/x/electoral/types"
+	"github.com/sharering/shareledger/x/gentlemint/client/tests"
+	swapTypes "github.com/sharering/shareledger/x/swap/types"
+	denom "github.com/sharering/shareledger/x/utils/denom"
 )
 
 type SwapIntegrationTestSuite struct {

@@ -2,18 +2,19 @@ package simulation
 
 import (
 	"fmt"
-	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
-	"github.com/sharering/shareledger/testutil"
-	elecSim "github.com/sharering/shareledger/x/electoral/simulation"
-	"github.com/sharering/shareledger/x/utils/denom"
-	"github.com/thanhpk/randstr"
 	"math/rand"
 
 	"github.com/cosmos/cosmos-sdk/baseapp"
+	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
+	"github.com/thanhpk/randstr"
+
+	"github.com/sharering/shareledger/testutil"
+	elecSim "github.com/sharering/shareledger/x/electoral/simulation"
 	"github.com/sharering/shareledger/x/swap/keeper"
 	"github.com/sharering/shareledger/x/swap/types"
+	"github.com/sharering/shareledger/x/utils/denom"
 )
 
 var msg types.MsgRequestIn

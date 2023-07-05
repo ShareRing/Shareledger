@@ -3,8 +3,9 @@ package types_test
 import (
 	"testing"
 
-	"github.com/sharering/shareledger/x/asset/types"
 	"github.com/stretchr/testify/require"
+
+	"github.com/sharering/shareledger/x/asset/types"
 )
 
 func TestGenesisState_Validate(t *testing.T) {

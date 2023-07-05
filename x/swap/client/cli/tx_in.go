@@ -9,8 +9,9 @@ import (
 	"github.com/cosmos/cosmos-sdk/client/tx"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	"github.com/sharering/shareledger/x/swap/types"
 	"github.com/spf13/cobra"
+
+	"github.com/sharering/shareledger/x/swap/types"
 )
 
 func CmdIn() *cobra.Command {

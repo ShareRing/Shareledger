@@ -1,13 +1,15 @@
 package simulation
 
 import (
+	"math/rand"
+
 	"github.com/cosmos/cosmos-sdk/types/module"
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
 	uuid2 "github.com/google/uuid"
+	"github.com/thanhpk/randstr"
+
 	"github.com/sharering/shareledger/testutil"
 	assetTypes "github.com/sharering/shareledger/x/asset/types"
-	"github.com/thanhpk/randstr"
-	"math/rand"
 )
 
 func RandomizedGenState(simState *module.SimulationState) {

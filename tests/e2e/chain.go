@@ -12,9 +12,10 @@ import (
 	authvesting "github.com/cosmos/cosmos-sdk/x/auth/vesting/types"
 	evidencetypes "github.com/cosmos/cosmos-sdk/x/evidence/types"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
+	tmrand "github.com/tendermint/tendermint/libs/rand"
+
 	"github.com/sharering/shareledger/app"
 	"github.com/sharering/shareledger/app/params"
-	tmrand "github.com/tendermint/tendermint/libs/rand"
 )
 
 const (

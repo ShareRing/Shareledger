@@ -5,8 +5,9 @@ import (
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/sharering/shareledger/x/gentlemint/types"
 	"github.com/spf13/cobra"
+
+	"github.com/sharering/shareledger/x/gentlemint/types"
 )
 
 func CmdSetLevelFee() *cobra.Command {

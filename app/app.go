@@ -33,7 +33,6 @@ import (
 	ibcchanneltypes "github.com/cosmos/ibc-go/v5/modules/core/04-channel/types"
 	"github.com/gorilla/mux"
 	"github.com/rakyll/statik/fs"
-	gentleminttypes "github.com/sharering/shareledger/x/gentlemint/types"
 	"github.com/spf13/cast"
 	abci "github.com/tendermint/tendermint/abci/types"
 	tmjson "github.com/tendermint/tendermint/libs/json"
@@ -46,11 +45,12 @@ import (
 	"github.com/sharering/shareledger/app/params"
 	"github.com/sharering/shareledger/app/upgrades"
 	v2 "github.com/sharering/shareledger/app/upgrades/v2"
+	gentleminttypes "github.com/sharering/shareledger/x/gentlemint/types"
 )
 
 const (
 	AccountAddressPrefix = "shareledger"
-	Name                 = "shareledger"
+	Name                 = "Shareledger"
 )
 
 var (

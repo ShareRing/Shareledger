@@ -5,6 +5,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/codec"
 	"github.com/cosmos/cosmos-sdk/testutil"
 	clitestutil "github.com/cosmos/cosmos-sdk/testutil/cli"
+
 	"github.com/sharering/shareledger/x/swap/client/cli"
 	"github.com/sharering/shareledger/x/swap/types"
 )

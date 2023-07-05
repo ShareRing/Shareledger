@@ -10,6 +10,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
 	"github.com/cosmos/ibc-go/v5/testing/simapp/helpers"
+
 	"github.com/sharering/shareledger/x/distributionx/types"
 	"github.com/sharering/shareledger/x/utils/denom"
 )

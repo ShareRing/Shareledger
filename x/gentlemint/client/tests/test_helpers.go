@@ -3,14 +3,14 @@ package tests
 import (
 	"testing"
 
-	testutil2 "github.com/cosmos/cosmos-sdk/x/bank/client/testutil"
-	"github.com/cosmos/cosmos-sdk/x/bank/types"
-
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/testutil"
 	clitestutil "github.com/cosmos/cosmos-sdk/testutil/cli"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	cli2 "github.com/cosmos/cosmos-sdk/x/bank/client/cli"
+	testutil2 "github.com/cosmos/cosmos-sdk/x/bank/client/testutil"
+	"github.com/cosmos/cosmos-sdk/x/bank/types"
+
 	"github.com/sharering/shareledger/x/gentlemint/client/cli"
 )
 

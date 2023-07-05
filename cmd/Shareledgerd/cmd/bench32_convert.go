@@ -3,8 +3,9 @@ package cmd
 import (
 	"fmt"
 
-	addressutil "github.com/sharering/shareledger/pkg/address"
 	"github.com/spf13/cobra"
+
+	addressutil "github.com/sharering/shareledger/pkg/address"
 )
 
 var flagBech32Prefix = "prefix"

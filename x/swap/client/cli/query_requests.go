@@ -4,12 +4,12 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/spf13/pflag"
-
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
-	"github.com/sharering/shareledger/x/swap/types"
 	"github.com/spf13/cobra"
+	"github.com/spf13/pflag"
+
+	"github.com/sharering/shareledger/x/swap/types"
 )
 
 func CmdRequests() *cobra.Command {

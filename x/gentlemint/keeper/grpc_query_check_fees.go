@@ -2,13 +2,14 @@ package keeper
 
 import (
 	"context"
-	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	denom "github.com/sharering/shareledger/x/utils/denom"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/sharering/shareledger/x/gentlemint/types"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+
+	"github.com/sharering/shareledger/x/gentlemint/types"
+	denom "github.com/sharering/shareledger/x/utils/denom"
 )
 
 func (k Keeper) CheckFees(goCtx context.Context, req *types.QueryCheckFeesRequest) (*types.QueryCheckFeesResponse, error) {

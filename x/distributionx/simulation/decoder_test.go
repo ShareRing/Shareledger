@@ -7,11 +7,12 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/kv"
+	"github.com/stretchr/testify/require"
+
 	"github.com/sharering/shareledger/app"
 	"github.com/sharering/shareledger/x/distributionx/simulation"
 	"github.com/sharering/shareledger/x/distributionx/types"
 	"github.com/sharering/shareledger/x/utils/denom"
-	"github.com/stretchr/testify/require"
 )
 
 func TestNewStoreDecoder(t *testing.T) {

@@ -4,9 +4,10 @@ import (
 	"context"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/sharering/shareledger/x/id/types"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+
+	"github.com/sharering/shareledger/x/id/types"
 )
 
 func (k Keeper) IdByAddress(goCtx context.Context, req *types.QueryIdByAddressRequest) (*types.QueryIdByAddressResponse, error) {

@@ -9,6 +9,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/types/module"
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
 	"github.com/cosmos/cosmos-sdk/x/simulation"
+
 	"github.com/sharering/shareledger/testutil/sample"
 	swapsimulation "github.com/sharering/shareledger/x/swap/simulation"
 	"github.com/sharering/shareledger/x/swap/types"

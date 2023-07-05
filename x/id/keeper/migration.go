@@ -2,6 +2,7 @@ package keeper
 
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
+
 	v3 "github.com/sharering/shareledger/x/id/migrations/v3"
 )
 

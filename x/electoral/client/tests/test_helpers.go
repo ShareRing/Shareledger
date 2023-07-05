@@ -6,10 +6,11 @@ import (
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/testutil"
 	clitestutil "github.com/cosmos/cosmos-sdk/testutil/cli"
+	"github.com/stretchr/testify/require"
+
 	"github.com/sharering/shareledger/app"
 	"github.com/sharering/shareledger/x/electoral/client/cli"
 	"github.com/sharering/shareledger/x/electoral/types"
-	"github.com/stretchr/testify/require"
 )
 
 func ExCmdEnrollDocIssuer(clientCtx client.Context, address []string, additionalFlags ...string) (testutil.BufferWriter, error) {

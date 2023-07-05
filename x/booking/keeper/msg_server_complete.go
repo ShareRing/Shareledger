@@ -3,11 +3,11 @@ package keeper
 import (
 	"context"
 
-	denom "github.com/sharering/shareledger/x/utils/denom"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+
 	"github.com/sharering/shareledger/x/booking/types"
+	denom "github.com/sharering/shareledger/x/utils/denom"
 )
 
 func (k msgServer) CompleteBooking(goCtx context.Context, msg *types.MsgCompleteBooking) (*types.MsgCompleteBookingResponse, error) {

@@ -2,6 +2,7 @@ package document
 
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
+
 	"github.com/sharering/shareledger/x/document/keeper"
 	"github.com/sharering/shareledger/x/document/types"
 )

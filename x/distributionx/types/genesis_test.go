@@ -3,8 +3,9 @@ package types_test
 import (
 	"testing"
 
-	"github.com/sharering/shareledger/x/distributionx/types"
 	"github.com/stretchr/testify/require"
+
+	"github.com/sharering/shareledger/x/distributionx/types"
 )
 
 func validParams() types.Params {

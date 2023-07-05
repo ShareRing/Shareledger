@@ -12,12 +12,12 @@ import (
 	xauthsigning "github.com/cosmos/cosmos-sdk/x/auth/signing"
 	"github.com/cosmos/cosmos-sdk/x/params/types"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
-	"github.com/sharering/shareledger/app/helpers"
 	"github.com/stretchr/testify/suite"
 	tmrand "github.com/tendermint/tendermint/libs/rand"
 	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
 
 	shareledgerapp "github.com/sharering/shareledger/app"
+	"github.com/sharering/shareledger/app/helpers"
 	gentleminttypes "github.com/sharering/shareledger/x/gentlemint/types"
 )
 

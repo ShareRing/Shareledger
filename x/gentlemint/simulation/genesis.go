@@ -2,13 +2,15 @@ package simulation
 
 import (
 	"fmt"
+	"math/rand"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
+
 	"github.com/sharering/shareledger/testutil"
 	"github.com/sharering/shareledger/x/fee"
 	"github.com/sharering/shareledger/x/gentlemint/types"
 	"github.com/sharering/shareledger/x/utils/denom"
-	"math/rand"
 )
 
 const (

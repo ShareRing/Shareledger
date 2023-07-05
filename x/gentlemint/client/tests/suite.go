@@ -2,18 +2,19 @@ package tests
 
 import (
 	"fmt"
+	"os"
+	"strings"
+
 	testutil2 "github.com/cosmos/cosmos-sdk/testutil"
 	"github.com/cosmos/cosmos-sdk/testutil/network"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	"github.com/stretchr/testify/suite"
+
 	netutilts "github.com/sharering/shareledger/testutil/network"
+	"github.com/sharering/shareledger/x/electoral/client/tests"
 	gentleminttypes "github.com/sharering/shareledger/x/gentlemint/types"
 	denom "github.com/sharering/shareledger/x/utils/denom"
-	"github.com/stretchr/testify/suite"
-	"os"
-	"strings"
-
-	"github.com/sharering/shareledger/x/electoral/client/tests"
 )
 
 const MaximumSHRSupply = 2090000

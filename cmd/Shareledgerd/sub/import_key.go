@@ -9,9 +9,10 @@ import (
 	"github.com/cosmos/cosmos-sdk/crypto/hd"
 	"github.com/cosmos/cosmos-sdk/crypto/keyring"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	myutils "github.com/sharering/shareledger/x/utils"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+
+	myutils "github.com/sharering/shareledger/x/utils"
 )
 
 const (

@@ -7,9 +7,10 @@ import (
 	"github.com/cosmos/cosmos-sdk/testutil/network"
 	"github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	"github.com/stretchr/testify/suite"
+
 	netutilts "github.com/sharering/shareledger/testutil/network"
 	types2 "github.com/sharering/shareledger/x/electoral/types"
-	"github.com/stretchr/testify/suite"
 )
 
 type ElectoralIntegrationTestSuite struct {

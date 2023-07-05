@@ -1,12 +1,13 @@
 package types
 
 import (
-	"github.com/google/uuid"
 	"testing"
 
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	"github.com/sharering/shareledger/testutil/sample"
+	"github.com/google/uuid"
 	"github.com/stretchr/testify/require"
+
+	"github.com/sharering/shareledger/testutil/sample"
 )
 
 func TestMsgBook_ValidateBasic(t *testing.T) {

@@ -5,10 +5,11 @@ import (
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/server"
 	"github.com/cosmos/cosmos-sdk/types/errors"
-	electoralmoduletypes "github.com/sharering/shareledger/x/electoral/types"
-	"github.com/sharering/shareledger/x/gentlemint/types"
 	"github.com/spf13/cobra"
 	"github.com/tendermint/tendermint/libs/cli"
+
+	electoralmoduletypes "github.com/sharering/shareledger/x/electoral/types"
+	"github.com/sharering/shareledger/x/gentlemint/types"
 )
 
 func NewGenesisAddAccountOperatorCmd(defaultNodeHome string) *cobra.Command {

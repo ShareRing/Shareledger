@@ -2,14 +2,15 @@ package cli
 
 import (
 	"fmt"
-	"github.com/spf13/pflag"
 	"strconv"
 	"strings"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
-	"github.com/sharering/shareledger/x/swap/types"
 	"github.com/spf13/cobra"
+	"github.com/spf13/pflag"
+
+	"github.com/sharering/shareledger/x/swap/types"
 )
 
 var _ = strconv.Itoa(0)

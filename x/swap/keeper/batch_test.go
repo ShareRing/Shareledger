@@ -4,11 +4,12 @@ import (
 	"testing"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/stretchr/testify/require"
+
 	keepertest "github.com/sharering/shareledger/testutil/keeper"
 	"github.com/sharering/shareledger/testutil/nullify"
 	"github.com/sharering/shareledger/x/swap/keeper"
 	"github.com/sharering/shareledger/x/swap/types"
-	"github.com/stretchr/testify/require"
 )
 
 func createNBatch(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.Batch {

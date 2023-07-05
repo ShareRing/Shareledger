@@ -2,13 +2,14 @@ package simulation
 
 import (
 	"fmt"
-	"github.com/thanhpk/randstr"
 	"math/rand"
 
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	types2 "github.com/cosmos/cosmos-sdk/crypto/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
+	"github.com/thanhpk/randstr"
+
 	"github.com/sharering/shareledger/testutil"
 	"github.com/sharering/shareledger/x/electoral/keeper"
 	"github.com/sharering/shareledger/x/electoral/types"

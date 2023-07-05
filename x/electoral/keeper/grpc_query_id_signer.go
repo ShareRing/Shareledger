@@ -4,9 +4,10 @@ import (
 	"context"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/sharering/shareledger/x/electoral/types"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+
+	"github.com/sharering/shareledger/x/electoral/types"
 )
 
 func (k Keeper) IdSigner(goCtx context.Context, req *types.QueryIdSignerRequest) (*types.QueryIdSignerResponse, error) {

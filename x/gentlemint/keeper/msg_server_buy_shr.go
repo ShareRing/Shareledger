@@ -6,6 +6,7 @@ import (
 
 	errorsmod "cosmossdk.io/errors"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+
 	"github.com/sharering/shareledger/x/gentlemint/types"
 	denom "github.com/sharering/shareledger/x/utils/denom"
 )

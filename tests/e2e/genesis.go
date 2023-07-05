@@ -16,9 +16,10 @@ import (
 	govv1 "github.com/cosmos/cosmos-sdk/x/gov/types/v1"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 	icatypes "github.com/cosmos/ibc-go/v5/modules/apps/27-interchain-accounts/types"
+	tmtypes "github.com/tendermint/tendermint/types"
+
 	electoraltypes "github.com/sharering/shareledger/x/electoral/types"
 	gentleminttypes "github.com/sharering/shareledger/x/gentlemint/types"
-	tmtypes "github.com/tendermint/tendermint/types"
 )
 
 func getGenDoc(path string) (*tmtypes.GenesisDoc, error) {

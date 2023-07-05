@@ -2,6 +2,7 @@ package gentlemint
 
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
+
 	"github.com/sharering/shareledger/x/gentlemint/keeper"
 	"github.com/sharering/shareledger/x/gentlemint/types"
 )

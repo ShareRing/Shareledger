@@ -9,10 +9,11 @@ import (
 	"github.com/cosmos/cosmos-sdk/types/tx/signing"
 	authsigning "github.com/cosmos/cosmos-sdk/x/auth/signing"
 	minttypes "github.com/cosmos/cosmos-sdk/x/mint/types"
-	"github.com/sharering/shareledger/app"
-	"github.com/sharering/shareledger/app/helpers"
 	"github.com/stretchr/testify/suite"
 	tmtypes "github.com/tendermint/tendermint/proto/tendermint/types"
+
+	"github.com/sharering/shareledger/app"
+	"github.com/sharering/shareledger/app/helpers"
 )
 
 type KeeperTestHelper struct {

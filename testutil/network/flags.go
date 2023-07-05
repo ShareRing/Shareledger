@@ -2,6 +2,7 @@ package network
 
 import (
 	"fmt"
+
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/tendermint/tendermint/libs/cli"
 )

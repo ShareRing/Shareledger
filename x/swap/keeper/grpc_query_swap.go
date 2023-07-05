@@ -2,13 +2,14 @@ package keeper
 
 import (
 	"context"
-	"github.com/cosmos/cosmos-sdk/types/query"
 	"strings"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/sharering/shareledger/x/swap/types"
+	"github.com/cosmos/cosmos-sdk/types/query"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+
+	"github.com/sharering/shareledger/x/swap/types"
 )
 
 func (k Keeper) Swap(goCtx context.Context, req *types.QuerySwapRequest) (*types.QuerySwapResponse, error) {

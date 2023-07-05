@@ -2,14 +2,15 @@ package keeper
 
 import (
 	"context"
+
 	"github.com/cosmos/cosmos-sdk/store/prefix"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/cosmos/cosmos-sdk/types/query"
-
-	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/sharering/shareledger/x/swap/types"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+
+	"github.com/sharering/shareledger/x/swap/types"
 )
 
 func (k Keeper) Batches(goCtx context.Context, req *types.QueryBatchesRequest) (*types.QueryBatchesResponse, error) {

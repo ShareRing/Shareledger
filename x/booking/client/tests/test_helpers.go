@@ -6,11 +6,12 @@ import (
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/testutil"
 	clitestutil "github.com/cosmos/cosmos-sdk/testutil/cli"
+	"github.com/stretchr/testify/require"
+
 	"github.com/sharering/shareledger/app"
 	"github.com/sharering/shareledger/testutil/network"
 	"github.com/sharering/shareledger/x/booking/client/cli"
 	"github.com/sharering/shareledger/x/booking/types"
-	"github.com/stretchr/testify/require"
 )
 
 func ExCmdCreateBooking(clientCtx client.Context, assetUUID, duration string, additionalFlags ...string) (testutil.BufferWriter, error) {

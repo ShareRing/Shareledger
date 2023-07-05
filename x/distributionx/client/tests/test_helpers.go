@@ -10,6 +10,7 @@ import (
 	cli4 "github.com/cosmos/cosmos-sdk/x/staking/client/cli"
 	types3 "github.com/cosmos/cosmos-sdk/x/staking/types"
 	"github.com/pkg/errors"
+
 	"github.com/sharering/shareledger/testutil/network"
 	cli2 "github.com/sharering/shareledger/x/distributionx/client/cli"
 	"github.com/sharering/shareledger/x/distributionx/types"

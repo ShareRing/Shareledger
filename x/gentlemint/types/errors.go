@@ -4,7 +4,9 @@ package types
 
 import (
 	"fmt"
+
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+
 	denom "github.com/sharering/shareledger/x/utils/denom"
 )
 

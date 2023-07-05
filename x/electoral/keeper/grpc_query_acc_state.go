@@ -6,9 +6,10 @@ import (
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/query"
-	"github.com/sharering/shareledger/x/electoral/types"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+
+	"github.com/sharering/shareledger/x/electoral/types"
 )
 
 func (k Keeper) AccStates(c context.Context, req *types.QueryAccStatesRequest) (*types.QueryAccStatesResponse, error) {

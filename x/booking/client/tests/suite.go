@@ -2,19 +2,18 @@ package tests
 
 import (
 	"fmt"
-	"github.com/cosmos/cosmos-sdk/testutil/network"
-	sdk "github.com/cosmos/cosmos-sdk/types"
-	netutilts "github.com/sharering/shareledger/testutil/network"
-	"github.com/sharering/shareledger/x/asset/types"
-	bookingtypes "github.com/sharering/shareledger/x/booking/types"
-	"github.com/sharering/shareledger/x/utils/denom"
-
 	"os"
 
+	"github.com/cosmos/cosmos-sdk/testutil/network"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	testutil2 "github.com/cosmos/cosmos-sdk/x/bank/client/testutil"
 	"github.com/stretchr/testify/suite"
 
+	netutilts "github.com/sharering/shareledger/testutil/network"
 	"github.com/sharering/shareledger/x/asset/client/tests"
+	"github.com/sharering/shareledger/x/asset/types"
+	bookingtypes "github.com/sharering/shareledger/x/booking/types"
+	"github.com/sharering/shareledger/x/utils/denom"
 )
 
 type BookingIntegrationTestSuite struct {

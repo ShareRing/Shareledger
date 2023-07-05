@@ -5,9 +5,10 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/telemetry"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	abci "github.com/tendermint/tendermint/abci/types"
+
 	"github.com/sharering/shareledger/x/distributionx/keeper"
 	"github.com/sharering/shareledger/x/distributionx/types"
-	abci "github.com/tendermint/tendermint/abci/types"
 )
 
 // BeginBlocker sets the proposer for determining distribution during endblock

@@ -28,12 +28,13 @@ import (
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 	"github.com/ory/dockertest/v3"
 	"github.com/ory/dockertest/v3/docker"
-	"github.com/sharering/shareledger/app/params"
 	"github.com/spf13/viper"
 	"github.com/stretchr/testify/suite"
 	tmconfig "github.com/tendermint/tendermint/config"
 	tmjson "github.com/tendermint/tendermint/libs/json"
 	rpchttp "github.com/tendermint/tendermint/rpc/client/http"
+
+	"github.com/sharering/shareledger/app/params"
 )
 
 const (

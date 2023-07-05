@@ -15,11 +15,12 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/bank/types"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
+	"github.com/stretchr/testify/require"
+
 	"github.com/sharering/shareledger/app"
 	"github.com/sharering/shareledger/testutil/simapp"
 	electoraltypes "github.com/sharering/shareledger/x/electoral/types"
 	"github.com/sharering/shareledger/x/utils/denom"
-	"github.com/stretchr/testify/require"
 )
 
 const (

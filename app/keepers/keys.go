@@ -22,6 +22,8 @@ import (
 	icahosttypes "github.com/cosmos/ibc-go/v5/modules/apps/27-interchain-accounts/host/types"
 	ibctransfertypes "github.com/cosmos/ibc-go/v5/modules/apps/transfer/types"
 	ibchost "github.com/cosmos/ibc-go/v5/modules/core/24-host"
+	routertypes "github.com/strangelove-ventures/packet-forward-middleware/v5/router/types"
+
 	assetmoduletypes "github.com/sharering/shareledger/x/asset/types"
 	bookingmoduletypes "github.com/sharering/shareledger/x/booking/types"
 	distributionxtypes "github.com/sharering/shareledger/x/distributionx/types"
@@ -30,7 +32,6 @@ import (
 	gentlemintmoduletypes "github.com/sharering/shareledger/x/gentlemint/types"
 	idmoduletypes "github.com/sharering/shareledger/x/id/types"
 	swapmoduletypes "github.com/sharering/shareledger/x/swap/types"
-	routertypes "github.com/strangelove-ventures/packet-forward-middleware/v5/router/types"
 )
 
 func (appKeepers *AppKeepers) GenerateKeys() {

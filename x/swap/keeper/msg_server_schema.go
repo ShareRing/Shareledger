@@ -2,11 +2,12 @@ package keeper
 
 import (
 	"context"
-	denom "github.com/sharering/shareledger/x/utils/denom"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+
 	"github.com/sharering/shareledger/x/swap/types"
+	denom "github.com/sharering/shareledger/x/utils/denom"
 )
 
 func (k msgServer) CreateSchema(goCtx context.Context, msg *types.MsgCreateSchema) (*types.MsgCreateSchemaResponse, error) {

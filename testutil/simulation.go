@@ -4,8 +4,9 @@ import (
 	"fmt"
 	"math/rand"
 
-	"github.com/sharering/shareledger/x/swap/types"
 	"github.com/thanhpk/randstr"
+
+	"github.com/sharering/shareledger/x/swap/types"
 )
 
 func RandBool(r *rand.Rand) bool {

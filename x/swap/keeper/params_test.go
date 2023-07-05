@@ -3,9 +3,10 @@ package keeper_test
 import (
 	"testing"
 
+	"github.com/stretchr/testify/require"
+
 	testkeeper "github.com/sharering/shareledger/testutil/keeper"
 	"github.com/sharering/shareledger/x/swap/types"
-	"github.com/stretchr/testify/require"
 )
 
 func TestGetParams(t *testing.T) {
