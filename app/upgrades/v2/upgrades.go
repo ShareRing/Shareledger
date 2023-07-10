@@ -40,7 +40,7 @@ func CreateUpgradeHandler(
 
 		// modify DistributionxParams
 		p := keepers.DistributionxKeeper.GetParams(ctx)
-		p.DevPoolAccount = "shareledger18pf3zdwqjntd9wkvfcjvmdc7hua6c0q2eck5h5"
+		p.DevPoolAccount = "shareledger1qda5j5mgvmesceg8h68przllcxhz5lzvwz38v5"
 		keepers.DistributionxKeeper.SetParams(ctx, p)
 		// ================================================
 
