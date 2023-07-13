@@ -2,6 +2,8 @@ package keeper
 
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
+
+	"github.com/sharering/shareledger/x/utils/denom"
 )
 
 // Migrator is a struct for handling in-place store migrations.
@@ -21,6 +23,7 @@ func (m Migrator) Migrate1to2(ctx sdk.Context) error {
 
 // this version add paramSpace min_gas_price for `gentlemint`
 func (m Migrator) Migrate2to3(ctx sdk.Context) error {
-	m.keeper.SetMinGasPriceParam(ctx, sdk.NewDecCoins())
+	// default min-gas-prices is 100_000_000 nshr
+	m.keeper.SetMinGasPriceParam(ctx, sdk.NewDecCoins(sdk.NewDecCoin(denom.Base, sdk.NewInt(100_000))))
 	return nil
 }
