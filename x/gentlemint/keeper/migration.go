@@ -23,7 +23,7 @@ func (m Migrator) Migrate1to2(ctx sdk.Context) error {
 
 // this version add paramSpace min_gas_price for `gentlemint`
 func (m Migrator) Migrate2to3(ctx sdk.Context) error {
-	// default min-gas-prices is 100_000_000 nshr
-	m.keeper.SetMinGasPriceParam(ctx, sdk.NewDecCoins(sdk.NewDecCoin(denom.Base, sdk.NewInt(100_000))))
+	// default min-gas-prices is 10_000_000 nshr
+	m.keeper.SetMinGasPriceParam(ctx, sdk.NewDecCoins(sdk.NewDecCoin(denom.Base, sdk.NewInt(10_000))))
 	return nil
 }
