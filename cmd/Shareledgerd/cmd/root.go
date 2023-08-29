@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"errors"
 	"io"
 	"os"
 	"path/filepath"
@@ -32,11 +31,12 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/crisis"
 	genutilcli "github.com/cosmos/cosmos-sdk/x/genutil/client/cli"
 	genutiltypes "github.com/cosmos/cosmos-sdk/x/genutil/types"
+	"github.com/spf13/cast"
+	"github.com/spf13/cobra"
+
 	"github.com/sharering/shareledger/app"
 	"github.com/sharering/shareledger/app/params"
 	"github.com/sharering/shareledger/cmd/Shareledgerd/tools"
-	"github.com/spf13/cast"
-	"github.com/spf13/cobra"
 )
 
 func NewRootCmd() (*cobra.Command, params.EncodingConfig) {
@@ -244,10 +244,7 @@ func (ac appCreator) newApp(
 	}
 
 	return app.New(
-		logger, db, traceStore, true, skipUpgradeHeights,
-		homeDir,
-		cast.ToUint(appOpts.Get(server.FlagInvCheckPeriod)),
-		ac.encCfg,
+		logger, db, traceStore, true,
 		appOpts,
 		baseapp.SetPruning(pruningOpts),
 		baseapp.SetMinGasPrices(cast.ToString(appOpts.Get(server.FlagMinGasPrices))),
@@ -274,11 +271,6 @@ func (ac appCreator) appExport(
 	appOpts servertypes.AppOptions,
 	modulesToExport []string,
 ) (servertypes.ExportedApp, error) {
-	homePath, ok := appOpts.Get(flags.FlagHome).(string)
-	if !ok || homePath == "" {
-		return servertypes.ExportedApp{}, errors.New("application home is not set")
-	}
-
 	var loadLatest bool
 	if height == -1 {
 		loadLatest = true
@@ -289,10 +281,6 @@ func (ac appCreator) appExport(
 		db,
 		traceStore,
 		loadLatest,
-		map[int64]bool{},
-		homePath,
-		cast.ToUint(appOpts.Get(server.FlagInvCheckPeriod)),
-		ac.encCfg,
 		appOpts,
 	)
 

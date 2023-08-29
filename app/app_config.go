@@ -124,7 +124,7 @@ var (
 			{
 				Name: "runtime",
 				Config: appconfig.WrapAny(&runtimev1alpha1.Module{
-					AppName: "Shareledger",
+					AppName: "shareledger",
 					// During begin block slashing happens after distr.BeginBlocker so that
 					// there is nothing left over in the validator fee pool, so as to keep the
 					// CanWithdrawInvariant invariant.
@@ -209,7 +209,7 @@ var (
 			{
 				Name: authtypes.ModuleName,
 				Config: appconfig.WrapAny(&authmodulev1.Module{
-					Bech32Prefix:             "cosmos",
+					Bech32Prefix:             "shareledger",
 					ModuleAccountPermissions: moduleAccPerms,
 					// By default modules authority is the governance module. This is configurable with the following:
 					// Authority: "group", // A custom module authority can be set using a module name

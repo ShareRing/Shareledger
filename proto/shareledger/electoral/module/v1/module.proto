@@ -10,5 +10,3 @@ message Module {
     go_import: "github.com/sharering/shareledger/x/electoral"
   };
 }
-
-

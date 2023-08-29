@@ -5,18 +5,21 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/crypto/keyring"
 	servertypes "github.com/cosmos/cosmos-sdk/server/types"
 	"github.com/cosmos/cosmos-sdk/testutil/network"
+	simtestutil "github.com/cosmos/cosmos-sdk/testutil/sims"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
+	"github.com/stretchr/testify/require"
+
 	"github.com/sharering/shareledger/app"
 	"github.com/sharering/shareledger/testutil/simapp"
 	electoraltypes "github.com/sharering/shareledger/x/electoral/types"
 	"github.com/sharering/shareledger/x/utils/denom"
-	"github.com/stretchr/testify/require"
 )
 
 // AppConstructor defines a function which accepts a network configuration and
@@ -180,18 +183,11 @@ func SetTestingGenesis(t *testing.T, config *network.Config, nodedir, moniker st
 // ShareLedgerChainConstructor returns a new shareLedger AppConstructor
 func ShareLedgerChainConstructor() AppConstructor {
 	return func(val network.Validator) servertypes.Application {
-		return simapp.New(val.Ctx.Config.RootDir, TestAppOptions{})
+		return simapp.New(simtestutil.AppOptionsMap{
+			app.FlagAppOptionSkipCheckVoter: true,
+			flags.FlagHome:                  val.Ctx.Config.RootDir,
+		})
 	}
-}
-
-type TestAppOptions struct{}
-
-// Get implements TestAppOptions
-func (ao TestAppOptions) Get(o string) interface{} {
-	if o == app.FlagAppOptionSkipCheckVoter {
-		return true
-	}
-	return nil
 }
 
 func MustAddressFormKeyring(kr keyring.Keyring, id string) sdk.AccAddress {

@@ -9,11 +9,10 @@ import (
 	"path/filepath"
 
 	"cosmossdk.io/depinject"
-	dbm "github.com/cometbft/cometbft-db"
-	"github.com/cometbft/cometbft/libs/log"
-
 	"github.com/CosmWasm/wasmd/x/wasm"
 	wasmkeeper "github.com/CosmWasm/wasmd/x/wasm/keeper"
+	dbm "github.com/cometbft/cometbft-db"
+	"github.com/cometbft/cometbft/libs/log"
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/codec"
@@ -68,6 +67,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/upgrade"
 	upgradeclient "github.com/cosmos/cosmos-sdk/x/upgrade/client"
 	upgradekeeper "github.com/cosmos/cosmos-sdk/x/upgrade/keeper"
+	ica "github.com/cosmos/ibc-go/v7/modules/apps/27-interchain-accounts"
 	icacontrollerkeeper "github.com/cosmos/ibc-go/v7/modules/apps/27-interchain-accounts/controller/keeper"
 	icahostkeeper "github.com/cosmos/ibc-go/v7/modules/apps/27-interchain-accounts/host/keeper"
 	ibcfeekeeper "github.com/cosmos/ibc-go/v7/modules/apps/29-fee/keeper"
@@ -76,7 +76,6 @@ import (
 	ibcchanneltypes "github.com/cosmos/ibc-go/v7/modules/core/04-channel/types"
 	ibckeeper "github.com/cosmos/ibc-go/v7/modules/core/keeper"
 
-	ica "github.com/cosmos/ibc-go/v7/modules/apps/27-interchain-accounts"
 	assetmodule "github.com/sharering/shareledger/x/asset"
 	assetmodulekeeper "github.com/sharering/shareledger/x/asset/keeper"
 	bookingmodule "github.com/sharering/shareledger/x/booking"
@@ -97,7 +96,8 @@ import (
 
 var (
 	// DefaultNodeHome default home directories for the application daemon
-	DefaultNodeHome string
+	DefaultNodeHome             string
+	FlagAppOptionSkipCheckVoter = "skip-checking-voter-role"
 
 	// ModuleBasics defines the module BasicManager is in charge of setting up basic,
 	// non-dependant module elements, such as codec registration
@@ -214,6 +214,7 @@ func New(logger log.Logger,
 	db dbm.DB,
 	traceStore io.Writer,
 	loadLatest bool,
+
 	appOpts servertypes.AppOptions,
 	baseAppOptions ...func(*baseapp.BaseApp),
 ) *App {
@@ -248,13 +249,14 @@ func New(logger log.Logger,
 		&shareledgerApp.NFTKeeper,
 		&shareledgerApp.ConsensusParamsKeeper,
 
-		// &shareledgerApp.IBCKeeper,
-		// &shareledgerApp.IBCFeeKeeper,
-		// &shareledgerApp.ICAControllerKeeper,
-		// &shareledgerApp.ICAHostKeeper,
-		// &shareledgerApp.TransferKeeper,
-		// &shareledgerApp.WasmKeeper,
-		// &shareledgerApp.ContractKeeper,
+		// IBC and Wasm is not yet support depinject
+		&shareledgerApp.IBCKeeper,
+		&shareledgerApp.IBCFeeKeeper,
+		&shareledgerApp.ICAControllerKeeper,
+		&shareledgerApp.ICAHostKeeper,
+		&shareledgerApp.TransferKeeper,
+		&shareledgerApp.WasmKeeper,
+		&shareledgerApp.ContractKeeper,
 
 		// shareledger keeper
 		&shareledgerApp.DocumentKeeper,

@@ -9,9 +9,11 @@ import (
 	servertypes "github.com/cosmos/cosmos-sdk/server/types"
 	pruningtypes "github.com/cosmos/cosmos-sdk/store/pruning/types"
 	"github.com/cosmos/cosmos-sdk/testutil/network"
+	"github.com/cosmos/cosmos-sdk/testutil/sims"
 	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types"
 	v1 "github.com/cosmos/cosmos-sdk/x/gov/types/v1"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
+
 	"github.com/sharering/shareledger/app"
 	"github.com/sharering/shareledger/app/params"
 	denom "github.com/sharering/shareledger/x/utils/denom"
@@ -42,11 +44,12 @@ func DefaultConfig() network.Config {
 		encodingConfig.Codec.MustUnmarshalJSON(genesisState[govtypes.ModuleName], &govGenesisState)
 	}
 
-	var invCheckPeriod uint = 5
-
 	config.AppConstructor = func(val network.ValidatorI) servertypes.Application {
-		return app.New(val.GetCtx().Logger, dbm.NewMemDB(), nil, true, map[int64]bool{},
-			app.DefaultNodeHome, invCheckPeriod, encodingConfig, TestAppOptions{},
+		return app.New(val.GetCtx().Logger, dbm.NewMemDB(), nil, true,
+			sims.AppOptionsMap{
+				app.FlagAppOptionSkipCheckVoter: true,
+				flags.FlagHome:                  app.DefaultNodeHome,
+			},
 			bam.SetPruning(pruningtypes.NewPruningOptionsFromString(val.GetAppConfig().Pruning)),
 			bam.SetMinGasPrices(val.GetAppConfig().MinGasPrices),
 			bam.SetChainID(val.GetCtx().Viper.GetString(flags.FlagChainID)),

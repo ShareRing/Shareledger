@@ -5,10 +5,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/cometbft/cometbft/crypto"
-
 	dbm "github.com/cometbft/cometbft-db"
 	abci "github.com/cometbft/cometbft/abci/types"
+	"github.com/cometbft/cometbft/crypto"
 	"github.com/cometbft/cometbft/libs/log"
 	tmproto "github.com/cometbft/cometbft/proto/tendermint/types"
 	tmtypes "github.com/cometbft/cometbft/types"
@@ -131,17 +130,11 @@ func SetupWithGenesisValSet(t *testing.T, valSet *tmtypes.ValidatorSet, genAccs 
 
 func setup() (*shareledgerapp.App, shareledgerapp.GenesisState) {
 	db := dbm.NewMemDB()
-	encCdc := shareledgerapp.MakeTestEncodingConfig()
-	var invCheckPeriod uint = 5
 	app := shareledgerapp.New(
 		log.NewNopLogger(),
 		db,
 		nil,
 		true,
-		map[int64]bool{},
-		shareledgerapp.DefaultNodeHome,
-		invCheckPeriod,
-		encCdc,
 		EmptyAppOptions{},
 	)
 	return app, shareledgerapp.NewDefaultGenesisState()

@@ -20,6 +20,7 @@ import (
 	tmos "github.com/cometbft/cometbft/libs/os"
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	"github.com/cosmos/cosmos-sdk/client"
+	"github.com/cosmos/cosmos-sdk/client/flags"
 	nodeservice "github.com/cosmos/cosmos-sdk/client/grpc/node"
 	"github.com/cosmos/cosmos-sdk/client/grpc/tmservice"
 	"github.com/cosmos/cosmos-sdk/codec"
@@ -42,7 +43,6 @@ import (
 	ibcchanneltypes "github.com/cosmos/ibc-go/v7/modules/core/04-channel/types"
 	"github.com/gorilla/mux"
 	"github.com/rakyll/statik/fs"
-	gentleminttypes "github.com/sharering/shareledger/x/gentlemint/types"
 	"github.com/spf13/cast"
 
 	"github.com/sharering/shareledger/ante"
@@ -50,6 +50,7 @@ import (
 	"github.com/sharering/shareledger/app/params"
 	"github.com/sharering/shareledger/app/upgrades"
 	v2 "github.com/sharering/shareledger/app/upgrades/v2"
+	gentleminttypes "github.com/sharering/shareledger/x/gentlemint/types"
 )
 
 const (
@@ -85,7 +86,6 @@ type App struct {
 	cdc               *codec.LegacyAmino
 	appCodec          codec.Codec
 	interfaceRegistry types.InterfaceRegistry
-	invCheckPeriod    uint
 
 	// the module manager
 	ModuleManager *module.Manager
@@ -100,13 +100,11 @@ func New(
 	db dbm.DB,
 	traceStore io.Writer,
 	loadLatest bool,
-	skipUpgradeHeights map[int64]bool,
-	homePath string,
-	invCheckPeriod uint,
-	encodingConfig params.EncodingConfig,
+
 	appOpts servertypes.AppOptions,
 	baseAppOptions ...func(*baseapp.BaseApp),
 ) *App {
+	encodingConfig := params.MakeTestEncodingConfig()
 	appCodec := encodingConfig.Codec
 	cdc := encodingConfig.Amino
 	interfaceRegistry := encodingConfig.InterfaceRegistry
@@ -122,9 +120,9 @@ func New(
 		cdc:               cdc,
 		appCodec:          appCodec,
 		interfaceRegistry: interfaceRegistry,
-		invCheckPeriod:    invCheckPeriod,
 	}
 
+	homePath := cast.ToString(appOpts.Get(flags.FlagHome))
 	// Setup keepers
 	app.AppKeepers = keepers.NewAppKeeper(
 		appCodec,
@@ -132,9 +130,7 @@ func New(
 		encodingConfig.Amino,
 		maccPerms,
 		app.BlockedModuleAccountAddrs(),
-		skipUpgradeHeights,
 		homePath,
-		invCheckPeriod,
 		appOpts,
 	)
 

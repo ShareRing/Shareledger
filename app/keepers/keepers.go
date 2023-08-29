@@ -8,6 +8,7 @@ import (
 	tmos "github.com/cometbft/cometbft/libs/os"
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	"github.com/cosmos/cosmos-sdk/codec"
+	"github.com/cosmos/cosmos-sdk/server"
 	servertypes "github.com/cosmos/cosmos-sdk/server/types"
 	"github.com/cosmos/cosmos-sdk/store/streaming"
 	storetypes "github.com/cosmos/cosmos-sdk/store/types"
@@ -64,12 +65,12 @@ import (
 	ibcclient "github.com/cosmos/ibc-go/v7/modules/core/02-client"
 	ibcclienttypes "github.com/cosmos/ibc-go/v7/modules/core/02-client/types"
 	porttypes "github.com/cosmos/ibc-go/v7/modules/core/05-port/types"
+	ibcexported "github.com/cosmos/ibc-go/v7/modules/core/exported"
 	ibckeeper "github.com/cosmos/ibc-go/v7/modules/core/keeper"
 	ibctestingtypes "github.com/cosmos/ibc-go/v7/testing/types"
-
-	ibcexported "github.com/cosmos/ibc-go/v7/modules/core/exported"
-
 	"github.com/prometheus/client_golang/prometheus"
+	"github.com/spf13/cast"
+
 	assetmodulekeeper "github.com/sharering/shareledger/x/asset/keeper"
 	assetmoduletypes "github.com/sharering/shareledger/x/asset/types"
 	bookingmodulekeeper "github.com/sharering/shareledger/x/booking/keeper"
@@ -86,7 +87,6 @@ import (
 	idmoduletypes "github.com/sharering/shareledger/x/id/types"
 	swapmodulekeeper "github.com/sharering/shareledger/x/swap/keeper"
 	swapmoduletypes "github.com/sharering/shareledger/x/swap/types"
-	"github.com/spf13/cast"
 )
 
 type AppKeepers struct {
@@ -149,9 +149,7 @@ func NewAppKeeper(
 	legacyAmino *codec.LegacyAmino,
 	maccPerms map[string][]string,
 	blockedAddress map[string]bool,
-	skipUpgradeHeights map[int64]bool,
 	homePath string,
-	invCheckPeriod uint,
 	appOpts servertypes.AppOptions,
 ) AppKeepers {
 	appKeepers := AppKeepers{}
@@ -181,6 +179,7 @@ func NewAppKeeper(
 
 	appKeepers.CapabilityKeeper.Seal()
 
+	invCheckPeriod := cast.ToUint(appOpts.Get(server.FlagInvCheckPeriod))
 	appKeepers.CrisisKeeper = crisiskeeper.NewKeeper(
 		appCodec,
 		appKeepers.GetKey(crisistypes.StoreKey),
@@ -316,6 +315,10 @@ func NewAppKeeper(
 
 	// set the governance module account as the authority for conducting upgrades
 	// UpgradeKeeper must be created before IBCKeeper
+	skipUpgradeHeights := map[int64]bool{}
+	for _, h := range cast.ToIntSlice(appOpts.Get(server.FlagUnsafeSkipUpgrades)) {
+		skipUpgradeHeights[int64(h)] = true
+	}
 	appKeepers.UpgradeKeeper = upgradekeeper.NewKeeper(
 		skipUpgradeHeights,
 		appKeepers.keys[upgradetypes.StoreKey],
