@@ -1,0 +1,52 @@
+# Development Dockerfile for Shareledger with Air hot reload
+# Includes WasmVM support for CosmWasm contract testing
+
+FROM golang:1.18
+
+# Install build dependencies
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    git \
+    curl \
+    jq \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Air for hot reload (v1.49.0 is compatible with Go 1.18)
+RUN go install github.com/cosmtrek/air@v1.49.0
+
+# Download WasmVM library (v1.1.1 compatible with Cosmos SDK 0.46.x)
+# Using the glibc version since we're on debian-based golang image
+ARG WASMVM_VERSION=v1.1.1
+RUN curl -L -o /lib/libwasmvm.x86_64.so \
+    https://github.com/CosmWasm/wasmvm/releases/download/${WASMVM_VERSION}/libwasmvm.x86_64.so && \
+    chmod 755 /lib/libwasmvm.x86_64.so
+
+# Set library path
+ENV LD_LIBRARY_PATH=/lib
+
+# Set working directory
+WORKDIR /app
+
+# Copy go mod files first for better caching
+COPY go.mod go.sum ./
+RUN go mod download
+
+# Copy the rest of the source code (will be overridden by volume mount in dev)
+COPY . .
+
+# Create tmp directory for Air
+RUN mkdir -p tmp
+
+# Create directory for chain data
+RUN mkdir -p /root/.shareledger-dev
+
+# Expose ports
+# 26656: P2P
+# 26657: RPC
+# 1317: REST API
+# 9090: gRPC
+EXPOSE 26656 26657 1317 9090
+
+# Default command - run Air for hot reload
+CMD ["air", "-c", ".air.toml"]
+

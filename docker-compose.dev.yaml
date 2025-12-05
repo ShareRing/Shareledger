@@ -1,0 +1,58 @@
+version: "3.8"
+
+services:
+  shareledger-dev:
+    container_name: shareledger-dev
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      # Mount source code for hot reload
+      - .:/app
+      # Persist Go module cache for faster rebuilds
+      - go-mod-cache:/go/pkg/mod
+      # Persist chain data between restarts
+      - shareledger-dev-data:/root/.shareledger-dev
+      # Mount initialization script (read-only)
+      - ./scripts:/app/scripts:ro
+    ports:
+      # P2P port
+      - "26656:26656"
+      # RPC port
+      - "26657:26657"
+      # REST API port
+      - "1317:1317"
+      # gRPC port
+      - "9090:9090"
+    environment:
+      # Enable CGO for WasmVM
+      - CGO_ENABLED=1
+      # Chain ID for development
+      - CHAIN_ID=shareledger-dev
+      # Moniker for the node
+      - MONIKER=dev-node
+    # Run init script if chain not initialized, then start Air
+    entrypoint: ["/bin/bash", "-c"]
+    command:
+      - |
+        if [ ! -f /root/.shareledger-dev/config/genesis.json ]; then
+          echo "Initializing development chain..."
+          /app/script/init-dev.sh
+        fi
+        echo "Starting Air hot reload..."
+        air -c .air.toml
+    # Restart policy
+    restart: unless-stopped
+    # Health check
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:26657/status"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+volumes:
+  go-mod-cache:
+    name: shareledger-go-mod-cache
+  shareledger-dev-data:
+    name: shareledger-dev-data
