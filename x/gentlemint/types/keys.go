@@ -41,7 +41,7 @@ var (
 
 var (
 	RequiredBaseAmt              = sdk.NewCoin(denom.Base, sdk.NewInt(10*denom.ShrExponent))
-	MaxBaseSupply                = sdk.NewInt(4396_000_000 * denom.ShrExponent)
+	MaxBaseSupply                = sdk.NewInt(6740_000_000 * denom.ShrExponent)
 	DefaultExchangeRateSHRPToSHR = sdk.NewDec(200)
 )
 

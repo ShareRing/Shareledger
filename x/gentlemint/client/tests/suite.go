@@ -105,7 +105,7 @@ func (s *GentlemintIntegrationTestSuite) TestLoadSHR() {
 		{
 			d:           "load_shr_but_supply_reach_to_limit",
 			iLoadTarget: netutilts.Accounts[netutilts.KeyEmpty1].String(),
-			iAmount:     "4396000043shr",
+			iAmount:     "6740000000shr",
 			txCreator:   netutilts.KeyAuthority,
 			txFee:       2,
 			oErr:        nil,
