@@ -9,3 +9,4 @@ vendor/
 go.work
 go.work.sum
 tmp/
+.DS_Store
