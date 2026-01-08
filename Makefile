@@ -1,8 +1,9 @@
 .PHONY: build_linux_amd64 build dbuild dinit dup ddown duprefresh run
-VERSION := v0.44
+VERSION ?= $(shell git describe --tags --always --dirty 2>/dev/null || echo "dev")
 COMMIT := $(shell git log -1 --format='%H')
 BUILDDIR := ./build
 DOCKER := $(shell which docker)
+UNAME_S ?= $(shell uname -s)
 build_tags = netgo
 ifeq ($(LEDGER_ENABLED),true)
   ifeq ($(OS),Windows_NT)
@@ -42,7 +43,10 @@ ldflags = -X github.com/cosmos/cosmos-sdk/version.Name=shareledger \
 		  -X github.com/cosmos/cosmos-sdk/version.Commit=$(COMMIT) \
 		  -X "github.com/cosmos/cosmos-sdk/version.BuildTags=$(build_tags_comma_sep)"
 
+# Linux-only static linking flags (macOS linkers don't support these options)
+ifeq ($(UNAME_S),Linux)
 ldflags += -linkmode=external -extldflags "-Wl,-z,muldefs -static"
+endif
 
 ldflags += $(LDFLAGS)
 ldflags := $(strip $(ldflags))
@@ -52,7 +56,7 @@ run:
 	go run ./cmd/Shareledgerd/main.go start
 
 build_linux_amd64:
-	env GOOS=linux GOARCH=amd64 go build -o build/shareledger_linux_amd64 ./cmd/Shareledgerd
+	env GOOS=linux GOARCH=amd64 go build -mod=readonly $(BUILD_FLAGS) -o build/shareledger_linux_amd64 ./cmd/Shareledgerd
 
 build:
 	go build -mod=readonly $(BUILD_FLAGS) -o build/shareledger ./cmd/Shareledgerd
