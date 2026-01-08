@@ -45,6 +45,7 @@ import (
 	"github.com/sharering/shareledger/app/params"
 	"github.com/sharering/shareledger/app/upgrades"
 	v2 "github.com/sharering/shareledger/app/upgrades/v2"
+	v3 "github.com/sharering/shareledger/app/upgrades/v3"
 	gentleminttypes "github.com/sharering/shareledger/x/gentlemint/types"
 )
 
@@ -60,7 +61,7 @@ var (
 	FlagAppOptionSkipCheckVoter = "skip-checking-voter-role"
 
 	DefaultNodeHome string
-	Upgrades        = []upgrades.Upgrade{v2.Upgrade}
+	Upgrades        = []upgrades.Upgrade{v2.Upgrade, v3.Upgrade}
 )
 
 func init() {
