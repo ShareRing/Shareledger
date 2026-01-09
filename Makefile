@@ -52,6 +52,21 @@ ldflags += $(LDFLAGS)
 ldflags := $(strip $(ldflags))
 
 BUILD_FLAGS := -tags "$(build_tags_comma_sep)" -ldflags '$(ldflags)' -trimpath
+
+# Extra args passed to `docker build` for dbuild targets.
+# Usage:
+#   make dbuild DOCKER_BUILD_ARGS="--no-cache --progress=plain"
+# The Makefile may append some build-args when you override variables like VERSION/COMMIT.
+DOCKER_BUILD_ARGS ?=
+ifneq ($(filter command line environment,$(origin VERSION)),)
+  DOCKER_BUILD_ARGS += --build-arg VERSION=$(VERSION)
+endif
+ifneq ($(filter command line environment,$(origin COMMIT)),)
+  DOCKER_BUILD_ARGS += --build-arg COMMIT=$(COMMIT)
+endif
+ifneq ($(filter command line environment,$(origin BUILD_FLAGS)),)
+  DOCKER_BUILD_ARGS += --build-arg BUILD_FLAGS=$(BUILD_FLAGS)
+endif
 run:
 	go run ./cmd/Shareledgerd/main.go start
 
@@ -62,7 +77,11 @@ build:
 	go build -mod=readonly $(BUILD_FLAGS) -o build/shareledger ./cmd/Shareledgerd
 
 dbuild:
-	docker build -t sharering/shareledger -f ./deploy/docker/Dockerfile . --platform linux/amd64
+	docker build -t sharering/shareledger -f ./deploy/docker/Dockerfile . --platform linux/amd64 $(DOCKER_BUILD_ARGS)
+	mkdir -p $(BUILDDIR)
+	docker create --name shareledger-extract sharering/shareledger
+	docker cp shareledger-extract:/bin/shareledger $(BUILDDIR)/shareledger_linux_amd64
+	docker rm shareledger-extract
 
 dbuild-mac-local:
 	docker build -t sharering/shareledger -f ./deploy/docker/Dockerfile .

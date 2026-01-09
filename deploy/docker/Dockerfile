@@ -4,6 +4,10 @@ WORKDIR /app
 RUN set -eux; apk add --no-cache ca-certificates build-base linux-headers;
 RUN apk add git
 
+ARG VERSION=""
+ARG COMMIT=""
+ARG BUILD_FLAGS=""
+
 COPY /go.mod ./
 COPY /go.sum ./
 RUN go mod tidy
@@ -13,7 +17,17 @@ COPY  . .
 # See https://github.com/CosmWasm/wasmvm/releases
 ADD https://github.com/CosmWasm/wasmvm/releases/download/v1.0.0/libwasmvm_muslc.x86_64.a /lib/libwasmvm_muslc.a
 
-RUN make build LEDGER_ENABLED=false BUILD_TAGS=muslc
+RUN set -eux; \
+    if [ -n "$BUILD_FLAGS" ]; then \
+      make build LEDGER_ENABLED=false BUILD_TAGS=muslc \
+        ${VERSION:+VERSION=$VERSION} \
+        ${COMMIT:+COMMIT=$COMMIT} \
+        BUILD_FLAGS="$BUILD_FLAGS"; \
+    else \
+      make build LEDGER_ENABLED=false BUILD_TAGS=muslc \
+        ${VERSION:+VERSION=$VERSION} \
+        ${COMMIT:+COMMIT=$COMMIT}; \
+    fi
 
 FROM alpine:3.14
 WORKDIR /app
